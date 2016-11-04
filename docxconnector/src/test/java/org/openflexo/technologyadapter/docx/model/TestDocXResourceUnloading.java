@@ -118,6 +118,7 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
+				docResource.unloadResourceData(false);
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}

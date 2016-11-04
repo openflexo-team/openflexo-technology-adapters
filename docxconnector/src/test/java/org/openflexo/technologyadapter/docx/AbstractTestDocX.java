@@ -43,6 +43,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
@@ -69,6 +70,15 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 		docXTA.setDefaultIDStrategy(idStrategy);
 		serviceManager.activateTechnologyAdapter(docXTA);
 		return serviceManager;
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+
 	}
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
