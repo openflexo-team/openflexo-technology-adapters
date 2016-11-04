@@ -70,28 +70,20 @@ public class DiagramFlexoConceptView extends FlexoConceptView<FlexoConcept> {
 	}
 
 	@Override
-	public void show(final FlexoController controller, FlexoPerspective perspective) {
+	public void willShow() {
+		super.willShow();
 
 		// Sets palette view of editor to be the top right view
-		perspective.setTopRightView(previewComponent);
+		getPerspective().setTopRightView(previewComponent);
 
-		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
-		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
+		getDiagramTechnologyAdapterController(getFlexoController()).getInspectors().attachToEditor(previewComponent.getPreviewController());
+		getDiagramTechnologyAdapterController(getFlexoController()).getDialogInspectors()
+				.attachToEditor(previewComponent.getPreviewController());
 
-		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
+		getPerspective().setBottomRightView(getDiagramTechnologyAdapterController(getFlexoController()).getInspectors().getPanelGroup());
 
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
-			}
-		});*/
+		getFlexoController().getControllerModel().setRightViewVisible(true);
 
-		controller.getControllerModel().setRightViewVisible(true);
-
-		revalidate();
-		repaint();
 	}
 
 	@Override
