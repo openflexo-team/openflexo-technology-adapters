@@ -50,8 +50,8 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	 * Then copy-paste 
 	 */
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Dialog")).getFile(),
-				"Fib/Dialog/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Dialog")).getFile(), "Fib/Dialog/"));
 	}
 
 	@Test
@@ -94,9 +94,10 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Dialog/ImportImageFileDialog.fib");
 	}
 
-	@Test
+	// Deprecated dialog
+	/*@Test
 	public void testPushToPaletteDialog() {
 		validateFIB("Fib/Dialog/PushToPaletteDialog.fib");
-	}
+	}*/
 
 }
