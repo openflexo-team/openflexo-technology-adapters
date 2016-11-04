@@ -135,8 +135,9 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 
 		assertNotNull(virtualModel.getBindingModel());
-		assertEquals(6, virtualModel.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, virtualModel.getBindingModel().getBindingVariablesCount());
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.PROJECT_PROPERTY));
+		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.RC_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
@@ -164,8 +165,9 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 	public void testVirtualModelBindingModel() {
 
 		assertNotNull(virtualModel.getBindingModel());
-		assertEquals(6, virtualModel.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, virtualModel.getBindingModel().getBindingVariablesCount());
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.PROJECT_PROPERTY));
+		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.RC_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
