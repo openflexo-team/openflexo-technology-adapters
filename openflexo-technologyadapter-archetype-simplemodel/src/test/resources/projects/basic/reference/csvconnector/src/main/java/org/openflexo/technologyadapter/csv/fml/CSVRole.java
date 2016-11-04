@@ -36,88 +36,94 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv.fml;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.fml.CSVRole.CSVRoleImpl;
+import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 @ModelEntity
 @ImplementationClass(value = CSVRoleImpl.class)
 @XMLElement
 public interface CSVRole extends FlexoRole<CSVModel> {
 
-    public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
+	public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
-    public abstract static class CSVRoleImpl extends FlexoRoleImpl<CSVModel> implements CSVRole {
+	public abstract static class CSVRoleImpl extends FlexoRoleImpl<CSVModel>implements CSVRole {
 
-        public CSVRoleImpl() {
-            super();
-        }
+		public CSVRoleImpl() {
+			super();
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getType()
-         */
-        @Override
-        public Type getType() {
-            return CSVModel.class;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getType()
+		 */
+		@Override
+		public Type getType() {
+			return CSVModel.class;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getPreciseType()
-         */
-        @Override
-        public String getPreciseType() {
-            return CSVModel.class.getSimpleName();
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getPreciseType()
+		 */
+		@Override
+		public String getPreciseType() {
+			return CSVModel.class.getSimpleName();
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole#defaultCloningStrategy()
-         */
-        @Override
-        public RoleCloningStrategy defaultCloningStrategy() {
-            return RoleCloningStrategy.Reference;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.viewpoint.FlexoRole#defaultCloningStrategy()
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Reference;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
-         */
-        @Override
-        public boolean defaultBehaviourIsToBeDeleted() {
-            return false;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
+		 */
+		@Override
+		public boolean defaultBehaviourIsToBeDeleted() {
+			return false;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.view.FlexoConceptInstance)
-         */
-        @Override
-        public ActorReference<CSVModel> makeActorReference(final CSVModel object, final FlexoConceptInstance epi) {
-            final VirtualModelInstanceModelFactory factory = epi.getFactory();
-            final ModelObjectActorReference<CSVModel> returned = factory.newInstance(ModelObjectActorReference.class);
-            returned.setFlexoRole(this);
-            returned.setFlexoConceptInstance(epi);
-            returned.setModellingElement(object);
-            return returned;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.view.FlexoConceptInstance)
+		 */
+		@Override
+		public ActorReference<CSVModel> makeActorReference(final CSVModel object, final FlexoConceptInstance epi) {
+			final VirtualModelInstanceModelFactory factory = epi.getFactory();
+			final ModelObjectActorReference<CSVModel> returned = factory.newInstance(ModelObjectActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
+		}
 
-        /**
-         * 
-         * @return CSV technology adapter in service manager.
-         */
-        @Override
-        public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
-            return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(CSVTechnologyAdapter.class);
-        }
-    }
+		/**
+		 * 
+		 * @return CSV technology adapter in service manager.
+		 */
+		@Override
+		public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(CSVTechnologyAdapter.class);
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return CSVTechnologyAdapter.class;
+		}
+
+	}
 }

@@ -47,6 +47,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -79,7 +80,7 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 
 	public XMLTechnologyAdapter getXMLTechnologyAdapter();
 
-	public static abstract class XMLIndividualRoleImpl extends FlexoRoleImpl<XMLIndividual> implements XMLIndividualRole {
+	public static abstract class XMLIndividualRoleImpl extends FlexoRoleImpl<XMLIndividual>implements XMLIndividualRole {
 
 		private String individualURI;
 
@@ -139,6 +140,11 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getTypeDescription() + " from "
 					+ getModelSlot().getName() + " ;", context);
 			return out.toString();
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return XMLTechnologyAdapter.class;
 		}
 
 	}

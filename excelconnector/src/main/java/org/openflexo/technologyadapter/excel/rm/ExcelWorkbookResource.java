@@ -40,14 +40,10 @@
 package org.openflexo.technologyadapter.excel.rm;
 
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyContextManager;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 @ModelEntity
@@ -55,13 +51,15 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @XMLElement
 public interface ExcelWorkbookResource extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> {
 
-	@PropertyIdentifier(type = ExcelTechnologyContextManager.class)
+	/*@PropertyIdentifier(type = ExcelTechnologyContextManager.class)
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
-
+	
+	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public ExcelTechnologyContextManager getTechnologyContextManager();
-
+	
+	@Override
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(ExcelTechnologyContextManager technologyContextManager);
-
+	public void setTechnologyContextManager(TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager);
+	*/
 }

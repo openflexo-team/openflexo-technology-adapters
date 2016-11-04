@@ -94,9 +94,10 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Dialog/ImportImageFileDialog.fib");
 	}
 
-	@Test
+	// Deprecated dialog
+	/*@Test
 	public void testPushToPaletteDialog() {
 		validateFIB("Fib/Dialog/PushToPaletteDialog.fib");
-	}
+	}*/
 
 }

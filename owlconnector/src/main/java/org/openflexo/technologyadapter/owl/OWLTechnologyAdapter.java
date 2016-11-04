@@ -97,6 +97,13 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return "FlexoLocalization/OWLTechnologyAdapter";
 	}
 
+	@Override
+	public void ensureAllRepositoriesAreCreated(FlexoResourceCenter<?> rc) {
+		super.ensureAllRepositoriesAreCreated(rc);
+		getOWLOntologyRepository(rc);
+
+	}
+
 	/**
 	 * Return the {@link FlexoOntologyTechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in
 	 * the scope of {@link FlexoResourceCenterService}

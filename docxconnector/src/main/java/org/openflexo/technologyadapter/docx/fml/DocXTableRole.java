@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FlexoTableRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -101,6 +102,11 @@ public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, D
 			return returned;
 		
 		}*/
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return DocXTechnologyAdapter.class;
+		}
 
 	}
 }

@@ -51,6 +51,8 @@ import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 @ModelEntity
 @ImplementationClass(ExcelSheetParameter.ExcelSheetParameterImpl.class)
 @XMLElement
+// TODO: deprecated, use generic FlexoBehaviourParameter instead
+@Deprecated
 public interface ExcelSheetParameter extends InnerModelSlotParameter<BasicExcelModelSlot> {
 
 	public static abstract class ExcelSheetParameterImpl extends InnerModelSlotParameterImpl<BasicExcelModelSlot>

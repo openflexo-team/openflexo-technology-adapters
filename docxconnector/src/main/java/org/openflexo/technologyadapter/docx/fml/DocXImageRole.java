@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FlexoImageRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -89,6 +90,11 @@ public interface DocXImageRole extends FlexoImageRole<DocXDrawingRun, DocXDocume
 			imageFragment = makeImageFragment();
 			getPropertyChangeSupport().firePropertyChange(IMAGE_FRAGMENT_KEY, getImageFragment() == null ? false : null,
 					getImageFragment());
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return DocXTechnologyAdapter.class;
 		}
 
 	}
