@@ -44,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -70,6 +71,12 @@ import org.openflexo.test.TestOrder;
 public class TestDocXResourceUnloading extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestDocXResourceUnloading.class.getPackage().getName());
 
+	@AfterClass
+	public static void tearDownClass() {
+
+		AbstractTestDocX.tearDownClass();
+	}
+
 	@Test
 	@TestOrder(1)
 	public void performTest() throws Exception {
@@ -82,15 +89,17 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 		// if FlexoServiceManager is not freed after each iteration
 		while (i < 10) {
 			log("Iteration " + i);
+			debugMemory();
 			instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 			testDocXLoading();
 			log("After docx loading:");
 			debugMemory();
-			unloadServiceManager();
+			AbstractTestDocX.tearDownClass();
 			log("After service manager unload:");
 			debugMemory();
 
 			i++;
+			Thread.sleep(10);
 
 		}
 
@@ -118,8 +127,9 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
-				docResource.unloadResourceData(false);
 				System.out.println("URI of document: " + docResource.getURI());
+				docResource.unloadResourceData(true);
+				docResource = null;
 			}
 		}
 	}

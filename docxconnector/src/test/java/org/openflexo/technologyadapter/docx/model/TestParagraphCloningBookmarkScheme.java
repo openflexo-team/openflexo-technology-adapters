@@ -43,27 +43,37 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
 public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestParagraphCloningBookmarkScheme.class.getPackage().getName());
+
+	private static DocXDocument simpleDocumentWithBookmarks;
+	private static DocXParagraph titleParagraph;
+	private static DocXParagraph firstParagraph;
+	private static DocXParagraph lastParagraph;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		unloadAndDelete(simpleDocumentWithBookmarks);
+		simpleDocumentWithBookmarks = null;
+		titleParagraph = null;
+		firstParagraph = null;
+		lastParagraph = null;
+
+		AbstractTestDocX.tearDownClass();
+	}
 
 	@Test
 	@TestOrder(1)
@@ -83,40 +93,6 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
-
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			DocXDocumentRepository docXRepository = technologicalAdapter.getDocXDocumentRepository(resourceCenter);
-			assertNotNull(docXRepository);
-			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
-			for (DocXDocumentResource docResource : documents) {
-				try {
-					docResource.loadResourceData(null);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				assertNotNull(docResource.getLoadedResourceData());
-				System.out.println("URI of document: " + docResource.getURI());
-			}
-		}
-	}
-
-	private static DocXDocument simpleDocumentWithBookmarks;
-	private static DocXParagraph titleParagraph;
-	private static DocXParagraph firstParagraph;
-	private static DocXParagraph lastParagraph;
-
-	@Test
-	@TestOrder(4)
 	public void testSimpleDocumentWithBookmarksLoading() throws SaveResourceException {
 
 		simpleDocumentWithBookmarks = getDocument("SimpleDocumentWithBookmarks.docx");
@@ -160,7 +136,7 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 	 * @throws SaveResourceException
 	 */
 	@Test
-	@TestOrder(5)
+	@TestOrder(4)
 	public void testCloneParagraph() throws SaveResourceException {
 
 		log("testCloneParagraph()");

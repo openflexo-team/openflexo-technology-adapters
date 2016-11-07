@@ -80,13 +80,12 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	public static void tearDownClass() {
 
 		technologicalAdapter = null;
+		unloadAndDelete(newDocument);
 		newDocument = null;
 		newDocResource = null;
 		table1 = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		AbstractTestDocX.tearDownClass();
 	}
 
 	@Test
@@ -100,7 +99,8 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestDocumentWithTable.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestDocumentWithTable.docx", true,
+				technologicalAdapter.getDefaultIDStrategy());
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);

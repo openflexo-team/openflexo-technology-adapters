@@ -72,6 +72,14 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 		return serviceManager;
 	}
 
+	protected static void unloadAndDelete(DocXDocument d) {
+		if (d != null) {
+			FlexoResource<DocXDocument> r = d.getResource();
+			if (r != null)
+				r.unloadResourceData(true);
+		}
+	}
+
 	@AfterClass
 	public static void tearDownClass() {
 

@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -49,6 +50,14 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestMSWordIdentifiersPersistency2.class.getPackage().getName());
+
+	// TODO This test is incomplete
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		AbstractTestDocX.tearDownClass();
+	}
 
 	@Test
 	@TestOrder(1)

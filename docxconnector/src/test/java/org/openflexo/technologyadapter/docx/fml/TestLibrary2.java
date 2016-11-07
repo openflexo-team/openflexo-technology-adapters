@@ -213,10 +213,6 @@ public class TestLibrary2 extends AbstractTestDocX {
 		libraryVMI = null;
 		documentVMI = null;
 
-		templateResource = null;
-		templateDocument = null;
-		generatedDocument = null;
-
 		viewPoint = null;
 		viewPointResource = null;
 
@@ -246,9 +242,13 @@ public class TestLibrary2 extends AbstractTestDocX {
 		updateDocumentActionScheme = null;
 		reinjectFromDocumentActionScheme = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		unloadAndDelete(templateDocument);
+		unloadAndDelete(generatedDocument);
+		templateResource = null;
+		templateDocument = null;
+		generatedDocument = null;
+
+		AbstractTestDocX.tearDownClass();
 	}
 
 	/**
