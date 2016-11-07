@@ -354,7 +354,11 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 						}
 						break;
 				}
-				((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
+				// NPE Protection (when deleting elements)
+				DocXDocumentImpl docxDoc = ((DocXDocumentImpl) getFlexoDocument());
+				if (docxDoc != null) {
+					docxDoc.reindexElement(this, oldIdentifier);
+				}
 			}
 			else {
 				logger.warning("Unreachable factory");

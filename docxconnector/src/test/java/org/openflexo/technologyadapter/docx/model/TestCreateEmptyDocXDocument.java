@@ -73,9 +73,7 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 
 		technologicalAdapter = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		AbstractTestDocX.tearDownClass();
 	}
 
 	@Test
@@ -108,6 +106,8 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 		newDocResource.save(null);
 
 		assertFalse(newDocResource.isModified());
+
+		newDocResource.unloadResourceData(true);
 	}
 
 }

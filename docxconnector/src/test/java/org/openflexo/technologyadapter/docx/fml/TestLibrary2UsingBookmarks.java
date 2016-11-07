@@ -213,10 +213,6 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		libraryVMI = null;
 		documentVMI = null;
 
-		templateResource = null;
-		templateDocument = null;
-		generatedDocument = null;
-
 		viewPoint = null;
 		viewPointResource = null;
 
@@ -246,9 +242,13 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		updateDocumentActionScheme = null;
 		reinjectFromDocumentActionScheme = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		templateResource = null;
+		unloadAndDelete(templateDocument);
+		templateDocument = null;
+		unloadAndDelete(generatedDocument);
+		generatedDocument = null;
+
+		AbstractTestDocX.tearDownClass();
 	}
 
 	/**

@@ -82,13 +82,12 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 	@AfterClass
 	public static void tearDownClass() {
 
+		unloadAndDelete(newDocument);
+		newDocument = null;
 		technologicalAdapter = null;
 		newDocResource = null;
-		newDocument = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		AbstractTestDocX.tearDownClass();
 	}
 
 	@Test
