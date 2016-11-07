@@ -154,7 +154,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 		private CellType cellType = null;
 
-		private boolean isRowIndex = false;
+		// private boolean isRowIndex = false;
 
 		public AddExcelCellImpl() {
 			super();
@@ -175,7 +175,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 				try {
 					ExcelRow excelRow = null;
-					if (isRowIndex) {
+					if (isRowIndex()) {
 						Integer rowIndex = getRowIndex().getBindingValue(evaluationContext);
 						ExcelSheet excelSheet = getSheet().getBindingValue(evaluationContext);
 						if (excelSheet != null && rowIndex != null) {
@@ -393,15 +393,15 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 			this.sheet = sheet;
 		}
 
-		@Override
+		/*@Override
 		public boolean isRowIndex() {
 			return isRowIndex;
 		}
-
+		
 		@Override
 		public void setRowIndex(boolean isRowIndex) {
 			this.isRowIndex = isRowIndex;
-		}
+		}*/
 
 	}
 }
