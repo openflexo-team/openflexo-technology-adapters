@@ -70,6 +70,8 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLContro
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromShapeInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsAndFlexoConceptInstancesInitializer;
@@ -86,7 +88,6 @@ import org.openflexo.technologyadapter.diagram.controller.action.ExportDiagramTo
 import org.openflexo.technologyadapter.diagram.controller.action.ExportFMLControlledDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.OpenFMLControlledDiagramVirtualModelInstanceInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ResetGraphicalRepresentationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
@@ -201,7 +202,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeleteDiagramSpecificationInitializer(actionInitializer);
 		new CreateExampleDiagramInitializer(actionInitializer);
 		new DeleteExampleDiagramInitializer(actionInitializer);
-		new PushToPaletteInitializer(actionInitializer);
+		new CreatePaletteElementFromShapeInitializer(actionInitializer);
 		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
 		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
@@ -228,7 +229,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new ResetGraphicalRepresentationInitializer(actionInitializer);
 		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
 		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
-		new PushToPaletteInitializer(actionInitializer);
+		new CreatePaletteElementFromFlexoConceptInitializer(actionInitializer);
+		new CreatePaletteElementFromShapeInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);

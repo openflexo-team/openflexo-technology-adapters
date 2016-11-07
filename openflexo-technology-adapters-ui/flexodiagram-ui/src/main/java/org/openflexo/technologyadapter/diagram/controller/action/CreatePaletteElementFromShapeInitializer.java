@@ -51,7 +51,7 @@ import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
-import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
+import org.openflexo.technologyadapter.diagram.fml.action.CreatePaletteElementFromShape;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -60,19 +60,19 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.TechnologyPerspective;
 
-public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, DiagramShape, DiagramElement<?>> {
+public class CreatePaletteElementFromShapeInitializer extends ActionInitializer<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public PushToPaletteInitializer(ControllerActionInitializer actionInitializer) {
-		super(PushToPalette.actionType, actionInitializer);
+	public CreatePaletteElementFromShapeInitializer(ControllerActionInitializer actionInitializer) {
+		super(CreatePaletteElementFromShape.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<PushToPalette> getDefaultInitializer() {
-		return new FlexoActionInitializer<PushToPalette>() {
+	protected FlexoActionInitializer<CreatePaletteElementFromShape> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreatePaletteElementFromShape>() {
 			@Override
-			public boolean run(EventObject e, PushToPalette action) {
+			public boolean run(EventObject e, CreatePaletteElementFromShape action) {
 
 				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
 					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
@@ -86,7 +86,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 					action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
 				}
 
-				Wizard wizard = new PushToPaletteWizard(action, getController());
+				Wizard wizard = new CreatePaletteElementFromShapeWizard(action, getController());
 				WizardDialog dialog = new WizardDialog(wizard, getController());
 				dialog.showDialog();
 				if (dialog.getStatus() != Status.VALIDATED) {
@@ -101,10 +101,10 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 	}
 
 	@Override
-	protected FlexoActionFinalizer<PushToPalette> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<PushToPalette>() {
+	protected FlexoActionFinalizer<CreatePaletteElementFromShape> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<CreatePaletteElementFromShape>() {
 			@Override
-			public boolean run(EventObject e, PushToPalette action) {
+			public boolean run(EventObject e, CreatePaletteElementFromShape action) {
 				// Switch to palette if in DiagramPerspective
 				if (getController().getCurrentPerspective() instanceof TechnologyPerspective
 						&& ((TechnologyPerspective) getController().getCurrentPerspective())

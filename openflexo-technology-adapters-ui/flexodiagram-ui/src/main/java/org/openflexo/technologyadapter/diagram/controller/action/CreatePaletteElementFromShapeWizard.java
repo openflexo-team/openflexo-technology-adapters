@@ -52,31 +52,31 @@ import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
+import org.openflexo.technologyadapter.diagram.fml.action.CreatePaletteElementFromShape;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class PushToPaletteWizard extends FlexoWizard {
+public class CreatePaletteElementFromShapeWizard extends FlexoWizard {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(PushToPaletteWizard.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(CreatePaletteElementFromShapeWizard.class.getPackage().getName());
 
-	private final PushToPalette action;
+	private final CreatePaletteElementFromShape action;
 
-	private final PushToPaletteOptions configureNewConcept;
+	private final PutToPaletteOptions configureNewConcept;
 
-	public PushToPaletteWizard(PushToPalette action, FlexoController controller) {
+	public CreatePaletteElementFromShapeWizard(CreatePaletteElementFromShape action, FlexoController controller) {
 		super(controller);
 		this.action = action;
-		addStep(configureNewConcept = new PushToPaletteOptions());
+		addStep(configureNewConcept = new PutToPaletteOptions());
 	}
 
 	@Override
 	public String getWizardTitle() {
-		return action.getLocales().localizedForKey("push_to_palette");
+		return action.getLocales().localizedForKey("use_this_shape_to_create_a_palette_element");
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class PushToPaletteWizard extends FlexoWizard {
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_PALETTE_BIG_ICON, IconLibrary.NEW_32_32).getImage();
 	}
 
-	public PushToPaletteOptions getConfigureNewConcept() {
+	public PutToPaletteOptions getConfigureNewConcept() {
 		return configureNewConcept;
 	}
 
@@ -94,20 +94,20 @@ public class PushToPaletteWizard extends FlexoWizard {
 	 * @author sylvain
 	 *
 	 */
-	@FIBPanel("Fib/Wizard/PushToPalette/PushToPaletteOptions.fib")
-	public class PushToPaletteOptions extends WizardStep {
+	@FIBPanel("Fib/Wizard/PutToPalette/PutToPaletteFromShapeOptions.fib")
+	public class PutToPaletteOptions extends WizardStep {
 
 		public ApplicationContext getServiceManager() {
 			return getController().getApplicationContext();
 		}
 
-		public PushToPalette getAction() {
+		public CreatePaletteElementFromShape getAction() {
 			return action;
 		}
 
 		@Override
 		public String getTitle() {
-			return action.getLocales().localizedForKey("configure_push_to_palette");
+			return action.getLocales().localizedForKey("configure_palette_element");
 		}
 
 		@Override
