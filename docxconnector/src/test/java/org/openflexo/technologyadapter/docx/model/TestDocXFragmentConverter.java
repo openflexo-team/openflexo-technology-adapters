@@ -64,12 +64,11 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 	@AfterClass
 	public static void tearDownClass() {
 
+		unloadAndDelete(document);
 		document = null;
 		initialFragment = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		AbstractTestDocX.tearDownClass();
 	}
 
 	@Test

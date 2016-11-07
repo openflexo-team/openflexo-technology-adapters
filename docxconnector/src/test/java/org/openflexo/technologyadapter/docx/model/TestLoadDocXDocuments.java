@@ -352,4 +352,20 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 	}
 
+	@Test
+	@TestOrder(9)
+	public void testDocXUnLoading() {
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			DocXDocumentRepository docXRepository = technologicalAdapter.getDocXDocumentRepository(resourceCenter);
+			assertNotNull(docXRepository);
+			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
+			for (DocXDocumentResource docResource : documents) {
+				docResource.unloadResourceData(false);
+			}
+		}
+	}
+
 }

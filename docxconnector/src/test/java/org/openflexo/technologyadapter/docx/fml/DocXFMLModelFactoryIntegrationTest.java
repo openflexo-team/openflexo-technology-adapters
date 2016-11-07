@@ -43,6 +43,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -50,6 +51,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.foundation.test.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -63,6 +65,12 @@ import org.openflexo.test.TestOrder;
 public class DocXFMLModelFactoryIntegrationTest extends AbstractModelFactoryIntegrationTestCase {
 
 	private static final Logger logger = FlexoLogger.getLogger(DocXFMLModelFactoryIntegrationTest.class.getPackage().getName());
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		AbstractTestDocX.tearDownClass();
+	}
 
 	/**
 	 * Instanciate test ServiceManager

@@ -62,13 +62,14 @@ public class TestHeterogeneousIdentifiersPersistency1 extends AbstractTestDocX {
 	@AfterClass
 	public static void tearDownClass() {
 
+		unloadAndDelete(step1);
+		unloadAndDelete(step2);
+		unloadAndDelete(step3);
 		step1 = null;
 		step2 = null;
 		step3 = null;
 
-		deleteProject();
-		deleteTestResourceCenters();
-		unloadServiceManager();
+		AbstractTestDocX.tearDownClass();
 	}
 
 	@Test
