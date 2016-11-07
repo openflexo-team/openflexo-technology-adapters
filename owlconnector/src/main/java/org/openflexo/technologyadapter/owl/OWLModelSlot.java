@@ -221,8 +221,30 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		}
 
 		@Override
-		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
-				FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
+		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String relativePath,
+				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
+
+			// TODO: refactor as in TypedDiagramModelSlotImpl:
+			/*DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
+			
+			Object serializationArtefact = diagramTA.retrieveResourceSerializationArtefact(rc, diagramName, relativePath,
+					DiagramResourceFactory.DIAGRAM_SUFFIX);
+			
+			DiagramResource newDiagramResource;
+			try {
+				newDiagramResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
+				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newDiagramResource;
+			} catch (SaveResourceException e) {
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
+			}
+			return null;*/
+
 			try {
 				return getModelSlotTechnologyAdapter().createNewOntology((FlexoResourceCenter<File>) rc, filename, modelUri,
 						(OWLOntologyResource) metaModelResource);

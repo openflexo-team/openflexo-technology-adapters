@@ -216,16 +216,15 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String diagramName, String diagramUri,
-				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String diagramName, String relativePath,
+				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
-			String artefactName = diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? diagramName
-					: diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
-			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
+			Object serializationArtefact = diagramTA.retrieveResourceSerializationArtefact(rc, diagramName, relativePath,
+					DiagramResourceFactory.DIAGRAM_SUFFIX);
 
 			DiagramResource newDiagramResource;
 			try {

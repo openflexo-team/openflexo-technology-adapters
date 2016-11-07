@@ -99,22 +99,20 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram from ppt slide");
 
-		if (getDiagram() == null) {
-			DiagramResource newDiagramResource;
-			try {
-				newDiagramResource = _makeDiagram();
-			} catch (ModelDefinitionException e) {
-				throw new FlexoException(e);
+		try {
+			if (getDiagram() == null) {
+				DiagramResource newDiagramResource = makeDiagramResource(true);
+				setDiagramResource(newDiagramResource);
 			}
-			setDiagramResource(newDiagramResource);
 
-			/*DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-			
-			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null,
-					getFocusedObject().getResourceRepository().getResourceCenter()));
-			getFocusedObject().addToResources(getDiagramResource());
-			getDiagramResource().save(null);*/
+			else if (getDiagram().getResource() == null) {
+				DiagramResource newDiagramResource = makeDiagramResource(false);
+				getDiagram().setResource(newDiagramResource);
+				newDiagramResource.setResourceData(getDiagram());
+				setDiagramResource(newDiagramResource);
+			}
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
 		}
 
 		if (getSlide() != null) {
@@ -125,7 +123,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		}
 	}
 
-	protected <I> DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+	protected <I> DiagramResource makeDiagramResource(boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
@@ -137,7 +135,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
 
 		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-				diagramTA.getTechnologyContextManager(), getDiagramName(), getDiagramURI(), true);
+				diagramTA.getTechnologyContextManager(), artefactName, getDiagramURI(), createEmptyContents);
 
 		return newDiagramResource;
 	}

@@ -91,9 +91,11 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return null;
@@ -113,8 +115,9 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		}
 
 		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename,
-				String modelUri, FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
+		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc,
+				String filename, String relativePath, String modelUri,
+				FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;
 		}

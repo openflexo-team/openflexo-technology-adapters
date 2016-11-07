@@ -3,7 +3,7 @@
 	useScrollBar="true" protectContent="false" height="550" opaque="false"
 	layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController"
 	border="empty" trackViewPortWidth="true" width="650"
-	dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette"
+	dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreatePaletteElementFromShape"
 	trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
 	<LocalizedDictionary id="1" />
 	<Panel layout="flow" hGap="5" vGap="5" flowAlignment="CENTER"
@@ -62,7 +62,7 @@
 		borderRight="0" border="rounded3d" trackViewPortWidth="true" index="3"
 		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)"
 		borderBottom="2" borderTitle=""
-		dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette"
+		dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreatePaletteElementFromShape"
 		borderTop="2" trackViewPortHeight="true">
 		<Dependancy id="11" componentName="PaletteRadioButtonList" />
 		<Label id="12" manageDynamicModel="false" useScrollBar="false"
