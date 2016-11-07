@@ -115,6 +115,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -164,8 +165,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			getPropertyChangeSupport().firePropertyChange("diagram", null, diag);
 			if (diag != null)
 				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diag.getTitle());
-			else
-				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, null);
 			getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 			getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 		}
@@ -173,7 +172,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	public Diagram getDiagram() {
 		if (getDiagramResource() != null) {
-			setDiagram(getDiagramResource().getDiagram());
+			return getDiagramResource().getDiagram();
 		}
 		return diagram;
 	}
@@ -184,11 +183,13 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 			Diagram oldValue = this.diagram;
 			this.diagram = diagram;
+			if (diagram != null) {
+				diagramResource = (DiagramResource) diagram.getResource();
+			}
 			getPropertyChangeSupport().firePropertyChange("diagram", oldValue, getDiagram());
-			if (diagram != null)
+			if (diagram != null) {
 				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagram.getTitle());
-			else
-				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, null);
+			}
 
 			getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 			getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
@@ -297,14 +298,26 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public void setDiagramName(String diagramName) {
+
+		if (diagramName == null) {
+			return;
+		}
+
+		if (!diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
+			diagramName = diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
+		}
+
 		boolean wasValid = isValid();
 		if (getDiagram() != null) {
 			getDiagram().setName(diagramName);
 		}
+
 		this.diagramName = diagramName;
 		getPropertyChangeSupport().firePropertyChange("diagramName", null, diagramName);
 		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+
+
 	}
 
 	public String getDiagramTitle() {
