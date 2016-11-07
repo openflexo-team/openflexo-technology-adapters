@@ -43,7 +43,6 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -81,7 +80,9 @@ import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndivid
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>
@@ -169,34 +170,28 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		}
 
 		@Override
-		public EMFModelResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
-				FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			File modelFile = null;
-			if (rc instanceof FlexoProject) {
-				modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
-			}
-			else if (rc instanceof FileSystemBasedResourceCenter) {
-				modelFile = new File(((FileSystemBasedResourceCenter) rc).getDirectory(), filename);
-			}
-			else {
-				logger.warning("INVESTIGATE: not implemented yet, cannot create an EMFModel in a non FlexoProject" + rc.toString());
-				return null;
-			}
+		public EMFModelResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String relativePath,
+				String modelUri, FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
 
+			EMFTechnologyAdapter emfTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
+			EMFModelResourceFactory factory = getModelSlotTechnologyAdapter().getEMFModelResourceFactory();
+
+			Object serializationArtefact = emfTA.retrieveResourceSerializationArtefact(rc, filename, relativePath,
+					((EMFMetaModelResource) metaModelResource).getModelFileExtension());
+
+			EMFModelResource newEMFModelResource;
 			try {
-				return getModelSlotTechnologyAdapter().getEMFModelResourceFactory().makeResource(modelFile, (FlexoResourceCenter<File>) rc,
-						getModelSlotTechnologyAdapter().getTechnologyContextManager(), true);
+				newEMFModelResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						emfTA.getTechnologyContextManager(), filename, modelUri, true);
+				newEMFModelResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newEMFModelResource;
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			return null;
 
-			// return getModelSlotTechnologyAdapter().createNewEMFModel(rc, filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override

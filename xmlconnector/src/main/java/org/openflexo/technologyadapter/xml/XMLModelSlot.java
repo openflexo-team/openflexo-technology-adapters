@@ -46,7 +46,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -133,6 +132,11 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		@Override
 		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
 			return XMLTechnologyAdapter.class;
+		}
+
+		@Override
+		public XMLTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
@@ -302,31 +306,27 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		}
 
 		@Override
-		public XMLFileResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+		public XMLFileResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String relativePath,
+				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
 
-			XMLModelRepository<?> modelRepository = ((XMLTechnologyAdapter) getModelSlotTechnologyAdapter()).getXMLModelRepository(rc);
+			XMLTechnologyAdapter xmlTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
+			XMLFileResourceFactory factory = getModelSlotTechnologyAdapter().getXMLFileResourceFactory();
 
-			if (rc instanceof FlexoProject) {
+			Object serializationArtefact = xmlTA.retrieveResourceSerializationArtefact(rc, filename, relativePath,
+					XMLFileResourceFactory.XML_EXTENSION);
 
-				File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
-
-				try {
-					return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
-				} catch (SaveResourceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
+			XMLFileResource newXMLFileResource;
+			try {
+				newXMLFileResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						xmlTA.getTechnologyContextManager(), filename, modelUri, true);
+				newXMLFileResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newXMLFileResource;
+			} catch (SaveResourceException e) {
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
-			else {
-				logger.warning("UNABLE TO CREATE NEW XML FILE => not a FlexoProject: " + rc.toString());
-				return null;
-			}
+			return null;
 		}
 
 		@Override
@@ -341,8 +341,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository<?> modelRepository = ((XMLTechnologyAdapter) getModelSlotTechnologyAdapter())
-						.getXMLModelRepository(resourceCenter);
+				XMLModelRepository<?> modelRepository = getModelSlotTechnologyAdapter().getXMLModelRepository(resourceCenter);
 
 				try {
 					return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
@@ -361,7 +360,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository,
 				XSDMetaModelResource metaModelResource) throws SaveResourceException, ModelDefinitionException {
 
-			XMLTechnologyAdapter ta = (XMLTechnologyAdapter) getModelSlotTechnologyAdapter();
+			XMLTechnologyAdapter ta = getModelSlotTechnologyAdapter();
 			XMLFileResourceFactory xmlFileResourceFactory = ta.getXMLFileResourceFactory();
 
 			XMLFileResource returned = xmlFileResourceFactory.makeResource(xmlFile, modelRepository.getResourceCenter(),
