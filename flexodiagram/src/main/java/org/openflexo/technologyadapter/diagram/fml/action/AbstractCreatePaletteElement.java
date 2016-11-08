@@ -319,7 +319,7 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 
 	@Override
 	public boolean isValid() {
-		if (palette == null) {
+		if (getPalette() == null) {
 			return false;
 		}
 
@@ -338,6 +338,10 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 		}
 
 		if (StringUtils.isEmpty(getNewElementName())) {
+			return false;
+		}
+
+		if (getPalette().getPaletteElement(getNewElementName()) != null) {
 			return false;
 		}
 

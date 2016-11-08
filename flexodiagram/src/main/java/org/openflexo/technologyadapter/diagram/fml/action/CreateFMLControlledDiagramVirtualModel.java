@@ -218,6 +218,7 @@ public class CreateFMLControlledDiagramVirtualModel
 		performCreateProperties();
 		performCreateBehaviours();
 		performCreateInspectors();
+		performPostProcessings();
 
 		// newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
 		// newVirtualModel.setDescription(newVirtualModelDescription);

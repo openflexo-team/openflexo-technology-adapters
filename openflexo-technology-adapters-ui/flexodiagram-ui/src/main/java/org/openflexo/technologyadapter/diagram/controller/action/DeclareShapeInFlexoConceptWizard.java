@@ -51,6 +51,7 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.action.BlankFlexoConceptFromShapeCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
@@ -60,6 +61,8 @@ import org.openflexo.technologyadapter.diagram.fml.action.MapShapeToIndividualSt
 import org.openflexo.technologyadapter.diagram.fml.action.ShapeRoleCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.ShapeRoleSettingStrategy;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
@@ -88,6 +91,10 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	public DeclareShapeInFlexoConceptWizard(DeclareShapeInFlexoConcept action, FlexoController controller) {
 		super(action, controller);
 	}
+
+	private ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> configurePaletteElementForNewFlexoConcept;
+
+	// addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<>(action, this));
 
 	@Override
 	public String getWizardTitle() {
@@ -129,6 +136,37 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 					(BlankFlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy());
 		}
 		return null;
+	}
+
+	@Override
+	public void configurePostProcessings() {
+
+		super.configurePostProcessings();
+
+		addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
+				getAction(), this) {
+			@Override
+			public FlexoConcept getFlexoConcept() {
+				return DeclareShapeInFlexoConceptWizard.this.getAction().getFlexoConcept();
+			}
+
+			@Override
+			public DropScheme getDropScheme() {
+				// TODO
+				System.out.println("Renvoyer ici le bon DropScheme qu'on vient de creer");
+				return null;
+			}
+		});
+		getAction().addToPostProcessing(configurePaletteElementForNewFlexoConcept);
+
+	}
+
+	@Override
+	public void discardPostProcessings() {
+		super.discardPostProcessings();
+
+		getAction().removeFromPostProcessing(configurePaletteElementForNewFlexoConcept);
+		removeStep(configurePaletteElementForNewFlexoConcept);
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
@@ -213,7 +251,6 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 				checkValidity();
 			}
 		}
-
 
 	}
 

@@ -232,6 +232,7 @@ public class CreateFMLControlledFIBVirtualModel
 		performCreateProperties();
 		performCreateBehaviours();
 		performCreateInspectors();
+		performPostProcessings();
 
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
