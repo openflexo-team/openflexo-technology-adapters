@@ -1,239 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" borderLeft="0" height="400" sizeAdjustment="OriginalSize"
-	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
-	borderRight="0" border="empty" trackViewPortWidth="true" font="Lucida Grande,0,11"
-	align="left" width="600" borderBottom="0" titleFont="Lucida Grande,0,11"
-	borderTop="0" trackViewPortHeight="true" layout="twocols" name="main">
-	<Label id="1" name="PaletteLabel" index="1" localize="true"
-		align="left"
-		constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		label="palette" />
-	<DropDown id="2" data="data.palette" index="2"
-		constraints="twocols(anchor=west;expandHorizontally=false;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		format="object.name" showText="true"
-		iteratorClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette"
-		showIcon="false" autoSelectFirstRow="true" name="paletteDropDown"
-		list="data.diagramSpecification.palettes" />
-	<Label id="3" name="NameForNewElementLabel" index="3" localize="true"
-		align="left"
-		constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=3;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		label="element_name" />
-	<TextField id="4" columns="20" name="PaletteElementNameTextField"
-		data="data.newElementName" text="TextField" index="4" localize="true"
-		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)" />
-	<Label id="5" name="Label3" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		label="fml_element" />
-	<Panel id="6" borderLeft="0" sizeAdjustment="OriginalSize"
-		opaque="false" borderRight="0" border="rounded3d" trackViewPortWidth="true"
-		index="3" align="left"
-		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=1.0)"
-		borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11"
-		borderTop="2" trackViewPortHeight="true" layout="twocols" name="FIBPanel">
-		<Label id="7" name="VirtualModelLabel" index="5" localize="true"
-			align="left"
-			constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			label="virtual_model" />
-		<Custom id="8" manageDynamicModel="true"
-			dataClassForComponent="org.openflexo.foundation.fml.rm.AbstractVirtualModelResource"
-			componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector"
-			name="virtualModelSelector" data="data.virtualModelResource" index="6"
-			localize="true"
-			constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=1;index=6;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)">
-			<Assignment id="9" mandatory="true" variable="component.viewPoint" />
-			<Assignment id="10" mandatory="true" variable="component.serviceManager" />
-			<Assignment id="11" mandatory="true" variable="component.flexoController" />
-			<Assignment id="12" mandatory="true"
-				variable="component.selectableCondition" />
-			<Assignment id="13" mandatory="true"
-				value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
-			<Assignment id="14" mandatory="true" value="data.diagramSpecification"
-				variable="component.diagramSpecification" />
-		</Custom>
-		<Label id="15" name="FlexoConceptLabel" index="7" localize="true"
-			align="left"
-			constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=0;index=7;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			label="flexo_concept">
-		</Label>
-		<Custom id="17" manageDynamicModel="true"
-			dataClassForComponent="org.openflexo.foundation.fml.FlexoConcept"
-			componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
-			name="conceptSelector" data="data.flexoConcept" index="4"
-			constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right)">
-			<Assignment mandatory="true"
-				value="data.virtualModelResource.virtualModel" variable="component.virtualModel" />
-		</Custom>
-		<Label id="18" name="DropSchemeLabel" index="9" localize="true"
-			align="left"
-			constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=2;gridY=0;index=9;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			label="drop_scheme" />
-		<DropDown id="19" data="data.dropScheme" index="10"
-			constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=2;gridY=1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			format="object.name" showText="true"
-			iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme"
-			showIcon="false" staticList="" autoSelectFirstRow="true"
-			name="dropSchemeDropDown" list="data.availableDropSchemes" />
-	</Panel>
-	<Label id="21" name="Label4" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		label="representation" />
-	<Panel id="22" borderLeft="0" sizeAdjustment="OriginalSize"
-		opaque="false" borderRight="0" border="rounded3d" trackViewPortWidth="true"
-		index="11" align="left"
-		constraints="twocols(anchor=west;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=5;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-		borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11"
-		borderTop="2" trackViewPortHeight="true" layout="gridbag" name="FIBPanel2">
-		<CheckBox id="23" selected="true" name="useScreenshotCB"
-			data="data.takeScreenshotForTopLevelElement" index="0" localize="true"
-			constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
-		<Label id="24" name="UseScreenshotAsTopLevelRepresentationLabel"
-			index="1" localize="true" align="left"
-			constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=2;gridX=1;gridY=0;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-			label="use_screenshot_as_top_level_representation" />
-		<Number id="25" visible="data.takeScreenshotForTopLevelElement"
-			minValue="-2147483648" columns="3" name="Integer" data="data.action.imageWidth"
-			maxValue="2147483647" increment="1" index="3" localize="true"
-			constraints="gridbag(anchor=south_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			numberType="IntegerType" />
-		<Label id="26" visible="data.takeScreenshotForTopLevelElement"
-			name="WidthLabel" index="4" localize="true" align="left"
-			constraints="gridbag(anchor=south_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)"
-			label="width" />
-		<Number id="27" visible="data.takeScreenshotForTopLevelElement"
-			minValue="-2147483648" columns="3" name="Integer" data="data.action.imageHeight"
-			maxValue="2147483647" increment="1" index="5" localize="true"
-			constraints="gridbag(anchor=north_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=2;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			numberType="IntegerType" />
-		<Label id="28" visible="data.takeScreenshotForTopLevelElement"
-			name="Label" index="5" align="left"
-			constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)"
-			label="height" />
-		<Image id="29" visible="data.takeScreenshotForTopLevelElement"
-			sizeAdjustment="OriginalSize" name="Image" data="data.action.screenshot.image"
-			imageHeight="80" index="6" localize="true" align="right"
-			constraints="gridbag(anchor=west;fill=both;gridHeight=3;gridWidth=1;gridX=2;gridY=0;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-			imageWidth="32" />
-	</Panel>
-	<Label id="30" name="Label2" index="11" localize="true" align="left"
-		constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		label="" />
-	<Panel id="31" borderLeft="0" sizeAdjustment="OriginalSize"
-		opaque="false" borderRight="0" border="rounded3d" trackViewPortWidth="true"
-		index="12" align="left"
-		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-		borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11"
-		borderTop="2" trackViewPortHeight="true" layout="gridbag" name="FIBPanel3">
-		<Panel id="32" vGap="5" borderLeft="0" hGap="0" sizeAdjustment="OriginalSize"
-			opaque="false" borderRight="0" border="empty" trackViewPortWidth="true"
-			index="0" align="left"
-			constraints="gridbag(anchor=north_west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-			borderBottom="0" borderTitle="Panel" titleFont="Lucida Grande,0,11"
-			borderTop="0" trackViewPortHeight="true" layout="flow" name="FIBPanel"
-			flowAlignment="LEADING">
-			<Label id="33" name="OverrideDefaultGraphicalRepresentationsLabel"
-				index="1" localize="true" align="left"
-				constraints="flow(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-				label="override_default_graphical_representations" />
-			<CheckBox id="34" manageDynamicModel="true" selected="true"
-				name="OverrideDefaultGRCB" data="data.overrideDefaultGraphicalRepresentations"
-				index="0" localize="true" constraints="flow(index=0)" />
-		</Panel>
-		<Table id="35" showFooter="true" manageDynamicModel="true"
-			enable="OverrideDefaultGRCB.value" selectionMode="MultipleIntervalSelection"
-			data="data.action.diagramElementEntries" index="1" localize="true"
-			constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-			visibleRowCount="3" rowHeight="18" textSelectionColor="255,255,255"
-			iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractCreatePaletteElement$GraphicalElementEntry"
-			backgroundSelectionColor="41,90,209" backgroundNonSelectionColor="255,255,255"
-			name="Table" textNonSelectionColor="0,0,0"
-			backgroundSecondarySelectionColor="173,215,255">
-			<CheckBoxColumn id="36" data="iterator.selectThis"
-				displayTitle="false" title="select" name="select" columnWidth="20"
-				resizable="false" showIcon="false" />
-			<IconColumn id="37"
-				data="controller.iconForObject(iterator.graphicalObject)"
-				displayTitle="false" title="icon" name="icon" columnWidth="20"
-				resizable="false" showIcon="false" />
-			<LabelColumn id="38" data="iterator.elementName"
-				displayTitle="true" title="role" name="role" columnWidth="50"
-				resizable="true" showIcon="false" />
-			<LabelColumn id="39" data="iterator.parentEntry.elementName"
-				displayTitle="true" title="parent" name="parent" columnWidth="50"
-				resizable="true" showIcon="false" />
-			<DropDownColumn id="40" data="iterator.flexoRole"
-				list="iterator.availableFlexoRoles" displayTitle="true" title="assign_to_role"
-				name="assign" columnWidth="100" resizable="true" showIcon="false" />
-			<Dependancy id="41" componentName="flexoConceptDropDown" />
-		</Table>
-	</Panel>
-	<FIBVariable id="42" name="data"
-		type="org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromShapeWizard$PutToPaletteOptions" />
-	<LocalizedDictionary id="43">
-		<Localized id="44" value="Palette" lang="English" key="palette" />
-		<Localized id="45" value="Palette" lang="Dutch" key="palette" />
-		<Localized id="46" value="Palette" lang="French" key="palette" />
-		<Localized id="47" value="Fml element" lang="English" key="fml_element" />
-		<Localized id="48" value="Fml element" lang="Dutch" key="fml_element" />
-		<Localized id="49" value="Element FML" lang="French" key="fml_element" />
-		<Localized id="50" value="Virtual model" lang="English"
-			key="virtual_model" />
-		<Localized id="51" value="Virtual model" lang="Dutch"
-			key="virtual_model" />
-		<Localized id="52" value="Modèle virtuel" lang="French"
-			key="virtual_model" />
-		<Localized id="53" value="Flexo concept" lang="English"
-			key="flexo_concept" />
-		<Localized id="54" value="Flexo concept" lang="Dutch"
-			key="flexo_concept" />
-		<Localized id="55" value="Flexo concept" lang="French"
-			key="flexo_concept" />
-		<Localized id="56" value="Drop scheme" lang="English" key="drop_scheme" />
-		<Localized id="57" value="Drop scheme" lang="Dutch" key="drop_scheme" />
-		<Localized id="58" value="Drop scheme" lang="French" key="drop_scheme" />
-		<Localized id="59" value="Representation" lang="English"
-			key="representation" />
-		<Localized id="60" value="Representation" lang="Dutch"
-			key="representation" />
-		<Localized id="61" value="Représentation" lang="French"
-			key="representation" />
-		<Localized id="62" value="Use screenshot as top level representation"
-			lang="English" key="use_screenshot_as_top_level_representation" />
-		<Localized id="63" value="Use screenshot as top level representation"
-			lang="Dutch" key="use_screenshot_as_top_level_representation" />
-		<Localized id="64" value="Utiliser une capture d'écran"
-			lang="French" key="use_screenshot_as_top_level_representation" />
-		<Localized id="65" value="Width" lang="English" key="width" />
-		<Localized id="66" value="Width" lang="Dutch" key="width" />
-		<Localized id="67" value="Largeur" lang="French" key="width" />
-		<Localized id="68" value="Height" lang="English" key="height" />
-		<Localized id="69" value="Height" lang="Dutch" key="height" />
-		<Localized id="70" value="Hauteur" lang="French" key="height" />
-		<Localized id="71" value="Override default graphical representations"
-			lang="English" key="override_default_graphical_representations" />
-		<Localized id="72" value="Override default graphical representations"
-			lang="Dutch" key="override_default_graphical_representations" />
-		<Localized id="73" value="Surcharger la représentation par défaut"
-			lang="French" key="override_default_graphical_representations" />
-		<Localized id="74" value="Icon" lang="English" key="icon" />
-		<Localized id="75" value="Icon" lang="Dutch" key="icon" />
-		<Localized id="76" value="Icone" lang="French" key="icon" />
-		<Localized id="77" value="Element name" lang="English" key="element_name" />
-		<Localized id="78" value="Element name" lang="Dutch" key="element_name" />
-		<Localized id="79" value="Nom de l'élément" lang="French"
-			key="element_name" />
-		<Localized id="80" value="Parent" lang="English" key="parent" />
-		<Localized id="81" value="Parent" lang="Dutch" key="parent" />
-		<Localized id="82" value="Parent" lang="French" key="parent" />
-		<Localized id="83" value="Assign to role" lang="English"
-			key="assign_to_role" />
-		<Localized id="84" value="Assign to role" lang="Dutch"
-			key="assign_to_role" />
-		<Localized id="85" value="Assigner à" lang="French" key="assign_to_role" />
-		<Localized id="86" value="Select" lang="English" key="select" />
-		<Localized id="87" value="Selectie" lang="Dutch" key="select" />
-		<Localized id="88" value="Sélectionner" lang="French" key="select" />
-		<Localized id="89" value="Role" lang="English" key="role" />
-		<Localized id="90" value="Rol" lang="Dutch" key="role" />
-		<Localized id="91" value="Rôle" lang="French" key="role" />
-	</LocalizedDictionary>
+<Panel id="0" borderLeft="0" height="400" sizeAdjustment="OriginalSize" controllerClassName="org.openflexo.view.controller.FlexoFIBController" border="empty" borderRight="0" trackViewPortWidth="true" font="Lucida Grande,0,11" align="left" width="600" borderBottom="0" titleFont="Lucida Grande,0,11" borderTop="0" trackViewPortHeight="true" layout="twocols" name="main">
+  <Label id="1" name="PaletteLabel" index="1" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="palette" />
+  <DropDown id="2" data="data.palette" index="2" constraints="twocols(anchor=west;expandHorizontally=false;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)" format="object.name" showText="true" iteratorClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette" showIcon="false" autoSelectFirstRow="true" name="paletteDropDown" list="data.diagramSpecification.palettes" />
+  <Label id="3" name="NameForNewElementLabel" index="3" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=3;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="element_name" />
+  <TextField id="4" columns="20" name="PaletteElementNameTextField" data="data.newElementName" text="TextField" index="4" localize="true" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)" />
+  <Label id="5" name="Label3" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;location=left)" label="fml_element" />
+  <Panel id="6" borderLeft="0" sizeAdjustment="OriginalSize" opaque="false" border="rounded3d" borderRight="0" trackViewPortWidth="true" index="3" align="left" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;location=right;padX=0;padY=0;weightX=0.0;weightY=1.0)" borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11" borderTop="2" trackViewPortHeight="true" layout="twocols" name="FIBPanel">
+    <Label id="7" name="VirtualModelLabel" index="5" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="virtual_model" />
+    <Custom id="8" manageDynamicModel="true" dataClassForComponent="org.openflexo.foundation.fml.rm.AbstractVirtualModelResource" componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector" name="virtualModelSelector" data="data.virtualModelResource" index="6" localize="true" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=1;index=6;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)">
+      <Assignment id="9" mandatory="true" variable="component.viewPoint" />
+      <Assignment id="10" mandatory="true" variable="component.serviceManager" />
+      <Assignment id="11" mandatory="true" variable="component.flexoController" />
+      <Assignment id="12" mandatory="true" variable="component.selectableCondition" />
+      <Assignment id="13" mandatory="true" value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
+      <Assignment id="14" mandatory="true" value="data.diagramSpecification" variable="component.diagramSpecification" />
+    </Custom>
+    <Label id="15" name="FlexoConceptLabel" index="7" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=0;index=7;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="flexo_concept" />
+    <Custom id="16" manageDynamicModel="true" dataClassForComponent="org.openflexo.foundation.fml.FlexoConcept" componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector" name="conceptSelector" data="data.flexoConcept" index="4" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right)">
+      <Assignment id="17" mandatory="true" variable="component.viewPointLibrary" />
+      <Assignment id="18" mandatory="true" variable="component.viewPoint" />
+      <Assignment id="19" mandatory="true" variable="component.serviceManager" />
+      <Assignment id="20" mandatory="true" variable="component.flexoController" />
+      <Assignment id="21" mandatory="true" variable="component.selectableCondition" />
+      <Assignment id="22" mandatory="true" value="data.virtualModelResource.virtualModel" variable="component.virtualModel" />
+    </Custom>
+    <Label id="23" name="DropSchemeLabel" index="9" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=2;gridY=0;index=9;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="drop_scheme" />
+    <DropDown id="24" data="data.dropScheme" index="10" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=2;gridY=1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)" format="object.name" showText="true" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme" showIcon="false" staticList="" autoSelectFirstRow="true" name="dropSchemeDropDown" list="data.availableDropSchemes" />
+  </Panel>
+  <Label id="25" name="Label4" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;location=left)" label="representation" />
+  <Panel id="26" borderLeft="0" sizeAdjustment="OriginalSize" opaque="false" border="rounded3d" borderRight="0" trackViewPortWidth="true" index="11" align="left" constraints="twocols(anchor=west;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=5;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11" borderTop="2" trackViewPortHeight="true" layout="gridbag" name="FIBPanel2">
+    <CheckBox id="27" selected="true" name="useScreenshotCB" data="data.takeScreenshotForTopLevelElement" index="0" localize="true" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
+    <Label id="28" name="UseScreenshotAsTopLevelRepresentationLabel" index="1" localize="true" align="left" constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=2;gridX=1;gridY=0;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" label="use_screenshot_as_top_level_representation" />
+    <Number id="29" visible="data.takeScreenshotForTopLevelElement" minValue="-2147483648" columns="3" name="Integer" data="data.action.imageWidth" maxValue="2147483647" increment="1" index="3" localize="true" constraints="gridbag(anchor=south_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" numberType="IntegerType" />
+    <Label id="30" visible="data.takeScreenshotForTopLevelElement" name="WidthLabel" index="4" localize="true" align="left" constraints="gridbag(anchor=south_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" label="width" />
+    <Number id="31" visible="data.takeScreenshotForTopLevelElement" minValue="-2147483648" columns="3" name="Integer" data="data.action.imageHeight" maxValue="2147483647" increment="1" index="5" localize="true" constraints="gridbag(anchor=north_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=2;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" numberType="IntegerType" />
+    <Label id="32" visible="data.takeScreenshotForTopLevelElement" name="Label" index="5" align="left" constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" label="height" />
+    <Image id="33" visible="data.takeScreenshotForTopLevelElement" sizeAdjustment="OriginalSize" name="Image" data="data.action.screenshot.image" imageHeight="80" index="6" localize="true" align="right" constraints="gridbag(anchor=west;fill=both;gridHeight=3;gridWidth=1;gridX=2;gridY=0;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" imageWidth="32" />
+  </Panel>
+  <Label id="34" name="Label2" index="11" localize="true" align="left" constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="" />
+  <Panel id="35" borderLeft="0" sizeAdjustment="OriginalSize" opaque="false" border="rounded3d" borderRight="0" trackViewPortWidth="true" index="12" align="left" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;location=right;padX=0;padY=0;weightX=1.0;weightY=1.0)" borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11" borderTop="2" trackViewPortHeight="true" layout="gridbag" name="FIBPanel3">
+    <Panel id="36" vGap="5" borderLeft="0" hGap="0" sizeAdjustment="OriginalSize" opaque="false" border="empty" borderRight="0" trackViewPortWidth="true" index="0" align="left" constraints="gridbag(anchor=north_west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderBottom="0" borderTitle="Panel" titleFont="Lucida Grande,0,11" borderTop="0" trackViewPortHeight="true" layout="flow" name="FIBPanel" flowAlignment="LEADING">
+      <Label id="37" name="OverrideDefaultGraphicalRepresentationsLabel" index="1" localize="true" align="left" constraints="flow(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="override_default_graphical_representations" />
+      <CheckBox id="38" manageDynamicModel="true" selected="true" name="OverrideDefaultGRCB" data="data.overrideDefaultGraphicalRepresentations" index="0" localize="true" constraints="flow(index=0)" />
+    </Panel>
+    <Table id="39" showFooter="true" manageDynamicModel="true" enable="OverrideDefaultGRCB.value" selectionMode="MultipleIntervalSelection" data="data.action.diagramElementEntries" index="1" localize="true" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" visibleRowCount="3" rowHeight="18" textSelectionColor="255,255,255" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractCreatePaletteElement$GraphicalElementEntry" backgroundSelectionColor="41,90,209" backgroundNonSelectionColor="255,255,255" name="Table" textNonSelectionColor="0,0,0" backgroundSecondarySelectionColor="173,215,255">
+      <CheckBoxColumn id="40" data="iterator.selectThis" displayTitle="false" title="select" name="select" columnWidth="20" resizable="false" showIcon="false" />
+      <IconColumn id="41" data="controller.iconForObject(iterator.graphicalObject)" displayTitle="false" title="icon" name="icon" columnWidth="20" resizable="false" showIcon="false" />
+      <LabelColumn id="42" data="iterator.elementName" displayTitle="true" title="role" name="role" columnWidth="50" resizable="true" showIcon="false" />
+      <LabelColumn id="43" data="iterator.parentEntry.elementName" displayTitle="true" title="parent" name="parent" columnWidth="50" resizable="true" showIcon="false" />
+      <DropDownColumn id="44" data="iterator.flexoRole" list="iterator.availableFlexoRoles" format="object.roleName" displayTitle="true" title="assign_to_role" name="assign" columnWidth="100" resizable="true" showIcon="false" />
+      <Dependancy id="45" componentName="flexoConceptDropDown" />
+    </Table>
+  </Panel>
+  <FIBVariable id="46" name="data" type="org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromShapeWizard$PutToPaletteOptions" />
+  <LocalizedDictionary id="47">
+    <Localized id="48" value="Palette" lang="English" key="palette" />
+    <Localized id="49" value="Palette" lang="Dutch" key="palette" />
+    <Localized id="50" value="Palette" lang="French" key="palette" />
+    <Localized id="51" value="FML element" lang="English" key="fml_element" />
+    <Localized id="52" value="FML element" lang="Dutch" key="fml_element" />
+    <Localized id="53" value="Element FML" lang="French" key="fml_element" />
+    <Localized id="54" value="Virtual model" lang="English" key="virtual_model" />
+    <Localized id="55" value="Virtual model" lang="Dutch" key="virtual_model" />
+    <Localized id="56" value="Modèle virtuel" lang="French" key="virtual_model" />
+    <Localized id="57" value="Flexo concept" lang="English" key="flexo_concept" />
+    <Localized id="58" value="Flexo concept" lang="Dutch" key="flexo_concept" />
+    <Localized id="59" value="Flexo concept" lang="French" key="flexo_concept" />
+    <Localized id="60" value="Drop scheme" lang="English" key="drop_scheme" />
+    <Localized id="61" value="Drop scheme" lang="Dutch" key="drop_scheme" />
+    <Localized id="62" value="Drop scheme" lang="French" key="drop_scheme" />
+    <Localized id="63" value="Representation" lang="English" key="representation" />
+    <Localized id="64" value="Representation" lang="Dutch" key="representation" />
+    <Localized id="65" value="Représentation" lang="French" key="representation" />
+    <Localized id="66" value="Use screenshot as top level representation" lang="English" key="use_screenshot_as_top_level_representation" />
+    <Localized id="67" value="Use screenshot as top level representation" lang="Dutch" key="use_screenshot_as_top_level_representation" />
+    <Localized id="68" value="Utiliser une capture d'écran" lang="French" key="use_screenshot_as_top_level_representation" />
+    <Localized id="69" value="Width" lang="English" key="width" />
+    <Localized id="70" value="Width" lang="Dutch" key="width" />
+    <Localized id="71" value="Largeur" lang="French" key="width" />
+    <Localized id="72" value="Height" lang="English" key="height" />
+    <Localized id="73" value="Height" lang="Dutch" key="height" />
+    <Localized id="74" value="Hauteur" lang="French" key="height" />
+    <Localized id="75" value="Override default graphical representations" lang="English" key="override_default_graphical_representations" />
+    <Localized id="76" value="Override default graphical representations" lang="Dutch" key="override_default_graphical_representations" />
+    <Localized id="77" value="Surcharger la représentation par défaut" lang="French" key="override_default_graphical_representations" />
+    <Localized id="78" value="Icon" lang="English" key="icon" />
+    <Localized id="79" value="Icon" lang="Dutch" key="icon" />
+    <Localized id="80" value="Icone" lang="French" key="icon" />
+    <Localized id="81" value="Element name" lang="English" key="element_name" />
+    <Localized id="82" value="Element name" lang="Dutch" key="element_name" />
+    <Localized id="83" value="Nom de l'élément" lang="French" key="element_name" />
+    <Localized id="84" value="Parent" lang="English" key="parent" />
+    <Localized id="85" value="Parent" lang="Dutch" key="parent" />
+    <Localized id="86" value="Parent" lang="French" key="parent" />
+    <Localized id="87" value="Assign to role" lang="English" key="assign_to_role" />
+    <Localized id="88" value="Assign to role" lang="Dutch" key="assign_to_role" />
+    <Localized id="89" value="Assigner à" lang="French" key="assign_to_role" />
+    <Localized id="90" value="Select" lang="English" key="select" />
+    <Localized id="91" value="Selectie" lang="Dutch" key="select" />
+    <Localized id="92" value="Sélectionner" lang="French" key="select" />
+    <Localized id="93" value="Role" lang="English" key="role" />
+    <Localized id="94" value="Rol" lang="Dutch" key="role" />
+    <Localized id="95" value="Rôle" lang="French" key="role" />
+  </LocalizedDictionary>
 </Panel>

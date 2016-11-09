@@ -2,6 +2,7 @@ CreateGoal=CreateGoal
 DropScheme=DropScheme
 LinkScheme=LinkScheme
 RO=RO
+a_palette_element_with_that_name_already_exists=a_palette_element_with_that_name_already_exists
 action=Action
 actions=actions
 as_described_in_action=as_described_in_action
