@@ -211,6 +211,10 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 	public void initializeBehaviours() {
 	}
 
+	public DropScheme getNewDropScheme() {
+		return newDropScheme;
+	}
+
 	/*private FlexoBehaviour createDropFlexoBehaviourActions(FlexoBehaviourConfiguration editionSchemeConfiguration) {
 		// Create new drop scheme
 		DropScheme editionScheme = (DropScheme) editionSchemeConfiguration.getFlexoBehaviour();
