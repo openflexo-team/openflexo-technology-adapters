@@ -45,8 +45,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
@@ -143,30 +146,83 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		super.configurePostProcessings();
 
-		addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
-				getAction(), this) {
-			@Override
-			public FlexoConcept getFlexoConcept() {
-				return DeclareShapeInFlexoConceptWizard.this.getAction().getFlexoConcept();
-			}
+		if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+				&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
 
-			@Override
-			public DropScheme getDropScheme() {
-				// TODO
-				System.out.println("Renvoyer ici le bon DropScheme qu'on vient de creer");
-				return null;
-			}
-		});
-		getAction().addToPostProcessing(configurePaletteElementForNewFlexoConcept);
+			addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
+					getAction(), this) {
 
+				@Override
+				public VirtualModel getVirtualModel() {
+					return getAction().getVirtualModel();
+				}
+
+				@Override
+				public FlexoConcept getFlexoConcept() {
+					return DeclareShapeInFlexoConceptWizard.this.getAction().getFlexoConcept();
+				}
+
+				@Override
+				public String getFlexoConceptName() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+						return getAction().getFlexoConceptCreationStrategy().getFlexoConceptName();
+					}
+					if (getFlexoConcept() != null) {
+						return getFlexoConcept().getName();
+					}
+					return null;
+				}
+
+				@Override
+				public DropScheme getDropScheme() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+						if (getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+							return ((FlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy())
+									.getNewDropScheme();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				public String getDropSchemeName() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+							&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+						return ((FlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy()).getDropSchemeName();
+					}
+					return null;
+				}
+
+				@Override
+				public String getDefaultPaletteElementName() {
+					return getFlexoConceptName();
+				}
+
+				@Override
+				public List<? extends GraphicalElementEntry> getGraphicalElementEntries() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public ScreenshotImage<DiagramShape> makeScreenshot() {
+					return getAction().getFocusedObject().getScreenshotImage();
+				}
+
+			});
+			getAction().addToPostProcessing(configurePaletteElementForNewFlexoConcept);
+		}
 	}
 
 	@Override
 	public void discardPostProcessings() {
 		super.discardPostProcessings();
 
-		getAction().removeFromPostProcessing(configurePaletteElementForNewFlexoConcept);
-		removeStep(configurePaletteElementForNewFlexoConcept);
+		if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+				&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+			getAction().removeFromPostProcessing(configurePaletteElementForNewFlexoConcept);
+			removeStep(configurePaletteElementForNewFlexoConcept);
+		}
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
@@ -386,10 +442,10 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		}
 
 		/*@Override
-		public void setModelSlot(ModelSlot<?> modelSlot) {
-			super.setModelSlot(modelSlot);
-			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}*/
+			public void setModelSlot(ModelSlot<?> modelSlot) {
+				super.setModelSlot(modelSlot);
+				getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
+			}*/
 
 	}
 

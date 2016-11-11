@@ -45,7 +45,6 @@ import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.view.controller.FlexoController;
 
 /**
@@ -60,23 +59,63 @@ public class CreateFMLControlledDiagramFlexoConceptWizard extends CreateFlexoCon
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramFlexoConceptWizard.class.getPackage().getName());
 
-	private final ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, AbstractVirtualModel<?>, FMLObject> configurePaletteElementForNewFlexoConcept;
+	private ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, AbstractVirtualModel<?>, FMLObject> configurePaletteElementForNewFlexoConcept;
 
 	public CreateFMLControlledDiagramFlexoConceptWizard(CreateFlexoConcept action, FlexoController controller) {
 		super(action, controller);
-		addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, AbstractVirtualModel<?>, FMLObject>(
+		// TODO, one day
+		/*addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, AbstractVirtualModel<?>, FMLObject>(
 				action, this) {
+		
+			@Override
+			public VirtualModel getVirtualModel() {
+				if (getAction().getFocusedObject() instanceof VirtualModel) {
+					return (VirtualModel) getAction().getFocusedObject();
+				}
+				return null;
+			}
+		
 			@Override
 			public FlexoConcept getFlexoConcept() {
 				return CreateFMLControlledDiagramFlexoConceptWizard.this.getAction().getNewFlexoConcept();
 			}
-
+		
+			@Override
+			public String getFlexoConceptName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
 			@Override
 			public DropScheme getDropScheme() {
 				// TODO
 				return null;
 			}
-		});
+		
+			@Override
+			public String getDropSchemeName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			@Override
+			public String getDefaultPaletteElementName() {
+				// TODO
+				return null;
+			}
+		
+			@Override
+			public List<? extends org.openflexo.technologyadapter.diagram.controller.action.ConfigurePaletteElementForNewFlexoConcept.GraphicalElementEntry> getGraphicalElementEntries() {
+				// TODO
+				return null;
+			}
+		
+			@Override
+			public ScreenshotImage<DiagramShape> makeScreenshot() {
+				// TODO
+				return null;
+			}
+		});*/
 	}
 
 	public ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, AbstractVirtualModel<?>, FMLObject> getConfigurePaletteElementForNewFlexoConcept() {
