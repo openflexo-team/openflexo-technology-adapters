@@ -75,28 +75,32 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
-		System.out.println("getFIBController=" + getFIBController());
-
-		// Sets palette view of editor to be the top right view
-		// perspective.setTopRightView(previewComponent);
-
-		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
-		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
-
-		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
+		/*if (getFIBController() != null) {
+			getFIBController().setModuleView(this);
+			if (getFIBController().getSelectedDiagram() == null && getFIBController().getSelectedPalette() == null) {
+				if (getFIBController().getDiagramSpecification(getRepresentedObject()) != null
+						&& getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().size() > 0) {
+					getFIBController().setSelectedDiagram(
+							getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().get(0));
+				}
+		
+			}
+			if (getFIBController().getSelectedDiagram() != null || getFIBController().getSelectedPalette() != null) {
 				controller.getControllerModel().setRightViewVisible(true);
 			}
-		});*/
+			getFIBController().updateModuleViewTooling();
+		}
+		
+		revalidate();
+		repaint();*/
 
-		System.out.println("*************** SHOW dans FMLControlledDiagramVirtualModelView");
-		System.out.println("top right: " + perspective.getTopRightView());
-		System.out.println("middle right: " + perspective.getMiddleRightView());
-		System.out.println("bottom right: " + perspective.getBottomRightView());
+		super.show(controller, perspective);
+
+	}
+
+	@Override
+	public void willShow() {
+		super.willShow();
 
 		if (getFIBController() != null) {
 			getFIBController().setModuleView(this);
@@ -109,14 +113,13 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 
 			}
 			if (getFIBController().getSelectedDiagram() != null || getFIBController().getSelectedPalette() != null) {
-				controller.getControllerModel().setRightViewVisible(true);
+				getFlexoController().getControllerModel().setRightViewVisible(true);
 			}
 			getFIBController().updateModuleViewTooling();
 		}
 
 		revalidate();
 		repaint();
-
 	}
 
 	@Override
