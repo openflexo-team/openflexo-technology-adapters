@@ -67,7 +67,13 @@
 			<BrowserElement id="16" editableLabel="palette.name"
 				icon="controller.iconForObject(palette)" label="palette.name"
 				dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette"
-				name="palette" isEditable="false" />
+				name="palette" isEditable="false">
+				<Children name="elements" data="palette.elements" />
+			</BrowserElement>
+			<BrowserElement editableLabel="paletteElement.name"
+				icon="controller.iconForObject(paletteElement)" label="paletteElement.name"
+				dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement"
+				name="paletteElement" isEditable="false" />
 		</Browser>
 		<Browser id="17" showFooter="true" showRootsHandle="true"
 			root="data" manageDynamicModel="true"

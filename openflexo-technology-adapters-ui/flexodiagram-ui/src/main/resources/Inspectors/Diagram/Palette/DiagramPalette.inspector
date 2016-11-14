@@ -9,7 +9,7 @@
       <Label label="description" index="4" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;location=left)" name="DescriptionLabel" localize="true" />
       <TextArea columns="10" index="5" data="data.description" constraints="twocols(expandHorizontally=true;expandVertically=true;index=5;location=right)" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="Description" localize="true" />
       <!--<Panel id="25" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" useScrollBar="true" protectContent="false" opaque="false" name="DiagramPaletteScreenshotPanel" constraints="split(index=0;location=north;splitIdentifier=right)" trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">-->
-       <Image id="26" manageDynamicModel="false" useScrollBar="false" data="data.screenshotImage.image" sizeAdjustment="FitToAvailableSizeRespectRatio" imageHeight="16" localize="true" align="left" readOnly="false" imageWidth="32" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;location=right)"/>
+       <!--  <Image id="26" manageDynamicModel="false" useScrollBar="false" data="data.screenshotImage.image" sizeAdjustment="FitToAvailableSizeRespectRatio" imageHeight="16" localize="true" align="left" readOnly="false" imageWidth="32" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;location=right)"/>-->
       <!--	</Panel> -->
     </Tab>
   </TabPanel>
