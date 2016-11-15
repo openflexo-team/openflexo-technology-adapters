@@ -131,7 +131,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(ExcelWorkbookResource templateResource);
 
-	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook>implements BasicExcelModelSlot {
+	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook> implements BasicExcelModelSlot {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlot.class.getPackage().getName());
 
@@ -252,6 +252,9 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 					}
 					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
 							.getAccessibleExcelObjects();
+					if (excelObject.size() > 100) {
+						logger.fine("WARNING: more than one hundred lines in Excel file");
+					}
 					for (ExcelObject obj : excelObject) {
 						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 							return obj;

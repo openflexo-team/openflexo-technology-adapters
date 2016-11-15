@@ -117,6 +117,16 @@ public class CreatePaletteElementFromFlexoConceptWizard extends FlexoWizard {
 				return false;
 			}
 
+			if (StringUtils.isEmpty(getNewElementName())) {
+				setIssueMessage(noNameMessage(), IssueMessageType.ERROR);
+				return false;
+			}
+
+			if (getPalette().getPaletteElement(getNewElementName()) != null) {
+				setIssueMessage(duplicatedPaletteElement(), IssueMessageType.ERROR);
+				return false;
+			}
+
 			if (getConfigureFMLControls()) {
 				if (getVirtualModel() == null) {
 					setIssueMessage(noVirtualModelSelectedMessage(), IssueMessageType.ERROR);
@@ -132,11 +142,6 @@ public class CreatePaletteElementFromFlexoConceptWizard extends FlexoWizard {
 					return false;
 				}
 
-			}
-
-			if (StringUtils.isEmpty(getNewElementName())) {
-				setIssueMessage(noNameMessage(), IssueMessageType.ERROR);
-				return false;
 			}
 
 			return true;
@@ -274,6 +279,10 @@ public class CreatePaletteElementFromFlexoConceptWizard extends FlexoWizard {
 
 		public String noPaletteSelectedMessage() {
 			return action.getLocales().localizedForKey("no_palette_selected");
+		}
+
+		public String duplicatedPaletteElement() {
+			return action.getLocales().localizedForKey("a_palette_element_with_that_name_already_exists");
 		}
 
 		public String noFlexoConceptSelectedMessage() {

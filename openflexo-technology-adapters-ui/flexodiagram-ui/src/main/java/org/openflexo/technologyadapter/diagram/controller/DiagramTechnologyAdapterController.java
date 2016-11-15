@@ -65,13 +65,14 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPa
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromShapeInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromFlexoConceptInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreatePaletteElementFromShapeInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsAndFlexoConceptInstancesInitializer;
@@ -247,6 +248,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
 		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
+
+		// Overrides CreateFlexoConceptInitializer by providing palette element creation
+		new CreateFMLControlledDiagramFlexoConceptInitializer(actionInitializer);
 
 	}
 

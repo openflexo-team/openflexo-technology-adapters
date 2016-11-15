@@ -45,12 +45,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.action.BlankFlexoConceptFromShapeCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
@@ -60,6 +64,8 @@ import org.openflexo.technologyadapter.diagram.fml.action.MapShapeToIndividualSt
 import org.openflexo.technologyadapter.diagram.fml.action.ShapeRoleCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.ShapeRoleSettingStrategy;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
@@ -88,6 +94,10 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	public DeclareShapeInFlexoConceptWizard(DeclareShapeInFlexoConcept action, FlexoController controller) {
 		super(action, controller);
 	}
+
+	private ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> configurePaletteElementForNewFlexoConcept;
+
+	// addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<>(action, this));
 
 	@Override
 	public String getWizardTitle() {
@@ -129,6 +139,90 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 					(BlankFlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy());
 		}
 		return null;
+	}
+
+	@Override
+	public void configurePostProcessings() {
+
+		super.configurePostProcessings();
+
+		if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+				&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+
+			addStep(configurePaletteElementForNewFlexoConcept = new ConfigurePaletteElementForNewFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
+					getAction(), this) {
+
+				@Override
+				public VirtualModel getVirtualModel() {
+					return getAction().getVirtualModel();
+				}
+
+				@Override
+				public FlexoConcept getFlexoConcept() {
+					return DeclareShapeInFlexoConceptWizard.this.getAction().getFlexoConcept();
+				}
+
+				@Override
+				public String getFlexoConceptName() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+						return getAction().getFlexoConceptCreationStrategy().getFlexoConceptName();
+					}
+					if (getFlexoConcept() != null) {
+						return getFlexoConcept().getName();
+					}
+					return null;
+				}
+
+				@Override
+				public DropScheme getDropScheme() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+						if (getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+							return ((FlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy())
+									.getNewDropScheme();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				public String getDropSchemeName() {
+					if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+							&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+						return ((FlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy()).getDropSchemeName();
+					}
+					return null;
+				}
+
+				@Override
+				public String getDefaultPaletteElementName() {
+					return getFlexoConceptName();
+				}
+
+				@Override
+				public List<? extends GraphicalElementEntry> getGraphicalElementEntries() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public ScreenshotImage<DiagramShape> makeScreenshot() {
+					return getAction().getFocusedObject().getScreenshotImage();
+				}
+
+			});
+			getAction().addToPostProcessing(configurePaletteElementForNewFlexoConcept);
+		}
+	}
+
+	@Override
+	public void discardPostProcessings() {
+		super.discardPostProcessings();
+
+		if (getAction().getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT
+				&& getAction().getFlexoConceptCreationStrategy() instanceof FlexoConceptFromShapeCreationStrategy) {
+			getAction().removeFromPostProcessing(configurePaletteElementForNewFlexoConcept);
+			removeStep(configurePaletteElementForNewFlexoConcept);
+		}
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
@@ -213,7 +307,6 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 				checkValidity();
 			}
 		}
-
 
 	}
 
@@ -349,10 +442,10 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		}
 
 		/*@Override
-		public void setModelSlot(ModelSlot<?> modelSlot) {
-			super.setModelSlot(modelSlot);
-			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}*/
+			public void setModelSlot(ModelSlot<?> modelSlot) {
+				super.setModelSlot(modelSlot);
+				getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
+			}*/
 
 	}
 

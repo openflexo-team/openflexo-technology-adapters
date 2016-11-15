@@ -38,12 +38,6 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.logging.Logger;
-
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +50,12 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This test is really important and should be generalized in all technology adapters<br>
@@ -80,29 +80,23 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void performTest() throws Exception {
-
 		debugMemory();
 
 		int i = 0;
 
 		// 10 iterations are generally enough to exceed memory limit
 		// if FlexoServiceManager is not freed after each iteration
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 		while (i < 10) {
 			log("Iteration " + i);
-			debugMemory();
-			instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+
 			testDocXLoading();
 			log("After docx loading:");
-			debugMemory();
-			AbstractTestDocX.tearDownClass();
-			log("After service manager unload:");
 			debugMemory();
 
 			i++;
 			Thread.sleep(10);
-
 		}
-
 	}
 
 	public void testDocXLoading() {

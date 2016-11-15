@@ -2,7 +2,7 @@
  * 
  * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Fml-technologyadapter-ui, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -45,45 +45,46 @@ import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.foundation.FlexoObject;
+import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
+import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
-import org.openflexo.view.controller.TechnologyPerspective;
 
-public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDiagramPalette, DiagramSpecification, FlexoObject> {
+public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionInitializer {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public CreateDiagramPaletteInitializer(ControllerActionInitializer actionInitializer) {
-		super(CreateDiagramPalette.actionType, actionInitializer);
+	public CreateFMLControlledDiagramFlexoConceptInitializer(ControllerActionInitializer actionInitializer) {
+		super(CreateFlexoConcept.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramPalette> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramPalette>() {
+	protected FlexoActionInitializer<CreateFlexoConcept> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreateFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
+			public boolean run(EventObject e, CreateFlexoConcept action) {
+				action.setDefineSomeBehaviours(true);
+				Wizard wizard;
 
-				try {
-					FGEModelFactory factory = new FGEModelFactoryImpl();
-					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
-				} catch (ModelDefinitionException e1) {
-					e1.printStackTrace();
+				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView
+						&& action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+							.getCurrentModuleView();
+					wizard = new CreateFMLControlledDiagramFlexoConceptWizard(action, getController());
+					action.addToPostProcessing(
+							((CreateFMLControlledDiagramFlexoConceptWizard) wizard).getConfigurePaletteElementForNewFlexoConcept());
 				}
-
-				Wizard wizard = new CreateDiagramPaletteWizard(action, getController());
+				else {
+					wizard = new CreateFlexoConceptWizard(action, getController());
+				}
 				WizardDialog dialog = new WizardDialog(wizard, getController());
 				dialog.showDialog();
 				if (dialog.getStatus() != Status.VALIDATED) {
@@ -91,29 +92,22 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 					return false;
 				}
 				return true;
-
-				/*FGEModelFactory factory;
-				try {
-					FGEModelFactory factory = new FGEModelFactoryImpl();
-					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
-					return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
-				} catch (ModelDefinitionException e1) {
-					e1.printStackTrace();
-					return false;
-				}*/
 			}
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramPalette>() {
+	protected FlexoActionFinalizer<CreateFlexoConcept> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<CreateFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
-				if (getController().getCurrentPerspective() instanceof TechnologyPerspective
-						&& ((TechnologyPerspective) getController().getCurrentPerspective())
-								.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
-					getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
+			public boolean run(EventObject e, CreateFlexoConcept action) {
+				if (action.switchNewlyCreatedFlexoConcept) {
+					if (action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+						DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+								.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+						getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
+					}
+					getController().setCurrentEditedObjectAsModuleView(action.getNewFlexoConcept());
 				}
 				return true;
 			}
@@ -122,16 +116,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 
 	@Override
 	protected Icon getEnabledIcon() {
-		return FMLIconLibrary.VIEWPOINT_ICON;
-	}
-
-	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(FGEModelFactory factory) {
-		DrawingGraphicalRepresentation gr = factory.makeDrawingGraphicalRepresentation();
-		gr.setDrawWorkingArea(true);
-		gr.setWidth(260);
-		gr.setHeight(300);
-		gr.setIsVisible(true);
-		return gr;
+		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 
 }
