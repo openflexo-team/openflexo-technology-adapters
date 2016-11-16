@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -51,7 +52,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @ImplementationClass(DiagramPaletteElement.DiagramPaletteElementImpl.class)
 @XMLElement
-public interface DiagramPaletteElement extends DiagramPaletteObject {
+public interface DiagramPaletteElement extends DiagramPaletteObject, InnerResourceData<DiagramPalette> {
 
 	@PropertyIdentifier(type = DiagramPalette.class)
 	public static final String PALETTE_KEY = "palette";
@@ -92,7 +93,7 @@ public interface DiagramPaletteElement extends DiagramPaletteObject {
 		public String getName() {
 			return name;
 		}
-
+		
 		@Override
 		public void setName(String name) {
 			if (requireChange(this.name, name)) {
@@ -151,12 +152,16 @@ public interface DiagramPaletteElement extends DiagramPaletteObject {
 		public ShapeGraphicalRepresentation getGraphicalRepresentation() {
 			return graphicalRepresentation;
 		}
-
+		
 		@Override
 		public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
 			this.graphicalRepresentation = graphicalRepresentation;
 		}*/
 
+		@Override
+		public DiagramPalette getResourceData() {
+			return getPalette();
+		}
 	}
 
 }

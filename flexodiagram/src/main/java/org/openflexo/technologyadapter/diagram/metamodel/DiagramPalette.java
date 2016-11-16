@@ -234,6 +234,9 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		@Override
 		public String getName() {
 			if (getResource() != null) {
+				if (getResource().getName().endsWith(".palette")) {
+					return getResource().getName().substring(0, getResource().getName().indexOf(".palette"));
+				}
 				return getResource().getName();
 			}
 			return null;

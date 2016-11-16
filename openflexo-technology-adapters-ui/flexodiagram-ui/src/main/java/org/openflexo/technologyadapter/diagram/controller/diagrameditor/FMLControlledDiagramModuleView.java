@@ -45,7 +45,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
@@ -127,6 +126,29 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		System.out.println("FMLControlledDiagramModuleView WILL SHOW !!!!!!");
 
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(getEditor().getPaletteView());
+		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+
+		DiagramTechnologyAdapterController diagramTAController = getDiagramTechnologyAdapterController(getEditor().getFlexoController());
+
+		diagramTAController.getInspectors().attachToEditor(getEditor());
+		diagramTAController.getDialogInspectors().attachToEditor(getEditor());
+		diagramTAController.getScaleSelector().attachToEditor(getEditor());
+
+		perspective.setBottomRightView(
+				getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getInspectors().getPanelGroup());
+
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Force right view to be visible
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});*/
+
+		getEditor().getFlexoController().getControllerModel().setRightViewVisible(true);
+
 		getEditor().getFlexoController().getEditingContext().registerPasteHandler(getEditor().getPasteHandler());
 
 		bottomPanel.add(getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getScaleSelector().getComponent(),
@@ -144,15 +166,15 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
 		// Sets palette view of editor to be the top right view
-		perspective.setTopRightView(getEditor().getPaletteView());
+		/*perspective.setTopRightView(getEditor().getPaletteView());
 		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
-
+		
 		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
 		getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
-
+		
 		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -160,8 +182,8 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 				controller.getControllerModel().setRightViewVisible(true);
 			}
 		});
-
-		controller.getControllerModel().setRightViewVisible(true);
+		
+		controller.getControllerModel().setRightViewVisible(true);*/
 	}
 
 	@Override
