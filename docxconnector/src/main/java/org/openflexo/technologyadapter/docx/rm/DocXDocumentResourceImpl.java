@@ -41,14 +41,14 @@ import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
 	protected DocXDocument performLoad() throws IOException, Exception {
 
 		try {
-			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getFile());
+			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getFlexoIOStreamDelegate().getInputStream());
 
 			DocXDocument returned = getFactory().makeNewDocXDocument(wpmlPackage);
 			return returned;
