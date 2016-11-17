@@ -124,10 +124,10 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void testCreateExampleDiagramFrommPPTSlide() {
 
-		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType.makeNewAction(
-				project.getRootFolder(), null, editor);
+		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType
+				.makeNewAction(project.getRootFolder(), null, editor);
 
-		for (Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"))) {
+		for (Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"), false)) {
 			File pptFile = ((FileResourceImpl) rsc).getFile();
 			logger.info("Testing file " + pptFile.getName());
 			createExampleDiagramFromPPTSlide.setFile(pptFile);
@@ -165,7 +165,8 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			for (int i = sh.length - 1; i >= 0; i--) {
 				if (MasterSheet.isPlaceholder(sh[i])) {
 					continue;
-				} else {
+				}
+				else {
 					expectedShapes.add(sh[i]);
 				}
 			}
@@ -182,14 +183,18 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		if (shape instanceof Table) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 1
 					+ (((Table) shape).getNumberOfColumns() * ((Table) shape).getNumberOfRows());
-		} else if (shape instanceof TextBox || shape instanceof Picture) {
+		}
+		else if (shape instanceof TextBox || shape instanceof Picture) {
 			expectedNumberOfShapesAndConnectors++;
-		} else if (shape instanceof Line) {
+		}
+		else if (shape instanceof Line) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 3;
-		} else if (shape instanceof AutoShape) {
+		}
+		else if (shape instanceof AutoShape) {
 			if (!isConnector(shape.getShapeType())) {
 				expectedNumberOfShapesAndConnectors++;
-			} else {
+			}
+			else {
 				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + elementToCreate(shape, expectedShapes);
 			}
 		}
@@ -213,18 +218,18 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	private boolean isConnector(int shapeType) {
 		switch (shapeType) {
-		case ShapeTypes.CurvedConnector2:
-			return true;
-		case ShapeTypes.CurvedConnector3:
-			return true;
-		case ShapeTypes.CurvedConnector4:
-			return true;
-		case ShapeTypes.CurvedConnector5:
-			return true;
-		case ShapeTypes.Line:
-			return true;
-		case ShapeTypes.StraightConnector1:
-			return true;
+			case ShapeTypes.CurvedConnector2:
+				return true;
+			case ShapeTypes.CurvedConnector3:
+				return true;
+			case ShapeTypes.CurvedConnector4:
+				return true;
+			case ShapeTypes.CurvedConnector5:
+				return true;
+			case ShapeTypes.Line:
+				return true;
+			case ShapeTypes.StraightConnector1:
+				return true;
 		}
 		return false;
 	}
@@ -237,7 +242,8 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			if (poiConnector.getAnchor().intersects(diagramShape.getAnchor())) {
 				if (sourceShape == null && targetShape == null) {
 					sourceShape = diagramShape;
-				} else if (sourceShape != null && targetShape == null) {
+				}
+				else if (sourceShape != null && targetShape == null) {
 					targetShape = diagramShape;
 				}
 			}
