@@ -157,7 +157,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			}*/
 			out.append(
 					getClass().getSimpleName()
-							+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")
+							/*+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")*/
 							+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR,
 					context);
 			out.append("}", context);
