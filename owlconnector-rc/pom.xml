@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -10,7 +9,7 @@
 
 	<groupId>org.openflexo.rc</groupId>
 	<artifactId>owlconnector-rc</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.8.0-RC2</version>
 	<properties>
 	    <ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
 	    <sitedeploy.dir>/home/www/sites/openflexo-ta</sitedeploy.dir>
@@ -18,7 +17,7 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
-		<tag>1.8.0</tag>
+		<tag>Openflexo-Technology-Adapters-1.8.0-RC2</tag>
 	</scm>
 
 	<name>OWLRC</name>
