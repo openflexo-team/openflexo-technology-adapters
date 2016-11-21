@@ -9,22 +9,6 @@ buildscript {
   }
 }
 
-// task test(type: Test) {
-//   childProjects.each { _, Project child ->
-//     try {
-//       print child.tasks//.getByName("test")
-//     } catch (UnknownTaskException e) { println ("the " + child + " has no test") }
-//   }
-// }
-
-// ask test(type: Test) {
-//  dependsOn {
-//    rootProject.subprojects.collect {
-//      it.tasks.getByName 'test'
-//    }
-//  }
-// 
-
 subprojects {
   group='org.openflexo'
   apply plugin: 'java'
