@@ -127,7 +127,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType
 				.makeNewAction(project.getRootFolder(), null, editor);
 
-		for (Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"))) {
+		for (Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"), false)) {
 			File pptFile = ((FileResourceImpl) rsc).getFile();
 			logger.info("Testing file " + pptFile.getName());
 			createExampleDiagramFromPPTSlide.setFile(pptFile);

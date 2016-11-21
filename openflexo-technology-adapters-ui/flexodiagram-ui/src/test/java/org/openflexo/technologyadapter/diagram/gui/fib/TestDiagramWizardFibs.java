@@ -141,8 +141,13 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testPushToPaletteOptions() {
-		validateFIB("Fib/Wizard/PushToPalette/PushToPaletteOptions.fib");
+	public void testPutToPaletteFromConceptOptions() {
+		validateFIB("Fib/Wizard/PutToPalette/PutToPaletteFromConceptOptions.fib");
+	}
+
+	@Test
+	public void testPutToPaletteFromShapeOptions() {
+		validateFIB("Fib/Wizard/PutToPalette/PutToPaletteFromShapeOptions.fib");
 	}
 
 }

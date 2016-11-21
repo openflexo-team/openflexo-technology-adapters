@@ -157,7 +157,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			}*/
 			out.append(
 					getClass().getSimpleName()
-							+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")
+							/*+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")*/
 							+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR,
 					context);
 			out.append("}", context);
@@ -287,7 +287,8 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			if (getAssignedFlexoProperty() instanceof DiagramRole) {
 				return getAssignedFlexoProperty().getDiagramSpecificationResource();
 			}
-			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
+			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI) && getModelSlot() != null
+					&& getModelSlot().getModelSlotTechnologyAdapter() != null) {
 				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getModelSlotTechnologyAdapter()
 						.getTechnologyContextManager().getResourceWithURI(diagramSpecificationURI);
 				logger.info("Looked-up " + diagramSpecificationResource);
