@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.8.0-RC2</version>
+		<version>1.8.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>ginaconnector</artifactId>
 	<description>Technology Adapter for GINA (rich interfaces framework)</description>

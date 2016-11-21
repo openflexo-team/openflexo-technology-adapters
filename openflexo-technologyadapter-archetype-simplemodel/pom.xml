@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.8.0-RC2</version>
+		<version>1.8.0-SNAPSHOT</version>
 	</parent>
 
   <groupId>org.openflexo.archetypes</groupId>
@@ -18,7 +18,7 @@
   </properties>
 
   <scm>
-    <tag>Openflexo-Technology-Adapters-1.8.0-RC2</tag>
+    <tag>1.8.0</tag>
   </scm>
   
     <dependencies>
