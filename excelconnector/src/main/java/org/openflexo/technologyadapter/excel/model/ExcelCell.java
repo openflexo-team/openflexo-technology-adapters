@@ -491,7 +491,7 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 		}
 	}
 
-	public void setCellValue(String value) {
+	public void setCellValue(Object value) {
 
 		createCellWhenNonExistant();
 
@@ -499,32 +499,60 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 			cell.setCellValue((String) null);
 			return;
 		}
+		if (value instanceof String) {
+			String valueString = (String) value;
+			if (valueString.startsWith("=")) {
+				setCellFormula(valueString);
+				setCellValue(evaluateFormula().formatAsString());
+				return;
+			}
+			if (valueString.equalsIgnoreCase("true")) {
+				cell.setCellValue(true);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			else if (valueString.equalsIgnoreCase("false")) {
+				cell.setCellValue(false);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			try {
+				double doubleValue = Double.parseDouble(valueString);
+				cell.setCellValue(doubleValue);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			} catch (NumberFormatException e) {
+				cell.setCellValue(valueString);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+		}
+		else if (value instanceof Integer) {
+			cell.setCellValue((Integer) value);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			return;
+		}
+		else if (value instanceof Double) {
+			cell.setCellValue((Double) value);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			return;
+		}
+		else if (value instanceof Float) {
+			cell.setCellValue((Float) value);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			return;
+		}
+		else if (value instanceof Long) {
+			cell.setCellValue((Long) value);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			return;
+		}
+		else if (value instanceof Boolean) {
+			cell.setCellValue((Boolean) value);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			return;
+		}
 
-		if (value.startsWith("=")) {
-			setCellFormula(value);
-			setCellValue(evaluateFormula().formatAsString());
-			return;
-		}
-		if (value.equalsIgnoreCase("true")) {
-			cell.setCellValue(true);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		}
-		else if (value.equalsIgnoreCase("false")) {
-			cell.setCellValue(false);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		}
-		try {
-			double doubleValue = Double.parseDouble(value);
-			cell.setCellValue(doubleValue);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		} catch (NumberFormatException e) {
-			cell.setCellValue(value);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		}
 	}
 
 	public void setCellStringValue(String value) {
@@ -580,9 +608,13 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 	 */
 	@Override
 	public String toString() {
-		return "[" + getCellIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
-				+ getTopLeftMergedCell().getCellIdentifier() + ":" + getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "")
-				+ getDisplayValue();
+		return "["
+				+ getCellIdentifier()
+				+ "]/"
+				+ getCellType().name()
+				+ "/"
+				+ (isMerged() ? "MergedWith:" + "[" + getTopLeftMergedCell().getCellIdentifier() + ":"
+						+ getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "") + getDisplayValue();
 	}
 
 	public boolean hasTopBorder() {
