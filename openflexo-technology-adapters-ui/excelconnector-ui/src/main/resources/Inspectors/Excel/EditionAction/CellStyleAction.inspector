@@ -59,8 +59,16 @@
 				<Assignment variable="component.bindable" value="data" />
 				<Dependancy componentName="cellStyleDD" />
 			</Custom>
+			<Label label="color" align="right" index="7" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
+				visible="data.isColorStyle" format="" icon="" tooltip="" localize="true"
+				enable="" clickAction="" doubleClickAction="" rightClickAction=""
+				enterPressedAction="" valueChangedAction="" valueTransform=""
+				valueValidator="">
+				<Dependancy componentName="cellStyleDD" />
+			</Label>
 			<Color enable="data.isColorStyle" visible="data.isColorStyle" readOnly="false" index="7" data="data.cellColorStyle"
-				constraints="twocols(expandHorizontally=false;expandVertically=false;index=1;insetsBottom=2;insetsLeft=6;insetsRight=2;insetsTop=0;location=center)" 
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				localize="true" >
 				<Dependancy componentName="cellStyleDD" />
 			</Color>
