@@ -31,6 +31,7 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 import org.openflexo.technologyadapter.pdf.gui.PDFIconLibrary;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
+import org.openflexo.technologyadapter.pdf.view.PDFDocumentModuleView;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -133,9 +134,9 @@ public class PDFAdapterController extends TechnologyAdapterController<PDFTechnol
 	@Override
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<PDFTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
-		/*if (object instanceof PDFDocument) {
+		if (object instanceof PDFDocument) {
 			return new PDFDocumentModuleView((PDFDocument) object, perspective);
-		}*/
+		}
 		return null;
 	}
 
