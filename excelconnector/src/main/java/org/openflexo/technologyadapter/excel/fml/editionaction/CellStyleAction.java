@@ -156,8 +156,8 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 
 	public boolean isPatternStyle();
 
-	public static abstract class CellStyleActionImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelStyleObject>
-			implements CellStyleAction {
+	public static abstract class CellStyleActionImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelStyleObject> implements
+			CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 
@@ -302,6 +302,10 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 				else {
 					isPatternStyle = false;
 				}
+				getPropertyChangeSupport().firePropertyChange("isBorderStyle", null, isBorderStyle);
+				getPropertyChangeSupport().firePropertyChange("isAlignmentStyle", null, isAlignmentStyle);
+				getPropertyChangeSupport().firePropertyChange("isColorStyle", null, isColorStyle);
+				getPropertyChangeSupport().firePropertyChange("isPatternStyle", null, isPatternStyle);
 			}
 		}
 

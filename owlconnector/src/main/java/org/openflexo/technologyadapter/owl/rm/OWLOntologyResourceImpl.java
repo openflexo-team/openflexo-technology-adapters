@@ -38,17 +38,15 @@
 
 package org.openflexo.technologyadapter.owl.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.RDFWriter;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -83,7 +81,8 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	@Override
 	public OWLOntology loadResourceData(IProgress progress)
 			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		OWLOntology returned = new OWLOntology(getURI(), getFile(), getOntologyLibrary(), getTechnologyAdapter());
+		OWLOntology returned = new OWLOntology(getURI(), getFlexoIODelegate().getSerializationArtefactAsResource(), getOntologyLibrary(),
+				getTechnologyAdapter());
 		returned.setResource(this);
 		resourceData = returned;
 		return returned;
@@ -101,58 +100,59 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		}
 
-		if (!getFileFlexoIODelegate().hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getFlexoIODelegate().getSerializationArtefact());
 			}
-			throw new SaveResourcePermissionDeniedException(getFileFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFileFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			_writeToFile();
-			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+				logger.info("Succeeding to save Resource " + getURI());
 			}
 		}
 	}
 
 	private void _writeToFile() throws SaveResourceException {
-		System.out.println("Saving OWL ontology to " + getFile().getAbsolutePath());
-		FileOutputStream out = null;
+		System.out.println("Saving OWL ontology to " + getFlexoIODelegate().getSerializationArtefact());
+		OutputStream out = null;
 		try {
 			OWLOntology ontology = getResourceData(null);
 			OntModel ontModel = ontology.getOntModel();
 			ontModel.setNsPrefix("base", ontology.getURI());
-			out = new FileOutputStream(getFile());
+			out = getFlexoIODelegate().getSerializationArtefactAsResource().openOutputStream();
+			// out = new FileOutputStream(getFile());
 			RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
 			writer.setProperty("xmlbase", ontology.getURI());
 			writer.write(ontModel.getBaseModel(), out, ontology.getURI());
 			// getOntModel().setNsPrefix("base", getOntologyURI());
 			// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
 			clearIsModified(true);
-			logger.info("Wrote " + getFile());
+			logger.info("Wrote " + getFlexoIODelegate().getSerializationArtefact());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			logger.warning("FileNotFoundException: " + e.getMessage());
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			try {
 				if (out != null) {
@@ -161,7 +161,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.warning("IOException: " + e.getMessage());
-				throw new SaveResourceException(getFileFlexoIODelegate());
+				throw new SaveResourceException(getFlexoIODelegate());
 			}
 		}
 
@@ -209,14 +209,6 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	@Override
 	public Class<OWLOntology> getResourceDataClass() {
 		return OWLOntology.class;
-	}
-
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
-	}
-
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
 	}
 
 }

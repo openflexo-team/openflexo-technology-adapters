@@ -39,13 +39,9 @@
 
 package org.openflexo.technologyadapter.owl.model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -75,11 +71,9 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.util.ResourceUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -102,13 +96,12 @@ import org.openflexo.foundation.ontology.dm.OntologyIndividualRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyObjectPropertyInserted;
 import org.openflexo.foundation.ontology.dm.OntologyObjectPropertyRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyObjectRenamed;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.utils.FlexoProgress;
+import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.action.CreateDataProperty;
 import org.openflexo.technologyadapter.owl.model.action.CreateObjectProperty;
@@ -134,7 +127,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	private String name;
 	private final String ontologyURI;
 	protected OntModel ontModel;
-	private final File alternativeLocalFile;
+	private final Resource alternativeLocalResource;
 	private final OWLOntologyLibrary _library;
 	protected boolean isLoaded = false;
 	protected boolean isLoading = false;
@@ -161,9 +154,9 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 	private OWLOntologyResource ontologyResource;
 
-	public static OWLOntology createOWLEmptyOntology(String anURI, File owlFile, OWLOntologyLibrary ontologyLibrary,
+	public static OWLOntology createOWLEmptyOntology(String anURI, Resource owlResource, OWLOntologyLibrary ontologyLibrary,
 			OWLTechnologyAdapter adapter) {
-		OWLOntology returned = new OWLOntology(anURI, owlFile, ontologyLibrary, adapter);
+		OWLOntology returned = new OWLOntology(anURI, owlResource, ontologyLibrary, adapter);
 
 		Model base = ModelFactory.createDefaultModel();
 		returned.ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, ontologyLibrary, base);
@@ -173,19 +166,19 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		return returned;
 	}
 
-	public OWLOntology(String anURI, File owlFile, OWLOntologyLibrary library, OWLTechnologyAdapter adapter) {
+	public OWLOntology(String anURI, Resource owlResource, OWLOntologyLibrary library, OWLTechnologyAdapter adapter) {
 		super(adapter);
 
-		logger.info("Register ontology " + anURI + " file: " + owlFile);
+		logger.info("Register ontology " + anURI + " file: " + owlResource);
 
 		ontologyURI = anURI;
-		if (owlFile != null && owlFile.exists()) {
-			name = findOntologyName(owlFile);
+		if (owlResource != null /*&& owlResource.exists()*/) {
+			name = findOntologyName(owlResource);
 		}
 		if (name == null) {
 			name = ontologyURI.substring(ontologyURI.lastIndexOf("/") + 1);
 		}
-		alternativeLocalFile = owlFile;
+		alternativeLocalResource = owlResource;
 		_library = library;
 
 		importedOntologies = new Vector<OWLOntology>();
@@ -207,38 +200,39 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 	}
 
-	public static String findOntologyURI(File aFile) {
-		String returned = findOntologyURIWithOntologyAboutMethod(aFile);
+	public static String findOntologyURI(Resource aResource) {
+		String returned = findOntologyURIWithOntologyAboutMethod(aResource);
 		if (StringUtils.isNotEmpty(returned) && returned.endsWith("#")) {
 			returned = returned.substring(0, returned.lastIndexOf("#"));
 		}
 		if (StringUtils.isEmpty(returned)) {
-			returned = findOntologyURIWithRDFBaseMethod(aFile);
+			returned = findOntologyURIWithRDFBaseMethod(aResource);
 		}
 		if (StringUtils.isNotEmpty(returned) && returned.endsWith("#")) {
 			returned = returned.substring(0, returned.lastIndexOf("#"));
 		}
 		if (StringUtils.isEmpty(returned)) {
-			logger.warning("Could not find URI for ontology stored in file " + aFile.getAbsolutePath());
-			return aFile.toURI().toString();
+			logger.warning("Could not find URI for ontology stored in resource " + aResource.getURI());
+			return aResource.getURI();
 		}
 		return returned;
 
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Hop1: " + findOntologyURI(new File(
-				"/Users/sylvain/GIT/openflexo/flexodesktop/model/flexofoundation/src/test/resources/TestProjects/1.6/Test1.6.prj/Models/myModel.owl")));
-		System.out.println("Hop2: " + findOntologyURI(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter/owl-xml_cpmf.owl")));
-		System.out.println("Hop3: "
-				+ findOntologyURI(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter/Ontologies/www.omg.org/UML2.owl")));
-	}
+	/*public static void main(String[] args) throws MalformedURLException, LocatorNotFoundException {
+	
+		FileSystemResourceLocatorImpl rl = new FileSystemResourceLocatorImpl();
+	
+		FileResourceImpl ontoResource1 = new FileResourceImpl(rl, new File(
+				"/Users/sylvain/GIT/openflexo-technology-adapters/owlconnector-rc/src/main/resources/Ontologies/www.w3.org/1999/02/22-rdf-syntax-ns.owl"));
+		System.out.println("URI: " + findOntologyURI(ontoResource1));
+	}*/
 
-	private static String findOntologyURIWithRDFBaseMethod(File aFile) {
+	private static String findOntologyURIWithRDFBaseMethod(Resource aResource) {
 		Document document;
 		try {
-			logger.fine("Try to find URI for " + aFile);
-			document = readXMLFile(aFile);
+			logger.fine("Try to find URI for " + aResource);
+			document = readXMLContents(aResource);
 			Element root = getElement(document, "RDF");
 			if (root != null) {
 				Iterator it = root.getAttributes().iterator();
@@ -270,11 +264,11 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		return null;
 	}
 
-	private static String findOntologyURIWithOntologyAboutMethod(File aFile) {
+	private static String findOntologyURIWithOntologyAboutMethod(Resource aResource) {
 		Document document;
 		try {
-			logger.fine("Try to find URI for " + aFile);
-			document = readXMLFile(aFile);
+			logger.fine("Try to find URI for " + aResource);
+			document = readXMLContents(aResource);
 			Element root = getElement(document, "Ontology");
 			if (root != null) {
 				Iterator it = root.getAttributes().iterator();
@@ -295,21 +289,21 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			e.printStackTrace();
 		}
 		logger.fine("Returned null");
-		return findOntologyURIWithRDFBaseMethod(aFile);
+		return findOntologyURIWithRDFBaseMethod(aResource);
 	}
 
-	public static String findOntologyName(File aFile) {
-		if (aFile == null || !aFile.exists() || aFile.length() == 0) {
-			if (aFile != null && aFile.length() == 0) {
+	public static String findOntologyName(Resource aResource) {
+		if (aResource == null /*|| !aFile.exists() || aFile.length() == 0*/) {
+			/*if (aFile != null && aFile.length() == 0) {
 				aFile.delete();
-			}
+			}*/
 			return null;
 		}
 
 		Document document;
 		try {
-			logger.fine("Try to find name for " + aFile);
-			document = readXMLFile(aFile);
+			logger.fine("Try to find name for " + aResource);
+			document = readXMLContents(aResource);
 			Element root = getElement(document, "RDF");
 			if (root != null) {
 				Element ontology = getElement(root, "Ontology");
@@ -332,11 +326,11 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return aFile.getName();
+		return aResource.getURI();
 	}
 
-	private static Document readXMLFile(File f) throws JDOMException, IOException {
-		FileInputStream fio = new FileInputStream(f);
+	private static Document readXMLContents(Resource resource) throws JDOMException, IOException {
+		InputStream fio = resource.openInputStream();
 		SAXBuilder parser = new SAXBuilder();
 		Document reply = parser.build(fio);
 		return reply;
@@ -397,8 +391,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		this.ontModel = ontModel;
 	}
 
-	public File getAlternativeLocalFile() {
-		return alternativeLocalFile;
+	public Resource getAlternativeLocalResource() {
+		return alternativeLocalResource;
 	}
 
 	/**
@@ -451,16 +445,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			}
 		}
 
-		/*if (importedOntologies.size() == 0) {
-			if (getURI().equals(OWLOntologyLibrary.OWL_ONTOLOGY_URI)) {
-				importedOntologies.add(getOntologyLibrary().getRDFOntology());
-				importedOntologies.add(getOntologyLibrary().getRDFSOntology());
-			} else if (getURI().equals(OWLOntologyLibrary.RDF_ONTOLOGY_URI)) {
-				importedOntologies.add(getOntologyLibrary().getRDFSOntology());
-			} else if (!getURI().equals(OWLOntologyLibrary.RDFS_ONTOLOGY_URI)) {
-				importedOntologies.add(getOntologyLibrary().getOWLOntology());
-			}
-		}*/
 		return importedOntologies;
 	}
 
@@ -644,8 +628,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		// I dont understand why, but on some ontologies, this is the only way to obtain those classes
 		for (NodeIterator i = ontModel.listObjects(); i.hasNext();) {
 			RDFNode node = i.nextNode();
-			if (node instanceof Resource && ((Resource) node).canAs(OntClass.class)) {
-				OntClass ontClass = ((Resource) node).as(OntClass.class);
+			if (node instanceof org.apache.jena.rdf.model.Resource && ((org.apache.jena.rdf.model.Resource) node).canAs(OntClass.class)) {
+				OntClass ontClass = ((org.apache.jena.rdf.model.Resource) node).as(OntClass.class);
 				if (_classes.get(ontClass) == null && isNamedResourceOfThisOntology(ontClass)) {
 					// Only named classes will be appended)
 					makeNewClass(ontClass);
@@ -653,38 +637,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 				}
 			}
 		}
-
-		/*if (getURI().equals(OWLOntologyLibrary.RDFS_ONTOLOGY_URI)) {
-			for (StmtIterator i = getOntModel().listStatements(); i.hasNext();) {
-				Statement s = i.nextStatement();
-				System.out.println("statement = " + s);
-			}
-			for (NodeIterator i = ontModel.listObjects(); i.hasNext();) {
-				RDFNode node = i.nextNode();
-				System.out.println("node = " + node);
-			}
-			for (NodeIterator i = ontModel.listObjects(); i.hasNext();) {
-				RDFNode node = i.nextNode();
-				if (node.canAs(Resource.class)) {
-					System.out.println("resource = " + node.as(Resource.class));
-				}
-			}
-			for (Iterator i = ontModel.listAllOntProperties(); i.hasNext();) {
-				OntProperty ontProperty = (OntProperty) i.next();
-				System.out.println("Property: " + ontProperty);
-				if (ontProperty.canAs(ObjectProperty.class)) {
-					System.out.println("ObjectProperty");
-				} else if (ontProperty.canAs(DatatypeProperty.class)) {
-					System.out.println("DataProperty");
-				} else if (ontProperty.canAs(AnnotationProperty.class)) {
-					AnnotationProperty ap = ontProperty.as(AnnotationProperty.class);
-					System.out.println("AnnotationProperty " + ap.getRange());
-				} else if (ontProperty.canAs(FunctionalProperty.class)) {
-					System.out.println("FunctionalProperty");
-				}
-			}
-			System.exit(-1);
-		}*/
 
 		if (!getURI().equals(OWL2URIDefinitions.OWL_ONTOLOGY_URI) && !getURI().equals(RDFURIDefinitions.RDF_ONTOLOGY_URI)
 				&& !getURI().equals(RDFSURIDefinitions.RDFS_ONTOLOGY_URI)) {
@@ -1106,7 +1058,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		}
 	}
 
-	protected OWLConcept<?> retrieveOntologyObject(Resource resource) {
+	protected OWLConcept<?> retrieveOntologyObject(org.apache.jena.rdf.model.Resource resource) {
 		// First try to lookup with resource URI
 		if (StringUtils.isNotEmpty(resource.getURI())) {
 			OWLConcept<?> returned = getOntologyObject(resource.getURI());
@@ -1496,19 +1448,19 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		// ontModel.setStrictMode(false);
 
 		// we have a local copy of flexo concept ontology
-		if (alternativeLocalFile != null) {
-			logger.fine("Alternative local file: " + alternativeLocalFile.getAbsolutePath());
-			try {
-				ontModel.getDocumentManager().addAltEntry(ontologyURI, alternativeLocalFile.toURL().toString());
-			} catch (MalformedURLException e) {
+		if (alternativeLocalResource != null) {
+			logger.fine("Alternative local file: " + alternativeLocalResource.getURI());
+			// try {
+			ontModel.getDocumentManager().addAltEntry(ontologyURI, alternativeLocalResource.getURI());
+			/*} catch (MalformedURLException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 		// read the source document
 		try {
 			logger.fine("BEGIN Read " + ontologyURI);
-			ontModel.read(ontologyURI);
+			ontModel.read(alternativeLocalResource.openInputStream(), ontologyURI);
 			logger.fine("END read " + ontologyURI);
 		} catch (Exception e) {
 			logger.warning("Unexpected exception while reading ontology " + ontologyURI);
@@ -1645,34 +1597,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	public void setDescription(String description) {
 		// TODO
 	}
-
-	/*public void saveToFile(File aFile) {
-		System.out.println("Saving OWL ontology to " + aFile.getAbsolutePath());
-		FileOutputStream out = null;
-		try {
-			getOntModel().setNsPrefix("base", getOntologyURI());
-			out = new FileOutputStream(aFile);
-			RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
-			writer.setProperty("xmlbase", getOntologyURI());
-			writer.write(ontModel.getBaseModel(), out, getOntologyURI());
-			// getOntModel().setNsPrefix("base", getOntologyURI());
-			// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
-			clearIsModified(true);
-			logger.info("Wrote " + aFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			logger.warning("FileNotFoundException: " + e.getMessage());
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.warning("IOException: " + e.getMessage());
-			}
-		}
-	}*/
 
 	public void save(FlexoProgress progress) throws SaveResourceException {
 		// saveToFile(getAlternativeLocalFile());
@@ -1995,18 +1919,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			return null;
 		}
 
-		/*if (objectURI.endsWith("#")) {
-			String potentialOntologyURI = objectURI.substring(0, objectURI.lastIndexOf("#"));
-			OWLOntology returned = getOntologyLibrary().getOntology(ontologyURI);
-			if (returned != null) {
-				return returned;
-			}
-		}*/
-
-		/*if (objectURI.equals(getURI())) {
-			return this;
-		}*/
-
 		OWLConcept<?> returned = null;
 
 		returned = getClass(objectURI);
@@ -2026,7 +1938,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			return returned;
 		}
 
-		// logger.warning("Cannot find IFlexoOntologyConcept " + objectURI);
 		return null;
 	}
 
@@ -2043,14 +1954,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			return returned;
 		}
 
-		/*for (OWLOntology o : getAllImportedOntologies()) {
-			if (o != null) {
-				returned = o.getDeclaredClass(classURI);
-				if (returned != null) {
-					return returned;
-				}
-			}
-		}*/
 		for (OWLOntology o : getImportedOntologies()) {
 			// Special code to avoid infinite loop because RDF and RDFS ontologies reference them both
 			if (getURI().equals(RDF_ONTOLOGY_URI)) {
@@ -2231,31 +2134,19 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		return null;
 	}
 
-	public static void main3(String[] args) {
+	/*public static void main3(String[] args) {
 		File f = new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter/Ontologies/www.bolton.ac.uk/Archimate_from_Ecore.owl");
 		String uri = findOntologyURI(f);
 		System.out.println("uri: " + uri);
 		System.out.println("uri: " + findOntologyName(f));
 		FlexoResourceCenter resourceCenter = DirectoryResourceCenter
 				.instanciateNewDirectoryResourceCenter(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter"), null);
-		// resourceCenter.retrieveBaseOntologyLibrary();
-		// ImportedOntology o = ImportedOntology.createNewImportedOntology(uri, f, resourceCenter.retrieveBaseOntologyLibrary());
-		// o.load();
-		/*try {
-			o.save();
-		} catch (SaveResourceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		/*System.out.println("ontologies:" + o.getImportedOntologies());
-		System.out.println("classes:" + o.getClasses());
-		System.out.println("properties:" + o.getObjectProperties());*/
-	}
+	}*/
 
-	public static void main2(String[] args) {
+	/*public static void main2(String[] args) {
 		Hashtable<OntResource, String> renamedResources = new Hashtable<OntResource, String>();
 		Hashtable<String, OntResource> renamedURI = new Hashtable<String, OntResource>();
-
+	
 		OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
 		String ontologyURI = "file:/tmp/UML2.owl";
 		ontModel.read(ontologyURI);
@@ -2271,14 +2162,14 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			DatatypeProperty aProperty = i.next();
 			handleResource(aProperty, renamedResources, renamedURI);
 		}
-
+	
 		for (OntResource r : renamedResources.keySet()) {
 			String oldURI = r.getURI();
 			String newURI = r.getURI().substring(0, r.getURI().indexOf("#")) + "#" + renamedResources.get(r);
 			System.out.println("Rename " + oldURI + " to " + newURI);
 			ResourceUtils.renameResource(r, newURI);
 		}
-
+	
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(new File("/tmp/Prout.owl"));
@@ -2297,8 +2188,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 				logger.warning("IOException: " + e.getMessage());
 			}
 		}
-
-	}
+	
+	}*/
 
 	@Override
 	public OWLOntology getMetaModel() {
@@ -2368,21 +2259,5 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	public void setResource(org.openflexo.foundation.resource.FlexoResource<OWLOntology> resource) {
 		ontologyResource = (OWLOntologyResource) resource;
 	}
-
-	/*@Override
-	protected synchronized void setChanged() {
-		super.setChanged();
-		if (isLoaded) {
-			logger.info("***************** setChanged() in OWLOntology");
-		}
-	}
-	
-	@Override
-	public synchronized void setIsModified() {
-		super.setIsModified();
-		if (isLoaded) {
-			logger.info("***************** setIsModified() in OWLOntology");
-		}
-	}*/
 
 }

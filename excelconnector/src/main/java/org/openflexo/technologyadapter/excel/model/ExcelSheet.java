@@ -57,7 +57,7 @@ public class ExcelSheet extends ExcelObject {
 	private Sheet sheet;
 	private ExcelWorkbook workbook;
 	private List<ExcelRow> excelRows;
-	private String CELL_NAME_REGEX = "(\\w+)(\\d+)";
+	private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
 	private FormulaEvaluator evaluator;
 
 	public Sheet getSheet() {

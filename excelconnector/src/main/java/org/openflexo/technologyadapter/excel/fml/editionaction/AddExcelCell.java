@@ -95,10 +95,10 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	@Getter(value = VALUE_KEY)
 	@XMLAttribute
-	public DataBinding<String> getValue();
+	public DataBinding<Object> getValue();
 
 	@Setter(VALUE_KEY)
-	public void setValue(DataBinding<String> value);
+	public void setValue(DataBinding<Object> value);
 
 	@Getter(value = CELL_TYPE_KEY)
 	@XMLAttribute
@@ -137,12 +137,12 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
-	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell>
-			implements AddExcelCell {
+	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
+			AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
-		private DataBinding<String> value;
+		private DataBinding<Object> value;
 
 		private DataBinding<Integer> columnIndex;
 
@@ -198,15 +198,15 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 					if (columnIndex != null) {
 						if (excelRow != null) {
 							Cell cell = null;
-							String value = getValue().getBindingValue(evaluationContext);
+							Object value = getValue().getBindingValue(evaluationContext);
 							// If this cell exists, just get it
 							if (excelRow.getCellAt(columnIndex) != null) {
 								excelCell = excelRow.getCellAt(columnIndex);
 							}
 							else {
 								cell = excelRow.getRow().createCell(columnIndex);
-								excelCell = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelCellToCell(cell,
-										excelRow, null);
+								excelCell = modelSlotInstance.getAccessedResourceData().getConverter()
+										.convertExcelCellToCell(cell, excelRow, null);
 							}
 							if (value != null) {
 								excelCell.setCellValue(value);
@@ -249,19 +249,19 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		}
 
 		@Override
-		public DataBinding<String> getValue() {
+		public DataBinding<Object> getValue() {
 			if (value == null) {
-				value = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				value = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
 		}
 
 		@Override
-		public void setValue(DataBinding<String> value) {
+		public void setValue(DataBinding<Object> value) {
 			if (value != null) {
 				value.setOwner(this);
-				value.setDeclaredType(String.class);
+				value.setDeclaredType(Object.class);
 				value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}

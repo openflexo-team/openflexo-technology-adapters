@@ -53,6 +53,8 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.test.OpenflexoTestCase;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
@@ -85,8 +87,8 @@ public class TestPizza extends OpenflexoTestCase {
 	@TestOrder(2)
 	public void test1LoadTestResourceCenter() {
 
-		File myOntology = ResourceLocator
-				.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl"));
+		Resource myOntology = ResourceLocator.locateResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
+		File myOntologyFile = ((FileResourceImpl) myOntology).getFile();
 
 		System.out.println("Found: " + myOntology);
 		OWLOntology hop = new OWLOntology(OWLOntology.findOntologyURI(myOntology), myOntology, ontologyLibrary, owlAdapter);
@@ -104,7 +106,7 @@ public class TestPizza extends OpenflexoTestCase {
 
 		try {
 			File f = File.createTempFile("MyPizza", ".owl");
-			createdFile = new File(myOntology.getParent(), f.getName());
+			createdFile = new File(myOntologyFile.getParent(), f.getName());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
