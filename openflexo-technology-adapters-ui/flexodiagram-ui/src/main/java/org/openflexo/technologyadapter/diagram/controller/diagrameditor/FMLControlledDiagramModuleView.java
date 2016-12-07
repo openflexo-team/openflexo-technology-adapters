@@ -77,11 +77,16 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 		bottomPanel.add(editor.getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		editor.getFlexoController().setInfoMessage("Controlled diagramming - CTRL-drag to draw edges", false);
+		editor.getFlexoController().setInfoMessage(getInfoMessage(), false);
 
 		validate();
 
 		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+	}
+
+	public String getInfoMessage() {
+		return "Controlled diagramming - CTRL-drag to draw edges";
+		// return FlexoLocalization.getMainLocalizer().localizedForKey("controlled_diagramming")
 	}
 
 	public FMLControlledDiagramEditor getEditor() {
