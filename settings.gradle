@@ -1,5 +1,3 @@
-rootProject.name = 'openflexo-technology-adapters'
-
 include 'csvconnector',
 'docxconnector',
 'owlconnector',

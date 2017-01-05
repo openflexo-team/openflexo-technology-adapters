@@ -1,10 +1,10 @@
 dependencies {
   // openflexo dep
-   compile group: "org.openflexo", name: "flexo-ui", version: "1.+"
-   compile group: "org.openflexo", name: "docxconnector", version: "1.+"
-   compile group: "org.openflexo", name: "flexo-documentation-ui", version: "1.+"
-   compile group: "org.openflexo", name: "docx4all", version: "1.+"
+   compile group: "org.openflexo", name: "flexo-ui", version: "1.4-SNAPSHOT"
+   compile group: "org.openflexo", name: "docxconnector", version: "1.4-SNAPSHOT"
+   compile group: "org.openflexo", name: "flexo-documentation-ui", version: "1.4-SNAPSHOT"
+   compile group: "org.openflexo", name: "docx4all", version: "1.4-SNAPSHOT"
   // external dep
   // testing dep
-    testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.+"
+    testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.4-SNAPSHOT"
 }
