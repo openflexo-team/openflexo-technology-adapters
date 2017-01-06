@@ -22,6 +22,10 @@ subprojects {
     options.encoding = 'UTF-8'
   }
 
+  tasks.withType(Test) {
+    maxParallelForks = 1
+  }
+
   repositories {
     jcenter()
     maven { url "https://maven.openflexo.org/artifactory/openflexo-snapshot/" }
