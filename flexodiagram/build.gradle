@@ -8,6 +8,8 @@ dependencies {
   compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.12'
 
   // testing dep
-   testCompile group: "org.openflexo", name: "testutils", version: "1.4-SNAPSHOT"
-   testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.9.0-SNAPSHOT"
+  testCompile group: "org.openflexo", name: "testutils", version: "1.4-SNAPSHOT"
+  testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.9.0-SNAPSHOT"
+
+  testRuntime group: "org.openflexo", name: "testdiagram_vp", version: "1.1"
 }
