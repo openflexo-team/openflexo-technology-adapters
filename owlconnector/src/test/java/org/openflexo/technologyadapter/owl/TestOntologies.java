@@ -39,7 +39,6 @@
 
 package org.openflexo.technologyadapter.owl;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -63,7 +62,6 @@ import java.util.logging.Logger;
 import static org.junit.Assert.*;
 
 @RunWith(OrderedRunner.class)
-@Ignore
 public class TestOntologies extends OpenflexoTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestOntologies.class.getPackage().getName());

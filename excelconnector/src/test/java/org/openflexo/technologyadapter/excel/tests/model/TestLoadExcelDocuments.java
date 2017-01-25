@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.tests.model;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -61,7 +60,6 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@Ignore
 @RunWith(OrderedRunner.class)
 public class TestLoadExcelDocuments extends AbstractTestExcel {
 	protected static final Logger logger = Logger.getLogger(TestLoadExcelDocuments.class.getPackage().getName());
