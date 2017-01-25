@@ -38,16 +38,7 @@
 
 package org.openflexo.technologyadapter.excel.tests.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
@@ -66,7 +57,15 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
+
 @RunWith(OrderedRunner.class)
+@Ignore
 public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestCompareExcelSheet.class.getPackage().getName());
 

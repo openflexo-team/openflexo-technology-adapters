@@ -9,6 +9,4 @@ dependencies {
   // external dep
   // testing dep
   testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.9.0-SNAPSHOT"
-
-  testRuntime project(":emf-test-resources")
 }
