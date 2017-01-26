@@ -1,6 +1,6 @@
 include 'csvconnector',
 'docxconnector',
-'owlconnector',
+'owlconnector', 'owlconnector-rc',
 'emfconnector',
 'excelconnector',
 'powerpointconnector',
