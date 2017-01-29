@@ -39,16 +39,9 @@
 
 package org.openflexo.technologyadapter.owl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.logging.Logger;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
@@ -63,6 +56,10 @@ import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
 
 @RunWith(OrderedRunner.class)
 public class TestOntologies extends OpenflexoTestCase {

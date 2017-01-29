@@ -102,8 +102,8 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	@Setter(REQ_DESCRIPTION_KEY)
 	public void setReqDescription(DataBinding<String> description);
 
-	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCResource> implements
-			AddOSLCRequirement {
+	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCResource>
+			implements AddOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirement.class.getPackage().getName());
 
@@ -127,7 +127,7 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 
 			OSLCRequirement oslcRequirement = null;
 
-			ModelSlotInstance<OSLCRMModelSlot, ?> msi = getModelSlotInstance(evaluationContext);
+			ModelSlotInstance msi = getModelSlotInstance(evaluationContext);
 			if (msi.getResourceData() != null) {
 
 				try {
@@ -137,7 +137,8 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 					String desc = getReqDescription().getBindingValue(evaluationContext);
 					if (getCreationFactory().getBindingValue(evaluationContext) != null) {
 						creationFactory = getCreationFactory().getBindingValue(evaluationContext);
-					} else {
+					}
+					else {
 						creationFactory = getDefaultRequirementCreationFactory(resource);
 					}
 					OSLCRMModelConverter converter = resource.getConverter().getConverter(OSLCRMModelConverter.class);
@@ -152,7 +153,8 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -161,7 +163,7 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 		}
 
 		@Override
-		public ModelSlotInstance<OSLCRMModelSlot, ?> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
+		public ModelSlotInstance getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
 			// TODO Auto-generated method stub
 			return super.getModelSlotInstance(evaluationContext);
 		}
@@ -227,15 +229,12 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 		}
 
 		private CreationFactory getDefaultRequirementCreationFactory(OSLCResourceResource resource) {
-			CreationFactory factory = resource
-					.getConverter()
-					.getOslcClient()
-					.getFirstCreationFactory(OSLCConstants.RM_REQUIREMENT_TYPE, OSLCConstants.OSLC_RM_V2,
-							resource.getLoadedResourceData().getOSLCServiceProviderCatalog());
+			CreationFactory factory = resource.getConverter().getOslcClient().getFirstCreationFactory(OSLCConstants.RM_REQUIREMENT_TYPE,
+					OSLCConstants.OSLC_RM_V2, resource.getLoadedResourceData().getOSLCServiceProviderCatalog());
 			return factory;
 		}
 
-		private OSLCResourceResource getResource(ModelSlotInstance<OSLCRMModelSlot, ?> msi) {
+		private OSLCResourceResource getResource(ModelSlotInstance msi) {
 			return (OSLCResourceResource) (msi.getAccessedResourceData().getResource());
 		}
 	}

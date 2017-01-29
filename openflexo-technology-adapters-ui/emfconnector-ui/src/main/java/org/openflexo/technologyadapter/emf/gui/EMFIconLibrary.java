@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
@@ -57,55 +58,72 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeDataPropertyValue;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValue;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class EMFIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(EMFIconLibrary.class.getPackage().getName());
 
-	
-
-	public static final ImageIconResource EMF_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology32.png"));
-	public static final ImageIconResource EMF_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
-	public static final ImageIconResource ECORE_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
+	public static final ImageIconResource EMF_TECHNOLOGY_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EMFTechnology32.png"));
+	public static final ImageIconResource EMF_TECHNOLOGY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EMFTechnology.png"));
+	public static final ImageIconResource ECORE_FILE_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EMFTechnology.png"));
 	public static final ImageIconResource EMF_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
 	public static final ImageIconResource EMF_CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EClass.gif"));
 	public static final ImageIconResource EMF_ENUM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EEnum.gif"));
-	public static final ImageIconResource EMF_ENUM_LITERAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EEnumLiteral.gif"));
+	public static final ImageIconResource EMF_ENUM_LITERAL_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EEnumLiteral.gif"));
 	public static final ImageIconResource EMF_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EObject.gif"));
-	public static final ImageIconResource EMF_REFERENCE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EReference.gif"));
-	public static final ImageIconResource EMF_ATTRIBUTE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EAttribute.gif"));
+	public static final ImageIconResource EMF_REFERENCE_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EReference.gif"));
+	public static final ImageIconResource EMF_ATTRIBUTE_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/EAttribute.gif"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (EMFMetaModel.class.isAssignableFrom(objectClass)) {
 			return ECORE_FILE_ICON;
-		} else if (EMFModel.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFModel.class.isAssignableFrom(objectClass)) {
 			return EMF_FILE_ICON;
-		} else if (EMFClassClass.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFClassClass.class.isAssignableFrom(objectClass)) {
 			return EMF_CLASS_ICON;
-		} else if (EMFEnumClass.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFEnumClass.class.isAssignableFrom(objectClass)) {
 			return EMF_ENUM_ICON;
-		} else if (EMFEnumIndividual.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFEnumIndividual.class.isAssignableFrom(objectClass)) {
 			return EMF_ENUM_LITERAL_ICON;
-		} else if (EMFObjectIndividual.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividual.class.isAssignableFrom(objectClass)) {
 			return EMF_INDIVIDUAL_ICON;
-		} else if (EMFReferenceObjectProperty.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFReferenceObjectProperty.class.isAssignableFrom(objectClass)) {
 			return EMF_REFERENCE_ICON;
-		} else if (EMFAttributeDataProperty.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFAttributeDataProperty.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFAttributeObjectProperty.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFAttributeObjectProperty.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFObjectIndividualAttributeDataPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualAttributeDataPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFObjectIndividualAttributeObjectPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualAttributeObjectPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFObjectIndividualReferenceObjectPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualReferenceObjectPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_REFERENCE_ICON;
-		} else if (EMFObjectIndividualAttributeDataPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualAttributeDataPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFObjectIndividualAttributeObjectPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualAttributeObjectPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_ATTRIBUTE_ICON;
-		} else if (EMFObjectIndividualReferenceObjectPropertyValue.class.isAssignableFrom(objectClass)) {
+		}
+		else if (EMFObjectIndividualReferenceObjectPropertyValue.class.isAssignableFrom(objectClass)) {
 			return EMF_REFERENCE_ICON;
 		}
 		logger.warning("No icon for " + objectClass);

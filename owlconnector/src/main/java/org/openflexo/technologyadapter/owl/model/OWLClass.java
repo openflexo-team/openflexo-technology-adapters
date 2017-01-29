@@ -48,6 +48,9 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.ConversionException;
+import org.apache.jena.ontology.Individual;
+import org.apache.jena.ontology.OntClass;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
@@ -56,12 +59,8 @@ import org.openflexo.foundation.ontology.OntologyUtils;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
-import com.hp.hpl.jena.ontology.ConversionException;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-
-public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClass<OWLTechnologyAdapter>,
-		Comparable<IFlexoOntologyClass<OWLTechnologyAdapter>> {
+public class OWLClass extends OWLConcept<OntClass>
+		implements IFlexoOntologyClass<OWLTechnologyAdapter>, Comparable<IFlexoOntologyClass<OWLTechnologyAdapter>> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyClass.class.getPackage().getName());
 

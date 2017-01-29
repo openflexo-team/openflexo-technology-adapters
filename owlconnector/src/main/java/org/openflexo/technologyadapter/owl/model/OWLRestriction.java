@@ -41,13 +41,12 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.Restriction;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.Restriction;
 
 public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter> {
 

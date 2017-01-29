@@ -4,7 +4,7 @@ import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
 import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.junit.Test;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
@@ -22,8 +22,8 @@ public class TestFlexoOslcRmClient extends OpenflexoTestCase {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
-		OSLCTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				OSLCTechnologyAdapter.class);
+		OSLCTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(OSLCTechnologyAdapter.class);
 		/*for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			OSLCRepository repository = resourceCenter.getRepository(OSLCRepository.class, technologicalAdapter);
 			assertNotNull(repository);
@@ -48,7 +48,7 @@ public class TestFlexoOslcRmClient extends OpenflexoTestCase {
 			Requirement requirement = new Requirement();
 			requirement.setTitle("Test");
 			assertNotNull(requirement);
-
+		
 			for (OSLCServiceProvider sp : catalog.getOSLCServiceProviders()) {
 				for (OSLCService service : sp.getOSLCServices()) {
 					if (service.getOSLCService().getDomain().toString().equals(OSLCConstants.OSLC_RM_V2)) {

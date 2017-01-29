@@ -45,10 +45,10 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
+import org.openflexo.foundation.test.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
@@ -90,8 +90,8 @@ public class DiagramFMLModelFactoryIntegrationTest extends AbstractModelFactoryI
 	public void checkDiagramFMLTechnologyAdapter() {
 		log("checkDiagramFMLTechnologyAdapter()");
 
-		testVirtualModelModelFactoryWithTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class));
+		testVirtualModelModelFactoryWithTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 	}
 
 }

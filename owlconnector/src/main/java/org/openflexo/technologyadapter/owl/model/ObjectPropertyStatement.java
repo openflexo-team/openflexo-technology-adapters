@@ -43,12 +43,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class ObjectPropertyStatement extends PropertyStatement implements IFlexoOntologyObjectPropertyValue<OWLTechnologyAdapter> {
 
@@ -71,9 +70,11 @@ public class ObjectPropertyStatement extends PropertyStatement implements IFlexo
 			if (statementObject == null) {
 				logger.warning("Ontology: " + getOntology() + " cannot retrieve " + s.getObject() + " for statement " + s);
 			}
-		} else if (s.getObject() instanceof Literal) {
+		}
+		else if (s.getObject() instanceof Literal) {
 			literal = (Literal) s.getObject();
-		} else {
+		}
+		else {
 			logger.warning("ObjectPropertyStatement: object is not a Resource nor a Litteral !");
 		}
 	}
@@ -118,7 +119,8 @@ public class ObjectPropertyStatement extends PropertyStatement implements IFlexo
 		if (hasLitteralValue()) {
 			return (isAnnotationProperty() ? "(A) " : "") + getSubject().getName() + " " + getProperty().getName() + "=\"" + getLiteral()
 					+ "\" language=" + getLanguage();
-		} else {
+		}
+		else {
 			return (isAnnotationProperty() ? "(A) " : "") + getSubject().getName() + " " + getProperty().getName() + " "
 					+ (getStatementObject() != null ? getStatementObject().getName() : getStatementObject());
 		}

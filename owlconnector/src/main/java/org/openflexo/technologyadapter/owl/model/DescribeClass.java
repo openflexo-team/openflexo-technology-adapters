@@ -65,13 +65,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.hp.hpl.jena.ontology.BooleanClassDescription;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.Restriction;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.shared.PrefixMapping;
+import org.apache.jena.ontology.BooleanClassDescription;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.Restriction;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.shared.PrefixMapping;
 
 /**
  * <p>
@@ -151,18 +151,23 @@ public class DescribeClass {
 	public void renderClassDescription(PrintStream out, OntClass c) {
 		if (c.isUnionClass()) {
 			renderBooleanClass(out, "union", c.asUnionClass());
-		} else if (c.isIntersectionClass()) {
+		}
+		else if (c.isIntersectionClass()) {
 			renderBooleanClass(out, "intersection", c.asIntersectionClass());
-		} else if (c.isComplementClass()) {
+		}
+		else if (c.isComplementClass()) {
 			renderBooleanClass(out, "complement", c.asComplementClass());
-		} else if (c.isRestriction()) {
+		}
+		else if (c.isRestriction()) {
 			renderRestriction(out, c.asRestriction());
-		} else {
+		}
+		else {
 			if (!c.isAnon()) {
 				out.print("Class ");
 				renderURI(out, prefixesFor(c), c.getURI());
 				out.print(' ');
-			} else {
+			}
+			else {
 				renderAnonymous(out, c, "class");
 			}
 		}
@@ -185,7 +190,8 @@ public class DescribeClass {
 		if (!r.isAnon()) {
 			out.print("Restriction ");
 			renderURI(out, prefixesFor(r), r.getURI());
-		} else {
+		}
+		else {
 			renderAnonymous(out, r, "restriction");
 		}
 
@@ -214,16 +220,20 @@ public class DescribeClass {
 	protected void renderValue(PrintStream out, RDFNode value) {
 		if (value.canAs(OntClass.class)) {
 			renderClassDescription(out, value.as(OntClass.class));
-		} else if (value instanceof Resource) {
+		}
+		else if (value instanceof Resource) {
 			Resource r = (Resource) value;
 			if (r.isAnon()) {
 				renderAnonymous(out, r, "resource");
-			} else {
+			}
+			else {
 				renderURI(out, r.getModel(), r.getURI());
 			}
-		} else if (value instanceof Literal) {
+		}
+		else if (value instanceof Literal) {
 			out.print(((Literal) value).getLexicalForm());
-		} else {
+		}
+		else {
 			out.print(value);
 		}
 	}

@@ -53,6 +53,27 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.AnnotationProperty;
+import org.apache.jena.ontology.ComplementClass;
+import org.apache.jena.ontology.DatatypeProperty;
+import org.apache.jena.ontology.Individual;
+import org.apache.jena.ontology.IntersectionClass;
+import org.apache.jena.ontology.ObjectProperty;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.ontology.OntResource;
+import org.apache.jena.ontology.Restriction;
+import org.apache.jena.ontology.UnionClass;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -89,28 +110,6 @@ import org.openflexo.technologyadapter.owl.model.action.CreateOntologyIndividual
 import org.openflexo.technologyadapter.owl.model.action.DeleteOntologyObjects;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.toolbox.StringUtils;
-
-import com.hp.hpl.jena.ontology.AnnotationProperty;
-import com.hp.hpl.jena.ontology.ComplementClass;
-import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.IntersectionClass;
-import com.hp.hpl.jena.ontology.ObjectProperty;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.ontology.OntResource;
-import com.hp.hpl.jena.ontology.Restriction;
-import com.hp.hpl.jena.ontology.UnionClass;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 /**
  * Represents an OWL Ontology<br>
@@ -629,8 +628,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		// I dont understand why, but on some ontologies, this is the only way to obtain those classes
 		for (NodeIterator i = ontModel.listObjects(); i.hasNext();) {
 			RDFNode node = i.nextNode();
-			if (node instanceof com.hp.hpl.jena.rdf.model.Resource && ((com.hp.hpl.jena.rdf.model.Resource) node).canAs(OntClass.class)) {
-				OntClass ontClass = ((com.hp.hpl.jena.rdf.model.Resource) node).as(OntClass.class);
+			if (node instanceof org.apache.jena.rdf.model.Resource && ((org.apache.jena.rdf.model.Resource) node).canAs(OntClass.class)) {
+				OntClass ontClass = ((org.apache.jena.rdf.model.Resource) node).as(OntClass.class);
 				if (_classes.get(ontClass) == null && isNamedResourceOfThisOntology(ontClass)) {
 					// Only named classes will be appended)
 					makeNewClass(ontClass);
@@ -1059,7 +1058,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		}
 	}
 
-	protected OWLConcept<?> retrieveOntologyObject(com.hp.hpl.jena.rdf.model.Resource resource) {
+	protected OWLConcept<?> retrieveOntologyObject(org.apache.jena.rdf.model.Resource resource) {
 		// First try to lookup with resource URI
 		if (StringUtils.isNotEmpty(resource.getURI())) {
 			OWLConcept<?> returned = getOntologyObject(resource.getURI());

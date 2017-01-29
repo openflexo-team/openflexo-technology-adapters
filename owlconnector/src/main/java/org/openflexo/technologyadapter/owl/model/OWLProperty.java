@@ -48,14 +48,13 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.ConversionException;
+import org.apache.jena.ontology.OntProperty;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.ConversionException;
-import com.hp.hpl.jena.ontology.OntProperty;
 
 public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> {
 

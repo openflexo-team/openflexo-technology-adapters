@@ -1,0 +1,12 @@
+dependencies {
+  compile project(":emfconnector")
+
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-ui", version: "1.9.0-SNAPSHOT"
+  compile group: "org.openflexo", name: "flexo-ontology", version: "1.9.0-SNAPSHOT"
+  compile group: "org.openflexo", name: "flexo-ontology-ui", version: "1.9.0-SNAPSHOT"
+  runtime group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.9.0-SNAPSHOT"
+  // external dep
+  // testing dep
+  testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.9.0-SNAPSHOT"
+}

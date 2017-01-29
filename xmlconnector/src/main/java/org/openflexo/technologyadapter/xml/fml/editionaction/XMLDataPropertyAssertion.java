@@ -126,7 +126,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 		@Override
 		public XMLDataProperty getDataProperty() {
-			AddXMLIndividual act = (AddXMLIndividual) getAction();
+			AddXMLIndividual act = (AddXMLIndividual) (AddIndividual) getAction();
 			String pname = _getDataPropertyName();
 			if (act != null && pname != null) {
 				String typeURI = act.getTypeURI();
@@ -191,8 +191,8 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	}
 
-	public static class DataPropertyAssertionMustDefineAnOntologyProperty extends
-			ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
+	public static class DataPropertyAssertionMustDefineAnOntologyProperty
+			extends ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
 		public DataPropertyAssertionMustDefineAnOntologyProperty() {
 			super(XMLDataPropertyAssertion.class, "data_property_assertion_must_define_an_ontology_property");
 		}

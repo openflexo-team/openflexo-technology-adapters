@@ -26,10 +26,10 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
+import org.openflexo.foundation.test.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
@@ -66,8 +66,8 @@ public class TestOslcTechnologyAdapterIntegration extends AbstractModelFactoryIn
 	public void checkOSLCTechnologyAdapter() {
 		log("checkOSLCTechnologyAdapter()");
 
-		testVirtualModelModelFactoryWithTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				OSLCTechnologyAdapter.class));
+		testVirtualModelModelFactoryWithTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OSLCTechnologyAdapter.class));
 	}
 
 }

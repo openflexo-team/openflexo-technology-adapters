@@ -38,13 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.tests.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.logging.Logger;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -59,6 +52,13 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(OrderedRunner.class)
 public class TestLoadExcelDocuments extends AbstractTestExcel {

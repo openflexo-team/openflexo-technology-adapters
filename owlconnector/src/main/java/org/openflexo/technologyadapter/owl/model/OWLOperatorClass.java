@@ -43,11 +43,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.BooleanClassDescription;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.util.iterator.ExtendedIterator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.BooleanClassDescription;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 public abstract class OWLOperatorClass extends OWLClass {
 
@@ -82,7 +81,8 @@ public abstract class OWLOperatorClass extends OWLClass {
 			OWLClass ontologyClass = getOntology().retrieveOntologyClass(c);
 			if (ontologyClass != null) {
 				operands.add(ontologyClass);
-			} else {
+			}
+			else {
 				logger.warning("Cannot find class for " + c);
 			}
 		}

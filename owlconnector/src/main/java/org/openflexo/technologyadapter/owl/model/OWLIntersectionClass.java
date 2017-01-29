@@ -41,9 +41,8 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.IntersectionClass;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.IntersectionClass;
 
 public class OWLIntersectionClass extends OWLOperatorClass {
 

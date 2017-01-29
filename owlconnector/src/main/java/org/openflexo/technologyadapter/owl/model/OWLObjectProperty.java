@@ -41,13 +41,12 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-import com.hp.hpl.jena.ontology.OntProperty;
-
-public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObjectProperty<OWLTechnologyAdapter>,
-		Comparable<IFlexoOntologyObjectProperty<OWLTechnologyAdapter>> {
+public class OWLObjectProperty extends OWLProperty
+		implements IFlexoOntologyObjectProperty<OWLTechnologyAdapter>, Comparable<IFlexoOntologyObjectProperty<OWLTechnologyAdapter>> {
 
 	static final Logger logger = Logger.getLogger(IFlexoOntologyObjectProperty.class.getPackage().getName());
 
@@ -83,8 +82,8 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 	@Override
 	public String getDisplayableDescription() {
 		return "<html>Object property <b>" + getName() + "</b><br>" + "<i>" + getURI() + "</i><br>" + "Domain: "
-				+ (getDomain() != null ? getDomain().getURI() : "?") + "<br>" + "Range: "
-				+ (getRange() != null ? getRange().getURI() : "?") + "<br>" + "</html>";
+				+ (getDomain() != null ? getDomain().getURI() : "?") + "<br>" + "Range: " + (getRange() != null ? getRange().getURI() : "?")
+				+ "<br>" + "</html>";
 	}
 
 	public boolean isLiteralRange() {

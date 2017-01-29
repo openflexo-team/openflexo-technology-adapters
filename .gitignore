@@ -1,4 +1,5 @@
 **/target
+**/build
 *.class
 *.war
 *.ear
@@ -9,4 +10,5 @@
 .classpath
 .project
 .settings
+.gradle/
 /.DS_Store

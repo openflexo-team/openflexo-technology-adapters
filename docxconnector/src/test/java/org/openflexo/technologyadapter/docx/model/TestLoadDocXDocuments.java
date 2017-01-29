@@ -162,7 +162,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		// System.out.println("structure:\n" + structuredDocument.debugStructuredContents());
 		// System.out.println("Used styles: " + structuredDocument.getStyles());
 
-		assertEquals(11, structuredDocument.getStyles().size());
+		assertEquals(12, structuredDocument.getStyles().size());
 		DocXStyle docDefaults = (DocXStyle) structuredDocument.getStyleByName("DocDefaults");
 		assertNotNull(docDefaults);
 		assertNull(docDefaults.getParentStyle());

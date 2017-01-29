@@ -47,6 +47,10 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.ConversionException;
+import org.apache.jena.ontology.Individual;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.rdf.model.Resource;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
@@ -55,13 +59,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-import com.hp.hpl.jena.ontology.ConversionException;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.rdf.model.Resource;
-
-public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntologyIndividual<OWLTechnologyAdapter>,
-		Comparable<IFlexoOntologyIndividual<OWLTechnologyAdapter>> {
+public class OWLIndividual extends OWLConcept<Individual>
+		implements IFlexoOntologyIndividual<OWLTechnologyAdapter>, Comparable<IFlexoOntologyIndividual<OWLTechnologyAdapter>> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyIndividual.class.getPackage().getName());
 
@@ -159,7 +158,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 				}
 			} catch (ConversionException e) {
 				// This happen when loading OWL2 ontology
-				// com.hp.hpl.jena.ontology.ConversionException: Cannot convert node http://www.w3.org/2002/07/owl#ObjectProperty to
+				// org.apache.jena.ontology.ConversionException: Cannot convert node http://www.w3.org/2002/07/owl#ObjectProperty to
 				// OntClass: it does not have rdf:type owl:Class or equivalent
 				// Please investigate this
 				logger.warning("Exception thrown while processing updateSuperClasses() for " + getURI());
@@ -259,7 +258,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 			_appendRangeAndDomains(aClass, alreadyComputed);
 		}
 	}
-
+	
 	private void _appendRangeAndDomains(IFlexoOntologyClass superClass, Vector<IFlexoOntologyClass> alreadyComputed) {
 		if (alreadyComputed.contains(superClass)) {
 			return;

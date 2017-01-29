@@ -41,18 +41,17 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Level;
 
+import org.apache.jena.rdf.model.Literal;
 import org.openflexo.foundation.ontology.BuiltInDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.W3URIDefinitions;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
-import com.hp.hpl.jena.rdf.model.Literal;
-
 public class OWLDataType extends OWLObject implements IFlexoOntologyDataType<OWLTechnologyAdapter>, W3URIDefinitions {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(OWLDataType.class.getPackage()
-			.getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(OWLDataType.class.getPackage().getName());
 
 	private final String dataTypeURI;
 	private BuiltInDataType builtInDataType;
@@ -111,27 +110,27 @@ public class OWLDataType extends OWLObject implements IFlexoOntologyDataType<OWL
 	public Object valueFromLiteral(Literal literal) {
 		if (getBuiltInDataType() != null) {
 			switch (getBuiltInDataType()) {
-			case String:
-				return literal.getString();
-			case Boolean:
-				return literal.getBoolean();
-			case Byte:
-				return literal.getByte();
-			case Int:
-				return literal.getInt();
-			case Integer:
-				return literal.getInt();
-			case Short:
-				return literal.getShort();
-			case Long:
-				return literal.getLong();
-			case Float:
-				return literal.getFloat();
-			case Double:
-				return literal.getDouble();
-			default:
-				logger.warning("Unexpected type: " + getBuiltInDataType());
-				break;
+				case String:
+					return literal.getString();
+				case Boolean:
+					return literal.getBoolean();
+				case Byte:
+					return literal.getByte();
+				case Int:
+					return literal.getInt();
+				case Integer:
+					return literal.getInt();
+				case Short:
+					return literal.getShort();
+				case Long:
+					return literal.getLong();
+				case Float:
+					return literal.getFloat();
+				case Double:
+					return literal.getDouble();
+				default:
+					logger.warning("Unexpected type: " + getBuiltInDataType());
+					break;
 			}
 		}
 		return null;
