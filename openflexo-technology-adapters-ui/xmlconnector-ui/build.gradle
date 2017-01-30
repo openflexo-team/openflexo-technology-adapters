@@ -2,10 +2,12 @@ dependencies {
   // openflexo dep
   compile project(":xmlconnector")
 
-  compile group: "org.openflexo", name: "flexo-ui", version: "1.9.0-SNAPSHOT"
-  compile group: "org.openflexo", name: "flexo-ontology-ui", version: "1.9.0-SNAPSHOT"
+  compile flexoUi()
+  compile flexoOntologyUi()
+
+  runtime fmlTechnologyAdapterUi()
   runtime group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.9.0-SNAPSHOT"
   // external dep
   // testing dep
-    testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.9.0-SNAPSHOT"
+    testCompile flexoUiTest()
 }

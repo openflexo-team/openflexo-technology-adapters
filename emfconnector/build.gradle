@@ -1,8 +1,8 @@
 dependencies {
   // openflexo dep
-  compile group: "org.openflexo", name: "flexo-foundation", version: "1.9.0-SNAPSHOT"
-  compile group: "org.openflexo", name: "flexoutils", version: "1.4-SNAPSHOT"
-  compile group: "org.openflexo", name: "flexo-ontology", version: "1.9.0-SNAPSHOT"
+  compile flexoFoundation()
+  compile flexoUtils()
+  compile flexoOntology()
   // external dep
   compile group: 'org.eclipse.uml2', name: 'uml-resources', version: '5.0.1'
   compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.10.0'
@@ -12,6 +12,6 @@ dependencies {
   runtime group: 'org.eclipse.uml2.uml', name: 'profile-standard', version: '1.0.0'
   //runtime group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.common.types', version: '2.8.1'
   // testing dep
-  testCompile group: "org.openflexo", name: "testutils", version: "1.4-SNAPSHOT"
-  testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.9.0-SNAPSHOT"
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
 }

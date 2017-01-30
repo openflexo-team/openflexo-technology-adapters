@@ -1,6 +1,6 @@
 dependencies {
   // openflexo dep
-  compile group: "org.openflexo", name: "flexo-foundation", version: "1.9.0-SNAPSHOT"
+  compile flexoFoundation()
   // external dep
   compile group: 'org.freeplane', name: 'freeplaneviewer', version: '201406221527'
   compile group: 'org.freeplane', name: 'freeplaneeditor', version: '201406221527'
@@ -13,5 +13,5 @@ dependencies {
   // TODO : il manque freeplanemac
   
   // testing dep
-    testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.9.0-SNAPSHOT"
+    testCompile flexoFoundationTest()
 }

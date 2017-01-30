@@ -2,10 +2,11 @@ dependencies {
   compile project(":freeplaneconnector")
 
   // openflexo dep
-  compile group: "org.openflexo", name: "flexo-ui", version: "1.9.0-SNAPSHOT"
-  runtime group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.9.0-SNAPSHOT"
+  compile flexoUi()
+  runtime fmlTechnologyAdapterUi()
+
   // external dep
   compile 'org.easytesting:fest-swing:1.2.1'
   // testing dep
-  testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.9.0-SNAPSHOT"
+  testCompile flexoUiTest()
 }
