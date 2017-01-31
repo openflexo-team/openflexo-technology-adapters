@@ -39,12 +39,6 @@
 
 package org.openflexo.technologyadapter.owl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.logging.Logger;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.ontology.OntologyUtils;
@@ -61,6 +55,10 @@ import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link OntologyBrowserModel} in OWL context
@@ -88,6 +86,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		ontologyLibrary.init();
 	}
 
 	@Test
