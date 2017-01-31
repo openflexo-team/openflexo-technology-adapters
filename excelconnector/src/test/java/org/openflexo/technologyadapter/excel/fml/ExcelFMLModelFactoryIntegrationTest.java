@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.excel.fml;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -60,6 +61,7 @@ import static org.junit.Assert.assertNotNull;
  * 
  */
 @RunWith(OrderedRunner.class)
+@Ignore
 public class ExcelFMLModelFactoryIntegrationTest extends AbstractModelFactoryIntegrationTestCase {
 
 	private static final Logger logger = FlexoLogger.getLogger(ExcelFMLModelFactoryIntegrationTest.class.getPackage().getName());
