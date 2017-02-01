@@ -59,8 +59,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-public class OWLIndividual extends OWLConcept<Individual>
-		implements IFlexoOntologyIndividual<OWLTechnologyAdapter>, Comparable<IFlexoOntologyIndividual<OWLTechnologyAdapter>> {
+public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntologyIndividual<OWLTechnologyAdapter>,
+		Comparable<IFlexoOntologyIndividual<OWLTechnologyAdapter>> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyIndividual.class.getPackage().getName());
 
@@ -102,7 +102,8 @@ public class OWLIndividual extends OWLConcept<Individual>
 	}
 
 	/**
-	 * Update this IFlexoOntologyIndividual, given base Individual which is assumed to extends base Individual
+	 * Update this IFlexoOntologyIndividual, given base Individual which is
+	 * assumed to extends base Individual
 	 * 
 	 * @param anOntClass
 	 */
@@ -111,26 +112,19 @@ public class OWLIndividual extends OWLConcept<Individual>
 		updateSuperClasses(anIndividual);
 	}
 
-	/*@Override
-	public void setName(String aName)
-	{
-		String oldURI = getURI();
-		String oldName = getName();
-		String newURI;
-		if (getURI().indexOf("#") > -1) {
-			newURI = getURI().substring(0,getURI().indexOf("#")+1)+aName;
-		} else {
-			newURI = aName;
-		}
-		logger.info("Rename individual "+getURI()+" to "+newURI);
-		individual = (Individual) (ResourceUtils.renameResource(individual, newURI).as(Individual.class));
-		_updateNameAndURIAfterRenaming(aName,newURI);
-		getFlexoOntology().renameIndividual(this, oldURI, newURI);
-		update();
-		setChanged();
-		notifyObservers(new NameChanged(oldName,aName));
-		logger.info("Les references: "+getFlexoConceptReferences());
-	}*/
+	/*
+	 * @Override public void setName(String aName) { String oldURI = getURI();
+	 * String oldName = getName(); String newURI; if (getURI().indexOf("#") >
+	 * -1) { newURI = getURI().substring(0,getURI().indexOf("#")+1)+aName; }
+	 * else { newURI = aName; }
+	 * logger.info("Rename individual "+getURI()+" to "+newURI); individual =
+	 * (Individual) (ResourceUtils.renameResource(individual,
+	 * newURI).as(Individual.class));
+	 * _updateNameAndURIAfterRenaming(aName,newURI);
+	 * getFlexoOntology().renameIndividual(this, oldURI, newURI); update();
+	 * setChanged(); notifyObservers(new NameChanged(oldName,aName));
+	 * logger.info("Les references: "+getFlexoConceptReferences()); }
+	 */
 
 	@Override
 	public void setName(String aName) {
@@ -158,7 +152,8 @@ public class OWLIndividual extends OWLConcept<Individual>
 				}
 			} catch (ConversionException e) {
 				// This happen when loading OWL2 ontology
-				// org.apache.jena.ontology.ConversionException: Cannot convert node http://www.w3.org/2002/07/owl#ObjectProperty to
+				// org.apache.jena.ontology.ConversionException: Cannot convert
+				// node http://www.w3.org/2002/07/owl#ObjectProperty to
 				// OntClass: it does not have rdf:type owl:Class or equivalent
 				// Please investigate this
 				logger.warning("Exception thrown while processing updateSuperClasses() for " + getURI());
@@ -206,7 +201,8 @@ public class OWLIndividual extends OWLConcept<Individual>
 
 	public static final Comparator<IFlexoOntologyIndividual<OWLTechnologyAdapter>> COMPARATOR = new Comparator<IFlexoOntologyIndividual<OWLTechnologyAdapter>>() {
 		@Override
-		public int compare(IFlexoOntologyIndividual<OWLTechnologyAdapter> o1, IFlexoOntologyIndividual<OWLTechnologyAdapter> o2) {
+		public int compare(IFlexoOntologyIndividual<OWLTechnologyAdapter> o1,
+				IFlexoOntologyIndividual<OWLTechnologyAdapter> o2) {
 			return Collator.getInstance().compare(o1.getName(), o2.getName());
 		}
 	};
@@ -250,34 +246,27 @@ public class OWLIndividual extends OWLConcept<Individual>
 		}
 	}
 
-	/*@Override
-	protected void recursivelySearchRangeAndDomains() {
-		super.recursivelySearchRangeAndDomains();
-		Vector<IFlexoOntologyClass> alreadyComputed = new Vector<IFlexoOntologyClass>();
-		for (IFlexoOntologyClass aClass : getSuperClasses()) {
-			_appendRangeAndDomains(aClass, alreadyComputed);
-		}
-	}
-	
-	private void _appendRangeAndDomains(IFlexoOntologyClass superClass, Vector<IFlexoOntologyClass> alreadyComputed) {
-		if (alreadyComputed.contains(superClass)) {
-			return;
-		}
-		alreadyComputed.add(superClass);
-		for (IFlexoOntologyStructuralProperty p : superClass.getDeclaredPropertiesTakingMySelfAsDomain()) {
-			if (!propertiesTakingMySelfAsDomain.contains(p)) {
-				propertiesTakingMySelfAsDomain.add(p);
-			}
-		}
-		for (IFlexoOntologyStructuralProperty p : superClass.getDeclaredPropertiesTakingMySelfAsRange()) {
-			if (!propertiesTakingMySelfAsRange.contains(p)) {
-				propertiesTakingMySelfAsRange.add(p);
-			}
-		}
-		for (IFlexoOntologyClass superSuperClass : superClass.getSuperClasses()) {
-			_appendRangeAndDomains(superSuperClass, alreadyComputed);
-		}
-	}*/
+	/*
+	 * @Override protected void recursivelySearchRangeAndDomains() {
+	 * super.recursivelySearchRangeAndDomains(); Vector<IFlexoOntologyClass>
+	 * alreadyComputed = new Vector<IFlexoOntologyClass>(); for
+	 * (IFlexoOntologyClass aClass : getSuperClasses()) {
+	 * _appendRangeAndDomains(aClass, alreadyComputed); } }
+	 * 
+	 * private void _appendRangeAndDomains(IFlexoOntologyClass superClass,
+	 * Vector<IFlexoOntologyClass> alreadyComputed) { if
+	 * (alreadyComputed.contains(superClass)) { return; }
+	 * alreadyComputed.add(superClass); for (IFlexoOntologyStructuralProperty p
+	 * : superClass.getDeclaredPropertiesTakingMySelfAsDomain()) { if
+	 * (!propertiesTakingMySelfAsDomain.contains(p)) {
+	 * propertiesTakingMySelfAsDomain.add(p); } } for
+	 * (IFlexoOntologyStructuralProperty p :
+	 * superClass.getDeclaredPropertiesTakingMySelfAsRange()) { if
+	 * (!propertiesTakingMySelfAsRange.contains(p)) {
+	 * propertiesTakingMySelfAsRange.add(p); } } for (IFlexoOntologyClass
+	 * superSuperClass : superClass.getSuperClasses()) {
+	 * _appendRangeAndDomains(superSuperClass, alreadyComputed); } }
+	 */
 
 	@Override
 	public String getHTMLDescription() {
@@ -297,15 +286,15 @@ public class OWLIndividual extends OWLConcept<Individual>
 		return sb.toString();
 	}
 
-	@Override
-	public String getDescription() {
-		return (String) getPropertyValue(getOntology().getDataProperty(OWLOntologyLibrary.OPENFLEXO_DESCRIPTION_URI));
-	}
-
-	@Override
-	public void setDescription(String aDescription) {
-		setPropertyValue(getOntology().getDataProperty(OWLOntologyLibrary.OPENFLEXO_DESCRIPTION_URI), aDescription);
-	}
+	/*
+	 * @Override public String getDescription() { return (String)
+	 * getPropertyValue(getOntology().getDataProperty(OWLOntologyLibrary.
+	 * OPENFLEXO_DESCRIPTION_URI)); }
+	 * 
+	 * @Override public void setDescription(String aDescription) {
+	 * setPropertyValue(getOntology().getDataProperty(OWLOntologyLibrary.
+	 * OPENFLEXO_DESCRIPTION_URI), aDescription); }
+	 */
 
 	@Override
 	public List<? extends IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter>> getStructuralFeatureAssociations() {

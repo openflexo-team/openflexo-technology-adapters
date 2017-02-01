@@ -97,9 +97,10 @@ public class TestFIBOWLIndividualSelector extends OpenflexoTestCaseWithGUI {
 	@BeforeClass
 	public static void setupClass() {
 		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
+				.getTechnologyContextManager(owlAdapter);
 		initGUI();
 	}
 
@@ -107,7 +108,8 @@ public class TestFIBOWLIndividualSelector extends OpenflexoTestCaseWithGUI {
 	@TestOrder(1)
 	public void test1RetrieveOntology() {
 
-		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
+		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(OWLTechnologyAdapter.class);
 
 		assertNotNull(owlTA);
 
@@ -123,7 +125,8 @@ public class TestFIBOWLIndividualSelector extends OpenflexoTestCaseWithGUI {
 
 		assertNotNull(ontologyRepository);
 
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
+		// ontologyResource =
+		// ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
 		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
 
 		assertNotNull(ontologyResource);

@@ -55,8 +55,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyEditor;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
@@ -80,16 +78,22 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	private static OWLOntologyLibrary ontologyLibrary;
 	private static ResourceRepository<OWLOntologyResource, ?> ontologyRepository;
 
+	public static final String FLEXO_CONCEPT_ONTOLOGY_URI = "http://www.agilebirds.com/openflexo/ontologies/FlexoConceptsOntology.owl";
+
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
+		// Resource rsc =
+		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
-		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
+				.getTechnologyContextManager(owlAdapter);
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager()
+				.getAllRepositories(owlAdapter);
 		for (ResourceRepository<?, ?> ontoRep : owlRepositories) {
 			// Look for the one containing needed ontologies
-			OWLOntologyResource skosResource = (OWLOntologyResource) ontoRep.getResource("http://www.w3.org/2004/02/skos/core");
+			OWLOntologyResource skosResource = (OWLOntologyResource) ontoRep
+					.getResource("http://www.w3.org/2004/02/skos/core");
 			if (skosResource != null) {
 				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) ontoRep;
 				break;
@@ -160,7 +164,9 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	@TestOrder(5)
 	public void instanciateWidgetOnFlexoConceptOntology() {
 
-		OWLOntologyResource flexoConceptResource = ontologyRepository.getResource(OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
+		OWLOntologyResource flexoConceptResource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource(FLEXO_CONCEPT_ONTOLOGY_URI, OWLOntology.class);
+
 		try {
 			flexoConceptResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -183,8 +189,9 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	@TestOrder(6)
 	public void instanciateWidgetOnSEPELOntology() {
 
-		OWLOntologyResource sepelResource = ontologyRepository
-				.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+		OWLOntologyResource sepelResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource(
+				"http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl", OWLOntology.class);
+
 		try {
 			sepelResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -207,9 +214,10 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	@TestOrder(7)
 	public void instanciateWidgetOnO5Ontology() {
 
-		OWLOntologyResource sepelResource = ontologyRepository.getResource("http://www.openflexo.org/test/O5.owl");
+		OWLOntologyResource o5Resource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource("http://www.openflexo.org/test/O5.owl", OWLOntology.class);
 		try {
-			sepelResource.loadResourceData(null);
+			o5Resource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -221,7 +229,7 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 			fail(e.getMessage());
 		}
 
-		FIBOWLOntologyEditor editor7 = new FIBOWLOntologyEditor(sepelResource.getLoadedResourceData(), null);
+		FIBOWLOntologyEditor editor7 = new FIBOWLOntologyEditor(o5Resource.getLoadedResourceData(), null);
 
 		gcDelegate.addTab("O5", editor7.getFIBController());
 	}

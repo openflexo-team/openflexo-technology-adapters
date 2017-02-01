@@ -55,12 +55,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyBrowser;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
@@ -95,10 +95,12 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
+		// Resource rsc =
+		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
+				.getTechnologyContextManager(owlAdapter);
 		initGUI();
 	}
 
@@ -106,7 +108,15 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 	@TestOrder(1)
 	public void test1RetrieveOntology() {
 
-		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + rc.getDefaultBaseURI() + " " + rc.getBaseArtefact());
+			for (FlexoResource<?> r : rc.getAllResources(null)) {
+				System.out.println(" >>> " + r.getURI());
+			}
+		}
+
+		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(OWLTechnologyAdapter.class);
 
 		assertNotNull(owlTA);
 
@@ -122,7 +132,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 
 		assertNotNull(ontologyRepository);
 
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
+		// ontologyResource =
+		// ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
 		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
 
 		assertNotNull(ontologyResource);
@@ -178,16 +189,20 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertNotNull(historyNote = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "historyNote"));
 		assertNotNull(scopeNote = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "scopeNote"));
 
-		assertNotNull(semanticRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "semanticRelation"));
-		assertNotNull(broaderTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broaderTransitive"));
+		assertNotNull(
+				semanticRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "semanticRelation"));
+		assertNotNull(
+				broaderTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broaderTransitive"));
 		assertNotNull(broader = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broader"));
 		assertNotNull(broadMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broadMatch"));
-		assertNotNull(mappingRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "mappingRelation"));
+		assertNotNull(
+				mappingRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "mappingRelation"));
 		assertNotNull(closeMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "closeMatch"));
 		assertNotNull(exactMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "exactMatch"));
 		assertNotNull(narrowMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrowMatch"));
 		assertNotNull(relatedMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "relatedMatch"));
-		assertNotNull(narrowerTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrowerTransitive"));
+		assertNotNull(narrowerTransitive = skosOntology
+				.getObjectProperty(skosOntology.getURI() + "#" + "narrowerTransitive"));
 		assertNotNull(narrower = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrower"));
 		assertNotNull(related = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "related"));
 
@@ -197,26 +212,32 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertNotNull(coreIndividual = skosOntology.getIndividual(skosOntology.getURI()));
 
 		assertNotNull(resource = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Resource"));
-		assertNotNull(namedIndividual = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "NamedIndividual"));
+		assertNotNull(
+				namedIndividual = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "NamedIndividual"));
 		assertNotNull(nothing = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "Nothing"));
 
-		assertNotNull(topObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
-		assertNotNull(
-				bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
-		assertNotNull(bottomDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
-		assertNotNull(topDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
+		assertNotNull(topObjectProperty = owlOntology
+				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
+		assertNotNull(bottomObjectProperty = owlOntology
+				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
+		assertNotNull(bottomDataProperty = owlOntology
+				.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
+		assertNotNull(topDataProperty = owlOntology
+				.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
 
-		assertNotNull(differentFrom = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "differentFrom"));
+		assertNotNull(differentFrom = owlOntology
+				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "differentFrom"));
 		assertNotNull(sameAs = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "sameAs"));
 
 	}
 
 	private static OWLOntology skosOntology, owlOntology;
 	private static OWLClass thing, collection, concept, conceptScheme, list;
-	private static OWLObjectProperty altLabel, hiddenLabel, prefLabel, hasTopConcept, inScheme, topConceptOf, member, memberList;
+	private static OWLObjectProperty altLabel, hiddenLabel, prefLabel, hasTopConcept, inScheme, topConceptOf, member,
+			memberList;
 	private static OWLObjectProperty note, changeNote, definition, editorialNote, example, historyNote, scopeNote;
-	private static OWLObjectProperty semanticRelation, broaderTransitive, broader, broadMatch, mappingRelation, closeMatch, exactMatch,
-			narrowMatch, relatedMatch, narrowerTransitive, narrower, related;
+	private static OWLObjectProperty semanticRelation, broaderTransitive, broader, broadMatch, mappingRelation,
+			closeMatch, exactMatch, narrowMatch, relatedMatch, narrowerTransitive, narrower, related;
 	private static OWLDataProperty label, notation;
 	private static OWLIndividual coreIndividual;
 	private static OWLClass resource, namedIndividual, nothing;
@@ -246,7 +267,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertEquals(obm.getRoots().get(3), notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel, prefLabel, coreIndividual);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel,
+				prefLabel, coreIndividual);
 
 		assertEquals(6, obm.getChildren(note).size());
 		assertSameList(obm.getChildren(note), changeNote, definition, editorialNote, example, historyNote, scopeNote);
@@ -258,7 +280,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(concept), topConceptOf, semanticRelation);
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);
@@ -298,8 +321,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertEquals(obm.getRoots().get(3), notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), resource, coreIndividual, bottomObjectProperty, differentFrom, topObjectProperty, sameAs,
-				bottomDataProperty, topDataProperty);
+		assertSameList(obm.getChildren(thing), resource, coreIndividual, bottomObjectProperty, differentFrom,
+				topObjectProperty, sameAs, bottomDataProperty, topDataProperty);
 
 		assertEquals(26, obm.getChildren(resource).size());
 		assertTrue(obm.getChildren(resource).contains(collection));
@@ -318,7 +341,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(concept), topConceptOf, semanticRelation);
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);
@@ -356,7 +380,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getRoots(), thing, inScheme, note, notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel, prefLabel, coreIndividual);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel,
+				prefLabel, coreIndividual);
 
 		assertEquals(6, obm.getChildren(note).size());
 		assertSameList(obm.getChildren(note), changeNote, definition, editorialNote, example, historyNote, scopeNote);
@@ -368,7 +393,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(concept), topConceptOf, semanticRelation);
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);
@@ -405,7 +431,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getRoots(), thing, note, notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel, prefLabel, coreIndividual);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel,
+				prefLabel, coreIndividual);
 
 		assertEquals(6, obm.getChildren(note).size());
 		assertSameList(obm.getChildren(note), changeNote, definition, editorialNote, example, historyNote, scopeNote);
@@ -429,7 +456,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getRoots(), thing, inScheme, note);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel, prefLabel, coreIndividual);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel,
+				prefLabel, coreIndividual);
 
 		assertEquals(6, obm.getChildren(note).size());
 		assertSameList(obm.getChildren(note), changeNote, definition, editorialNote, example, historyNote, scopeNote);
@@ -441,7 +469,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(concept), topConceptOf, semanticRelation);
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);
@@ -480,7 +509,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getRoots(), thing, notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, coreIndividual, hiddenLabel, altLabel, prefLabel);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, coreIndividual, hiddenLabel,
+				altLabel, prefLabel);
 
 		assertNull(obm.getChildren(conceptScheme));
 
@@ -499,8 +529,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		OWLOntologyBrowserModel obm = browser.getModel();
 
 		assertEquals(11, obm.getRoots().size());
-		assertSameList(obm.getRoots(), thing, altLabel, hasTopConcept, hiddenLabel, inScheme, member, memberList, note, prefLabel,
-				semanticRelation, notation);
+		assertSameList(obm.getRoots(), thing, altLabel, hasTopConcept, hiddenLabel, inScheme, member, memberList, note,
+				prefLabel, semanticRelation, notation);
 
 		assertEquals(5, obm.getChildren(thing).size());
 		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, coreIndividual);
@@ -513,7 +543,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertNull(obm.getChildren(concept));
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);
@@ -559,7 +590,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(skosOntology), thing, inScheme, note, notation);
 
 		assertEquals(8, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel, prefLabel, coreIndividual);
+		assertSameList(obm.getChildren(thing), collection, concept, conceptScheme, list, hiddenLabel, altLabel,
+				prefLabel, coreIndividual);
 
 		assertEquals(6, obm.getChildren(note).size());
 		assertSameList(obm.getChildren(note), changeNote, definition, editorialNote, example, historyNote, scopeNote);
@@ -571,7 +603,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 		assertSameList(obm.getChildren(concept), topConceptOf, semanticRelation);
 
 		assertEquals(4, obm.getChildren(semanticRelation).size());
-		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive, related);
+		assertSameList(obm.getChildren(semanticRelation), broaderTransitive, mappingRelation, narrowerTransitive,
+				related);
 
 		assertEquals(1, obm.getChildren(broaderTransitive).size());
 		assertSameList(obm.getChildren(broaderTransitive), broader);

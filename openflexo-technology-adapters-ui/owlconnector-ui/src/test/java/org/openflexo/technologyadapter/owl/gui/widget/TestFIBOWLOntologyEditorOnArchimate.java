@@ -54,11 +54,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyEditor;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
@@ -69,7 +70,8 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBOWLOntologyBrowser copy of the test on SKOSontology to test performance Issues
+ * Test the structural and behavioural features of FIBOWLOntologyBrowser copy of
+ * the test on SKOSontology to test performance Issues
  * 
  * @author sylvain
  * 
@@ -83,14 +85,24 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 	private static FIBOWLOntologyEditor editor;
 	private static OWLTechnologyAdapter owlAdapter;
 	private static OWLOntologyLibrary ontologyLibrary;
-	protected static final Logger logger = Logger.getLogger(TestFIBOWLOntologyEditorOnArchimate.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(TestFIBOWLOntologyEditorOnArchimate.class.getPackage().getName());
 
 	@BeforeClass
 	public static void setupClass() {
-		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
+		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + rc.getDefaultBaseURI() + " " + rc.getBaseArtefact());
+			for (FlexoResource<?> r : rc.getAllResources(null)) {
+				System.out.println(" >>> " + r.getURI());
+			}
+		}
+
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
+				.getTechnologyContextManager(owlAdapter);
 		initGUI();
 	}
 
@@ -98,7 +110,8 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 	@TestOrder(1)
 	public void test1RetrieveOntology() {
 
-		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
+		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(OWLTechnologyAdapter.class);
 
 		assertNotNull(owlTA);
 
@@ -114,8 +127,8 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 		assertNotNull(ontologyRepository);
 
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.bolton.ac.uk/archimate");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource("http://www.bolton.ac.uk/archimate", OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
