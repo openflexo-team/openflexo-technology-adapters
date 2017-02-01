@@ -20,13 +20,14 @@ public class TestLoadPDF2 {
 
 	@Test
 	public void testLoadPDF() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF")).getFile();
+		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
+				.getFile();
 		System.out.println("resourceDir=" + resourceDir);
 		for (File f : resourceDir.listFiles()) {
 			System.out.println("> " + f);
 		}
-		final File resource = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf"))
-				.getFile();
+		final File resource = ((FileResourceImpl) ResourceLocator
+				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
 		PDDocument document = null;
 
@@ -64,26 +65,23 @@ public class TestLoadPDF2 {
 
 		PDPage page = document.getPage(0);
 
-		/*PDFMarkedContentExtractor e = new PDFMarkedContentExtractor() {
-			@Override
-			public void beginMarkedContentSequence(COSName tag, COSDictionary properties) {
-				System.out.println("BEGIN with " + tag + " properties=" + properties);
-				super.beginMarkedContentSequence(tag, properties);
-			}
-		
-			@Override
-			public void endMarkedContentSequence() {
-				System.out.println("END");
-				super.endMarkedContentSequence();
-			}
-		
-			@Override
-			protected void processTextPosition(org.apache.pdfbox.text.TextPosition text) {
-				super.processTextPosition(text);
-				// System.out.println("processTextPosition with " + text);
-			}
-		};
-		e.processPage(page);*/
+		/*
+		 * PDFMarkedContentExtractor e = new PDFMarkedContentExtractor() {
+		 * 
+		 * @Override public void beginMarkedContentSequence(COSName tag,
+		 * COSDictionary properties) { System.out.println("BEGIN with " + tag +
+		 * " properties=" + properties); super.beginMarkedContentSequence(tag,
+		 * properties); }
+		 * 
+		 * @Override public void endMarkedContentSequence() {
+		 * System.out.println("END"); super.endMarkedContentSequence(); }
+		 * 
+		 * @Override protected void
+		 * processTextPosition(org.apache.pdfbox.text.TextPosition text) {
+		 * super.processTextPosition(text); //
+		 * System.out.println("processTextPosition with " + text); } };
+		 * e.processPage(page);
+		 */
 
 		PDFTextStripperByArea textStripper2 = new PDFTextStripperByArea() {
 			@Override

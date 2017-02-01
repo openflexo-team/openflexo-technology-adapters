@@ -34,13 +34,14 @@ public class TestLoadPDF {
 
 	@Test
 	public void testLoadPDF() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF")).getFile();
+		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
+				.getFile();
 		System.out.println("resourceDir=" + resourceDir);
 		for (File f : resourceDir.listFiles()) {
 			System.out.println("> " + f);
 		}
-		final File resource = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf"))
-				.getFile();
+		final File resource = ((FileResourceImpl) ResourceLocator
+				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
 		PDDocument document = null;
 
@@ -91,13 +92,14 @@ public class TestLoadPDF {
 
 	@Test
 	public void testLoadPDF2() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF")).getFile();
+		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
+				.getFile();
 		System.out.println("resourceDir=" + resourceDir);
 		for (File f : resourceDir.listFiles()) {
 			System.out.println("> " + f);
 		}
-		final File resource = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf"))
-				.getFile();
+		final File resource = ((FileResourceImpl) ResourceLocator
+				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
 		PDDocument document = null;
 
@@ -150,17 +152,19 @@ public class TestLoadPDF {
 
 			@Override
 			protected void processTextPosition(TextPosition text) {
-				// System.out.println("* " + text + " on " + text.getX() + " " + text.getY());
+				// System.out.println("* " + text + " on " + text.getX() + " " +
+				// text.getY());
 				super.processTextPosition(text);
 				if (currentString == null) {
 					currentString = new StringBuffer();
 				}
 				currentString.append(text.toString());
 				if (box == null) {
-					box = new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight());
-				}
-				else {
-					box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight()));
+					box = new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(),
+							(int) text.getHeight());
+				} else {
+					box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(),
+							(int) text.getHeight()));
 				}
 				fontSize = text.getFontSize();
 			}
@@ -175,7 +179,8 @@ public class TestLoadPDF {
 			}
 
 			@Override
-			protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance) throws IOException {
+			protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance)
+					throws IOException {
 				System.out.println("processAnnotation " + annotation + " " + appearance);
 				super.processAnnotation(annotation, appearance);
 			}
@@ -209,13 +214,14 @@ public class TestLoadPDF {
 	@Test
 	public void loadImages() throws IOException {
 
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF")).getFile();
+		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
+				.getFile();
 		System.out.println("resourceDir=" + resourceDir);
 		for (File f : resourceDir.listFiles()) {
 			System.out.println("> " + f);
 		}
-		final File resource = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf"))
-				.getFile();
+		final File resource = ((FileResourceImpl) ResourceLocator
+				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
 		PDDocument document = null;
 
@@ -242,8 +248,7 @@ public class TestLoadPDF {
 					frame.validate();
 					frame.pack();
 					frame.setVisible(true);
-				}
-				else if (obj instanceof PDFormXObject) {
+				} else if (obj instanceof PDFormXObject) {
 					PDFormXObject form = (PDFormXObject) obj;
 					System.out.println("form=" + form);
 					PDResources formResources = form.getResources();
@@ -257,7 +262,7 @@ public class TestLoadPDF {
 			}
 			// waits 10 seconds and stops
 			int t = 0;
-			while (t<10) {
+			while (t < 10) {
 				System.out.println("hop");
 				t++;
 				try {
@@ -268,16 +273,14 @@ public class TestLoadPDF {
 				}
 			}
 
-			/*Map pageImages = resources.getImages();
-			if (pageImages != null) {
-				Iterator imageIter = pageImages.keySet().iterator();
-				while (imageIter.hasNext()) {
-					String key = (String) imageIter.next();
-					PDXObjectImage image = (PDXObjectImage) pageImages.get(key);
-					image.write2file("C:\\Users\\Pradyut\\Documents\\image" + i);
-					i++;
-				}
-			}*/
+			/*
+			 * Map pageImages = resources.getImages(); if (pageImages != null) {
+			 * Iterator imageIter = pageImages.keySet().iterator(); while
+			 * (imageIter.hasNext()) { String key = (String) imageIter.next();
+			 * PDXObjectImage image = (PDXObjectImage) pageImages.get(key);
+			 * image.write2file("C:\\Users\\Pradyut\\Documents\\image" + i);
+			 * i++; } }
+			 */
 		}
 
 	}

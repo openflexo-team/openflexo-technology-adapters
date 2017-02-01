@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
@@ -55,25 +56,39 @@ public abstract class AbstractTestPDF extends OpenflexoProjectAtRunTimeTestCase 
 	protected static final Logger logger = Logger.getLogger(AbstractTestPDF.class.getPackage().getName());
 
 	/**
-	 * Instantiate a default {@link FlexoServiceManager} well suited for PDF test purpose<br>
+	 * Instantiate a default {@link FlexoServiceManager} well suited for PDF
+	 * test purpose<br>
 	 * 
 	 * @param taClasses
 	 * @return a newly created {@link FlexoServiceManager}
 	 */
 	protected static FlexoServiceManager instanciateTestServiceManagerForPDF() {
 		serviceManager = instanciateTestServiceManager();
-		PDFTechnologyAdapter pdfTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(PDFTechnologyAdapter.class);
+		PDFTechnologyAdapter pdfTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(PDFTechnologyAdapter.class);
 		serviceManager.activateTechnologyAdapter(pdfTA);
 		return serviceManager;
 	}
 
 	protected PDFDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/pdf-test");
+
+		/*
+		 * for (FlexoResourceCenter<?> rc :
+		 * serviceManager.getResourceCenterService().getResourceCenters()) {
+		 * System.out.println("> " + rc.getDefaultBaseURI()); }
+		 */
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/"
+				+ documentName;
 		System.out.println("Searching " + documentURI);
 
-		PDFDocumentResource documentResource = (PDFDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				PDFDocument.class);
+		PDFDocumentResource documentResource = (PDFDocumentResource) serviceManager.getResourceManager()
+				.getResource(documentURI, null, PDFDocument.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);

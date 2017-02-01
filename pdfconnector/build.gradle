@@ -8,4 +8,8 @@ dependencies {
   // testing dep
   testCompile testUtils()
   testCompile flexoFoundationTest()
+  
+  // Test resource center
+   testRuntime project(':pdfconnector-test-rc')
+  
 }

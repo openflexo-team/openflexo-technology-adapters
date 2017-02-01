@@ -63,15 +63,16 @@ public class TestLoadPDFDocuments extends AbstractTestPDF {
 		instanciateTestServiceManagerForPDF();
 	}
 
-	/*@Test
-	@TestOrder(2)
-	public void testCreateProject() {
-		_editor = createProject("TestProject");
-		_project = _editor.getProject();
-		System.out.println("Created project " + _project.getProjectDirectory());
-		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
-	}*/
+	/*
+	 * @Test
+	 * 
+	 * @TestOrder(2) public void testCreateProject() { _editor =
+	 * createProject("TestProject"); _project = _editor.getProject();
+	 * System.out.println("Created project " + _project.getProjectDirectory());
+	 * assertTrue(_project.getProjectDirectory().exists());
+	 * assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists(
+	 * )); }
+	 */
 
 	@Test
 	@TestOrder(3)
@@ -80,25 +81,25 @@ public class TestLoadPDFDocuments extends AbstractTestPDF {
 				.getTechnologyAdapter(PDFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			// PDFDocumentRepository docXRepository = resourceCenter.getRepository(PDFDocumentRepository.class, technologicalAdapter);
+			// PDFDocumentRepository docXRepository =
+			// resourceCenter.getRepository(PDFDocumentRepository.class,
+			// technologicalAdapter);
 			PDFDocumentRepository pdfRepository = technologicalAdapter.getPDFDocumentRepository(resourceCenter);
 			assertNotNull(pdfRepository);
 			Collection<PDFDocumentResource> documents = pdfRepository.getAllResources();
 			for (PDFDocumentResource docResource : documents) {
-				/*try {
-					docResource.loadResourceData(null);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				assertNotNull(docResource.getLoadedResourceData());
-				System.out.println("URI of document: " + docResource.getURI());*/
+				/*
+				 * try { docResource.loadResourceData(null); } catch
+				 * (FileNotFoundException e) { // TODO Auto-generated catch
+				 * block e.printStackTrace(); } catch
+				 * (ResourceLoadingCancelledException e) { // TODO
+				 * Auto-generated catch block e.printStackTrace(); } catch
+				 * (FlexoException e) { // TODO Auto-generated catch block
+				 * e.printStackTrace(); }
+				 * assertNotNull(docResource.getLoadedResourceData());
+				 * System.out.println("URI of document: " +
+				 * docResource.getURI());
+				 */
 				System.out.println("> docResource=" + docResource + " uri=" + docResource.getURI());
 			}
 		}
@@ -106,15 +107,16 @@ public class TestLoadPDFDocuments extends AbstractTestPDF {
 
 	private void testDocumentLoading(String pdfName, int expectedTextBoxesNb, int expectedImageBoxesNb) {
 
-		PDFDocument doc = getDocument("PDF/" + pdfName);
+		PDFDocument doc = getDocument(pdfName);
 		System.out.println(pdfName + doc);
 
 		assertEquals(1, doc.getPages().size());
 		PDFDocumentPage p = doc.getPages().get(0);
 
-		/*for (TextBox tb : p.getTextBoxes()) {
-			System.out.println("* tb=" + tb.toString());
-		}*/
+		/*
+		 * for (TextBox tb : p.getTextBoxes()) { System.out.println("* tb=" +
+		 * tb.toString()); }
+		 */
 		assertEquals(expectedTextBoxesNb, p.getTextBoxes().size());
 
 		assertEquals(expectedImageBoxesNb, p.getImageBoxes().size());
