@@ -10,4 +10,8 @@ dependencies {
   // external dep
   // testing dep
   testCompile flexoUiTest()
+  
+  // Test resource center
+  testRuntime project(':owlconnector-test-rc')
+  
 }

@@ -9,5 +9,10 @@ dependencies {
     testCompile testUtils()
     testCompile flexoFoundationTest()
 
-    testRuntime project(':owlconnector-rc')
+	// This resource center must always be present at run-time
+    runtime project(':owlconnector-rc')
+
+	// Test resource center
+    testRuntime project(':owlconnector-test-rc')
+
 }
