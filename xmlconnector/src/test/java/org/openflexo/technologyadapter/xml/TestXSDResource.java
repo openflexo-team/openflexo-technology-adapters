@@ -49,6 +49,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
@@ -75,21 +76,26 @@ public class TestXSDResource extends OpenflexoTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
+		log("test0LoadTestResourceCenter()");
+
 		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
-		log("test0LoadTestResourceCenter()");
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
-		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
+		baseUrl = resourceCenter.getDefaultBaseURI();
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 4);
 		assertNotNull(mmRepository);
 		assertTrue(mmRepository.getAllResources().size() > 2);
 		/*
-			Found an XSD with uri: http://www.example.org/Library(library.xsd)
-			Found an XSD with uri: http://maven.apache.org/POM/4.0.0(maven-v4_0_0.xsd)
-			Found an XSD with uri: http://www.taskcoach.org/TSK_XSD(taskcoach.xsd)
+		 * Found an XSD with uri: http://www.example.org/Library(library.xsd)
+		 * Found an XSD with uri:
+		 * http://maven.apache.org/POM/4.0.0(maven-v4_0_0.xsd) Found an XSD with
+		 * uri: http://www.taskcoach.org/TSK_XSD(taskcoach.xsd)
 		 */
 	}
 
@@ -104,7 +110,8 @@ public class TestXSDResource extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void test1LoadLibraryMetamodel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test1LoadLibraryMetamodel()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		XSDMetaModelResource mmRes = mmRepository.getResource("http://www.example.org/Library");
 

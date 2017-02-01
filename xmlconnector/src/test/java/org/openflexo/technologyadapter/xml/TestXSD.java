@@ -43,11 +43,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
@@ -72,16 +72,15 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 
+		log("test0LoadTestResourceCenter()");
+
 		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
-		log("test0LoadTestResourceCenter()");
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		try {
-			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		baseUrl = resourceCenter.getDefaultBaseURI();
 
 		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);

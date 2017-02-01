@@ -52,6 +52,8 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -81,9 +83,13 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
+		log("test0LoadTestResourceCenter()");
+
 		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
-		log("test0LoadTestResourceCenter()");
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		baseUrl = resourceCenter.getDefaultBaseURI();
@@ -99,7 +105,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
+		XMLFileResource modelRes = modelRepository
+				.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
 
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
@@ -109,7 +116,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		// dumpTypes(modelRes.getModel());
 
-		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
+		assertNotNull(
+				modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
 
 		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
@@ -123,7 +131,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_1.xml");
+		XMLFileResource modelRes = modelRepository
+				.getResource(baseUrl + "/TestResourceCenter/XML/example_library_1.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -146,7 +155,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_2.xml");
+		XMLFileResource modelRes = modelRepository
+				.getResource(baseUrl + "/TestResourceCenter/XML/example_library_2.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -168,7 +178,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_3.xml");
+		XMLFileResource modelRes = modelRepository
+				.getResource(baseUrl + "/TestResourceCenter/XML/example_library_3.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -187,54 +198,66 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test1CreateNewFile()");
 
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		assertNotNull(modelRepository);
 
-		String fileUUID = UUID.randomUUID().toString();
-		// URI fileURI = new URI(baseUrl + "/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
+		if (resourceCenter instanceof FileSystemBasedResourceCenter) {
 
-		File xmlFile = new File(resourceCenter.getDirectory(), "/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
-		System.out.println("xmlFile=" + xmlFile);
+			String fileUUID = UUID.randomUUID().toString();
+			// URI fileURI = new URI(baseUrl +
+			// "/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
 
-		// File xmlFile = new File(fileURI);
+			File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
+					"/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
+			System.out.println("xmlFile=" + xmlFile);
 
-		XMLFileResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile, resourceCenter,
-				xmlAdapter.getTechnologyContextManager(), true);
+			// File xmlFile = new File(fileURI);
 
-		// XMLFileResource modelRes = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
-		// (XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager(), modelRepository.getResourceCenter());
+			XMLFileResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile,
+					(FileSystemBasedResourceCenter) resourceCenter, xmlAdapter.getTechnologyContextManager(), true);
 
-		XMLModel aModel = modelRes.getModel();
-		aModel.setNamespace("http://montest.com", "tst");
+			// XMLFileResource modelRes =
+			// XMLFileResourceImpl.makeXMLFileResource(xmlFile,
+			// (XMLTechnologyContextManager)
+			// xmlAdapter.getTechnologyContextManager(),
+			// modelRepository.getResourceCenter());
 
-		// creating an empty MetaModel for this file and
-		XMLMetaModel aMetamodel = XMLMetaModelImpl.createEmptyMetaModel("http://montest.com");
-		Object blobType = aMetamodel.createNewType("http://montest.com#Blob", "Blob", false);
-		aModel.setMetaModel(aMetamodel);
+			XMLModel aModel = modelRes.getModel();
+			aModel.setNamespace("http://montest.com", "tst");
 
-		XMLType aType = aMetamodel.createNewType("http://zutalors.com", "Blib", false);
+			// creating an empty MetaModel for this file and
+			XMLMetaModel aMetamodel = XMLMetaModelImpl.createEmptyMetaModel("http://montest.com");
+			Object blobType = aMetamodel.createNewType("http://montest.com#Blob", "Blob", false);
+			aModel.setMetaModel(aMetamodel);
 
-		// TODO Manage several namespaces in same file!!
-		// aType = new XMLType("http://zutalors.com", "Blib", "pt:Blib", aModel);
-		// aModel.addType(aType);
+			XMLType aType = aMetamodel.createNewType("http://zutalors.com", "Blib", false);
 
-		XMLIndividual rootIndividual = aModel.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
-		aModel.setRoot(rootIndividual);
+			// TODO Manage several namespaces in same file!!
+			// aType = new XMLType("http://zutalors.com", "Blib", "pt:Blib",
+			// aModel);
+			// aModel.addType(aType);
 
-		XMLIndividual anIndividual = aModel.addNewIndividual(aType);
-		anIndividual.addPropertyValue("name", "Mon velo court");
-		rootIndividual.addChild(anIndividual);
+			XMLIndividual rootIndividual = aModel
+					.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
+			aModel.setRoot(rootIndividual);
 
-		anIndividual = aModel.addNewIndividual(aType);
-		anIndividual.addPropertyValue("name", "Pan");
-		anIndividual.addPropertyValue("ID", "17");
-		rootIndividual.addChild(anIndividual);
+			XMLIndividual anIndividual = aModel.addNewIndividual(aType);
+			anIndividual.addPropertyValue("name", "Mon velo court");
+			rootIndividual.addChild(anIndividual);
 
-		assertNotNull(anIndividual);
+			anIndividual = aModel.addNewIndividual(aType);
+			anIndividual.addPropertyValue("name", "Pan");
+			anIndividual.addPropertyValue("ID", "17");
+			rootIndividual.addChild(anIndividual);
 
-		Helpers.dumpTypes(aMetamodel);
-		Helpers.dumpIndividual(modelRes.getModel().getRoot(), "");
+			assertNotNull(anIndividual);
 
-		modelRes.save(null);
+			Helpers.dumpTypes(aMetamodel);
+			Helpers.dumpIndividual(modelRes.getModel().getRoot(), "");
 
+			modelRes.save(null);
+		}
 	}
 }

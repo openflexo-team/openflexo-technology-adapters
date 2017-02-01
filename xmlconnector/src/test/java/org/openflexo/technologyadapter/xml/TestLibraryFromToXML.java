@@ -51,6 +51,7 @@ import javax.xml.transform.TransformerException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -88,6 +89,10 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
 		log("test0LoadTestResourceCenter()");
+
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
@@ -131,58 +136,52 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 	}
 	/*
-		@Test
-		@TestOrder(3)
-		public void test1LibraryToXML() throws ParserConfigurationException, TransformerException, FileNotFoundException,
-		ResourceLoadingCancelledException, FlexoException {
-	
-			log("test1LibraryToXML()");
-	
-			assertNotNull(mmRepository);
-			assertNotNull(modelRepository);
-	
-			XSDMetaModelResource mmLibraryRes = mmRepository.getResource("http://www.example.org/Library");
-	
-			if (!mmLibraryRes.isLoaded()) {
-				mmLibraryRes.loadResourceData(null);
-			}
-			XMLMetaModel mmLib = mmLibraryRes.getMetaModelData();
-	
-			assertNotNull(mmLib);
-			assertTrue(mmLib.getResource().isLoaded());
-	
-			if (mmLib.getResource().isLoaded() == false) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Failed to load.");
-				}
-			}
-			else {
-	
-				XMLXSDFileResource libRes = (XMLXSDFileResource) xmlAdapter.createNewXMLFile(resourceCenter,
-						"TestResourceCenter/GenXML", "library.xml", mmLibraryRes);
-	
-				XMLXSDModel lib = libRes.getModel();
-	
-				// TODO : this wont work anymore as we suppressed name's
-				// significance for XSOntIndividual
-				XSOntIndividual library = lib.createOntologyIndividual(mmLib.getClass(LIBRARY_URI));
-				lib.setRoot(library);
-				library.addToPropertyValue(mmLib.getProperty(LIB_NAME_URI), "My Library");
-				XSOntIndividual book1 = lib.createOntologyIndividual(mmLib.getClass(BOOK_URI));
-				book1.addToPropertyValue(mmLib.getProperty(BOOK_TITLE_URI), "My First Book");
-				XSOntIndividual book2 = lib.createOntologyIndividual(mmLib.getClass(BOOK_URI));
-				book2.addToPropertyValue(mmLib.getProperty(BOOK_TITLE_URI), "My Second Book");
-				library.addToPropertyValue(mmLib.getProperty(LIB_BOOKS_URI), book1);
-				library.addToPropertyValue(mmLib.getProperty(LIB_BOOKS_URI), book2);
-	
-				try {
-					lib.save();
-				} catch (SaveResourceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		*/
+	 * @Test
+	 * 
+	 * @TestOrder(3) public void test1LibraryToXML() throws
+	 * ParserConfigurationException, TransformerException,
+	 * FileNotFoundException, ResourceLoadingCancelledException, FlexoException
+	 * {
+	 * 
+	 * log("test1LibraryToXML()");
+	 * 
+	 * assertNotNull(mmRepository); assertNotNull(modelRepository);
+	 * 
+	 * XSDMetaModelResource mmLibraryRes =
+	 * mmRepository.getResource("http://www.example.org/Library");
+	 * 
+	 * if (!mmLibraryRes.isLoaded()) { mmLibraryRes.loadResourceData(null); }
+	 * XMLMetaModel mmLib = mmLibraryRes.getMetaModelData();
+	 * 
+	 * assertNotNull(mmLib); assertTrue(mmLib.getResource().isLoaded());
+	 * 
+	 * if (mmLib.getResource().isLoaded() == false) { if
+	 * (logger.isLoggable(Level.WARNING)) { logger.warning("Failed to load."); }
+	 * } else {
+	 * 
+	 * XMLXSDFileResource libRes = (XMLXSDFileResource)
+	 * xmlAdapter.createNewXMLFile(resourceCenter, "TestResourceCenter/GenXML",
+	 * "library.xml", mmLibraryRes);
+	 * 
+	 * XMLXSDModel lib = libRes.getModel();
+	 * 
+	 * // TODO : this wont work anymore as we suppressed name's // significance
+	 * for XSOntIndividual XSOntIndividual library =
+	 * lib.createOntologyIndividual(mmLib.getClass(LIBRARY_URI));
+	 * lib.setRoot(library);
+	 * library.addToPropertyValue(mmLib.getProperty(LIB_NAME_URI),
+	 * "My Library"); XSOntIndividual book1 =
+	 * lib.createOntologyIndividual(mmLib.getClass(BOOK_URI));
+	 * book1.addToPropertyValue(mmLib.getProperty(BOOK_TITLE_URI),
+	 * "My First Book"); XSOntIndividual book2 =
+	 * lib.createOntologyIndividual(mmLib.getClass(BOOK_URI));
+	 * book2.addToPropertyValue(mmLib.getProperty(BOOK_TITLE_URI),
+	 * "My Second Book");
+	 * library.addToPropertyValue(mmLib.getProperty(LIB_BOOKS_URI), book1);
+	 * library.addToPropertyValue(mmLib.getProperty(LIB_BOOKS_URI), book2);
+	 * 
+	 * try { lib.save(); } catch (SaveResourceException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); } } }
+	 */
 
 }

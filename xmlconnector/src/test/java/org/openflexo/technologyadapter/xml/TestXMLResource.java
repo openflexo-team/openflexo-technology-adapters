@@ -49,6 +49,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
@@ -77,9 +78,13 @@ public class TestXMLResource extends OpenflexoTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
+		log("test0LoadTestResourceCenter()");
+
 		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
-		log("test0LoadTestResourceCenter()");
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		metaModelRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
@@ -100,7 +105,8 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void test0LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test0LoadXMLResourcel()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test0LoadXMLResourcel()");
 
@@ -115,7 +121,8 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
-		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
+		assertNotNull(
+				modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
 
 		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
@@ -123,7 +130,8 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(3)
-	public void test1LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test1LoadXMLResourcel()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test1LoadXMLResourcel()");
 
@@ -146,7 +154,8 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void test2LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test2LoadXMLResourcel()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test2LoadXMLResourcel()");
 
