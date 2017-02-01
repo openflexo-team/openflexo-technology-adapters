@@ -50,7 +50,6 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -93,17 +92,13 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 		assertNotNull(applicationContext);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService()
+				.getTechnologyAdapter(GINATechnologyAdapter.class);
 
 		assertNotNull(technologicalAdapter);
 
-		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
-				resourceCenter = rc;
-				break;
-			}
-		}
+		resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/gina-test");
 
 		assertNotNull(resourceCenter);
 
@@ -133,7 +128,11 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 		log("testLoadComponent()");
 
-		GINAFIBComponentResource componentResource = repository.getResource(TEST_RESOURCE_CENTER_URI + "/TestResourceCenter/Test.fib");
+		GINAFIBComponentResource componentResource = repository
+				.getResource(resourceCenter.getDefaultBaseURI() + "/TestResourceCenter/Test.fib");
+
+		System.out.println("All resources=" + repository.getAllResources());
+		System.out.println("searched: " + resourceCenter.getDefaultBaseURI() + "/TestResourceCenter/Test.fib");
 
 		assertNotNull(componentResource);
 
