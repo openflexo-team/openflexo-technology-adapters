@@ -59,8 +59,8 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.xml.XMLRootElementReader;
 
-public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImpl<DiagramSpecification, DiagramSpecificationFactory>
-		implements DiagramSpecificationResource {
+public abstract class DiagramSpecificationResourceImpl extends
+		PamelaResourceImpl<DiagramSpecification, DiagramSpecificationFactory> implements DiagramSpecificationResource {
 
 	static final Logger logger = Logger.getLogger(DiagramSpecificationResourceImpl.class.getPackage().getName());
 
@@ -107,7 +107,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
 		if (getServiceManager() != null) {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			return getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 		return null;
 	}
@@ -131,14 +132,16 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	@Override
 	public boolean delete(Object... context) {
 		if (super.delete(context)) {
-			getServiceManager().getResourceManager().addToFilesToDelete(ResourceLocator.retrieveResourceAsFile(getDirectory()));
+			getServiceManager().getResourceManager()
+					.addToFilesToDelete(ResourceLocator.retrieveResourceAsFile(getDirectory()));
 			// isDeleted = true;
 			// also remove the parent folder if empty, created by openflexo
-			/*if (!(getDirectory().length() > 0)) {
-				getDirectory().delete();
-			} else {
-				logger.warning("Diagram specification folder cannot be deleted because it is not empty");
-			}*/
+			/*
+			 * if (!(getDirectory().length() > 0)) { getDirectory().delete(); }
+			 * else { logger.
+			 * warning("Diagram specification folder cannot be deleted because it is not empty"
+			 * ); }
+			 */
 			return true;
 		}
 
@@ -148,16 +151,16 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	@Override
 	public Resource getDirectory() {
 		if (getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			String parentPath = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().getParentFile().getAbsolutePath();
+			String parentPath = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().getParentFile()
+					.getAbsolutePath();
 			if (ResourceLocator.locateResource(parentPath) == null) {
 				FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(parentPath);
 			}
 			return ResourceLocator.locateResource(parentPath);
-		}
-		else if (getFlexoIODelegate() instanceof InJarFlexoIODelegate) {
+		} else if (getFlexoIODelegate() instanceof InJarFlexoIODelegate) {
 			InJarResourceImpl resource = ((InJarFlexoIODelegate) getFlexoIODelegate()).getInJarResource();
 			String parentPath = FilenameUtils.getFullPath(resource.getRelativePath());
-			BasicResourceImpl parent = (BasicResourceImpl) ((ClasspathResourceLocatorImpl) (resource.getLocator())).getJarResourcesList()
+			BasicResourceImpl parent = ((ClasspathResourceLocatorImpl) (resource.getLocator())).getJarResourcesList()
 					.get(parentPath);
 			return parent;
 		}

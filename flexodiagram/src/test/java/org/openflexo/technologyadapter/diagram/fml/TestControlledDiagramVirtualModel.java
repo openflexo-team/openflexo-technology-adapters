@@ -65,7 +65,6 @@ import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -87,7 +86,8 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileUtils;
 
 /**
- * Test the creation of a VirtualModel whose instances have {@link FMLControlledDiagramVirtualModelNature}
+ * Test the creation of a VirtualModel whose instances have
+ * {@link FMLControlledDiagramVirtualModelNature}
  * 
  * @author sylvain
  * 
@@ -133,15 +133,12 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
-				resourceCenter = rc;
-				break;
-			}
-		}
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
+
 		assertNotNull(resourceCenter);
 
 		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
@@ -163,7 +160,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		log("testCreateDiagramSpecification()");
 
-		CreateDiagramSpecification action = CreateDiagramSpecification.actionType.makeNewAction(repository.getRootFolder(), null, editor);
+		CreateDiagramSpecification action = CreateDiagramSpecification.actionType
+				.makeNewAction(repository.getRootFolder(), null, editor);
 		action.setNewDiagramSpecificationName(DIAGRAM_SPECIFICATION_NAME);
 		action.setNewDiagramSpecificationURI(DIAGRAM_SPECIFICATION_URI);
 
@@ -189,8 +187,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		log("testCreatePalette()");
 
-		CreateDiagramPalette action = CreateDiagramPalette.actionType.makeNewAction(diagramSpecificationResource.getDiagramSpecification(),
-				null, editor);
+		CreateDiagramPalette action = CreateDiagramPalette.actionType
+				.makeNewAction(diagramSpecificationResource.getDiagramSpecification(), null, editor);
 		action.setNewPaletteName(PALETTE_NAME);
 
 		action.doAction();
@@ -203,7 +201,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertTrue(paletteResource.getFlexoIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
-		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
+		assertEquals(2, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
 
 		// Add palette element
 		DiagramPalette palette = paletteResource.getDiagramPalette();
@@ -241,13 +239,17 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
+
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
-		// ((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
+		// ((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
+		// serviceManager.getViewPointLibrary(), resourceCenter);
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -267,13 +269,16 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = vmFactory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getViewPointResourceFactory()
+				.getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = vmFactory.makeVirtualModelResource(VIRTUAL_MODEL_NAME,
+				viewPoint.getViewPointResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		virtualModel = newVMResource.getLoadedResourceData();
 
-		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
+		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel",
+		// viewPoint);
+		assertTrue(ResourceLocator
+				.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFlexoIODelegate().exists());
 
 		typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, virtualModel);
@@ -287,7 +292,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		virtualModel.addToFlexoConcepts(flexoConcept);
 
-		CreateTechnologyRole createShapeRole = CreateTechnologyRole.actionType.makeNewAction(flexoConcept, null, editor);
+		CreateTechnologyRole createShapeRole = CreateTechnologyRole.actionType.makeNewAction(flexoConcept, null,
+				editor);
 		createShapeRole.setRoleName("shape");
 		createShapeRole.setFlexoRoleClass(ShapeRole.class);
 		createShapeRole.doAction();
@@ -300,21 +306,25 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		shapeGR.setShapeSpecification(rectangleShape);
 		role.setGraphicalRepresentation(shapeGR);
 
-		CreateFlexoBehaviour createDropScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
+		CreateFlexoBehaviour createDropScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null,
+				editor);
 		createDropScheme.setFlexoBehaviourName("drop");
 		createDropScheme.setFlexoBehaviourClass(DropScheme.class);
 		createDropScheme.doAction();
 		assertTrue(createDropScheme.hasActionExecutionSucceeded());
 		dropScheme = (DropScheme) createDropScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme.getControlGraph(), null, editor);
-		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
+		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme.getControlGraph(),
+				null, editor);
+		// createAddShape.actionChoice =
+		// CreateEditionActionChoice.ModelSlotSpecificAction;
 		createAddShape.setModelSlot(typedDiagramModelSlot);
 		createAddShape.setEditionActionClass(AddShape.class);
 		createAddShape.doAction();
 		assertTrue(createAddShape.hasActionExecutionSucceeded());
 
-		FMLDiagramPaletteElementBinding newBinding = virtualModel.getFMLModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+		FMLDiagramPaletteElementBinding newBinding = virtualModel.getFMLModelFactory()
+				.newInstance(FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(dropScheme);
@@ -326,7 +336,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
-		assertEquals(typedDiagramModelSlot, FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel));
+		assertEquals(typedDiagramModelSlot,
+				FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel));
 	}
 
 	/**
@@ -340,15 +351,11 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
-				resourceCenter = rc;
-				break;
-			}
-		}
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
 
 		assertNotNull(resourceCenter);
 
@@ -356,18 +363,23 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		assertNotNull(repository);
 
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), "CopyFromPreviousRC");
+		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
+				"CopyFromPreviousRC");
 		newDirectory.mkdirs();
 
 		try {
 			File dsDir = new File(newDirectory,
 					ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
 			dsDir.mkdirs();
-			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
-			File vpDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
+			FileUtils.copyContentDirToDir(
+					ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
+			File vpDir = new File(newDirectory,
+					ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
 			vpDir.mkdirs();
-			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()), vpDir);
-			// We wait here for the thread monitoring ResourceCenters to detect new files
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()),
+					vpDir);
+			// We wait here for the thread monitoring ResourceCenters to detect
+			// new files
 			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -378,7 +390,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertNotNull(retrievedDSResource);
 		assertEquals(1, retrievedDSResource.getDiagramSpecification().getPalettes().size());
 
-		ViewPointResource retrievedVPResource = serviceManager.getViewPointLibrary().getViewPointResource(VIEWPOINT_URI);
+		ViewPointResource retrievedVPResource = serviceManager.getViewPointLibrary()
+				.getViewPointResource(VIEWPOINT_URI);
 		assertNotNull(retrievedVPResource);
 
 		assertEquals(1, retrievedVPResource.getVirtualModelResources().size());

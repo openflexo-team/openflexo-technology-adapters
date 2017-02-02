@@ -63,14 +63,15 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	private static final Logger logger = Logger.getLogger(CreateDiagramSpecification.class.getPackage().getName());
 
 	public static FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject>(
-			"create_diagram_specification", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+			"create_diagram_specification", FlexoActionType.newMenu, FlexoActionType.defaultGroup,
+			FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramSpecification makeNewAction(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection,
-				FlexoEditor editor) {
+		public CreateDiagramSpecification makeNewAction(RepositoryFolder focusedObject,
+				Vector<FMLObject> globalSelection, FlexoEditor editor) {
 			return new CreateDiagramSpecification(focusedObject, globalSelection, editor);
 		}
 
@@ -118,41 +119,18 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 		newDiagramSpecification = newDSResource.getLoadedResourceData();
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 
-		/*
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		
-		DiagramSpecificationResource newDSResource = diagramTA.getDiagramSpecificationResourceFactory().makeResource(serializationArtefact, resourceCenter, technologyContextManager, createEmptyContents);
-		(newPaletteName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(),
-						true);
-		
-		
-		newDiagramSpecification = DiagramSpecificationImpl.newDiagramSpecification(newDiagramSpecificationURI, newDiagramSpecificationName,
-				getFocusedObject(), getServiceManager());
-		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
-		// getFocusedObject().addToVirtualModels(newDiagramSpecification);
-		// getFocusedObject().getResourceRepository().registerResource(newDiagramSpecification.getResource());
-		getFocusedObject().addToResources(newDiagramSpecification.getResource());*/
+		newDSResource.save(null);
 	}
 
-	protected <I> DiagramSpecificationResource _makeDiagramSpecification() throws SaveResourceException, ModelDefinitionException {
+	protected <I> DiagramSpecificationResource _makeDiagramSpecification()
+			throws SaveResourceException, ModelDefinitionException {
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		return diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(newDiagramSpecificationName,
-				newDiagramSpecificationURI, getFocusedObject(), diagramTA.getTechnologyContextManager(), true);
+		return diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(
+				newDiagramSpecificationName, newDiagramSpecificationURI, getFocusedObject(),
+				diagramTA.getTechnologyContextManager(), true);
 
-		/*FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
-		I parentDirectory = (I) getFocusedObject().getSerializationArtefact();
-		String artefactName = newDiagramSpecificationName.endsWith(DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)
-				? newDiagramSpecificationName
-				: newDiagramSpecificationName + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
-		I serializationArtefact = rc.createEntry(artefactName, parentDirectory);
-		
-		DiagramSpecificationResource newDSResource = diagramTA.getDiagramSpecificationResourceFactory().makeResource(serializationArtefact,
-				rc, diagramTA.getTechnologyContextManager(), newDiagramSpecificationURI, true);
-		
-		return newDSResource;*/
 	}
 
 	public boolean isNewDiagramSpecificationNameValid() {
@@ -201,10 +179,12 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	public void setNewDiagramSpecificationName(String newDiagramSpecificationName) {
 		if ((newDiagramSpecificationName == null && this.newDiagramSpecificationName != null)
-				|| (newDiagramSpecificationName != null && !newDiagramSpecificationName.equals(this.newDiagramSpecificationName))) {
+				|| (newDiagramSpecificationName != null
+						&& !newDiagramSpecificationName.equals(this.newDiagramSpecificationName))) {
 			String oldValue = this.newDiagramSpecificationName;
 			this.newDiagramSpecificationName = newDiagramSpecificationName;
-			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationName", oldValue, newDiagramSpecificationName);
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationName", oldValue,
+					newDiagramSpecificationName);
 		}
 	}
 
@@ -214,10 +194,12 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	public void setNewDiagramSpecificationURI(String newDiagramSpecificationURI) {
 		if ((newDiagramSpecificationURI == null && this.newDiagramSpecificationURI != null)
-				|| (newDiagramSpecificationURI != null && !newDiagramSpecificationURI.equals(this.newDiagramSpecificationURI))) {
+				|| (newDiagramSpecificationURI != null
+						&& !newDiagramSpecificationURI.equals(this.newDiagramSpecificationURI))) {
 			String oldValue = this.newDiagramSpecificationURI;
 			this.newDiagramSpecificationURI = newDiagramSpecificationURI;
-			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationURI", oldValue, newDiagramSpecificationURI);
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationURI", oldValue,
+					newDiagramSpecificationURI);
 		}
 	}
 
