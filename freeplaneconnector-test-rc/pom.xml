@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-root-pom</artifactId>
+       		<version>0.4-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.openflexo.rc</groupId>
+	<artifactId>pdfconnector-test-rc</artifactId>
+	<version>1.8.1-SNAPSHOT</version>
+	<properties>
+	    <ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
+	    <sitedeploy.dir>/home/www/sites/openflexo-ta</sitedeploy.dir>
+	</properties>
+	<scm>
+		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
+		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
+		<tag>1.8.1</tag>
+	</scm>
+
+	<name>PDFTestRC</name>
+	<description>PDF Test Resource Center</description>
+
+<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>META-INF/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<!-- skip maven site for this module -->
+			       <plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-site-plugin</artifactId>
+				  <configuration>
+					<skip>true</skip>
+					<skipDeploy>true</skipDeploy>
+				  </configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<executions>
+						<execution>
+						    <id>default-jar</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+							<configuration>
+							     <skipIfEmpty>true</skipIfEmpty>
+							</configuration>
+						</execution>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+							<configuration>
+							     <skipIfEmpty>true</skipIfEmpty>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<profiles>
+		<profile>
+			<id>build-installers</id>
+			<build>
+			<!--  override profile to empty it => nothing to do -->
+			</build>
+		</profile>   
+   <!-- ************
+   Specific profiles used to differentiate between snapshot release and release-candidates and official-releases
+   -->
+        <profile>
+            <id>snapshot-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+   		-->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>RC-profile</id>
+            <activation>
+                <property>
+                    <name>performRC</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>release-profile</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/${project.version}/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+    </profiles>
+</project>

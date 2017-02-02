@@ -13,5 +13,9 @@ dependencies {
   // TODO : il manque freeplanemac
   
   // testing dep
-    testCompile flexoFoundationTest()
+  testCompile flexoFoundationTest()
+    
+  // Test resource center
+  testRuntime project(':freeplaneconnector-test-rc')
+    
 }

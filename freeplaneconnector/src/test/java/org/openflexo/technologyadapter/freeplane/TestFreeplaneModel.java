@@ -50,8 +50,6 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -67,22 +65,25 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 
 	private static FreeplaneTechnologyAdapter fpTA;
 
-	private static FlexoServiceManager applicationContext;
+	// private static FlexoServiceManager applicationContext;
 
 	private ModelFactory factory;
 
 	@BeforeClass
 	public static void sotupBeforeClass() {
-		applicationContext = instanciateTestServiceManager();
+		serviceManager = instanciateTestServiceManager(FreeplaneTechnologyAdapter.class);
 		fpTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
-				resourceCenter = (DirectoryResourceCenter) rc;
-				break;
-			}
+
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + resourceCenter);
 		}
-		Assume.assumeNotNull(applicationContext, fpTA, resourceCenter);
+
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/freeplane-test");
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		Assume.assumeNotNull(serviceManager, fpTA, resourceCenter);
 	}
 
 	@Before
@@ -103,6 +104,7 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 
 	@Test
 	public void validateModelDefinition() {
+
 		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
 		Assert.assertNotNull(map);
 		map.setTechnologyAdapter(fpTA);
@@ -117,8 +119,9 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 
 	@Test
 	public void validateConnectorToFreeplaneAPI() {
-		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance()
-				.loadMapFromFile(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
+
+		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(
+				ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
 		Assert.assertEquals(FreeplaneBasicAdapter.getInstance().getMapName(), "FPTest");
 		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getIconToolbar());
 		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getMapView());
@@ -135,8 +138,7 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 				Assert.assertEquals(node.getNodeAttributes().size(), 1);
 				Assert.assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
 				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 1");
-			}
-			else if ("ue".equals(node.getNodeModel().getText())) {
+			} else if ("ue".equals(node.getNodeModel().getText())) {
 				Assert.assertEquals(node.getNodeAttributes().size(), 1);
 				Assert.assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
 				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 2");

@@ -56,7 +56,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -88,16 +87,18 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupBeforeClass() {
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(FreeplaneTechnologyAdapter.class);
 		fpTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
 
-		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
-				resourceCenter = (DirectoryResourceCenter) rc;
-				break;
-			}
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + resourceCenter);
 		}
+
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/freeplane-test");
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
 		Assume.assumeNotNull(applicationContext, fpTA, resourceCenter);
 	}
 
@@ -121,17 +122,14 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 		// this.perspective = null;
 	}
 
-	/*private void initializeAFlexoController() {
-		try {
-			final FlexoModule module = new VPMModule((ApplicationContext) applicationContext);
-			module.initModule();
-			controller = module.getController();
-			this.perspective = controller.getCurrentPerspective();
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "controller init fail", e);
-			Assert.fail("Error while initializing FlexoController");
-		}
-	}*/
+	/*
+	 * private void initializeAFlexoController() { try { final FlexoModule
+	 * module = new VPMModule((ApplicationContext) applicationContext);
+	 * module.initModule(); controller = module.getController();
+	 * this.perspective = controller.getCurrentPerspective(); } catch (Exception
+	 * e) { LOGGER.log(Level.SEVERE, "controller init fail", e);
+	 * Assert.fail("Error while initializing FlexoController"); } }
+	 */
 
 	// @Test
 	public void emptyTest() {
@@ -140,14 +138,16 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	public void testInitModuleView() throws InvocationTargetException, InterruptedException {
-		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance()
-				.loadMapFromFile(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
+		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(
+				ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
 		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
 		map.setTechnologyAdapter(fpTA);
 		map.setMapModel(loadedMap);
 		FreeplaneAdapterController freeplaneAdapterController = new FreeplaneAdapterController();
 
-		// ModuleView moduleView = freeplaneAdapterController.createModuleViewForObject(map, controller, perspective);
+		// ModuleView moduleView =
+		// freeplaneAdapterController.createModuleViewForObject(map, controller,
+		// perspective);
 		ModuleView moduleView = freeplaneAdapterController.createModuleViewForObject(map, null, null);
 		Assert.assertTrue(moduleView instanceof AbstractFreeplaneModuleView);
 
