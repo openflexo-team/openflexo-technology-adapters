@@ -38,6 +38,13 @@
 
 package org.openflexo.technologyadapter.excel.tests.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,13 +60,6 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.logging.Logger;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(OrderedRunner.class)
 @Ignore
@@ -79,7 +79,8 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			ExcelWorkbookRepository<?> workbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
+			ExcelWorkbookRepository<?> workbookRepository = technologicalAdapter
+					.getExcelWorkbookRepository(resourceCenter);
 			assertNotNull(workbookRepository);
 			Collection<ExcelWorkbookResource> documents = workbookRepository.getAllResources();
 			for (ExcelWorkbookResource docResource : documents) {
@@ -192,8 +193,8 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		ExcelCell cell48 = row4.getExcelCell(7);
 
 		System.out.println(cell41.getCellValue() + " | " + cell42.getCellValue() + " | " + cell43.getCellValue() + " | "
-				+ cell44.getCellValue() + " | " + cell45.getCellValue() + " | " + cell46.getCellValue() + " | " + cell47.getCellValue()
-				+ " | " + cell48.getCellValue());
+				+ cell44.getCellValue() + " | " + cell45.getCellValue() + " | " + cell46.getCellValue() + " | "
+				+ cell47.getCellValue() + " | " + cell48.getCellValue());
 
 		assertEquals(null, cell41.getCellValue());
 		assertEquals(null, cell42.getCellValue());

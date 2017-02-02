@@ -5,6 +5,9 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi', version: '3.12'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.12'
 
+  // Test resource center
+  testRuntime project(':excelconnector-test-rc')
+
   // testing dep
   testCompile testUtils()
   testCompile flexoFoundationTest()

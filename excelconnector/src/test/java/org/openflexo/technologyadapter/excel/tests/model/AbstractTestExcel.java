@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -55,11 +56,21 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 
 	protected ExcelWorkbookResource getExcelResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "Excel" + "/" + documentName;
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/excel-test");
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> " + rc.getDefaultBaseURI());
+		}
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/"
+				+ documentName;
 		System.out.println("Searching " + documentURI);
 
-		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				ExcelWorkbook.class);
+		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager()
+				.getResource(documentURI, null, ExcelWorkbook.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);
