@@ -49,7 +49,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
@@ -63,7 +65,8 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test UML Meta-Model and model loading. and Testing a Model with a Profile (SysML)
+ * Test UML Meta-Model and model loading. and Testing a Model with a Profile
+ * (SysML)
  * 
  * @author xtof
  * 
@@ -81,6 +84,9 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static String UML_MODEL_NAME = "testingProfiles.uml";
 
+	private static DirectoryResourceCenter newResourceCenter;
+	private static FlexoResourceCenter<?> emfResourceCenter;
+
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
@@ -88,7 +94,10 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
+		newResourceCenter = makeNewDirectoryResourceCenter();
+
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 		assertNotNull(technologicalAdapter);
 
 		ctxManager = technologicalAdapter.getTechnologyContextManager();
@@ -123,7 +132,8 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(4)
 	public void TestLoadSysMLMetaModell() {
 
-		EMFMetaModelResource sysmlMetaModelResource = ctxManager.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");
+		EMFMetaModelResource sysmlMetaModelResource = ctxManager
+				.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");
 
 		assertNotNull(sysmlMetaModelResource);
 
@@ -138,8 +148,9 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 		RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 		File serializationArtefact = new File(modelFolder.getSerializationArtefact(), UML_MODEL_NAME);
-		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-				umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
+		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(
+				serializationArtefact, umlMetaModelResource, newResourceCenter,
+				technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
 
 		assertNotNull(umlModelResource);
 		EMFModel umlModel = umlModelResource.getModel();
@@ -151,37 +162,33 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 	}
 
-	/*	
-		protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI, FMLModelFactory factory) {
-	
-			EMFObjectIndividual result = null;
-	
-			CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
-					editor);
-			// createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
-			createEditionAction1.setEditionActionClass(AddEMFObjectIndividual.class);
-			createEditionAction1.setModelSlot(newModelSlot);
-			createEditionAction1.doAction();
-	
-			AddEMFObjectIndividual addObject = (AddEMFObjectIndividual) createEditionAction1.getNewEditionAction();
-	
-			try {
-				addObject.setOntologyClass(umlMetaModelResource.getResourceData(null).getClass(classURI));
-				// addObject.setEMFClassURI(classURI);
-				result = addObject.execute(creationSchemeCreationAction);
-				// addObject.finalizePerformAction(creationSchemeCreationAction, result);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return result;
-		}
-	*/
+	/*
+	 * protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource
+	 * emfModelResource, String classURI, FMLModelFactory factory) {
+	 * 
+	 * EMFObjectIndividual result = null;
+	 * 
+	 * CreateEditionAction createEditionAction1 =
+	 * CreateEditionAction.actionType.makeNewAction(creationScheme.
+	 * getControlGraph(), null, editor); // createEditionAction1.actionChoice =
+	 * CreateEditionActionChoice.ModelSlotSpecificAction;
+	 * createEditionAction1.setEditionActionClass(AddEMFObjectIndividual.class);
+	 * createEditionAction1.setModelSlot(newModelSlot);
+	 * createEditionAction1.doAction();
+	 * 
+	 * AddEMFObjectIndividual addObject = (AddEMFObjectIndividual)
+	 * createEditionAction1.getNewEditionAction();
+	 * 
+	 * try {
+	 * addObject.setOntologyClass(umlMetaModelResource.getResourceData(null).
+	 * getClass(classURI)); // addObject.setEMFClassURI(classURI); result =
+	 * addObject.execute(creationSchemeCreationAction); //
+	 * addObject.finalizePerformAction(creationSchemeCreationAction, result); }
+	 * catch (FileNotFoundException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { //
+	 * TODO Auto-generated catch block e.printStackTrace(); } catch
+	 * (FlexoException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } return result; }
+	 */
 
 }

@@ -89,9 +89,11 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		/*for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
-			System.out.println(" > " + r.getURI());
-		}*/
+		/*
+		 * for (FlexoResource<?> r :
+		 * serviceManager.getResourceManager().getRegisteredResources()) {
+		 * System.out.println(" > " + r.getURI()); }
+		 */
 
 	}
 
@@ -110,8 +112,8 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 	@TestOrder(3)
 	public void lookupCity1Model() {
 
-		city1Res = (EMFModelResource) serviceManager.getResourceManager()
-				.getResource("http://openflexo.org/test/TestResourceCenter/TestResourceCenter/EMF/Model/city1/my.city1", EMFModel.class);
+		city1Res = (EMFModelResource) serviceManager.getResourceManager().getResource(
+				"http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/city1/my.city1", EMFModel.class);
 
 		assertNotNull(city1Res);
 		assertSame(city1MMRes, city1Res.getMetaModelResource());
@@ -158,18 +160,18 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 			System.out.println("> class " + c.getURI());
 		}
 
-		EMFClassClass cityClass = (EMFClassClass) metaModel.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
+		EMFClassClass cityClass = (EMFClassClass) metaModel
+				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
 		assertNotNull(cityClass);
 
-		// assertSame(cityClass, metaModel.getDeclaredClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
+		// assertSame(cityClass,
+		// metaModel.getDeclaredClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
 
 		Resource resource = city1Model.getEMFResource();
-		/*try {
-			city1Model.getEMFResource().load(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { city1Model.getEMFResource().load(null); } catch (IOException e)
+		 * { // TODO Auto-generated catch block e.printStackTrace(); }
+		 */
 		List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
 		TreeIterator<EObject> iterator = resource.getAllContents();
 		while (iterator.hasNext()) {

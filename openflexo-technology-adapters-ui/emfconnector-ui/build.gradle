@@ -9,4 +9,8 @@ dependencies {
   // external dep
   // testing dep
   testCompile flexoUiTest()
+  
+  // Test resource center
+  testRuntime project(':emfconnector-test-rc')
+  
 }

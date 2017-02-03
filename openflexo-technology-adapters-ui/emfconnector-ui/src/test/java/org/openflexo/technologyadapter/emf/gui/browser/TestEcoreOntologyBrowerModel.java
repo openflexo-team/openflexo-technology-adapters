@@ -84,9 +84,10 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(true, EMFTechnologyAdapter.class);
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		initGUI();
 	}
@@ -96,7 +97,8 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestLoadECOREModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
-			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter
+					.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
 			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
@@ -108,10 +110,11 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			if (modelResource != null) {
 				ecoreModelResource = modelResource;
-				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
-			}
-			else {
-				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+				System.out.println(
+						"Found resource " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			} else {
+				System.out.println(
+						"Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
 				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
 					System.out.println(" > " + r.getURI());
 				}
@@ -119,6 +122,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		}
 
+		System.out.println("ecoreModelResource=" + ecoreModelResource);
 		assertNotNull(ecoreModelResource);
 
 		ecoreModel = ecoreModelResource.getModel();
@@ -286,13 +290,15 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			modelView.setShowObjectProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out
+					.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 
 			modelView.setShowAnnotationProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(
+					" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 
@@ -335,7 +341,8 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			modelView.setShowAnnotationProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
+			System.out.println(
+					" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 

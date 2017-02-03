@@ -84,9 +84,10 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(true, EMFTechnologyAdapter.class);
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		initGUI();
 	}
@@ -96,7 +97,8 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestLoadUMLEMFModel() {
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter
+					.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
 			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
@@ -108,10 +110,11 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			if (modelResource != null) {
 				umlModelResource = modelResource;
-				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
-			}
-			else {
-				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+				System.out.println(
+						"Found resource " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+			} else {
+				System.out.println(
+						"Not found: " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
 					System.out.println(" > " + r.getURI());
 				}
@@ -285,13 +288,15 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			modelView.setShowObjectProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out
+					.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 
 			modelView.setShowAnnotationProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(
+					" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 
@@ -334,7 +339,8 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			modelView.setShowAnnotationProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
+			System.out.println(
+					" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
 			previousDate = currentDate;
 			Thread.sleep(latency_time);
 
