@@ -96,6 +96,8 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 				.getFlexoResourceCenter("http://openflexo.org/gina-test");
 		assertNotNull(resourceCenter);
 
+		System.out.println("Found resource center: " + resourceCenter);
+
 		repository = technologicalAdapter.getGINAResourceRepository(resourceCenter);
 
 		assertNotNull(repository);
