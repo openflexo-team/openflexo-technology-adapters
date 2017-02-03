@@ -44,9 +44,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.AfterClass;
@@ -54,24 +52,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileUtils;
 
 @RunWith(OrderedRunner.class)
 public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestDocXBookmarksURIManagement.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(TestDocXBookmarksURIManagement.class.getPackage().getName());
 
 	private static DocXDocument simpleDocumentWithBookmarks;
 	private static DocXParagraph titleParagraph;
 	private static DocXParagraph firstParagraph;
 	private static DocXParagraph lastParagraph;
+
+	private static DirectoryResourceCenter newResourceCenter;
 
 	@AfterClass
 	public static void tearDownClass() {
@@ -89,6 +88,9 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
 	}
 
 	@Test
@@ -107,7 +109,8 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 
 		simpleDocumentWithBookmarks = getDocument("SimpleDocumentWithBookmarks.docx");
 
-		System.out.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
+		System.out
+				.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
 
 		System.out.println("Elements: " + simpleDocumentWithBookmarks.getElements().size());
 
@@ -117,8 +120,7 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
 						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
 								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
-			}
-			else {
+			} else {
 				System.out.println("* Element " + element);
 			}
 		}
@@ -136,9 +138,12 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 		// New generated id
 		assertNotNull(titleParagraph.getIdentifier());
 
-		assertTrue(simpleDocumentWithBookmarks.isModified());
-		simpleDocumentWithBookmarks.getResource().save(null);
-		assertFalse(simpleDocumentWithBookmarks.isModified());
+		// Document is modified because a new id has been generated
+		if (simpleDocumentWithBookmarks.isModified()) {
+			assertTrue(simpleDocumentWithBookmarks.isModified());
+			simpleDocumentWithBookmarks.getResource().save(null);
+			assertFalse(simpleDocumentWithBookmarks.isModified());
+		}
 
 	}
 
@@ -151,35 +156,18 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 		log("testReloadDocument()");
 
 		DocXDocument documentBeforeReload = simpleDocumentWithBookmarks;
-		DocXDocumentResource documentResourceBeforeReload = (DocXDocumentResource) simpleDocumentWithBookmarks.getResource();
+		DocXDocumentResource documentResourceBeforeReload = (DocXDocumentResource) simpleDocumentWithBookmarks
+				.getResource();
 		assertNotNull(documentBeforeReload);
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
 
-		File directory = ((FileFlexoIODelegate) documentResourceBeforeReload.getFlexoIODelegate()).getFile().getParentFile();
+		serviceManager.getResourceCenterService()
+				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
+						serviceManager.getResourceCenterService()));
+		newResourceCenter.performDirectoryWatchingNow();
 
-		// File directory = ResourceLocator.retrieveResourceAsFile(newDocResource).getParentFile();
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), directory.getName());
-		newDirectory.mkdirs();
-
-		try {
-			FileUtils.copyContentDirToDir(directory, newDirectory);
-			// We wait here for the thread monitoring ResourceCenters to detect new files
-			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		DocXDocument reloadedDocument;
-		// DocXDocumentResource reloadedDocResource;
-
-		reloadedDocument = getDocument("SimpleDocumentWithBookmarks.docx");
-
-		// assertNotNull(reloadedDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
-		// .getResource("http://openflexo.org/test/TestResourceCenter/DocX/SimpleDocumentWithBookmarks.docx", null));
-
-		// reloadedDocument = reloadedDocResource.getDocument();
+		DocXDocument reloadedDocument = getDocument("SimpleDocumentWithBookmarks.docx");
 		assertNotSame(documentBeforeReload, reloadedDocument);
 
 		assertEquals(14, reloadedDocument.getElements().size());

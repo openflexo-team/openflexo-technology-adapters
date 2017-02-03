@@ -63,11 +63,13 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
-	/*private static SwingGraphicalContextDelegate gcDelegate;
-	
-	private static Resource fibResource;
-	
-	static FlexoEditor editor;*/
+	/*
+	 * private static SwingGraphicalContextDelegate gcDelegate;
+	 * 
+	 * private static Resource fibResource;
+	 * 
+	 * static FlexoEditor editor;
+	 */
 
 	@Test
 	@TestOrder(1)
@@ -107,6 +109,8 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
 		System.out.println("TextBindings=" + role.getTextBindings());
 
+		System.out.println("fragment=" + role.getFragment());
+
 		System.out.println(role.getFragment().getFlexoDocument().debugStructuredContents());
 	}
 
@@ -119,24 +123,18 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 		gcDelegate.addTab("DocXFragmentRole", widget.getController());
 	}
 
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestDocXFragmentRoleInspector.class.getSimpleName());
-	}
-	
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-	
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
+	/*
+	 * public static void initGUI() { gcDelegate = new
+	 * SwingGraphicalContextDelegate(TestDocXFragmentRoleInspector.class.
+	 * getSimpleName()); }
+	 * 
+	 * @AfterClass public static void waitGUI() { gcDelegate.waitGUI(); }
+	 * 
+	 * @Before public void setUp() { gcDelegate.setUp(); }
+	 * 
+	 * @Override
+	 * 
+	 * @After public void tearDown() throws Exception { gcDelegate.tearDown(); }
+	 */
 
 }

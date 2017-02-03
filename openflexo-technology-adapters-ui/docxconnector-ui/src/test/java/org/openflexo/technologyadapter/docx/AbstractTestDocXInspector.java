@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
+import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,6 +51,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoFIBInspectorTestCase;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
@@ -70,46 +72,81 @@ import org.openflexo.test.OrderedRunner;
 @RunWith(OrderedRunner.class)
 public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTestCase {
 
+	protected static final Logger logger = Logger.getLogger(AbstractTestDocXInspector.class.getPackage().getName());
+
 	protected static SwingGraphicalContextDelegate gcDelegate;
 	protected static Resource fibResource;
 	protected static FlexoEditor editor;
-	
+
 	/**
-	 * Instantiate a default {@link FlexoServiceManager} well suited for test purpose<br>
-	 * FML and FML@RT technology adapters are activated in returned {@link FlexoServiceManager}, as well as technology adapters whose
-	 * classes are supplied as varargs arguments
+	 * Instantiate a default {@link FlexoServiceManager} well suited for test
+	 * purpose<br>
+	 * FML and FML@RT technology adapters are activated in returned
+	 * {@link FlexoServiceManager}, as well as technology adapters whose classes
+	 * are supplied as varargs arguments
 	 * 
 	 * @param taClasses
 	 * @return a newly created {@link FlexoServiceManager}
 	 */
 	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
 		serviceManager = instanciateTestServiceManager();
-		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 		docXTA.setDefaultIDStrategy(idStrategy);
 		serviceManager.activateTechnologyAdapter(docXTA);
 		return serviceManager;
 	}
-	
+
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + (resourceCenter.getDefaultBaseURI().endsWith("/") ? "" : "/")
-				+ "TestResourceCenter" + "/" + documentName;
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/docx-test");
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> " + rc.getDefaultBaseURI());
+		}
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager()
+				.getResource(documentURI, null, DocXDocument.class);
 
 		if (documentResource == null) {
-			System.out.println("Cannot find: " + documentURI);
-			for (FlexoResource r : resourceCenter.getAllResources()) {
-				System.out.println(" > " + r.getURI());
+			logger.warning("Cannot find document resource " + documentURI);
+			for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+				System.out.println("> " + r.getURI());
 			}
 		}
+
 		assertNotNull(documentResource);
 
 		return documentResource;
-
 	}
+
+	/*
+	 * protected DocXDocumentResource getDocumentResource(String documentName) {
+	 * 
+	 * String documentURI = resourceCenter.getDefaultBaseURI() +
+	 * (resourceCenter.getDefaultBaseURI().endsWith("/") ? "" : "/") +
+	 * "TestResourceCenter" + "/" + documentName;
+	 * System.out.println("Searching " + documentURI);
+	 * 
+	 * DocXDocumentResource documentResource = (DocXDocumentResource)
+	 * serviceManager.getResourceManager().getResource(documentURI, null,
+	 * DocXDocument.class);
+	 * 
+	 * if (documentResource == null) { System.out.println("Cannot find: " +
+	 * documentURI); for (FlexoResource r : resourceCenter.getAllResources()) {
+	 * System.out.println(" > " + r.getURI()); } }
+	 * assertNotNull(documentResource);
+	 * 
+	 * return documentResource;
+	 * 
+	 * }
+	 */
 
 	protected DocXDocument getDocument(String documentName) {
 
@@ -146,20 +183,18 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 		// TODO: please check this: suspiscion of missing code after merge
 
-		/* {
-		@Override
-		public boolean handleException(Exception e) {
-			// System.out.println(
-			// "Handle exception ? isDisposed=" + isDisposed() + " exception=" + e + " stacktrace=" + e.getStackTrace().length);
-			if (e instanceof NullPointerException && ((NullPointerException) e).getStackTrace().length == 0) {
-				// Handle unexpected exception occured in docx4all editor
-				// We suspect issues with fonts
-				// Temporary ignore those exceptions
-				return false;
-			}
-			return super.handleException(e);
-		}
-		}*/
+		/*
+		 * {
+		 * 
+		 * @Override public boolean handleException(Exception e) { //
+		 * System.out.println( // "Handle exception ? isDisposed=" +
+		 * isDisposed() + " exception=" + e + " stacktrace=" +
+		 * e.getStackTrace().length); if (e instanceof NullPointerException &&
+		 * ((NullPointerException) e).getStackTrace().length == 0) { // Handle
+		 * unexpected exception occured in docx4all editor // We suspect issues
+		 * with fonts // Temporary ignore those exceptions return false; }
+		 * return super.handleException(e); } }
+		 */
 	}
 
 	@AfterClass

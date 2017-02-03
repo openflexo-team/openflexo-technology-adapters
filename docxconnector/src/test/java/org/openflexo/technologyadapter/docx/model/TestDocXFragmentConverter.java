@@ -107,7 +107,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		System.out.println("fragment: " + converter.convertToString(initialFragment));
 
-		assertEquals("http://openflexo.org/test/TestResourceCenter/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934",
+		assertEquals("http://openflexo.org/docx-test/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934",
 				converter.convertToString(initialFragment));
 	}
 
@@ -119,7 +119,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		DocXFragmentConverter converter = new DocXFragmentConverter();
 
-		String stringValue = "http://openflexo.org/test/TestResourceCenter/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934";
+		String stringValue = "http://openflexo.org/docx-test/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934";
 		DocXFragment fragment = converter.convertFromString(stringValue, factory);
 
 		System.out.println("fragment=" + fragment);

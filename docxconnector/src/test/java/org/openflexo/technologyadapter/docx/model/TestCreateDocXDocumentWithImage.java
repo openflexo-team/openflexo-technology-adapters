@@ -51,7 +51,12 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -66,12 +71,15 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestCreateDocXDocumentWithImage.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(TestCreateDocXDocumentWithImage.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
 	private static DocXDocument newDocument = null;
 	private static DocXDocumentResource newDocResource;
+
+	private static DirectoryResourceCenter newResourceCenter;
 
 	@AfterClass
 	public static void tearDownClass() {
@@ -89,20 +97,28 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
+
 	}
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+	public void testEmptyDocXCreation()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestDocumentWithTable.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
+				"TestDocumentWithTable.docx", true, technologicalAdapter.getDefaultIDStrategy());
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx",
+				newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -117,7 +133,8 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testAddSomeParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddSomeParagraphs()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testAddSomeParagraphs");
 
@@ -166,16 +183,21 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 	public void testAddImage() throws Exception {
 		log("testAddImage");
 
-		File imageFile = new File(resourceCenter.getDirectory(), "TestResourceCenter/Images/CarteDeVoeuxOF2015.png");
-		assertTrue(imageFile.exists());
+		FlexoResourceCenter<?> docXResourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/docx-test");
+		assertNotNull(docXResourceCenter);
 
-		DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
+		Resource imageResource = ResourceLocator.locateResource("TestResourceCenter/Images/CarteDeVoeuxOF2015.png");
+		System.out.println("imageResource:" + imageResource);
 
-		text2.addToRuns(newDocument.getFactory().makeDrawingRun(imageFile));
-
-		System.out.println(newDocument.debugStructuredContents());
-
-		newDocResource.save(null);
+		if (imageResource instanceof FileResourceImpl) {
+			File imageFile = ((FileResourceImpl) imageResource).getFile();
+			assertTrue(imageFile.exists());
+			DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
+			text2.addToRuns(newDocument.getFactory().makeDrawingRun(imageFile));
+			System.out.println(newDocument.debugStructuredContents());
+			newDocResource.save(null);
+		}
 
 	}
 

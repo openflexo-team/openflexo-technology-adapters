@@ -49,6 +49,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -68,6 +69,8 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
+	private static DirectoryResourceCenter newResourceCenter;
+
 	@AfterClass
 	public static void tearDownClass() {
 
@@ -80,22 +83,28 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
 	}
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+	public void testEmptyDocXCreation()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		DocXDocumentResource newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX",
-				"TestBlankDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		DocXDocumentResource newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter,
+				"DocX", "TestBlankDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
 		DocXDocument newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBlankDocument.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBlankDocument.docx",
+				newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 

@@ -52,6 +52,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -68,13 +69,16 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestCreateDocXDocumentWithTable.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(TestCreateDocXDocumentWithTable.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
 	private static DocXDocument newDocument = null;
 	private static DocXDocumentResource newDocResource;
 	private static DocXTable table1;
+
+	private static DirectoryResourceCenter newResourceCenter;
 
 	@AfterClass
 	public static void tearDownClass() {
@@ -92,21 +96,28 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
+
 	}
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+	public void testEmptyDocXCreation()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestDocumentWithTable.docx", true,
-				technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
+				"TestDocumentWithTable.docx", true, technologicalAdapter.getDefaultIDStrategy());
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx",
+				newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -121,7 +132,8 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testAddSomeParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddSomeParagraphs()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testAddSomeParagraphs");
 
@@ -241,7 +253,8 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 		DocXFragmentConverter fragmentConverter = new DocXFragmentConverter(serviceManager);
 
 		String serializedFragment = fragmentConverter.convertToString(fragment1);
-		DocXFragment fragment1bis = fragmentConverter.convertFromString(serializedFragment, newDocResource.getFactory());
+		DocXFragment fragment1bis = fragmentConverter.convertFromString(serializedFragment,
+				newDocResource.getFactory());
 		assertNotNull(fragment1bis);
 		assertEquals(paragraph, fragment1bis.getStartElement());
 		assertEquals(paragraph, fragment1bis.getEndElement());

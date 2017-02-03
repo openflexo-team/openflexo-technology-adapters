@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -57,6 +57,7 @@ import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -86,9 +87,11 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestDocXImageRoleInspectorViewPoint";
 	private static final String DOCUMENT_VIRTUAL_MODEL_NAME = "DocumentVirtualModel";
 
-	/*private static SwingGraphicalContextDelegate gcDelegate;
-	
-	private static Resource fibResource;*/
+	/*
+	 * private static SwingGraphicalContextDelegate gcDelegate;
+	 * 
+	 * private static Resource fibResource;
+	 */
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
@@ -118,11 +121,17 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	private static DocXImageRole role;
 
+	private static DirectoryResourceCenter newResourceCenter;
+
 	@Test
 	@TestOrder(3)
-	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException, ModelDefinitionException {
+	public void loadConcepts()
+			throws ResourceLoadingCancelledException, FlexoException, ModelDefinitionException, IOException {
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+
+		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
@@ -132,10 +141,11 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
-		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, resourceCenter.getDirectory(),
+		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
+		// resourceCenter.getDirectory(),
 		// serviceManager.getViewPointLibrary(), resourceCenter);
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
@@ -148,16 +158,20 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertEquals(19, templateDocument.getElements().size());
 
 		// We create a VM
-		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
-				viewPoint.getViewPointResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(
+				DOCUMENT_VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
-		// documentVirtualModel = VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
+		// documentVirtualModel =
+		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
+		assertTrue(ResourceLocator
+				.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
 		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getFlexoIODelegate().exists());
 
 		// Then we create the docx model slot
-		CreateModelSlot createDocumentModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, editor);
+		CreateModelSlot createDocumentModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null,
+				editor);
 		createDocumentModelSlot.setTechnologyAdapter(technologicalAdapter);
 		createDocumentModelSlot.setModelSlotClass(DocXModelSlot.class);
 		createDocumentModelSlot.setModelSlotName("document");
@@ -167,7 +181,8 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		docXModelSlot.setTemplateResource(templateResource);
 
 		// We create a image role
-		CreateTechnologyRole createImageRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null, editor);
+		CreateTechnologyRole createImageRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
+				editor);
 		createImageRole.setRoleName("image");
 		// createSectionRole.setModelSlot(docXModelSlot);
 		createImageRole.setFlexoRoleClass(DocXImageRole.class);
@@ -191,24 +206,18 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		gcDelegate.addTab("DocXImageRole", widget.getController());
 	}
 
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestDocXImageRoleInspector.class.getSimpleName());
-	}
-	
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-	
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
+	/*
+	 * public static void initGUI() { gcDelegate = new
+	 * SwingGraphicalContextDelegate(TestDocXImageRoleInspector.class.
+	 * getSimpleName()); }
+	 * 
+	 * @AfterClass public static void waitGUI() { gcDelegate.waitGUI(); }
+	 * 
+	 * @Before public void setUp() { gcDelegate.setUp(); }
+	 * 
+	 * @Override
+	 * 
+	 * @After public void tearDown() throws Exception { gcDelegate.tearDown(); }
+	 */
 
 }

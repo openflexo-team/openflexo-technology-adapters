@@ -47,6 +47,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -79,41 +80,42 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		initGUI();
 	}
 
-	/*private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
-	
-		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
-	
-		assertNotNull(documentResource);
-	
-		try {
-			documentResource.loadResourceData(null);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-		DocXDocument document = documentResource.getLoadedResourceData();
-		assertNotNull(document);
-		assertNotNull(document.getWordprocessingMLPackage());
-	
-		return document;
-	}*/
+	/*
+	 * private DocXDocument getDocument(String documentName) { String
+	 * documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/"
+	 * + documentName;
+	 * 
+	 * FlexoResource<DocXDocument> documentResource =
+	 * serviceManager.getResourceManager().getResource(documentURI, null,
+	 * DocXDocument.class);
+	 * 
+	 * assertNotNull(documentResource);
+	 * 
+	 * try { documentResource.loadResourceData(null); } catch
+	 * (FileNotFoundException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { //
+	 * TODO Auto-generated catch block e.printStackTrace(); } catch
+	 * (FlexoException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * DocXDocument document = documentResource.getLoadedResourceData();
+	 * assertNotNull(document);
+	 * assertNotNull(document.getWordprocessingMLPackage());
+	 * 
+	 * return document; }
+	 */
 
 	@Test
 	@TestOrder(1)
 	public void testInitRetrieveDocuments() {
 
-		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 		assertNotNull(docXTA);
 
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/docx-test");
+		assertNotNull(resourceCenter);
 		DocXDocumentRepository docXRepository = docXTA.getDocXDocumentRepository(resourceCenter);
 		assertNotNull(docXRepository);
 
@@ -121,7 +123,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
-	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testOpenSimpleDocumentEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
 		openDocXEditor(simpleDocument.getResource());
@@ -129,7 +132,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testOpenStructuredDocumentEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 		openDocXEditor(structuredDocument.getResource());
@@ -137,7 +141,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
-	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testOpenDocumentWithTableEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
 		openDocXEditor(documentWithTable.getResource());
@@ -145,7 +150,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(5)
-	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testOpenDocumentWithImageEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
 		openDocXEditor(documentWithImage.getResource());
@@ -153,53 +159,53 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(6)
-	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testOpenExampleReportEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
 		openDocXEditor(exampleReport.getResource());
 	}
 
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
-	}
-	
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-	
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
+	/*
+	 * public static void initGUI() { gcDelegate = new
+	 * SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+	 * }
+	 * 
+	 * @AfterClass public static void waitGUI() { gcDelegate.waitGUI(); }
+	 * 
+	 * @Before public void setUp() { gcDelegate.setUp(); }
+	 * 
+	 * @Override
+	 * 
+	 * @After public void tearDown() throws Exception { gcDelegate.tearDown(); }
+	 */
 
 	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
-		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
-		FileSystemManager fsManager = VFS.getManager();
-		FileObject fo = fsManager.resolveFile(docResource.getURI());*/
+		/*
+		 * DefaultLocalFileProvider p = new DefaultLocalFileProvider(); File f =
+		 * ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
+		 * FileSystemManager fsManager = VFS.getManager(); FileObject fo =
+		 * fsManager.resolveFile(docResource.getURI());
+		 */
 
-		/*ToolBarStates _toolbarStates = new ToolBarStates();
-		
-		JPanel toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
-		
-		DocXDocument document = docResource.getResourceData(null);
-		
-		JEditorPane editorView = createEditorView(document, _toolbarStates);
-		
-		JPanel editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
-		
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(toolbar, BorderLayout.NORTH);
-		panel.add(editorPanel, BorderLayout.CENTER);*/
+		/*
+		 * ToolBarStates _toolbarStates = new ToolBarStates();
+		 * 
+		 * JPanel toolbar =
+		 * FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
+		 * 
+		 * DocXDocument document = docResource.getResourceData(null);
+		 * 
+		 * JEditorPane editorView = createEditorView(document, _toolbarStates);
+		 * 
+		 * JPanel editorPanel =
+		 * FxScriptUIHelper.getInstance().createEditorPanel(editorView);
+		 * 
+		 * JPanel panel = new JPanel(new BorderLayout()); panel.add(toolbar,
+		 * BorderLayout.NORTH); panel.add(editorPanel, BorderLayout.CENTER);
+		 */
 
 		DocXEditor editor = new DocXEditor(docResource.getResourceData(null), true);
 
@@ -207,44 +213,42 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	}
 
-	/*private JEditorPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
-	
-		// Clipboard clipboard = getContext().getClipboard();
-		// clipboard.addFlavorListener(_toolbarStates);
-		// As a FlavorListener, _toolbarStates will ONLY be notified
-		// when there is a DataFlavor change in Clipboard.
-		// Therefore, make sure that toolbarStates' _isPasteEnable property
-		// is initialised correctly.
-	
-		WordMLTextPane editorView = new WordMLTextPane();
-		editorView.addFocusListener(_toolbarStates);
-		editorView.addCaretListener(_toolbarStates);
-		editorView.setTransferHandler(new TransferHandler());
-	
-		WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
-		editorKit.addInputAttributeListener(_toolbarStates);
-	
-		WordMLDocument doc = null;
-	
-		try {
-			doc = editorKit.openDocument(document.getWordprocessingMLPackage());
-	
-			doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
-			doc.addDocumentListener(_toolbarStates);
-			doc.setDocumentFilter(new WordMLDocumentFilter());
-			editorView.setDocument(doc);
-			editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
-	
-			if (DocUtil.isSharedDocument(doc)) {
-				editorKit.initPlutextClient(editorView);
-			}
-	
-		} catch (Exception exc) {
-			exc.printStackTrace();
-			doc = null;
-		}
-	
-		return editorView;
-	}*/
+	/*
+	 * private JEditorPane createEditorView(DocXDocument document, ToolBarStates
+	 * _toolbarStates) {
+	 * 
+	 * // Clipboard clipboard = getContext().getClipboard(); //
+	 * clipboard.addFlavorListener(_toolbarStates); // As a FlavorListener,
+	 * _toolbarStates will ONLY be notified // when there is a DataFlavor change
+	 * in Clipboard. // Therefore, make sure that toolbarStates' _isPasteEnable
+	 * property // is initialised correctly.
+	 * 
+	 * WordMLTextPane editorView = new WordMLTextPane();
+	 * editorView.addFocusListener(_toolbarStates);
+	 * editorView.addCaretListener(_toolbarStates);
+	 * editorView.setTransferHandler(new TransferHandler());
+	 * 
+	 * WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
+	 * editorKit.addInputAttributeListener(_toolbarStates);
+	 * 
+	 * WordMLDocument doc = null;
+	 * 
+	 * try { doc =
+	 * editorKit.openDocument(document.getWordprocessingMLPackage());
+	 * 
+	 * doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY,
+	 * document.getResource().getURI());
+	 * doc.addDocumentListener(_toolbarStates); doc.setDocumentFilter(new
+	 * WordMLDocumentFilter()); editorView.setDocument(doc);
+	 * editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG,
+	 * Boolean.TRUE);
+	 * 
+	 * if (DocUtil.isSharedDocument(doc)) {
+	 * editorKit.initPlutextClient(editorView); }
+	 * 
+	 * } catch (Exception exc) { exc.printStackTrace(); doc = null; }
+	 * 
+	 * return editorView; }
+	 */
 
 }

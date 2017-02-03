@@ -38,12 +38,20 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
+import java.io.FileNotFoundException;
+import java.util.logging.Logger;
+
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -51,14 +59,6 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileUtils;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import static org.junit.Assert.*;
 
 /**
  * This test is intented to test blank .docx document creation features
@@ -68,12 +68,15 @@ import static org.junit.Assert.*;
  */
 @RunWith(OrderedRunner.class)
 public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestCreateBasicDocXDocumentParaIdScheme.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(TestCreateBasicDocXDocumentParaIdScheme.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
 	private static DocXDocumentResource newDocResource = null;
 	private static DocXDocument newDocument = null;
+
+	private static DirectoryResourceCenter newResourceCenter;
 
 	@AfterClass
 	public static void tearDownClass() {
@@ -90,25 +93,32 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
+
 	}
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testEmptyDocXCreation()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testEmptyDocXCreation");
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestBasicDocument.docx", true,
-				technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
+				"TestBasicDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
 		newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx",
+				newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -120,9 +130,12 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
 		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
 
-		// System.out.println("docDefaultsStyle=" + docDefaultsStyle + " of " + docDefaultsStyle.getClass());
-		// System.out.println("normalStyle=" + normalStyle + " of " + normalStyle.getClass());
-		// System.out.println("heading1=" + heading1 + " of " + heading1.getClass());
+		// System.out.println("docDefaultsStyle=" + docDefaultsStyle + " of " +
+		// docDefaultsStyle.getClass());
+		// System.out.println("normalStyle=" + normalStyle + " of " +
+		// normalStyle.getClass());
+		// System.out.println("heading1=" + heading1 + " of " +
+		// heading1.getClass());
 
 		assertEquals(4, newDocument.getStructuringStyles().size());
 		assertFalse(docDefaultsStyle.isLevelled());
@@ -130,10 +143,11 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 		assertTrue(heading1.isLevelled());
 
 		// System.out.println("style=" + normalStyle.getStyle());
-		// System.out.println("based on=" + normalStyle.getStyle().getBasedOn());
+		// System.out.println("based on=" +
+		// normalStyle.getStyle().getBasedOn());
 
 		// TODO Check why it fails with gradle
-		//assertEquals(docDefaultsStyle, normalStyle.getParentStyle());
+		// assertEquals(docDefaultsStyle, normalStyle.getParentStyle());
 		assertEquals(normalStyle, heading1.getParentStyle());
 
 		System.out.println(newDocument.debugStructuredContents());
@@ -168,8 +182,10 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 
 		assertEquals(4, newDocument.getStructuringStyles().size());
 
-		// newDocument.getWordprocessingMLPackage().getMainDocumentPart().addStyledParagraphOfText("Title", "Hello Word!");
-		// newDocument.getWordprocessingMLPackage().getMainDocumentPart().addStyledParagraphOfText("Subtitle", "This is a subtitle!");
+		// newDocument.getWordprocessingMLPackage().getMainDocumentPart().addStyledParagraphOfText("Title",
+		// "Hello Word!");
+		// newDocument.getWordprocessingMLPackage().getMainDocumentPart().addStyledParagraphOfText("Subtitle",
+		// "This is a subtitle!");
 
 	}
 
@@ -231,20 +247,10 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 
 		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
-		File directory = ((FileFlexoIODelegate) newDocResource.getFlexoIODelegate()).getFile().getParentFile();
-
-		// File directory = ResourceLocator.retrieveResourceAsFile(newDocResource).getParentFile();
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), directory.getName());
-		newDirectory.mkdirs();
-
-		try {
-			FileUtils.copyContentDirToDir(directory, newDirectory);
-			// We wait here for the thread monitoring ResourceCenters to detect new files
-			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		serviceManager.getResourceCenterService()
+				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
+						serviceManager.getResourceCenterService()));
+		newResourceCenter.performDirectoryWatchingNow();
 
 		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
 				.getResource("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx"));

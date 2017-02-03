@@ -65,7 +65,8 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 	public void setFragment(DocXFragment fragment);
 
 	public static abstract class DocXFragmentRoleImpl
-			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>implements DocXFragmentRole {
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>
+			implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -82,23 +83,24 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 			return RoleCloningStrategy.Clone;
 		}
 
-		/*@Override
-		public ActorReference<DocXFragment> makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
-		
-			VirtualModelInstanceModelFactory factory = fci.getFactory();
-			FragmentActorReference<DocXFragment> returned = factory.newInstance(FragmentActorReference.class);
-			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(fci);
-			returned.setModellingElement(fragment);
-			return returned;
-		
-		}*/
+		/*
+		 * @Override public ActorReference<DocXFragment>
+		 * makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
+		 * 
+		 * VirtualModelInstanceModelFactory factory = fci.getFactory();
+		 * FragmentActorReference<DocXFragment> returned =
+		 * factory.newInstance(FragmentActorReference.class);
+		 * returned.setFlexoRole(this); returned.setFlexoConceptInstance(fci);
+		 * returned.setModellingElement(fragment); return returned;
+		 * 
+		 * }
+		 */
 
 		@Override
 		public String getTypeDescription() {
 			try {
-				return TypeUtils.simpleRepresentation(getType()) + "(" + getFMLModelFactory().getStringEncoder().toString(getFragment())
-						+ ")";
+				return TypeUtils.simpleRepresentation(getType()) + "("
+						+ getFMLModelFactory().getStringEncoder().toString(getFragment()) + ")";
 			} catch (InvalidDataException e) {
 				return super.getTypeDescription();
 			}
@@ -109,5 +111,20 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 			return DocXTechnologyAdapter.class;
 		}
 
+		// TODO: this code is useless, but required by
+		// DocXFMLModelFactoryIntegrationTest to pass
+		// (issue with PAMELA checking)
+		@Override
+		public DocXFragment getFragment() {
+			return (DocXFragment) performSuperGetter(FRAGMENT_KEY);
+		}
+
+		// TODO: this code is useless, but required by
+		// DocXFMLModelFactoryIntegrationTest to pass
+		// (issue with PAMELA checking)
+		@Override
+		public void setFragment(DocXFragment fragment) {
+			performSuperSetter(FRAGMENT_KEY, fragment);
+		}
 	}
 }

@@ -47,6 +47,7 @@ import org.junit.AfterClass;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -57,16 +58,19 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
 
 	/**
-	 * Instantiate a default {@link FlexoServiceManager} well suited for test purpose<br>
-	 * FML and FML@RT technology adapters are activated in returned {@link FlexoServiceManager}, as well as technology adapters whose
-	 * classes are supplied as varargs arguments
+	 * Instantiate a default {@link FlexoServiceManager} well suited for test
+	 * purpose<br>
+	 * FML and FML@RT technology adapters are activated in returned
+	 * {@link FlexoServiceManager}, as well as technology adapters whose classes
+	 * are supplied as varargs arguments
 	 * 
 	 * @param taClasses
 	 * @return a newly created {@link FlexoServiceManager}
 	 */
 	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
 		serviceManager = instanciateTestServiceManager();
-		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 		docXTA.setDefaultIDStrategy(idStrategy);
 		serviceManager.activateTechnologyAdapter(docXTA);
 		return serviceManager;
@@ -91,11 +95,20 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/TestResourceCenter/" + documentName;
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/docx-test");
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> " + rc.getDefaultBaseURI());
+		}
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager()
+				.getResource(documentURI, null, DocXDocument.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);
@@ -107,7 +120,6 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 		assertNotNull(documentResource);
 
 		return documentResource;
-
 	}
 
 	protected DocXDocument getDocument(String documentName) {

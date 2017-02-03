@@ -48,6 +48,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
@@ -62,24 +63,54 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + (resourceCenter.getDefaultBaseURI().endsWith("/") ? "" : "/")
-				+ "TestResourceCenter" + "/" + documentName;
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/docx-test");
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> " + rc.getDefaultBaseURI());
+		}
+
+		System.out.println("resourceCenter=" + resourceCenter);
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager()
+				.getResource(documentURI, null, DocXDocument.class);
 
 		if (documentResource == null) {
-			System.out.println("Cannot find: " + documentURI);
-			for (FlexoResource r : resourceCenter.getAllResources()) {
-				System.out.println(" > " + r.getURI());
+			logger.warning("Cannot find document resource " + documentURI);
+			for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+				System.out.println("> " + r.getURI());
 			}
 		}
+
 		assertNotNull(documentResource);
 
 		return documentResource;
-
 	}
+
+	/*
+	 * protected DocXDocumentResource getDocumentResource(String documentName) {
+	 * 
+	 * String documentURI = resourceCenter.getDefaultBaseURI() +
+	 * (resourceCenter.getDefaultBaseURI().endsWith("/") ? "" : "/") +
+	 * "TestResourceCenter" + "/" + documentName;
+	 * System.out.println("Searching " + documentURI);
+	 * 
+	 * DocXDocumentResource documentResource = (DocXDocumentResource)
+	 * serviceManager.getResourceManager().getResource(documentURI, null,
+	 * DocXDocument.class);
+	 * 
+	 * if (documentResource == null) { System.out.println("Cannot find: " +
+	 * documentURI); for (FlexoResource r : resourceCenter.getAllResources()) {
+	 * System.out.println(" > " + r.getURI()); } }
+	 * assertNotNull(documentResource);
+	 * 
+	 * return documentResource;
+	 * 
+	 * }
+	 */
 
 	protected DocXDocument getDocument(String documentName) {
 
@@ -116,20 +147,18 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 
 		// TODO: please check this: suspiscion of missing code after merge
 
-		/* {
-		@Override
-		public boolean handleException(Exception e) {
-			// System.out.println(
-			// "Handle exception ? isDisposed=" + isDisposed() + " exception=" + e + " stacktrace=" + e.getStackTrace().length);
-			if (e instanceof NullPointerException && ((NullPointerException) e).getStackTrace().length == 0) {
-				// Handle unexpected exception occured in docx4all editor
-				// We suspect issues with fonts
-				// Temporary ignore those exceptions
-				return false;
-			}
-			return super.handleException(e);
-		}
-		}*/
+		/*
+		 * {
+		 * 
+		 * @Override public boolean handleException(Exception e) { //
+		 * System.out.println( // "Handle exception ? isDisposed=" +
+		 * isDisposed() + " exception=" + e + " stacktrace=" +
+		 * e.getStackTrace().length); if (e instanceof NullPointerException &&
+		 * ((NullPointerException) e).getStackTrace().length == 0) { // Handle
+		 * unexpected exception occured in docx4all editor // We suspect issues
+		 * with fonts // Temporary ignore those exceptions return false; }
+		 * return super.handleException(e); } }
+		 */
 	}
 
 	@AfterClass

@@ -1,11 +1,15 @@
 dependencies {
-    compile project(":docxconnector")
+  compile project(":docxconnector")
 
-    // openflexo dep
-   compile flexoUi()
-   compile flexoDocumentationUi()
-   compile docx4all()
+  // openflexo dep
+  compile flexoUi()
+  compile flexoDocumentationUi()
+  compile docx4all()
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testCompile flexoUiTest()
+    
+  // Test resource center
+  testRuntime project(':docxconnector-test-rc')
+    
 }

@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +52,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -69,6 +70,8 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 	private static DocXDocument templateDocument;
 	private static DocXDocument generatedDocument;
 
+	private static DirectoryResourceCenter newResourceCenter;
+
 	@AfterClass
 	public static void tearDownClass() {
 
@@ -85,39 +88,37 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+
+		newResourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(newResourceCenter);
+
+		technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 	}
 
-	/*@Test
-	@TestOrder(3)
-	public void testDocXLoading() {
-	
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
-			assertNotNull(docXRepository);
-			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
-			System.out.println("Trying to load:");
-			for (DocXDocumentResource docResource : documents) {
-				System.out.println("> " + docResource);
-			}
-			for (DocXDocumentResource docResource : documents) {
-				try {
-					docResource.loadResourceData(null);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				assertNotNull(docResource.getLoadedResourceData());
-				System.out.println("URI of document: " + docResource.getURI());
-			}
-		}
-	}*/
+	/*
+	 * @Test
+	 * 
+	 * @TestOrder(3) public void testDocXLoading() {
+	 * 
+	 * for (FlexoResourceCenter<?> resourceCenter :
+	 * serviceManager.getResourceCenterService().getResourceCenters()) {
+	 * DocXDocumentRepository docXRepository =
+	 * resourceCenter.getRepository(DocXDocumentRepository.class,
+	 * technologicalAdapter); assertNotNull(docXRepository);
+	 * Collection<DocXDocumentResource> documents =
+	 * docXRepository.getAllResources(); System.out.println("Trying to load:");
+	 * for (DocXDocumentResource docResource : documents) {
+	 * System.out.println("> " + docResource); } for (DocXDocumentResource
+	 * docResource : documents) { try { docResource.loadResourceData(null); }
+	 * catch (FileNotFoundException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { //
+	 * TODO Auto-generated catch block e.printStackTrace(); } catch
+	 * (FlexoException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * assertNotNull(docResource.getLoadedResourceData());
+	 * System.out.println("URI of document: " + docResource.getURI()); } } }
+	 */
 
 	@Test
 	@TestOrder(4)
@@ -140,18 +141,25 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		DocXDocumentResource templateResource = (DocXDocumentResource) templateDocument.getResource();
 
-		File f = new File(((FileFlexoIODelegate) templateResource.getFlexoIODelegate()).getFile().getParent(), "Generated.docx");
+		// File f = new File(((FileFlexoIODelegate)
+		// templateResource.getFlexoIODelegate()).getFile().getParent(),
+		// "Generated.docx");
+
+		File f = new File(newResourceCenter.getDirectory(), "Generated.docx");
 
 		System.out.println("Generating " + f);
 		technologicalAdapter.setDefaultIDStrategy(IdentifierManagementStrategy.ParaId);
-		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory().makeResource(f,
-				resourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
-		// FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
-		// technologicalAdapter.getTechnologyContextManager(), resourceCenter, IdentifierManagementStrategy.ParaId);
+		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory()
+				.makeResource(f, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
+		// FlexoResource<DocXDocument> generatedResource =
+		// DocXDocumentResourceImpl.makeDocXDocumentResource(f,
+		// technologicalAdapter.getTechnologyContextManager(), resourceCenter,
+		// IdentifierManagementStrategy.ParaId);
 
 		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
 
-		// MainDocumentPart mdp = XmlUtils.deepCopy(templateDocument.getWordprocessingMLPackage().getMainDocumentPart());
+		// MainDocumentPart mdp =
+		// XmlUtils.deepCopy(templateDocument.getWordprocessingMLPackage().getMainDocumentPart());
 		// generatedPackage.set
 		// templateDocument.getWordprocessingMLPackage().getMainDocumentPart()
 
@@ -162,16 +170,18 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
+		for (P p : DocXUtils.getAllElementsFromObject(
+				generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());
 		}
 
-		/*generatedResource.save(null);
-		generatedResource.unloadResourceData();
-		generatedResource.loadResourceData(null);
-		generatedDocument = generatedResource.getResourceData(null);*/
+		/*
+		 * generatedResource.save(null); generatedResource.unloadResourceData();
+		 * generatedResource.loadResourceData(null); generatedDocument =
+		 * generatedResource.getResourceData(null);
+		 */
 
 		assertFalse(generatedDocument == templateDocument);
 
