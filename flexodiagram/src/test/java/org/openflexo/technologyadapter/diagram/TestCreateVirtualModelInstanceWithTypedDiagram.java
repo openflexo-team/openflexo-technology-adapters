@@ -43,7 +43,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -68,8 +67,7 @@ import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
@@ -77,7 +75,6 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileUtils;
 
 /**
  * This unit test is intented to test VirtualModelInstance using a
@@ -101,26 +98,28 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	private static View newView;
 	private static VirtualModelInstance newVirtualModelInstance;
 
+	private static DirectoryResourceCenter newResourceCenter;
+
 	/**
 	 * Instantiate a ViewPoint with a VirtualModel
 	 * 
 	 * @throws SaveResourceException
 	 * @throws ModelDefinitionException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(1)
-	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
+	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException, IOException {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
+		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
 		newViewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
 
@@ -299,23 +298,28 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
+		serviceManager.getResourceCenterService()
+				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),
+						serviceManager.getResourceCenterService()));
+		newResourceCenter.performDirectoryWatchingNow();
 
-		File directory = ResourceLocator.retrieveResourceAsFile(newViewPointResource.getDirectory());
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
-				directory.getName());
-		newDirectory.mkdirs();
-
-		try {
-			FileUtils.copyContentDirToDir(directory, newDirectory);
-			// We wait here for the thread monitoring ResourceCenters to detect
-			// new files
-			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		/*
+		 * FlexoResourceCenter<?> resourceCenter =
+		 * serviceManager.getResourceCenterService()
+		 * .getFlexoResourceCenter("http://openflexo.org/diagram-test");
+		 * 
+		 * File directory =
+		 * ResourceLocator.retrieveResourceAsFile(newViewPointResource.
+		 * getDirectory()); File newDirectory = new
+		 * File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
+		 * directory.getName()); newDirectory.mkdirs();
+		 * 
+		 * try { FileUtils.copyContentDirToDir(directory, newDirectory); // We
+		 * wait here for the thread monitoring ResourceCenters to detect // new
+		 * files ((FileSystemBasedResourceCenter)
+		 * resourceCenter).performDirectoryWatchingNow(); } catch (IOException
+		 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 */
 
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
@@ -326,7 +330,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		System.out.println("view in " + newViewResource.getFlexoIODelegate().getSerializationArtefact());
 
-		ViewPointRepository<?> vpRep = resourceCenter.getViewPointRepository();
+		ViewPointRepository<?> vpRep = newResourceCenter.getViewPointRepository();
 		for (ViewPointResource r : vpRep.getAllResources()) {
 			System.out.println("> " + r.getURI());
 		}
