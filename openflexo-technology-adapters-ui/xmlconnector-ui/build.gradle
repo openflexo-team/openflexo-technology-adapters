@@ -6,7 +6,7 @@ dependencies {
   compile flexoOntologyUi()
 
   runtime fmlTechnologyAdapterUi()
-  runtime group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.9.0-SNAPSHOT"
+  runtime group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.8.1-SNAPSHOT"
   // external dep
   // testing dep
     testCompile flexoUiTest()
