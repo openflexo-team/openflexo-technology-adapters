@@ -43,7 +43,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -65,7 +64,7 @@ import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -83,7 +82,6 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileUtils;
 
 /**
  * Test the creation of a VirtualModel whose instances have
@@ -106,7 +104,6 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 	public static DiagramTechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
-	public static FlexoResourceCenter<?> resourceCenter;
 	public static DiagramSpecificationRepository<?> repository;
 	public static FlexoEditor editor;
 
@@ -122,6 +119,9 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 	public static VirtualModel virtualModel;
 	public static DropScheme dropScheme;
 
+	private static FlexoResourceCenter<?> diagramTestResourceCenter;
+	private static DirectoryResourceCenter newResourceCenter;
+
 	/**
 	 * Initialize
 	 */
@@ -136,12 +136,12 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		technologicalAdapter = applicationContext.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+		diagramTestResourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
 
-		assertNotNull(resourceCenter);
+		assertNotNull(diagramTestResourceCenter);
 
-		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
+		repository = technologicalAdapter.getDiagramSpecificationRepository(diagramTestResourceCenter);
 
 		assertNotNull(repository);
 
@@ -228,10 +228,11 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 	 * 
 	 * @throws ModelDefinitionException
 	 * @throws SaveResourceException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(4)
-	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
+	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException, IOException {
 
 		log("testCreateViewPoint()");
 
@@ -239,11 +240,10 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
+		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 
@@ -354,37 +354,17 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		technologicalAdapter = applicationContext.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+		serviceManager.getResourceCenterService()
+				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),
+						serviceManager.getResourceCenterService()));
+		newResourceCenter.performDirectoryWatchingNow();
+
+		diagramTestResourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
 
-		assertNotNull(resourceCenter);
+		assertNotNull(diagramTestResourceCenter);
 
-		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
-
-		assertNotNull(repository);
-
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
-				"CopyFromPreviousRC");
-		newDirectory.mkdirs();
-
-		try {
-			File dsDir = new File(newDirectory,
-					ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
-			dsDir.mkdirs();
-			FileUtils.copyContentDirToDir(
-					ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
-			File vpDir = new File(newDirectory,
-					ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
-			vpDir.mkdirs();
-			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()),
-					vpDir);
-			// We wait here for the thread monitoring ResourceCenters to detect
-			// new files
-			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		repository = technologicalAdapter.getDiagramSpecificationRepository(diagramTestResourceCenter);
 
 		DiagramSpecificationResource retrievedDSResource = repository.getResource(DIAGRAM_SPECIFICATION_URI);
 		assertNotNull(retrievedDSResource);
