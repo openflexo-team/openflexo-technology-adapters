@@ -45,7 +45,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Line;
@@ -56,16 +55,16 @@ import org.apache.poi.hslf.model.ShapeTypes;
 import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.model.Table;
 import org.apache.poi.hslf.model.TextBox;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.FlexoServiceManager;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -87,9 +86,12 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static FlexoServiceManager testApplicationContext;
 	private static DiagramTechnologyAdapter technologicalAdapter;
-	private static Resource resourceCenterDirectory;
+	// private static Resource resourceCenterDirectory;
 	private static FlexoEditor editor;
 	private static FlexoProject project;
+
+	private static FlexoResourceCenter rc;
+	private static Object testResourceCenterNode;
 
 	/**
 	 * Instantiate test resource center
@@ -103,11 +105,22 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		ResourceLocator.appendDelegate(fsrl);
 
 		log("test0InstantiateResourceCenter()");
-		testApplicationContext = instanciateTestServiceManager();
+		testApplicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		assertNotNull(testApplicationContext);
 
-		resourceCenterDirectory = ResourceLocator.locateResource("src/test/resources");
-		assertTrue(resourceCenterDirectory != null);
+		rc = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/diagram-test");
+		Object rcRoot = rc.getBaseArtefact();
+		for (Object child : rc.getContents(rcRoot)) {
+			System.out.println("child = " + child);
+			if (rc.retrieveName(child).equals("TestResourceCenter")) {
+				testResourceCenterNode = child;
+				break;
+			}
+		}
+		assertNotNull(testResourceCenterNode);
+
+		System.out.println("testResourceCenterNode=" + testResourceCenterNode);
+
 		editor = createProject("TestProject");
 		project = editor.getProject();
 		assertTrue(project.getProjectDirectory().exists());
@@ -127,31 +140,37 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType
 				.makeNewAction(project.getRootFolder(), null, editor);
 
-		for (Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"), false)) {
-			File pptFile = ((FileResourceImpl) rsc).getFile();
-			logger.info("Testing file " + pptFile.getName());
-			createExampleDiagramFromPPTSlide.setFile(pptFile);
-			for (Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()) {
-				logger.info("Testing Slide number " + slide.getSlideNumber() + " in file named " + pptFile.getName());
-				createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
-				createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
-				createExampleDiagramFromPPTSlide.setSlide(slide);
-				createExampleDiagramFromPPTSlide.doAction();
+		Assume.assumeTrue(testResourceCenterNode instanceof File);
 
-				DiagramContainerElement diag = createExampleDiagramFromPPTSlide.getDiagram();
-				assertNotNull(diag);
+		for (File pptFile : ((File) testResourceCenterNode).listFiles()) {
+			if (rc.retrieveName(pptFile).endsWith(".ppt")) {
+				logger.info("Testing file " + pptFile.getName());
+				createExampleDiagramFromPPTSlide.setFile(pptFile);
+				for (Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()) {
+					logger.info(
+							"Testing Slide number " + slide.getSlideNumber() + " in file named " + pptFile.getName());
+					createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
+					createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
+					createExampleDiagramFromPPTSlide.setSlide(slide);
+					createExampleDiagramFromPPTSlide.doAction();
 
-				realNumberOfShapesAndConnectors = 0;
-				expectedNumberOfShapesAndConnectors = 1;
+					DiagramContainerElement diag = createExampleDiagramFromPPTSlide.getDiagram();
+					assertNotNull(diag);
 
-				computeExpectedNumberOfShapesAndConnectors(slide);
-				computeRealNumberOfShapesAndConnectors(diag);
+					realNumberOfShapesAndConnectors = 0;
+					expectedNumberOfShapesAndConnectors = 1;
 
-				logger.info("Testing file " + pptFile.getName() + " slide number " + slide.getSlideNumber() + " expecting "
-						+ expectedNumberOfShapesAndConnectors + " in reality " + realNumberOfShapesAndConnectors);
-				// Sylvain: Temporary commented this line to get test successfull
-				// Vincent will fix this soon
-				// assertEquals(expectedNumberOfShapesAndConnectors,realNumberOfShapesAndConnectors);
+					computeExpectedNumberOfShapesAndConnectors(slide);
+					computeRealNumberOfShapesAndConnectors(diag);
+
+					logger.info("Testing file " + pptFile.getName() + " slide number " + slide.getSlideNumber()
+							+ " expecting " + expectedNumberOfShapesAndConnectors + " in reality "
+							+ realNumberOfShapesAndConnectors);
+					// Sylvain: Temporary commented this line to get test
+					// successfull
+					// Vincent will fix this soon
+					// assertEquals(expectedNumberOfShapesAndConnectors,realNumberOfShapesAndConnectors);
+				}
 			}
 		}
 	}
@@ -165,8 +184,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			for (int i = sh.length - 1; i >= 0; i--) {
 				if (MasterSheet.isPlaceholder(sh[i])) {
 					continue;
-				}
-				else {
+				} else {
 					expectedShapes.add(sh[i]);
 				}
 			}
@@ -183,19 +201,16 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		if (shape instanceof Table) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 1
 					+ (((Table) shape).getNumberOfColumns() * ((Table) shape).getNumberOfRows());
-		}
-		else if (shape instanceof TextBox || shape instanceof Picture) {
+		} else if (shape instanceof TextBox || shape instanceof Picture) {
 			expectedNumberOfShapesAndConnectors++;
-		}
-		else if (shape instanceof Line) {
+		} else if (shape instanceof Line) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 3;
-		}
-		else if (shape instanceof AutoShape) {
+		} else if (shape instanceof AutoShape) {
 			if (!isConnector(shape.getShapeType())) {
 				expectedNumberOfShapesAndConnectors++;
-			}
-			else {
-				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + elementToCreate(shape, expectedShapes);
+			} else {
+				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors
+						+ elementToCreate(shape, expectedShapes);
 			}
 		}
 	}
@@ -218,18 +233,18 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	private boolean isConnector(int shapeType) {
 		switch (shapeType) {
-			case ShapeTypes.CurvedConnector2:
-				return true;
-			case ShapeTypes.CurvedConnector3:
-				return true;
-			case ShapeTypes.CurvedConnector4:
-				return true;
-			case ShapeTypes.CurvedConnector5:
-				return true;
-			case ShapeTypes.Line:
-				return true;
-			case ShapeTypes.StraightConnector1:
-				return true;
+		case ShapeTypes.CurvedConnector2:
+			return true;
+		case ShapeTypes.CurvedConnector3:
+			return true;
+		case ShapeTypes.CurvedConnector4:
+			return true;
+		case ShapeTypes.CurvedConnector5:
+			return true;
+		case ShapeTypes.Line:
+			return true;
+		case ShapeTypes.StraightConnector1:
+			return true;
 		}
 		return false;
 	}
@@ -242,8 +257,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			if (poiConnector.getAnchor().intersects(diagramShape.getAnchor())) {
 				if (sourceShape == null && targetShape == null) {
 					sourceShape = diagramShape;
-				}
-				else if (sourceShape != null && targetShape == null) {
+				} else if (sourceShape != null && targetShape == null) {
 					targetShape = diagramShape;
 				}
 			}
