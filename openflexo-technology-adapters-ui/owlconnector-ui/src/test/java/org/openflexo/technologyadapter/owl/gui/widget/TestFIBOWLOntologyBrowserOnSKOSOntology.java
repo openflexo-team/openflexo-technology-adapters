@@ -46,7 +46,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,7 +57,6 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
@@ -120,21 +118,8 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
-
-		ResourceRepository<OWLOntologyResource, ?> ontologyRepository = null;
-		for (ResourceRepository<?, ?> rep : owlRepositories) {
-			if (rep.getSize() > 0) {
-				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) rep;
-				break;
-			}
-		}
-
-		assertNotNull(ontologyRepository);
-
-		// ontologyResource =
-		// ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource("http://www.w3.org/2004/02/skos/core", OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 

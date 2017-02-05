@@ -59,6 +59,7 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyBrowser;
+import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -94,24 +95,12 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 
 		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ResourceRepository<OWLOntologyResource, ?> ontologyRepository = null;
-		for (ResourceRepository<?, ?> rep : owlRepositories) {
-			if (rep.getSize() > 0) {
-				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) rep;
-				break;
-			}
-		}
-
-		assertNotNull(ontologyRepository);
-
-		// ontologyResource =
-		// ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource("http://www.w3.org/2004/02/skos/core", OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
 		System.out.println("Found ontology resource " + ontologyResource);
-
 		System.out.println("Try to load ontology resource " + ontologyResource);
 
 		try {
