@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -29,7 +28,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -44,7 +43,8 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
  * @author sylvain
  *
  */
-public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
+public class ExcelWorkbookResourceFactory
+		extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceFactory.class.getPackage().getName());
 
@@ -57,39 +57,36 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 
 	@Override
 	public ExcelWorkbook makeEmptyResourceData(ExcelWorkbookResource resource) {
-		return createExcelWorkbook(resource);
+		if (resource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
+			return createExcelWorkbook((FlexoIOStreamDelegate) resource.getFlexoIODelegate());
+		}
+		logger.severe("Cannot create excel workbook for this io delegate: " + resource.getFlexoIODelegate());
+		return null;
 	}
 
-	protected static ExcelWorkbook createExcelWorkbook(ExcelWorkbookResource resource) {
+	protected static <I> ExcelWorkbook createExcelWorkbook(FlexoIOStreamDelegate<I> ioDelegate) {
 		Workbook wb = null;
 		ExcelWorkbook newWorkbook = null;
 
-		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate) resource.getFlexoIODelegate();
-			try {
-				if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xls")) {
-					wb = new HSSFWorkbook();
-					wb.createSheet("Default");
-				}
-				else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
-					wb = new XSSFWorkbook();
-					wb.createSheet("Default");
-				}
-				else {
-					wb = WorkbookFactory.create(new FileInputStream(delegate.getFile()));
-				}
-				BasicExcelModelConverter converter = new BasicExcelModelConverter();
-				newWorkbook = converter.convertExcelWorkbook(wb, resource.getTechnologyAdapter());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xls")) {
+				wb = new HSSFWorkbook();
+				wb.createSheet("Default");
+			} else if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xlsx")) {
+				wb = new XSSFWorkbook();
+				wb.createSheet("Default");
+			} else {
+				wb = WorkbookFactory.create(ioDelegate.getInputStream());
 			}
-		}
-		else {
-			logger.warning("Create workbook for a non-file is not implemented");
+			BasicExcelModelConverter converter = new BasicExcelModelConverter();
+			newWorkbook = converter.convertExcelWorkbook(wb,
+					((ExcelWorkbookResource) ioDelegate.getFlexoResource()).getTechnologyAdapter());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return newWorkbook;
 	}
@@ -102,11 +99,13 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 	}
 
 	@Override
-	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter,
+	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource,
+			FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);
 
-		// Register the resource in the ExcelWorkbookRepository of supplied resource center
+		// Register the resource in the ExcelWorkbookRepository of supplied
+		// resource center
 		registerResourceInResourceRepository(resource,
 				technologyContextManager.getTechnologyAdapter().getExcelWorkbookRepository(resourceCenter));
 
