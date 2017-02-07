@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,19 +38,27 @@ import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.task.Progress;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>
+		implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
 	protected DocXDocument performLoad() throws IOException, Exception {
 
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load DocX document with this IO/delegate: " + getFlexoIODelegate());
+		}
+
+		Progress.progress(
+				getLocales().localizedForKey("loading") + " " + getFlexoIODelegate().getSerializationArtefact());
 		try {
-			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getFlexoIOStreamDelegate().getInputStream());
+			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getInputStream());
 
 			DocXDocument returned = getFactory().makeNewDocXDocument(wpmlPackage);
 			return returned;
@@ -72,98 +82,86 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	@Override
 	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
-		File temporaryFile = null;
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new SaveResourceException(getFlexoIODelegate());
+		}
+
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getFile() + " version=" + getModelVersion());
+			logger.info("Saving resource " + this + " : " + getFlexoIODelegate().getSerializationArtefact()
+					+ " version=" + getModelVersion());
 		}
 
-		try {
-			File dir = getFile().getParentFile();
-			willWrite(dir);
-			if (!dir.exists()) {
-				dir.mkdirs();
+		if (getFlexoIOStreamDelegate() instanceof FileFlexoIODelegate) {
+			File temporaryFile = null;
+			try {
+				File fileToSave = ((FileFlexoIODelegate) getFlexoIOStreamDelegate()).getFile();
+				// Make local copy
+				makeLocalCopy(fileToSave);
+				// Using temporary file
+				temporaryFile = ((FileFlexoIODelegate) getFlexoIODelegate()).createTemporaryArtefact(".pdf");
+				if (logger.isLoggable(Level.FINE)) {
+					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+				}
+				write(new FileOutputStream(temporaryFile));
+				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
+				FileUtils.rename(temporaryFile, fileToSave);
+				if (clearIsModified) {
+					notifyResourceStatusChanged();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (temporaryFile != null) {
+					temporaryFile.delete();
+				}
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getFlexoIODelegate(), e);
 			}
-			willWrite(getFile());
-			// Make local copy
-			makeLocalCopy();
-			// Using temporary file
-			temporaryFile = File.createTempFile("temp", ".docx", dir);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+		} else {
+			try {
+				write(getOutputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getFlexoIODelegate(), e);
 			}
-			writeToFile(temporaryFile);
-
-			System.out.println("Renamed " + temporaryFile + " to " + getFile());
-			FileUtils.rename(temporaryFile, getFile());
-			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-			if (clearIsModified) {
-				notifyResourceStatusChanged();
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			if (temporaryFile != null) {
-				temporaryFile.delete();
-			}
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
-			}
-			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-			throw new SaveResourceException(getFlexoIODelegate(), e);
-		} finally {
-			hasWritten(getFile());
-			hasWritten(getFile().getParentFile());
 		}
+
+		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 		if (clearIsModified) {
-			if (getFactory().getIDStrategy() == IdentifierManagementStrategy.Bookmark) {
-				getFactory().someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;
-			}
+			notifyResourceStatusChanged();
 		}
+
 	}
 
-	private void writeToFile(File docxDir) throws SaveResourceException {
-		FileOutputStream out = null;
+	private void write(OutputStream out) throws SaveResourceException, IOException {
+		System.out.println("Writing docx file in : " + getFlexoIODelegate().getSerializationArtefact());
 		try {
-			out = new FileOutputStream(docxDir);
-			/*StreamResult result = new StreamResult(out);
-			TransformerFactory factory = TransformerFactory
-					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
-			
-			Transformer transformer = factory.newTransformer();*/
-
-			System.out.println("Writing docx file in : " + docxDir);
-
-			// System.out.println("getDocument().getWordprocessingMLPackage().getMainDocumentPart()="
-			// + getDocument().getWordprocessingMLPackage().getMainDocumentPart());
-
-			/*for (Object o : getDocument().getWordprocessingMLPackage().getMainDocumentPart().getContent()) {
-				System.out.println("% " + o);
-			}*/
-
-			// System.out.println(XmlUtils.marshaltoString(getDocument().getWordprocessingMLPackage().getMainDocumentPart()));
-
 			getDocument().getWordprocessingMLPackage().save(out);
 
 		} catch (Docx4JException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
 
-		logger.info("Wrote " + getFile());
+		System.out.println("Wrote : " + getFlexoIODelegate().getSerializationArtefact());
 	}
 
-	private void makeLocalCopy() throws IOException {
-		if (getFile() != null && getFile().exists()) {
-			String localCopyName = getFile().getName() + "~";
-			File localCopy = new File(getFile().getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(getFile(), localCopy);
+	private void makeLocalCopy(File file) throws IOException {
+		if (file != null && file.exists()) {
+			String localCopyName = file.getName() + "~";
+			File localCopy = new File(file.getParentFile(), localCopyName);
+			FileUtils.copyFileToFile(file, localCopy);
 		}
 	}
 
@@ -188,12 +186,25 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		return DocXDocument.class;
 	}
 
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+	/*
+	 * private File getFile() { return getFileFlexoIODelegate().getFile(); }
+	 * 
+	 * public FileFlexoIODelegate getFileFlexoIODelegate() { return
+	 * (FileFlexoIODelegate) getFlexoIODelegate(); }
+	 */
+
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
 	}
 
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
 	}
 
 }
