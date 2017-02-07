@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,93 +42,100 @@ import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 import org.openflexo.technologyadapter.pdf.model.PDFFactory;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocument, PDFFactory>implements PDFDocumentResource {
+public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocument, PDFFactory>
+		implements PDFDocumentResource {
 	private static final Logger logger = Logger.getLogger(PDFDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
 	protected PDFDocument performLoad() throws IOException, Exception {
 
-		Progress.progress(getLocales().localizedForKey("loading") + " " + getFile().getName());
-		PDDocument document = PDDocument.load(getFile());
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load PDF document with this IO/delegate: " + getFlexoIODelegate());
+		}
+
+		Progress.progress(
+				getLocales().localizedForKey("loading") + " " + getFlexoIODelegate().getSerializationArtefact());
+		PDDocument document = PDDocument.load(getInputStream());
 		PDFDocument returned = getFactory().makeNewPDFDocument(document);
 		return returned;
 	}
 
 	@Override
 	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
-		File temporaryFile = null;
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new SaveResourceException(getFlexoIODelegate());
+		}
+
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getFile() + " version=" + getModelVersion());
+			logger.info("Saving resource " + this + " : " + getFlexoIODelegate().getSerializationArtefact()
+					+ " version=" + getModelVersion());
 		}
 
-		try {
-			File dir = getFile().getParentFile();
-			willWrite(dir);
-			if (!dir.exists()) {
-				dir.mkdirs();
+		if (getFlexoIOStreamDelegate() instanceof FileFlexoIODelegate) {
+			File temporaryFile = null;
+			try {
+				File fileToSave = ((FileFlexoIODelegate) getFlexoIOStreamDelegate()).getFile();
+				// Make local copy
+				makeLocalCopy(fileToSave);
+				// Using temporary file
+				temporaryFile = ((FileFlexoIODelegate) getFlexoIODelegate()).createTemporaryArtefact(".pdf");
+				if (logger.isLoggable(Level.FINE)) {
+					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+				}
+				write(new FileOutputStream(temporaryFile));
+				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
+				FileUtils.rename(temporaryFile, fileToSave);
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (temporaryFile != null) {
+					temporaryFile.delete();
+				}
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getFlexoIODelegate(), e);
 			}
-			willWrite(getFile());
-			// Make local copy
-			makeLocalCopy();
-			// Using temporary file
-			temporaryFile = File.createTempFile("temp", ".pdf", dir);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+		} else {
+			try {
+				write(getOutputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getFlexoIODelegate(), e);
 			}
-			writeToFile(temporaryFile);
+		}
 
-			System.out.println("Renamed " + temporaryFile + " to " + getFile());
-			FileUtils.rename(temporaryFile, getFile());
-			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-			if (clearIsModified) {
-				notifyResourceStatusChanged();
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			if (temporaryFile != null) {
-				temporaryFile.delete();
-			}
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
-			}
-			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-			throw new SaveResourceException(getFlexoIODelegate(), e);
-		} finally {
-			hasWritten(getFile());
-			hasWritten(getFile().getParentFile());
+		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+		if (clearIsModified) {
+			notifyResourceStatusChanged();
 		}
 	}
 
-	private void writeToFile(File file) throws SaveResourceException {
-		FileOutputStream out = null;
+	private void write(OutputStream out) throws SaveResourceException, IOException {
 		try {
-			out = new FileOutputStream(file);
-
-			System.out.println("Writing pdf file in : " + file);
-
+			System.out.println("Writing pdf file in : " + getFlexoIODelegate().getSerializationArtefact());
 			getDocument().getPDDocument().save(out);
-
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		} catch (IOException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
-
-		logger.info("Wrote " + getFile());
+		System.out.println("Wrote : " + getFlexoIODelegate().getSerializationArtefact());
 	}
 
-	private void makeLocalCopy() throws IOException {
-		if (getFile() != null && getFile().exists()) {
-			String localCopyName = getFile().getName() + "~";
-			File localCopy = new File(getFile().getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(getFile(), localCopy);
+	private void makeLocalCopy(File file) throws IOException {
+		if (file != null && file.exists()) {
+			String localCopyName = file.getName() + "~";
+			File localCopy = new File(file.getParentFile(), localCopyName);
+			FileUtils.copyFileToFile(file, localCopy);
 		}
 	}
 
@@ -151,12 +160,18 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 		return PDFDocument.class;
 	}
 
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
 	}
 
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
 	}
 
 }
