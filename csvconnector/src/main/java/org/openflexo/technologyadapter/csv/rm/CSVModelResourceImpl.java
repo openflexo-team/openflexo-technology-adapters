@@ -38,18 +38,6 @@
 
 package org.openflexo.technologyadapter.csv.rm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -59,6 +47,17 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.toolbox.IProgress;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>implements CSVModelResource {
 	private static final Logger logger = Logger.getLogger(CSVModelResourceImpl.class.getPackage().getName());
@@ -109,13 +108,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>im
 	public CSVModel getModelData() {
 		try {
 			return getResourceData(null);
-		} catch (ResourceLoadingCancelledException e) {
-			e.printStackTrace();
-			return null;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (FlexoException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -127,23 +120,18 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>im
 	}
 
 	private void writeToFile() throws SaveResourceException {
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(getFile());
+
+		try (FileOutputStream out = new FileOutputStream(getFile())) {
 			StreamResult result = new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
 			Transformer transformer = factory.newTransformer();
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (IOException e) {
 			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
 			throw new SaveResourceException(getFlexoIODelegate());
-		} finally {
-			IOUtils.closeQuietly(out);
 		}
 
 		logger.info("Wrote " + getFile());
