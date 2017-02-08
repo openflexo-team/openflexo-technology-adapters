@@ -107,7 +107,6 @@ import org.openflexo.foundation.fml.rt.editionaction.SelectFlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -291,7 +290,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
-		System.out.println("template file: " + ((FileFlexoIODelegate) templateResource.getFlexoIODelegate()).getFile());
+		System.out.println("template file: " + templateResource.getFlexoIODelegate().getSerializationArtefact());
 		System.out.println("template document:\n" + templateDocument.debugStructuredContents());
 
 		assertEquals(14, templateDocument.getElements().size());

@@ -131,7 +131,6 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 		firstParagraph = (DocXParagraph) simpleDocumentWithBookmarks.getElements().get(2);
 		lastParagraph = (DocXParagraph) simpleDocumentWithBookmarks.getElements().get(12);
 
-		// Ids present in document
 		assertEquals("19DABA72", firstParagraph.getIdentifier());
 		assertEquals("77576D62", lastParagraph.getIdentifier());
 
@@ -139,8 +138,7 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 		assertNotNull(titleParagraph.getIdentifier());
 
 		// Document is modified because a new id has been generated
-		if (simpleDocumentWithBookmarks.isModified()) {
-			assertTrue(simpleDocumentWithBookmarks.isModified());
+		if (simpleDocumentWithBookmarks.isModified() && !simpleDocumentWithBookmarks.getResource().isReadOnly()) {
 			simpleDocumentWithBookmarks.getResource().save(null);
 			assertFalse(simpleDocumentWithBookmarks.isModified());
 		}
