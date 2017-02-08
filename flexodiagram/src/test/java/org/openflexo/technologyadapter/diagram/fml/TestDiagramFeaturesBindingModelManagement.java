@@ -122,7 +122,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 	public static DiagramTechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
-	public static DiagramSpecificationRepository<?> repository;
+	// public static DiagramSpecificationRepository<?> repository;
 	public static FlexoEditor editor;
 
 	public static DiagramSpecificationResource diagramSpecificationResource;
@@ -147,10 +147,12 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 	/**
 	 * Initialize
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(1)
-	public void testInitialize() {
+	public void testInitialize() throws IOException {
 
 		log("testInitialize()");
 
@@ -162,18 +164,15 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		diagramTestResourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
 
+		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
+
 		assertNotNull(diagramTestResourceCenter);
-
-		repository = technologicalAdapter.getDiagramSpecificationRepository(diagramTestResourceCenter);
-
-		assertNotNull(repository);
 
 		editor = new FlexoTestEditor(null, applicationContext);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);
 		assertNotNull(diagramTestResourceCenter);
-		assertNotNull(repository);
 	}
 
 	/**
@@ -184,6 +183,10 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	public void testCreateDiagramSpecification() {
 
 		log("testCreateDiagramSpecification()");
+
+		DiagramSpecificationRepository<?> repository = technologicalAdapter
+				.getDiagramSpecificationRepository(newResourceCenter);
+		assertNotNull(repository);
 
 		CreateDiagramSpecification action = CreateDiagramSpecification.actionType
 				.makeNewAction(repository.getRootFolder(), null, editor);
@@ -226,7 +229,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertTrue(paletteResource.getFlexoIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
-		assertEquals(2, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
+		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
 
 		// Add palette element
 		DiagramPalette palette = paletteResource.getDiagramPalette();
@@ -264,8 +267,6 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
-
-		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
@@ -577,8 +578,8 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		assertNotNull(diagramTestResourceCenter);
 
-		repository = technologicalAdapter.getDiagramSpecificationRepository(diagramTestResourceCenter);
-
+		DiagramSpecificationRepository<?> repository = technologicalAdapter
+				.getDiagramSpecificationRepository(newResourceCenter);
 		assertNotNull(repository);
 
 		DiagramSpecificationResource retrievedDSResource = repository.getResource(DIAGRAM_SPECIFICATION_URI);
