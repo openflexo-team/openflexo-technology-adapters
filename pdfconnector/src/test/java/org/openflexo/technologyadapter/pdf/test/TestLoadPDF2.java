@@ -1,6 +1,5 @@
 package org.openflexo.technologyadapter.pdf.test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -12,27 +11,24 @@ import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
+import org.junit.Assume;
 import org.junit.Test;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.technologyadapter.pdf.model.AbstractTestPDF;
+import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResource;
 
-public class TestLoadPDF2 {
+public class TestLoadPDF2 extends AbstractTestPDF {
 
 	@Test
 	public void testLoadPDF() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
-				.getFile();
-		System.out.println("resourceDir=" + resourceDir);
-		for (File f : resourceDir.listFiles()) {
-			System.out.println("> " + f);
-		}
-		final File resource = ((FileResourceImpl) ResourceLocator
-				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
-		PDDocument document = null;
+		instanciateTestServiceManagerForPDF();
 
-		document = PDDocument.load(resource);
+		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
+		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
+
+		PDDocument document = PDDocument.load(docResource.openInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();

@@ -72,6 +72,8 @@ public abstract class AbstractTestPDF extends OpenflexoProjectAtRunTimeTestCase 
 
 	protected PDFDocumentResource getDocumentResource(String documentName) {
 
+		System.out.println("SM=" + serviceManager);
+
 		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/pdf-test");
 

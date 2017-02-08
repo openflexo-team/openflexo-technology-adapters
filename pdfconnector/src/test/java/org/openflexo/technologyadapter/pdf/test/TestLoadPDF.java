@@ -1,7 +1,6 @@
 package org.openflexo.technologyadapter.pdf.test;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,27 +25,33 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.apache.pdfbox.text.TextPosition;
+import org.junit.Assume;
 import org.junit.Test;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import org.junit.runner.RunWith;
+import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.technologyadapter.pdf.model.AbstractTestPDF;
+import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResource;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
-public class TestLoadPDF {
+@RunWith(OrderedRunner.class)
+public class TestLoadPDF extends AbstractTestPDF {
 
 	@Test
+	@TestOrder(1)
+	public void testInitializeServiceManager() throws Exception {
+		instanciateTestServiceManagerForPDF();
+	}
+
+	@Test
+	@TestOrder(2)
 	public void testLoadPDF() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
-				.getFile();
-		System.out.println("resourceDir=" + resourceDir);
-		for (File f : resourceDir.listFiles()) {
-			System.out.println("> " + f);
-		}
-		final File resource = ((FileResourceImpl) ResourceLocator
-				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
-		PDDocument document = null;
+		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		document = PDDocument.load(resource);
+		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
+		PDDocument document = PDDocument.load(docResource.openInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -91,20 +96,14 @@ public class TestLoadPDF {
 	}
 
 	@Test
+	@TestOrder(3)
 	public void testLoadPDF2() throws IOException {
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
-				.getFile();
-		System.out.println("resourceDir=" + resourceDir);
-		for (File f : resourceDir.listFiles()) {
-			System.out.println("> " + f);
-		}
-		final File resource = ((FileResourceImpl) ResourceLocator
-				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
 
-		PDDocument document = null;
+		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		document = PDDocument.load(resource);
+		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
+		PDDocument document = PDDocument.load(docResource.openInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -212,20 +211,14 @@ public class TestLoadPDF {
 	}
 
 	@Test
+	@TestOrder(4)
 	public void loadImages() throws IOException {
 
-		final File resourceDir = ((FileResourceImpl) ResourceLocator.locateResource("TestResourceCenter/PDF"))
-				.getFile();
-		System.out.println("resourceDir=" + resourceDir);
-		for (File f : resourceDir.listFiles()) {
-			System.out.println("> " + f);
-		}
-		final File resource = ((FileResourceImpl) ResourceLocator
-				.locateResource("TestResourceCenter/PDF/EH200052_MAXITAB Regular_5kg.pdf")).getFile();
+		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		PDDocument document = null;
+		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		document = PDDocument.load(resource);
+		PDDocument document = PDDocument.load(docResource.openInputStream());
 
 		System.out.println("document=" + document);
 

@@ -1624,9 +1624,11 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// Template has been modified, because identifier management added some
 		// bookmarks in original document
-		assertTrue(templateResource.isModified());
-		templateResource.save(null);
-		assertFalse(templateResource.isModified());
+		if (!templateResource.isReadOnly()) {
+			assertTrue(templateResource.isModified());
+			templateResource.save(null);
+			assertFalse(templateResource.isModified());
+		}
 
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
