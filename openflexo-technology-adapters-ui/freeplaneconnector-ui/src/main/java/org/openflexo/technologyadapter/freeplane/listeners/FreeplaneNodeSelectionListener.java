@@ -62,7 +62,8 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 		this(map, controller, false);
 	}
 
-	public FreeplaneNodeSelectionListener(final IFreeplaneMap map, final FlexoController controller, final boolean isFMLControlled) {
+	public FreeplaneNodeSelectionListener(final IFreeplaneMap map, final FlexoController controller,
+			final boolean isFMLControlled) {
 		super();
 		this.controller = controller;
 		this.nodesMap = new HashMap<NodeModel, IFreeplaneNode>();
@@ -94,7 +95,9 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 				return;
 			}
 		}
-		this.controller.getSelectionManager().setSelectedObject(this.nodesMap.get(node));
+		if (controller != null && nodesMap != null) {
+			controller.getSelectionManager().setSelectedObject(nodesMap.get(node));
+		}
 	}
 
 	private boolean referenceNode(final NodeModel node) {

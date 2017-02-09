@@ -38,6 +38,10 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,19 +49,21 @@ import java.util.logging.Logger;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
+import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
 public class TestFreeplaneModel extends OpenflexoTestCase {
 
@@ -84,6 +90,11 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 		System.out.println("resourceCenter=" + resourceCenter);
 
 		Assume.assumeNotNull(serviceManager, fpTA, resourceCenter);
+
+		for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+			System.out.println(" > " + r);
+		}
+
 	}
 
 	@Before
@@ -106,42 +117,52 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 	public void validateModelDefinition() {
 
 		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
-		Assert.assertNotNull(map);
+		assertNotNull(map);
 		map.setTechnologyAdapter(fpTA);
-		Assert.assertEquals(map.getTechnologyAdapter(), fpTA);
+		assertEquals(map.getTechnologyAdapter(), fpTA);
 		final MapModel expected = new MapModel();
 		expected.createNewRoot();
 		map.setMapModel(expected);
-		Assert.assertEquals(expected, map.getMapModel());
-		Assert.assertNotNull(map.getRoot());
-		Assert.assertEquals(Collections.emptyList(), map.getRoot().getChildren());
+		assertEquals(expected, map.getMapModel());
+		assertNotNull(map.getRoot());
+		assertEquals(Collections.emptyList(), map.getRoot().getChildren());
 	}
 
 	@Test
-	public void validateConnectorToFreeplaneAPI() {
+	public void validateConnectorToFreeplaneAPI()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(
-				ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
-		Assert.assertEquals(FreeplaneBasicAdapter.getInstance().getMapName(), "FPTest");
-		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getIconToolbar());
-		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getMapView());
+		IFreeplaneResource fpResource = (IFreeplaneResource) serviceManager.getResourceManager()
+				.getResource("http://openflexo.org/freeplane-test/TestResourceCenter/FPTest.mm");
+		assertNotNull(fpResource);
+
+		IFreeplaneMap map = fpResource.getResourceData(null);
+
+		final MapModel loadedMap = map.getMapModel();
+
+		assertEquals(FreeplaneBasicAdapter.getInstance().getMapName(), "FPTest");
+		assertNotNull(FreeplaneBasicAdapter.getInstance().getIconToolbar());
+		assertNotNull(FreeplaneBasicAdapter.getInstance().getMapView());
 		final NodeModel nœudRacine = loadedMap.getRootNode();
-		Assert.assertEquals(nœudRacine.getText(), "FreeplaneModel First node");
-		Assert.assertEquals(nœudRacine.getChildCount(), 4);
-		Assert.assertEquals(nœudRacine.getChildAt(2).getText(), "すごい");
+		assertEquals(nœudRacine.getText(), "FreeplaneModel First node");
+		assertEquals(nœudRacine.getChildCount(), 4);
+		assertEquals(nœudRacine.getChildAt(2).getText(), "すごい");
 
-		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
-		map.setTechnologyAdapter(fpTA);
-		map.setMapModel(loadedMap);
+		/*
+		 * final FreeplaneMapImpl map = (FreeplaneMapImpl)
+		 * this.factory.newInstance(IFreeplaneMap.class);
+		 * map.setTechnologyAdapter(fpTA); map.setMapModel(loadedMap);
+		 */
+
 		for (IFreeplaneNode node : map.getRoot().getChildren()) {
 			if ("Tututus".equals(node.getNodeModel().getText())) {
-				Assert.assertEquals(node.getNodeAttributes().size(), 1);
-				Assert.assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
-				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 1");
+				assertEquals(node.getNodeAttributes().size(), 1);
+				assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
+				assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 1");
 			} else if ("ue".equals(node.getNodeModel().getText())) {
-				Assert.assertEquals(node.getNodeAttributes().size(), 1);
-				Assert.assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
-				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 2");
+				assertEquals(node.getNodeAttributes().size(), 1);
+				assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
+				assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 2");
 			}
 		}
 	}

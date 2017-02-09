@@ -38,9 +38,12 @@
 
 package org.openflexo.technologyadapter.freeplane.tests;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,16 +58,17 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.FreeplaneAdapterController;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
-import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
+import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 import org.openflexo.technologyadapter.freeplane.view.AbstractFreeplaneModuleView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -137,12 +141,25 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 	}
 
 	@Test
-	public void testInitModuleView() throws InvocationTargetException, InterruptedException {
-		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(
-				ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
-		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
-		map.setTechnologyAdapter(fpTA);
-		map.setMapModel(loadedMap);
+	public void testInitModuleView() throws InvocationTargetException, InterruptedException, FileNotFoundException,
+			ResourceLoadingCancelledException, FlexoException {
+
+		IFreeplaneResource fpResource = (IFreeplaneResource) serviceManager.getResourceManager()
+				.getResource("http://openflexo.org/freeplane-test/TestResourceCenter/FPTest.mm");
+		assertNotNull(fpResource);
+
+		IFreeplaneMap map = fpResource.getResourceData(null);
+
+		final MapModel loadedMap = map.getMapModel();
+
+		/*
+		 * final MapModel loadedMap =
+		 * FreeplaneBasicAdapter.getInstance().loadMapFromFile(
+		 * ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource
+		 * ("TestResourceCenter/FPTest.mm"))); final FreeplaneMapImpl map =
+		 * (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
+		 * map.setTechnologyAdapter(fpTA); map.setMapModel(loadedMap);
+		 */
 		FreeplaneAdapterController freeplaneAdapterController = new FreeplaneAdapterController();
 
 		// ModuleView moduleView =
@@ -160,6 +177,6 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 		frame.getContentPane().add((Container) moduleView);
 		FrameFixture fixture = new FrameFixture(frame);
 		fixture.show();
-		Thread.sleep(15000);
+		Thread.sleep(5000);
 	}
 }
