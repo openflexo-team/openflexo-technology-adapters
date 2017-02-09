@@ -108,6 +108,13 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		XMLFileResource modelRes = modelRepository
 				.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
 
+		for (XMLFileResource r : modelRepository.getAllResources()) {
+			System.out.println("Found: " + r.getURI() + " : " + r);
+		}
+
+		System.out.println(
+				"Resource with URI " + baseUrl + "/TestResourceCenter/XML/example_library_0.xml : " + modelRes);
+
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
