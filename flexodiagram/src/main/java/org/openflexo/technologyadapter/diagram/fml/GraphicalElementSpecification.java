@@ -208,9 +208,11 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 		@Override
 		public void setReadOnly(boolean readOnly) {
-			this.readOnly = readOnly;
-			getValue().setBindingDefinitionType(getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
-			notifiedBindingChanged(getValue());
+			if (this.readOnly != readOnly) {
+				this.readOnly = readOnly;
+				getValue().setBindingDefinitionType(getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
+				notifiedBindingChanged(getValue());
+			}
 		}
 
 		@Override
@@ -258,23 +260,28 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param gr
 		 * @param element
 		 */
-		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR> element) {
+		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR>
+		// element) {
 		public void applyToGraphicalRepresentation(FlexoConceptInstance fci, GraphicalElementRole<?, GR> patternRole) {
 
 			try {
 
-				/*if (getValue().toString().equals("company.companyName")) {
-					System.out.println("applyToGraphicalRepresentation in GraphicalElementSpecification for feature " + getFeatureName());
-					System.out.println("value=" + getValue());
-					System.out.println("valid=" + getValue().isValid());
-					System.out.println("reason=" + getValue().invalidBindingReason());
-					System.out.println("fci=" + fci);
-					System.out.println("Result=" + getValue().getBindingValue(fci));
-				}*/
+				/*
+				 * if (getValue().toString().equals("company.companyName")) {
+				 * System.out.
+				 * println("applyToGraphicalRepresentation in GraphicalElementSpecification for feature "
+				 * + getFeatureName()); System.out.println("value=" +
+				 * getValue()); System.out.println("valid=" +
+				 * getValue().isValid()); System.out.println("reason=" +
+				 * getValue().invalidBindingReason()); System.out.println("fci="
+				 * + fci); System.out.println("Result=" +
+				 * getValue().getBindingValue(fci)); }
+				 */
 
 				DiagramElement<GR> diagramElement = fci.getFlexoActor(patternRole);
 				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(), getValue().getBindingValue(fci));
-				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
+				// getFeature().applyToGraphicalRepresentation(gr, (T)
+				// getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
