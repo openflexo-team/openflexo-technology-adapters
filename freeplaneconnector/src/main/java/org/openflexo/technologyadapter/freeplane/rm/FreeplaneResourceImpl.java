@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
@@ -70,7 +71,12 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 	}
 
 	@Override
-	public IFreeplaneMap loadResourceData(final IProgress progress) {
+	public IFreeplaneMap loadResourceData(final IProgress progress) throws FlexoException {
+
+		if (getFileFlexoIODelegate() == null) {
+			throw new FlexoException("Cannot load FreePlane document with this IO/delegate: " + getFlexoIODelegate());
+		}
+
 		final FreeplaneMapImpl map = (FreeplaneMapImpl) FreeplaneResourceFactory.MODEL_FACTORY.newInstance(IFreeplaneMap.class);
 		map.setTechnologyAdapter(getTechnologyAdapter());
 		map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(getFile()));
@@ -99,10 +105,16 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 
 	@Override
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+		if (getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			return (FileFlexoIODelegate) getFlexoIODelegate();
+		}
+		return null;
 	}
 
 	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+		if (getFileFlexoIODelegate() != null) {
+			return getFileFlexoIODelegate().getFile();
+		}
+		return null;
 	}
 }
