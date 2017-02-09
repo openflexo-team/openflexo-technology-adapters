@@ -42,12 +42,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.action.AddRepositoryFolder;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -80,10 +82,12 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 
 	/**
 	 * Initialize
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(1)
-	public void testInitialize() {
+	public void testInitialize() throws IOException {
 
 		log("testInitialize()");
 
@@ -92,8 +96,7 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		technologicalAdapter = applicationContext.getTechnologyAdapterService()
 				.getTechnologyAdapter(GINATechnologyAdapter.class);
 
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/gina-test");
+		DirectoryResourceCenter resourceCenter = makeNewDirectoryResourceCenter(applicationContext);
 		assertNotNull(resourceCenter);
 
 		System.out.println("Found resource center: " + resourceCenter);

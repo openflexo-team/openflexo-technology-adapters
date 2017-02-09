@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.gina.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 
@@ -49,7 +48,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -135,9 +133,6 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 		System.out.println("searched: " + resourceCenter.getDefaultBaseURI() + "/TestResourceCenter/Test.fib");
 
 		assertNotNull(componentResource);
-
-		assertTrue(componentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
-		assertTrue(((FileFlexoIODelegate) componentResource.getFlexoIODelegate()).getFile().exists());
 
 		GINAFIBComponent component = componentResource.getResourceData(null);
 
