@@ -98,8 +98,11 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 		ExcelWorkbook resourceData = null;
 		try {
 			resourceData = ExcelWorkbookResourceFactory.createExcelWorkbook(getFlexoIOStreamDelegate());
+			getInputStream().close();
 		} catch (OfficeXmlFileException e) {
 			throw new InvalidExcelFormatException(this, e);
+		} catch (IOException e) {
+			throw new FlexoException(e);
 		}
 
 		if (resourceData == null) {
