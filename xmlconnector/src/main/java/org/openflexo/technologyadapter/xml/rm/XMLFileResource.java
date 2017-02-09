@@ -39,7 +39,6 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -59,7 +58,5 @@ public interface XMLFileResource extends XMLResource {
 	@Override
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(XMLTechnologyContextManager technologyContextManager);
-
-	public FileFlexoIODelegate getFileFlexoIODelegate();
 
 }
