@@ -177,8 +177,12 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 		// Ids present in document
 		assertEquals("19DABA72", reloadedFirstParagraph.getIdentifier());
 		assertEquals("77576D62", reloadedLastParagraph.getIdentifier());
-		assertEquals(titleParagraph.getIdentifier(), reloadedTitleParagraph.getIdentifier());
 
+		// If we use Jar resource center, document could not be saved, and id
+		// cannot be the same
+		if (!reloadedDocument.getResource().isReadOnly()) {
+			assertEquals(titleParagraph.getIdentifier(), reloadedTitleParagraph.getIdentifier());
+		}
 	}
 
 }
