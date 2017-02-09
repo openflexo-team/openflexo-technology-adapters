@@ -60,6 +60,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
@@ -147,6 +148,8 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 		IFreeplaneResource fpResource = (IFreeplaneResource) serviceManager.getResourceManager()
 				.getResource("http://openflexo.org/freeplane-test/TestResourceCenter/FPTest.mm");
 		assertNotNull(fpResource);
+
+		Assume.assumeTrue(fpResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
 
 		IFreeplaneMap map = fpResource.getResourceData(null);
 

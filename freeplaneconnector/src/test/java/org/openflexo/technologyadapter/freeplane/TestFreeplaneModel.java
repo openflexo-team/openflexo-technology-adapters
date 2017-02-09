@@ -54,6 +54,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -129,12 +130,13 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 	}
 
 	@Test
-	public void validateConnectorToFreeplaneAPI()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void validateConnectorToFreeplaneAPI() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		IFreeplaneResource fpResource = (IFreeplaneResource) serviceManager.getResourceManager()
 				.getResource("http://openflexo.org/freeplane-test/TestResourceCenter/FPTest.mm");
 		assertNotNull(fpResource);
+
+		Assume.assumeTrue(fpResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
 
 		IFreeplaneMap map = fpResource.getResourceData(null);
 
@@ -159,7 +161,8 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 				assertEquals(node.getNodeAttributes().size(), 1);
 				assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
 				assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 1");
-			} else if ("ue".equals(node.getNodeModel().getText())) {
+			}
+			else if ("ue".equals(node.getNodeModel().getText())) {
 				assertEquals(node.getNodeAttributes().size(), 1);
 				assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
 				assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 2");
