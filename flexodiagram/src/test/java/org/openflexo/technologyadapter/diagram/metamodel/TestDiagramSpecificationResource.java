@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -55,11 +55,9 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -88,7 +86,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 	public static DiagramTechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
-	public static DiagramSpecificationRepository<?> repository;
+	// public static DiagramSpecificationRepository<?> repository;
 
 	public static DiagramSpecificationResource diagramSpecificationResource;
 	public static DiagramPaletteResource paletteResource;
@@ -96,7 +94,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 	public static TypedDiagramModelSlot typedDiagramModelSlot;
 	public static VirtualModel newVirtualModel;
 
-	public static FileSystemBasedResourceCenter resourceCenter;
+	public static FileSystemBasedResourceCenter newResourceCenter;
 
 	/**
 	 * Initialize
@@ -114,16 +112,12 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		technologicalAdapter = applicationContext.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		resourceCenter = makeNewDirectoryResourceCenter(applicationContext);
-		assertNotNull(resourceCenter);
-
-		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
-		assertNotNull(repository);
+		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
+		assertNotNull(newResourceCenter);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);
-		assertNotNull(resourceCenter);
-		assertNotNull(repository);
+		assertNotNull(newResourceCenter);
 	}
 
 	/**
@@ -141,6 +135,10 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
+		DiagramSpecificationRepository<?> repository = technologicalAdapter
+				.getDiagramSpecificationRepository(newResourceCenter);
+		assertNotNull(repository);
+
 		diagramSpecificationResource = diagramTA.getDiagramSpecificationResourceFactory()
 				.makeDiagramSpecificationResourceResource(diagramSpecificationName, diagramSpecificationURI,
 						repository.getRootFolder(), diagramTA.getTechnologyContextManager(), true);
@@ -148,36 +146,10 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		diagramSpecificationResource.save(null);
 		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
 
-	}
-
-	/**
-	 * Reload the DiagramSpecification, tests that uri and name are persistent
-	 * 
-	 * @throws ModelDefinitionException
-	 * @throws IOException
-	 */
-	@Test
-	@TestOrder(3)
-	public void testLoadDiagramSpecification() throws ModelDefinitionException, IOException {
-
-		log("testLoadDiagramSpecification()");
-
-		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/diagram-test");
-
-		DiagramSpecificationResource reloadedResource = diagramTA.getDiagramSpecificationResourceFactory()
-				.retrieveResource(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()),
-						(FlexoResourceCenter<File>) resourceCenter, diagramTA.getTechnologyContextManager());
-
-		assertNotNull(reloadedResource);
-		assertEquals(diagramSpecificationURI, reloadedResource.getURI());
-
-		// An other way (the good way) to retrieve the resource
 		DiagramSpecificationResource retrievedResource = repository.getResource(diagramSpecificationURI);
 		assertNotNull(retrievedResource);
+
+		assertSame(retrievedResource, diagramSpecificationResource);
 		assertEquals(diagramSpecificationURI, retrievedResource.getURI());
 
 	}
@@ -276,12 +248,12 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		applicationContext.getResourceCenterService()
-				.addToResourceCenters(resourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
+				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
 						applicationContext.getResourceCenterService()));
-		resourceCenter.performDirectoryWatchingNow();
+		newResourceCenter.performDirectoryWatchingNow();
 
-		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
-
+		DiagramSpecificationRepository<?> repository = technologicalAdapter
+				.getDiagramSpecificationRepository(newResourceCenter);
 		assertNotNull(repository);
 
 		DiagramSpecificationResource retrievedResource = repository.getResource(diagramSpecificationURI);
