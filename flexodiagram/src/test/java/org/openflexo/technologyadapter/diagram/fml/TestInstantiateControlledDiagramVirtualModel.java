@@ -294,6 +294,11 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(diagram.isModified());
 		assertTrue(newVirtualModelInstance.isModified());
 
+		System.out.println("-----------> Modified resources");
+		for (FlexoResource<?> r : serviceManager.getResourceManager().getUnsavedResources()) {
+			System.out.println(" > " + r);
+		}
+
 		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
 		// TODO: (sylvain): i think this is not true anymore, check this
 		// The VirtualModel has changed, because a default GR has been added of
