@@ -38,12 +38,13 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
@@ -67,7 +68,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel>implements XSDMetaModelResource {
+public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel> implements XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -98,12 +99,18 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not immediately available.
+	 *            a progress monitor in case the resource data is not
+	 *            immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
+	 * @throws FlexoException
 	 */
 	@Override
-	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
+	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FlexoException {
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getFlexoIODelegate());
+		}
 
 		if (loadWhenUnloaded())
 			return resourceData;
@@ -157,8 +164,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
@@ -177,12 +183,10 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(element.getName(),
 								resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-					}
-					else {
+					} else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				}
-				else {
+				} else {
 					logger.warning("unable to find an owner for : " + uri);
 				}
 
@@ -201,12 +205,10 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					// TODO: better manage types
 					((XMLComplexType) owner).createProperty(attribute.getName(),
 							resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-				}
-				else {
+				} else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
-			}
-			else {
+			} else {
 				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
@@ -231,8 +233,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(name, t);
-					}
-					else {
+					} else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
@@ -255,7 +256,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		}
 		isLoading = true;
 		isLoaded = false;
-		schemaSet = XSOMUtils.read(getFile());
+		schemaSet = XSOMUtils.read(getInputStream());
 		if (schemaSet != null) {
 			fetcher = new XSDeclarationsFetcher();
 			fetcher.fetch(schemaSet);
@@ -263,9 +264,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			loadDataProperties();
 			loadObjectProperties();
 			isLoaded = true;
-		}
-		else
-			logger.info("I've not been able to parse the file" + getFile());
+		} else
+			logger.info("I've not been able to parse the stream" + getInputStream());
 		isLoading = false;
 		return isLoaded;
 	}
@@ -314,13 +314,30 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		return XMLMetaModel.class;
 	}
 
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+	/**
+	 * Return a FlexoIOStreamDelegate associated to this flexo resource
+	 * 
+	 * @return
+	 */
+	public FlexoIOStreamDelegate<?> getFlexoIOStreamDelegate() {
+		if (getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
+			return (FlexoIOStreamDelegate<?>) getFlexoIODelegate();
+		}
+		return null;
 	}
 
-	@Override
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
+	}
+
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
 	}
 
 }

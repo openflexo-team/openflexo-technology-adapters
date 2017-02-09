@@ -136,9 +136,11 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 	@Override
 	public XMLModel loadResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, FileNotFoundException,
+			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
-			FlexoException {
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getFlexoIODelegate());
+		}
 
 		if (resourceData == null) {
 			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
