@@ -28,7 +28,7 @@ public class TestLoadPDF2 extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		PDDocument document = PDDocument.load(docResource.openInputStream());
+		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();

@@ -234,8 +234,9 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 		if (editorController == null) {
 			Progress.progress(locales.localizedForKey("loading_fib_editor"));
-			editorController = getFIBEditor(false).openFIBComponent(component.getResource(), component.getComponent(), virtualModelInstance,
-					controller.getFlexoFrame());
+			editorController = getFIBEditor(false).openFIBComponent(
+					component.getResource().getFlexoIODelegate().getSerializationArtefactAsResource(), component.getComponent(),
+					virtualModelInstance, controller.getFlexoFrame());
 		}
 
 		Progress.progress(locales.localizedForKey("initialize_fib_editor"));

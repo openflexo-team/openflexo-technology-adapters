@@ -51,7 +51,7 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		PDDocument document = PDDocument.load(docResource.openInputStream());
+		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -103,7 +103,7 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		PDDocument document = PDDocument.load(docResource.openInputStream());
+		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -159,11 +159,10 @@ public class TestLoadPDF extends AbstractTestPDF {
 				}
 				currentString.append(text.toString());
 				if (box == null) {
-					box = new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(),
-							(int) text.getHeight());
-				} else {
-					box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(),
-							(int) text.getHeight()));
+					box = new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight());
+				}
+				else {
+					box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight()));
 				}
 				fontSize = text.getFontSize();
 			}
@@ -178,8 +177,7 @@ public class TestLoadPDF extends AbstractTestPDF {
 			}
 
 			@Override
-			protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance)
-					throws IOException {
+			protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance) throws IOException {
 				System.out.println("processAnnotation " + annotation + " " + appearance);
 				super.processAnnotation(annotation, appearance);
 			}
@@ -218,7 +216,7 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		PDDocument document = PDDocument.load(docResource.openInputStream());
+		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
 
 		System.out.println("document=" + document);
 
@@ -241,7 +239,8 @@ public class TestLoadPDF extends AbstractTestPDF {
 					frame.validate();
 					frame.pack();
 					frame.setVisible(true);
-				} else if (obj instanceof PDFormXObject) {
+				}
+				else if (obj instanceof PDFormXObject) {
 					PDFormXObject form = (PDFormXObject) obj;
 					System.out.println("form=" + form);
 					PDResources formResources = form.getResources();

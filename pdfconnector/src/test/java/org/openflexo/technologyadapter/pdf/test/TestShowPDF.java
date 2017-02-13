@@ -52,7 +52,7 @@ public class TestShowPDF extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
 
-		PDDocument document = PDDocument.load(docResource.openInputStream());
+		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		return document;
@@ -160,8 +160,8 @@ public class TestShowPDF extends AbstractTestPDF {
 
 				MyPDFRenderer pdfRenderer = new MyPDFRenderer(document);
 				BufferedImage originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-				Image image = originalImage.getScaledInstance((int) page.getMediaBox().getWidth(),
-						(int) page.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
+				Image image = originalImage.getScaledInstance((int) page.getMediaBox().getWidth(), (int) page.getMediaBox().getHeight(),
+						Image.SCALE_SMOOTH);
 
 				add(new JLabel(new ImageIcon(image)));
 
@@ -242,10 +242,9 @@ public class TestShowPDF extends AbstractTestPDF {
 
 					@Override
 					protected void processTextPosition(TextPosition text) {
-						System.out.println("* " + text + " on (" + text.getX() + "," + text.getY() + ") width="
-								+ text.getWidth() + " height=" + text.getHeight() + " font:" + text.getFontSize() + " "
-								+ text.getFontSizeInPt() + " matrix=" + text.getTextMatrix() + " dir=" + text.getDir()
-								+ " font=" + text.getFont());
+						System.out.println("* " + text + " on (" + text.getX() + "," + text.getY() + ") width=" + text.getWidth()
+								+ " height=" + text.getHeight() + " font:" + text.getFontSize() + " " + text.getFontSizeInPt() + " matrix="
+								+ text.getTextMatrix() + " dir=" + text.getDir() + " font=" + text.getFont());
 						super.processTextPosition(text);
 						if (currentString == null) {
 							currentString = new StringBuffer();
@@ -259,7 +258,8 @@ public class TestShowPDF extends AbstractTestPDF {
 						}
 						if (box == null) {
 							box = new Rectangle((int) text.getX(), (int) text.getY(), width, height);
-						} else {
+						}
+						else {
 							box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), width, height));
 						}
 						fontSize = text.getFontSize();
@@ -279,8 +279,7 @@ public class TestShowPDF extends AbstractTestPDF {
 					}
 
 					@Override
-					protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance)
-							throws IOException {
+					protected void processAnnotation(PDAnnotation annotation, PDAppearanceStream appearance) throws IOException {
 						System.out.println("processAnnotation " + annotation + " " + appearance);
 						super.processAnnotation(annotation, appearance);
 					}
@@ -335,8 +334,8 @@ public class TestShowPDF extends AbstractTestPDF {
 
 				for (PDFormXObject o : formObjects) {
 					g.setColor(Color.RED);
-					g.drawRect((int) o.getBBox().getLowerLeftX(), (int) o.getBBox().getUpperRightY(),
-							(int) o.getBBox().getWidth(), (int) o.getBBox().getHeight());
+					g.drawRect((int) o.getBBox().getLowerLeftX(), (int) o.getBBox().getUpperRightY(), (int) o.getBBox().getWidth(),
+							(int) o.getBBox().getHeight());
 				}
 
 				for (TextBox tb : textBoxes) {
