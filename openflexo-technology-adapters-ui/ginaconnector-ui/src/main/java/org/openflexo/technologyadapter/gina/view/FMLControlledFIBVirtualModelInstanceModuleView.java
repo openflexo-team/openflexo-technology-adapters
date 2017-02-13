@@ -35,6 +35,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
@@ -292,6 +293,9 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 			return false;
 		}
 
+		if (component.getResource().getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
+			((FlexoIOStreamDelegate<?>) component.getResource().getFlexoIODelegate()).setSaveToSourceResource(true);
+		}
 		component.getResource().save(null);
 
 		return true;
