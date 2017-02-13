@@ -20,13 +20,12 @@
 
 package org.openflexo.technologyadapter.gina.view;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
-
+import java.awt.*;
+import javax.swing.*;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
@@ -76,8 +75,9 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		// TODO: if we set flag to true, a dead-lock happen here.
 		// Please investigate to find an elegant solution
-		editorController = getFIBEditor(false).openFIBComponent(component.getResource(), component.getComponent(), null,
-				controller.getFlexoFrame());
+		Resource resource = component.getResource().getFlexoIODelegate().getSerializationArtefactAsResource();
+		FIBEditor fibEditor = getFIBEditor(false);
+		editorController = fibEditor.openFIBComponent(resource, component.getComponent(), null, controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
 	}
