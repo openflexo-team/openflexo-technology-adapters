@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.pdf.rm;
 
 import java.util.logging.Logger;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -29,10 +28,10 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 import org.openflexo.technologyadapter.pdf.model.PDFFactory;
+import org.openflexo.toolbox.StringUtils;
 
 /**
- * Implementation of PamelaResourceFactory for {@link DocXDocumentResource}
- * 
+ *
  * @author sylvain
  *
  */
@@ -59,8 +58,8 @@ public class PDFDocumentResourceFactory extends PamelaResourceFactory<PDFDocumen
 
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		System.out.println("Pour " + serializationArtefact);
-		return resourceCenter.retrieveName(serializationArtefact).endsWith(PDF_FILE_EXTENSION);
+		String name = resourceCenter.retrieveName(serializationArtefact);
+		return StringUtils.hasExtension(name, PDF_FILE_EXTENSION);
 	}
 
 	@Override
@@ -75,56 +74,4 @@ public class PDFDocumentResourceFactory extends PamelaResourceFactory<PDFDocumen
 
 		return resource;
 	}
-
-	/*
-	 public static PDFDocumentResource makePDFDocumentResource(File modelFile, PDFTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(PDFDocumentResource.class, FileFlexoIODelegate.class));
-			PDFDocumentResourceImpl returned = (PDFDocumentResourceImpl) factory.newInstance(PDFDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			PDFFactory docXFactory = new PDFFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
-			returned.setFactory(docXFactory);
-	
-			// returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-	
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static PDFDocumentResource retrievePDFDocumentResource(File modelFile, PDFTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(PDFDocumentResource.class, FileFlexoIODelegate.class));
-			PDFDocumentResourceImpl returned = (PDFDocumentResourceImpl) factory.newInstance(PDFDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			PDFFactory docXFactory = new PDFFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
-			returned.setFactory(docXFactory);
-	
-			// returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	*/
 }
