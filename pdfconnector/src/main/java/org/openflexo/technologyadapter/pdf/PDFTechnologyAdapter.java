@@ -22,9 +22,7 @@ package org.openflexo.technologyadapter.pdf;
 
 import java.io.File;
 import java.util.logging.Logger;
-
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -49,12 +47,8 @@ import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResourceFactory;
  */
 
 @DeclareModelSlots({ PDFModelSlot.class })
-// @DeclareRepositoryType({ PDFDocumentRepository.class })
-// @DeclareVirtualModelInstanceNatures({ FMLControlledPDFVirtualModelInstanceNature.class })
 @DeclareResourceTypes({ PDFDocumentResourceFactory.class })
 public class PDFTechnologyAdapter extends TechnologyAdapter {
-
-	public static String PDF_FILE_EXTENSION = ".pdf";
 
 	protected static final Logger logger = Logger.getLogger(PDFTechnologyAdapter.class.getPackage().getName());
 
@@ -87,149 +81,11 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	/*@Override
-	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-	
-		PDFDocumentRepository pdfRepository = resourceCenter.getRepository(PDFDocumentRepository.class, this);
-		if (pdfRepository == null) {
-			pdfRepository = createPDFDocumentRepository(resourceCenter);
-		}
-	
-		Iterator<I> it = resourceCenter.iterator();
-	
-		while (it.hasNext()) {
-			I item = it.next();
-			// if (item instanceof File) {
-			// System.out.println("searching " + item);
-			// }
-			// File candidateFile = (File) item;
-			PDFDocumentResource wbRes = tryToLookupPDF(resourceCenter, item);
-			// }
-		}
-	
-		// Call it to update the current repositories
-		notifyRepositoryStructureChanged();
-	}
-	
-	protected PDFDocumentResource tryToLookupPDF(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
-		PDFTechnologyContextManager technologyContextManager = getTechnologyContextManager();
-		if (isValidPDF(candidateElement)) {
-			PDFDocumentResource pdfDocumentResource = retrievePDFResource(candidateElement, resourceCenter);
-			referenceResource(pdfDocumentResource, resourceCenter);
-		}
-		return null;
-	}
-	
-	@Override
-	public void referenceResource(FlexoResource<?> resource, FlexoResourceCenter<?> resourceCenter) {
-		super.referenceResource(resource, resourceCenter);
-		if (resource instanceof PDFDocumentResource) {
-			registerInPDFDocumentRepository((PDFDocumentResource) resource, resourceCenter);
-		}
-	}*/
-
-	/*private void registerInPDFDocumentRepository(PDFDocumentResource pdfDocumentResource, FlexoResourceCenter<?> resourceCenter) {
-		if (pdfDocumentResource == null) {
-			return;
-		}
-		PDFDocumentRepository pdfDocumentRepository = resourceCenter.getRepository(PDFDocumentRepository.class, this);
-		if (pdfDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			RepositoryFolder<PDFDocumentResource> folder;
-			try {
-				folder = pdfDocumentRepository
-						.getRepositoryFolder(((FileFlexoIODelegate) pdfDocumentResource.getFlexoIODelegate()).getFile(), true);
-				pdfDocumentRepository.registerResource(pdfDocumentResource, folder);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}*/
-
-	/**
-	 * Instantiate new workbook resource stored in supplied model file<br>
-	 * *
-	 */
-	/*public PDFDocumentResource retrievePDFResource(Object pdfDocumentItem, FlexoResourceCenter<?> resourceCenter) {
-	
-		PDFDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
-		if (returned == null) {
-			if (pdfDocumentItem instanceof File) {
-				returned = PDFDocumentResourceImpl.retrievePDFDocumentResource((File) pdfDocumentItem, getTechnologyContextManager(),
-						resourceCenter);
-			}
-			if (returned != null) {
-				getTechnologyContextManager().registerPDFDocumentResource(returned);
-			}
-			else {
-				logger.warning("Cannot retrieve PDFDocumentResource resource for " + pdfDocumentItem);
-			}
-		}
-	
-		return returned;
-	}
-	
-	public boolean isValidPDF(Object candidateElement) {
-		if (candidateElement instanceof File && isValidPDFFile(((File) candidateElement))) {
-			return true;
-		}
-		else if (candidateElement instanceof InJarResourceImpl && isValidPDFInJar((InJarResourceImpl) candidateElement)) {
-			return true;
-		}
-		return false;
-	}*/
-
-	/**
-	 * Return flag indicating if supplied file appears as a valid workbook
-	 * 
-	 * @param candidateFile
-	 * 
-	 * @return
-	 */
-	/*public boolean isValidPDFFile(File candidateFile) {
-		return candidateFile.getName().endsWith(PDF_FILE_EXTENSION);
-	}
-	
-	public boolean isValidPDFInJar(InJarResourceImpl candidateInJar) {
-		if (candidateInJar.getRelativePath().endsWith(PDF_FILE_EXTENSION)) {
-			return true;
-		}
-		return false;
-	}*/
-
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	/*@Override
-	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		if (contents instanceof File) {
-			File candidateFile = (File) contents;
-			PDFDocumentResource pdfRes = tryToLookupPDF(resourceCenter, candidateFile);
-			return pdfRes != null;
-		}
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	*/
 
 	public <I> PDFDocumentRepository<I> getPDFDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		PDFDocumentRepository<I> returned = resourceCenter.retrieveRepository(PDFDocumentRepository.class, this);
@@ -239,17 +95,6 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		}
 		return returned;
 	}
-
-	/**
-	 * 
-	 * Create a {@link PDFDocumentRepository} for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
-	 * 
-	 */
-	/*public PDFDocumentRepository createPDFDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
-		PDFDocumentRepository returned = new PDFDocumentRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, PDFDocumentRepository.class, this);
-		return returned;
-	}*/
 
 	/**
 	 * Create a new {@link PDFDocumentResource} using supplied configuration options<br>
@@ -296,27 +141,7 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		PDFDocumentResource pdfDocumentResource = getPDFDocumentResourceFactory().makeResource(pdfFile, resourceCenter,
 				getTechnologyContextManager(), true);
 
-		// PDFDocumentResource pdfDocumentResource = PDFDocumentResourceImpl.makePDFDocumentResource(pdfFile, getTechnologyContextManager(),
-		// resourceCenter);
-
-		// referenceResource(pdfDocumentResource, resourceCenter);
-
-		/*if (createEmptyDocument) {
-			PDFDocument document = pdfDocumentResource.getFactory().makeNewPDFDocument();
-			document.setResource(pdfDocumentResource);
-			pdfDocumentResource.setResourceData(document);
-			pdfDocumentResource.setModified(true);
-		}*/
-
 		return pdfDocumentResource;
-	}
-
-	@Override
-	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
-		super.initFMLModelFactory(fMLModelFactory);
-
-		// fMLModelFactory.addConverter(new PDFFragmentConverter());
-		// fMLModelFactory.addConverter(new PDFElementConverter());
 	}
 
 	@Override
@@ -327,13 +152,5 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	public PDFDocumentResourceFactory getPDFDocumentResourceFactory() {
 		return getResourceFactory(PDFDocumentResourceFactory.class);
 	}
-
-	/*@Override
-	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
-		super.foundFolder(resourceCenter, folder);
-		if (resourceCenter.isDirectory(folder)) {
-			getPDFDocumentRepository(resourceCenter).getRepositoryFolder(folder, true);
-		}
-	}*/
 
 }
