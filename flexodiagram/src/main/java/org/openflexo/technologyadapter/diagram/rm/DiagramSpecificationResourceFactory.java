@@ -188,7 +188,7 @@ public class DiagramSpecificationResourceFactory extends
 	private void exploreDiagramSpecificationContents(DiagramSpecificationResource dsResource,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
 
-		exploreResource(dsResource.getFlexoIODelegate().getSerializationArtefact(), dsResource, technologyContextManager);
+		exploreResource(dsResource.getIODelegate().getSerializationArtefact(), dsResource, technologyContextManager);
 	}
 
 	private <I> void exploreResource(I serializationArtefact, DiagramSpecificationResource dsResource,
@@ -239,7 +239,7 @@ public class DiagramSpecificationResourceFactory extends
 
 		DiagramSpecificationInfo returned = new DiagramSpecificationInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
-				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+				.getXMLRootElementInfo((I) resource.getIODelegate().getSerializationArtefact());
 		if (xmlRootElementInfo == null) {
 			return null;
 		}

@@ -261,7 +261,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		_project = _editor.getProject();
 		System.out.println("Created _project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+		assertTrue(viewPointResource.getIODelegate().exists());
 
 	}
 
@@ -327,7 +327,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// viewPoint);
 		assertTrue(ResourceLocator
 				.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) virtualModel.getResource()).getIODelegate().exists());
 
 		docXModelSlot = technologicalAdapter.makeModelSlot(DocXModelSlot.class, virtualModel);
 		docXModelSlot.setTemplateResource(templateResource);
@@ -425,7 +425,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertNotNull(newView.getResource());
 		assertTrue(
 				ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 	}
 
 	/**
@@ -475,7 +475,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertNotNull(newVirtualModelInstance.getResource());
 		assertTrue(
 				ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());
 
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) newVirtualModelInstance

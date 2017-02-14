@@ -72,10 +72,10 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 	public DiagramPaletteFactory(DiagramPaletteResource paletteResource, EditingContext editingContext) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (paletteResource != null && paletteResource.getFlexoIODelegate() != null
-				&& paletteResource.getFlexoIODelegate().getSerializationArtefactAsResource() != null) {
+		if (paletteResource != null && paletteResource.getIODelegate() != null
+				&& paletteResource.getIODelegate().getSerializationArtefactAsResource() != null) {
 			relativePathResourceConverter
-					.setContainerResource(paletteResource.getFlexoIODelegate().getSerializationArtefactAsResource().getContainer());
+					.setContainerResource(paletteResource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 		setEditingContext(editingContext);
 		this.resource = paletteResource;

@@ -81,7 +81,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	@Override
 	public OWLOntology loadResourceData(IProgress progress)
 			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		OWLOntology returned = new OWLOntology(getURI(), getFlexoIODelegate().getSerializationArtefactAsResource(), getOntologyLibrary(),
+		OWLOntology returned = new OWLOntology(getURI(), getIODelegate().getSerializationArtefactAsResource(), getOntologyLibrary(),
 				getTechnologyAdapter());
 		returned.setResource(this);
 		resourceData = returned;
@@ -100,25 +100,25 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().getSerializationArtefact());
+				logger.warning("Permission denied : " + getIODelegate().getSerializationArtefact());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			_writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
@@ -128,13 +128,13 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	}
 
 	private void _writeToFile() throws SaveResourceException {
-		System.out.println("Saving OWL ontology to " + getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("Saving OWL ontology to " + getIODelegate().getSerializationArtefact());
 		OutputStream out = null;
 		try {
 			OWLOntology ontology = getResourceData(null);
 			OntModel ontModel = ontology.getOntModel();
 			ontModel.setNsPrefix("base", ontology.getURI());
-			out = getFlexoIODelegate().getSerializationArtefactAsResource().openOutputStream();
+			out = getIODelegate().getSerializationArtefactAsResource().openOutputStream();
 			// out = new FileOutputStream(getFile());
 			RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
 			writer.setProperty("xmlbase", ontology.getURI());
@@ -142,17 +142,17 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			// getOntModel().setNsPrefix("base", getOntologyURI());
 			// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
 			clearIsModified(true);
-			logger.info("Wrote " + getFlexoIODelegate().getSerializationArtefact());
+			logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			logger.warning("FileNotFoundException: " + e.getMessage());
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			try {
 				if (out != null) {
@@ -161,7 +161,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.warning("IOException: " + e.getMessage());
-				throw new SaveResourceException(getFlexoIODelegate());
+				throw new SaveResourceException(getIODelegate());
 			}
 		}
 

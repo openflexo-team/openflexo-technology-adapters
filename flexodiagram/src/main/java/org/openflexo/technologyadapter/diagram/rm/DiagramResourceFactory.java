@@ -157,7 +157,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 		DiagramInfo returned = new DiagramInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
-				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+				.getXMLRootElementInfo((I) resource.getIODelegate().getSerializationArtefact());
 		if (xmlRootElementInfo == null) {
 			return null;
 		}

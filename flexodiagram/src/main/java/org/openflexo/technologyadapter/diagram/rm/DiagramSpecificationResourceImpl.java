@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
+import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.rm.BasicResourceImpl;
@@ -150,15 +150,15 @@ public abstract class DiagramSpecificationResourceImpl extends
 
 	@Override
 	public Resource getDirectory() {
-		if (getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			String parentPath = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().getParentFile()
+		if (getIODelegate() instanceof FileIODelegate) {
+			String parentPath = ((FileIODelegate) getIODelegate()).getFile().getParentFile()
 					.getAbsolutePath();
 			if (ResourceLocator.locateResource(parentPath) == null) {
 				FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(parentPath);
 			}
 			return ResourceLocator.locateResource(parentPath);
-		} else if (getFlexoIODelegate() instanceof InJarFlexoIODelegate) {
-			InJarResourceImpl resource = ((InJarFlexoIODelegate) getFlexoIODelegate()).getInJarResource();
+		} else if (getIODelegate() instanceof InJarIODelegate) {
+			InJarResourceImpl resource = ((InJarIODelegate) getIODelegate()).getInJarResource();
 			String parentPath = FilenameUtils.getFullPath(resource.getRelativePath());
 			BasicResourceImpl parent = ((ClasspathResourceLocatorImpl) (resource.getLocator())).getJarResourcesList()
 					.get(parentPath);

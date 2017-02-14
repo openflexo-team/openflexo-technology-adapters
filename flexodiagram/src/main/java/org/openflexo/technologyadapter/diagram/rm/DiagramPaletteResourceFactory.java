@@ -97,7 +97,7 @@ public class DiagramPaletteResourceFactory
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		I serializationArtefact = resourceCenter.createEntry(
 				(name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)),
-				resourceCenter.getContainer((I) dsResource.getFlexoIODelegate().getSerializationArtefact()));
+				resourceCenter.getContainer((I) dsResource.getIODelegate().getSerializationArtefact()));
 
 		DiagramPaletteResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name,
 				dsResource.getURI() + "/" + (name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)));
@@ -166,7 +166,7 @@ public class DiagramPaletteResourceFactory
 
 		PaletteInfo returned = new PaletteInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
-				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+				.getXMLRootElementInfo((I) resource.getIODelegate().getSerializationArtefact());
 		if (xmlRootElementInfo == null) {
 			return null;
 		}

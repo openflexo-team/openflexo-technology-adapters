@@ -42,7 +42,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.ISetup;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 
 import com.google.inject.Injector;
@@ -79,7 +79,7 @@ public abstract class XtextEMFMetaModelResourceImpl extends EMFMetaModelResource
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 
 		Resource resource = resourceSet.createResource(
-				org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+				org.eclipse.emf.common.util.URI.createFileURI(((FileIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
 
 		return resource;
 

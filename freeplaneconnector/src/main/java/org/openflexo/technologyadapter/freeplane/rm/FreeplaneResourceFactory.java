@@ -30,7 +30,7 @@ import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -70,12 +70,12 @@ public class FreeplaneResourceFactory extends FlexoResourceFactory<IFreeplaneRes
 	@Override
 	public IFreeplaneMap makeEmptyResourceData(IFreeplaneResource resource) {
 
-		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+		if (resource.getIODelegate() instanceof FileIODelegate) {
 
 			final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
 			map.setTechnologyAdapter(resource.getTechnologyAdapter());
 
-			File serializationArtefact = (File) resource.getFlexoIODelegate().getSerializationArtefact();
+			File serializationArtefact = (File) resource.getIODelegate().getSerializationArtefact();
 
 			// Maybe noi initialized yet
 			FreeplaneBasicAdapter.getInstance();

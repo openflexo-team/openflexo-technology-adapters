@@ -100,30 +100,30 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
 				// logger.warning("Permission denied : " + getFile().getAbsolutePath());
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getIODelegate().toString());
 			}
 		}
 	}
@@ -157,7 +157,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	private void writeToFile() throws SaveResourceException {
 		try {
 			getEMFResource().save(null);
-			logger.info("Wrote " + getFlexoIODelegate().toString());
+			logger.info("Wrote " + getIODelegate().toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,7 +197,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 
 			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
 			// RESOURCES!!
-			modelResource = mmResource.createEMFModelResource(getFlexoIODelegate());
+			modelResource = mmResource.createEMFModelResource(getIODelegate());
 
 		}
 		return modelResource;

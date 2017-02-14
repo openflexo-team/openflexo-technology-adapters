@@ -25,7 +25,7 @@ import java.io.File;
 
 import javax.swing.JPanel;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -63,10 +63,10 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 		this.representedObject = representedObject;
 		this.perspective = perspective;
 
-		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
+		File f = ((FileIODelegate) representedObject.getResource().getIODelegate()).getFile();
 
 		editorController = getFIBEditor(false).openFIBComponent(
-				representedObject.getResource().getFlexoIODelegate().getSerializationArtefactAsResource(), representedObject.getComponent(),
+				representedObject.getResource().getIODelegate().getSerializationArtefactAsResource(), representedObject.getComponent(),
 				null, controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);

@@ -152,7 +152,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// assertTrue(((ViewPointResource)
 		// newViewPoint.getResource()).getFile().exists());
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getIODelegate().exists());
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newVirtualModel =
 		// VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getIODelegate().exists());
 		newModelSlot = technologicalAdapter.makeModelSlot(UMLEMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(umlMetaModelResource);
 		assertNotNull(newModelSlot);
@@ -202,7 +202,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		project = editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test
@@ -293,7 +293,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		((VirtualModelResource) newVirtualModel.getResource()).save(null);
 
 		System.out.println(
-				"Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFlexoIODelegate().toString());
+				"Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
 		/**
 		 * NamedElement e = null; Profile profile = null;

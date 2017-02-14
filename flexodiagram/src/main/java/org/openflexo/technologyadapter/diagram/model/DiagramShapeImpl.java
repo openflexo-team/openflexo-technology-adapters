@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.swing.ImageUtils;
@@ -250,8 +250,8 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	}
 
 	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getDiagram().getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate) (getDiagram().getResource()).getFlexoIODelegate();
+		if (expectedScreenshotImageFile == null && getDiagram().getResource().getIODelegate() instanceof FileIODelegate) {
+			FileIODelegate delegate = (FileIODelegate) (getDiagram().getResource()).getIODelegate();
 			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram_container_element.png");
 		}
 		return expectedScreenshotImageFile;

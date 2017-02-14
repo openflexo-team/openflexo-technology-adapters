@@ -49,7 +49,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	@Override
 	public OWLOntology makeEmptyResourceData(OWLOntologyResource resource) {
 
-		return OWLOntology.createOWLEmptyOntology(resource.getURI(), resource.getFlexoIODelegate().getSerializationArtefactAsResource(),
+		return OWLOntology.createOWLEmptyOntology(resource.getURI(), resource.getIODelegate().getSerializationArtefactAsResource(),
 				resource.getOntologyLibrary(), resource.getTechnologyAdapter());
 	}
 
@@ -76,7 +76,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	protected <I> OWLOntologyResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		OWLOntologyResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
-		returned.setURI(OWLOntology.findOntologyURI(returned.getFlexoIODelegate().getSerializationArtefactAsResource()));
+		returned.setURI(OWLOntology.findOntologyURI(returned.getIODelegate().getSerializationArtefactAsResource()));
 		return returned;
 	}
 

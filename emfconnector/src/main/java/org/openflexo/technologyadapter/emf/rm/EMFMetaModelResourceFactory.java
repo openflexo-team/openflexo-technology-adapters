@@ -152,7 +152,7 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 		ClassLoaderIODelegate ioDelegate = newInstance(ClassLoaderIODelegate.class);
 		ioDelegate.setSerializationArtefact(getClass().getClassLoader());
 
-		returned.setFlexoIODelegate(ioDelegate);
+		returned.setIODelegate(ioDelegate);
 
 		registerResource(returned, resourceCenter, technologyContextManager);
 		return returned;
@@ -194,7 +194,7 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 		returned.setPackageClassName(ePackageClassName);
 		returned.setResourceFactoryClassName(resourceFactoryClassName);
 
-		returned.setFlexoIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
+		returned.setIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
 
 		return returned;
 	}

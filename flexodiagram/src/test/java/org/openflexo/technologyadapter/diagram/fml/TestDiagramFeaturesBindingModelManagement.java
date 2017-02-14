@@ -200,7 +200,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		diagramSpecificationResource = action.getNewDiagramSpecification().getResource();
 
 		assertNotNull(diagramSpecificationResource);
-		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
+		assertTrue(diagramSpecificationResource.getIODelegate().exists());
 
 	}
 
@@ -226,7 +226,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		paletteResource = action.getNewPalette().getResource();
 
 		assertNotNull(paletteResource);
-		assertTrue(paletteResource.getFlexoIODelegate().exists());
+		assertTrue(paletteResource.getIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
@@ -277,7 +277,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		// serviceManager.getViewPointLibrary(), resourceCenter);
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		assertTrue(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).exists());
-		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+		assertTrue(viewPointResource.getIODelegate().exists());
 	}
 
 	/**
@@ -302,7 +302,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		// viewPoint);
 		assertTrue(ResourceLocator
 				.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) virtualModel.getResource()).getIODelegate().exists());
 
 		typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, virtualModel);
 		typedDiagramModelSlot.setMetaModelResource(diagramSpecificationResource);

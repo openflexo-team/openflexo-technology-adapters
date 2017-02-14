@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
@@ -317,8 +317,8 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		private File getExpectedScreenshotImageFile() {
-			if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-				FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+			if (expectedScreenshotImageFile == null && getResource().getIODelegate() instanceof FileIODelegate) {
+				FileIODelegate delegate = (FileIODelegate) getResource().getIODelegate();
 				expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 			}
 			return expectedScreenshotImageFile;

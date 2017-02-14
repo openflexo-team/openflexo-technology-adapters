@@ -26,7 +26,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.resource.FlexoIOGitDelegate;
+import org.openflexo.foundation.resource.GitIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.GitResourceCenter;
@@ -182,7 +182,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getSize() > 0);
 		for (PowerpointSlideshowResource pssResource : modelRepository.getAllResources()) {
-			logger.info("Load file " + pssResource.getFlexoIODelegate().toString());
+			logger.info("Load file " + pssResource.getIODelegate().toString());
 			assertNotNull(pssResource);
 			assertFalse(pssResource.isLoaded());
 			pssResource.loadResourceData(null);
@@ -195,7 +195,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@TestOrder(4)
 	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FlexoIOGitDelegate.class,
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(GitIODelegate.class,
 				PowerpointSlideshowResource.class));
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
@@ -203,8 +203,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			// factory,
 			// gitRepository.getWorkTree(), gitRepository));
 			flexoResource
-					.setFlexoIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
-			FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
+					.setIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
+			GitIODelegate gitDelegate = (GitIODelegate) flexoResource.getIODelegate();
 			try {
 				gitDelegate.save(flexoResource);
 			} catch (NotImplementedException e) {
@@ -257,7 +257,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		System.out.println("avant la resource pptFile = " + pptFile);
 		modelRes = factory.makeResource(pptFile, gitResourceCenter, pptTechnologyAdapter.getTechnologyContextManager(),
 				true);
-		System.out.println("apres: " + modelRes.getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("apres: " + modelRes.getIODelegate().getSerializationArtefact());
 
 		// modelRes =
 		// PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(),
@@ -266,7 +266,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 		modelRes.save(null);
 
-		System.out.println("Serialization artefact = " + modelRes.getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("Serialization artefact = " + modelRes.getIODelegate().getSerializationArtefact());
 		System.out.println("pptFile = " + pptFile);
 
 		assertTrue(pptFile.exists());

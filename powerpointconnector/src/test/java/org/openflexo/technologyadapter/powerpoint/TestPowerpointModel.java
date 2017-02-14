@@ -206,7 +206,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getSize() > 0);
 		for (PowerpointSlideshowResource pssResource : modelRepository.getAllResources()) {
-			logger.info("Load file " + pssResource.getFlexoIODelegate().toString());
+			logger.info("Load file " + pssResource.getIODelegate().toString());
 			assertNotNull(pssResource);
 			assertFalse(pssResource.isLoaded());
 			pssResource.loadResourceData(null);

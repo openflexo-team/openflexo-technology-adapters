@@ -54,7 +54,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -136,7 +136,7 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 				.getResource("http://openflexo.org/freeplane-test/TestResourceCenter/FPTest.mm");
 		assertNotNull(fpResource);
 
-		Assume.assumeTrue(fpResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
+		Assume.assumeTrue(fpResource.getIODelegate() instanceof FileIODelegate);
 
 		IFreeplaneMap map = fpResource.getResourceData(null);
 

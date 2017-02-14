@@ -130,7 +130,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		diagramResource.save(null);
 
-		assertTrue(diagramResource.getFlexoIODelegate().exists());
+		assertTrue(diagramResource.getIODelegate().exists());
 
 	}
 

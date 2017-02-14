@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.freeplane.rm;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -60,5 +60,5 @@ public interface IFreeplaneResource extends TechnologyAdapterResource<IFreeplane
     @Setter(TECHNOLOGY_CONTEXT_MANAGER)
     public void setTechnologyContextManager(FreeplaneTechnologyContextManager paramFreeplaneTechnologyContextManager);
 
-    public FileFlexoIODelegate getFileFlexoIODelegate();
+    public FileIODelegate getFileFlexoIODelegate();
 }

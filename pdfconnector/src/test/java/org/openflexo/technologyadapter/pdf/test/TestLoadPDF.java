@@ -28,7 +28,7 @@ import org.apache.pdfbox.text.TextPosition;
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.pdf.model.AbstractTestPDF;
 import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -49,9 +49,9 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
+		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
 
-		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
+		PDDocument document = PDDocument.load(((StreamIODelegate) docResource.getIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -101,9 +101,9 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
+		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
 
-		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
+		PDDocument document = PDDocument.load(((StreamIODelegate) docResource.getIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		PDDocumentInformation docInfo = document.getDocumentInformation();
@@ -214,9 +214,9 @@ public class TestLoadPDF extends AbstractTestPDF {
 
 		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
 
-		Assume.assumeTrue(docResource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate);
+		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
 
-		PDDocument document = PDDocument.load(((FlexoIOStreamDelegate) docResource.getFlexoIODelegate()).getInputStream());
+		PDDocument document = PDDocument.load(((StreamIODelegate) docResource.getIODelegate()).getInputStream());
 
 		System.out.println("document=" + document);
 

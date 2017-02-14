@@ -87,7 +87,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 		project = editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 
 		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/excel-test");

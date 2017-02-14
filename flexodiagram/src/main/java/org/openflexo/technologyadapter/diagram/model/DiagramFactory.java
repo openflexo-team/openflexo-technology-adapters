@@ -78,10 +78,10 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		this.resource = resource;
 		setEditingContext(editingContext);
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getFlexoIODelegate() != null
-				&& resource.getFlexoIODelegate().getSerializationArtefactAsResource() != null) {
+		if (resource != null && resource.getIODelegate() != null
+				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
 			relativePathResourceConverter
-					.setContainerResource(resource.getFlexoIODelegate().getSerializationArtefactAsResource().getContainer());
+					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 

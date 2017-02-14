@@ -89,7 +89,7 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 		_project = _editor.getProject();
 		System.out.println("Created project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test

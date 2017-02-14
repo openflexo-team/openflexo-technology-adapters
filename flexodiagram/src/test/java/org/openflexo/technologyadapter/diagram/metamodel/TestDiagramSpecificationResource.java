@@ -144,7 +144,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 						repository.getRootFolder(), diagramTA.getTechnologyContextManager(), true);
 
 		diagramSpecificationResource.save(null);
-		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
+		assertTrue(diagramSpecificationResource.getIODelegate().exists());
 
 		DiagramSpecificationResource retrievedResource = repository.getResource(diagramSpecificationURI);
 		assertNotNull(retrievedResource);
@@ -184,7 +184,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
 		paletteResource.save(null);
-		assertTrue(paletteResource.getFlexoIODelegate().exists());
+		assertTrue(paletteResource.getIODelegate().exists());
 		diagramSpecificationResource.save(null);
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 

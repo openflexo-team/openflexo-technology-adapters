@@ -1,14 +1,14 @@
 package org.openflexo.jgitTests;
 
-import org.openflexo.foundation.resource.FlexoIOGitDelegate;
+import org.openflexo.foundation.resource.GitIODelegate;
 
 public class GitResource {
 
-	private FlexoIOGitDelegate IOGitDelegate;
+	private GitIODelegate IOGitDelegate;
 
 	public static final String RESOURCE_CENTER = "resourceCenter";
 
-	public FlexoIOGitDelegate getIOGitDelegate() {
+	public GitIODelegate getIOGitDelegate() {
 		return IOGitDelegate;
 	}
 

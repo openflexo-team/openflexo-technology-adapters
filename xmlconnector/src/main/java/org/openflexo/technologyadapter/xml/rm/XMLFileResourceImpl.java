@@ -52,9 +52,9 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -116,7 +116,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 		if (!isLoaded()) {
 			XMLRootElementInfo rootInfo;
-			rootInfo = REreader.readRootElement(getFlexoIODelegate().getSerializationArtefactAsResource());
+			rootInfo = REreader.readRootElement(getIODelegate().getSerializationArtefactAsResource());
 			return rootInfo.getURI();
 		} else {
 			return this.getModel().getMetaModel().getURI();
@@ -139,7 +139,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getFlexoIODelegate());
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
 		}
 
 		if (resourceData == null) {
@@ -278,9 +278,9 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	 * 
 	 * @return
 	 */
-	public FlexoIOStreamDelegate<?> getFlexoIOStreamDelegate() {
-		if (getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
-			return (FlexoIOStreamDelegate<?>) getFlexoIODelegate();
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
 		}
 		return null;
 	}
@@ -308,17 +308,17 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	protected final void saveResourceData(boolean clearIsModified)
 			throws SaveResourceException, SaveResourcePermissionDeniedException {
 		// System.out.println("PamelaResourceImpl Saving " + getFile());
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
 			_saveResourceData(clearIsModified);
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Succeeding to save Resource " + this + " : "
-						+ getFlexoIODelegate().getSerializationArtefact());
+						+ getIODelegate().getSerializationArtefact());
 			}
 		}
 		if (clearIsModified) {
@@ -335,23 +335,23 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getFlexoIODelegate().getSerializationArtefact());
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact());
 		}
 
-		if (getFlexoIOStreamDelegate() instanceof FileFlexoIODelegate) {
+		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
 			File temporaryFile = null;
 			try {
-				File fileToSave = ((FileFlexoIODelegate) getFlexoIOStreamDelegate()).getFile();
+				File fileToSave = ((FileIODelegate) getFlexoIOStreamDelegate()).getFile();
 				// Make local copy
 				makeLocalCopy(fileToSave);
 				// Using temporary file
-				temporaryFile = ((FileFlexoIODelegate) getFlexoIODelegate()).createTemporaryArtefact(".pdf");
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
@@ -367,7 +367,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 					logger.warning("Failed to save resource " + this);
 				}
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getFlexoIODelegate(), e);
+				throw new SaveResourceException(getIODelegate(), e);
 			}
 		} else {
 			try {
@@ -378,7 +378,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 					logger.warning("Failed to save resource " + this);
 				}
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getFlexoIODelegate(), e);
+				throw new SaveResourceException(getIODelegate(), e);
 			}
 		}
 
@@ -392,17 +392,17 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
 
 		try {
-			System.out.println("Writing xml file in : " + getFlexoIODelegate().getSerializationArtefact());
+			System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
 			OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8");
 			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, outSW);
 			writer.writeDocument();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
-		System.out.println("Wrote : " + getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
 	private void makeLocalCopy(File file) throws IOException {

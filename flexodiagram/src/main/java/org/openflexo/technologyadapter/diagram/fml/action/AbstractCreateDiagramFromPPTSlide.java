@@ -456,7 +456,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	public <I> I saveImageFile(BufferedImage image, String name) {
 		FlexoResourceCenter<I> rc = (FlexoResourceCenter<I>) getDiagramResource().getResourceCenter();
 		I serializationArtefact = rc.createEntry(JavaUtils.getClassName(name) + ".diagram-element" + ".png",
-				rc.getContainer((I) getDiagramResource().getFlexoIODelegate().getSerializationArtefact()));
+				rc.getContainer((I) getDiagramResource().getIODelegate().getSerializationArtefact()));
 
 		if (serializationArtefact instanceof File) {
 			try {

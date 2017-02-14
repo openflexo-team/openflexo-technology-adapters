@@ -50,7 +50,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.action.AddRepositoryFolder;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -148,9 +148,9 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		assertTrue(createComponent.hasActionExecutionSucceeded());
 		componentResource = createComponent.getNewComponentResource();
 
-		assertTrue(componentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
+		assertTrue(componentResource.getIODelegate() instanceof FileIODelegate);
 
-		assertTrue(((FileFlexoIODelegate) componentResource.getFlexoIODelegate()).getFile().exists());
+		assertTrue(((FileIODelegate) componentResource.getIODelegate()).getFile().exists());
 
 	}
 

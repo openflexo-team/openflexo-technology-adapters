@@ -55,7 +55,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.FileIODelegate.FileIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -67,7 +67,7 @@ import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfigurati
 import org.openflexo.technologyadapter.oslc.model.io.OSLCModelConverter;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCServiceProviderCatalog>implements OSLCResourceResource {
+public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCServiceProviderCatalog> implements OSLCResourceResource {
 	private static final Logger logger = Logger.getLogger(OSLCResourceResourceImpl.class.getPackage().getName());
 
 	private OSLCModelConverter converter;
@@ -88,7 +88,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 		AbstractResource unit = null;
 
-		if (getFlexoIODelegate().exists()) {
+		if (getIODelegate().exists()) {
 			try {
 				// Retrieve the configuration from a configuration file
 				adaptorConfiguration = loadAdaptorConfiguration();
@@ -118,31 +118,31 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		} catch (FileNotFoundException e) {
 			OSLCResourceResource resourceData;
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 		OSLCResource resourceData = null;
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + ((File) getFlexoIODelegate().getSerializationArtefact()).getAbsolutePath());
+				logger.warning("Permission denied : " + ((File) getIODelegate().getSerializationArtefact()).getAbsolutePath());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = ((FileFlexoIODelegateImpl) getFlexoIODelegate()).willWriteOnDisk();
+			FileWritingLock lock = ((FileIODelegateImpl) getIODelegate()).willWriteOnDisk();
 			writeToFile();
-			((FileFlexoIODelegateImpl) getFlexoIODelegate()).hasWrittenOnDisk(lock);
+			((FileIODelegateImpl) getIODelegate()).hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			// resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : "
-						+ ((File) getFlexoIODelegate().getSerializationArtefact()).getName());
+				logger.info(
+						"Succeeding to save Resource " + getURI() + " : " + ((File) getIODelegate().getSerializationArtefact()).getName());
 			}
 		}
 	}
@@ -150,7 +150,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	private void writeToFile() throws SaveResourceException {
 		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream(((File) getFlexoIODelegate().getSerializationArtefact()));
+			out = new FileOutputStream(((File) getIODelegate().getSerializationArtefact()));
 			StreamResult result = new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
@@ -159,15 +159,15 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
 
-		logger.info("Wrote " + (getFlexoIODelegate().getSerializationArtefact()));
+		logger.info("Wrote " + (getIODelegate().getSerializationArtefact()));
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	 */
 	private FlexoOslcAdaptorConfiguration loadAdaptorConfiguration() {
 		FlexoOslcAdaptorConfiguration adaptor = null;
-		File providerFile = (File) getFlexoIODelegate().getSerializationArtefact();
+		File providerFile = (File) getIODelegate().getSerializationArtefact();
 		Properties properties = new Properties();
 		FileInputStream input = null;
 		try {

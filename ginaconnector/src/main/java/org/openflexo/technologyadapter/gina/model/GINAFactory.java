@@ -44,7 +44,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
@@ -80,17 +80,17 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 
 		addConverter(typeConverter = new TypeConverter(serviceManager.getTechnologyAdapterService().getCustomTypeFactories()));
 
-		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			addConverter(new RelativePathFileConverter(((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile().getParentFile()));
+		if (resource.getIODelegate() instanceof FileIODelegate) {
+			addConverter(new RelativePathFileConverter(((FileIODelegate) resource.getIODelegate()).getFile().getParentFile()));
 		}
 
 		this.resource = resource;
 		setEditingContext(serviceManager.getEditingContext());
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getFlexoIODelegate() != null
-				&& resource.getFlexoIODelegate().getSerializationArtefactAsResource() != null) {
+		if (resource != null && resource.getIODelegate() != null
+				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
 			relativePathResourceConverter
-					.setContainerResource(resource.getFlexoIODelegate().getSerializationArtefactAsResource().getContainer());
+					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 

@@ -54,10 +54,10 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate;
+import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
@@ -107,9 +107,9 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 
 		try {
 			// Retrieve class loader to be used
-			classLoader = getFlexoIODelegate().retrieveClassLoader();
+			classLoader = getIODelegate().retrieveClassLoader();
 
-			System.out.println("Reading EMF metamodel from " + getFlexoIODelegate());
+			System.out.println("Reading EMF metamodel from " + getIODelegate());
 			System.out.println("ClassLoader=" + classLoader);
 
 			ePackageClass = classLoader.loadClass(getPackageClassName());
@@ -192,14 +192,14 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 
 		// TODO: refactor this with IODelegate
 
-		if (flexoIODelegate instanceof FileFlexoIODelegate) {
+		if (flexoIODelegate instanceof FileIODelegate) {
 			return getEMFResourceFactory().createResource(
-					org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+					org.eclipse.emf.common.util.URI.createFileURI(((FileIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
 		}
 
-		if (flexoIODelegate instanceof InJarFlexoIODelegate) {
+		if (flexoIODelegate instanceof InJarIODelegate) {
 			try {
-				InJarFlexoIODelegate inJarIODelegate = (InJarFlexoIODelegate) flexoIODelegate;
+				InJarIODelegate inJarIODelegate = (InJarIODelegate) flexoIODelegate;
 				JarEntry entry = inJarIODelegate.getInJarResource().getEntry();
 				JarFile jarFile = inJarIODelegate.getInJarResource().getJarResource().getJarfile();
 				File copiedFile = jarEntryAsFile(jarFile, entry);

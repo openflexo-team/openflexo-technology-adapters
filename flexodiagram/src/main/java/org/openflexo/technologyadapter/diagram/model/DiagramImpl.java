@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.CannotRenameException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
@@ -105,8 +105,8 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	}
 
 	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+		if (expectedScreenshotImageFile == null && getResource().getIODelegate() instanceof FileIODelegate) {
+			FileIODelegate delegate = (FileIODelegate) getResource().getIODelegate();
 			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 		}
 		return expectedScreenshotImageFile;

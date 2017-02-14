@@ -33,7 +33,7 @@ import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -52,11 +52,11 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	protected DocXDocument performLoad() throws IOException, Exception {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load DocX document with this IO/delegate: " + getFlexoIODelegate());
+			throw new FlexoException("Cannot load DocX document with this IO/delegate: " + getIODelegate());
 		}
 
 		Progress.progress(
-				getLocales().localizedForKey("loading") + " " + getFlexoIODelegate().getSerializationArtefact());
+				getLocales().localizedForKey("loading") + " " + getIODelegate().getSerializationArtefact());
 		try {
 			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getInputStream());
 
@@ -84,24 +84,24 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getFlexoIODelegate().getSerializationArtefact()
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact()
 					+ " version=" + getModelVersion());
 		}
 
-		if (getFlexoIOStreamDelegate() instanceof FileFlexoIODelegate) {
+		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
 			File temporaryFile = null;
 			try {
-				File fileToSave = ((FileFlexoIODelegate) getFlexoIOStreamDelegate()).getFile();
+				File fileToSave = ((FileIODelegate) getFlexoIOStreamDelegate()).getFile();
 				// Make local copy
 				makeLocalCopy(fileToSave);
 				// Using temporary file
-				temporaryFile = ((FileFlexoIODelegate) getFlexoIODelegate()).createTemporaryArtefact(".pdf");
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
@@ -120,7 +120,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
 				}
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getFlexoIODelegate(), e);
+				throw new SaveResourceException(getIODelegate(), e);
 			}
 		} else {
 			try {
@@ -131,7 +131,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
 				}
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getFlexoIODelegate(), e);
+				throw new SaveResourceException(getIODelegate(), e);
 			}
 		}
 
@@ -143,18 +143,18 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	}
 
 	private void write(OutputStream out) throws SaveResourceException, IOException {
-		System.out.println("Writing docx file in : " + getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("Writing docx file in : " + getIODelegate().getSerializationArtefact());
 		try {
 			getDocument().getWordprocessingMLPackage().save(out);
 
 		} catch (Docx4JException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
 
-		System.out.println("Wrote : " + getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
 	private void makeLocalCopy(File file) throws IOException {

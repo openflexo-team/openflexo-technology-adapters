@@ -68,7 +68,7 @@ public class ExampleDiagramResourceFactory extends DiagramResourceFactory {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		I serializationArtefact = resourceCenter.createEntry((name.endsWith(DIAGRAM_SUFFIX) ? name : (name + DIAGRAM_SUFFIX)),
-				resourceCenter.getContainer((I) dsResource.getFlexoIODelegate().getSerializationArtefact()));
+				resourceCenter.getContainer((I) dsResource.getIODelegate().getSerializationArtefact()));
 
 		DiagramResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name,
 				dsResource.getURI() + "/" + (name.endsWith(DIAGRAM_SUFFIX) ? name : (name + DIAGRAM_SUFFIX)));

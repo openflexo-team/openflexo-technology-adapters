@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -71,8 +71,8 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 
 	public DiagramResource getDiagramResource(File diagramFile) {
 		for (Entry<String, DiagramResource> entry : diagrams.entrySet()) {
-			if (entry.getValue().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-				FileFlexoIODelegate delegate = (FileFlexoIODelegate) entry.getValue().getFlexoIODelegate();
+			if (entry.getValue().getIODelegate() instanceof FileIODelegate) {
+				FileIODelegate delegate = (FileIODelegate) entry.getValue().getIODelegate();
 				if (delegate.getFile().equals(diagramFile)) {
 					return entry.getValue();
 				}

@@ -33,7 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -61,25 +61,25 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 		} catch (FileNotFoundException e) {
 			ODTDocument resourceData;
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
@@ -116,10 +116,10 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -136,7 +136,7 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 		return getFileFlexoIODelegate().getFile();
 	}
 
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	public FileIODelegate getFileFlexoIODelegate() {
+		return (FileIODelegate) getIODelegate();
 	}
 }

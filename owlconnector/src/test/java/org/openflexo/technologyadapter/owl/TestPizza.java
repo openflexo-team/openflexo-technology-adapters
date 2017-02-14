@@ -106,7 +106,7 @@ public class TestPizza extends OpenflexoTestCase {
 
 		System.out.println("Found: " + hop);
 
-		Object myOntologyFile = hop.getResource().getFlexoIODelegate().getSerializationArtefact();
+		Object myOntologyFile = hop.getResource().getIODelegate().getSerializationArtefact();
 
 		System.out.println("myOntologyFile: " + myOntologyFile);
 

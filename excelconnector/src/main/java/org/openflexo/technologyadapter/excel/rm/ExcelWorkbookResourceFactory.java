@@ -28,7 +28,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -57,14 +57,14 @@ public class ExcelWorkbookResourceFactory
 
 	@Override
 	public ExcelWorkbook makeEmptyResourceData(ExcelWorkbookResource resource) {
-		if (resource.getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
-			return createExcelWorkbook((FlexoIOStreamDelegate) resource.getFlexoIODelegate());
+		if (resource.getIODelegate() instanceof StreamIODelegate) {
+			return createExcelWorkbook((StreamIODelegate) resource.getIODelegate());
 		}
-		logger.severe("Cannot create excel workbook for this io delegate: " + resource.getFlexoIODelegate());
+		logger.severe("Cannot create excel workbook for this io delegate: " + resource.getIODelegate());
 		return null;
 	}
 
-	protected static <I> ExcelWorkbook createExcelWorkbook(FlexoIOStreamDelegate<I> ioDelegate) {
+	protected static <I> ExcelWorkbook createExcelWorkbook(StreamIODelegate<I> ioDelegate) {
 		Workbook wb = null;
 		ExcelWorkbook newWorkbook = null;
 

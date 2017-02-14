@@ -44,7 +44,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -82,15 +82,15 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelModelResource.class));
+					ModelContextLibrary.getCompoundModelContext(FileIODelegate.class, ExcelModelResource.class));
 			ExcelModelResourceImpl returned = (ExcelModelResourceImpl) factory.newInstance(ExcelModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.initName(modelFile.getName());
 
 			// returned.setFile(modelFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
+			FileIODelegate fileIODelegate = factory.newInstance(FileIODelegate.class);
+			returned.setIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
 
 			// returned.setURI(modelURI);
@@ -121,15 +121,15 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelModelResource.class));
+					ModelContextLibrary.getCompoundModelContext(FileIODelegate.class, ExcelModelResource.class));
 			ExcelModelResourceImpl returned = (ExcelModelResourceImpl) factory.newInstance(ExcelModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.initName(modelFile.getName());
 			// returned.setFile(modelFile);
 
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
+			FileIODelegate fileIODelegate = factory.newInstance(FileIODelegate.class);
+			returned.setIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
 
 			// returned.setURI(modelFile.toURI().toString());
@@ -174,29 +174,29 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getIODelegate().toString());
 			}
 		}
 	}
@@ -229,7 +229,7 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 	 */
 	private void writeToFile() throws SaveResourceException {
 		// TODO: insert saving code here
-		logger.info("Wrote " + getFlexoIODelegate().toString());
+		logger.info("Wrote " + getIODelegate().toString());
 	}
 
 	@Override

@@ -290,7 +290,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
-		System.out.println("template file: " + templateResource.getFlexoIODelegate().getSerializationArtefact());
+		System.out.println("template file: " + templateResource.getIODelegate().getSerializationArtefact());
 		System.out.println("template document:\n" + templateDocument.debugStructuredContents());
 
 		assertEquals(14, templateDocument.getElements().size());
@@ -345,7 +345,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		_project = _editor.getProject();
 		System.out.println("Created _project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+		assertTrue(viewPointResource.getIODelegate().exists());
 	}
 
 	/**
@@ -426,7 +426,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(ResourceLocator
 				.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory())
 				.exists());
-		assertTrue(((VirtualModelResource) libraryVirtualModel.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) libraryVirtualModel.getResource()).getIODelegate().exists());
 
 		CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewAction(libraryVirtualModel, null,
 				_editor);
@@ -612,7 +612,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(ResourceLocator
 				.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
-		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getIODelegate().exists());
 
 		// Now we create the library model slot
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null,
@@ -1129,7 +1129,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertNotNull(newView.getResource());
 		assertTrue(
 				ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 	}
 
 	public static final String LES_MISERABLES_DESCRIPTION = "Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.";
@@ -1169,7 +1169,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertNotNull(libraryVMI.getResource());
 		assertTrue(
 				ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 
 		// Creation of book1
 		CreationSchemeAction createBook1 = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
@@ -1287,7 +1287,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertNotNull(documentVMI.getResource());
 		assertTrue(
 				ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 		assertEquals(2, documentVMI.getModelSlotInstances().size());
 
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) documentVMI

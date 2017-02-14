@@ -51,9 +51,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -92,7 +92,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	public ExcelWorkbook loadResourceData(IProgress progress) throws FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load Excel document with this IO/delegate: " + getFlexoIODelegate());
+			throw new FlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
 		}
 
 		ExcelWorkbook resourceData = null;
@@ -107,7 +107,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 
 		if (resourceData == null) {
 			logger.warning(
-					"canno't retrieve resource data from serialization artifact " + getFlexoIODelegate().toString());
+					"canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
 
@@ -158,16 +158,16 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * @throws SaveResourceException
 	 */
 	private void write(Workbook workbook, OutputStream out) throws SaveResourceException {
-		logger.info("Writing " + getFlexoIODelegate().getSerializationArtefact());
+		logger.info("Writing " + getIODelegate().getSerializationArtefact());
 		try {
 			workbook.write(out);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
-		logger.info("Wrote " + getFlexoIODelegate().getSerializationArtefact());
+		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
 
 	@Override
@@ -180,9 +180,9 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * 
 	 * @return
 	 */
-	public FlexoIOStreamDelegate<?> getFlexoIOStreamDelegate() {
-		if (getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
-			return (FlexoIOStreamDelegate<?>) getFlexoIODelegate();
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
 		}
 		return null;
 	}
@@ -229,16 +229,16 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	protected final void saveResourceData(boolean clearIsModified)
 			throws SaveResourceException, SaveResourcePermissionDeniedException {
 		// System.out.println("PamelaResourceImpl Saving " + getFile());
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
 			_saveResourceData(resourceData, clearIsModified);
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Succeeding to save " + getFlexoIODelegate().getSerializationArtefact());
+				logger.fine("Succeeding to save " + getIODelegate().getSerializationArtefact());
 			}
 		}
 		if (clearIsModified) {
@@ -256,23 +256,23 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 			throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getFlexoIODelegate().getSerializationArtefact());
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact());
 		}
 
-		if (getFlexoIOStreamDelegate() instanceof FileFlexoIODelegate) {
+		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
 			File temporaryFile = null;
 			try {
-				File fileToSave = ((FileFlexoIODelegate) getFlexoIOStreamDelegate()).getFile();
+				File fileToSave = ((FileIODelegate) getFlexoIOStreamDelegate()).getFile();
 				// Make local copy
 				makeLocalCopy(fileToSave);
 				// Using temporary file
-				temporaryFile = ((FileFlexoIODelegate) getFlexoIODelegate()).createTemporaryArtefact(".pdf");
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
@@ -285,10 +285,10 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 					temporaryFile.delete();
 				}
 				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Failed to save resource " + getFlexoIODelegate().getSerializationArtefact());
+					logger.warning("Failed to save resource " + getIODelegate().getSerializationArtefact());
 				}
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getFlexoIODelegate(), e);
+				throw new SaveResourceException(getIODelegate(), e);
 			}
 		} else {
 			write(excelWorkbook.getWorkbook(), getOutputStream());

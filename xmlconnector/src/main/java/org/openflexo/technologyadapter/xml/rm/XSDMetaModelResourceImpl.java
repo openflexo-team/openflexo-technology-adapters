@@ -44,7 +44,7 @@ import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
@@ -109,7 +109,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getFlexoIODelegate());
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
 		}
 
 		if (loadWhenUnloaded())
@@ -319,9 +319,9 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * 
 	 * @return
 	 */
-	public FlexoIOStreamDelegate<?> getFlexoIOStreamDelegate() {
-		if (getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
-			return (FlexoIOStreamDelegate<?>) getFlexoIODelegate();
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
 		}
 		return null;
 	}

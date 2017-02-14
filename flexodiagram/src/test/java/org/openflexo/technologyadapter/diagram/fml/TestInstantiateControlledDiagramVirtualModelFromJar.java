@@ -166,7 +166,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		project = editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		assertNotNull(newView);
 		assertNotNull(newView.getResource());
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		assertNotNull(newVirtualModelInstance);
 		assertNotNull(newVirtualModelInstance.getResource());
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
 		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());
 
 		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> diagramMSInstance = (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) newVirtualModelInstance
@@ -236,7 +236,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		assertNotNull(diagramMSInstance);
 		assertNotNull(diagram = diagramMSInstance.getAccessedResourceData());
 		assertNotNull(diagramMSInstance.getResource());
-		assertTrue(((DiagramResource) diagramMSInstance.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((DiagramResource) diagramMSInstance.getResource()).getIODelegate().exists());
 
 		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE));
 
@@ -292,11 +292,11 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
 
 		newVirtualModelInstance.getResource().save(null);
-		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getIODelegate().exists());
 		assertFalse(newVirtualModelInstance.isModified());
 
 		diagram.getResource().save(null);
-		assertTrue(((DiagramResource) diagram.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((DiagramResource) diagram.getResource()).getIODelegate().exists());
 		assertFalse(diagram.isModified());
 
 		assertEquals(1, serviceManager.getResourceManager().getUnsavedResources().size());

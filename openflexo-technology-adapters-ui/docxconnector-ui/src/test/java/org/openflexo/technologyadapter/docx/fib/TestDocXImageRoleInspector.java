@@ -150,7 +150,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+		assertTrue(viewPointResource.getIODelegate().exists());
 
 		templateResource = getDocumentResource("DocumentWithSomeImages.docx");
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
@@ -167,7 +167,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertTrue(ResourceLocator
 				.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
-		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getIODelegate().exists());
 
 		// Then we create the docx model slot
 		CreateModelSlot createDocumentModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null,

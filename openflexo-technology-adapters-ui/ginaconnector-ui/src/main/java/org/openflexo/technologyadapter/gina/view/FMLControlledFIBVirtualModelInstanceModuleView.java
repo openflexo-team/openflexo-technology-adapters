@@ -35,7 +35,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.resource.FlexoIOStreamDelegate;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
@@ -236,7 +236,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		if (editorController == null) {
 			Progress.progress(locales.localizedForKey("loading_fib_editor"));
 			editorController = getFIBEditor(false).openFIBComponent(
-					component.getResource().getFlexoIODelegate().getSerializationArtefactAsResource(), component.getComponent(),
+					component.getResource().getIODelegate().getSerializationArtefactAsResource(), component.getComponent(),
 					virtualModelInstance, controller.getFlexoFrame());
 		}
 
@@ -293,8 +293,8 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 			return false;
 		}
 
-		if (component.getResource().getFlexoIODelegate() instanceof FlexoIOStreamDelegate) {
-			((FlexoIOStreamDelegate<?>) component.getResource().getFlexoIODelegate()).setSaveToSourceResource(true);
+		if (component.getResource().getIODelegate() instanceof StreamIODelegate) {
+			((StreamIODelegate<?>) component.getResource().getIODelegate()).setSaveToSourceResource(true);
 		}
 		component.getResource().save(null);
 
