@@ -196,7 +196,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				}
 				listeners.clear();
 				performSuperSetter(ROLE_KEY, aRole);
-				if (aRole != null) {
+				if (aRole != null && aRole.getGrSpecifications() != null) {
 					for (GraphicalElementSpecification<?, GR> grSpec : aRole.getGrSpecifications()) {
 						listenToGRSpecification(grSpec);
 					}

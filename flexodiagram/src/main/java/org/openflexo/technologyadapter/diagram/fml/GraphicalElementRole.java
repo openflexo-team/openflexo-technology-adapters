@@ -203,7 +203,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
 
 	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-			extends FlexoRoleImpl<T>implements GraphicalElementRole<T, GR> {
+			extends FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
@@ -419,7 +419,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public void setIsPrimaryRole(boolean isPrimary) {
 			setIsPrimaryRepresentationRole(isPrimary);
 		}
-		*/
+		 */
 
 		@Override
 		public boolean containsShapes() {
@@ -507,20 +507,20 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
-			if (grSpecifications == null && getFMLModelFactory() != null) {
+
+			if ((grSpecifications == null) && getFMLModelFactory() != null) {
 				initDefaultSpecifications();
-			}
-			else if (grSpecifications == null) {
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
 		}
 
 		@Override
 		public GraphicalElementSpecification<?, GR> getGraphicalElementSpecification(String featureName) {
-			for (GraphicalElementSpecification<?, GR> spec : getGrSpecifications()) {
-				if (spec.getFeatureName().equals(featureName)) {
-					return spec;
+			if (getGrSpecifications() != null) {
+				for (GraphicalElementSpecification<?, GR> spec : getGrSpecifications()) {
+					if (spec.getFeatureName().equals(featureName)) {
+						return spec;
+					}
 				}
 			}
 			return null;
@@ -537,9 +537,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> _getDeclaredGRSpecifications() {
 			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<GraphicalElementSpecification<?, GR>>();
-			for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
-				if (spec.getValue().isSet()) {
-					returned.add((GraphicalElementSpecification<?, GR>) spec);
+			if (getGrSpecifications() != null) {
+				for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
+					if (spec.getValue().isSet()) {
+						returned.add((GraphicalElementSpecification<?, GR>) spec);
+					}
 				}
 			}
 			return returned;
