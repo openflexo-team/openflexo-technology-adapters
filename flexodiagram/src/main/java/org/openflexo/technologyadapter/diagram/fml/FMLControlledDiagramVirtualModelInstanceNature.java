@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import java.awt.image.BufferedImage;
-
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
@@ -72,11 +72,12 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
-		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+		VirtualModel virtualModel = virtualModelInstance.getVirtualModel();
+		if (virtualModel == null || !virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 			return false;
 		}
 
-		TypedDiagramModelSlot diagramMS = virtualModelInstance.getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+		TypedDiagramModelSlot diagramMS = virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 
 		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> msInstance = (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) virtualModelInstance
 				.getModelSlotInstance(diagramMS);
