@@ -86,11 +86,12 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 		 * @param elementsToIgnore
 		 */
 		private void appendElementsToIgnore(FlexoConcept concept, List<DocXElement> elementsToIgnore) {
+
 			for (FlexoBehaviour behaviour : concept.getFlexoBehaviours()) {
 				// TODO handle deep action
 				if (behaviour.getControlGraph() != null) {
 					for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
-						if (cg instanceof AddDocXFragment) {
+						if ((cg instanceof AddDocXFragment) && ((AddDocXFragment) cg).getFragment() != null) {
 							for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 								elementsToIgnore.add(e);
 							}
