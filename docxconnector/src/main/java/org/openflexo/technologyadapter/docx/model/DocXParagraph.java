@@ -118,7 +118,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXParagraphImpl.class.getPackage().getName());
 
-		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
+		private final Map<R, DocXRun> runs = new HashMap<>();
 
 		// Factory used during initialization of DocXParagraph (either new or loaded document)
 		protected DocXFactory _factory;
@@ -163,7 +163,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of P given by getP() returns the new value
 
-			List<FlexoDocRun> runsToRemove = new ArrayList<FlexoDocRun>(getRuns());
+			List<FlexoDocRun> runsToRemove = new ArrayList<>(getRuns());
 
 			int currentIndex = 0;
 
@@ -464,7 +464,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			P p = getP();
 			if (aRun instanceof DocXRun) {
 				R r = ((DocXRun) aRun).getR();
-				p.getContent().add(index, r);
+				p.getContent().add(index + 1, r);
 				internallyInsertRunAtIndex(aRun, index);
 			}
 			else {
