@@ -284,7 +284,7 @@
 				icon="controller.iconForObject(flexoConcept)" label="flexoConcept.name"
 				dataClassName="org.openflexo.foundation.fml.FlexoConcept" name="flexoConcept"
 				isEditable="false">
-				<Children id="90" name="children" data="flexoConcept.childFlexoConcepts" />
+				<Children id="90" name="children" data="flexoConcept.embeddedFlexoConcepts" />
 				<BrowserAddAction id="91" name="add_flexo_concept"
 					method="controller.createFlexoConcept(selected)" />
 				<BrowserRemoveAction id="92" name="remove_flexo_concept"
