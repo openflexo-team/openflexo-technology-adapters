@@ -1,73 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
-	height="400" name="main" layout="gridbag"
+	height="400" name="main" layout="twocols"
 	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
 	border="empty" trackViewPortWidth="true" font="Lucida Grande,0,11"
 	width="600"
 	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceWizard$ChooseVirtualModel"
 	titleFont="Lucida Grande,0,11" trackViewPortHeight="true">
-	<Label id="68" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.gina.controller.FIBController"
-		index="1" localize="true" align="left"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		label="virtual_model_name" readOnly="false" />
-	<TextField id="69" passwd="false" manageDynamicModel="false"
-		useScrollBar="false" data="data.newVirtualModelInstanceName" columns="6"
-		name="VirtualModelNameTextField" controllerClassName="org.openflexo.gina.controller.FIBController"
-		text="TextField" index="3" localize="true"
-		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-		readOnly="false" validateOnReturn="false" />
-	<Label id="70" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.gina.controller.FIBController"
-		index="3" localize="true" align="left"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		label="virtual_model_title" readOnly="false" />
-	<TextField id="71" passwd="false" manageDynamicModel="false"
-		useScrollBar="false" data="data.newVirtualModelInstanceTitle" columns="7"
-		name="VirtualModelTitleTextField" controllerClassName="org.openflexo.gina.controller.FIBController"
-		text="TextField" index="3" localize="true"
-		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-		readOnly="false" validateOnReturn="false" />
-		
-	<Label label="virtual_model" index="5"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=10;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		localize="true" />
-	<Custom index="6"
-		data="data.virtualModelResource" componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector"
+	<Label id="1" label="virtual_model" align="left" localize="true"
+		index="1"
+		constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="VirtualModelLabel" />
+	<Custom index="2" data="data.virtualModelResource"
+		componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector"
 		name="VirtualModelSelector" controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true"
-		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=10;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=5;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)"
 		readOnly="false">
-		<Assignment mandatory="true" value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
-		<Assignment mandatory="true" value="data.action.containerViewpointResource" variable="component.viewPoint" />
+		<Assignment mandatory="true"
+			value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
+		<Assignment mandatory="true"
+			value="data.action.containerViewpointResource" variable="component.viewPoint" />
 	</Custom>
-	
-	<Label label="initialization" index="7"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		localize="true" />
-	<RadioButtonList manageDynamicModel="true"
-		columns="1" controllerClassName="org.openflexo.gina.controller.FIBController"
-		index="8" localize="true"
-		constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-		showText="true"
-		iteratorClassName="java.lang.String"
-		vGap="-2" showIcon="false" useScrollBar="false" data="data.initializationOption"
-		staticList="choose_a_creation_scheme,configure_all_model_slots_manually" autoSelectFirstRow="true" name="OptionRadioButtonList"
-		hGap="0" readOnly="false" />
+	<Label id="8" label="virtual_model_instance_name" align="left"
+		localize="true" index="3"
+		constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=20;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="VirtualModelInstanceTitleLabel" />
+	<TextField id="9" columns="7" text="TextField" localize="true"
+		data="data.newVirtualModelInstanceName" index="4"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;insetsBottom=5;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		name="VirtualModelTitleTextField" />
+	<Label id="10" label="virtual_model_instance_title" align="left"
+		localize="true" index="5"
+		constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=20;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="VirtualModelInstanceNameLabel" />
+	<TextField id="11" columns="6" text="TextField" localize="true"
+		data="data.newVirtualModelInstanceTitle" index="6"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=5;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		name="VirtualModelNameTextField" />
+	<Label id="12" label="creation_scheme" align="left" localize="true"
+		visible="((VirtualModelSelector.value != null) &amp; (VirtualModelSelector.value.virtualModel.creationSchemes.size &gt; 0))"
+		index="7"
+		constraints="twocols(anchor=north_east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="CreationSchemeLabel" />
+	<RadioButtonList id="13" autoSelectFirstRow="true"
+		staticList="" showText="true" iteratorClassName="org.openflexo.foundation.fml.CreationScheme"
+		list="VirtualModelSelector.value.virtualModel.creationSchemes"
+		showIcon="true" icon="controller.flexoController.iconForObject(object)"
+		format="object.signature" data="data.creationScheme"
+		visible="((VirtualModelSelector.value != null) &amp; (VirtualModelSelector.value.virtualModel.creationSchemes.size &gt; 0))"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="CreationSchemeSelector" />
+	<Label id="14" label="" align="left"
+		visible="((VirtualModelSelector.value != null) &amp; (VirtualModelSelector.value.virtualModel.creationSchemes.size &gt; 0))"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		name="Label2" />
+	<Label id="15" label="label" align="left"
+		data="data.creationScheme.description"
+		visible="((VirtualModelSelector.value != null) &amp; (VirtualModelSelector.value.virtualModel.creationSchemes.size &gt; 0))"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		font="SansSerif,2,11" name="Label" />
 
-	<Label label="creation_scheme" index="9" visible="data.initializationOption='choose_a_creation_scheme'"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		localize="true" />
-	<Custom index="10" visible="data.initializationOption='choose_a_creation_scheme'"
-		data="data.creationScheme" componentClassName="org.openflexo.fml.controller.widget.FIBFlexoBehaviourSelector"
-		name="CreationSchemeSelector" controllerClassName="org.openflexo.gina.controller.FIBController"
-		localize="true"
-		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-		readOnly="false">
-		<Assignment mandatory="true" variable="component.flexoConcept" value="data.virtualModelResource.loadedResourceData" />
-		<Assignment mandatory="true" variable="component.behaviourClass" value="data.creationSchemeType" />
-	</Custom>
-		
-	<LocalizedDictionary id="1">
+	<LocalizedDictionary>
 	</LocalizedDictionary>
 </Panel>
