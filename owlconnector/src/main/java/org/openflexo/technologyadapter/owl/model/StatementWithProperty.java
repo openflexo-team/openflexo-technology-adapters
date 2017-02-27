@@ -82,6 +82,15 @@ public class StatementWithProperty implements TechnologySpecificType<OWLTechnolo
 	}
 
 	@Override
+	public boolean isOfType(Object object, boolean permissive) {
+		if (!(object instanceof OWLStatement)) {
+			return false;
+		}
+		// TODO please implement me
+		return true;
+	}
+
+	@Override
 	public String simpleRepresentation() {
 		return "Statement:" + property.getName();
 	}

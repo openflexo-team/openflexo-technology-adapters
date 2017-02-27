@@ -74,6 +74,15 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 	}
 
 	@Override
+	public boolean isOfType(Object object, boolean permissive) {
+		if (!(object instanceof Diagram)) {
+			return false;
+		}
+		// TODO please implement me
+		return true;
+	}
+
+	@Override
 	public String simpleRepresentation() {
 		return "DiagramType" + ":" + (diagramSpecification != null ? diagramSpecification.toString() : null);
 	}
