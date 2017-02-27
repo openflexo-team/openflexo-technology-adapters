@@ -464,7 +464,12 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			P p = getP();
 			if (aRun instanceof DocXRun) {
 				R r = ((DocXRun) aRun).getR();
-				p.getContent().add(index + 1, r);
+				if (index < p.getContent().size()) {
+					p.getContent().add(index + 1, r);
+				}
+				else {
+					p.getContent().add(index, r);
+				}
 				internallyInsertRunAtIndex(aRun, index);
 			}
 			else {
