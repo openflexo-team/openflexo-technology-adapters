@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.freeplane.controller.acitoninit;
 
 import java.util.EventObject;
-
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
@@ -58,7 +57,7 @@ public class NewSiblingNodeInitializer extends ActionInitializer<NewSiblingNode,
         return new NewSiblingNodeDefaultInit();
     }
 
-    private class NewSiblingNodeDefaultInit extends FlexoActionInitializer<NewSiblingNode> {
+    private class NewSiblingNodeDefaultInit implements FlexoActionInitializer<NewSiblingNode> {
 
         @Override
         public boolean run(final EventObject event, final NewSiblingNode action) {

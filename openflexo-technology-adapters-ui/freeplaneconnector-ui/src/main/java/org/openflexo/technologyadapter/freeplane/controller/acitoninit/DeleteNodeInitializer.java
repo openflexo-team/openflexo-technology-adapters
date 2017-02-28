@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.freeplane.controller.acitoninit;
 
 import java.util.EventObject;
-
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
@@ -58,7 +57,7 @@ public class DeleteNodeInitializer extends ActionInitializer<DeleteNode, IFreepl
         return new DeleteNodeDefaultInit();
     }
 
-    private class DeleteNodeDefaultInit extends FlexoActionInitializer<DeleteNode> {
+    private class DeleteNodeDefaultInit implements FlexoActionInitializer<DeleteNode> {
 
         @Override
         public boolean run(final EventObject event, final DeleteNode action) {
