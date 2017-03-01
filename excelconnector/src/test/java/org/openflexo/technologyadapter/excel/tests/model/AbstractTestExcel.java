@@ -65,12 +65,11 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 
 		System.out.println("resourceCenter=" + resourceCenter);
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/"
-				+ documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager()
-				.getResource(documentURI, null, ExcelWorkbook.class);
+		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager().getResource(documentURI, null,
+				ExcelWorkbook.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);
@@ -94,13 +93,10 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 		try {
 			document = documentResource.getResourceData(null);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertNotNull(document);

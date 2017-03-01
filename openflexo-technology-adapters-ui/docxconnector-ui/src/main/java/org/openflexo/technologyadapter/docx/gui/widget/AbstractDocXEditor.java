@@ -301,7 +301,6 @@ public abstract class AbstractDocXEditor extends JPanel {
 					// System.out.println("endMarker=" + endMarker);
 					getEditor().textSelection = getEditor().getDocXDocument().getFactory().makeTextSelection(startMarker, endMarker);
 				} catch (FragmentConsistencyException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -582,7 +581,6 @@ public abstract class AbstractDocXEditor extends JPanel {
 						s = labelView.getParent().modelToView(pos, getBounds(), Position.Bias.Forward);
 						System.out.println("Parent Shape = " + s);
 					} catch (BadLocationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

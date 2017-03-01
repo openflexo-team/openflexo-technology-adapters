@@ -79,19 +79,16 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 	protected static FlexoEditor editor;
 
 	/**
-	 * Instantiate a default {@link FlexoServiceManager} well suited for test
-	 * purpose<br>
-	 * FML and FML@RT technology adapters are activated in returned
-	 * {@link FlexoServiceManager}, as well as technology adapters whose classes
-	 * are supplied as varargs arguments
+	 * Instantiate a default {@link FlexoServiceManager} well suited for test purpose<br>
+	 * FML and FML@RT technology adapters are activated in returned {@link FlexoServiceManager}, as well as technology adapters whose
+	 * classes are supplied as varargs arguments
 	 * 
 	 * @param taClasses
 	 * @return a newly created {@link FlexoServiceManager}
 	 */
 	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
 		serviceManager = instanciateTestServiceManager();
-		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		docXTA.setDefaultIDStrategy(idStrategy);
 		serviceManager.activateTechnologyAdapter(docXTA);
 		return serviceManager;
@@ -111,8 +108,8 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager()
-				.getResource(documentURI, null, DocXDocument.class);
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
+				DocXDocument.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);
@@ -157,13 +154,10 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 		try {
 			document = documentResource.getResourceData(null);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertNotNull(document);

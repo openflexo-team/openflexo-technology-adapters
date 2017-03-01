@@ -84,17 +84,17 @@ public class TestLoadPDFDocuments extends AbstractTestPDF {
 			// PDFDocumentRepository docXRepository =
 			// resourceCenter.getRepository(PDFDocumentRepository.class,
 			// technologicalAdapter);
-			PDFDocumentRepository pdfRepository = technologicalAdapter.getPDFDocumentRepository(resourceCenter);
+			PDFDocumentRepository<?> pdfRepository = technologicalAdapter.getPDFDocumentRepository(resourceCenter);
 			assertNotNull(pdfRepository);
 			Collection<PDFDocumentResource> documents = pdfRepository.getAllResources();
 			for (PDFDocumentResource docResource : documents) {
 				/*
 				 * try { docResource.loadResourceData(null); } catch
-				 * (FileNotFoundException e) { // TODO Auto-generated catch
-				 * block e.printStackTrace(); } catch
-				 * (ResourceLoadingCancelledException e) { // TODO
-				 * Auto-generated catch block e.printStackTrace(); } catch
-				 * (FlexoException e) { // TODO Auto-generated catch block
+				 * (FileNotFoundException e) { 
+				 *  e.printStackTrace(); } catch
+				 * (ResourceLoadingCancelledException e) { 
+				 *  e.printStackTrace(); } catch
+				 * (FlexoException e) { 
 				 * e.printStackTrace(); }
 				 * assertNotNull(docResource.getLoadedResourceData());
 				 * System.out.println("URI of document: " +

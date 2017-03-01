@@ -75,8 +75,8 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager()
-				.getResource(documentURI, null, DocXDocument.class);
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
+				DocXDocument.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);
@@ -121,13 +121,10 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 		try {
 			document = documentResource.getResourceData(null);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertNotNull(document);
