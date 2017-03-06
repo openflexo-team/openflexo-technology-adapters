@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.lang.reflect.Type;
 import java.util.Vector;
 import java.util.logging.Logger;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
@@ -69,11 +68,14 @@ import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.localization.LocalizedDelegate;
@@ -137,6 +139,15 @@ public class CreateFMLControlledDiagramVirtualModel
 
 	CreateFMLControlledDiagramVirtualModel(ViewPoint focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+
+		FlexoResource<ViewPoint> resource = focusedObject.getResource();
+		if (resource != null && resource.getResourceCenter() instanceof ResourceRepository) {
+			ResourceRepository resourceCenter = (ResourceRepository) resource.getResourceCenter();
+			RepositoryFolder repositoryFolder = resourceCenter.getFolderWithName(resource.getName() + ViewPointResourceFactory.VIEWPOINT_SUFFIX);
+			if (repositoryFolder != null) {
+				setRepositoryFolder(repositoryFolder);
+			}
+		}
 	}
 
 	@Override
@@ -315,7 +326,12 @@ public class CreateFMLControlledDiagramVirtualModel
 
 	public void setNewVirtualModelName(String newVirtualModelName) {
 		this.newVirtualModelName = newVirtualModelName;
+
+		setNewDiagramSpecificationName(newVirtualModelName + "Spec");
+		setNewDiagramSpecificationURI(getFocusedObject().getURI() + "/" + newVirtualModelName + "/" + getNewDiagramSpecificationName());
+
 		getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, newVirtualModelName);
+
 
 	}
 
