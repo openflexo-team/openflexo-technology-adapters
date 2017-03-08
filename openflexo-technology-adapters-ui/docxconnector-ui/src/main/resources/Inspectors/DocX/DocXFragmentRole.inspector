@@ -22,14 +22,14 @@
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
 			<Label id="9" manageDynamicModel="false" useScrollBar="false"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="3" localize="true" align="left"
+				index="8" localize="true" align="left"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="template_fragment" readOnly="false" />
 			<Custom id="10" manageDynamicModel="true" useScrollBar="false"
 				data="data.fragment" dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
 				componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="4" localize="true"
+				index="9" localize="true"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
 				readOnly="false">
 				<Assignment id="11" mandatory="true" variable="component.serviceManager" />
@@ -42,13 +42,13 @@
 			</Custom>
 			<Label id="108" manageDynamicModel="false" useScrollBar="false"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="3" localize="true" align="left"
+				index="10" localize="true" align="left"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="preview" readOnly="false" />
 			<Panel id="109" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 				useScrollBar="true" protectContent="false" height="60" layout="border"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
-				border="empty" trackViewPortWidth="true" width="60"
+				border="empty" trackViewPortWidth="true" width="60" index="11"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
 				titleFont="SansSerif,0,11" trackViewPortHeight="true"
 				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
@@ -64,7 +64,7 @@
 			</Panel>
 			<Label id="110" manageDynamicModel="false" useScrollBar="false"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="3" localize="true" align="left"
+				index="12" localize="true" align="left"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="text_bindings" readOnly="false" />
 
@@ -73,7 +73,7 @@
 				createNewRowOnClick="false" boundToSelectionManager="false"
 				showFooter="true" selectionMode="SingleSelection"
 				localize="true" manageDynamicModel="true" name="TextBindingsTable"
-				index="0" data="data.textBindings"
+				index="13" data="data.textBindings"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
 				<IconColumn data="controller.iconForObject(iterator)"
 					format="" title="icon" columnWidth="30" resizable="false"
