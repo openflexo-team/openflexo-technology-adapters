@@ -1,4 +1,0 @@
-15:10:02,063 ERROR [org.docx4j.fonts.BestMatchingMapper] Illegal Panose Array: Invalid value 9 > 8 in position 5 of [ 2 11 8 6 3 9 2 5 2 4 ]
-15:10:10,196 ERROR [org.docx4j.fonts.GlyphCheck] Couldn't get font Calibri
-15:10:10,196 ERROR [org.docx4j.fonts.GlyphCheck] Couldn't get font MS Gothic
-15:10:10,223 ERROR [org.docx4j.fonts.GlyphCheck] Couldn't get font Source Sans Pro

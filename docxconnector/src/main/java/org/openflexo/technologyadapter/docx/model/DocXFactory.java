@@ -98,7 +98,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXDocument makeDocument() {
+	public DocXDocument makeDocument() {
 		DocXDocument returned = newInstance(DocXDocument.class);
 		((DocXDocumentImpl) returned)._factory = this;
 		return returned;
@@ -178,7 +178,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			if (o instanceof Drawing) {
 				return makeNewDocXDrawingRun(r);
 			}
-			if (o instanceof R.Tab){
+			if (o instanceof R.Tab) {
 				return makeNewDocXTextRun(r);
 			}
 		}
