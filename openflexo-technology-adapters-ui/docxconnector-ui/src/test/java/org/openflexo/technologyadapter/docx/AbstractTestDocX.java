@@ -52,7 +52,6 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
@@ -140,7 +139,7 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate("AbstractTestDocX");
 
 		// TODO: please check this: suspiscion of missing code after merge
 

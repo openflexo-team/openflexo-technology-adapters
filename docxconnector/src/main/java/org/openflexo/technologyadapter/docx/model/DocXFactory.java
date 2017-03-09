@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Logger;
@@ -49,16 +50,23 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
+import org.docx4j.wml.BooleanDefaultTrue;
+import org.docx4j.wml.Color;
 import org.docx4j.wml.Drawing;
+import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RFonts;
+import org.docx4j.wml.RPrAbstract;
 import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
+import org.docx4j.wml.U;
 import org.openflexo.foundation.doc.DocumentFactory;
+import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -83,7 +91,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext, IdentifierManagementStrategy idStrategy)
 			throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, DocXStyle.class), resource,
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, NamedDocXStyle.class), resource,
 				editingContext);
 		this.idStrategy = idStrategy;
 	}
@@ -331,12 +339,17 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXStyle makeStyle() {
+	public DocXStyle makeStyle() {
 		return newInstance(DocXStyle.class);
 	}
 
-	public DocXStyle makeNewDocXStyle(Style style, DocXStyle parent) {
-		DocXStyle returned = makeStyle();
+	@Override
+	protected NamedDocXStyle makeNamedStyle() {
+		return newInstance(NamedDocXStyle.class);
+	}
+
+	public NamedDocXStyle makeNewDocXStyle(Style style, NamedDocXStyle parent) {
+		NamedDocXStyle returned = makeNamedStyle();
 		returned.updateFromStyle(style, this);
 		if (parent != null) {
 			returned.setParentStyle(parent);
@@ -370,6 +383,61 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		int docPrId = 1;
 		int cNvPrId = 2;
 		return imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
+	}
+
+	public Font makeFont(RFonts rFonts) {
+		System.out.println("Comment faire une fonte avec " + rFonts);
+		System.out.println("ascii=" + rFonts.getAscii());
+		System.out.println("hAnsi=" + rFonts.getHAnsi());
+		System.out.println("cs=" + rFonts.getCs());
+		System.out.println("hint=" + rFonts.getHint());
+		return null;
+	}
+
+	public java.awt.Color makeColor(Color color) {
+		System.out.println("Comment faire une couleur avec " + color);
+		return java.awt.Color.red;
+	}
+
+	public void extractStyleProperties(RPrAbstract rPr, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
+
+		RFonts rFonts = rPr.getRFonts();
+		if (rFonts != null) {
+			style.setFont(makeFont(rFonts));
+		}
+
+		HpsMeasure sz = rPr.getSz();
+		if (sz != null) {
+			style.setFontSize(sz.getVal().intValue());
+		}
+
+		Color color = rPr.getColor();
+		if (color != null) {
+			style.setFontColor(makeColor(color));
+		}
+
+		BooleanDefaultTrue b = rPr.getB();
+		if (b != null) {
+			style.setBold(b.isVal());
+		}
+
+		BooleanDefaultTrue i = rPr.getI();
+		if (i != null) {
+			style.setItalic(i.isVal());
+		}
+
+		U u = rPr.getU();
+		if (u != null) {
+			style.setUnderline(true);
+		}
+
+	}
+
+	public DocXStyle makeStyle(RPrAbstract rPr) {
+
+		DocXStyle returned = newInstance(DocXStyle.class);
+		returned.updateFromRPr(rPr, this);
+		return returned;
 	}
 
 }

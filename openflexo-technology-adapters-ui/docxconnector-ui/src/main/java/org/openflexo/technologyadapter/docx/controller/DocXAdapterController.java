@@ -97,7 +97,7 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	public ImageIcon getIconForTechnologyObject(TechnologyObject<?> object) {
 		if (object instanceof DocXParagraph) {
 			DocXParagraph paragraph = (DocXParagraph) object;
-			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
+			if (paragraph.getNamedStyle() != null && paragraph.getNamedStyle().isLevelled()) {
 				return DocXIconLibrary.SECTION_ICON;
 			}
 			else {

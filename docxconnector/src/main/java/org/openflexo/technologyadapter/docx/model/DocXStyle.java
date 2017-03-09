@@ -20,8 +20,9 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import org.docx4j.wml.Style;
+import org.docx4j.wml.RPrAbstract;
 import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.NamedDocStyle;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -40,49 +41,36 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXStyle.DocXStyleImpl.class)
 @XMLElement
-public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXStyle extends DocXObject<RPrAbstract>, NamedDocStyle<DocXDocument, DocXTechnologyAdapter> {
 
-	@PropertyIdentifier(type = DocXStyle.class)
-	public static final String PARENT_STYLE_KEY = "parentStyle";
+	@PropertyIdentifier(type = RPrAbstract.class)
+	public static final String RPR_KEY = "rPr";
 
-	@PropertyIdentifier(type = Style.class)
-	public static final String STYLE_KEY = "style";
+	@Getter(value = RPR_KEY, ignoreType = true)
+	public RPrAbstract getRPr();
 
-	@Getter(value = PARENT_STYLE_KEY)
-	public DocXStyle getParentStyle();
-
-	@Setter(PARENT_STYLE_KEY)
-	public void setParentStyle(DocXStyle parentStyle);
-
-	@Getter(value = STYLE_KEY, ignoreType = true)
-	public Style getStyle();
-
-	@Setter(STYLE_KEY)
-	public void setStyle(Style style);
+	@Setter(RPR_KEY)
+	public void setRPr(RPrAbstract rPr);
 
 	/**
-	 * This is the starting point for updating {@link DocXStyle} with the style provided from docx4j library<br>
-	 * Take care that the supplied p is the object we should update with, but that {@link #getStyle()} is unsafe in this context, because
+	 * This is the starting point for updating {@link DocXStyle} with the rPr provided from docx4j library<br>
+	 * Take care that the supplied rPr is the object we should update with, but that {@link #getRPr()} is unsafe in this context, because
 	 * return former value
 	 */
-	public void updateFromStyle(Style style, DocXFactory factory);
+	public void updateFromRPr(RPrAbstract rPr, DocXFactory factory);
 
-	public static abstract class DocXStyleImpl extends FlexoStyleImpl<DocXDocument, DocXTechnologyAdapter>implements DocXStyle {
+	public static abstract class DocXStyleImpl extends NamedDocStyleImpl<DocXDocument, DocXTechnologyAdapter> implements DocXStyle {
 
-		public DocXStyleImpl() {
-			super();
+		@Override
+		public RPrAbstract getDocXObject() {
+			return getRPr();
 		}
 
 		@Override
-		public Style getDocXObject() {
-			return getStyle();
-		}
-
-		@Override
-		public void setStyle(Style style) {
-			if ((style == null && getStyle() != null) || (style != null && !style.equals(getStyle()))) {
-				if (style != null && getResourceData() != null && getResourceData().getResource() != null) {
-					updateFromStyle(style, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+		public void setRPr(RPrAbstract rPr) {
+			if ((rPr == null && getRPr() != null) || (rPr != null && !rPr.equals(getRPr()))) {
+				if (rPr != null && getResourceData() != null && getResourceData().getResource() != null) {
+					updateFromRPr(rPr, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
 				}
 			}
 		}
@@ -93,43 +81,18 @@ public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument
 		 * because return former value
 		 */
 		@Override
-		public void updateFromStyle(Style style, DocXFactory factory) {
+		public void updateFromRPr(RPrAbstract rPr, DocXFactory factory) {
 
-			performSuperSetter(STYLE_KEY, style);
+			performSuperSetter(RPR_KEY, rPr);
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
-			// if value of P given by getStyle() returns the new value
+			// if value of RPrAbstract given by getRPr() returns the new value
 
-		}
-
-		@Override
-		public String getName() {
-			if (getStyle() != null) {
-				return getStyle().getName().getVal();
-			}
-			return null;
-		}
-
-		@Override
-		public void setName(String name) {
-			// TODO not implemented yet
-		}
-
-		@Override
-		public String getStyleId() {
-			if (getStyle() != null) {
-				return getStyle().getStyleId();
-			}
-			return null;
-		}
-
-		@Override
-		public void setStyleId(String styleId) {
-			// TODO not implemented yet
+			factory.extractStyleProperties(rPr, this);
 		}
 
 		@Override
 		public String toString() {
-			return getName() + (getParentStyle() != null ? " (based on " + getParentStyle().getName() + ")" : "");
+			return getStringRepresentation();
 		}
 	}
 

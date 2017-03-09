@@ -68,8 +68,7 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX {
-	protected static final Logger logger = Logger
-			.getLogger(TestCreateBasicDocXDocumentBookmarkScheme.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestCreateBasicDocXDocumentBookmarkScheme.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
@@ -101,24 +100,21 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testEmptyDocXCreation");
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
-				"TestBasicDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX", "TestBasicDocument.docx", true,
+				technologicalAdapter.getDefaultIDStrategy());
 		newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx",
-				newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -126,9 +122,9 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		assertEquals(23, newDocument.getStyles().size());
 
-		DocXStyle docDefaultsStyle = (DocXStyle) newDocument.getStyleByIdentifier("DocDefaults");
-		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
-		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
+		NamedDocXStyle docDefaultsStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("DocDefaults");
+		NamedDocXStyle normalStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("Normal");
+		NamedDocXStyle heading1 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading1");
 
 		// System.out.println("docDefaultsStyle=" + docDefaultsStyle + " of " +
 		// docDefaultsStyle.getClass());
@@ -166,7 +162,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		log("testUseSomeStyles");
 
-		DocXStyle normalWebStyle;
+		NamedDocXStyle normalWebStyle;
 
 		System.out.println("Styles=" + newDocument.getStyles());
 		System.out.println("Known styles=" + newDocument.getKnownStyleIds());
@@ -196,9 +192,9 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		log("testAddSomeParagraphs");
 
-		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
-		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
-		DocXStyle heading2 = (DocXStyle) newDocument.getStyleByIdentifier("Heading2");
+		NamedDocXStyle normalStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("Normal");
+		NamedDocXStyle heading1 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading1");
+		NamedDocXStyle heading2 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading2");
 
 		newDocument.addStyledParagraphOfText(heading1, "Title of document");
 		newDocument.addStyledParagraphOfText(heading2, "Subtitle1");
@@ -218,15 +214,15 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
 
 		assertEquals("Title of document", title.getRawText());
-		assertEquals(heading1, title.getStyle());
+		assertEquals(heading1, title.getNamedStyle());
 		assertEquals("Subtitle1", subtitle1.getRawText());
-		assertEquals(heading2, subtitle1.getStyle());
+		assertEquals(heading2, subtitle1.getNamedStyle());
 		assertEquals("This is a paragraph", text1.getRawText());
-		assertEquals(normalStyle, text1.getStyle());
+		assertEquals(normalStyle, text1.getNamedStyle());
 		assertEquals("Subtitle2", subtitle2.getRawText());
-		assertEquals(heading2, subtitle2.getStyle());
+		assertEquals(heading2, subtitle2.getNamedStyle());
 		assertEquals("This is an other paragraph", text2.getRawText());
-		assertEquals(normalStyle, text2.getStyle());
+		assertEquals(normalStyle, text2.getNamedStyle());
 
 		assertTrue(newDocResource.isModified());
 		newDocResource.save(null);
@@ -248,9 +244,8 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
-		serviceManager.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
-						serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(
+				newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
 		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
@@ -262,9 +257,9 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		assertEquals(5, newDocument.getElements().size());
 		assertEquals(1, newDocument.getRootElements().size());
 
-		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
-		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
-		DocXStyle heading2 = (DocXStyle) newDocument.getStyleByIdentifier("Heading2");
+		NamedDocXStyle normalStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("Normal");
+		NamedDocXStyle heading1 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading1");
+		NamedDocXStyle heading2 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading2");
 
 		DocXParagraph title = (DocXParagraph) newDocument.getElements().get(0);
 		DocXParagraph subtitle1 = (DocXParagraph) newDocument.getElements().get(1);
@@ -273,15 +268,15 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
 
 		assertEquals("Title of document", title.getRawText());
-		assertEquals(heading1, title.getStyle());
+		assertEquals(heading1, title.getNamedStyle());
 		assertEquals("Subtitle1", subtitle1.getRawText());
-		assertEquals(heading2, subtitle1.getStyle());
+		assertEquals(heading2, subtitle1.getNamedStyle());
 		assertEquals("This is a paragraph", text1.getRawText());
-		assertEquals(normalStyle, text1.getStyle());
+		assertEquals(normalStyle, text1.getNamedStyle());
 		assertEquals("Subtitle2", subtitle2.getRawText());
-		assertEquals(heading2, subtitle2.getStyle());
+		assertEquals(heading2, subtitle2.getNamedStyle());
 		assertEquals("This is an other paragraph", text2.getRawText());
-		assertEquals(normalStyle, text2.getStyle());
+		assertEquals(normalStyle, text2.getNamedStyle());
 
 	}
 
@@ -295,9 +290,9 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		System.out.println(newDocument.debugStructuredContents());
 
-		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
-		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
-		DocXStyle heading2 = (DocXStyle) newDocument.getStyleByIdentifier("Heading2");
+		NamedDocXStyle normalStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("Normal");
+		NamedDocXStyle heading1 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading1");
+		NamedDocXStyle heading2 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading2");
 
 		DocXParagraph title = (DocXParagraph) newDocument.getElements().get(0);
 		DocXParagraph subtitle1 = (DocXParagraph) newDocument.getElements().get(1);
@@ -306,18 +301,18 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
 
 		assertEquals("Title of document", title.getRawText());
-		assertEquals(heading1, title.getStyle());
+		assertEquals(heading1, title.getNamedStyle());
 		assertEquals("Subtitle1", subtitle1.getRawText());
-		assertEquals(heading2, subtitle1.getStyle());
+		assertEquals(heading2, subtitle1.getNamedStyle());
 		assertEquals("This is a paragraph", text1.getRawText());
-		assertEquals(normalStyle, text1.getStyle());
+		assertEquals(normalStyle, text1.getNamedStyle());
 		assertEquals("Subtitle2", subtitle2.getRawText());
-		assertEquals(heading2, subtitle2.getStyle());
+		assertEquals(heading2, subtitle2.getNamedStyle());
 		assertEquals("This is an other paragraph", text2.getRawText());
-		assertEquals(normalStyle, text2.getStyle());
+		assertEquals(normalStyle, text2.getNamedStyle());
 
-		text1.setStyle(heading2);
-		text2.setStyle(heading1);
+		text1.setNamedStyle(heading2);
+		text2.setNamedStyle(heading1);
 
 		System.out.println(newDocument.debugStructuredContents());
 

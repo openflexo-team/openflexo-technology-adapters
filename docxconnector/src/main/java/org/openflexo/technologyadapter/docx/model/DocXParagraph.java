@@ -41,9 +41,10 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RPrAbstract;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
 import org.openflexo.foundation.doc.FlexoDocRun;
-import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.NamedDocStyle;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -212,6 +213,22 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
 				// System.out.println("# Remove run for " + e);
 				internallyRemoveFromRuns(run);
+			}
+
+			if (p != null) {
+				PPr ppr = p.getPPr();
+				if (ppr != null) {
+					RPrAbstract rpr = ppr.getRPr();
+					if (rpr != null) {
+						System.out.println("Style du paragraphe: " + getRawText());
+						System.out.println("style=" + rpr.getRStyle());
+						System.out.println("fonts=" + rpr.getRFonts());
+						System.out.println("size=" + rpr.getSz());
+						System.out.println("color=" + rpr.getColor());
+						System.out.println("b=" + rpr.getB());
+						System.out.println("i=" + rpr.getI());
+					}
+				}
 			}
 
 		}
@@ -597,7 +614,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		}
 
 		@Override
-		public FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
+		public NamedDocStyle<DocXDocument, DocXTechnologyAdapter> getNamedStyle() {
 			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null && getFlexoDocument() != null) {
 				String styleName = getP().getPPr().getPStyle().getVal();
 				return getFlexoDocument().getStyleByIdentifier(styleName);
@@ -606,8 +623,8 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		}
 
 		@Override
-		public void setStyle(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
-			if (getStyle() != style) {
+		public void setNamedStyle(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
+			if (getNamedStyle() != style) {
 				if (getP() != null) {
 					PPr paragraphProperties = getP().getPPr();
 					if (paragraphProperties == null) {

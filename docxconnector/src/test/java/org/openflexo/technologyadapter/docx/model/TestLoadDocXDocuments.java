@@ -130,7 +130,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 			}
 		}*/
 
-		assertEquals(12, simpleDocument.getElements().size());
+		assertEquals(11, simpleDocument.getElements().size());
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -163,56 +163,56 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		// System.out.println("Used styles: " + structuredDocument.getStyles());
 
 		assertEquals(12, structuredDocument.getStyles().size());
-		DocXStyle docDefaults = (DocXStyle) structuredDocument.getStyleByName("DocDefaults");
+		NamedDocXStyle docDefaults = (NamedDocXStyle) structuredDocument.getStyleByName("DocDefaults");
 		assertNotNull(docDefaults);
 		assertNull(docDefaults.getParentStyle());
-		DocXStyle normal = (DocXStyle) structuredDocument.getStyleByName("Normal");
+		NamedDocXStyle normal = (NamedDocXStyle) structuredDocument.getStyleByName("Normal");
 		assertNotNull(normal);
 		assertSame(docDefaults, normal.getParentStyle());
-		DocXStyle title = (DocXStyle) structuredDocument.getStyleByName("Title");
+		NamedDocXStyle title = (NamedDocXStyle) structuredDocument.getStyleByName("Title");
 		assertNotNull(title);
 		assertSame(normal, title.getParentStyle());
-		DocXStyle heading1 = (DocXStyle) structuredDocument.getStyleByName("heading 1");
+		NamedDocXStyle heading1 = (NamedDocXStyle) structuredDocument.getStyleByName("heading 1");
 		assertNotNull(heading1);
 		assertSame(normal, heading1.getParentStyle());
-		DocXStyle heading2 = (DocXStyle) structuredDocument.getStyleByName("heading 2");
+		NamedDocXStyle heading2 = (NamedDocXStyle) structuredDocument.getStyleByName("heading 2");
 		assertNotNull(heading2);
 		assertSame(normal, heading2.getParentStyle());
 
 		DocXParagraph titleParagraph = (DocXParagraph) structuredDocument.getElements().get(0);
-		assertSame(title, titleParagraph.getStyle());
+		assertSame(title, titleParagraph.getNamedStyle());
 
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
-		assertSame(heading1, section1Paragraph.getStyle());
+		assertSame(heading1, section1Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph1 = (DocXParagraph) structuredDocument.getElements().get(2);
-		assertNull(paragraph1.getStyle());
+		assertNull(paragraph1.getNamedStyle());
 
 		DocXParagraph subSection1Paragraph = (DocXParagraph) structuredDocument.getElements().get(3);
-		assertSame(heading2, subSection1Paragraph.getStyle());
+		assertSame(heading2, subSection1Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph2 = (DocXParagraph) structuredDocument.getElements().get(4);
-		assertNull(paragraph2.getStyle());
+		assertNull(paragraph2.getNamedStyle());
 
 		DocXParagraph subSection2Paragraph = (DocXParagraph) structuredDocument.getElements().get(5);
-		assertSame(heading2, subSection2Paragraph.getStyle());
+		assertSame(heading2, subSection2Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
-		assertNull(paragraph3.getStyle());
+		assertNull(paragraph3.getNamedStyle());
 
 		DocXParagraph section2Paragraph = (DocXParagraph) structuredDocument.getElements().get(7);
-		assertSame(heading1, section2Paragraph.getStyle());
+		assertSame(heading1, section2Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph4 = (DocXParagraph) structuredDocument.getElements().get(8);
-		assertNull(paragraph4.getStyle());
+		assertNull(paragraph4.getNamedStyle());
 		DocXParagraph paragraph5 = (DocXParagraph) structuredDocument.getElements().get(9);
-		assertNull(paragraph5.getStyle());
+		assertNull(paragraph5.getNamedStyle());
 		DocXParagraph paragraph6 = (DocXParagraph) structuredDocument.getElements().get(10);
-		assertNull(paragraph6.getStyle());
+		assertNull(paragraph6.getNamedStyle());
 		DocXParagraph paragraph7 = (DocXParagraph) structuredDocument.getElements().get(11);
-		assertNull(paragraph7.getStyle());
+		assertNull(paragraph7.getNamedStyle());
 		DocXParagraph paragraph8 = (DocXParagraph) structuredDocument.getElements().get(12);
-		assertNull(paragraph8.getStyle());
+		assertNull(paragraph8.getNamedStyle());
 
 		assertSameList(structuredDocument.getRootElements(), titleParagraph, section1Paragraph, section2Paragraph);
 

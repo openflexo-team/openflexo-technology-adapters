@@ -44,11 +44,11 @@ import org.docx4j.wml.Tbl;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
-import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.foundation.doc.FlexoDocTable;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.foundation.doc.FlexoDocTableRow;
 import org.openflexo.foundation.doc.FlexoDocument;
+import org.openflexo.foundation.doc.NamedDocStyle;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -71,7 +71,8 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DocXDocument.DocXDocumentImpl.class)
 @XMLElement
-@Imports({ @Import(DocXParagraph.class), @Import(DocXTable.class), @Import(DocXSdtBlock.class), @Import(DocXUnmappedElement.class) })
+@Imports({ @Import(DocXParagraph.class), @Import(DocXTable.class), @Import(DocXSdtBlock.class), @Import(DocXUnmappedElement.class),
+		@Import(NamedDocXStyle.class), @Import(DocXStyle.class) })
 public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = WordprocessingMLPackage.class)
@@ -104,22 +105,22 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 	public DocXFactory getFactory();
 
 	@Override
-	public DocXStyle activateStyle(String styleId);
+	public NamedDocXStyle activateStyle(String styleId);
 
 	// TODO: we cannot do that: issue with PAMELA, please fix this (see issue PAMELA-7)
 	// @Override
-	// public DocXStyle getStyleByIdentifier(String styleId);
+	// public NamedDocXStyle getStyleByIdentifier(String styleId);
 
 	@Override
 	public DocXFragment getFragment(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXDocumentImpl.class.getPackage().getName());
 
-		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
+		private final Map<Style, NamedDocXStyle> styles = new HashMap<Style, NamedDocXStyle>();
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
 		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
@@ -308,7 +309,7 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 			StyleTree styleTree = wpmlPackage.getMainDocumentPart().getStyleTree(true);
 
-			List<DocXStyle> stylesToRemove = new ArrayList<>(styles.values());
+			List<NamedDocXStyle> stylesToRemove = new ArrayList<>(styles.values());
 
 			registerStyle(styleTree.getParagraphStylesTree().getRootElement(), null, stylesToRemove, factory);
 
@@ -318,23 +319,23 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 					// System.out.println("# style " + style.getName().getVal() + " "
 					// + (style.getUiPriority() != null ? style.getUiPriority().getVal() : ""));
 
-					DocXStyle docXStyle = styles.get(style);
-					if (docXStyle != null) {
-						stylesToRemove.remove(docXStyle);
+					NamedDocXStyle namedDocXStyle = styles.get(style);
+					if (namedDocXStyle != null) {
+						stylesToRemove.remove(namedDocXStyle);
 					}
 					else {
 						if (style.getBasedOn() != null && StringUtils.isNotEmpty(style.getBasedOn().getVal())) {
 							// System.out.println("looking up: " + style.getBasedOn().getVal());
-							DocXStyle parentStyle = (DocXStyle) getStyleByIdentifier(style.getBasedOn().getVal());
+							NamedDocXStyle parentStyle = (NamedDocXStyle) getStyleByIdentifier(style.getBasedOn().getVal());
 							// System.out.println("parentStyle: " + parentStyle);
-							docXStyle = factory.makeNewDocXStyle(style, parentStyle);
+							namedDocXStyle = factory.makeNewDocXStyle(style, parentStyle);
 						}
 						else {
-							docXStyle = factory.makeNewDocXStyle(style, null);
+							namedDocXStyle = factory.makeNewDocXStyle(style, null);
 						}
-						addToStyles(docXStyle);
+						addToStyles(namedDocXStyle);
 					}
-					docXStyle.updateFromStyle(style, factory);
+					namedDocXStyle.updateFromStyle(style, factory);
 
 				}
 			} catch (Docx4JException e) {
@@ -342,13 +343,13 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 				e.printStackTrace();
 			}
 
-			for (DocXStyle styleToRemove : stylesToRemove) {
+			for (NamedDocXStyle styleToRemove : stylesToRemove) {
 				removeFromStyles(styleToRemove);
 			}
 
 			// Temporaray solution to provide structuring styles
 			for (int i = 1; i < 10; i++) {
-				DocXStyle headingStyle = (DocXStyle) getStyleByName("heading " + i);
+				NamedDocXStyle headingStyle = (NamedDocXStyle) getStyleByName("heading " + i);
 				if (headingStyle != null && !(getStructuringStyles().contains(headingStyle))) {
 					addToStructuringStyles(headingStyle);
 				}
@@ -357,7 +358,7 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 			/*for (DocXParagraph p : getElements(DocXParagraph.class)) {
 				if (p.getP() != null && p.getP().getPPr() != null && p.getP().getPPr().getPStyle() != null) {
 					String styleName = p.getP().getPPr().getPStyle().getVal();
-					FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> paragraphStyle = getStyleByIdentifier(styleName);
+					NamedDocStyle<DocXDocument, DocXTechnologyAdapter> paragraphStyle = getStyleByIdentifier(styleName);
 					if (paragraphStyle != null) {
 						p.setStyle(paragraphStyle);
 					}
@@ -366,23 +367,23 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 		}
 
-		private void registerStyle(Node<AugmentedStyle> styleNode, Node<AugmentedStyle> parentNode, List<DocXStyle> stylesToRemove,
+		private void registerStyle(Node<AugmentedStyle> styleNode, Node<AugmentedStyle> parentNode, List<NamedDocXStyle> stylesToRemove,
 				DocXFactory factory) {
 			if (styleNode != null && styleNode.getData() != null) {
 				Style style = styleNode.getData().getStyle();
 				// System.out.println("Registering Style " + style.getName().getVal());
 				// System.out.println("StyleId " + style.getStyleId());
 				// System.out.println("Aliases " + style.getAliases());
-				DocXStyle parentStyle = (parentNode != null ? styles.get(parentNode.data.getStyle()) : null);
-				DocXStyle docXStyle = styles.get(style);
-				if (docXStyle != null) {
-					stylesToRemove.remove(docXStyle);
+				NamedDocXStyle parentStyle = (parentNode != null ? styles.get(parentNode.data.getStyle()) : null);
+				NamedDocXStyle namedDocXStyle = styles.get(style);
+				if (namedDocXStyle != null) {
+					stylesToRemove.remove(namedDocXStyle);
 				}
 				else {
-					docXStyle = factory.makeNewDocXStyle(style, parentStyle);
-					addToStyles(docXStyle);
+					namedDocXStyle = factory.makeNewDocXStyle(style, parentStyle);
+					addToStyles(namedDocXStyle);
 				}
-				docXStyle.updateFromStyle(style, factory);
+				namedDocXStyle.updateFromStyle(style, factory);
 				for (Node<AugmentedStyle> child : styleNode.getChildren()) {
 					registerStyle(child, styleNode, stylesToRemove, factory);
 				}
@@ -390,15 +391,15 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		}
 
 		@Override
-		public void addToStyles(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
+		public void addToStyles(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
 			performSuperAdder(STYLES_KEY, aStyle);
-			styles.put(((DocXStyle) aStyle).getStyle(), (DocXStyle) aStyle);
+			styles.put(((NamedDocXStyle) aStyle).getStyle(), (NamedDocXStyle) aStyle);
 		}
 
 		@Override
-		public void removeFromStyles(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
+		public void removeFromStyles(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
 			performSuperRemover(STYLES_KEY, aStyle);
-			styles.remove(((DocXStyle) aStyle).getStyle());
+			styles.remove(((NamedDocXStyle) aStyle).getStyle());
 		}
 
 		@Override
@@ -688,15 +689,15 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		}
 
 		@Override
-		public DocXStyle activateStyle(String styleId) {
+		public NamedDocXStyle activateStyle(String styleId) {
 			System.out.println("On active: " + styleId);
-			DocXStyle returned = (DocXStyle) getStyleByIdentifier(styleId);
+			NamedDocXStyle returned = (NamedDocXStyle) getStyleByIdentifier(styleId);
 			System.out.println("A priori je l'ai pas");
 			if (returned == null) {
 				if (getWordprocessingMLPackage().getMainDocumentPart().getPropertyResolver().activateStyle(styleId)) {
 					System.out.println("Je viens de le trouver dans les known");
 					updateStylesFromWmlPackage(getWordprocessingMLPackage(), getFactory());
-					returned = (DocXStyle) getStyleByIdentifier(styleId);
+					returned = (NamedDocXStyle) getStyleByIdentifier(styleId);
 					return returned;
 				}
 				else {
@@ -708,7 +709,7 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		}
 
 		@Override
-		public DocXParagraph addStyledParagraphOfText(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
+		public DocXParagraph addStyledParagraphOfText(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 
 			DocXParagraph returned = makeStyledParagraph(style, text);
 			addToElements(returned);
@@ -717,16 +718,16 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 		@Override
 		public FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> insertStyledParagraphOfTextAtIndex(
-				FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text, int index) {
+				NamedDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text, int index) {
 			DocXParagraph returned = makeStyledParagraph(style, text);
 			insertElementAtIndex(returned, index);
 			return returned;
 		}
 
-		private DocXParagraph makeStyledParagraph(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
+		private DocXParagraph makeStyledParagraph(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 			P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
 			DocXParagraph returned = getFactory().makeNewDocXParagraph(p);
-			returned.setStyle(style);
+			returned.setNamedStyle(style);
 			return returned;
 		}
 
