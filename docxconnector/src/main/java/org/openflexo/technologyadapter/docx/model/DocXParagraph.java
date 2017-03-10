@@ -41,7 +41,6 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
-import org.docx4j.wml.RPrAbstract;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.NamedDocStyle;
@@ -215,7 +214,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				internallyRemoveFromRuns(run);
 			}
 
-			if (p != null) {
+			/*if (p != null) {
 				PPr ppr = p.getPPr();
 				if (ppr != null) {
 					RPrAbstract rpr = ppr.getRPr();
@@ -229,7 +228,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 						System.out.println("i=" + rpr.getI());
 					}
 				}
-			}
+			}*/
 
 		}
 

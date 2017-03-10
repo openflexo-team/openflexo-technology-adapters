@@ -386,17 +386,19 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	public Font makeFont(RFonts rFonts) {
-		System.out.println("Comment faire une fonte avec " + rFonts);
+		/*System.out.println("Comment faire une fonte avec " + rFonts);
 		System.out.println("ascii=" + rFonts.getAscii());
 		System.out.println("hAnsi=" + rFonts.getHAnsi());
 		System.out.println("cs=" + rFonts.getCs());
-		System.out.println("hint=" + rFonts.getHint());
+		System.out.println("hint=" + rFonts.getHint());*/
 		return null;
 	}
 
 	public java.awt.Color makeColor(Color color) {
-		System.out.println("Comment faire une couleur avec " + color);
-		return java.awt.Color.red;
+		int r = Integer.parseInt(color.getVal().substring(0, 2), 16);
+		int g = Integer.parseInt(color.getVal().substring(2, 4), 16);
+		int b = Integer.parseInt(color.getVal().substring(4, 6), 16);
+		return new java.awt.Color(r, g, b);
 	}
 
 	public void extractStyleProperties(RPrAbstract rPr, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
