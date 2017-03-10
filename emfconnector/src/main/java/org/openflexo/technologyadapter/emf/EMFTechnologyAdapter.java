@@ -125,7 +125,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		try {
 			registerClasspathMetaModels();
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -149,7 +148,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			try {
 				mmRepository = createMetaModelRepository(resourceCenter);
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

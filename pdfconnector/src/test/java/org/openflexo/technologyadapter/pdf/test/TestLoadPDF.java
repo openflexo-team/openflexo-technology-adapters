@@ -278,9 +278,5 @@ public class TestLoadPDF extends AbstractTestPDF {
 	}
 
 	public class PDFFrame extends JFrame {
-
-		public PDFFrame() {
-			// TODO Auto-generated constructor stub
-		}
 	}
 }

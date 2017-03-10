@@ -136,7 +136,7 @@ public interface SelectGeneratedDocXParagraph extends DocXParagraphAction {
 		@Override
 		public DataBinding<DocXFragment> getDocumentFragment() {
 			if (documentFragment == null) {
-				documentFragment = new DataBinding<DocXFragment>(this, DocXFragment.class, BindingDefinitionType.GET);
+				documentFragment = new DataBinding<>(this, DocXFragment.class, BindingDefinitionType.GET);
 				documentFragment.setBindingName("documentFragment");
 			}
 			return documentFragment;
@@ -174,13 +174,10 @@ public interface SelectGeneratedDocXParagraph extends DocXParagraphAction {
 				try {
 					searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (NullReferenceException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (InvocationTargetException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				if (searchAreaFragment != null) {

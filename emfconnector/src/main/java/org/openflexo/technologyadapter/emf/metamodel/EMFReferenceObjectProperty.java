@@ -289,7 +289,6 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "EMFClassReference: " + getName() + " range=" + getRange() + " domain=" + getDomain();
 	}
 }

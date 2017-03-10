@@ -58,7 +58,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -92,8 +91,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 		newResourceCenter = makeNewDirectoryResourceCenter();
 		assertNotNull(newResourceCenter);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 	}
 
 	/*
@@ -111,10 +109,10 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 	 * for (DocXDocumentResource docResource : documents) {
 	 * System.out.println("> " + docResource); } for (DocXDocumentResource
 	 * docResource : documents) { try { docResource.loadResourceData(null); }
-	 * catch (FileNotFoundException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { //
-	 * TODO Auto-generated catch block e.printStackTrace(); } catch
-	 * (FlexoException e) { // TODO Auto-generated catch block
+	 * catch (FileNotFoundException e) { 
+	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { 
+	 * e.printStackTrace(); } catch
+	 * (FlexoException e) { 
 	 * e.printStackTrace(); }
 	 * assertNotNull(docResource.getLoadedResourceData());
 	 * System.out.println("URI of document: " + docResource.getURI()); } } }
@@ -139,7 +137,8 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 	public void testDocumentGenerating()
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException, ModelDefinitionException {
 
-		DocXDocumentResource templateResource = (DocXDocumentResource) templateDocument.getResource();
+		// Unused DocXDocumentResource templateResource = (DocXDocumentResource)
+		templateDocument.getResource();
 
 		// File f = new File(((FileFlexoIODelegate)
 		// templateResource.getFlexoIODelegate()).getFile().getParent(),
@@ -149,14 +148,15 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		System.out.println("Generating " + f);
 		technologicalAdapter.setDefaultIDStrategy(IdentifierManagementStrategy.ParaId);
-		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory()
-				.makeResource(f, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
+		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory().makeResource(f,
+				newResourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
 		// FlexoResource<DocXDocument> generatedResource =
 		// DocXDocumentResourceImpl.makeDocXDocumentResource(f,
 		// technologicalAdapter.getTechnologyContextManager(), resourceCenter,
 		// IdentifierManagementStrategy.ParaId);
 
-		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
+		// Unused WordprocessingMLPackage generatedPackage =
+		new WordprocessingMLPackage();
 
 		// MainDocumentPart mdp =
 		// XmlUtils.deepCopy(templateDocument.getWordprocessingMLPackage().getMainDocumentPart());
@@ -170,8 +170,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXUtils.getAllElementsFromObject(
-				generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
+		for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());

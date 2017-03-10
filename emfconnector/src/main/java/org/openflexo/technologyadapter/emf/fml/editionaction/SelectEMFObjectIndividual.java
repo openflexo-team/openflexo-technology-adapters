@@ -101,7 +101,6 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 			/*try {
 				resource.load(null);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
 			IFlexoOntologyClass flexoOntologyClass = getType();

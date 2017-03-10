@@ -144,31 +144,26 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends EMFObjectIndividual> c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean addAll(int index, Collection<? extends EMFObjectIndividual> c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import java.util.List;
@@ -81,10 +80,6 @@ public interface OSLCServiceProvider extends OSLCResource {
 	public void removeFromOSLCServices(OSLCService oslcService);
 
 	public static abstract class OSLCServiceProviderImpl extends OSLCResourceImpl implements OSLCServiceProvider {
-
-		public OSLCServiceProviderImpl() {
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public String getUri() {

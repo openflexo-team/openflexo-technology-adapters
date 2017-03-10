@@ -38,6 +38,12 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,12 +56,6 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.logging.Logger;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * This test is really important and should be generalized in all technology adapters<br>
@@ -111,13 +111,10 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());

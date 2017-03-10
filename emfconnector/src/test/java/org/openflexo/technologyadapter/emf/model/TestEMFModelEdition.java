@@ -137,8 +137,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		newResourceCenter = makeNewDirectoryResourceCenter();
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
@@ -170,12 +169,10 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		emfResourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/emf-test");
+		emfResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/emf-test");
 		assertNotNull(emfResourceCenter);
 
-		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter
-				.getEMFMetaModelRepository(emfResourceCenter);
+		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter);
 
 		emfMetaModelResource = emfMetaModelRepository.getResource("http://www.thalesgroup.com/parameters/1.0");
 
@@ -183,10 +180,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory()
-				.getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME,
-				newViewPoint.getViewPointResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, newViewPoint.getViewPointResource(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// newVirtualModel =
@@ -223,9 +219,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.emf");
-			emfModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(
-					serializationArtefact, emfMetaModelResource, newResourceCenter,
-					technologicalAdapter.getTechnologyContextManager(), "coucou.emf", "myURI", true);
+			emfModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
+					emfMetaModelResource, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.emf", "myURI",
+					true);
 
 			/*
 			 * try { RepositoryFolder<FlexoResource<?>,?> modelFolder =
@@ -241,10 +237,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			emfModelResource.save(null);
 
 		} catch (SaveResourceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -253,8 +245,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(5)
 	public void testCreateVMI() {
 
-		CreateViewInFolder viewAction = CreateViewInFolder.actionType
-				.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
+		CreateViewInFolder viewAction = CreateViewInFolder.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
 		viewAction.setNewViewName("MyView");
 		viewAction.setNewViewTitle("Test creation of a new view");
 		viewAction.setViewpointResource((ViewPointResource) newViewPoint.getResource());
@@ -262,8 +253,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(viewAction.hasActionExecutionSucceeded());
 		newView = viewAction.getNewView();
 
-		CreateBasicVirtualModelInstance vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView,
-				null, editor);
+		CreateBasicVirtualModelInstance vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		vmiAction.setNewVirtualModelInstanceName("MyVMI");
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");
@@ -302,8 +292,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		((VirtualModelResource) newVirtualModel.getResource()).save(null);
 
-		System.out.println(
-				"Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
+		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
 	}
 
@@ -316,8 +305,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			creationScheme = (CreationScheme) creationEditionScheme.getNewFlexoBehaviour();
 			assertNotNull(creationScheme);
 
-			creationSchemeCreationAction = CreationSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null,
-					editor);
+			creationSchemeCreationAction = CreationSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
 			creationSchemeCreationAction.setCreationScheme(creationScheme);
 			assertNotNull(creationSchemeCreationAction);
 
@@ -362,19 +350,17 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			emfModelResource.save(null);
 
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI,
-			FMLModelFactory factory) {
+	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI, FMLModelFactory factory) {
 
 		EMFObjectIndividual result = null;
 
-		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType
-				.makeNewAction(creationScheme.getControlGraph(), null, editor);
+		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
+				editor);
 		// createEditionAction1.actionChoice =
 		// CreateEditionActionChoice.ModelSlotSpecificAction;
 		createEditionAction1.setEditionActionClass(AddEMFObjectIndividual.class);
@@ -390,23 +376,19 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			// addObject.finalizePerformAction(creationSchemeCreationAction,
 			// result);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ReturnException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource,
-			EMFObjectIndividual objectIndividual, FMLModelFactory factory) throws FlexoException {
+	protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
+			FMLModelFactory factory) throws FlexoException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
 		removeObject.setModelSlot(newModelSlot);
@@ -415,7 +397,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		try {
 			removeObject.execute(creationSchemeCreationAction);
 		} catch (ReturnException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		result = objectIndividual;

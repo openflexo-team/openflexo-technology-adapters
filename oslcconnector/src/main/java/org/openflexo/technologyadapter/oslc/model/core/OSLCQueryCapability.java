@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
@@ -68,11 +67,6 @@ public interface OSLCQueryCapability extends OSLCResource {
 	public void setOSLCService(OSLCService oslcService);
 
 	public static abstract class OSLCQueryCapabilityImpl extends OSLCResourceImpl implements OSLCQueryCapability {
-
-		public OSLCQueryCapabilityImpl() {
-			// TODO Auto-generated constructor stub
-		}
-
 		@Override
 		public String getUri() {
 			if (getOSLCQueryCapability().getAbout() != null) {

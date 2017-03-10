@@ -72,7 +72,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXModelSlot, DocXDocument, DocXTechnologyAdapter> {
 
 	public static abstract class CreateDocXResourceImpl
-			extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument, DocXTechnologyAdapter>implements CreateEmptyDocXResource {
+			extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument, DocXTechnologyAdapter> implements CreateEmptyDocXResource {
 
 		private static final Logger logger = Logger.getLogger(CreateDocXResourceImpl.class.getPackage().getName());
 
@@ -110,10 +110,8 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 					System.out.println("Return " + returned);
 					return returned;
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

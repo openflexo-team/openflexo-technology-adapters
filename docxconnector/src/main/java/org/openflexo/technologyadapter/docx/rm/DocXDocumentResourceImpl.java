@@ -44,8 +44,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>
-		implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
@@ -55,8 +54,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			throw new FlexoException("Cannot load DocX document with this IO/delegate: " + getIODelegate());
 		}
 
-		Progress.progress(
-				getLocales().localizedForKey("loading") + " " + getIODelegate().getSerializationArtefact());
+		Progress.progress(getLocales().localizedForKey("loading") + " " + getIODelegate().getSerializationArtefact());
 		try {
 			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getInputStream());
 
@@ -90,8 +88,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact()
-					+ " version=" + getModelVersion());
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact() + " version=" + getModelVersion());
 		}
 
 		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
@@ -122,7 +119,8 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 				throw new SaveResourceException(getIODelegate(), e);
 			}
-		} else {
+		}
+		else {
 			try {
 				write(getOutputStream());
 			} catch (IOException e) {
@@ -157,7 +155,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
-	private void makeLocalCopy(File file) throws IOException {
+	private static void makeLocalCopy(File file) throws IOException {
 		if (file != null && file.exists()) {
 			String localCopyName = file.getName() + "~";
 			File localCopy = new File(file.getParentFile(), localCopyName);

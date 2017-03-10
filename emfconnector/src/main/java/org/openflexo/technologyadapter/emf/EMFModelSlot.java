@@ -206,10 +206,8 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 							(FlexoResourceCenter<File>) resourceCenter, getModelSlotTechnologyAdapter().getTechnologyContextManager(),
 							true);
 				} catch (SaveResourceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -61,8 +61,8 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @FML("RemoveEMFObjectIndividual")
 public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
-	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual> implements
-			RemoveEMFObjectIndividual {
+	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual>
+			implements RemoveEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(RemoveEMFObjectIndividual.class.getPackage().getName());
 
@@ -94,7 +94,6 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndivid
 
 		@Override
 		public FlexoProperty getAssignedFlexoProperty() {
-			// TODO Auto-generated method stub
 			return super.getAssignedFlexoProperty();
 		}
 	}

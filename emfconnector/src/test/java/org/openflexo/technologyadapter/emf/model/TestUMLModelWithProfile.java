@@ -65,8 +65,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test UML Meta-Model and model loading. and Testing a Model with a Profile
- * (SysML)
+ * Test UML Meta-Model and model loading. and Testing a Model with a Profile (SysML)
  * 
  * @author xtof
  * 
@@ -96,8 +95,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 		newResourceCenter = makeNewDirectoryResourceCenter();
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 		assertNotNull(technologicalAdapter);
 
 		ctxManager = technologicalAdapter.getTechnologyContextManager();
@@ -132,8 +130,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(4)
 	public void TestLoadSysMLMetaModell() {
 
-		EMFMetaModelResource sysmlMetaModelResource = ctxManager
-				.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");
+		EMFMetaModelResource sysmlMetaModelResource = ctxManager.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");
 
 		assertNotNull(sysmlMetaModelResource);
 
@@ -148,9 +145,8 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 		RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 		File serializationArtefact = new File(modelFolder.getSerializationArtefact(), UML_MODEL_NAME);
-		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(
-				serializationArtefact, umlMetaModelResource, newResourceCenter,
-				technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
+		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
+				umlMetaModelResource, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
 
 		assertNotNull(umlModelResource);
 		EMFModel umlModel = umlModelResource.getModel();
@@ -184,10 +180,10 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	 * getClass(classURI)); // addObject.setEMFClassURI(classURI); result =
 	 * addObject.execute(creationSchemeCreationAction); //
 	 * addObject.finalizePerformAction(creationSchemeCreationAction, result); }
-	 * catch (FileNotFoundException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { //
-	 * TODO Auto-generated catch block e.printStackTrace(); } catch
-	 * (FlexoException e) { // TODO Auto-generated catch block
+	 * catch (FileNotFoundException e) { 
+	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { 
+	 *  e.printStackTrace(); } catch
+	 * (FlexoException e) { 
 	 * e.printStackTrace(); } return result; }
 	 */
 

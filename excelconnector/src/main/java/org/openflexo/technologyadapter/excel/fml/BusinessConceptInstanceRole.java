@@ -74,7 +74,6 @@ public interface BusinessConceptInstanceRole extends FlexoRole<BusinessConceptIn
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

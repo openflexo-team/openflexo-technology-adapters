@@ -82,12 +82,10 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		emfResourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/emf-test");
+		emfResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/emf-test");
 		assertNotNull(emfResourceCenter);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 	}
 
 	@Test
@@ -97,8 +95,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 		// Collection<EMFMetaModelResource> metaModelResources =
 		// technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
 
-		for (EMFMetaModelResource mmResource : technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
-				.getAllResources()) {
+		for (EMFMetaModelResource mmResource : technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter).getAllResources()) {
 
 			System.out.println("\t Loading and Converting " + mmResource.getURI());
 			long startTime = System.currentTimeMillis();
@@ -106,10 +103,10 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 			System.out.println("mmResource=" + mmResource);
 			/*
 			 * try { mmResource.loadResourceData(null); } catch
-			 * (FileNotFoundException e) { // TODO Auto-generated catch block
+			 * (FileNotFoundException e) { 
 			 * e.printStackTrace(); } catch (ResourceLoadingCancelledException
-			 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-			 * catch (FlexoException e) { // TODO Auto-generated catch block
+			 * e) {  e.printStackTrace(); }
+			 * catch (FlexoException e) { 
 			 * e.printStackTrace(); }
 			 */
 
@@ -139,8 +136,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : city1MM.getClasses()) {
 			if (!emfClass.getName().contains("E")) {
 				System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
-				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass
-						.getStructuralFeatureAssociations()) {
+				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
 					System.out.println("    > " + fa);
 				}
 			}
@@ -149,14 +145,10 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 		EMFClassClass cityClass, houseClass, residentClass;
 		EMFEnumClass houseTypeEnum;
 
-		assertNotNull(cityClass = (EMFClassClass) city1MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
-		assertNotNull(houseClass = (EMFClassClass) city1MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/House"));
-		assertNotNull(residentClass = (EMFClassClass) city1MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/Resident"));
-		assertNotNull(houseTypeEnum = (EMFEnumClass) city1MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/HouseType"));
+		assertNotNull(cityClass = (EMFClassClass) city1MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
+		assertNotNull(houseClass = (EMFClassClass) city1MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/House"));
+		assertNotNull(residentClass = (EMFClassClass) city1MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/Resident"));
+		assertNotNull(houseTypeEnum = (EMFEnumClass) city1MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/HouseType"));
 
 		assertEquals(4, cityClass.getDeclaredFeatureAssociations().size());
 		assertEquals(3, houseClass.getDeclaredFeatureAssociations().size());
@@ -178,8 +170,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : city2MM.getClasses()) {
 			if (!emfClass.getName().contains("E")) {
 				System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
-				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass
-						.getStructuralFeatureAssociations()) {
+				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
 					System.out.println("    > " + fa);
 				}
 			}
@@ -187,16 +178,12 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 		EMFClassClass cityClass, houseClass, mayorClass, mansionClass, appartmentClass;
 
-		assertNotNull(mayorClass = (EMFClassClass) city2MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Mayor"));
-		assertNotNull(houseClass = (EMFClassClass) city2MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/House"));
-		assertNotNull(mansionClass = (EMFClassClass) city2MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Mansion"));
-		assertNotNull(appartmentClass = (EMFClassClass) city2MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Appartment"));
-		assertNotNull(cityClass = (EMFClassClass) city2MM
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/City"));
+		assertNotNull(mayorClass = (EMFClassClass) city2MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Mayor"));
+		assertNotNull(houseClass = (EMFClassClass) city2MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/House"));
+		assertNotNull(mansionClass = (EMFClassClass) city2MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Mansion"));
+		assertNotNull(
+				appartmentClass = (EMFClassClass) city2MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/Appartment"));
+		assertNotNull(cityClass = (EMFClassClass) city2MM.getClass("http://www.thalesgroup.com/openflexo/emf/model/city2/City"));
 
 		assertEquals(1, mayorClass.getDeclaredFeatureAssociations().size());
 		assertEquals(1, houseClass.getDeclaredFeatureAssociations().size());
@@ -219,8 +206,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : archiMM.getClasses()) {
 			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
-			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass
-					.getStructuralFeatureAssociations()) {
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
 				System.out.println("    > " + fa);
 			}
 		}
@@ -228,8 +214,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(7)
-	public void testParametersMetaModel()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testParametersMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		EMFMetaModelResource parametersMMRes = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
 				.getResource("http://www.thalesgroup.com/parameters/1.0");
@@ -240,8 +225,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : parametersMM.getClasses()) {
 			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
-			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass
-					.getStructuralFeatureAssociations()) {
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
 				System.out.println("    > " + fa);
 			}
 		}
@@ -260,8 +244,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : sysMLMM.getClasses()) {
 			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
-			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass
-					.getStructuralFeatureAssociations()) {
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
 				System.out.println("    > " + fa);
 			}
 		}

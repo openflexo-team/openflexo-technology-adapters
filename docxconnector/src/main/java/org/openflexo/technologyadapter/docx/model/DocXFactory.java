@@ -178,7 +178,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			if (o instanceof Drawing) {
 				return makeNewDocXDrawingRun(r);
 			}
-			if (o instanceof R.Tab){
+			if (o instanceof R.Tab) {
 				return makeNewDocXTextRun(r);
 			}
 		}
@@ -228,7 +228,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			return makeNewDocXDrawingRun(run);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -251,7 +250,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			return makeNewDocXDrawingRun(run);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

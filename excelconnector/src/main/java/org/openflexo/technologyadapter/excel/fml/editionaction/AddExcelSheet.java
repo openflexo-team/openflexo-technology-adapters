@@ -97,8 +97,8 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 	@Setter(OVERRIDE_KEY)
 	public void setOverride(boolean override);
 
-	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelSheet> implements
-			AddExcelSheet {
+	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelSheet>
+			implements AddExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(AddExcelSheet.class.getPackage().getName());
 
@@ -133,28 +133,28 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 							// Create or retrieve this sheet
 							sheet = retrieveOrCreateSheet(wb, name);
 							// Instanciate Wrapper.
-							result = modelSlotInstance.getAccessedResourceData().getConverter()
-									.convertExcelSheetToSheet(sheet, modelSlotInstance.getAccessedResourceData(), null);
+							result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
+									modelSlotInstance.getAccessedResourceData(), null);
 							modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
 							modelSlotInstance.getAccessedResourceData().setIsModified();
-						} else {
+						}
+						else {
 							logger.warning("Create a sheet requires a name");
 						}
-					} else {
+					}
+					else {
 						logger.warning("Create a sheet requires a workbook");
 					}
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -173,12 +173,14 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 					wb.removeSheetAt(wb.getSheetIndex(name));
 					sheet = wb.createSheet(name);
 					logger.info("Override excel sheet with the name " + name);
-				} else {
+				}
+				else {
 					// Retrieve the existing one
 					sheet = wb.getSheet(name);
 					logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
 				}
-			} else {
+			}
+			else {
 				// Create a new one
 				sheet = wb.createSheet(name);
 				logger.info("Create a new excel sheet with the name " + name);
@@ -194,7 +196,7 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		@Override
 		public DataBinding<String> getSheetName() {
 			if (sheetName == null) {
-				sheetName = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				sheetName = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				sheetName.setBindingName("sheetName");
 			}
 			return sheetName;
@@ -214,7 +216,7 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		@Override
 		public DataBinding<List<ExcelRow>> getSheetRows() {
 			if (sheetRows == null) {
-				sheetRows = new DataBinding<List<ExcelRow>>(this, List.class, DataBinding.BindingDefinitionType.GET);
+				sheetRows = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET);
 				sheetRows.setBindingName("sheetRows");
 			}
 			return sheetRows;

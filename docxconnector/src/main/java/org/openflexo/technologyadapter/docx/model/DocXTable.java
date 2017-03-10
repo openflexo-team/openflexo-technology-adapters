@@ -158,7 +158,7 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of tbl given by getTbl() returns the new value
 
-			List<FlexoDocTableRow> rowsToRemove = new ArrayList<FlexoDocTableRow>(getTableRows());
+			List<FlexoDocTableRow> rowsToRemove = new ArrayList<>(getTableRows());
 
 			int currentIndex = 0;
 
@@ -245,30 +245,30 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 										// Translate ID
 										String newId = getFactory().generateId();
 										switch (getFactory().getIDStrategy()) {
-										case ParaId:
-											String oldId = paragraph.getParaId();
-											paragraph.setParaId(newId);
-											System.out.println("Change P id from " + oldId + " to " + newId);
-											break;
-										case Bookmark:
-											for (Object o4 : paragraph.getContent()) {
-												if (o4 instanceof JAXBElement) {
-													o4 = ((JAXBElement) o4).getValue();
-												}
-												if (o4 instanceof CTBookmark) {
-													CTBookmark bookmark = (CTBookmark) o4;
-													if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
-														String oldName = bookmark.getName();
-														bookmark.setName(BOOKMARK_PREFIX + newId);
-														BigInteger ID = BigInteger.valueOf(new Random().nextLong());
-														bookmark.setId(ID);
-														System.out.println("Translate CTBookmark ID for " + bookmark + " from name " + oldName + " to name="
-																+ bookmark.getName());
-														// setBookmark(bookmark);
+											case ParaId:
+												String oldId = paragraph.getParaId();
+												paragraph.setParaId(newId);
+												System.out.println("Change P id from " + oldId + " to " + newId);
+												break;
+											case Bookmark:
+												for (Object o4 : paragraph.getContent()) {
+													if (o4 instanceof JAXBElement) {
+														o4 = ((JAXBElement) o4).getValue();
+													}
+													if (o4 instanceof CTBookmark) {
+														CTBookmark bookmark = (CTBookmark) o4;
+														if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
+															String oldName = bookmark.getName();
+															bookmark.setName(BOOKMARK_PREFIX + newId);
+															BigInteger ID = BigInteger.valueOf(new Random().nextLong());
+															bookmark.setId(ID);
+															System.out.println("Translate CTBookmark ID for " + bookmark + " from name "
+																	+ oldName + " to name=" + bookmark.getName());
+															// setBookmark(bookmark);
+														}
 													}
 												}
-											}
-											break;
+												break;
 										}
 									}
 								}
@@ -276,7 +276,7 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 						}
 					}
 				}
-			}	
+			}
 
 			return copiedTbl;
 		}

@@ -97,8 +97,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
-		ExcelWorkbookRepository<?> excelWorkbookRepository = technologicalAdapter
-				.getExcelWorkbookRepository(resourceCenter);
+		ExcelWorkbookRepository<?> excelWorkbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
 		assertNotNull(excelWorkbookRepository);
 		workbook = excelWorkbookRepository.getResource(baseUrl + "/TestResourceCenter/Excel/Workbook3.xlsx");
 		assertNotNull(workbook);
@@ -130,13 +129,10 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 			assertEquals(excelCell1a.getCellValueAsString(), "OK");
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

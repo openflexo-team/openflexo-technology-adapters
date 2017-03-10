@@ -60,7 +60,7 @@ import org.openflexo.toolbox.IProgress;
  * @author sguerin
  * 
  */
-public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>implements EMFModelResource {
+public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> implements EMFModelResource {
 
 	private static final Logger logger = Logger.getLogger(EMFModelResourceImpl.class.getPackage().getName());
 
@@ -159,7 +159,6 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 			getEMFResource().save(null);
 			logger.info("Wrote " + getIODelegate().toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

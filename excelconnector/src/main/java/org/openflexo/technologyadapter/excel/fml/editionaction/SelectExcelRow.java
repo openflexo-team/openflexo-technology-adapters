@@ -107,26 +107,24 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 
 			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
-			List<ExcelRow> selectedExcelRows = new ArrayList<ExcelRow>();
+			List<ExcelRow> selectedExcelRows = new ArrayList<>();
 			ExcelSheet excelSheet;
 			try {
 				excelSheet = getExcelSheet().getBindingValue(evaluationContext);
 
 				if (excelSheet != null) {
 					selectedExcelRows.addAll(excelSheet.getExcelRows());
-				} else {
+				}
+				else {
 					for (ExcelSheet excelSheetItem : excelWorkbook.getExcelSheets()) {
 						selectedExcelRows.addAll(excelSheetItem.getExcelRows());
 					}
 				}
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -139,7 +137,7 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 		@Override
 		public DataBinding<ExcelSheet> getExcelSheet() {
 			if (excelSheet == null) {
-				excelSheet = new DataBinding<ExcelSheet>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
+				excelSheet = new DataBinding<>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
 				excelSheet.setBindingName("excelSheet");
 			}
 			return excelSheet;

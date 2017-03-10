@@ -65,11 +65,6 @@ public interface SelectOSLCRequirementCollection extends FetchRequest<OSLCCoreMo
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirementCollection.class.getPackage().getName());
 
-		public SelectOSLCRequirementCollectionImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
-
 		@Override
 		public Type getFetchedType() {
 			return OSLCRequirementCollection.class;

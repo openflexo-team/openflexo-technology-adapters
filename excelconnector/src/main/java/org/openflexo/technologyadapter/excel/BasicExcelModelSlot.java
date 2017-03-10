@@ -264,7 +264,6 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 				return o;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -280,10 +279,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			try {
 				return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename/*, modelUri*/);
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;

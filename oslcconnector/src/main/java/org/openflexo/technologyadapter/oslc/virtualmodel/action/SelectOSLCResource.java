@@ -60,15 +60,10 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 @FML("SelectOSLCResource")
 public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCResource> {
 
-	public static abstract class SelectOSLCResourceImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCResource> implements
-			SelectOSLCResource {
+	public static abstract class SelectOSLCResourceImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCResource>
+			implements SelectOSLCResource {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCResource.class.getPackage().getName());
-
-		public SelectOSLCResourceImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {

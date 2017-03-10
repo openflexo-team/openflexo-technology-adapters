@@ -137,8 +137,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
-	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
-			AddExcelCell {
+	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell>
+			implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
@@ -205,8 +205,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 							}
 							else {
 								cell = excelRow.getRow().createCell(columnIndex);
-								excelCell = modelSlotInstance.getAccessedResourceData().getConverter()
-										.convertExcelCellToCell(cell, excelRow, null);
+								excelCell = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelCellToCell(cell,
+										excelRow, null);
 							}
 							if (value != null) {
 								excelCell.setCellValue(value);
@@ -224,13 +224,10 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 						logger.warning("Create a cell requires a column index.");
 					}
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -251,7 +248,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<Object> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				value = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -271,7 +268,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<Integer> getRowIndex() {
 			if (rowIndex == null) {
-				rowIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				rowIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				rowIndex.setBindingName("rowIndex");
 			}
 			return rowIndex;
@@ -291,7 +288,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<Integer> getColumnIndex() {
 			if (columnIndex == null) {
-				columnIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				columnIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				columnIndex.setBindingName("columnIndex");
 			}
 			return columnIndex;
@@ -332,7 +329,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public List<CellType> getAvailableCellTypes() {
 			if (availableCellTypes == null) {
-				availableCellTypes = new Vector<CellType>();
+				availableCellTypes = new Vector<>();
 				for (CellType cellType : ExcelCell.CellType.values()) {
 					availableCellTypes.add(cellType);
 				}
@@ -356,7 +353,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<ExcelRow> getRow() {
 			if (row == null) {
-				row = new DataBinding<ExcelRow>(this, ExcelRow.class, DataBinding.BindingDefinitionType.GET);
+				row = new DataBinding<>(this, ExcelRow.class, DataBinding.BindingDefinitionType.GET);
 				row.setBindingName("row");
 			}
 			return row;
@@ -376,7 +373,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<ExcelSheet> getSheet() {
 			if (sheet == null) {
-				sheet = new DataBinding<ExcelSheet>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
+				sheet = new DataBinding<>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
 				sheet.setBindingName("sheet");
 			}
 			return sheet;

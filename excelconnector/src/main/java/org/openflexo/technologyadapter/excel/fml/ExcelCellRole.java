@@ -58,12 +58,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell;
 @FML("ExcelCellRole")
 public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 
-	public static abstract class ExcelCellRoleImpl extends FlexoRoleImpl<ExcelCell>implements ExcelCellRole {
-
-		public ExcelCellRoleImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+	public static abstract class ExcelCellRoleImpl extends FlexoRoleImpl<ExcelCell> implements ExcelCellRole {
 
 		@Override
 		public Type getType() {

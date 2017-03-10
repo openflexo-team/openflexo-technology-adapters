@@ -28,9 +28,9 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -43,8 +43,7 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
  * @author sylvain
  *
  */
-public class ExcelWorkbookResourceFactory
-		extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
+public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceFactory.class.getPackage().getName());
 
@@ -72,20 +71,20 @@ public class ExcelWorkbookResourceFactory
 			if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xls")) {
 				wb = new HSSFWorkbook();
 				wb.createSheet("Default");
-			} else if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xlsx")) {
+			}
+			else if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xlsx")) {
 				wb = new XSSFWorkbook();
 				wb.createSheet("Default");
-			} else {
+			}
+			else {
 				wb = WorkbookFactory.create(ioDelegate.getInputStream());
 			}
 			BasicExcelModelConverter converter = new BasicExcelModelConverter();
 			newWorkbook = converter.convertExcelWorkbook(wb,
 					((ExcelWorkbookResource) ioDelegate.getFlexoResource()).getTechnologyAdapter());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return newWorkbook;
@@ -99,8 +98,7 @@ public class ExcelWorkbookResourceFactory
 	}
 
 	@Override
-	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource,
-			FlexoResourceCenter<I> resourceCenter,
+	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);
 
