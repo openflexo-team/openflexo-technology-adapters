@@ -50,6 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.docx4all.swing.text.DocumentElement;
+import org.openflexo.components.doc.EditorPanel;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
@@ -58,7 +59,6 @@ import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
-import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
@@ -88,7 +88,8 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	private final VirtualModelInstance virtualModelInstance;
 	private final FlexoPerspective perspective;
 
-	private final DocXEditor docxEditor;
+	// private final DocXEditor docxEditor;
+	private final EditorPanel<?, ?> editorPanel;
 
 	private final FIBDocXDocumentBrowser browser;
 	private final JPanel topPanel;
@@ -103,8 +104,11 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			logger.severe("Supplied VirtualModelInstance does not have the FMLControlledDocXVirtualModelInstanceNature");
 		}
 
-		docxEditor = new DocXEditor(getDocument(), true);
-		add(docxEditor, BorderLayout.CENTER);
+		editorPanel = new EditorPanel(getDocument());
+		add(editorPanel, BorderLayout.CENTER);
+
+		// docxEditor = new DocXEditor(document, true);
+		// add(docxEditor, BorderLayout.CENTER);
 
 		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController()) {
 			@Override
@@ -225,16 +229,17 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			DocumentElement docElement = null;
 
 			if (element instanceof DocXParagraph) {
-				docElement = docxEditor.getMLDocument().getElement(((DocXParagraph) element).getP());
+				docElement = (DocumentElement) editorPanel.getElement(((DocXParagraph) element).getP());
+				docElement = (DocumentElement) editorPanel.getElement(((DocXParagraph) element).getP());
 				elts.add(docElement);
 			}
 			if (element instanceof DocXTable) {
-				docElement = docxEditor.getMLDocument().getElement(((DocXTable) element).getTbl());
+				docElement = (DocumentElement) editorPanel.getElement(((DocXTable) element).getTbl());
 				elts.add(docElement);
 			}
 
 			// Thread.dumpStack();
-			docxEditor.getMLDocument().setSelectedElements(elts);
+			editorPanel.setSelectedElements(elts);
 
 			if (docElement != null) {
 				scrollTo(docElement);
@@ -244,8 +249,11 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			e.printStackTrace();
 		}
 
-		docxEditor.getEditorView().revalidate();
-		docxEditor.getEditorView().repaint();
+		// docxEditor.getEditorView().revalidate();
+		// docxEditor.getEditorView().repaint();
+
+		editorPanel.revalidate();
+		editorPanel.repaint();
 
 	}
 
@@ -253,11 +261,14 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (!docxEditor.getEditorView().scrollToElement(docElement, false)) {
+				if (!editorPanel.scrollToElement(docElement)) {
 					scrollTo(docElement);
 				}
-				docxEditor.getEditorView().revalidate();
-				docxEditor.getEditorView().repaint();
+				// docxEditor.getEditorView().revalidate();
+				// docxEditor.getEditorView().repaint();
+
+				editorPanel.revalidate();
+				editorPanel.repaint();
 			}
 		});
 	}
