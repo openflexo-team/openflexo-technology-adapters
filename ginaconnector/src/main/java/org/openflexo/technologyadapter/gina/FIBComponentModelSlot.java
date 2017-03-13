@@ -21,8 +21,8 @@
 package org.openflexo.technologyadapter.gina;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
-
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
@@ -42,6 +42,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -52,6 +53,9 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.gina.fml.FIBComponentRole;
 import org.openflexo.technologyadapter.gina.fml.editionaction.ConfigureGINAFIBComponent;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -187,6 +191,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			if (templateResource != this.templateResource) {
 				GINAFIBComponentResource oldValue = this.templateResource;
 				this.templateResource = templateResource;
+				this.templateComponentURI = null;
 				getPropertyChangeSupport().firePropertyChange("templateResource", oldValue, templateResource);
 			}
 		}
@@ -335,5 +340,22 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 
 		}
 	}
+
+	@DefineValidationRule
+	class FIBComponentModelSlotMustReferenceNonNullTemplateResource
+			extends ValidationRule<FIBComponentModelSlotMustReferenceNonNullTemplateResource, FIBComponentModelSlot> {
+		public FIBComponentModelSlotMustReferenceNonNullTemplateResource() {
+			super(FIBComponentModelSlot.class, "fib_component_model_slot_must_reference_nonnull_template_resource");
+		}
+
+		@Override
+		public ValidationIssue<FIBComponentModelSlotMustReferenceNonNullTemplateResource, FIBComponentModelSlot> applyValidation(FIBComponentModelSlot modelSlot) {
+			if (modelSlot.getTemplateResource() == null) {
+				return new ValidationError<>(this, modelSlot, "fib_component_model_slot_must_reference_nonnull_template_resource", Collections.emptyList());
+			}
+			return null;
+		}
+	}
+
 
 }
