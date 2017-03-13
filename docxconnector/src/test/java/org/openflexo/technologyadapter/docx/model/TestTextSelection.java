@@ -102,13 +102,10 @@ public class TestTextSelection extends AbstractTestDocX {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
@@ -134,10 +131,10 @@ public class TestTextSelection extends AbstractTestDocX {
 		fragment = (DocXFragment) libraryDocument.getFactory().makeFragment(titleParagraph, descriptionParagraph);
 
 		StringBuffer sb = new StringBuffer();
-		for (DocXElement element : fragment.getElements()) {
+		for (DocXElement<?> element : fragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoDocRun run : para.getRuns()) {
+				for (FlexoDocRun<?, ?> run : para.getRuns()) {
 					sb.append("[" + ((DocXTextRun) run).getText() + "]");
 				}
 				sb.append("\n");

@@ -59,14 +59,10 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @FML("SelectExcelSheet")
 public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelSheet> {
 
-	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelSheet> implements SelectExcelSheet {
+	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelSheet>
+			implements SelectExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(SelectExcelSheet.class.getPackage().getName());
-
-		public SelectExcelSheetImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {

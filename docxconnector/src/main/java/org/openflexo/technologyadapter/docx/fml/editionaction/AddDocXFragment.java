@@ -121,7 +121,7 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 		@Override
 		public DataBinding<? extends FlexoDocElement<?, ?>> getLocation() {
 			if (location == null) {
-				location = new DataBinding<FlexoDocElement<?, ?>>(this, FlexoDocElement.class, BindingDefinitionType.GET);
+				location = new DataBinding<>(this, FlexoDocElement.class, BindingDefinitionType.GET);
 				location.setBindingName("location");
 			}
 			return location;
@@ -149,13 +149,10 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 				try {
 					location = getLocation().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (location == null) {

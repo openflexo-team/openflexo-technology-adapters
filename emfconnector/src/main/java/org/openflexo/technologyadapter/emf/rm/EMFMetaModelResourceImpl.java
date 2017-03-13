@@ -68,7 +68,7 @@ import org.openflexo.toolbox.IProgress;
  * 
  * @author xtof
  */
-public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMetaModel>implements EMFMetaModelResource {
+public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
 
 	protected static final Logger logger = Logger.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
 
@@ -205,7 +205,6 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 				File copiedFile = jarEntryAsFile(jarFile, entry);
 				return getEMFResourceFactory().createResource(org.eclipse.emf.common.util.URI.createFileURI(copiedFile.getAbsolutePath()));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -84,7 +84,8 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 	 */
 	public DocXParagraph getParagraph(P p);
 
-	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableCell {
+	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter>
+			implements DocXTableCell {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXTableCellImpl.class.getPackage().getName());
@@ -113,8 +114,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		@Override
 		public void updateFromTc(Tc tc, DocXFactory factory) {
 
-			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>>(
-					getParagraphs());
+			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<>(getParagraphs());
 
 			int currentIndex = 0;
 

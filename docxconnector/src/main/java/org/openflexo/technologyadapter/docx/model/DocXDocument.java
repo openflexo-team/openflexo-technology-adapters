@@ -172,16 +172,14 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 			// System.out.println("updateFromWordprocessingMLPackage with " + wpmlPackage);
 
-			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(
-					getElements());
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>(getElements());
 
-			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> oldRoots = new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(
-					getRootElements());
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> oldRoots = new ArrayList<>(getRootElements());
 
 			// This map stores old document hierarchy
-			Map<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>>();
+			Map<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<>();
 			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
-				oldChildren.put(e, new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(e.getChildrenElements()));
+				oldChildren.put(e, new ArrayList<>(e.getChildrenElements()));
 				e.invalidateChildrenElements();
 			}
 
@@ -349,7 +347,6 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 				}
 			} catch (Docx4JException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

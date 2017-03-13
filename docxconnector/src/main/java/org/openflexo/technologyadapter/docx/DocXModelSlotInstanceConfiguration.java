@@ -60,7 +60,6 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 	@Override
 	public FreeModelSlotInstance<DocXDocument, DocXModelSlot> createModelSlotInstance(AbstractVirtualModelInstance<?, ?> vmInstance,
 			View view) {
-		// TODO Auto-generated method stub
 		return super.createModelSlotInstance(vmInstance, view);
 	}
 }

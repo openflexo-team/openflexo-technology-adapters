@@ -59,7 +59,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 
-	//private static SwingGraphicalContextDelegate gcDelegate;
+	// private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
 
@@ -74,13 +74,10 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 		try {
 			documentResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -126,17 +123,17 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
 	}
-
+	
 	@AfterClass
 	public static void waitGUI() {
 		gcDelegate.waitGUI();
 	}
-
+	
 	@Before
 	public void setUp() {
 		gcDelegate.setUp();
 	}
-
+	
 	@Override
 	@After
 	public void tearDown() throws Exception {

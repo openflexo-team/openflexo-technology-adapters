@@ -236,7 +236,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			return makeNewDocXDrawingRun(run);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -259,7 +258,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			return makeNewDocXDrawingRun(run);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

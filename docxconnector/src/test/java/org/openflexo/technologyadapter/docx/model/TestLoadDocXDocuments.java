@@ -94,13 +94,10 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
@@ -241,7 +238,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		assertEquals(7, documentWithTable.getElements().size());
 
-		DocXParagraph titleParagraph = (DocXParagraph) documentWithTable.getElements().get(0);
+		// Unused DocXParagraph titleParagraph = (DocXParagraph)
+		documentWithTable.getElements().get(0);
 		DocXParagraph sectionParagraph = (DocXParagraph) documentWithTable.getElements().get(2);
 		DocXParagraph p1 = (DocXParagraph) documentWithTable.getElements().get(3);
 		DocXParagraph p2 = (DocXParagraph) documentWithTable.getElements().get(4);

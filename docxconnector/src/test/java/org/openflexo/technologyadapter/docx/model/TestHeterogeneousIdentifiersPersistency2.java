@@ -95,13 +95,10 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());

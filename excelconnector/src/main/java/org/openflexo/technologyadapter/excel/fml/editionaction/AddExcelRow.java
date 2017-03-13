@@ -98,7 +98,8 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
-	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow>implements AddExcelRow {
+	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow>
+			implements AddExcelRow {
 
 		private static final Logger logger = Logger.getLogger(AddExcelRow.class.getPackage().getName());
 
@@ -107,11 +108,6 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 		private DataBinding<ExcelSheet> excelSheet;
 
 		private DataBinding<Integer> rowIndex;
-
-		public AddExcelRowImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getAssignableType() {
@@ -161,13 +157,10 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 					}
 
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -184,7 +177,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 		@Override
 		public DataBinding<List<ExcelCell>> getExcelCells() {
 			if (excelCells == null) {
-				excelCells = new DataBinding<List<ExcelCell>>(this, List.class, DataBinding.BindingDefinitionType.GET);
+				excelCells = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET);
 				excelCells.setBindingName("excelCells");
 			}
 			return excelCells;
@@ -204,7 +197,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 		@Override
 		public DataBinding<ExcelSheet> getExcelSheet() {
 			if (excelSheet == null) {
-				excelSheet = new DataBinding<ExcelSheet>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
+				excelSheet = new DataBinding<>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
 				excelSheet.setBindingName("excelSheet");
 			}
 			return excelSheet;
@@ -224,7 +217,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 		@Override
 		public DataBinding<Integer> getRowIndex() {
 			if (rowIndex == null) {
-				rowIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				rowIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				rowIndex.setBindingName("rowIndex");
 			}
 			return rowIndex;

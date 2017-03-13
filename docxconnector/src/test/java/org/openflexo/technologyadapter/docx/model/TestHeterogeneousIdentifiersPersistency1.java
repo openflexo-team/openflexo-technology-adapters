@@ -92,13 +92,10 @@ public class TestHeterogeneousIdentifiersPersistency1 extends AbstractTestDocX {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
@@ -129,8 +126,10 @@ public class TestHeterogeneousIdentifiersPersistency1 extends AbstractTestDocX {
 		assertEquals(step1.getElements().size(), step2.getElements().size());
 
 		for (int i = 0; i < step1.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step2.getElements().get(i);
+			// Unused FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 =
+			step1.getElements().get(i);
+			// Unused FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 =
+			step2.getElements().get(i);
 			// assertEquals(element1.getIdentifier(), element2.getIdentifier());
 		}
 

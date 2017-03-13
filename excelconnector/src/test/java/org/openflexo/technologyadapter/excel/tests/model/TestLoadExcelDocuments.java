@@ -79,21 +79,17 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			ExcelWorkbookRepository<?> workbookRepository = technologicalAdapter
-					.getExcelWorkbookRepository(resourceCenter);
+			ExcelWorkbookRepository<?> workbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
 			assertNotNull(workbookRepository);
 			Collection<ExcelWorkbookResource> documents = workbookRepository.getAllResources();
 			for (ExcelWorkbookResource docResource : documents) {
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
@@ -193,8 +189,8 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		ExcelCell cell48 = row4.getExcelCell(7);
 
 		System.out.println(cell41.getCellValue() + " | " + cell42.getCellValue() + " | " + cell43.getCellValue() + " | "
-				+ cell44.getCellValue() + " | " + cell45.getCellValue() + " | " + cell46.getCellValue() + " | "
-				+ cell47.getCellValue() + " | " + cell48.getCellValue());
+				+ cell44.getCellValue() + " | " + cell45.getCellValue() + " | " + cell46.getCellValue() + " | " + cell47.getCellValue()
+				+ " | " + cell48.getCellValue());
 
 		assertEquals(null, cell41.getCellValue());
 		assertEquals(null, cell42.getCellValue());

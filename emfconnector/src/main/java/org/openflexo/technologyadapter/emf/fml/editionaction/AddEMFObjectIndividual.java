@@ -137,13 +137,10 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 					try {
 						container = getContainer().getBindingValue(evaluationContext);
 					} catch (TypeMismatchException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

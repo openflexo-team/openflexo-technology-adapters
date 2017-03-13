@@ -61,15 +61,10 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @FML("SelectOSLCRequirement")
 public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCRequirement> {
 
-	public static abstract class SelectOSLCRequirementImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCRequirement> implements
-			SelectOSLCRequirement {
+	public static abstract class SelectOSLCRequirementImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCRequirement>
+			implements SelectOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirement.class.getPackage().getName());
-
-		public SelectOSLCRequirementImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {

@@ -497,10 +497,6 @@ public class CreateFMLControlledFIBVirtualModel
 		private boolean isAPI;
 		private DataBinding<?> value;
 
-		public GINAFIBComponentAPIEntry() {
-			// TODO Auto-generated constructor stub
-		}
-
 		public void delete() {
 			name = null;
 			type = null;

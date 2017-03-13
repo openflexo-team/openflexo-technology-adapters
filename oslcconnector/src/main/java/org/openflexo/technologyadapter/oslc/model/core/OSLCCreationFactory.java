@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
@@ -68,10 +67,6 @@ public interface OSLCCreationFactory extends OSLCResource {
 	public void setOSLCService(OSLCService oslcService);
 
 	public static abstract class OSLCCreationFactoryImpl extends OSLCResourceImpl implements OSLCCreationFactory {
-
-		public OSLCCreationFactoryImpl() {
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public String getUri() {
