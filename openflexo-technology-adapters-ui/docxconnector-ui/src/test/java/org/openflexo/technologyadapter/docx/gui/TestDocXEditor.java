@@ -40,7 +40,10 @@ package org.openflexo.technologyadapter.docx.gui;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
+
+import javax.swing.JPanel;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,6 +55,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
@@ -177,8 +181,18 @@ public class TestDocXEditor extends AbstractTestDocX {
 	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		EditorPanel<?, ?> editorPanel = new EditorPanel<>(docResource.getResourceData(null));
-		gcDelegate.addTab(docResource.getName(), editorPanel);
+		DocXDocument doc = docResource.getResourceData(null);
+		FIBDocXDocumentBrowser docBrowser = new FIBDocXDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
+			@Override
+			public void singleClick(Object object) {
+				System.out.println("Je viens cliquer sur " + object);
+			}
+		};
+		EditorPanel<?, ?> editorPanel = new EditorPanel<>(doc);
+		JPanel pane = new JPanel(new BorderLayout());
+		pane.add(docBrowser, BorderLayout.WEST);
+		pane.add(editorPanel, BorderLayout.CENTER);
+		gcDelegate.addTab(docResource.getName(), pane);
 
 	}
 

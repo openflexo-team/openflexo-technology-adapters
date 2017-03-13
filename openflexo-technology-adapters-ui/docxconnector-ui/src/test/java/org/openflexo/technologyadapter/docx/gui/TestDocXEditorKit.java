@@ -213,8 +213,9 @@ public class TestDocXEditorKit extends AbstractTestDocX {
 		try {
 
 			System.out.println("On ouvre le fichier " + docResource.getIODelegate().getSerializationArtefact());
-			editorPane.getEditorKit().read(new FileInputStream((File) docResource.getIODelegate().getSerializationArtefact()),
-					new DocxDocument(), 0);
+			DocxDocument document = (DocxDocument) editorPane.getEditorKit().createDefaultDocument();
+			editorPane.getEditorKit().read(new FileInputStream((File) docResource.getIODelegate().getSerializationArtefact()), document, 0);
+			editorPane.setDocument(document);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

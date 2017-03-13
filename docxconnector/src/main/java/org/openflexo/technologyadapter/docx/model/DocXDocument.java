@@ -20,6 +20,8 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +62,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
+import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -110,6 +113,13 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 	// TODO: we cannot do that: issue with PAMELA, please fix this (see issue PAMELA-7)
 	// @Override
 	// public NamedDocXStyle getStyleByIdentifier(String styleId);
+
+	/**
+	 * Return temporary directory, where some embedded files might be stored
+	 * 
+	 * @return
+	 */
+	public File getTempDirectory();
 
 	@Override
 	public DocXFragment getFragment(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement,
@@ -690,12 +700,12 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 		@Override
 		public NamedDocXStyle activateStyle(String styleId) {
-			System.out.println("On active: " + styleId);
+			// System.out.println("On active: " + styleId);
 			NamedDocXStyle returned = (NamedDocXStyle) getStyleByIdentifier(styleId);
-			System.out.println("A priori je l'ai pas");
+			// System.out.println("A priori je l'ai pas");
 			if (returned == null) {
 				if (getWordprocessingMLPackage().getMainDocumentPart().getPropertyResolver().activateStyle(styleId)) {
-					System.out.println("Je viens de le trouver dans les known");
+					// System.out.println("Je viens de le trouver dans les known");
 					updateStylesFromWmlPackage(getWordprocessingMLPackage(), getFactory());
 					returned = (NamedDocXStyle) getStyleByIdentifier(styleId);
 					return returned;
@@ -748,6 +758,31 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		private DocXTable makeTable(int rows, int cols) {
 			Tbl tbl = TblFactory.createTable(rows, cols, 100);
 			DocXTable returned = getFactory().makeNewDocXTable(tbl);
+			return returned;
+		}
+
+		private File tempDirectory;
+
+		@Override
+		public File getTempDirectory() {
+			if (tempDirectory == null) {
+				try {
+					File tempFile = File.createTempFile(getName(), ".docx");
+					tempDirectory = new File(tempFile.getParentFile(), getName());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				tempDirectory.mkdirs();
+			}
+			return tempDirectory;
+		}
+
+		@Override
+		public boolean delete(Object... context) {
+			boolean returned = performSuperDelete(context);
+			if (tempDirectory != null && tempDirectory.exists()) {
+				FileUtils.recursiveDeleteFile(tempDirectory);
+			}
 			return returned;
 		}
 	}

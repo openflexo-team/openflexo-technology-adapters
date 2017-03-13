@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.prefs.ApplicationFIBLibraryService;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -64,7 +65,15 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDocXDocumentBrowser.fib");
 
 	public FIBDocXDocumentBrowser(DocXDocument document, FlexoController controller) {
-		super(document, controller, FIB_FILE, controller.getTechnologyAdapter(DocXTechnologyAdapter.class).getLocales());
+		super(document, controller, FIB_FILE,
+				controller != null ? controller.getTechnologyAdapter(DocXTechnologyAdapter.class).getLocales() : null);
+		if (getFIBController() instanceof DocXDocumentBrowserFIBController) {
+			((DocXDocumentBrowserFIBController) getFIBController()).setBrowser(this);
+		}
+	}
+
+	public FIBDocXDocumentBrowser(DocXDocument document, ApplicationFIBLibraryService appFIBLibraryService) {
+		super(document, appFIBLibraryService, FIB_FILE, null, true);
 		if (getFIBController() instanceof DocXDocumentBrowserFIBController) {
 			((DocXDocumentBrowserFIBController) getFIBController()).setBrowser(this);
 		}
@@ -78,6 +87,9 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 
 	public void setSelectedDocumentElement(DocXObject selected) {
 		selectedElement = selected;
+	}
+
+	public void singleClick(Object object) {
 	}
 
 	public static class DocXDocumentBrowserFIBController extends FlexoFIBController {
@@ -102,6 +114,12 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 			if (browser != null) {
 				browser.setSelectedDocumentElement(selected);
 			}
+		}
+
+		@Override
+		public void singleClick(Object object) {
+			super.singleClick(object);
+			browser.singleClick(object);
 		}
 
 	}

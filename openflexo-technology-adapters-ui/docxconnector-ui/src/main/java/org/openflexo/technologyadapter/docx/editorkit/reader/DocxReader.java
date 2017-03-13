@@ -105,6 +105,7 @@ public class DocxReader {
 			iteratePart(documentPart.getContent());
 
 			this.currentOffset = offset;
+
 		} catch (Docx4JException e) {
 			e.printStackTrace();
 			throw new IOException("Can't read the document.", e);
@@ -114,7 +115,7 @@ public class DocxReader {
 	public void iteratePart(List<Object> content) throws BadLocationException {
 		System.out.println("on itere sur " + content);
 		for (Object obj : content) {
-			System.out.println(" * je tombe sur " + obj);
+			System.out.println(" * je tombe sur " + obj + " of " + obj.getClass());
 			if (obj instanceof P) {
 				processParagraph((P) obj);
 				if (obj != content.get(content.size() - 1)) {
@@ -139,6 +140,7 @@ public class DocxReader {
 				JAXBElement el = (JAXBElement) obj;
 				if (el.getDeclaredType().equals(Text.class)) {
 					String text = ((Text) el.getValue()).getValue();
+					System.out.println("Et hop, du texte: " + text);
 					document.insertString(currentOffset, text, charAttrs);
 					currentOffset += text.length();
 				}
@@ -158,6 +160,7 @@ public class DocxReader {
 	}
 
 	protected void processParagraph(P p) throws BadLocationException {
+		System.out.println("---------> un paragraphe: " + p);
 		PPr pPr = p.getPPr();
 		parAttrs = new SimpleAttributeSet();
 		if (pPr != null) {
@@ -241,6 +244,7 @@ public class DocxReader {
 	}
 
 	protected void processRun(R run) throws BadLocationException {
+		System.out.println("---------> un run: " + run);
 		RPr rPr = run.getRPr();
 		charAttrs = new SimpleAttributeSet();
 

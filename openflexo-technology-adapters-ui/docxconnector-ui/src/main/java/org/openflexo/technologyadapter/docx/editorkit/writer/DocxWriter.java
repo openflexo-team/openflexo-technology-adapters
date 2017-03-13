@@ -278,6 +278,8 @@ public class DocxWriter {
 			int start = Math.max(leaf.getStartOffset(), pos);
 			int end = Math.min(leaf.getEndOffset(), pos + len) - start;
 			contentText = doc.getText(start, end);
+
+			System.out.println("writeLeaf with " + contentText);
 		} catch (Exception ex) {
 			throw new IOException("Error reading leaf content from source document!");
 		}

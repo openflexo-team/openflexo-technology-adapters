@@ -395,10 +395,13 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	public java.awt.Color makeColor(Color color) {
-		int r = Integer.parseInt(color.getVal().substring(0, 2), 16);
-		int g = Integer.parseInt(color.getVal().substring(2, 4), 16);
-		int b = Integer.parseInt(color.getVal().substring(4, 6), 16);
-		return new java.awt.Color(r, g, b);
+		if (color.getVal().length() == 6) {
+			int r = Integer.parseInt(color.getVal().substring(0, 2), 16);
+			int g = Integer.parseInt(color.getVal().substring(2, 4), 16);
+			int b = Integer.parseInt(color.getVal().substring(4, 6), 16);
+			return new java.awt.Color(r, g, b);
+		}
+		return null;
 	}
 
 	public void extractStyleProperties(RPrAbstract rPr, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
