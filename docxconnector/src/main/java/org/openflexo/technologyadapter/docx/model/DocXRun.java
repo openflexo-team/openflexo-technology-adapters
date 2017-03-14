@@ -102,7 +102,7 @@ public interface DocXRun extends FlexoDocRun<DocXDocument, DocXTechnologyAdapter
 			if (r != null) {
 				RPrAbstract rpr = r.getRPr();
 				if (rpr != null) {
-					setStyle(factory.makeStyle(rpr));
+					setRunStyle(factory.makeRunStyle(rpr));
 				}
 			}
 

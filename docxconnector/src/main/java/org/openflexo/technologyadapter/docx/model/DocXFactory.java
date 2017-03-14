@@ -43,6 +43,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Logger;
 
+import javax.swing.text.TabStop;
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.dml.wordprocessingDrawing.Inline;
@@ -51,13 +52,18 @@ import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.wml.BooleanDefaultTrue;
+import org.docx4j.wml.CTTabStop;
 import org.docx4j.wml.Color;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.HpsMeasure;
+import org.docx4j.wml.JcEnumeration;
 import org.docx4j.wml.P;
+import org.docx4j.wml.PPrBase;
 import org.docx4j.wml.R;
 import org.docx4j.wml.RFonts;
 import org.docx4j.wml.RPrAbstract;
+import org.docx4j.wml.STLineSpacingRule;
+import org.docx4j.wml.STTabJc;
 import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
@@ -66,7 +72,11 @@ import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.docx4j.wml.U;
 import org.openflexo.foundation.doc.DocumentFactory;
-import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphAlignment;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphIndent;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing.LineSpacingRule;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphTab;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -88,6 +98,8 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
 	private final IdentifierManagementStrategy idStrategy;
+
+	public static final int INDENTS_MULTIPLIER = 20;
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext, IdentifierManagementStrategy idStrategy)
 			throws ModelDefinitionException {
@@ -337,8 +349,13 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	public DocXStyle makeStyle() {
-		return newInstance(DocXStyle.class);
+	public DocXParagraphStyle makeParagraphStyle() {
+		return newInstance(DocXParagraphStyle.class);
+	}
+
+	@Override
+	public DocXRunStyle makeRunStyle() {
+		return newInstance(DocXRunStyle.class);
 	}
 
 	@Override
@@ -402,7 +419,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return null;
 	}
 
-	public void extractStyleProperties(RPrAbstract rPr, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
+	public void extractStyleProperties(RPrAbstract rPr, DocXRunStyle style) {
 
 		RFonts rFonts = rPr.getRFonts();
 		if (rFonts != null) {
@@ -411,12 +428,18 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 		HpsMeasure sz = rPr.getSz();
 		if (sz != null) {
-			style.setFontSize(sz.getVal().intValue());
+			style.setFontSize(sz.getVal().intValue() / 2);
 		}
 
 		Color color = rPr.getColor();
 		if (color != null) {
 			style.setFontColor(makeColor(color));
+		}
+
+		if (rPr.getHighlight() != null) {
+			String name = rPr.getHighlight().getVal();
+			java.awt.Color bgColor = decodeHighlightName(name);
+			style.setBackgroundColor(bgColor);
 		}
 
 		BooleanDefaultTrue b = rPr.getB();
@@ -436,10 +459,140 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	}
 
-	public DocXStyle makeStyle(RPrAbstract rPr) {
+	protected java.awt.Color decodeHighlightName(String name) {
+		if ("yellow".equals(name.toLowerCase())) {
+			return java.awt.Color.YELLOW;
+		}
+		else if ("blue".equals(name.toLowerCase())) {
+			return java.awt.Color.BLUE;
+		}
+		else if ("cyan".equals(name.toLowerCase())) {
+			return java.awt.Color.CYAN;
+		}
+		else if ("gray".equals(name.toLowerCase())) {
+			return java.awt.Color.GRAY;
+		}
+		else if ("green".equals(name.toLowerCase())) {
+			return java.awt.Color.GREEN;
+		}
+		else if ("magenta".equals(name.toLowerCase())) {
+			return java.awt.Color.MAGENTA;
+		}
+		else if ("orange".equals(name.toLowerCase())) {
+			return java.awt.Color.ORANGE;
+		}
+		else if ("pink".equals(name.toLowerCase())) {
+			return java.awt.Color.PINK;
+		}
+		else if ("red".equals(name.toLowerCase())) {
+			return java.awt.Color.RED;
+		}
+		else if ("white".equals(name.toLowerCase())) {
+			return java.awt.Color.WHITE;
+		}
+		return null;
+	}
 
-		DocXStyle returned = newInstance(DocXStyle.class);
+	public void extractStyleProperties(PPrBase pPr, DocXParagraphStyle style) {
+
+		if (pPr.getJc() != null) {
+			JcEnumeration align = pPr.getJc().getVal();
+			if (align.value().equals("center")) {
+				style.setParagraphAlignment(ParagraphAlignment.Center);
+			}
+			else if (align.value().equals("left")) {
+				style.setParagraphAlignment(ParagraphAlignment.Left);
+			}
+			else if (align.value().equals("right")) {
+				style.setParagraphAlignment(ParagraphAlignment.Right);
+			}
+			else if (align.value().equals("both")) {
+				style.setParagraphAlignment(ParagraphAlignment.Justify);
+			}
+		}
+
+		if (pPr.getTabs() != null) {
+			TabStop[] tabs = new TabStop[pPr.getTabs().getTab().size()];
+			for (CTTabStop stop : pPr.getTabs().getTab()) {
+				float pos = stop.getPos().intValue() / INDENTS_MULTIPLIER;
+				int align = TabStop.ALIGN_LEFT;
+				if (STTabJc.LEFT.equals(stop.getVal())) {
+					align = TabStop.ALIGN_LEFT;
+				}
+				else if (STTabJc.RIGHT.equals(stop.getVal())) {
+					align = TabStop.ALIGN_RIGHT;
+				}
+				else if (STTabJc.CENTER.equals(stop.getVal())) {
+					align = TabStop.ALIGN_CENTER;
+				}
+				else if (STTabJc.BAR.equals(stop.getVal())) {
+					align = TabStop.ALIGN_BAR;
+				}
+				else if (STTabJc.DECIMAL.equals(stop.getVal())) {
+					align = TabStop.ALIGN_DECIMAL;
+				}
+				int leader = TabStop.LEAD_NONE;
+				style.addToParagraphTabs(makeParagraphTab(pos, align, leader));
+			}
+		}
+
+		if (pPr.getSpacing() != null) {
+			ParagraphSpacing pSpacing = newInstance(ParagraphSpacing.class);
+			style.setParagraphSpacing(pSpacing);
+			if (STLineSpacingRule.AT_LEAST.equals(pPr.getSpacing().getLineRule())) {
+				pSpacing.setLineSpacingRule(LineSpacingRule.AT_LEAST);
+				pSpacing.setLine(pPr.getSpacing().getLine().intValue());
+			}
+			if (STLineSpacingRule.AUTO.equals(pPr.getSpacing().getLineRule())) {
+				pSpacing.setLineSpacingRule(LineSpacingRule.AUTO);
+				pSpacing.setLine(pPr.getSpacing().getLine().intValue());
+			}
+			if (pPr.getSpacing().getBefore() != null) {
+				pSpacing.setBefore(pPr.getSpacing().getBefore().intValue() / INDENTS_MULTIPLIER);
+			}
+			if (pPr.getSpacing().getAfter() != null) {
+				pSpacing.setAfter(pPr.getSpacing().getAfter().intValue() / INDENTS_MULTIPLIER);
+			}
+		}
+
+		if (pPr.getInd() != null) {
+			ParagraphIndent pIndent = newInstance(ParagraphIndent.class);
+			style.setParagraphIndent(pIndent);
+			if (pPr.getInd().getLeft() != null) {
+				int left = pPr.getInd().getLeft().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setLeft(left);
+			}
+			if (pPr.getInd().getRight() != null) {
+				int right = pPr.getInd().getRight().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setRight(right);
+			}
+			if (pPr.getInd().getFirstLine() != null) {
+				int first = pPr.getInd().getFirstLine().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setFirst(first);
+			}
+		}
+
+	}
+
+	public ParagraphTab makeParagraphTab(float pos, int align, int leader) {
+		ParagraphTab returned = newInstance(ParagraphTab.class);
+		returned.setPos(pos);
+		returned.setAlign(align);
+		returned.setLeader(leader);
+		return returned;
+	}
+
+	public DocXRunStyle makeRunStyle(RPrAbstract rPr) {
+
+		DocXRunStyle returned = newInstance(DocXRunStyle.class);
 		returned.updateFromRPr(rPr, this);
+		return returned;
+	}
+
+	public DocXParagraphStyle makeParagraphStyle(PPrBase pPr) {
+
+		DocXParagraphStyle returned = newInstance(DocXParagraphStyle.class);
+		returned.updateFromPPr(pPr, this);
 		return returned;
 	}
 

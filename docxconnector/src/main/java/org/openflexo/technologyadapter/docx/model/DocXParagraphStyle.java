@@ -20,9 +20,9 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import org.docx4j.wml.RPrAbstract;
+import org.docx4j.wml.PPrBase;
 import org.openflexo.foundation.doc.FlexoDocStyle;
-import org.openflexo.foundation.doc.NamedDocStyle;
+import org.openflexo.foundation.doc.FlexoParagraphStyle;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -39,55 +39,56 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
  *
  */
 @ModelEntity
-@ImplementationClass(DocXStyle.DocXStyleImpl.class)
+@ImplementationClass(DocXParagraphStyle.DocXParagraphStyleImpl.class)
 @XMLElement
-public interface DocXStyle extends DocXObject<RPrAbstract>, NamedDocStyle<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXParagraphStyle extends DocXObject<PPrBase>, FlexoParagraphStyle<DocXDocument, DocXTechnologyAdapter> {
 
-	@PropertyIdentifier(type = RPrAbstract.class)
-	public static final String RPR_KEY = "rPr";
+	@PropertyIdentifier(type = PPrBase.class)
+	public static final String PPR_KEY = "pPr";
 
-	@Getter(value = RPR_KEY, ignoreType = true)
-	public RPrAbstract getRPr();
+	@Getter(value = PPR_KEY, ignoreType = true)
+	public PPrBase getPPr();
 
-	@Setter(RPR_KEY)
-	public void setRPr(RPrAbstract rPr);
+	@Setter(PPR_KEY)
+	public void setPPr(PPrBase pPr);
 
 	/**
-	 * This is the starting point for updating {@link DocXStyle} with the rPr provided from docx4j library<br>
-	 * Take care that the supplied rPr is the object we should update with, but that {@link #getRPr()} is unsafe in this context, because
+	 * This is the starting point for updating {@link DocXParagraphStyle} with the pPr provided from docx4j library<br>
+	 * Take care that the supplied pPr is the object we should update with, but that {@link #getPPr()} is unsafe in this context, because
 	 * return former value
 	 */
-	public void updateFromRPr(RPrAbstract rPr, DocXFactory factory);
+	public void updateFromPPr(PPrBase pPr, DocXFactory factory);
 
-	public static abstract class DocXStyleImpl extends NamedDocStyleImpl<DocXDocument, DocXTechnologyAdapter> implements DocXStyle {
+	public static abstract class DocXParagraphStyleImpl extends FlexoParagraphStyleImpl<DocXDocument, DocXTechnologyAdapter>
+			implements DocXParagraphStyle {
 
 		@Override
-		public RPrAbstract getDocXObject() {
-			return getRPr();
+		public PPrBase getDocXObject() {
+			return getPPr();
 		}
 
 		@Override
-		public void setRPr(RPrAbstract rPr) {
-			if ((rPr == null && getRPr() != null) || (rPr != null && !rPr.equals(getRPr()))) {
-				if (rPr != null && getResourceData() != null && getResourceData().getResource() != null) {
-					updateFromRPr(rPr, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+		public void setPPr(PPrBase pPr) {
+			if ((pPr == null && getPPr() != null) || (pPr != null && !pPr.equals(getPPr()))) {
+				if (pPr != null && getResourceData() != null && getResourceData().getResource() != null) {
+					updateFromPPr(pPr, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
 				}
 			}
 		}
 
 		/**
-		 * This is the starting point for updating {@link DocXStyle} with the style provided from docx4j library<br>
+		 * This is the starting point for updating {@link DocXParagraphStyle} with the style provided from docx4j library<br>
 		 * Take care that the supplied p is the object we should update with, but that {@link #getStyle()} is unsafe in this context,
 		 * because return former value
 		 */
 		@Override
-		public void updateFromRPr(RPrAbstract rPr, DocXFactory factory) {
+		public void updateFromPPr(PPrBase pPr, DocXFactory factory) {
 
-			performSuperSetter(RPR_KEY, rPr);
+			performSuperSetter(PPR_KEY, pPr);
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of RPrAbstract given by getRPr() returns the new value
 
-			factory.extractStyleProperties(rPr, this);
+			factory.extractStyleProperties(pPr, this);
 		}
 
 		@Override

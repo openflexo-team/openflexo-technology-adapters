@@ -50,7 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.docx4all.swing.text.DocumentElement;
-import org.openflexo.components.doc.EditorPanel;
+import org.openflexo.components.doc.deprecated.EditorPanel;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;

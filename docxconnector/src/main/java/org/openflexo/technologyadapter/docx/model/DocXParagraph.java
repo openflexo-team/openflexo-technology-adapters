@@ -39,6 +39,7 @@ import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
+import org.docx4j.wml.PPrBase;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
@@ -229,6 +230,11 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 					}
 				}
 			}*/
+
+			PPrBase pPr = p.getPPr();
+			if (pPr != null) {
+				setParagraphStyle(factory.makeParagraphStyle(pPr));
+			}
 
 		}
 

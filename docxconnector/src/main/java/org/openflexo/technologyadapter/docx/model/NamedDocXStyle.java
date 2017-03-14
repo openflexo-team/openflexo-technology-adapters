@@ -100,8 +100,16 @@ public interface NamedDocXStyle extends DocXObject<Style>, NamedDocStyle<DocXDoc
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of P given by getStyle() returns the new value
 
+			if (style != null && style.getPPr() != null) {
+				DocXParagraphStyle pStyle = factory.makeParagraphStyle();
+				factory.extractStyleProperties(style.getPPr(), pStyle);
+				setParagraphStyle(pStyle);
+			}
+
 			if (style != null && style.getRPr() != null) {
-				factory.extractStyleProperties(style.getRPr(), this);
+				DocXRunStyle rStyle = factory.makeRunStyle();
+				factory.extractStyleProperties(style.getRPr(), rStyle);
+				setRunStyle(rStyle);
 			}
 		}
 

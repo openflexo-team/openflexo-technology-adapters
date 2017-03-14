@@ -75,7 +75,7 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(DocXDocument.DocXDocumentImpl.class)
 @XMLElement
 @Imports({ @Import(DocXParagraph.class), @Import(DocXTable.class), @Import(DocXSdtBlock.class), @Import(DocXUnmappedElement.class),
-		@Import(NamedDocXStyle.class), @Import(DocXStyle.class) })
+		@Import(NamedDocXStyle.class), @Import(DocXParagraphStyle.class), @Import(DocXRunStyle.class) })
 public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = WordprocessingMLPackage.class)

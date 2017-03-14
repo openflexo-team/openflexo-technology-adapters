@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.openflexo.components.doc.EditorPanel;
+import org.openflexo.components.doc.deprecated.EditorPanel;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
