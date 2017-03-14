@@ -97,29 +97,29 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 
 	}
 
-	/*@Test
+	@Test
 	@TestOrder(2)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
-		openDocXEditor(simpleDocument.getResource());
-	}*/
+		openFlexoDocumentEditor(simpleDocument.getResource());
+	}
 
-	/*@Test
+	@Test
 	@TestOrder(3)
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 		openFlexoDocumentEditor(structuredDocument.getResource());
-	}*/
+	}
 
-	/*@Test
+	@Test
 	@TestOrder(4)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
 		openFlexoDocumentEditor(documentWithTable.getResource());
-	}*/
+	}
 
 	@Test
 	@TestOrder(5)
@@ -129,13 +129,13 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		openFlexoDocumentEditor(documentWithImage.getResource());
 	}
 
-	/*@Test
+	@Test
 	@TestOrder(6)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
 		openFlexoDocumentEditor(exampleReport.getResource());
-	}*/
+	}
 
 	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -151,7 +151,7 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor = new FlexoDocumentEditor<>(doc);
 		JPanel pane = new JPanel(new BorderLayout());
 		pane.add(docBrowser, BorderLayout.WEST);
-		pane.add(editor.getEditorPane(), BorderLayout.CENTER);
+		pane.add(editor.getEditorPanel(), BorderLayout.CENTER);
 		gcDelegate.addTab(docResource.getName(), pane);
 
 	}

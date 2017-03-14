@@ -34,6 +34,8 @@ import org.docx4j.wml.CTBookmark;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.TblGrid;
+import org.docx4j.wml.TblGridCol;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.FlexoDocElement;
@@ -193,6 +195,31 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 				internallyRemoveFromTableRows(row);
 			}
 
+			int cellCount = 0;
+			int rowCount = 0;
+			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
+				rowCount++;
+				cellCount = Math.max(cellCount, row.getTableCells().size());
+			}
+
+			TblGrid tblGrid = tbl.getTblGrid();
+			columnWidths = new int[cellCount];
+			int i = 0;
+			for (TblGridCol col : tblGrid.getGridCol()) {
+				columnWidths[i] = col.getW().intValue() / DocXFactory.INDENTS_MULTIPLIER;
+				i++;
+			}
+
+		}
+
+		private int[] columnWidths;
+
+		@Override
+		public int getColumnWidth(int colIndex) {
+			if (colIndex < columnWidths.length) {
+				return columnWidths[colIndex];
+			}
+			return 100;
 		}
 
 		@Override
