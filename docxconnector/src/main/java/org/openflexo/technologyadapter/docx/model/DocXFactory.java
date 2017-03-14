@@ -539,6 +539,12 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		if (pPr.getSpacing() != null) {
 			ParagraphSpacing pSpacing = newInstance(ParagraphSpacing.class);
 			style.setParagraphSpacing(pSpacing);
+
+			// System.out.println(" >> pPr.getSpacing().getLineRule()=" + pPr.getSpacing().getLineRule());
+			// System.out.println(" >> pPr.getSpacing().getLine()=" + pPr.getSpacing().getLine());
+			// System.out.println(" >> pPr.getSpacing().getBefore()=" + pPr.getSpacing().getBefore());
+			// System.out.println(" >> pPr.getSpacing().getAfter()=" + pPr.getSpacing().getAfter());
+
 			if (STLineSpacingRule.AT_LEAST.equals(pPr.getSpacing().getLineRule())) {
 				pSpacing.setLineSpacingRule(LineSpacingRule.AT_LEAST);
 				pSpacing.setLine(pPr.getSpacing().getLine().intValue());
@@ -553,6 +559,9 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			if (pPr.getSpacing().getAfter() != null) {
 				pSpacing.setAfter(pPr.getSpacing().getAfter().intValue() / INDENTS_MULTIPLIER);
 			}
+
+			// System.out.println("Before: " + style.getParagraphSpacing().getBefore());
+			// System.out.println("After: " + style.getParagraphSpacing().getAfter());
 		}
 
 		if (pPr.getInd() != null) {
