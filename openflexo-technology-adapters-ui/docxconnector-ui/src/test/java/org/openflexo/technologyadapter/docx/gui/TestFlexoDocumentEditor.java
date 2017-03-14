@@ -105,36 +105,36 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		openDocXEditor(simpleDocument.getResource());
 	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 		openFlexoDocumentEditor(structuredDocument.getResource());
-	}
+	}*/
 
 	/*@Test
 	@TestOrder(4)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
-		openDocXEditor(documentWithTable.getResource());
-	}
-	
+		openFlexoDocumentEditor(documentWithTable.getResource());
+	}*/
+
 	@Test
 	@TestOrder(5)
 	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
-		openDocXEditor(documentWithImage.getResource());
+		openFlexoDocumentEditor(documentWithImage.getResource());
 	}
-	
-	@Test
+
+	/*@Test
 	@TestOrder(6)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
-		openDocXEditor(exampleReport.getResource());
+		openFlexoDocumentEditor(exampleReport.getResource());
 	}*/
 
 	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)

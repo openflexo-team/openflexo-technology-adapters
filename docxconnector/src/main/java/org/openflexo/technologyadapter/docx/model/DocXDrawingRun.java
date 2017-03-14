@@ -21,14 +21,15 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 
-import org.apache.commons.lang3.StringUtils;
 import org.docx4j.dml.Graphic;
 import org.docx4j.dml.GraphicData;
 import org.docx4j.dml.picture.CTPictureNonVisual;
@@ -47,6 +48,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Implementation of {@link FlexoDocRun} for {@link DocXTechnologyAdapter}
@@ -69,6 +71,28 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 		@Override
 		public Image getImage() {
+			if (image == null && StringUtils.isNotEmpty(embedId)) {
+
+				DocXDocument document = getFlexoDocument();
+
+				if (document != null && document instanceof DocXDocumentImpl
+						&& document.getResource().getIODelegate().getSerializationArtefact() instanceof File) {
+					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
+					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
+					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
+
+					BinaryPartAbstractImage binaryImage = (BinaryPartAbstractImage) relsPart.getPart(embedId);
+
+					try {
+						image = ImageIO.read(new ByteArrayInputStream(binaryImage.getBytes()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			}
+
 			return image;
 		}
 
@@ -84,6 +108,7 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 			return embedId;
 		}
 
+		@Deprecated
 		@Override
 		public File getImageFile() {
 
@@ -120,14 +145,6 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 			return imageFile;
 		}
 
-		public void setImageFile(File imageFile) {
-			if ((imageFile == null && this.imageFile != null) || (imageFile != null && !imageFile.equals(this.imageFile))) {
-				File oldValue = this.imageFile;
-				this.imageFile = imageFile;
-				getPropertyChangeSupport().firePropertyChange("imageFile", oldValue, imageFile);
-			}
-		}
-
 		/**
 		 * This is the starting point for updating {@link DocXDrawingRun} with the paragraph provided from docx4j library<br>
 		 * Take care that the supplied p is the object we should update with, but that {@link #getP()} is unsafe in this context, because
@@ -161,7 +178,7 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 									imageName = imageName + " (" + nvPicPr.getCNvPr().getName() + ")";
 
 									embedId = pic.getBlipFill().getBlip().getEmbed();
-									System.out.println("embedId=" + embedId);
+									// System.out.println("embedId=" + embedId);
 
 								}
 							}
