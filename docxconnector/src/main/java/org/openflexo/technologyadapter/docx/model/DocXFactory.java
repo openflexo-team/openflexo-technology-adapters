@@ -495,6 +495,16 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	public void extractStyleProperties(PPrBase pPr, DocXParagraphStyle style) {
 
+		if (pPr.getNumPr() != null) {
+			System.out.println("Tiens j'ai des infos de numbering");
+			if (pPr.getNumPr().getNumId() != null)
+				System.out.println("id=" + pPr.getNumPr().getNumId().getVal());
+			System.out.println("nc=" + pPr.getNumPr().getNumberingChange());
+			if (pPr.getNumPr().getIlvl() != null)
+				System.out.println("ilvl=" + pPr.getNumPr().getIlvl().getVal());
+			System.out.println("ins=" + pPr.getNumPr().getIns());
+		}
+
 		if (pPr.getJc() != null) {
 			JcEnumeration align = pPr.getJc().getVal();
 			if (align.value().equals("center")) {

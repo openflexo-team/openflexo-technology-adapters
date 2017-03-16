@@ -115,6 +115,15 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
+	public void testOpenStructuredDocumentWithNumberingEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		structuredDocument = getDocument("StructuredDocumentWithNumbering.docx");
+		assertNotNull(structuredDocument);
+		openFlexoDocumentEditor(structuredDocument.getResource());
+	}
+
+	@Test
+	@TestOrder(5)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
@@ -122,7 +131,7 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 	}
 
 	@Test
-	@TestOrder(5)
+	@TestOrder(6)
 	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
@@ -130,7 +139,7 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 	}
 
 	@Test
-	@TestOrder(6)
+	@TestOrder(7)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
@@ -150,8 +159,12 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		};
 		FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor = new FlexoDocumentEditor<>(doc);
 		JPanel pane = new JPanel(new BorderLayout());
+
+		// JTree tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
+
 		pane.add(docBrowser, BorderLayout.WEST);
 		pane.add(editor.getEditorPanel(), BorderLayout.CENTER);
+		// pane.add(new JScrollPane(tree), BorderLayout.EAST);
 		gcDelegate.addTab(docResource.getName(), pane);
 
 	}
