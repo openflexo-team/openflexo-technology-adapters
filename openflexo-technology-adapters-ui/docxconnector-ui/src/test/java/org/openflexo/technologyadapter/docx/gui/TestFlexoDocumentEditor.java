@@ -97,21 +97,21 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(2)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
 		openFlexoDocumentEditor(simpleDocument.getResource());
 	}
-
+	
 	@Test
 	@TestOrder(3)
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 		openFlexoDocumentEditor(structuredDocument.getResource());
-	}
+	}*/
 
 	@Test
 	@TestOrder(4)
@@ -122,14 +122,14 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		openFlexoDocumentEditor(structuredDocument.getResource());
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(5)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
 		openFlexoDocumentEditor(documentWithTable.getResource());
 	}
-
+	
 	@Test
 	@TestOrder(6)
 	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -137,14 +137,14 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		assertNotNull(documentWithImage);
 		openFlexoDocumentEditor(documentWithImage.getResource());
 	}
-
+	
 	@Test
 	@TestOrder(7)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
 		openFlexoDocumentEditor(exampleReport.getResource());
-	}
+	}*/
 
 	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {

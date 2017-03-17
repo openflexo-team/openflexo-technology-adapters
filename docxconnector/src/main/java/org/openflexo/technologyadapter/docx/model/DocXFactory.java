@@ -74,6 +74,7 @@ import org.docx4j.wml.U;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphAlignment;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphIndent;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphNumbering;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing.LineSpacingRule;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphTab;
@@ -495,16 +496,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	public void extractStyleProperties(PPrBase pPr, DocXParagraphStyle style) {
 
-		if (pPr.getNumPr() != null) {
-			System.out.println("Tiens j'ai des infos de numbering");
-			if (pPr.getNumPr().getNumId() != null)
-				System.out.println("id=" + pPr.getNumPr().getNumId().getVal());
-			System.out.println("nc=" + pPr.getNumPr().getNumberingChange());
-			if (pPr.getNumPr().getIlvl() != null)
-				System.out.println("ilvl=" + pPr.getNumPr().getIlvl().getVal());
-			System.out.println("ins=" + pPr.getNumPr().getIns());
-		}
-
 		if (pPr.getJc() != null) {
 			JcEnumeration align = pPr.getJc().getVal();
 			if (align.value().equals("center")) {
@@ -588,6 +579,17 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			if (pPr.getInd().getFirstLine() != null) {
 				int first = pPr.getInd().getFirstLine().intValue() / INDENTS_MULTIPLIER;
 				pIndent.setFirst(first);
+			}
+		}
+
+		if (pPr.getNumPr() != null) {
+			ParagraphNumbering pNumbering = newInstance(ParagraphNumbering.class);
+			style.setParagraphNumbering(pNumbering);
+			if (pPr.getNumPr().getNumId() != null) {
+				pNumbering.setNumId(pPr.getNumPr().getNumId().getVal().intValue());
+			}
+			if (pPr.getNumPr().getIlvl() != null) {
+				pNumbering.setIlvl(pPr.getNumPr().getIlvl().getVal().intValue());
 			}
 		}
 
