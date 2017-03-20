@@ -28,7 +28,6 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.doc.FlexoDocParagraph;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
@@ -117,8 +116,10 @@ public class DocXUtils {
 
 	public static String debugStructuredContents(DocXTableCell cell) {
 		StringBuffer result = new StringBuffer();
-		for (FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> paragraph : cell.getParagraphs()) {
-			result.append(debugStructuredContents((DocXParagraph) paragraph) + " ");
+		for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element : cell.getElements()) {
+			if (element instanceof DocXParagraph) {
+				result.append(debugStructuredContents((DocXParagraph) element) + " ");
+			}
 		}
 		return result.toString();
 	}

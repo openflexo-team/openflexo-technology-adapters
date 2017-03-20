@@ -27,7 +27,14 @@
 			label="paragraph.rawTextPreview" icon="controller.iconForObject(paragraph)"
 			tooltip="" enabled="" visible="" isEditable="false" editableLabel=""
 			filtered="false" defaultVisible="true" dynamicFont="" name="paragraph">
+			<Children data="paragraph.runs" name="runs" />
 			<Children data="paragraph.childrenElements" name="childrenElements" />
+		</BrowserElement>
+		<BrowserElement
+			dataClassName="org.openflexo.technologyadapter.docx.model.DocXTextRun"
+			label="run.text" icon="controller.iconForObject(run)"
+			isEditable="false" visible="" 
+			filtered="false" defaultVisible="true" name="run">
 		</BrowserElement>
 		<BrowserElement dataClassName="org.openflexo.technologyadapter.docx.model.DocXTable"
 			label="'TABLE'" icon="controller.iconForObject(table)" tooltip=""

@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import org.docx4j.wml.PPrBase;
 import org.docx4j.wml.RPrAbstract;
 import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.foundation.doc.FlexoRunStyle;
@@ -59,13 +58,6 @@ public interface DocXRunStyle extends DocXObject<RPrAbstract>, FlexoRunStyle<Doc
 	 * return former value
 	 */
 	public void updateFromRPr(RPrAbstract rPr, DocXFactory factory);
-
-	/**
-	 * This is the starting point for updating {@link DocXRunStyle} with the pPr provided from docx4j library<br>
-	 * Take care that the supplied pPr is the object we should update with, but that {@link #getRPr()} is unsafe in this context, because
-	 * return former value
-	 */
-	public void updateFromPPr(PPrBase pPr, DocXFactory factory);
 
 	public static abstract class DocXRunStyleImpl extends FlexoRunStyleImpl<DocXDocument, DocXTechnologyAdapter> implements DocXRunStyle {
 

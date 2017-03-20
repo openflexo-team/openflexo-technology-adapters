@@ -49,8 +49,8 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.docx4all.swing.text.DocumentElement;
-import org.openflexo.components.doc.deprecated.EditorPanel;
+import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
+import org.openflexo.components.doc.editorkit.FlexoStyledDocument.DocumentElement;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
@@ -88,8 +88,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	private final VirtualModelInstance virtualModelInstance;
 	private final FlexoPerspective perspective;
 
-	// private final DocXEditor docxEditor;
-	private final EditorPanel<?, ?> editorPanel;
+	private final FlexoDocumentEditor editor;
 
 	private final FIBDocXDocumentBrowser browser;
 	private final JPanel topPanel;
@@ -104,11 +103,8 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			logger.severe("Supplied VirtualModelInstance does not have the FMLControlledDocXVirtualModelInstanceNature");
 		}
 
-		editorPanel = new EditorPanel(getDocument());
-		add(editorPanel, BorderLayout.CENTER);
-
-		// docxEditor = new DocXEditor(document, true);
-		// add(docxEditor, BorderLayout.CENTER);
+		editor = new FlexoDocumentEditor<>(getDocument());
+		add(editor.getEditorPanel(), BorderLayout.CENTER);
 
 		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController()) {
 			@Override
@@ -229,17 +225,17 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			DocumentElement docElement = null;
 
 			if (element instanceof DocXParagraph) {
-				docElement = (DocumentElement) editorPanel.getElement(((DocXParagraph) element).getP());
-				docElement = (DocumentElement) editorPanel.getElement(((DocXParagraph) element).getP());
+				docElement = editor.getElement(((DocXParagraph) element));
+				docElement = editor.getElement(((DocXParagraph) element));
 				elts.add(docElement);
 			}
 			if (element instanceof DocXTable) {
-				docElement = (DocumentElement) editorPanel.getElement(((DocXTable) element).getTbl());
+				docElement = editor.getElement(((DocXTable) element));
 				elts.add(docElement);
 			}
 
 			// Thread.dumpStack();
-			editorPanel.setSelectedElements(elts);
+			editor.setSelectedElements(elts);
 
 			if (docElement != null) {
 				scrollTo(docElement);
@@ -249,11 +245,8 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 			e.printStackTrace();
 		}
 
-		// docxEditor.getEditorView().revalidate();
-		// docxEditor.getEditorView().repaint();
-
-		editorPanel.revalidate();
-		editorPanel.repaint();
+		editor.getEditorPanel().revalidate();
+		editor.getEditorPanel().repaint();
 
 	}
 
@@ -261,14 +254,14 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (!editorPanel.scrollToElement(docElement)) {
+				if (!editor.scrollToElement(docElement)) {
 					scrollTo(docElement);
 				}
 				// docxEditor.getEditorView().revalidate();
 				// docxEditor.getEditorView().repaint();
 
-				editorPanel.revalidate();
-				editorPanel.repaint();
+				editor.getEditorPanel().revalidate();
+				editor.getEditorPanel().repaint();
 			}
 		});
 	}

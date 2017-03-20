@@ -151,16 +151,19 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXParagraph makeParagraph() {
+	public DocXParagraph makeParagraph() {
 		DocXParagraph returned = newInstance(DocXParagraph.class);
 		((DocXParagraphImpl) returned)._factory = this;
+		P p = Context.getWmlObjectFactory().createP();
+		returned.updateFromP(p, this);
 		return returned;
 	}
 
 	public boolean someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;
 
 	public DocXParagraph makeNewDocXParagraph(P p) {
-		DocXParagraph returned = makeParagraph();
+		DocXParagraph returned = newInstance(DocXParagraph.class);
+		((DocXParagraphImpl) returned)._factory = this;
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
 			switch (getIDStrategy()) {

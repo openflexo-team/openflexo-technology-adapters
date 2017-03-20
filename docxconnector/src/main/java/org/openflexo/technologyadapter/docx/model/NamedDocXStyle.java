@@ -143,6 +143,11 @@ public interface NamedDocXStyle extends DocXObject<Style>, NamedDocStyle<DocXDoc
 		public String toString() {
 			return getName() + (getParentStyle() != null ? " (based on " + getParentStyle().getName() + ")" : "");
 		}
+
+		@Override
+		public String getStringRepresentation() {
+			return toString();
+		}
 	}
 
 }

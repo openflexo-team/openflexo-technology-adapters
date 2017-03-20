@@ -221,9 +221,8 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 							for (int col = 0; col < templateTable.getTableRows().get(row).getTableCells().size(); col++) {
 								FlexoDocTableCell<?, ?> templateCell = templateTable.getCell(row, col);
 								FlexoDocTableCell<?, ?> clonedCell = clonedTable.getCell(row, col);
-								for (int i = 0; i < templateCell.getParagraphs().size(); i++) {
-									clonedCell.getParagraphs().get(i)
-											.setBaseIdentifier(templateCell.getParagraphs().get(i).getIdentifier());
+								for (int i = 0; i < templateCell.getElements().size(); i++) {
+									clonedCell.getElements().get(i).setBaseIdentifier(templateCell.getElements().get(i).getIdentifier());
 								}
 							}
 

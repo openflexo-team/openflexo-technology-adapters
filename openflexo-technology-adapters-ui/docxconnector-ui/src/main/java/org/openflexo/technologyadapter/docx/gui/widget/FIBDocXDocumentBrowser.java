@@ -80,6 +80,7 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 	}
 
 	private DocXObject selectedElement;
+	private boolean showRuns = false;
 
 	public DocXObject getSelectedDocumentElement() {
 		return selectedElement;
@@ -90,6 +91,17 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 	}
 
 	public void singleClick(Object object) {
+	}
+
+	public boolean showRuns() {
+		return showRuns;
+	}
+
+	public void setShowRuns(boolean showRuns) {
+		if (showRuns != this.showRuns) {
+			this.showRuns = showRuns;
+			getPropertyChangeSupport().firePropertyChange("showRuns", !showRuns, showRuns);
+		}
 	}
 
 	public static class DocXDocumentBrowserFIBController extends FlexoFIBController {

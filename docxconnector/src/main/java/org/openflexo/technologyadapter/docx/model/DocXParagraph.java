@@ -472,7 +472,9 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				System.out.println("p=" + getP());*/
 
 			parent.getContent().add(index, getP());
-			getFlexoDocument().setIsModified();
+			if (getFlexoDocument() != null) {
+				getFlexoDocument().setIsModified();
+			}
 
 		}
 
@@ -482,17 +484,65 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		 */
 		@Override
 		public void insertRunAtIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
-			System.out.println("Add run " + aRun);
-			P p = getP();
+
 			if (aRun instanceof DocXRun) {
+				System.out.println("Au debut:");
+				for (Object o : getP().getContent()) {
+					StringWriter sw = new StringWriter();
+					try {
+						TextUtils.extractText(o, sw);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					System.out.println(">>> " + sw.toString());
+				}
+				if (aRun instanceof DocXTextRun) {
+					System.out.println("Add run at index " + index + " " + ((DocXTextRun) aRun).getText());
+				}
+				P p = getP();
+
+				// Because they might be some other kind of content, we compute the right place
+				// to insert the run
+				int effectiveIndex = 0;
+				int currentIndex = 0;
+				for (Object o : p.getContent()) {
+					if (o instanceof JAXBElement) {
+						o = ((JAXBElement) o).getValue();
+					}
+					if (o instanceof R) {
+						if (currentIndex == index) {
+							// ok this is the right index, break
+							break;
+						}
+						currentIndex++;
+					}
+					effectiveIndex++;
+				}
+
 				R r = ((DocXRun) aRun).getR();
-				if (index < p.getContent().size()) {
+				/*if (index < p.getContent().size()) {
+					System.out.println("Hop1");
 					p.getContent().add(index + 1, r);
 				}
 				else {
+					System.out.println("Hop2");
 					p.getContent().add(index, r);
-				}
+				}*/
+				System.out.println("Du coup, plutot que de le mettre en " + index + " je le mets en " + effectiveIndex);
+				p.getContent().add(effectiveIndex, r);
+
 				internallyInsertRunAtIndex(aRun, index);
+
+				System.out.println("Et a la fin:");
+				for (Object o : p.getContent()) {
+					StringWriter sw = new StringWriter();
+					try {
+						TextUtils.extractText(o, sw);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					System.out.println(">>> " + sw.toString());
+				}
 			}
 			else {
 				logger.warning("Unexpected run: " + aRun);

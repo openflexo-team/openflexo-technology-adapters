@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.openflexo.components.doc.deprecated.EditorPanel;
+import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -63,8 +63,7 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 	private final FlexoPerspective perspective;
 	private final DocXDocument document;
 
-	// private final DocXEditor docxEditor;
-	private final EditorPanel<?, ?> editorPanel;
+	private final FlexoDocumentEditor<?, ?> editor;
 
 	private final FIBDocXDocumentBrowser browser;
 
@@ -74,12 +73,8 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 		this.document = document;
 		this.perspective = perspective;
 
-		editorPanel = new EditorPanel(document);
-		add(editorPanel, BorderLayout.CENTER);
-
-		// docxEditor = new DocXEditor(document, true);
-		// add(docxEditor, BorderLayout.CENTER);
-
+		editor = new FlexoDocumentEditor<>(document);
+		add(editor.getEditorPanel(), BorderLayout.CENTER);
 		browser = new FIBDocXDocumentBrowser(document, perspective.getController());
 
 		add(browser, BorderLayout.EAST);

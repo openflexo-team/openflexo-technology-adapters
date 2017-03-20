@@ -225,8 +225,8 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 		@Override
 		public String getIdentifier() {
 			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
-			if (cell != null && cell.getParagraphs().size() > 0) {
-				return "Table" + cell.getParagraphs().get(0).getIdentifier();
+			if (cell != null && cell.getElements().size() > 0) {
+				return "Table" + cell.getElements().get(0).getIdentifier();
 			}
 			return "Table" + getIndex();
 		}
@@ -234,8 +234,8 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 		@Override
 		public void setIdentifier(String identifier) {
 			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
-			if (cell != null && cell.getParagraphs().size() > 0) {
-				cell.getParagraphs().get(0).setIdentifier(identifier);
+			if (cell != null && cell.getElements().size() > 0) {
+				cell.getElements().get(0).setIdentifier(identifier);
 			}
 		}
 

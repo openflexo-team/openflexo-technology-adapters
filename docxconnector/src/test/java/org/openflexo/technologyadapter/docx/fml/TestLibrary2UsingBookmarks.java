@@ -905,13 +905,13 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		// particulièrement aux pas du bagnard Jean )(Valjean)(.) }
 
 		DocXTableCell authorCell = (DocXTableCell) bookDescriptionTable.getCell(0, 1);
-		DocXParagraph authorParagraph = (DocXParagraph) authorCell.getParagraphs().get(0);
+		DocXParagraph authorParagraph = (DocXParagraph) authorCell.getElements().get(0);
 
 		DocXTableCell editionCell = (DocXTableCell) bookDescriptionTable.getCell(1, 1);
-		DocXParagraph editionParagraph = (DocXParagraph) editionCell.getParagraphs().get(0);
+		DocXParagraph editionParagraph = (DocXParagraph) editionCell.getElements().get(0);
 
 		DocXTableCell typeCell = (DocXTableCell) bookDescriptionTable.getCell(2, 1);
-		DocXParagraph typeParagraph = (DocXParagraph) typeCell.getParagraphs().get(0);
+		DocXParagraph typeParagraph = (DocXParagraph) typeCell.getElements().get(0);
 
 		assertEquals(2, titleParagraph.getRuns().size());
 		assertEquals(1, authorParagraph.getRuns().size());
@@ -1605,9 +1605,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(26);
 		DocXTable table3 = (DocXTable) generatedDocument.getElements().get(28);
-		DocXParagraph authorParagraph3 = (DocXParagraph) table3.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph3 = (DocXParagraph) table3.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph3 = (DocXParagraph) table3.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph3 = (DocXParagraph) table3.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph3 = (DocXParagraph) table3.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph3 = (DocXParagraph) table3.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(30);
 		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
 
@@ -1645,9 +1645,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(31);
 		DocXTable table2 = (DocXTable) generatedDocument.getElements().get(33);
-		DocXParagraph authorParagraph2 = (DocXParagraph) table2.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph2 = (DocXParagraph) table2.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph2 = (DocXParagraph) table2.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph2 = (DocXParagraph) table2.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph2 = (DocXParagraph) table2.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph2 = (DocXParagraph) table2.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(35);
 		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(36);
 		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(37);
@@ -1694,9 +1694,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
 		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
-		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
 		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
@@ -1948,9 +1948,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(44);
 		DocXTable table4 = (DocXTable) generatedDocument.getElements().get(46);
-		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(48);
 		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(49);
 
@@ -2051,9 +2051,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(44);
 		DocXTable table4 = (DocXTable) generatedDocument.getElements().get(46);
-		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(48);
 		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(49);
 		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(50);
@@ -2115,9 +2115,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
 		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
-		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
 		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
@@ -2203,9 +2203,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
 		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
-		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
 		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
@@ -2290,9 +2290,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
 		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
-		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
-		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
-		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getElements().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getElements().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
 		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);

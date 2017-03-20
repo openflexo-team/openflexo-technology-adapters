@@ -272,35 +272,35 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		DocXTableCell cell33 = (DocXTableCell) row2.getTableCells().get(2);
 		DocXTableCell cell34 = (DocXTableCell) row2.getTableCells().get(3);
 
-		assertEquals(1, cell11.getParagraphs().size());
-		assertEquals(1, cell12.getParagraphs().size());
-		assertEquals(1, cell13.getParagraphs().size());
-		assertEquals(1, cell14.getParagraphs().size());
+		assertEquals(1, cell11.getElements().size());
+		assertEquals(1, cell12.getElements().size());
+		assertEquals(1, cell13.getElements().size());
+		assertEquals(1, cell14.getElements().size());
 
-		assertEquals(1, cell21.getParagraphs().size());
-		assertEquals(1, cell22.getParagraphs().size());
-		assertEquals(1, cell23.getParagraphs().size());
-		assertEquals(1, cell24.getParagraphs().size());
+		assertEquals(1, cell21.getElements().size());
+		assertEquals(1, cell22.getElements().size());
+		assertEquals(1, cell23.getElements().size());
+		assertEquals(1, cell24.getElements().size());
 
-		assertEquals(1, cell31.getParagraphs().size());
-		assertEquals(1, cell32.getParagraphs().size());
-		assertEquals(1, cell33.getParagraphs().size());
-		assertEquals(1, cell34.getParagraphs().size());
+		assertEquals(1, cell31.getElements().size());
+		assertEquals(1, cell32.getElements().size());
+		assertEquals(1, cell33.getElements().size());
+		assertEquals(1, cell34.getElements().size());
 
-		assertEquals("", ((DocXParagraph) cell11.getParagraphs().get(0)).getRawText());
-		assertEquals("Column1", ((DocXParagraph) cell12.getParagraphs().get(0)).getRawText());
-		assertEquals("Column2", ((DocXParagraph) cell13.getParagraphs().get(0)).getRawText());
-		assertEquals("Column3", ((DocXParagraph) cell14.getParagraphs().get(0)).getRawText());
+		assertEquals("", ((DocXParagraph) cell11.getElements().get(0)).getRawText());
+		assertEquals("Column1", ((DocXParagraph) cell12.getElements().get(0)).getRawText());
+		assertEquals("Column2", ((DocXParagraph) cell13.getElements().get(0)).getRawText());
+		assertEquals("Column3", ((DocXParagraph) cell14.getElements().get(0)).getRawText());
 
-		assertEquals("Item1", ((DocXParagraph) cell21.getParagraphs().get(0)).getRawText());
-		assertEquals("First item", ((DocXParagraph) cell22.getParagraphs().get(0)).getRawText());
-		assertEquals("A description for the first item", ((DocXParagraph) cell23.getParagraphs().get(0)).getRawText());
-		assertEquals("Data1", ((DocXParagraph) cell24.getParagraphs().get(0)).getRawText());
+		assertEquals("Item1", ((DocXParagraph) cell21.getElements().get(0)).getRawText());
+		assertEquals("First item", ((DocXParagraph) cell22.getElements().get(0)).getRawText());
+		assertEquals("A description for the first item", ((DocXParagraph) cell23.getElements().get(0)).getRawText());
+		assertEquals("Data1", ((DocXParagraph) cell24.getElements().get(0)).getRawText());
 
-		assertEquals("Item2", ((DocXParagraph) cell31.getParagraphs().get(0)).getRawText());
-		assertEquals("Second item", ((DocXParagraph) cell32.getParagraphs().get(0)).getRawText());
-		assertEquals("A description for the second item", ((DocXParagraph) cell33.getParagraphs().get(0)).getRawText());
-		assertEquals("Data2", ((DocXParagraph) cell34.getParagraphs().get(0)).getRawText());
+		assertEquals("Item2", ((DocXParagraph) cell31.getElements().get(0)).getRawText());
+		assertEquals("Second item", ((DocXParagraph) cell32.getElements().get(0)).getRawText());
+		assertEquals("A description for the second item", ((DocXParagraph) cell33.getElements().get(0)).getRawText());
+		assertEquals("Data2", ((DocXParagraph) cell34.getElements().get(0)).getRawText());
 	}
 
 	@Test

@@ -210,11 +210,11 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	@TestOrder(5)
 	public void testAddParagraphsInCells() throws SaveResourceException {
 		log("testAddParagraphsInCells");
-		getCell(3, 1).addToParagraphs(newDocResource.getFactory().makeNewDocXParagraph("item3-data1-line2"));
+		getCell(3, 1).addToElements(newDocResource.getFactory().makeNewDocXParagraph("item3-data1-line2"));
 
 		System.out.println(newDocument.debugStructuredContents());
 
-		assertEquals(2, getCell(3, 1).getParagraphs().size());
+		assertEquals(2, getCell(3, 1).getElements().size());
 
 		assertTrue(newDocResource.isModified());
 		newDocResource.save(null);
@@ -260,7 +260,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	}
 
 	private DocXParagraph getParagraph(int row, int col) {
-		return (DocXParagraph) getCell(row, col).getParagraphs().get(0);
+		return (DocXParagraph) getCell(row, col).getElements().get(0);
 	}
 
 }
