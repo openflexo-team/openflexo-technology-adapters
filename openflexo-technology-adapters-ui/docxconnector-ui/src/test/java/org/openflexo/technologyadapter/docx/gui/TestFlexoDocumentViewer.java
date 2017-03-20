@@ -40,10 +40,8 @@ package org.openflexo.technologyadapter.docx.gui;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.DocumentEvent;
@@ -59,6 +57,13 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.gina.swing.editor.JFIBEditor.LayoutColumns;
+import org.openflexo.swing.layout.JXMultiSplitPane;
+import org.openflexo.swing.layout.MultiSplitLayout;
+import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
+import org.openflexo.swing.layout.MultiSplitLayout.Node;
+import org.openflexo.swing.layout.MultiSplitLayout.Split;
+import org.openflexo.swing.layout.MultiSplitLayoutFactory;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
@@ -152,10 +157,40 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 		openFlexoDocumentEditor(exampleReport.getResource());
 	}
 
+	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
+
+	public static enum LayoutPosition {
+		LEFT, CENTER, RIGHT;
+	}
+
+	private static Split getDefaultLayout() {
+		Split root = MSL_FACTORY.makeSplit();
+		root.setName("ROOT");
+		Leaf left = MSL_FACTORY.makeLeaf(LayoutPosition.LEFT.name());
+		left.setWeight(0.2);
+		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
+		center.setWeight(0.6);
+		center.setName(LayoutColumns.CENTER.name());
+		Leaf right = MSL_FACTORY.makeLeaf(LayoutPosition.RIGHT.name());
+		right.setWeight(0.2);
+		right.setName(LayoutColumns.RIGHT.name());
+		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
+		return root;
+	}
+
 	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		DocXDocument doc = docResource.getResourceData(null);
+
+		Split defaultLayout = getDefaultLayout();
+
+		MultiSplitLayout centerLayout = new MultiSplitLayout(true, MSL_FACTORY);
+		centerLayout.setLayoutMode(MultiSplitLayout.NO_MIN_SIZE_LAYOUT);
+		centerLayout.setModel(defaultLayout);
+
+		JXMultiSplitPane pane = new JXMultiSplitPane(centerLayout);
+		pane.setDividerSize(8);
 
 		FIBDocXDocumentBrowser docBrowser = new FIBDocXDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
 			@Override
@@ -165,13 +200,15 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 		};
 		docBrowser.setShowRuns(true);
 		FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor = new FlexoDocumentEditor<>(doc);
-		JPanel pane = new JPanel(new BorderLayout());
 
 		final JTree tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
 
-		pane.add(docBrowser, BorderLayout.WEST);
-		pane.add(editor.getEditorPanel(), BorderLayout.CENTER);
-		pane.add(new JScrollPane(tree), BorderLayout.EAST);
+		pane.add(docBrowser, LayoutPosition.LEFT.name());
+		pane.add(editor.getEditorPanel(), LayoutPosition.CENTER.name());
+		pane.add(new JScrollPane(tree), LayoutPosition.RIGHT.name());
+
+		pane.revalidate();
+
 		gcDelegate.addTab(docResource.getName(), pane);
 
 		editor.getStyledDocument().addDocumentListener(new DocumentListener() {

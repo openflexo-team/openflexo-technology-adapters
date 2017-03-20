@@ -50,7 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
-import org.openflexo.components.doc.editorkit.FlexoStyledDocument.DocumentElement;
+import org.openflexo.components.doc.editorkit.element.DocumentElement;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;

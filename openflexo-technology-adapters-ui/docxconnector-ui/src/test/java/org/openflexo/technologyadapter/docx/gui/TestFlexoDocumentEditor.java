@@ -41,10 +41,6 @@ package org.openflexo.technologyadapter.docx.gui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.Color;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.RadialGradientPaint;
 import java.io.FileNotFoundException;
 
 import javax.swing.JScrollPane;
@@ -58,8 +54,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
-import org.openflexo.components.doc.editorkit.FlexoStyledDocument.ParagraphElement;
+import org.openflexo.components.doc.editorkit.element.ParagraphElement;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -343,14 +340,6 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 
 	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
 
-	private static final int KNOB_SIZE = 5;
-	private static final int KNOB_SPACE = 2;
-	private static final int DIVIDER_SIZE = KNOB_SIZE + 2 * KNOB_SPACE;
-	private static final int DIVIDER_KNOB_SIZE = 3 * KNOB_SIZE + 2 * KNOB_SPACE;
-
-	private static final Paint KNOB_PAINTER = new RadialGradientPaint(new Point((KNOB_SIZE - 1) / 2, (KNOB_SIZE - 1) / 2),
-			(KNOB_SIZE - 1) / 2, new float[] { 0.0f, 1.0f }, new Color[] { Color.GRAY, Color.LIGHT_GRAY });
-
 	public static enum LayoutPosition {
 		LEFT, CENTER, RIGHT;
 	}
@@ -382,44 +371,20 @@ public class TestFlexoDocumentEditor extends AbstractTestDocX {
 		centerLayout.setModel(defaultLayout);
 
 		JXMultiSplitPane pane = new JXMultiSplitPane(centerLayout);
-		pane.setDividerSize(DIVIDER_SIZE);
-		/*centerPanel.setDividerPainter(new DividerPainter() {
-		
-			@Override
-			protected void doPaint(Graphics2D g, Divider divider, int width, int height) {
-				if (!divider.isVisible()) {
-					return;
-				}
-				if (divider.isVertical()) {
-					int x = (width - KNOB_SIZE) / 2;
-					int y = (height - DIVIDER_KNOB_SIZE) / 2;
-					for (int i = 0; i < 3; i++) {
-						Graphics2D graph = (Graphics2D) g.create(x, y + i * (KNOB_SIZE + KNOB_SPACE), KNOB_SIZE + 1, KNOB_SIZE + 1);
-						graph.setPaint(KNOB_PAINTER);
-						graph.fillOval(0, 0, KNOB_SIZE, KNOB_SIZE);
-					}
-				}
-				else {
-					int x = (width - DIVIDER_KNOB_SIZE) / 2;
-					int y = (height - KNOB_SIZE) / 2;
-					for (int i = 0; i < 3; i++) {
-						Graphics2D graph = (Graphics2D) g.create(x + i * (KNOB_SIZE + KNOB_SPACE), y, KNOB_SIZE + 1, KNOB_SIZE + 1);
-						graph.setPaint(KNOB_PAINTER);
-						graph.fillOval(0, 0, KNOB_SIZE, KNOB_SIZE);
-					}
-				}
-		
-			}
-		});*/
+		pane.setDividerSize(8);
+
+		editor = new FlexoDocumentEditor<>(doc);
 
 		FIBDocXDocumentBrowser docBrowser = new FIBDocXDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
 			@Override
 			public void singleClick(Object object) {
-				System.out.println("Je viens cliquer sur " + object);
+				if (object instanceof FlexoDocObject) {
+					System.out.println("Je viens cliquer sur " + object);
+					editor.highlight((FlexoDocObject<DocXDocument, DocXTechnologyAdapter>) object);
+				}
 			}
 		};
 		docBrowser.setShowRuns(true);
-		editor = new FlexoDocumentEditor<>(doc);
 
 		final JTree tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
 
