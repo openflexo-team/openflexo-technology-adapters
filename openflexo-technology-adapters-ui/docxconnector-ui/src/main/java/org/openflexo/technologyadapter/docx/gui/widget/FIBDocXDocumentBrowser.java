@@ -79,14 +79,14 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 		}
 	}
 
-	private DocXObject selectedElement;
+	private DocXObject<?> selectedElement;
 	private boolean showRuns = false;
 
-	public DocXObject getSelectedDocumentElement() {
+	public DocXObject<?> getSelectedDocumentElement() {
 		return selectedElement;
 	}
 
-	public void setSelectedDocumentElement(DocXObject selected) {
+	public void setSelectedDocumentElement(DocXObject<?> selected) {
 		selectedElement = selected;
 	}
 
@@ -115,14 +115,14 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 			this.browser = browser;
 		}
 
-		public DocXObject getSelectedDocumentElement() {
+		public DocXObject<?> getSelectedDocumentElement() {
 			if (browser != null) {
 				return browser.getSelectedDocumentElement();
 			}
 			return null;
 		}
 
-		public void setSelectedDocumentElement(DocXObject selected) {
+		public void setSelectedDocumentElement(DocXObject<?> selected) {
 			if (browser != null) {
 				browser.setSelectedDocumentElement(selected);
 			}

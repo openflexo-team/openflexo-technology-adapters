@@ -48,8 +48,10 @@ import javax.xml.bind.JAXBElement;
 
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.ThemePart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.CTTabStop;
@@ -404,13 +406,77 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
 	}
 
-	public Font makeFont(RFonts rFonts) {
-		/*System.out.println("Comment faire une fonte avec " + rFonts);
+	public Font makeFont(RFonts rFonts, DocXDocument document) {
+		System.out.println("Comment faire une fonte avec " + rFonts);
 		System.out.println("ascii=" + rFonts.getAscii());
 		System.out.println("hAnsi=" + rFonts.getHAnsi());
 		System.out.println("cs=" + rFonts.getCs());
-		System.out.println("hint=" + rFonts.getHint());*/
-		return null;
+		System.out.println("hint=" + rFonts.getHint());
+		System.out.println("parent=" + rFonts.getParent());
+		System.out.println("asciiT=" + rFonts.getAsciiTheme());
+		System.out.println("hAnsiT=" + rFonts.getCstheme());
+		System.out.println("csT=" + rFonts.getHAnsiTheme());
+		System.out.println("hint=" + rFonts.getHint());
+		System.out.println("parent=" + rFonts.getParent());
+
+		String defaultFont = "";
+
+		if (rFonts == null) {
+			// log.info("No styles/docDefaults/rPrDefault/rPr/rFonts - default to Times New Roman");
+			// Yes, Times New Roman is still buried in Word 2007
+			defaultFont = "Times New Roman";
+		}
+		else {
+			// Usual case
+			if (rFonts.getAsciiTheme() == null) {
+
+				if (rFonts.getAscii() == null) {
+					// TODO
+					// log.error("Neither ascii or asciTheme. What to do? ");
+					defaultFont = "Times New Roman";
+
+				}
+				else {
+					// log.info("rPrDefault/rFonts referenced " + rFonts.getAscii());
+					defaultFont = rFonts.getAscii();
+				}
+
+			}
+			else {
+				if (getThemePart(document) == null) {
+					// No theme part - default to Calibri
+					// log.info("No theme part - default to Calibri");
+					defaultFont = "Calibri";
+				}
+				else {
+					String font = null;
+					try {
+						font = getThemePart(document).getFontFromTheme(rFonts.getAsciiTheme()/*, themeFontLang*/);
+					} catch (Docx4JException e) {
+						// TODO Auto-generated catch block
+						// log.error(e.getMessage(), e);
+					}
+					if (font != null) {
+						defaultFont = font;
+					}
+					else {
+						// No minorFont/latin in theme part - default to Calibri
+						// log.info("No minorFont/latin in theme part - default to Calibri");
+						defaultFont = "Calibri";
+					}
+				}
+			}
+		}
+		System.out.println("! FOUND " + defaultFont);
+		return new Font(defaultFont, Font.PLAIN, 12);
+	}
+
+	private ThemePart getThemePart(DocXDocument document) {
+		System.out.println("document=" + document);
+		if (document == null) {
+			return null;
+		}
+		return document.getWordprocessingMLPackage().getMainDocumentPart().getThemePart();
 	}
 
 	public java.awt.Color makeColor(Color color) {
@@ -427,7 +493,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 		RFonts rFonts = rPr.getRFonts();
 		if (rFonts != null) {
-			style.setFont(makeFont(rFonts));
+			style.setFont(makeFont(rFonts, style.getFlexoDocument()));
 		}
 
 		HpsMeasure sz = rPr.getSz();

@@ -50,7 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
-import org.openflexo.components.doc.editorkit.element.DocumentElement;
+import org.openflexo.components.doc.editorkit.element.AbstractDocumentElement;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
@@ -88,7 +88,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	private final VirtualModelInstance virtualModelInstance;
 	private final FlexoPerspective perspective;
 
-	private final FlexoDocumentEditor editor;
+	private final FlexoDocumentEditor<?, ?> editor;
 
 	private final FIBDocXDocumentBrowser browser;
 	private final JPanel topPanel;
@@ -108,7 +108,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController()) {
 			@Override
-			public void setSelectedDocumentElement(DocXObject selected) {
+			public void setSelectedDocumentElement(DocXObject<?> selected) {
 				super.setSelectedDocumentElement(selected);
 				selectElementInDocumentEditor(selected);
 			}
@@ -220,22 +220,22 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 			// List<DocXElement> fragmentElements = fragment.getElements();
 
-			final List<DocumentElement> elts = new ArrayList<DocumentElement>();
+			final List<AbstractDocumentElement<?, ?, ?>> elts = new ArrayList<>();
 
-			DocumentElement docElement = null;
+			AbstractDocumentElement<?, ?, ?> docElement = null;
 
 			if (element instanceof DocXParagraph) {
-				docElement = editor.getElement(((DocXParagraph) element));
-				docElement = editor.getElement(((DocXParagraph) element));
+				docElement = editor.getElement((element));
+				docElement = editor.getElement((element));
 				elts.add(docElement);
 			}
 			if (element instanceof DocXTable) {
-				docElement = editor.getElement(((DocXTable) element));
+				docElement = editor.getElement((element));
 				elts.add(docElement);
 			}
 
 			// Thread.dumpStack();
-			editor.setSelectedElements(elts);
+			editor.setSelectedElements((List) elts);
 
 			if (docElement != null) {
 				scrollTo(docElement);
@@ -250,7 +250,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 	}
 
-	private void scrollTo(final DocumentElement docElement) {
+	private void scrollTo(final AbstractDocumentElement<?, ?, ?> docElement) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
