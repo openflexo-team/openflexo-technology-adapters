@@ -36,6 +36,10 @@
 			isEditable="false" visible="" 
 			filtered="false" defaultVisible="true" name="run">
 		</BrowserElement>
+		<BrowserElement dataClassName="org.openflexo.technologyadapter.docx.model.DocXDrawingRun"
+			label="drawingRunElement.imageName" icon="controller.iconForObject(drawingRunElement)" 
+			isEditable="false" name="drawingRunElement">
+		</BrowserElement>
 		<BrowserElement dataClassName="org.openflexo.technologyadapter.docx.model.DocXTable"
 			label="'TABLE'" icon="controller.iconForObject(table)" tooltip=""
 			enabled="" visible="" isEditable="false" editableLabel="" filtered="false"

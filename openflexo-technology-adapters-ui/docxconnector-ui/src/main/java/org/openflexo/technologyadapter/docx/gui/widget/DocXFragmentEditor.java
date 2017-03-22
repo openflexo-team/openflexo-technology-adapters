@@ -46,12 +46,16 @@ import javax.swing.JPanel;
 import org.docx4all.script.FxScriptUIHelper;
 import org.docx4all.swing.text.WordMLDocumentFragment;
 import org.docx4all.swing.text.WordMLEditorKit;
+import org.openflexo.components.doc.editorkit.FlexoDocumentEditorWidget;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomComponentParameter;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @SuppressWarnings("serial")
-public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXFragment> {
+public class DocXFragmentEditor extends FlexoDocumentEditorWidget<DocXDocument, DocXTechnologyAdapter>
+		implements FIBCustomComponent<DocXFragment> {
 
 	private static final Logger logger = Logger.getLogger(DocXFragmentEditor.class.getPackage().getName());
 
@@ -122,17 +126,17 @@ public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomC
 				(int) getEndIndex());
 	}
 
-	@Override
-	public DocXFragment getEditedObject() {
-		return fragment;
-	}
-
 	private JPanel editorPanel;
 
 	@Override
 	public void setDocXDocument(DocXDocument document) {
 
 		this.document = document;
+	}
+
+	@Override
+	public DocXFragment getEditedObject() {
+		return fragment;
 	}
 
 	@Override

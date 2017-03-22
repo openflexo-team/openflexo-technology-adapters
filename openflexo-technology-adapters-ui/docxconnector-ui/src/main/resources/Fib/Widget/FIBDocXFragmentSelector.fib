@@ -33,7 +33,7 @@
 			defaultVisible="true" dynamicFont="" name="table">
 		</BrowserElement>
 	</Browser>
-	<Custom componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXEditor"
+	<Custom componentClassName="org.openflexo.components.doc.editorkit.FlexoDocumentEditorWidget"
 		dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXDocument"
 		localize="true" manageDynamicModel="true" name="DocXEditor" index="13"
 		data="($org.openflexo.technologyadapter.docx.model.DocXDocument)data.document"

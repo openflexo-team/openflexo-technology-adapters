@@ -42,7 +42,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,10 +49,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
-import org.openflexo.components.doc.editorkit.element.AbstractDocumentElement;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
+import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -62,8 +61,6 @@ import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
-import org.openflexo.technologyadapter.docx.model.DocXParagraph;
-import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -218,12 +215,15 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 		try {
 
+			editor.highlight(element);
+			scrollTo(element, editor);
+
 			// List<DocXElement> fragmentElements = fragment.getElements();
 
-			final List<AbstractDocumentElement<?, ?, ?>> elts = new ArrayList<>();
-
+			/*final List<AbstractDocumentElement<?, ?, ?>> elts = new ArrayList<>();
+			
 			AbstractDocumentElement<?, ?, ?> docElement = null;
-
+			
 			if (element instanceof DocXParagraph) {
 				docElement = editor.getElement((element));
 				docElement = editor.getElement((element));
@@ -233,13 +233,13 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 				docElement = editor.getElement((element));
 				elts.add(docElement);
 			}
-
+			
 			// Thread.dumpStack();
 			editor.setSelectedElements((List) elts);
-
+			
 			if (docElement != null) {
 				scrollTo(docElement);
-			}
+			}*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -250,20 +250,15 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 	}
 
-	private void scrollTo(final AbstractDocumentElement<?, ?, ?> docElement) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (!editor.scrollToElement(docElement)) {
-					scrollTo(docElement);
+	private void scrollTo(FlexoDocObject object, FlexoDocumentEditor docXEditor) {
+		if (!docXEditor.scrollTo(object, true)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					scrollTo(object, docXEditor);
 				}
-				// docxEditor.getEditorView().revalidate();
-				// docxEditor.getEditorView().repaint();
-
-				editor.getEditorPanel().revalidate();
-				editor.getEditorPanel().repaint();
-			}
-		});
+			});
+		}
 	}
 
 }

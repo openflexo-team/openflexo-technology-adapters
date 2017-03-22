@@ -83,7 +83,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestFlexoDocumentEditor extends AbstractTestDocX {
+public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	private static DocXDocument docXDocument;
 

@@ -39,28 +39,28 @@
 
 package org.openflexo.technologyadapter.docx.gui.widget;
 
-import java.util.Collections;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
+import javax.swing.text.Element;
 
-import org.docx4all.swing.WordMLTextPane;
-import org.docx4all.swing.text.DocumentElement;
-import org.docx4j.wml.Drawing;
-import org.docx4j.wml.P;
-import org.docx4j.wml.R;
+import org.openflexo.components.doc.editorkit.FlexoDocumentEditorWidget;
+import org.openflexo.components.doc.editorkit.FlexoStyledDocument;
+import org.openflexo.components.doc.editorkit.element.AbstractDocumentElement;
 import org.openflexo.components.widget.FIBDocImageSelector;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.doc.FlexoDocument;
+import org.openflexo.foundation.doc.FlexoDrawingRun;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.gui.widget.AbstractDocXEditor.DocXEditorSelectionListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
-import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
  * Widget allowing to select an {@link DocXDrawingRun} inside a {@link FlexoDocument}<br>
@@ -91,24 +91,37 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 	@Override
 	protected void selectImageInDocumentEditor(final DocXDrawingRun drawingRun, FIBCustomWidget<?, ?, ?> documentEditorWidget) {
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		// System.out.println("customPanel" + getCustomPanel());
+		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
 
-		if (drawingRun == null) {
-			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
-			docXEditor.getEditorView().repaint();
-			return;
-		}
+		final FlexoDocumentEditorWidget docXEditor = (FlexoDocumentEditorWidget) documentEditorWidget.getCustomComponent();
 
 		try {
-			DocumentElement tableElement = docXEditor.getMLDocument().getElement(drawingRun.getR());
-			docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
-			docXEditor.getEditorView().scrollToElement(tableElement, false);
-			docXEditor.getEditorView().repaint();
+
+			if (drawingRun != null) {
+
+				docXEditor.getEditor().highlight(drawingRun);
+				scrollTo(drawingRun.getParagraph(), docXEditor);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		docXEditor.getJEditorPane().revalidate();
+		docXEditor.getJEditorPane().repaint();
+
+	}
+
+	private void scrollTo(FlexoDocObject object, FlexoDocumentEditorWidget docXEditor) {
+		if (!docXEditor.getEditor().scrollTo(object, false)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					scrollTo(object, docXEditor);
+				}
+			});
+		}
 	}
 
 	public class LoadDocXEditor extends FlexoTask {
@@ -148,39 +161,60 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 		}
 
 		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
-		WordMLTextPane pane = docXEditor.getEditorView();
-		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
+		FlexoDocumentEditorWidget<?, ?> docXEditor = (FlexoDocumentEditorWidget<?, ?>) documentEditorWidget.getCustomComponent();
+		docXEditor.getJEditorPane().addCaretListener(new FlexoDocumentEditorWidget.FlexoDocumentSelectionListener(docXEditor) {
 			@Override
-			public void caretUpdate(CaretEvent e) {
+			public void caretUpdate(CaretEvent evt) {
 
 				if (isSelecting) {
 					return;
 				}
 
-				super.caretUpdate(e);
+				super.caretUpdate(evt);
 
-				int startLocation = getEditor().getEditorView().getSelectionStart();
+				System.out.println("Caret changed with " + evt);
+				int start = Math.min(evt.getDot(), evt.getMark());
+				int end = Math.max(evt.getDot(), evt.getMark());
+				System.out.println("Selection: " + start + ":" + end);
 
-				DocumentElement startMLElement = (DocumentElement) getEditor().getMLDocument().getCharacterElement(startLocation);
-				Object startDocXObject = startMLElement.getElementML().getDocxObject();
-				// System.out.println("startDocXObject=" + startDocXObject + " of " + startDocXObject.getClass().getSimpleName());
-				DocXDrawingRun drawingRun = null;
+				// Better ???
+				// int startLocation = getEditor().getJEditorPane().getSelectionStart();
+				// int endLocation = getEditor().getJEditorPane().getSelectionEnd();
 
-				if (startDocXObject instanceof Drawing) {
-					DocumentElement runMLElement = (DocumentElement) startMLElement.getParentElement();
-					Object r = runMLElement.getElementML().getDocxObject();
-					if (r instanceof R && ((R) r).getParent() instanceof P) {
-						R drawingR = (R) r;
-						P p = (P) ((R) r).getParent();
-						DocXParagraph paragraph = getDocument().getParagraph(p);
-						drawingRun = (DocXDrawingRun) paragraph.getRun(drawingR);
-					}
+				// If selection is not empty, reduce the selection to be sure to be in a not implied run
+				if (start > end) {
+					end = end - 1;
 				}
 
+				FlexoStyledDocument<?, ?> styledDocument = docXEditor.getEditor().getStyledDocument();
+
+				Element startCharElement = styledDocument.getCharacterElement(start);
+				Element endCharElement = styledDocument.getCharacterElement(end);
+
+				FlexoDocObject<?, ?> startDocObject = null;
+				FlexoDocObject<?, ?> endDocObject = null;
+
+				if (startCharElement instanceof AbstractDocumentElement
+						&& ((AbstractDocumentElement<?, ?, ?>) startCharElement).getDocObject() instanceof FlexoDocElement) {
+					startDocObject = ((AbstractDocumentElement<?, ?, ?>) startCharElement).getDocObject();
+				}
+				if (endCharElement instanceof AbstractDocumentElement
+						&& ((AbstractDocumentElement<?, ?, ?>) endCharElement).getDocObject() instanceof FlexoDocElement) {
+					endDocObject = ((AbstractDocumentElement<?, ?, ?>) endCharElement).getDocObject();
+				}
+
+				System.out.println("Pour l'element: " + startCharElement);
+				System.out.println("Pour l'element par: " + styledDocument.getParagraphElement(start));
+				System.out.println("On detecte " + startDocObject);
+
+				if (startDocObject instanceof FlexoDrawingRun) {
+					setSelectedObject(startDocObject);
+				}
+
+				/*
 				isSelecting = true;
 				setEditedObject(drawingRun);
-				isSelecting = false;
+				isSelecting = false;*/
 
 			}
 		});
