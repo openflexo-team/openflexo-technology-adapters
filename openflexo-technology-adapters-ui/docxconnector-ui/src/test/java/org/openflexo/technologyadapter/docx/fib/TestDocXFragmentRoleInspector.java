@@ -118,6 +118,10 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 	@TestOrder(4)
 	public void testInstanciateWidget() {
 
+		System.out.println("On instancie le widget");
+		System.out.println("role=" + role);
+		System.out.println("fragment" + role.getFragment());
+
 		FIBJPanel<DocXFragmentRole> widget = instanciateFIB(fibResource, role, DocXFragmentRole.class);
 
 		gcDelegate.addTab("DocXFragmentRole", widget.getController());

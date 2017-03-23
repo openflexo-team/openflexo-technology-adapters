@@ -42,7 +42,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.components.doc.editorkit.FlexoFragmentEditorWidget;
+import org.openflexo.components.doc.editorkit.widget.FlexoDocFragmentEditorWidget;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -63,7 +63,7 @@ public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 
 	// private static SwingGraphicalContextDelegate gcDelegate;
 
-	private static FlexoFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter> fragmentEditor;
+	private static FlexoDocFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter> fragmentEditor;
 
 	/*private static DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
@@ -112,7 +112,7 @@ public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 
 		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
-		fragmentEditor = new FlexoFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter>(fragment);
+		fragmentEditor = new FlexoDocFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter>(fragment);
 		fragmentEditor.setEditedObject(fragment);
 		/*fragmentEditor = new FIBDocXFragmentSelector(fragment);
 		fragmentEditor.setServiceManager(serviceManager);

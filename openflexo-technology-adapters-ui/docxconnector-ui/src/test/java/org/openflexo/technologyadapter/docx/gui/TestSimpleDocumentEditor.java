@@ -327,7 +327,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 		log("appendNewLineInARun()");
 	
 		editor.getJEditorPane().select(56, 60);
-		editor.getJEditorPane().replaceSelection(" ");
+		editor.getJEditorPane().replaceSelection("prout");
 		assertEquals(11, docXDocument.getElements().size());
 		DocXParagraph title = (DocXParagraph) docXDocument.getElements().get(0);
 		assertEquals("Document title, with 16pixel font", title.getRawText());

@@ -1,114 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
-	p:modelEntity="org.openflexo.gina.utils.FIBInspector" darkLevel="0"
-	useScrollBar="false" protectContent="false" name="Inspector" layout="border"
+	p:modelEntity="org.openflexo.gina.utils.FIBInspector" align="left"
+	borderTop="0" borderLeft="0" trackViewPortHeight="true"
+	trackViewPortWidth="true" borderBottom="0" border="empty"
+	sizeAdjustment="OriginalSize" titleFont="SansSerif,0,12" layout="border"
+	borderRight="0"
 	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
-	border="empty" trackViewPortWidth="true" font="SansSerif,0,12"
-	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXFragmentRole"
-	titleFont="SansSerif,0,12" trackViewPortHeight="true">
-	<Parameter id="1" name="title" value="Document's fragment" />
-	<LocalizedDictionary id="2">
-		<Localized id="3" value="Avancé" lang="French" key="Advanced" />
-		<Localized id="4" value="Basique" lang="French" key="Basic" />
-	</LocalizedDictionary>
-	<TabPanel id="5" useScrollBar="false" constraints="border(location=center)"
-		restrictPreferredSizeToSelectedComponent="false" name="Tab"
-		controllerClassName="org.openflexo.gina.controller.FIBController">
-		<Tab id="6" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
-			darkLevel="0" useScrollBar="true" protectContent="false" title="Basic"
-			name="BasicTab" layout="twocols" controllerClassName="org.openflexo.gina.controller.FIBController"
-			border="empty" trackViewPortWidth="true" index="0" font="SansSerif,0,11"
-			titleFont="SansSerif,0,11" trackViewPortHeight="true"
-			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
-			<Label id="9" manageDynamicModel="false" useScrollBar="false"
-				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="8" localize="true" align="left"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel id="1" constraints="border(location=center)" name="Tab">
+		<Tab id="2" title="Basic" align="left" borderTop="0" borderLeft="0"
+			trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0"
+			border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11"
+			layout="twocols" borderRight="0" useScrollBar="true"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="0"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11"
+			name="BasicTab">
+			<Label id="3" label="template_fragment" align="left" localize="true"
+				index="8"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				label="template_fragment" readOnly="false" />
-			<Custom id="10" manageDynamicModel="true" useScrollBar="false"
-				data="data.fragment" dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
+				name="TemplateFragmentLabel" />
+			<Custom id="4"
 				componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
-				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="9" localize="true"
+				dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
+				localize="true" manageDynamicModel="true" data="data.fragment"
+				index="9"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
-				readOnly="false">
-				<Assignment id="11" mandatory="true" variable="component.serviceManager" />
-				<Assignment id="12" mandatory="true"
-					variable="component.selectableCondition" />
-				<Assignment id="13" mandatory="true" value="data.document"
-					variable="component.document" />
-				<Assignment id="14" mandatory="true"
-					value="controller.flexoController" variable="component.flexoController" />
+				name="CustomSelector">
+				<Assignment id="5" variable="component.serviceManager"
+					mandatory="true" />
+				<Assignment id="6" variable="component.selectableCondition"
+					mandatory="true" />
+				<Assignment id="7" variable="component.document" value="data.document"
+					mandatory="true" />
+				<Assignment id="8" variable="component.flexoController"
+					value="controller.flexoController" mandatory="true" />
 			</Custom>
-			<Label id="108" manageDynamicModel="false" useScrollBar="false"
-				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="10" localize="true" align="left"
+			<Label id="9" label="preview" align="left" localize="true"
+				index="10"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				label="preview" readOnly="false" />
-			<Panel id="109" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
-				useScrollBar="true" protectContent="false" height="60" layout="border"
-				controllerClassName="org.openflexo.gina.controller.FIBController"
-				border="empty" trackViewPortWidth="true" width="60" index="11"
+				name="PreviewLabel" />
+			<Panel id="10" align="left" borderTop="0" borderLeft="0"
+				trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0"
+				border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11"
+				layout="border" borderRight="0" useScrollBar="true"
+				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="11"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
-				titleFont="SansSerif,0,11" trackViewPortHeight="true"
-				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
-				<Custom id="115" manageDynamicModel="true" useScrollBar="false"
-					data="data.fragment" dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
-					componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXFragmentEditor"
-					name="DocXFragmentEditor" controllerClassName="org.openflexo.gina.controller.FIBController"
-					index="6" localize="true" constraints="border(location=center)"
-					readOnly="false">
-				<Assignment id="120" mandatory="true"
-					variable="component.highlightedTextSelection" value="TextBindingsTable.selected.textSelection" />
+				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" width="60"
+				height="60" name="FIBPanel">
+				<Custom id="11"
+					componentClassName="org.openflexo.components.doc.editorkit.widget.FlexoDocFragmentEditorWidget"
+					dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
+					localize="true" manageDynamicModel="true" data="data.fragment"
+					index="6" constraints="border(location=center)" name="DocXFragmentEditor">
+					<Assignment id="12" variable="component.highlightedTextSelection"
+						value="selectedTextBinding.textSelection" mandatory="true" />
 				</Custom>
 			</Panel>
-			<Label id="110" manageDynamicModel="false" useScrollBar="false"
-				controllerClassName="org.openflexo.gina.controller.FIBController"
-				index="12" localize="true" align="left"
+			<Label id="13" label="text_bindings" align="left" localize="true"
+				index="12"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				label="text_bindings" readOnly="false" />
-
-			<Table iteratorClassName="org.openflexo.foundation.doc.fml.TextBinding"
-				visibleRowCount="8" rowHeight="18" autoSelectFirstRow="false"
-				createNewRowOnClick="false" boundToSelectionManager="false"
-				showFooter="true" selectionMode="SingleSelection"
-				localize="true" manageDynamicModel="true" name="TextBindingsTable"
-				index="13" data="data.textBindings"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
-				<IconColumn data="controller.iconForObject(iterator)"
-					format="" title="icon" columnWidth="30" resizable="false"
-					displayTitle="false" color="" bgColor="" tooltip=""
-					valueChangedAction="" name="icon" />
-				<TextFieldColumn data="iterator.name" title="name"
-					columnWidth="80" resizable="true" displayTitle="true" name="title" />
-				<LabelColumn data="iterator.textSelection.toString" title="selection"
-					columnWidth="150" resizable="true" displayTitle="true" name="selection" />
-				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
-					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.value" title="value" columnWidth="300" resizable="true"
-					displayTitle="true" name="visibleValue">
-					<ColumnAssignment variable="component.bindable"
-						value="iterator" />
+				name="TextBindingsLabel" />
+			<Table id="14" visibleRowCount="8" boundToSelectionManager="true"
+				backgroundNonSelectionColor="255,255,255"
+				backgroundSecondarySelectionColor="178,215,255"
+				iteratorClassName="org.openflexo.foundation.doc.fml.TextBinding"
+				showFooter="true" selected="selectedTextBinding" selectionMode="SingleSelection"
+				rowHeight="18" localize="true" manageDynamicModel="true"
+				data="data.textBindings" index="13"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+				name="TextBindingsTable">
+				<IconColumn id="15" data="controller.iconForObject(iterator)"
+					resizable="false" title="icon" displayTitle="false" columnWidth="30"
+					showIcon="false" name="icon" />
+				<TextFieldColumn id="16" data="iterator.name"
+					resizable="true" title="name" displayTitle="true" columnWidth="80"
+					showIcon="false" name="title" />
+				<LabelColumn id="17" data="iterator.textSelection.toString"
+					resizable="true" title="selection" displayTitle="true" columnWidth="150"
+					showIcon="false" name="selection" />
+				<CustomColumn id="18"
+					componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+					data="iterator.value" resizable="true" title="value" displayTitle="true"
+					columnWidth="300" showIcon="false" name="visibleValue">
+					<ColumnAssignment id="19" variable="component.bindable"
+						value="iterator" mandatory="true" />
 				</CustomColumn>
-				<CheckBoxColumn data="iterator.isMultiline" title="multiline"
-					columnWidth="100" resizable="false" displayTitle="true" name="displayTitle" />
-				<AddAction method="controller.createTextBinding(data,DocXFragmentEditor.component.textSelection)" name="new_text_binding" />
-				<RemoveAction method="controller.deleteTextBinding(selected)"
-					name="delete_text_binding" />
-				<CustomAction method="controller.moveToTop(selected)" name="move_to_top" />
-				<CustomAction method="controller.moveUp(selected)" name="move_up" />
-				<CustomAction method="controller.moveDown(selected)" name="move_down" />
-				<CustomAction method="controller.moveToBottom(selected)"
+				<CheckBoxColumn id="20" data="iterator.isMultiline"
+					resizable="false" title="multiline" displayTitle="true"
+					columnWidth="100" showIcon="false" name="displayTitle" />
+				<RemoveAction id="21"
+					method="controller.deleteTextBinding(selected)" name="delete_text_binding" />
+				<CustomAction id="22" method="controller.moveToTop(selected)"
+					name="move_to_top" />
+				<CustomAction id="23" method="controller.moveUp(selected)"
+					name="move_up" />
+				<CustomAction id="24" method="controller.moveDown(selected)"
+					name="move_down" />
+				<CustomAction id="25" method="controller.moveToBottom(selected)"
 					name="move_to_bottom" />
 			</Table>
-
-			<Label name="DescriptionLabel" visible="false">
-				<Parameter name="hidden" value="true" />
+			<Label id="26" align="left" visible="false" constraints="twocols()"
+				name="DescriptionLabel">
+				<Parameter id="27" name="hidden" value="true" />
 			</Label>
-			<TextArea name="Description" visible="false">
-				<Parameter name="hidden" value="true" />
+			<TextArea id="28" visible="false" constraints="twocols(location=center)"
+				name="Description">
+				<Parameter id="29" name="hidden" value="true" />
 			</TextArea>
-
 		</Tab>
 	</TabPanel>
+	<FIBVariable id="30"
+		type="org.openflexo.technologyadapter.docx.fml.DocXFragmentRole" name="data" />
+	<FIBVariable id="31"
+		type="org.openflexo.foundation.doc.fml.TextBinding" name="selectedTextBinding" />
+	<LocalizedDictionary id="32">
+		<Localized id="33" lang="French" value="Avancé" key="Advanced" />
+		<Localized id="34" lang="French" value="Basique" key="Basic" />
+	</LocalizedDictionary>
+	<Parameter id="35" name="title" value="Document's fragment" />
 </Inspector>
