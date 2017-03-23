@@ -53,6 +53,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
+import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -66,7 +67,6 @@ import org.openflexo.swing.layout.MultiSplitLayout.Split;
 import org.openflexo.swing.layout.MultiSplitLayoutFactory;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
@@ -192,7 +192,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 		JXMultiSplitPane pane = new JXMultiSplitPane(centerLayout);
 		pane.setDividerSize(8);
 
-		FIBDocXDocumentBrowser docBrowser = new FIBDocXDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
+		FIBFlexoDocumentBrowser docBrowser = new FIBFlexoDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
 			@Override
 			public void singleClick(Object object) {
 				System.out.println("Je viens cliquer sur " + object);

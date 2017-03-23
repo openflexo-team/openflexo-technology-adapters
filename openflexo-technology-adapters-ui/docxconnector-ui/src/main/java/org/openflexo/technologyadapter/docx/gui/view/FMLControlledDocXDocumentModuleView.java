@@ -49,6 +49,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
+import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
@@ -58,7 +59,6 @@ import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
-import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
@@ -87,7 +87,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 	private final FlexoDocumentEditor<?, ?> editor;
 
-	private final FIBDocXDocumentBrowser browser;
+	private final FIBFlexoDocumentBrowser browser;
 	private final JPanel topPanel;
 
 	public FMLControlledDocXDocumentModuleView(VirtualModelInstance virtualModelInstance, FlexoPerspective perspective) {
@@ -103,11 +103,13 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		editor = new FlexoDocumentEditor<>(getDocument());
 		add(editor.getEditorPanel(), BorderLayout.CENTER);
 
-		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController()) {
+		browser = new FIBFlexoDocumentBrowser(getDocument(), perspective.getController()) {
 			@Override
-			public void setSelectedDocumentElement(DocXObject<?> selected) {
+			public void setSelectedDocumentElement(FlexoDocObject<?, ?> selected) {
 				super.setSelectedDocumentElement(selected);
-				selectElementInDocumentEditor(selected);
+				if (selected instanceof DocXObject) {
+					selectElementInDocumentEditor((DocXObject<?>) selected);
+				}
 			}
 		};
 		add(browser, BorderLayout.EAST);

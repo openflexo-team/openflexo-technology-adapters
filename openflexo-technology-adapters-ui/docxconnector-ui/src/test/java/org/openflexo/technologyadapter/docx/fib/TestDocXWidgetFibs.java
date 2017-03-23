@@ -56,7 +56,7 @@ public class TestDocXWidgetFibs extends GenericFIBTestCase {
 
 	@Test
 	public void testFIBDocXDocumentBrowser() {
-		validateFIB("Fib/Widget/FIBDocXDocumentBrowser.fib");
+		validateFIB("Fib/Widget/FIBFlexoDocumentBrowser.fib");
 	}
 
 	@Test
