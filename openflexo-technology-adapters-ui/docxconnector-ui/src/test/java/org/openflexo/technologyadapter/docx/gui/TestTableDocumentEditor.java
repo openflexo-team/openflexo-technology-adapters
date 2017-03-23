@@ -115,7 +115,7 @@ public class TestTableDocumentEditor extends AbstractTestDocX {
 		assertNotNull(docXDocument);
 		openFlexoDocumentEditor(docXDocument.getResource());
 
-		assertEquals(19, docXDocument.getElements().size());
+		assertEquals(20, docXDocument.getElements().size());
 	}
 
 	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
