@@ -42,8 +42,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.components.doc.editorkit.widget.FIBDocFragmentSelector;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -59,34 +61,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 
-	// private static SwingGraphicalContextDelegate gcDelegate;
-
-	private static FIBDocXFragmentSelector selector;
-
-	/*private static DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
-	
-		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
-		assertNotNull(documentResource);
-	
-		try {
-			documentResource.loadResourceData(null);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ResourceLoadingCancelledException e) {
-			e.printStackTrace();
-		} catch (FlexoException e) {
-			e.printStackTrace();
-		}
-	
-		DocXDocument document = documentResource.getLoadedResourceData();
-		assertNotNull(document);
-		assertNotNull(document.getWordprocessingMLPackage());
-	
-		return document;
-	}*/
+	private static FIBDocFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> selector;
 
 	@Test
 	@TestOrder(2)
@@ -109,7 +84,7 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 
 		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(startParagraph, endParagraph);
 
-		selector = new FIBDocXFragmentSelector(fragment);
+		selector = new FIBDocFragmentSelector<>(fragment);
 		selector.setServiceManager(serviceManager);
 		selector.setDocument(structuredDocument);
 		selector.getCustomPanel();
@@ -118,25 +93,5 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 
 		gcDelegate.addTab("FIBDocXFragmentSelector", selector.getSelectorPanel().getController());
 	}
-
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelector2.class.getSimpleName());
-	}
-	
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-	
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 
 }

@@ -20,7 +20,7 @@
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				name="TemplateFragmentLabel" />
 			<Custom id="4"
-				componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
+				componentClassName="org.openflexo.components.doc.editorkit.widget.FIBDocFragmentSelector"
 				dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
 				localize="true" manageDynamicModel="true" data="data.fragment"
 				index="9"

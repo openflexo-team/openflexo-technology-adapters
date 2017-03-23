@@ -42,8 +42,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.components.doc.editorkit.widget.FIBDocFragmentSelector;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -59,9 +61,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelectorWithTable extends AbstractTestDocX {
 
-	//private static SwingGraphicalContextDelegate gcDelegate;
-
-	private static FIBDocXFragmentSelector selector;
+	private static FIBDocFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> selector;
 
 	@Test
 	@TestOrder(2)
@@ -85,7 +85,7 @@ public class TestFIBDocXFragmentSelectorWithTable extends AbstractTestDocX {
 
 		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
-		selector = new FIBDocXFragmentSelector(fragment);
+		selector = new FIBDocFragmentSelector<>(fragment);
 		selector.setServiceManager(serviceManager);
 		selector.setDocument(structuredDocument);
 		selector.getCustomPanel();
@@ -94,25 +94,5 @@ public class TestFIBDocXFragmentSelectorWithTable extends AbstractTestDocX {
 
 		gcDelegate.addTab("FIBDocXFragmentSelector", selector.getSelectorPanel().getController());
 	}
-
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelectorWithTable.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 
 }
