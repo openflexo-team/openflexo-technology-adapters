@@ -42,8 +42,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.components.doc.editorkit.widget.FIBDocTableSelector;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.test.OrderedRunner;
@@ -58,9 +60,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXTableSelector extends AbstractTestDocX {
 
-	//private static SwingGraphicalContextDelegate gcDelegate;
-
-	private static FIBDocXTableSelector selector;
+	private static FIBDocTableSelector<DocXTable, DocXDocument, DocXTechnologyAdapter> selector;
 
 	@Test
 	@TestOrder(2)
@@ -77,7 +77,7 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 		assertNotNull(table);
 		assertNotNull(table.getFlexoDocument());
 
-		selector = new FIBDocXTableSelector(table);
+		selector = new FIBDocTableSelector<>(table);
 		selector.setServiceManager(serviceManager);
 		selector.setDocument(structuredDocument);
 		selector.getCustomPanel();
@@ -86,25 +86,5 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 
 		gcDelegate.addTab("FIBDocXTableSelector", selector.getSelectorPanel().getController());
 	}
-
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXTableSelector.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 
 }
