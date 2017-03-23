@@ -88,6 +88,7 @@
 				<CheckBoxColumn id="20" data="iterator.isMultiline"
 					resizable="false" title="multiline" displayTitle="true"
 					columnWidth="100" showIcon="false" name="displayTitle" />
+				<AddAction method="controller.createTextBinding(data,DocXFragmentEditor.component.textSelection)" name="new_text_binding" />
 				<RemoveAction id="21"
 					method="controller.deleteTextBinding(selected)" name="delete_text_binding" />
 				<CustomAction id="22" method="controller.moveToTop(selected)"
