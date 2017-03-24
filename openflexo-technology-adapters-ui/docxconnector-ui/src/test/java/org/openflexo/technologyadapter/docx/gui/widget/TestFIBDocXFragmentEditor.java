@@ -42,7 +42,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.components.doc.editorkit.widget.FIBDocFragmentSelector;
+import org.openflexo.components.doc.editorkit.widget.FlexoDocFragmentEditorWidget;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -59,39 +59,89 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
+public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 
-	private static FIBDocFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> selector;
+	// private static SwingGraphicalContextDelegate gcDelegate;
+
+	private static FlexoDocFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter> fragmentEditor;
+
+	/*private static DocXDocument getDocument(String documentName) {
+		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		System.out.println("Searching " + documentURI);
+	
+		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
+				DocXDocument.class);
+		assertNotNull(documentResource);
+	
+		try {
+			documentResource.loadResourceData(null);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ResourceLoadingCancelledException e) {
+			e.printStackTrace();
+		} catch (FlexoException e) {
+			e.printStackTrace();
+		}
+	
+		DocXDocument document = documentResource.getLoadedResourceData();
+		assertNotNull(document);
+		assertNotNull(document.getWordprocessingMLPackage());
+	
+		return document;
+	}*/
 
 	@Test
 	@TestOrder(2)
 	public void test2InstanciateWidget() throws FragmentConsistencyException {
 
-		DocXDocument structuredDocument = getDocument("ExampleReport.docx");
+		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 
-		DocXParagraph startParagraph = (DocXParagraph) structuredDocument.getElements().get(22);
-		DocXParagraph endParagraph = (DocXParagraph) structuredDocument.getElements().get(32);
+		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
+		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
 
 		System.out.println("Document: " + structuredDocument);
 		System.out.println("Contents:" + structuredDocument.debugContents());
-		System.out.println("Contents:" + structuredDocument.debugStructuredContents());
 
-		assertNotNull(startParagraph);
-		assertNotNull(endParagraph);
-		assertNotNull(startParagraph.getFlexoDocument());
-		assertNotNull(endParagraph.getFlexoDocument());
+		System.out.println("section1Paragraph=" + section1Paragraph.getRawText());
 
-		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(startParagraph, endParagraph);
+		assertNotNull(section1Paragraph);
+		assertNotNull(paragraph3);
+		assertNotNull(section1Paragraph.getFlexoDocument());
+		assertNotNull(paragraph3.getFlexoDocument());
 
-		selector = new FIBDocFragmentSelector<>(fragment);
-		selector.setServiceManager(serviceManager);
-		selector.setDocument(structuredDocument);
-		selector.getCustomPanel();
+		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
-		assertNotNull(selector.getSelectorPanel().getController());
+		fragmentEditor = new FlexoDocFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter>(fragment);
+		fragmentEditor.setEditedObject(fragment);
+		/*fragmentEditor = new FIBDocXFragmentSelector(fragment);
+		fragmentEditor.setServiceManager(serviceManager);
+		fragmentEditor.setDocument(structuredDocument);*/
+		// fragmentEditor.getCustomPanel();
 
-		gcDelegate.addTab("FIBDocXFragmentSelector", selector.getSelectorPanel().getController());
+		// assertNotNull(fragmentEditor.getSelectorPanel().getController());
+
+		gcDelegate.addTab("FIBDocXFragmentSelector", fragmentEditor);
 	}
+
+	/*public static void initGUI() {
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
+	}
+	
+	@AfterClass
+	public static void waitGUI() {
+		gcDelegate.waitGUI();
+	}
+	
+	@Before
+	public void setUp() {
+		gcDelegate.setUp();
+	}
+	
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		gcDelegate.tearDown();
+	}*/
 
 }

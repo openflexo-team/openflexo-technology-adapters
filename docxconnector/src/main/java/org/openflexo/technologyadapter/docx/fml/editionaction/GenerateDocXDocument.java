@@ -189,17 +189,16 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 							for (int column = 0; column < r.getTableCells().size(); column++) {
 								DocXTableCell generatedCell = (DocXTableCell) generatedTable.getCell(row, column);
 								DocXTableCell templateCell = (DocXTableCell) templateTable.getCell(row, column);
-								for (int i = 0; i < templateCell.getParagraphs().size(); i++) {
+								for (int i = 0; i < templateCell.getElements().size(); i++) {
 									if (!(column == 0 && row == 0)) {
 										// No need to generate new id for first cell, because it has already been done
 										// when changing id for the whole table !!!
-										String oldId2 = generatedCell.getParagraphs().get(i).getIdentifier();
-										generatedCell.getParagraphs().get(i).setIdentifier(generatedDocument.getFactory().generateId());
+										String oldId2 = generatedCell.getElements().get(i).getIdentifier();
+										generatedCell.getElements().get(i).setIdentifier(generatedDocument.getFactory().generateId());
 										// System.out.println("change id for cell row=" + row + " column=" + column + " from " + oldId2
 										// + " to " + generatedCell.getParagraphs().get(i).getIdentifier());
 									}
-									generatedCell.getParagraphs().get(i)
-											.setBaseIdentifier(templateCell.getParagraphs().get(i).getIdentifier());
+									generatedCell.getElements().get(i).setBaseIdentifier(templateCell.getElements().get(i).getIdentifier());
 								}
 							}
 						}

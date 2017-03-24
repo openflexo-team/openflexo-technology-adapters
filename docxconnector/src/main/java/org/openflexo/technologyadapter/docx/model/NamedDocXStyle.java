@@ -21,7 +21,7 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import org.docx4j.wml.Style;
-import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.NamedDocStyle;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -32,27 +32,27 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoDocStyle} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link NamedDocStyle} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
  */
 @ModelEntity
-@ImplementationClass(DocXStyle.DocXStyleImpl.class)
+@ImplementationClass(NamedDocXStyle.NamedDocXStyleImpl.class)
 @XMLElement
-public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> {
+public interface NamedDocXStyle extends DocXObject<Style>, NamedDocStyle<DocXDocument, DocXTechnologyAdapter> {
 
-	@PropertyIdentifier(type = DocXStyle.class)
+	@PropertyIdentifier(type = NamedDocXStyle.class)
 	public static final String PARENT_STYLE_KEY = "parentStyle";
 
 	@PropertyIdentifier(type = Style.class)
 	public static final String STYLE_KEY = "style";
 
 	@Getter(value = PARENT_STYLE_KEY)
-	public DocXStyle getParentStyle();
+	public NamedDocXStyle getParentStyle();
 
 	@Setter(PARENT_STYLE_KEY)
-	public void setParentStyle(DocXStyle parentStyle);
+	public void setParentStyle(NamedDocXStyle parentStyle);
 
 	@Getter(value = STYLE_KEY, ignoreType = true)
 	public Style getStyle();
@@ -61,15 +61,16 @@ public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument
 	public void setStyle(Style style);
 
 	/**
-	 * This is the starting point for updating {@link DocXStyle} with the style provided from docx4j library<br>
+	 * This is the starting point for updating {@link NamedDocXStyle} with the style provided from docx4j library<br>
 	 * Take care that the supplied p is the object we should update with, but that {@link #getStyle()} is unsafe in this context, because
 	 * return former value
 	 */
 	public void updateFromStyle(Style style, DocXFactory factory);
 
-	public static abstract class DocXStyleImpl extends FlexoStyleImpl<DocXDocument, DocXTechnologyAdapter>implements DocXStyle {
+	public static abstract class NamedDocXStyleImpl extends NamedDocStyleImpl<DocXDocument, DocXTechnologyAdapter>
+			implements NamedDocXStyle {
 
-		public DocXStyleImpl() {
+		public NamedDocXStyleImpl() {
 			super();
 		}
 
@@ -88,7 +89,7 @@ public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument
 		}
 
 		/**
-		 * This is the starting point for updating {@link DocXStyle} with the style provided from docx4j library<br>
+		 * This is the starting point for updating {@link NamedDocXStyle} with the style provided from docx4j library<br>
 		 * Take care that the supplied p is the object we should update with, but that {@link #getStyle()} is unsafe in this context,
 		 * because return former value
 		 */
@@ -99,6 +100,17 @@ public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of P given by getStyle() returns the new value
 
+			if (style != null && style.getPPr() != null) {
+				DocXParagraphStyle pStyle = factory.makeParagraphStyle();
+				factory.extractStyleProperties(style.getPPr(), pStyle);
+				setParagraphStyle(pStyle);
+			}
+
+			if (style != null && style.getRPr() != null) {
+				DocXRunStyle rStyle = factory.makeRunStyle();
+				factory.extractStyleProperties(style.getRPr(), rStyle);
+				setRunStyle(rStyle);
+			}
 		}
 
 		@Override
@@ -130,6 +142,11 @@ public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument
 		@Override
 		public String toString() {
 			return getName() + (getParentStyle() != null ? " (based on " + getParentStyle().getName() + ")" : "");
+		}
+
+		@Override
+		public String getStringRepresentation() {
+			return toString();
 		}
 	}
 

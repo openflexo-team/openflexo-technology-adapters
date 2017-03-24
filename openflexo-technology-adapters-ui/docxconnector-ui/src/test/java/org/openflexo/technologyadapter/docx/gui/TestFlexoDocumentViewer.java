@@ -42,31 +42,44 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
+import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.gina.swing.editor.JFIBEditor.LayoutColumns;
+import org.openflexo.swing.layout.JXMultiSplitPane;
+import org.openflexo.swing.layout.MultiSplitLayout;
+import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
+import org.openflexo.swing.layout.MultiSplitLayout.Node;
+import org.openflexo.swing.layout.MultiSplitLayout.Split;
+import org.openflexo.swing.layout.MultiSplitLayoutFactory;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBOWLPropertySelector
+ * Test the structural and behavioural features of {@link FlexoDocumentEditor}
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocX4allEditor extends AbstractTestDocX {
-
-	// private static SwingGraphicalContextDelegate gcDelegate;
+public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	private static DocXDocument simpleDocument;
 	private static DocXDocument structuredDocument;
@@ -79,31 +92,6 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 		initGUI();
 	}
-
-	/*
-	 * private DocXDocument getDocument(String documentName) { String
-	 * documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/"
-	 * + documentName;
-	 * 
-	 * FlexoResource<DocXDocument> documentResource =
-	 * serviceManager.getResourceManager().getResource(documentURI, null,
-	 * DocXDocument.class);
-	 * 
-	 * assertNotNull(documentResource);
-	 * 
-	 * try { documentResource.loadResourceData(null); } catch
-	 * (FileNotFoundException e) { 
-	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { 
-	 * e.printStackTrace(); } catch
-	 * (FlexoException e) { 
-	 * e.printStackTrace(); }
-	 * 
-	 * DocXDocument document = documentResource.getLoadedResourceData();
-	 * assertNotNull(document);
-	 * assertNotNull(document.getWordprocessingMLPackage());
-	 * 
-	 * return document; }
-	 */
 
 	@Test
 	@TestOrder(1)
@@ -125,7 +113,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
-		openDocXEditor(simpleDocument.getResource());
+		openFlexoDocumentEditor(simpleDocument.getResource());
 	}
 
 	@Test
@@ -133,116 +121,116 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
-		openDocXEditor(structuredDocument.getResource());
+		openFlexoDocumentEditor(structuredDocument.getResource());
 	}
 
 	@Test
 	@TestOrder(4)
-	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		documentWithTable = getDocument("DocumentWithTable.docx");
-		assertNotNull(documentWithTable);
-		openDocXEditor(documentWithTable.getResource());
+	public void testOpenStructuredDocumentWithNumberingEditor()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		structuredDocument = getDocument("StructuredDocumentWithNumbering.docx");
+		assertNotNull(structuredDocument);
+		openFlexoDocumentEditor(structuredDocument.getResource());
 	}
 
 	@Test
 	@TestOrder(5)
-	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		documentWithImage = getDocument("DocumentWithImage.docx");
-		assertNotNull(documentWithImage);
-		openDocXEditor(documentWithImage.getResource());
+	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		documentWithTable = getDocument("DocumentWithTable.docx");
+		assertNotNull(documentWithTable);
+		openFlexoDocumentEditor(documentWithTable.getResource());
 	}
 
 	@Test
 	@TestOrder(6)
+	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		documentWithImage = getDocument("DocumentWithImage.docx");
+		assertNotNull(documentWithImage);
+		openFlexoDocumentEditor(documentWithImage.getResource());
+	}
+
+	@Test
+	@TestOrder(7)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
-		openDocXEditor(exampleReport.getResource());
+		openFlexoDocumentEditor(exampleReport.getResource());
 	}
 
-	/*
-	 * public static void initGUI() { gcDelegate = new
-	 * SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
-	 * }
-	 * 
-	 * @AfterClass public static void waitGUI() { gcDelegate.waitGUI(); }
-	 * 
-	 * @Before public void setUp() { gcDelegate.setUp(); }
-	 * 
-	 * @Override
-	 * 
-	 * @After public void tearDown() throws Exception { gcDelegate.tearDown(); }
-	 */
+	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
 
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
+	public static enum LayoutPosition {
+		LEFT, CENTER, RIGHT;
+	}
+
+	private static Split getDefaultLayout() {
+		Split root = MSL_FACTORY.makeSplit();
+		root.setName("ROOT");
+		Leaf left = MSL_FACTORY.makeLeaf(LayoutPosition.LEFT.name());
+		left.setWeight(0.2);
+		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
+		center.setWeight(0.6);
+		center.setName(LayoutColumns.CENTER.name());
+		Leaf right = MSL_FACTORY.makeLeaf(LayoutPosition.RIGHT.name());
+		right.setWeight(0.2);
+		right.setName(LayoutColumns.RIGHT.name());
+		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
+		return root;
+	}
+
+	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		/*
-		 * DefaultLocalFileProvider p = new DefaultLocalFileProvider(); File f =
-		 * ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
-		 * FileSystemManager fsManager = VFS.getManager(); FileObject fo =
-		 * fsManager.resolveFile(docResource.getURI());
-		 */
+		DocXDocument doc = docResource.getResourceData(null);
 
-		/*
-		 * ToolBarStates _toolbarStates = new ToolBarStates();
-		 * 
-		 * JPanel toolbar =
-		 * FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
-		 * 
-		 * DocXDocument document = docResource.getResourceData(null);
-		 * 
-		 * JEditorPane editorView = createEditorView(document, _toolbarStates);
-		 * 
-		 * JPanel editorPanel =
-		 * FxScriptUIHelper.getInstance().createEditorPanel(editorView);
-		 * 
-		 * JPanel panel = new JPanel(new BorderLayout()); panel.add(toolbar,
-		 * BorderLayout.NORTH); panel.add(editorPanel, BorderLayout.CENTER);
-		 */
+		Split defaultLayout = getDefaultLayout();
 
-		DocXEditor editor = new DocXEditor(docResource.getResourceData(null), true);
+		MultiSplitLayout centerLayout = new MultiSplitLayout(true, MSL_FACTORY);
+		centerLayout.setLayoutMode(MultiSplitLayout.NO_MIN_SIZE_LAYOUT);
+		centerLayout.setModel(defaultLayout);
 
-		gcDelegate.addTab(docResource.getName(), editor);
+		JXMultiSplitPane pane = new JXMultiSplitPane(centerLayout);
+		pane.setDividerSize(8);
+
+		FIBFlexoDocumentBrowser docBrowser = new FIBFlexoDocumentBrowser(doc, serviceManager.getApplicationFIBLibraryService()) {
+			@Override
+			public void singleClick(Object object) {
+				System.out.println("Je viens cliquer sur " + object);
+			}
+		};
+		docBrowser.setShowRuns(true);
+		FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor = new FlexoDocumentEditor<>(doc);
+
+		final JTree tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
+
+		pane.add(docBrowser, LayoutPosition.LEFT.name());
+		pane.add(editor.getEditorPanel(), LayoutPosition.CENTER.name());
+		pane.add(new JScrollPane(tree), LayoutPosition.RIGHT.name());
+
+		pane.revalidate();
+
+		gcDelegate.addTab(docResource.getName(), pane);
+
+		editor.getStyledDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				System.out.println("Hop ca change");
+				((DefaultTreeModel) tree.getModel()).reload();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				System.out.println("Hop ca change");
+				((DefaultTreeModel) tree.getModel()).reload();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				System.out.println("Hop ca change");
+				((DefaultTreeModel) tree.getModel()).reload();
+			}
+		});
 
 	}
-
-	/*
-	 * private JEditorPane createEditorView(DocXDocument document, ToolBarStates
-	 * _toolbarStates) {
-	 * 
-	 * // Clipboard clipboard = getContext().getClipboard(); //
-	 * clipboard.addFlavorListener(_toolbarStates); // As a FlavorListener,
-	 * _toolbarStates will ONLY be notified // when there is a DataFlavor change
-	 * in Clipboard. // Therefore, make sure that toolbarStates' _isPasteEnable
-	 * property // is initialised correctly.
-	 * 
-	 * WordMLTextPane editorView = new WordMLTextPane();
-	 * editorView.addFocusListener(_toolbarStates);
-	 * editorView.addCaretListener(_toolbarStates);
-	 * editorView.setTransferHandler(new TransferHandler());
-	 * 
-	 * WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
-	 * editorKit.addInputAttributeListener(_toolbarStates);
-	 * 
-	 * WordMLDocument doc = null;
-	 * 
-	 * try { doc =
-	 * editorKit.openDocument(document.getWordprocessingMLPackage());
-	 * 
-	 * doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY,
-	 * document.getResource().getURI());
-	 * doc.addDocumentListener(_toolbarStates); doc.setDocumentFilter(new
-	 * WordMLDocumentFilter()); editorView.setDocument(doc);
-	 * editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG,
-	 * Boolean.TRUE);
-	 * 
-	 * if (DocUtil.isSharedDocument(doc)) {
-	 * editorKit.initPlutextClient(editorView); }
-	 * 
-	 * } catch (Exception exc) { exc.printStackTrace(); doc = null; }
-	 * 
-	 * return editorView; }
-	 */
-
 }

@@ -127,7 +127,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 			}
 		}*/
 
-		assertEquals(12, simpleDocument.getElements().size());
+		assertEquals(11, simpleDocument.getElements().size());
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -160,56 +160,56 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		// System.out.println("Used styles: " + structuredDocument.getStyles());
 
 		assertEquals(12, structuredDocument.getStyles().size());
-		DocXStyle docDefaults = (DocXStyle) structuredDocument.getStyleByName("DocDefaults");
+		NamedDocXStyle docDefaults = (NamedDocXStyle) structuredDocument.getStyleByName("DocDefaults");
 		assertNotNull(docDefaults);
 		assertNull(docDefaults.getParentStyle());
-		DocXStyle normal = (DocXStyle) structuredDocument.getStyleByName("Normal");
+		NamedDocXStyle normal = (NamedDocXStyle) structuredDocument.getStyleByName("Normal");
 		assertNotNull(normal);
 		assertSame(docDefaults, normal.getParentStyle());
-		DocXStyle title = (DocXStyle) structuredDocument.getStyleByName("Title");
+		NamedDocXStyle title = (NamedDocXStyle) structuredDocument.getStyleByName("Title");
 		assertNotNull(title);
 		assertSame(normal, title.getParentStyle());
-		DocXStyle heading1 = (DocXStyle) structuredDocument.getStyleByName("heading 1");
+		NamedDocXStyle heading1 = (NamedDocXStyle) structuredDocument.getStyleByName("heading 1");
 		assertNotNull(heading1);
 		assertSame(normal, heading1.getParentStyle());
-		DocXStyle heading2 = (DocXStyle) structuredDocument.getStyleByName("heading 2");
+		NamedDocXStyle heading2 = (NamedDocXStyle) structuredDocument.getStyleByName("heading 2");
 		assertNotNull(heading2);
 		assertSame(normal, heading2.getParentStyle());
 
 		DocXParagraph titleParagraph = (DocXParagraph) structuredDocument.getElements().get(0);
-		assertSame(title, titleParagraph.getStyle());
+		assertSame(title, titleParagraph.getNamedStyle());
 
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
-		assertSame(heading1, section1Paragraph.getStyle());
+		assertSame(heading1, section1Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph1 = (DocXParagraph) structuredDocument.getElements().get(2);
-		assertNull(paragraph1.getStyle());
+		assertNull(paragraph1.getNamedStyle());
 
 		DocXParagraph subSection1Paragraph = (DocXParagraph) structuredDocument.getElements().get(3);
-		assertSame(heading2, subSection1Paragraph.getStyle());
+		assertSame(heading2, subSection1Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph2 = (DocXParagraph) structuredDocument.getElements().get(4);
-		assertNull(paragraph2.getStyle());
+		assertNull(paragraph2.getNamedStyle());
 
 		DocXParagraph subSection2Paragraph = (DocXParagraph) structuredDocument.getElements().get(5);
-		assertSame(heading2, subSection2Paragraph.getStyle());
+		assertSame(heading2, subSection2Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
-		assertNull(paragraph3.getStyle());
+		assertNull(paragraph3.getNamedStyle());
 
 		DocXParagraph section2Paragraph = (DocXParagraph) structuredDocument.getElements().get(7);
-		assertSame(heading1, section2Paragraph.getStyle());
+		assertSame(heading1, section2Paragraph.getNamedStyle());
 
 		DocXParagraph paragraph4 = (DocXParagraph) structuredDocument.getElements().get(8);
-		assertNull(paragraph4.getStyle());
+		assertNull(paragraph4.getNamedStyle());
 		DocXParagraph paragraph5 = (DocXParagraph) structuredDocument.getElements().get(9);
-		assertNull(paragraph5.getStyle());
+		assertNull(paragraph5.getNamedStyle());
 		DocXParagraph paragraph6 = (DocXParagraph) structuredDocument.getElements().get(10);
-		assertNull(paragraph6.getStyle());
+		assertNull(paragraph6.getNamedStyle());
 		DocXParagraph paragraph7 = (DocXParagraph) structuredDocument.getElements().get(11);
-		assertNull(paragraph7.getStyle());
+		assertNull(paragraph7.getNamedStyle());
 		DocXParagraph paragraph8 = (DocXParagraph) structuredDocument.getElements().get(12);
-		assertNull(paragraph8.getStyle());
+		assertNull(paragraph8.getNamedStyle());
 
 		assertSameList(structuredDocument.getRootElements(), titleParagraph, section1Paragraph, section2Paragraph);
 
@@ -272,35 +272,35 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		DocXTableCell cell33 = (DocXTableCell) row2.getTableCells().get(2);
 		DocXTableCell cell34 = (DocXTableCell) row2.getTableCells().get(3);
 
-		assertEquals(1, cell11.getParagraphs().size());
-		assertEquals(1, cell12.getParagraphs().size());
-		assertEquals(1, cell13.getParagraphs().size());
-		assertEquals(1, cell14.getParagraphs().size());
+		assertEquals(1, cell11.getElements().size());
+		assertEquals(1, cell12.getElements().size());
+		assertEquals(1, cell13.getElements().size());
+		assertEquals(1, cell14.getElements().size());
 
-		assertEquals(1, cell21.getParagraphs().size());
-		assertEquals(1, cell22.getParagraphs().size());
-		assertEquals(1, cell23.getParagraphs().size());
-		assertEquals(1, cell24.getParagraphs().size());
+		assertEquals(1, cell21.getElements().size());
+		assertEquals(1, cell22.getElements().size());
+		assertEquals(1, cell23.getElements().size());
+		assertEquals(1, cell24.getElements().size());
 
-		assertEquals(1, cell31.getParagraphs().size());
-		assertEquals(1, cell32.getParagraphs().size());
-		assertEquals(1, cell33.getParagraphs().size());
-		assertEquals(1, cell34.getParagraphs().size());
+		assertEquals(1, cell31.getElements().size());
+		assertEquals(1, cell32.getElements().size());
+		assertEquals(1, cell33.getElements().size());
+		assertEquals(1, cell34.getElements().size());
 
-		assertEquals("", ((DocXParagraph) cell11.getParagraphs().get(0)).getRawText());
-		assertEquals("Column1", ((DocXParagraph) cell12.getParagraphs().get(0)).getRawText());
-		assertEquals("Column2", ((DocXParagraph) cell13.getParagraphs().get(0)).getRawText());
-		assertEquals("Column3", ((DocXParagraph) cell14.getParagraphs().get(0)).getRawText());
+		assertEquals("", ((DocXParagraph) cell11.getElements().get(0)).getRawText());
+		assertEquals("Column1", ((DocXParagraph) cell12.getElements().get(0)).getRawText());
+		assertEquals("Column2", ((DocXParagraph) cell13.getElements().get(0)).getRawText());
+		assertEquals("Column3", ((DocXParagraph) cell14.getElements().get(0)).getRawText());
 
-		assertEquals("Item1", ((DocXParagraph) cell21.getParagraphs().get(0)).getRawText());
-		assertEquals("First item", ((DocXParagraph) cell22.getParagraphs().get(0)).getRawText());
-		assertEquals("A description for the first item", ((DocXParagraph) cell23.getParagraphs().get(0)).getRawText());
-		assertEquals("Data1", ((DocXParagraph) cell24.getParagraphs().get(0)).getRawText());
+		assertEquals("Item1", ((DocXParagraph) cell21.getElements().get(0)).getRawText());
+		assertEquals("First item", ((DocXParagraph) cell22.getElements().get(0)).getRawText());
+		assertEquals("A description for the first item", ((DocXParagraph) cell23.getElements().get(0)).getRawText());
+		assertEquals("Data1", ((DocXParagraph) cell24.getElements().get(0)).getRawText());
 
-		assertEquals("Item2", ((DocXParagraph) cell31.getParagraphs().get(0)).getRawText());
-		assertEquals("Second item", ((DocXParagraph) cell32.getParagraphs().get(0)).getRawText());
-		assertEquals("A description for the second item", ((DocXParagraph) cell33.getParagraphs().get(0)).getRawText());
-		assertEquals("Data2", ((DocXParagraph) cell34.getParagraphs().get(0)).getRawText());
+		assertEquals("Item2", ((DocXParagraph) cell31.getElements().get(0)).getRawText());
+		assertEquals("Second item", ((DocXParagraph) cell32.getElements().get(0)).getRawText());
+		assertEquals("A description for the second item", ((DocXParagraph) cell33.getElements().get(0)).getRawText());
+		assertEquals("Data2", ((DocXParagraph) cell34.getElements().get(0)).getRawText());
 	}
 
 	@Test

@@ -71,8 +71,7 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
-	protected static final Logger logger = Logger
-			.getLogger(TestCreateDocXDocumentWithImage.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestCreateDocXDocumentWithImage.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
@@ -105,20 +104,17 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
-				"TestDocumentWithTable.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX", "TestDocumentWithTable.docx", true,
+				technologicalAdapter.getDefaultIDStrategy());
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx",
-				newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx", newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -133,14 +129,13 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testAddSomeParagraphs()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddSomeParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testAddSomeParagraphs");
 
-		DocXStyle normalStyle = (DocXStyle) newDocument.getStyleByIdentifier("Normal");
-		DocXStyle heading1 = (DocXStyle) newDocument.getStyleByIdentifier("Heading1");
-		DocXStyle heading2 = (DocXStyle) newDocument.getStyleByIdentifier("Heading2");
+		NamedDocXStyle normalStyle = (NamedDocXStyle) newDocument.getStyleByIdentifier("Normal");
+		NamedDocXStyle heading1 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading1");
+		NamedDocXStyle heading2 = (NamedDocXStyle) newDocument.getStyleByIdentifier("Heading2");
 
 		newDocument.addStyledParagraphOfText(heading1, "Title of document");
 		newDocument.addStyledParagraphOfText(heading2, "Subtitle1");
@@ -160,15 +155,15 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 		DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
 
 		assertEquals("Title of document", title.getRawText());
-		assertEquals(heading1, title.getStyle());
+		assertEquals(heading1, title.getNamedStyle());
 		assertEquals("Subtitle1", subtitle1.getRawText());
-		assertEquals(heading2, subtitle1.getStyle());
+		assertEquals(heading2, subtitle1.getNamedStyle());
 		assertEquals("This is a paragraph", text1.getRawText());
-		assertEquals(normalStyle, text1.getStyle());
+		assertEquals(normalStyle, text1.getNamedStyle());
 		assertEquals("Subtitle2", subtitle2.getRawText());
-		assertEquals(heading2, subtitle2.getStyle());
+		assertEquals(heading2, subtitle2.getNamedStyle());
 		assertEquals("This is an other paragraph", text2.getRawText());
-		assertEquals(normalStyle, text2.getStyle());
+		assertEquals(normalStyle, text2.getNamedStyle());
 
 		assertTrue(newDocResource.isModified());
 		newDocResource.save(null);

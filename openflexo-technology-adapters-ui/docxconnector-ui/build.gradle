@@ -4,7 +4,7 @@ dependencies {
   // openflexo dep
   compile flexoUi()
   compile flexoDocumentationUi()
-  compile docx4all()
+  // compile docx4all()
   // external dep
   // testing dep
   testCompile flexoUiTest()

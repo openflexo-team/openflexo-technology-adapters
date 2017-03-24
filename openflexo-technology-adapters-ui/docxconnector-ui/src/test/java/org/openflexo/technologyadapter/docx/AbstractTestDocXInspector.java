@@ -57,7 +57,6 @@ import org.openflexo.gina.test.OpenflexoFIBInspectorTestCase;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.rm.Resource;
-import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -173,7 +172,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 	}
 
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate("AbstractTestDocXInspector");
 
 		// TODO: please check this: suspiscion of missing code after merge
 

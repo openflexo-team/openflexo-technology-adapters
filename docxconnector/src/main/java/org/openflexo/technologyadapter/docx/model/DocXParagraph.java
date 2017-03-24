@@ -39,11 +39,12 @@ import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
+import org.docx4j.wml.PPrBase;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
 import org.openflexo.foundation.doc.FlexoDocRun;
-import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.NamedDocStyle;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -212,6 +213,27 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
 				// System.out.println("# Remove run for " + e);
 				internallyRemoveFromRuns(run);
+			}
+
+			/*if (p != null) {
+				PPr ppr = p.getPPr();
+				if (ppr != null) {
+					RPrAbstract rpr = ppr.getRPr();
+					if (rpr != null) {
+						System.out.println("Style du paragraphe: " + getRawText());
+						System.out.println("style=" + rpr.getRStyle());
+						System.out.println("fonts=" + rpr.getRFonts());
+						System.out.println("size=" + rpr.getSz());
+						System.out.println("color=" + rpr.getColor());
+						System.out.println("b=" + rpr.getB());
+						System.out.println("i=" + rpr.getI());
+					}
+				}
+			}*/
+
+			PPrBase pPr = p.getPPr();
+			if (pPr != null) {
+				setParagraphStyle(factory.makeParagraphStyle(pPr));
 			}
 
 		}
@@ -450,7 +472,9 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				System.out.println("p=" + getP());*/
 
 			parent.getContent().add(index, getP());
-			getFlexoDocument().setIsModified();
+			if (getFlexoDocument() != null) {
+				getFlexoDocument().setIsModified();
+			}
 
 		}
 
@@ -460,17 +484,65 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		 */
 		@Override
 		public void insertRunAtIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
-			System.out.println("Add run " + aRun);
-			P p = getP();
+
 			if (aRun instanceof DocXRun) {
+				System.out.println("Au debut:");
+				for (Object o : getP().getContent()) {
+					StringWriter sw = new StringWriter();
+					try {
+						TextUtils.extractText(o, sw);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					System.out.println(">>> " + sw.toString());
+				}
+				if (aRun instanceof DocXTextRun) {
+					System.out.println("Add run at index " + index + " " + ((DocXTextRun) aRun).getText());
+				}
+				P p = getP();
+
+				// Because they might be some other kind of content, we compute the right place
+				// to insert the run
+				int effectiveIndex = 0;
+				int currentIndex = 0;
+				for (Object o : p.getContent()) {
+					if (o instanceof JAXBElement) {
+						o = ((JAXBElement) o).getValue();
+					}
+					if (o instanceof R) {
+						if (currentIndex == index) {
+							// ok this is the right index, break
+							break;
+						}
+						currentIndex++;
+					}
+					effectiveIndex++;
+				}
+
 				R r = ((DocXRun) aRun).getR();
-				if (index < p.getContent().size()) {
+				/*if (index < p.getContent().size()) {
+					System.out.println("Hop1");
 					p.getContent().add(index + 1, r);
 				}
 				else {
+					System.out.println("Hop2");
 					p.getContent().add(index, r);
-				}
+				}*/
+				System.out.println("Du coup, plutot que de le mettre en " + index + " je le mets en " + effectiveIndex);
+				p.getContent().add(effectiveIndex, r);
+
 				internallyInsertRunAtIndex(aRun, index);
+
+				System.out.println("Et a la fin:");
+				for (Object o : p.getContent()) {
+					StringWriter sw = new StringWriter();
+					try {
+						TextUtils.extractText(o, sw);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					System.out.println(">>> " + sw.toString());
+				}
 			}
 			else {
 				logger.warning("Unexpected run: " + aRun);
@@ -597,7 +669,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		}
 
 		@Override
-		public FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
+		public NamedDocStyle<DocXDocument, DocXTechnologyAdapter> getNamedStyle() {
 			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null && getFlexoDocument() != null) {
 				String styleName = getP().getPPr().getPStyle().getVal();
 				return getFlexoDocument().getStyleByIdentifier(styleName);
@@ -606,8 +678,8 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		}
 
 		@Override
-		public void setStyle(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
-			if (getStyle() != style) {
+		public void setNamedStyle(NamedDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
+			if (getNamedStyle() != style) {
 				if (getP() != null) {
 					PPr paragraphProperties = getP().getPPr();
 					if (paragraphProperties == null) {

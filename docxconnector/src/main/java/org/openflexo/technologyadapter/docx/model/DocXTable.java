@@ -34,6 +34,8 @@ import org.docx4j.wml.CTBookmark;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.TblGrid;
+import org.docx4j.wml.TblGridCol;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.FlexoDocElement;
@@ -193,13 +195,38 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 				internallyRemoveFromTableRows(row);
 			}
 
+			int cellCount = 0;
+			int rowCount = 0;
+			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
+				rowCount++;
+				cellCount = Math.max(cellCount, row.getTableCells().size());
+			}
+
+			TblGrid tblGrid = tbl.getTblGrid();
+			columnWidths = new int[cellCount];
+			int i = 0;
+			for (TblGridCol col : tblGrid.getGridCol()) {
+				columnWidths[i] = col.getW().intValue() / DocXFactory.INDENTS_MULTIPLIER;
+				i++;
+			}
+
+		}
+
+		private int[] columnWidths;
+
+		@Override
+		public int getColumnWidth(int colIndex) {
+			if (colIndex < columnWidths.length) {
+				return columnWidths[colIndex];
+			}
+			return 100;
 		}
 
 		@Override
 		public String getIdentifier() {
 			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
-			if (cell != null && cell.getParagraphs().size() > 0) {
-				return "Table" + cell.getParagraphs().get(0).getIdentifier();
+			if (cell != null && cell.getElements().size() > 0) {
+				return "Table" + cell.getElements().get(0).getIdentifier();
 			}
 			return "Table" + getIndex();
 		}
@@ -207,8 +234,8 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 		@Override
 		public void setIdentifier(String identifier) {
 			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
-			if (cell != null && cell.getParagraphs().size() > 0) {
-				cell.getParagraphs().get(0).setIdentifier(identifier);
+			if (cell != null && cell.getElements().size() > 0) {
+				cell.getElements().get(0).setIdentifier(identifier);
 			}
 		}
 

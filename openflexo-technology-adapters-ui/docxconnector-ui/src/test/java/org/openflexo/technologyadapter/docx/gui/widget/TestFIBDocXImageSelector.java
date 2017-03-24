@@ -42,8 +42,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.components.doc.editorkit.widget.FIBDocImageSelector;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -51,7 +53,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBDocXFragmentSelector when a table is involved
+ * Test the structural and behavioural features of FIBDocImageSelector
  * 
  * @author sylvain
  * 
@@ -59,9 +61,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXImageSelector extends AbstractTestDocX {
 
-	// private static SwingGraphicalContextDelegate gcDelegate;
-
-	private static FIBDocXImageSelector selector;
+	private static FIBDocImageSelector<DocXDrawingRun, DocXDocument, DocXTechnologyAdapter> selector;
 
 	@Test
 	@TestOrder(2)
@@ -78,34 +78,14 @@ public class TestFIBDocXImageSelector extends AbstractTestDocX {
 		assertNotNull(drawingRun);
 		assertNotNull(drawingRun.getFlexoDocument());
 
-		selector = new FIBDocXImageSelector(drawingRun);
+		selector = new FIBDocImageSelector<>(drawingRun);
 		selector.setServiceManager(serviceManager);
 		selector.setDocument(documentWithImages);
 		selector.getCustomPanel();
 
 		assertNotNull(selector.getSelectorPanel().getController());
 
-		gcDelegate.addTab("FIBDocXImageSelector", selector.getSelectorPanel().getController());
+		gcDelegate.addTab("FIBDocImageSelector", selector.getSelectorPanel().getController());
 	}
-
-	/*public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXImageSelector.class.getSimpleName());
-	}
-	
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-	
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 
 }

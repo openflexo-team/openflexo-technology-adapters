@@ -323,8 +323,8 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 
 		@Override
 		public String getIdentifier() {
-			if (getTableCells().size() > 0 && getTableCells().get(0).getParagraphs().size() > 0) {
-				return "Row" + getTableCells().get(0).getParagraphs().get(0).getIdentifier();
+			if (getTableCells().size() > 0 && getTableCells().get(0).getElements().size() > 0) {
+				return "Row" + getTableCells().get(0).getElements().get(0).getIdentifier();
 			}
 			return "Row" + getIndex();
 		}

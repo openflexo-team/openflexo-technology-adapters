@@ -20,6 +20,14 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.dml.Graphic;
@@ -27,6 +35,10 @@ import org.docx4j.dml.GraphicData;
 import org.docx4j.dml.picture.CTPictureNonVisual;
 import org.docx4j.dml.picture.Pic;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
+import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoDocRun;
@@ -35,6 +47,8 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Implementation of {@link FlexoDocRun} for {@link DocXTechnologyAdapter}
@@ -51,6 +65,85 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 		private Drawing drawing;
 		private String imageName;
+		private Image image;
+		private File imageFile;
+		private String embedId;
+
+		@Override
+		public Image getImage() {
+			if (image == null && StringUtils.isNotEmpty(embedId)) {
+
+				DocXDocument document = getFlexoDocument();
+
+				if (document != null && document instanceof DocXDocumentImpl
+						&& document.getResource().getIODelegate().getSerializationArtefact() instanceof File) {
+					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
+					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
+					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
+
+					BinaryPartAbstractImage binaryImage = (BinaryPartAbstractImage) relsPart.getPart(embedId);
+
+					try {
+						image = ImageIO.read(new ByteArrayInputStream(binaryImage.getBytes()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+			return image;
+		}
+
+		public void setImage(Image image) {
+			if (image != this.image) {
+				Image oldValue = this.image;
+				this.image = image;
+				getPropertyChangeSupport().firePropertyChange("image", oldValue, image);
+			}
+		}
+
+		protected String getEmbedId() {
+			return embedId;
+		}
+
+		@Deprecated
+		@Override
+		public File getImageFile() {
+
+			if (imageFile == null && StringUtils.isNotEmpty(embedId)) {
+
+				DocXDocument document = getFlexoDocument();
+
+				if (document != null && document instanceof DocXDocumentImpl
+						&& document.getResource().getIODelegate().getSerializationArtefact() instanceof File) {
+					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
+					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
+					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
+
+					BinaryPartAbstractImage image = (BinaryPartAbstractImage) relsPart.getPart(embedId);
+
+					imageFile = new File(((DocXDocumentImpl) document).getTempDirectory(), r.getTarget());
+					System.out.println("imageFile=" + imageFile);
+					imageFile.getParentFile().mkdirs();
+
+					FileOutputStream out;
+					try {
+						out = new FileOutputStream(imageFile);
+						image.writeDataToOutputStream(out);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			return imageFile;
+		}
 
 		/**
 		 * This is the starting point for updating {@link DocXDrawingRun} with the paragraph provided from docx4j library<br>
@@ -83,6 +176,10 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 									Pic pic = graphicData.getPic();
 									CTPictureNonVisual nvPicPr = pic.getNvPicPr();
 									imageName = imageName + " (" + nvPicPr.getCNvPr().getName() + ")";
+
+									embedId = pic.getBlipFill().getBlip().getEmbed();
+									// System.out.println("embedId=" + embedId);
+
 								}
 							}
 						}

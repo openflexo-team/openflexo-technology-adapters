@@ -38,27 +38,48 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Logger;
 
+import javax.swing.text.TabStop;
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.ThemePart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
+import org.docx4j.wml.BooleanDefaultTrue;
+import org.docx4j.wml.CTTabStop;
+import org.docx4j.wml.Color;
 import org.docx4j.wml.Drawing;
+import org.docx4j.wml.HpsMeasure;
+import org.docx4j.wml.JcEnumeration;
 import org.docx4j.wml.P;
+import org.docx4j.wml.PPrBase;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RFonts;
+import org.docx4j.wml.RPrAbstract;
+import org.docx4j.wml.STLineSpacingRule;
+import org.docx4j.wml.STTabJc;
 import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
+import org.docx4j.wml.U;
 import org.openflexo.foundation.doc.DocumentFactory;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphAlignment;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphIndent;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphNumbering;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing.LineSpacingRule;
+import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphTab;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -81,9 +102,11 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	private final IdentifierManagementStrategy idStrategy;
 
+	public static final int INDENTS_MULTIPLIER = 20;
+
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext, IdentifierManagementStrategy idStrategy)
 			throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, DocXStyle.class), resource,
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, NamedDocXStyle.class), resource,
 				editingContext);
 		this.idStrategy = idStrategy;
 	}
@@ -98,7 +121,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXDocument makeDocument() {
+	public DocXDocument makeDocument() {
 		DocXDocument returned = newInstance(DocXDocument.class);
 		((DocXDocumentImpl) returned)._factory = this;
 		return returned;
@@ -130,16 +153,19 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXParagraph makeParagraph() {
+	public DocXParagraph makeParagraph() {
 		DocXParagraph returned = newInstance(DocXParagraph.class);
 		((DocXParagraphImpl) returned)._factory = this;
+		P p = Context.getWmlObjectFactory().createP();
+		returned.updateFromP(p, this);
 		return returned;
 	}
 
 	public boolean someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;
 
 	public DocXParagraph makeNewDocXParagraph(P p) {
-		DocXParagraph returned = makeParagraph();
+		DocXParagraph returned = newInstance(DocXParagraph.class);
+		((DocXParagraphImpl) returned)._factory = this;
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
 			switch (getIDStrategy()) {
@@ -329,12 +355,22 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXStyle makeStyle() {
-		return newInstance(DocXStyle.class);
+	public DocXParagraphStyle makeParagraphStyle() {
+		return newInstance(DocXParagraphStyle.class);
 	}
 
-	public DocXStyle makeNewDocXStyle(Style style, DocXStyle parent) {
-		DocXStyle returned = makeStyle();
+	@Override
+	public DocXRunStyle makeRunStyle() {
+		return newInstance(DocXRunStyle.class);
+	}
+
+	@Override
+	protected NamedDocXStyle makeNamedStyle() {
+		return newInstance(NamedDocXStyle.class);
+	}
+
+	public NamedDocXStyle makeNewDocXStyle(Style style, NamedDocXStyle parent) {
+		NamedDocXStyle returned = makeNamedStyle();
 		returned.updateFromStyle(style, this);
 		if (parent != null) {
 			returned.setParentStyle(parent);
@@ -368,6 +404,286 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		int docPrId = 1;
 		int cNvPrId = 2;
 		return imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
+	}
+
+	public Font makeFont(RFonts rFonts, DocXDocument document) {
+		System.out.println("Comment faire une fonte avec " + rFonts);
+		System.out.println("ascii=" + rFonts.getAscii());
+		System.out.println("hAnsi=" + rFonts.getHAnsi());
+		System.out.println("cs=" + rFonts.getCs());
+		System.out.println("hint=" + rFonts.getHint());
+		System.out.println("parent=" + rFonts.getParent());
+		System.out.println("asciiT=" + rFonts.getAsciiTheme());
+		System.out.println("hAnsiT=" + rFonts.getCstheme());
+		System.out.println("csT=" + rFonts.getHAnsiTheme());
+		System.out.println("hint=" + rFonts.getHint());
+		System.out.println("parent=" + rFonts.getParent());
+
+		String defaultFont = "";
+
+		if (rFonts == null) {
+			// log.info("No styles/docDefaults/rPrDefault/rPr/rFonts - default to Times New Roman");
+			// Yes, Times New Roman is still buried in Word 2007
+			defaultFont = "Times New Roman";
+		}
+		else {
+			// Usual case
+			if (rFonts.getAsciiTheme() == null) {
+
+				if (rFonts.getAscii() == null) {
+					// TODO
+					// log.error("Neither ascii or asciTheme. What to do? ");
+					defaultFont = "Times New Roman";
+
+				}
+				else {
+					// log.info("rPrDefault/rFonts referenced " + rFonts.getAscii());
+					defaultFont = rFonts.getAscii();
+				}
+
+			}
+			else {
+				if (getThemePart(document) == null) {
+					// No theme part - default to Calibri
+					// log.info("No theme part - default to Calibri");
+					defaultFont = "Calibri";
+				}
+				else {
+					String font = null;
+					try {
+						font = getThemePart(document).getFontFromTheme(rFonts.getAsciiTheme()/*, themeFontLang*/);
+					} catch (Docx4JException e) {
+						// TODO Auto-generated catch block
+						// log.error(e.getMessage(), e);
+					}
+					if (font != null) {
+						defaultFont = font;
+					}
+					else {
+						// No minorFont/latin in theme part - default to Calibri
+						// log.info("No minorFont/latin in theme part - default to Calibri");
+						defaultFont = "Calibri";
+					}
+				}
+			}
+		}
+		System.out.println("! FOUND " + defaultFont);
+		return new Font(defaultFont, Font.PLAIN, 12);
+	}
+
+	private ThemePart getThemePart(DocXDocument document) {
+		System.out.println("document=" + document);
+		if (document == null) {
+			return null;
+		}
+		return document.getWordprocessingMLPackage().getMainDocumentPart().getThemePart();
+	}
+
+	public java.awt.Color makeColor(Color color) {
+		if (color.getVal().length() == 6) {
+			int r = Integer.parseInt(color.getVal().substring(0, 2), 16);
+			int g = Integer.parseInt(color.getVal().substring(2, 4), 16);
+			int b = Integer.parseInt(color.getVal().substring(4, 6), 16);
+			return new java.awt.Color(r, g, b);
+		}
+		return null;
+	}
+
+	public void extractStyleProperties(RPrAbstract rPr, DocXRunStyle style) {
+
+		RFonts rFonts = rPr.getRFonts();
+		if (rFonts != null) {
+			style.setFont(makeFont(rFonts, style.getFlexoDocument()));
+		}
+
+		HpsMeasure sz = rPr.getSz();
+		if (sz != null) {
+			style.setFontSize(sz.getVal().intValue() / 2);
+		}
+
+		Color color = rPr.getColor();
+		if (color != null) {
+			style.setFontColor(makeColor(color));
+		}
+
+		if (rPr.getHighlight() != null) {
+			String name = rPr.getHighlight().getVal();
+			java.awt.Color bgColor = decodeHighlightName(name);
+			style.setBackgroundColor(bgColor);
+		}
+
+		BooleanDefaultTrue b = rPr.getB();
+		if (b != null) {
+			style.setBold(b.isVal());
+		}
+
+		BooleanDefaultTrue i = rPr.getI();
+		if (i != null) {
+			style.setItalic(i.isVal());
+		}
+
+		U u = rPr.getU();
+		if (u != null) {
+			style.setUnderline(true);
+		}
+
+	}
+
+	protected java.awt.Color decodeHighlightName(String name) {
+		if ("yellow".equals(name.toLowerCase())) {
+			return java.awt.Color.YELLOW;
+		}
+		else if ("blue".equals(name.toLowerCase())) {
+			return java.awt.Color.BLUE;
+		}
+		else if ("cyan".equals(name.toLowerCase())) {
+			return java.awt.Color.CYAN;
+		}
+		else if ("gray".equals(name.toLowerCase())) {
+			return java.awt.Color.GRAY;
+		}
+		else if ("green".equals(name.toLowerCase())) {
+			return java.awt.Color.GREEN;
+		}
+		else if ("magenta".equals(name.toLowerCase())) {
+			return java.awt.Color.MAGENTA;
+		}
+		else if ("orange".equals(name.toLowerCase())) {
+			return java.awt.Color.ORANGE;
+		}
+		else if ("pink".equals(name.toLowerCase())) {
+			return java.awt.Color.PINK;
+		}
+		else if ("red".equals(name.toLowerCase())) {
+			return java.awt.Color.RED;
+		}
+		else if ("white".equals(name.toLowerCase())) {
+			return java.awt.Color.WHITE;
+		}
+		return null;
+	}
+
+	public void extractStyleProperties(PPrBase pPr, DocXParagraphStyle style) {
+
+		if (pPr.getJc() != null) {
+			JcEnumeration align = pPr.getJc().getVal();
+			if (align.value().equals("center")) {
+				style.setParagraphAlignment(ParagraphAlignment.Center);
+			}
+			else if (align.value().equals("left")) {
+				style.setParagraphAlignment(ParagraphAlignment.Left);
+			}
+			else if (align.value().equals("right")) {
+				style.setParagraphAlignment(ParagraphAlignment.Right);
+			}
+			else if (align.value().equals("both")) {
+				style.setParagraphAlignment(ParagraphAlignment.Justify);
+			}
+		}
+
+		if (pPr.getTabs() != null) {
+			TabStop[] tabs = new TabStop[pPr.getTabs().getTab().size()];
+			for (CTTabStop stop : pPr.getTabs().getTab()) {
+				float pos = stop.getPos().intValue() / INDENTS_MULTIPLIER;
+				int align = TabStop.ALIGN_LEFT;
+				if (STTabJc.LEFT.equals(stop.getVal())) {
+					align = TabStop.ALIGN_LEFT;
+				}
+				else if (STTabJc.RIGHT.equals(stop.getVal())) {
+					align = TabStop.ALIGN_RIGHT;
+				}
+				else if (STTabJc.CENTER.equals(stop.getVal())) {
+					align = TabStop.ALIGN_CENTER;
+				}
+				else if (STTabJc.BAR.equals(stop.getVal())) {
+					align = TabStop.ALIGN_BAR;
+				}
+				else if (STTabJc.DECIMAL.equals(stop.getVal())) {
+					align = TabStop.ALIGN_DECIMAL;
+				}
+				int leader = TabStop.LEAD_NONE;
+				style.addToParagraphTabs(makeParagraphTab(pos, align, leader));
+			}
+		}
+
+		if (pPr.getSpacing() != null) {
+			ParagraphSpacing pSpacing = newInstance(ParagraphSpacing.class);
+			style.setParagraphSpacing(pSpacing);
+
+			// System.out.println(" >> pPr.getSpacing().getLineRule()=" + pPr.getSpacing().getLineRule());
+			// System.out.println(" >> pPr.getSpacing().getLine()=" + pPr.getSpacing().getLine());
+			// System.out.println(" >> pPr.getSpacing().getBefore()=" + pPr.getSpacing().getBefore());
+			// System.out.println(" >> pPr.getSpacing().getAfter()=" + pPr.getSpacing().getAfter());
+
+			if (STLineSpacingRule.AT_LEAST.equals(pPr.getSpacing().getLineRule())) {
+				pSpacing.setLineSpacingRule(LineSpacingRule.AT_LEAST);
+				pSpacing.setLine(pPr.getSpacing().getLine().intValue());
+			}
+			if (STLineSpacingRule.AUTO.equals(pPr.getSpacing().getLineRule())) {
+				pSpacing.setLineSpacingRule(LineSpacingRule.AUTO);
+				pSpacing.setLine(pPr.getSpacing().getLine().intValue());
+			}
+			if (pPr.getSpacing().getBefore() != null) {
+				pSpacing.setBefore(pPr.getSpacing().getBefore().intValue() / INDENTS_MULTIPLIER);
+			}
+			if (pPr.getSpacing().getAfter() != null) {
+				pSpacing.setAfter(pPr.getSpacing().getAfter().intValue() / INDENTS_MULTIPLIER);
+			}
+
+			// System.out.println("Before: " + style.getParagraphSpacing().getBefore());
+			// System.out.println("After: " + style.getParagraphSpacing().getAfter());
+		}
+
+		if (pPr.getInd() != null) {
+			ParagraphIndent pIndent = newInstance(ParagraphIndent.class);
+			style.setParagraphIndent(pIndent);
+			if (pPr.getInd().getLeft() != null) {
+				int left = pPr.getInd().getLeft().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setLeft(left);
+			}
+			if (pPr.getInd().getRight() != null) {
+				int right = pPr.getInd().getRight().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setRight(right);
+			}
+			if (pPr.getInd().getFirstLine() != null) {
+				int first = pPr.getInd().getFirstLine().intValue() / INDENTS_MULTIPLIER;
+				pIndent.setFirst(first);
+			}
+		}
+
+		if (pPr.getNumPr() != null) {
+			ParagraphNumbering pNumbering = newInstance(ParagraphNumbering.class);
+			style.setParagraphNumbering(pNumbering);
+			if (pPr.getNumPr().getNumId() != null) {
+				pNumbering.setNumId(pPr.getNumPr().getNumId().getVal().intValue());
+			}
+			if (pPr.getNumPr().getIlvl() != null) {
+				pNumbering.setIlvl(pPr.getNumPr().getIlvl().getVal().intValue());
+			}
+		}
+
+	}
+
+	public ParagraphTab makeParagraphTab(float pos, int align, int leader) {
+		ParagraphTab returned = newInstance(ParagraphTab.class);
+		returned.setPos(pos);
+		returned.setAlign(align);
+		returned.setLeader(leader);
+		return returned;
+	}
+
+	public DocXRunStyle makeRunStyle(RPrAbstract rPr) {
+
+		DocXRunStyle returned = newInstance(DocXRunStyle.class);
+		returned.updateFromRPr(rPr, this);
+		return returned;
+	}
+
+	public DocXParagraphStyle makeParagraphStyle(PPrBase pPr) {
+
+		DocXParagraphStyle returned = newInstance(DocXParagraphStyle.class);
+		returned.updateFromPPr(pPr, this);
+		return returned;
 	}
 
 }

@@ -31,8 +31,10 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
+import org.docx4j.wml.SdtBlock;
+import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
-import org.openflexo.foundation.doc.FlexoDocParagraph;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -91,10 +93,10 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 				.getLogger(DocXTableCellImpl.class.getPackage().getName());
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
-
-		public DocXTableCellImpl() {
-			super();
-		}
+		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
+		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<SdtBlock, DocXSdtBlock>();
+		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<Object, DocXUnmappedElement<?>>();
+		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<String, DocXElement<?>>();
 
 		@Override
 		public void setTc(Tc tc) {
@@ -114,7 +116,14 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		@Override
 		public void updateFromTc(Tc tc, DocXFactory factory) {
 
-			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<>(getParagraphs());
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>(getElements());
+
+			// This map stores old document hierarchy
+			Map<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<>();
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				oldChildren.put(e, new ArrayList<>(e.getChildrenElements()));
+				e.invalidateChildrenElements();
+			}
 
 			int currentIndex = 0;
 
@@ -127,25 +136,83 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 					if (paragraph == null) {
 						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
-						internallyInsertParagraphAtIndex(paragraph, currentIndex);
+						internallyInsertElementAtIndex(paragraph, currentIndex);
 					}
 					else {
 						// OK paragraph was found
-						if (getParagraphs().indexOf(paragraph) != currentIndex) {
+						if (getElements().indexOf(paragraph) != currentIndex) {
 							// Paragraph was existing but is not at the right position
-							internallyMoveParagraphToIndex(paragraph, currentIndex);
+							internallyMoveElementToIndex(paragraph, currentIndex);
 						}
 						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
-						paragraphsToRemove.remove(paragraph);
+						elementsToRemove.remove(paragraph);
 					}
-					currentIndex++;
 				}
+				else if (o instanceof Tbl) {
+					DocXTable table = tables.get(o);
+					if (table == null) {
+						// System.out.println("# Create new table for " + o);
+						table = factory.makeNewDocXTable((Tbl) o);
+						internallyInsertElementAtIndex(table, currentIndex);
+					}
+					else {
+						// OK table was found
+						if (getElements().indexOf(table) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							internallyMoveElementToIndex(table, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(table);
+					}
+				}
+				else if (o instanceof SdtBlock) {
+					DocXSdtBlock sdtBlockElement = sdtBlocks.get(o);
+					if (sdtBlockElement == null) {
+						System.out.println("# Create new SdtBlock for " + o);
+						sdtBlockElement = factory.makeNewSdtBlock((SdtBlock) o);
+						internallyInsertElementAtIndex(sdtBlockElement, currentIndex);
+					}
+					else {
+						// OK sdtBlock was found
+						if (getElements().indexOf(sdtBlockElement) != currentIndex) {
+							// SdtBlock was existing but is not at the right position
+							internallyMoveElementToIndex(sdtBlockElement, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(sdtBlockElement);
+					}
+				}
+				else {
+					DocXUnmappedElement<?> unmappedElement = unmappedElements.get(o);
+					if (unmappedElement == null) {
+						System.out.println("# Create new DocXUnmappedElement for " + o);
+						unmappedElement = factory.makeNewUnmappedElement(o);
+						internallyInsertElementAtIndex(unmappedElement, currentIndex);
+					}
+					else {
+						// OK element was found
+						if (getElements().indexOf(unmappedElement) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							internallyMoveElementToIndex(unmappedElement, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(unmappedElement);
+					}
+				}
+				currentIndex++;
 			}
 
-			for (FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> p : paragraphsToRemove) {
-				internallyRemoveFromParagraphs(p);
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
+				// System.out.println("# Remove paragraph for " + e);
+				internallyRemoveFromElements(e);
 			}
 
 			performSuperSetter(TC_KEY, tc);
@@ -156,9 +223,9 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		 * Insert paragraph to this {@link FlexoDocument} at supplied index (public API).<br>
 		 * Paragraph will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
-		@Override
+		/*@Override
 		public void insertParagraphAtIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> aParagraph, int index) {
-
+		
 			Tc tc = getTc();
 			if (aParagraph instanceof DocXParagraph) {
 				P p = ((DocXParagraph) aParagraph).getP();
@@ -168,7 +235,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 			else {
 				logger.warning("Unexpected paragraph: " + aParagraph);
 			}
-		}
+		}*/
 
 		/**
 		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph inserting (calling
@@ -176,34 +243,34 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyInsertParagraphAtIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph, int index) {
+		/*private void internallyInsertParagraphAtIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph, int index) {
 			performSuperAdder(PARAGRAPHS_KEY, addedParagraph, index);
 			internallyHandleParagraphAdding(addedParagraph);
-		}
+		}*/
 
 		/**
 		 * Internally used to handle paragraph adding in wrapping model
 		 * 
 		 * @param anParagraph
 		 */
-		private void internallyHandleParagraphAdding(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+		/*private void internallyHandleParagraphAdding(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (anParagraph instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) anParagraph;
 				if (paragraph.getP() != null) {
 					paragraphs.put(paragraph.getP(), paragraph);
 				}
 			}
-		}
+		}*/
 
 		/**
 		 * Moved paragraph to this {@link FlexoDocument} at supplied index (public API).<br>
 		 * Paragraph will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
-		@Override
+		/*@Override
 		public void moveParagraphToIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
 			// TODO: implement moving in Tc
 			internallyMoveParagraphToIndex(anParagraph, index);
-		}
+		}*/
 
 		/**
 		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph moving (calling
@@ -211,17 +278,17 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyMoveParagraphToIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
+		/*private void internallyMoveParagraphToIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
 			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphs = getParagraphs();
 			paragraphs.remove(anParagraph);
 			paragraphs.add(index, anParagraph);
-		}
+		}*/
 
 		/**
 		 * Add paragraph to this {@link FlexoDocument} (public API).<br>
 		 * Paragraph will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
-		@Override
+		/*@Override
 		public void addToParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (isCreatedByCloning()) {
 				internallyAddToParagraphs(anParagraph);
@@ -232,7 +299,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 				getTc().getContent().add(toAdd);
 			}
 			internallyAddToParagraphs(anParagraph);
-		}
+		}*/
 
 		/**
 		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph adding (calling
@@ -240,16 +307,16 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyAddToParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph) {
+		/*private void internallyAddToParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph) {
 			performSuperAdder(PARAGRAPHS_KEY, addedParagraph);
 			internallyHandleParagraphAdding(addedParagraph);
-		}
+		}*/
 
 		/**
 		 * Remove paragraph from this {@link FlexoDocument} (public API).<br>
 		 * Paragraph will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
-		@Override
+		/*@Override
 		public void removeFromParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (anParagraph instanceof DocXParagraph) {
 				P toRemove = ((DocXParagraph) anParagraph).getP();
@@ -257,10 +324,10 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 					logger.warning("P item not present in Tc. Please investigate...");
 				}
 			}
-
+		
 			// Then internal
 			internallyRemoveFromParagraphs(anParagraph);
-		}
+		}*/
 
 		/**
 		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph removing (calling
@@ -268,7 +335,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		 * 
 		 * @param removedParagraph
 		 */
-		private void internallyRemoveFromParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> removedParagraph) {
+		/*private void internallyRemoveFromParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> removedParagraph) {
 			if (removedParagraph instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) removedParagraph;
 				if (paragraph.getP() != null) {
@@ -276,11 +343,197 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 				}
 			}
 			performSuperRemover(PARAGRAPHS_KEY, removedParagraph);
+		}*/
+
+		/*@Override
+		public List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> getElements() {
+			return (List) getParagraphs();
+		}*/
+
+		// TODO: big code duplication with DocXDocument
+		// Please refactor this to avoid code duplication
+
+		/**
+		 * Insert element to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Element will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void insertElementAtIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+
+			Tc tc = getTc();
+			if (anElement instanceof DocXParagraph) {
+				P p = ((DocXParagraph) anElement).getP();
+				tc.getContent().add(index, p);
+				internallyInsertElementAtIndex(anElement, index);
+			}
+			if (anElement instanceof DocXTable) {
+				Tbl t = ((DocXTable) anElement).getTbl();
+				tc.getContent().add(index, t);
+				internallyInsertElementAtIndex(anElement, index);
+			}
+			else {
+				logger.warning("Unexpected element: " + anElement);
+			}
+
 		}
 
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element inserting (calling
+		 * this assume that added element is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyInsertElementAtIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> addedElement, int index) {
+			performSuperAdder(ELEMENTS_KEY, addedElement, index);
+			internallyHandleElementAdding(addedElement);
+		}
+
+		/**
+		 * Internally used to handle element adding in wrapping model
+		 * 
+		 * @param anElement
+		 */
+		private void internallyHandleElementAdding(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+			if (anElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) anElement;
+				if (paragraph.getP() != null) {
+					paragraphs.put(paragraph.getP(), paragraph);
+				}
+			}
+			if (anElement instanceof DocXTable) {
+				DocXTable table = (DocXTable) anElement;
+				if (table.getTbl() != null) {
+					tables.put(table.getTbl(), table);
+				}
+			}
+			if (anElement instanceof DocXSdtBlock) {
+				DocXSdtBlock docXSdtBlock = (DocXSdtBlock) anElement;
+				if (docXSdtBlock.getSdtBlock() != null) {
+					sdtBlocks.put(docXSdtBlock.getSdtBlock(), docXSdtBlock);
+				}
+			}
+			if (anElement instanceof DocXUnmappedElement) {
+				DocXUnmappedElement<?> unmappedElement = (DocXUnmappedElement<?>) anElement;
+				if (unmappedElement.getDocXObject() != null) {
+					unmappedElements.put(unmappedElement.getDocXObject(), unmappedElement);
+				}
+			}
+			if (anElement.getIdentifier() != null) {
+				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
+				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement<?>) anElement);
+			}
+			else {
+				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);
+			}
+		}
+
+		/**
+		 * Moved element to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Element will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
 		@Override
-		public List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> getElements() {
-			return getParagraphs();
+		public void moveElementToIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			// TODO: implement moving in WordProcessingMLPackage
+			internallyMoveElementToIndex(anElement, index);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element moving (calling this
+		 * assume that moved element has already been moved in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyMoveElementToIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elements = getElements();
+			elements.remove(anElement);
+			elements.add(index, anElement);
+		}
+
+		/**
+		 * Add element to this {@link FlexoDocument} (public API).<br>
+		 * Element will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void addToElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+			if (isCreatedByCloning()) {
+				internallyAddToElements(anElement);
+				return;
+			}
+			Tc tc = getTc();
+			if (anElement instanceof DocXParagraph) {
+				P toAdd = ((DocXParagraph) anElement).getP();
+				tc.getContent().add(toAdd);
+			}
+			else if (anElement instanceof DocXTable) {
+				Tbl toAdd = ((DocXTable) anElement).getTbl();
+				tc.getContent().add(toAdd);
+			}
+			internallyAddToElements(anElement);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element adding (calling this
+		 * assume that added element is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyAddToElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> addedElement) {
+			performSuperAdder(ELEMENTS_KEY, addedElement);
+			internallyHandleElementAdding(addedElement);
+		}
+
+		/**
+		 * Remove element from this {@link FlexoDocument} (public API).<br>
+		 * Element will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void removeFromElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+
+			// Removing in Tc
+			Tc tc = getTc();
+			if (anElement instanceof DocXParagraph) {
+				P toRemove = ((DocXParagraph) anElement).getP();
+				if (tc.getContent().contains(toRemove)) {
+					tc.getContent().remove(toRemove);
+				}
+			}
+			else if (anElement instanceof DocXTable) {
+				Tbl toRemove = ((DocXTable) anElement).getTbl();
+				if (!DocXUtils.removeFromList(toRemove, tc.getContent())) {
+					logger.warning("Tbl item not present in document root element list. Please investigate...");
+				}
+			}
+
+			// Then internal
+			internallyRemoveFromElements(anElement);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element removing (calling
+		 * this assume that removed element has already been removed from underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param removedElement
+		 */
+		private void internallyRemoveFromElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> removedElement) {
+			if (removedElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) removedElement;
+				if (paragraph.getP() != null) {
+					paragraphs.remove(paragraph.getP());
+				}
+			}
+			if (removedElement instanceof DocXTable) {
+				DocXTable table = (DocXTable) removedElement;
+				if (table.getTbl() != null) {
+					tables.remove(table.getTbl());
+				}
+			}
+			if (removedElement.getIdentifier() != null) {
+				elementsForIdentifier.remove(removedElement.getIdentifier());
+			}
+			else {
+				logger.warning("removeFromElements() called for element with null identifier: " + removedElement);
+			}
+			performSuperRemover(ELEMENTS_KEY, removedElement);
 		}
 
 		@Override
@@ -288,7 +541,6 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 			return getParagraphWithIdentifier(identifier);
 		}
 
-		@Override
 		public DocXParagraph getParagraphWithIdentifier(String identifier) {
 			for (DocXParagraph p : paragraphs.values()) {
 				if (p.getIdentifier().equals(identifier)) {
@@ -319,8 +571,8 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 
 		@Override
 		public String getIdentifier() {
-			if (getParagraphs().size() > 0) {
-				return "Cell" + getParagraphs().get(0).getIdentifier();
+			if (getElements().size() > 0) {
+				return "Cell" + getElements().get(0).getIdentifier();
 			}
 			return getRow().getIdentifier() + "Cell" + getIndex();
 		}
@@ -358,29 +610,31 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 				lines.add(st.nextToken());
 			}
 
-			if (getParagraphs().size() == 0) {
+			if (getElements().size() == 0) {
 				for (int i = 0; i < lines.size(); i++) {
 					// Add paragraph
 					DocXParagraph paragraph = getFlexoDocument().getFactory().makeNewDocXParagraph(lines.get(i));
-					addToParagraphs(paragraph);
+					addToElements(paragraph);
 				}
 
 				return;
 			}
 
-			while (getParagraphs().size() > lines.size()) {
+			while (getElements().size() > lines.size()) {
 				// Remove extra paragraphs
-				removeFromParagraphs(getParagraphs().get(getParagraphs().size() - 1));
+				removeFromElements(getElements().get(getElements().size() - 1));
 			}
 
 			for (int i = 0; i < lines.size(); i++) {
-				if (i < getParagraphs().size()) {
-					getParagraphs().get(i).setRawText(lines.get(i));
+				if (i < getElements().size()) {
+					if (getElements().get(i) instanceof DocXParagraph) {
+						((DocXParagraph) getElements().get(i)).setRawText(lines.get(i));
+					}
 				}
 				else {
 					// Add paragraph
 					DocXParagraph paragraph = getFlexoDocument().getFactory().makeNewDocXParagraph(lines.get(i));
-					addToParagraphs(paragraph);
+					addToElements(paragraph);
 				}
 			}
 
