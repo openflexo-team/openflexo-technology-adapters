@@ -173,21 +173,6 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 	public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate("AbstractTestDocXInspector");
-
-		// TODO: please check this: suspiscion of missing code after merge
-
-		/*
-		 * {
-		 * 
-		 * @Override public boolean handleException(Exception e) { //
-		 * System.out.println( // "Handle exception ? isDisposed=" +
-		 * isDisposed() + " exception=" + e + " stacktrace=" +
-		 * e.getStackTrace().length); if (e instanceof NullPointerException &&
-		 * ((NullPointerException) e).getStackTrace().length == 0) { // Handle
-		 * unexpected exception occured in docx4all editor // We suspect issues
-		 * with fonts // Temporary ignore those exceptions return false; }
-		 * return super.handleException(e); } }
-		 */
 	}
 
 	@AfterClass
