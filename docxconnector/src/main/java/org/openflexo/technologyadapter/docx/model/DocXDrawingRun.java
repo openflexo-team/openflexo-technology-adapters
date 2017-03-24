@@ -75,8 +75,7 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 				DocXDocument document = getFlexoDocument();
 
-				if (document != null && document instanceof DocXDocumentImpl
-						&& document.getResource().getIODelegate().getSerializationArtefact() instanceof File) {
+				if (document != null && document instanceof DocXDocumentImpl) {
 					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
 					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
 					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
