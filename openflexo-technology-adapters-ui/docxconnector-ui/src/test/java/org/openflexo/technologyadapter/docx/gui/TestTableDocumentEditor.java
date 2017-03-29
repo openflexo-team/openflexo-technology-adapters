@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultTreeModel;
@@ -180,20 +181,20 @@ public class TestTableDocumentEditor extends AbstractTestDocX {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("removeUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("insertUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("changedUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 		});
 
