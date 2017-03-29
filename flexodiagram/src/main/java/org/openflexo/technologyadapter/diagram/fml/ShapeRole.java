@@ -42,7 +42,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -310,7 +309,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				}
 
 				// center the shape in the parent
-				if (parentShapeRole != null) {
+				if (parentShapeRole != null && getGraphicalRepresentation() != null) {
 					getGraphicalRepresentation()
 							.setX((parentShapeRole.getGraphicalRepresentation().getWidth() - getGraphicalRepresentation().getWidth()) / 2);
 					getGraphicalRepresentation().setY(
@@ -318,8 +317,10 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				}
 				else {
 					// Center shape in preview
-					getGraphicalRepresentation().setX((250 - getGraphicalRepresentation().getWidth()) / 2);
-					getGraphicalRepresentation().setY((200 - getGraphicalRepresentation().getHeight()) / 2);
+					if (getGraphicalRepresentation() != null) {
+						getGraphicalRepresentation().setX((250 - getGraphicalRepresentation().getWidth()) / 2);
+						getGraphicalRepresentation().setY((200 - getGraphicalRepresentation().getHeight()) / 2);
+					}
 				}
 				// setChanged();
 				// notifyObservers();
