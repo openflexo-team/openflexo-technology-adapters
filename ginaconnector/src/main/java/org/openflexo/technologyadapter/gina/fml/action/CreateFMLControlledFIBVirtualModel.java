@@ -99,6 +99,11 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * 
+ * @author sylvain
+ *
+ */
 public class CreateFMLControlledFIBVirtualModel
 		extends AbstractCreateVirtualModel<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject> {
 
