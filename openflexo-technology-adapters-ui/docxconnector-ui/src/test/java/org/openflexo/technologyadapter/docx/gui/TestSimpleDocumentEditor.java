@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultTreeModel;
@@ -319,25 +320,21 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 				((ParagraphElement) editor.getStyledDocument().getRootElement().getElement(11)).getDocObject());
 	}
 
-	// TODO: don't understand what is wrong with this test, but this causes application freeze
-	/*@Test
+	@Test
 	@TestOrder(7)
 	public void mergeTwoParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-	
+
 		log("appendNewLineInARun()");
-	
+
 		editor.getJEditorPane().select(56, 60);
-		editor.getJEditorPane().replaceSelection("prout");
+		editor.getJEditorPane().replaceSelection("foo");
 		assertEquals(11, docXDocument.getElements().size());
 		DocXParagraph title = (DocXParagraph) docXDocument.getElements().get(0);
 		assertEquals("Document title, with 16pixel font", title.getRawText());
 		DocXParagraph paragraph1 = (DocXParagraph) docXDocument.getElements().get(2);
 		assertEquals(1, paragraph1.getRuns().size());
-		assertEquals("This is the modified ", paragraph1.getRawText());
-		DocXParagraph paragraph2 = (DocXParagraph) docXDocument.getElements().get(3);
-		assertEquals(1, paragraph2.getRuns().size());
-		assertEquals("paragraph.", paragraph2.getRawText());
-	}*/
+		assertEquals("This is the modified fooagraph.", paragraph1.getRawText());
+	}
 
 	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
 
@@ -401,20 +398,20 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("removeUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("insertUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				System.out.println("Hop ca change");
-				((DefaultTreeModel) tree.getModel()).reload();
+				System.out.println("changedUpdate()");
+				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
 			}
 		});
 

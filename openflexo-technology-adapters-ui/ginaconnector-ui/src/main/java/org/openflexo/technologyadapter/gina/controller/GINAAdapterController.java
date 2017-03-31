@@ -40,6 +40,7 @@ import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssign
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
 import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBComponentInitializer;
+import org.openflexo.technologyadapter.gina.controller.action.GivesFMLControlledFIBVirtualModelNatureInitializer;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.view.GINAModuleView;
 import org.openflexo.view.EmptyPanel;
@@ -147,6 +148,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 
 		// FML edition
 		new CreateFMLControlledFIBVirtualModelInitializer(actionInitializer);
+		new GivesFMLControlledFIBVirtualModelNatureInitializer(actionInitializer);
 
 		// GINA edition
 		new CreateGINAFIBComponentInitializer(actionInitializer);
