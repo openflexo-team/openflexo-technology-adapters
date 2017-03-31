@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 public interface XMLFileResource extends XMLResource {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
-
+	public static final String XML_FILE_EXTENSION = ".xml";
 	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public XMLTechnologyContextManager getTechnologyContextManager();

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" version="0.1" name="simpleXML" userID="FLX" flexoID="4">
+  <ModelSlot_FreeXMLModelSlot id="1" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="freeXML" userID="FLX" description="&lt;html&gt;&#xA;  &lt;head&gt;&#xA;&#xA;  &lt;/head&gt;&#xA;  &lt;body&gt;&#xA;    &lt;p style=&quot;margin-top: 0&quot;&gt;&#xA;      &#xA;    &lt;/p&gt;&#xA;  &lt;/body&gt;&#xA;&lt;/html&gt;&#xA;" flexoID="8">
+    <FreeXMLModelSlot idref="1" />
+  </ModelSlot_FreeXMLModelSlot>
+  <ModelSlot_XMLModelSlot id="2" metaModelURI="http://maven.apache.org/POM/4.0.0" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="mavenpomXML" userID="FLX" flexoID="12">
+    <XMLModelSlot idref="2" />
+    <XMLURIProcessor id="3" mappingStyle="SINGLETON" typeURI="http://maven.apache.org/POM/4.0.0#project" attributeName="name" userID="FLX" flexoID="13" />
+    <XMLURIProcessor id="4" mappingStyle="SINGLETON" typeURI="http://maven.apache.org/POM/4.0.0/Model#modules" userID="FLX" flexoID="14" />
+    <XMLURIProcessor id="5" mappingStyle="SINGLETON" typeURI="http://maven.apache.org/POM/4.0.0/Profile#build" userID="FLX" flexoID="15" />
+    <XMLURIProcessor id="6" mappingStyle="SINGLETON" typeURI="http://maven.apache.org/POM/4.0.0/PluginManagement#plugins" userID="FLX" flexoID="16" />
+  </ModelSlot_XMLModelSlot>
+  <CreationScheme id="7" name="create" width="800" label="create" height="600" userID="FLX" flexoID="17">
+    <BehaviourControlGraph_Sequence id="8" userID="FLX" flexoID="29">
+      <ControlGraph2_AssignationAction id="9" assign="mavenpomXML" ownerContext="controlGraph2" userID="FLX" flexoID="28">
+        <AssignableAction_CreateXMLFileResource id="10" resourceCenter="project" relativePath="data" resourceName="(parameters.baseFileName + &quot;_pom.xml&quot;)" userID="FLX" flexoID="27">
+          <FreeXMLModelSlot idref="1" />
+        </AssignableAction_CreateXMLFileResource>
+      </ControlGraph2_AssignationAction>
+      <ControlGraph1_AssignationAction id="11" assign="freeXML" ownerContext="controlGraph1" userID="FLX" flexoID="25">
+        <AssignableAction_CreateXMLFileResource id="12" resourceCenter="project" relativePath="data" resourceName="(parameters.baseFileName + &quot;_free.xml&quot;)" userID="FLX" description="" flexoID="24">
+          <FreeXMLModelSlot idref="1" />
+        </AssignableAction_CreateXMLFileResource>
+      </ControlGraph1_AssignationAction>
+    </BehaviourControlGraph_Sequence>
+    <GenericBehaviourParameter id="13" isRequired="true" widget="TEXT_FIELD" defaultValue="&quot;monFichier&quot;" name="baseFileName" type="java.lang.String" userID="FLX" description="" flexoID="18" />
+  </CreationScheme>
+  <DeletionScheme id="14" name="delete" width="800" label="delete" height="600" userID="FLX" flexoID="33">
+    <BehaviourControlGraph_EmptyControlGraph id="15" userID="FLX" flexoID="32" />
+  </DeletionScheme>
+  <Inspector id="16" inspectorTitle="simpleXML" userID="FLX" flexoID="1" />
+</VirtualModel>

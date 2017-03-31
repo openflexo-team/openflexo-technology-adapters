@@ -73,6 +73,7 @@ import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.fml.XMLActorReference;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.editionaction.CreateXMLFileResource;
 import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -94,7 +95,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
  */
 @DeclareFlexoRoles({ XMLIndividualRole.class })
 @DeclareActorReferences({ XMLActorReference.class })
-@DeclareEditionActions({ AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
+@DeclareEditionActions({ CreateXMLFileResource.class, AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)

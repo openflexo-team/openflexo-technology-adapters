@@ -61,6 +61,9 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.editionaction.CreateXMLFileResource;
+import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
@@ -72,7 +75,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
  * 
  */
 @DeclareFlexoRoles({ XMLIndividualRole.class })
-@DeclareEditionActions({ AddXMLIndividual.class })
+@DeclareEditionActions({ CreateXMLFileResource.class, AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
