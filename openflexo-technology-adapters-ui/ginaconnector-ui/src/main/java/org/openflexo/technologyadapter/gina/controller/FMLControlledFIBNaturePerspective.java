@@ -105,7 +105,7 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	@Override
 	protected ModuleView<ViewPoint> createModuleViewForViewPoint(ViewPoint viewPoint) {
 		// return new ViewPointView(viewPoint, getController(), this);
-		return new EmptyPanel<ViewPoint>(getController(), this, viewPoint);
+		return new EmptyPanel<>(getController(), this, viewPoint);
 	}
 
 	@Override
@@ -113,13 +113,13 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
 		}
-		return new EmptyPanel<VirtualModel>(getController(), this, virtualModel);
+		return new EmptyPanel<>(getController(), this, virtualModel);
 	}
 
 	@Override
 	protected ModuleView<FlexoConcept> createModuleViewForFlexoConcept(FlexoConcept flexoConcept) {
 		// return new DiagramFlexoConceptView(flexoConcept, getController(), this);
-		return new EmptyPanel<FlexoConcept>(getController(), this, flexoConcept);
+		return new EmptyPanel<>(getController(), this, flexoConcept);
 	}
 
 }

@@ -184,11 +184,11 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	@Override
 	public ModuleView<?> createModuleViewForObject(final TechnologyObject<GINATechnologyAdapter> object, final FlexoController controller,
 			final FlexoPerspective perspective) {
-		// TODO Auto-generated method stub : update your moduleView code to have somethig represented
+		// TODO Auto-generated method stub : update your moduleView code to have something represented
 		if (object instanceof GINAFIBComponent) {
 			return new GINAModuleView((GINAFIBComponent) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<GINATechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 
 	@Override
 	protected ModuleView<View> createModuleViewForView(View view) {
-		return new EmptyPanel<View>(getController(), this, view);
+		return new EmptyPanel<>(getController(), this, view);
 	}
 
 	@Override

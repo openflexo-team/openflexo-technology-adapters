@@ -310,10 +310,10 @@ public class CreateFMLControlledFIBVirtualModel
 				assign.setVariable(apiEntry.getName());
 				assign.setVariableType(apiEntry.getType());
 				if (apiEntry.isAPI()) {
-					assign.setValue(new DataBinding<Object>(apiEntry.getName()));
+					assign.setValue(new DataBinding<>(apiEntry.getName()));
 				}
 				else {
-					assign.setValue(new DataBinding<Object>(apiEntry.getValue().toString()));
+					assign.setValue(new DataBinding<>(apiEntry.getValue().toString()));
 				}
 			}
 		}
@@ -327,7 +327,8 @@ public class CreateFMLControlledFIBVirtualModel
 		for (GINAFIBComponentAPIEntry apiEntry : getAPIEntries()) {
 			if (apiEntry.getType() != null) {
 				if (apiEntry.isAPI()) {
-					FlexoBehaviourParameter newParameter = createParameter(initBehaviour, apiEntry.getName(), apiEntry.getType());
+					// Unused FlexoBehaviourParameter newParameter =
+					createParameter(initBehaviour, apiEntry.getName(), apiEntry.getType());
 				}
 			}
 		}
@@ -336,7 +337,7 @@ public class CreateFMLControlledFIBVirtualModel
 				null, this);
 		configureModelSlotAction.setModelSlot(uiModelSlot);
 		configureModelSlotAction.setEditionActionClass(ConfigureGINAFIBComponent.class);
-		configureModelSlotAction.setAssignation(new DataBinding<Object>(getFIBModelSlotName()));
+		configureModelSlotAction.setAssignation(new DataBinding<>(getFIBModelSlotName()));
 		configureModelSlotAction.doAction();
 
 		for (GINAFIBComponentAPIEntry apiEntry : getAPIEntries()) {
@@ -346,11 +347,11 @@ public class CreateFMLControlledFIBVirtualModel
 							.makeNewEmbeddedAction(initBehaviour.getControlGraph(), null, this);
 					createAssignAction.setModelSlot(uiModelSlot);
 					createAssignAction.setEditionActionClass(ExpressionAction.class);
-					createAssignAction.setAssignation(new DataBinding<Object>(apiEntry.getName()));
+					createAssignAction.setAssignation(new DataBinding<>(apiEntry.getName()));
 					createAssignAction.doAction();
 					AssignationAction<?> assignAction = (AssignationAction<?>) createAssignAction.getNewEditionAction();
 					((ExpressionAction) assignAction.getAssignableAction())
-							.setExpression(new DataBinding<Object>("parameters." + apiEntry.getName()));
+							.setExpression(new DataBinding<>("parameters." + apiEntry.getName()));
 					assignAction.setName("assign");
 				}
 			}
@@ -546,7 +547,7 @@ public class CreateFMLControlledFIBVirtualModel
 
 		public DataBinding<?> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				value = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -554,7 +555,7 @@ public class CreateFMLControlledFIBVirtualModel
 
 		public void setValue(DataBinding<?> value) {
 			if (value != null) {
-				this.value = new DataBinding<Object>(value.toString(), this, Object.class, DataBinding.BindingDefinitionType.GET);
+				this.value = new DataBinding<>(value.toString(), this, Object.class, DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 		}
