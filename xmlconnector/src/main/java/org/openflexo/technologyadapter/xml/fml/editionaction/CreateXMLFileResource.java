@@ -96,6 +96,9 @@ public interface CreateXMLFileResource
 				newResource = createResource(xmlTA, XMLFileResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
 						XMLFileResource.XML_FILE_EXTENSION, true);
 
+				newResource.save(null);
+				newResource.setIsModified();
+
 				XMLModel xmlModel = newResource.getResourceData(null);
 
 				return xmlModel;
