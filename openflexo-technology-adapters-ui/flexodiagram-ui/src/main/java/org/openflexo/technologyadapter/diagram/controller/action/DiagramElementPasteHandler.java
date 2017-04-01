@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoClipboard;
 import org.openflexo.foundation.action.PasteAction.DefaultPastingContext;
-import org.openflexo.foundation.action.PasteAction.PasteHandler;
+import org.openflexo.foundation.action.PasteAction.FlexoPasteHandler;
 import org.openflexo.foundation.action.PasteAction.PastingContext;
 import org.openflexo.model.factory.Clipboard;
 import org.openflexo.selection.MouseSelectionManager;
@@ -63,7 +63,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class DiagramElementPasteHandler implements PasteHandler<DiagramContainerElement> {
+public class DiagramElementPasteHandler extends FlexoPasteHandler<DiagramContainerElement> {
 
 	private static final Logger logger = Logger.getLogger(DiagramElementPasteHandler.class.getPackage().getName());
 
@@ -105,7 +105,8 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 
 		if (reflexivePaste) {
 			returned.setPasteProperty(REFLEXIVE_PASTE, "true");
-		} else {
+		}
+		else {
 			returned.setPasteProperty(REFLEXIVE_PASTE, "false");
 		}
 
@@ -121,14 +122,17 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 		if (leaderClipboard.isSingleObject()) {
 			if (leaderClipboard.getSingleContents() instanceof DiagramShape) {
 				translateName((DiagramShape) leaderClipboard.getSingleContents());
-			} else if (leaderClipboard.getSingleContents() instanceof DiagramConnector) {
+			}
+			else if (leaderClipboard.getSingleContents() instanceof DiagramConnector) {
 				translateName((DiagramConnector) leaderClipboard.getSingleContents());
 			}
-		} else {
+		}
+		else {
 			for (Object o : leaderClipboard.getMultipleContents()) {
 				if (o instanceof DiagramShape) {
 					translateName((DiagramShape) o);
-				} else if (o instanceof DiagramConnector) {
+				}
+				else if (o instanceof DiagramConnector) {
 					translateName((DiagramConnector) o);
 				}
 			}
@@ -142,13 +146,14 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 					shapeBeingPasted.getGraphicalRepresentation().setX(shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
 					shapeBeingPasted.getGraphicalRepresentation().setY(shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
 				}
-			} else {
+			}
+			else {
 				for (Object o : leaderClipboard.getMultipleContents()) {
 					if (o instanceof DiagramShape) {
-						((DiagramShape) o).getGraphicalRepresentation().setX(
-								((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
-						((DiagramShape) o).getGraphicalRepresentation().setY(
-								((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
+						((DiagramShape) o).getGraphicalRepresentation()
+								.setX(((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
+						((DiagramShape) o).getGraphicalRepresentation()
+								.setY(((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
 					}
 				}
 			}
@@ -161,7 +166,8 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 					shapeBeingPasted.getGraphicalRepresentation().setX(selectionManager.getLastClickedPoint().getX());
 					shapeBeingPasted.getGraphicalRepresentation().setY(selectionManager.getLastClickedPoint().getY());
 				}
-			} else {
+			}
+			else {
 				boolean deltaSet = false;
 				double deltaX = Double.NaN;
 				double deltaY = Double.NaN;
@@ -196,7 +202,8 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 		String newName;
 		if (oldName.endsWith(COPY_SUFFIX)) {
 			newName = oldName + "2";
-		} else if (oldName.contains(COPY_SUFFIX)) {
+		}
+		else if (oldName.contains(COPY_SUFFIX)) {
 			try {
 				int currentIndex = Integer.parseInt(oldName.substring(oldName.lastIndexOf(COPY_SUFFIX) + COPY_SUFFIX.length()));
 				newName = oldName.substring(0, oldName.lastIndexOf(COPY_SUFFIX)) + COPY_SUFFIX + (currentIndex + 1);
@@ -204,7 +211,8 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 				logger.warning("Could not parse as int " + oldName.substring(oldName.lastIndexOf(COPY_SUFFIX)));
 				newName = oldName + COPY_SUFFIX;
 			}
-		} else {
+		}
+		else {
 			newName = oldName + COPY_SUFFIX;
 		}
 		System.out.println("translating name from " + oldName + " to " + newName);
