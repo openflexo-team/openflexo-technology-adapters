@@ -88,6 +88,8 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 	private static DocXDocument documentWithImage;
 	private static DocXDocument exampleReport;
 
+	private static JTree tree;
+
 	@BeforeClass
 	public static void setupClass() {
 		instanciateTestServiceManager(DocXTechnologyAdapter.class);
@@ -202,12 +204,12 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 		docBrowser.setShowRuns(true);
 		FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor = new FlexoDocumentEditor<>(doc);
 
-		final JTree tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
-
 		pane.add(docBrowser, LayoutPosition.LEFT.name());
 		pane.add(editor.getEditorPanel(), LayoutPosition.CENTER.name());
-		pane.add(new JScrollPane(tree), LayoutPosition.RIGHT.name());
-
+		if (DISPLAY_RIGHT_BROWSER) {
+			tree = new JTree((TreeNode) editor.getStyledDocument().getDefaultRootElement());
+			pane.add(new JScrollPane(tree), LayoutPosition.RIGHT.name());
+		}
 		pane.revalidate();
 
 		gcDelegate.addTab(docResource.getName(), pane);
@@ -217,19 +219,25 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				System.out.println("removeUpdate()");
-				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				if (tree != null) {
+					SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				}
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				System.out.println("insertUpdate()");
-				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				if (tree != null) {
+					SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				}
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				System.out.println("changedUpdate()");
-				SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				if (tree != null) {
+					SwingUtilities.invokeLater(() -> ((DefaultTreeModel) tree.getModel()).reload());
+				}
 			}
 		});
 
