@@ -44,7 +44,6 @@ import java.util.List;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPointNature;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 
 /**
  * Define the "FML-controlled FIBComponent" nature of a {@link ViewPoint}<br>
@@ -61,10 +60,13 @@ public class FMLControlledFIBViewPointNature implements ViewPointNature {
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-controlled FIBComponent
+	 * Return boolean indicating if supplied {@link ViewPoint} might be interpreted as a FML-controlled FIBComponent
 	 */
 	@Override
 	public boolean hasNature(ViewPoint viewPoint) {
+		if (viewPoint.hasNature(FMLControlledFIBVirtualModelNature.INSTANCE)) {
+			return true;
+		}
 		for (VirtualModel vm : viewPoint.getVirtualModels()) {
 			if (vm.hasNature(FMLControlledFIBVirtualModelNature.INSTANCE)) {
 				return true;

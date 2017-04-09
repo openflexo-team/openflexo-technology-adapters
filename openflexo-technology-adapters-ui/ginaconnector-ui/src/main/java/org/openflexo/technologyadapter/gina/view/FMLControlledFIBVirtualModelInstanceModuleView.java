@@ -33,10 +33,11 @@ import javax.swing.JPanel;
 import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.gina.swing.editor.FIBEditor;
@@ -67,14 +68,14 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance> {
+public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<AbstractVirtualModelInstance<?, ?>> {
 
 	protected static final Logger logger = FlexoLogger
 			.getLogger(FMLControlledFIBVirtualModelInstanceModuleView.class.getPackage().getName());
 
 	private final FlexoController controller;
 	private final FlexoPerspective perspective;
-	private final VirtualModelInstance virtualModelInstance;
+	private final AbstractVirtualModelInstance<?, ?> virtualModelInstance;
 
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
@@ -83,7 +84,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 	private LocalizedDelegate locales;
 
-	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance representedObject, FlexoController controller,
+	public FMLControlledFIBVirtualModelInstanceModuleView(AbstractVirtualModelInstance<?, ?> representedObject, FlexoController controller,
 			FlexoPerspective perspective, LocalizedDelegate locales) {
 		super(new BorderLayout());
 
@@ -419,7 +420,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	@Override
-	public VirtualModelInstance getRepresentedObject() {
+	public AbstractVirtualModelInstance<?, ?> getRepresentedObject() {
 		return virtualModelInstance;
 	}
 }

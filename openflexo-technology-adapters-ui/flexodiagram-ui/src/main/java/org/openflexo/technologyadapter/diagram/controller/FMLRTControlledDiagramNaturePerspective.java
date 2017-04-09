@@ -40,15 +40,16 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLRTNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
@@ -91,15 +92,13 @@ public class FMLRTControlledDiagramNaturePerspective extends FMLRTNaturePerspect
 	}
 
 	@Override
-	protected ModuleView<View> createModuleViewForView(View view) {
+	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(AbstractVirtualModelInstance<?, ?> vmInstance) {
+		if (vmInstance instanceof VirtualModelInstance) {
+			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor((VirtualModelInstance) vmInstance, false, getController(),
+					getHandlingTechnologyAdapterController().getToolFactory());
+			return new FMLControlledDiagramModuleView(editor, this);
+		}
 		return null;
-	}
-
-	@Override
-	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance vmInstance) {
-		FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, getController(),
-				getHandlingTechnologyAdapterController().getToolFactory());
-		return new FMLControlledDiagramModuleView(editor, this);
 	}
 
 	@Override
