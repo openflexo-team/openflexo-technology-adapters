@@ -52,8 +52,9 @@ import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
@@ -80,38 +81,37 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  *
  */
-public class GivesFMLControlledFIBVirtualModelNature
-		extends FlexoAction<GivesFMLControlledFIBVirtualModelNature, AbstractVirtualModel<?>, FMLObject> {
+public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(GivesFMLControlledFIBVirtualModelNature.class.getPackage().getName());
 
-	public static FlexoActionType<GivesFMLControlledFIBVirtualModelNature, AbstractVirtualModel<?>, FMLObject> actionType = new FlexoActionType<GivesFMLControlledFIBVirtualModelNature, AbstractVirtualModel<?>, FMLObject>(
+	public static FlexoActionType<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> actionType = new FlexoActionType<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject>(
 			"gives_screen", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public GivesFMLControlledFIBVirtualModelNature makeNewAction(AbstractVirtualModel<?> focusedObject,
-				Vector<FMLObject> globalSelection, FlexoEditor editor) {
+		public GivesFMLControlledFIBVirtualModelNature makeNewAction(FlexoConcept focusedObject, Vector<FMLObject> globalSelection,
+				FlexoEditor editor) {
 			return new GivesFMLControlledFIBVirtualModelNature(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(AbstractVirtualModel<?> object, Vector<FMLObject> globalSelection) {
+		public boolean isVisibleForSelection(FlexoConcept object, Vector<FMLObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(AbstractVirtualModel<?> object, Vector<FMLObject> globalSelection) {
+		public boolean isEnabledForSelection(FlexoConcept object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(GivesFMLControlledFIBVirtualModelNature.actionType, AbstractVirtualModel.class);
+		FlexoObjectImpl.addActionForClass(GivesFMLControlledFIBVirtualModelNature.actionType, FlexoConcept.class);
 	}
 
 	private String fibModelSlotName = "ui";
@@ -125,7 +125,7 @@ public class GivesFMLControlledFIBVirtualModelNature
 	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
-	GivesFMLControlledFIBVirtualModelNature(AbstractVirtualModel<?> focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	GivesFMLControlledFIBVirtualModelNature(FlexoConcept focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -169,7 +169,7 @@ public class GivesFMLControlledFIBVirtualModelNature
 		uiModelSlot.setTemplateResource(getTemplateResource());
 		VariableAssignment assign = uiModelSlot.createAssignment();
 		assign.setVariable("data");
-		assign.setVariableType(VirtualModelInstanceType.getVirtualModelInstanceType(getFocusedObject()));
+		assign.setVariableType(FlexoConceptInstanceType.getFlexoConceptInstanceType(getFocusedObject()));
 		assign.setValue(new DataBinding<Object>("virtualModelInstance"));
 
 		if (getFocusedObject().getAbstractCreationSchemes().size() == 0) {

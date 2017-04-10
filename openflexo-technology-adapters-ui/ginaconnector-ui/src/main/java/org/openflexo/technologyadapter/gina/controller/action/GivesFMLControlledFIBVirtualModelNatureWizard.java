@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.FlexoWizard;
 import org.openflexo.components.wizard.WizardStep;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -100,7 +100,7 @@ public class GivesFMLControlledFIBVirtualModelNatureWizard extends FlexoWizard {
 		return chooseStrategy;
 	}
 
-	public AbstractVirtualModel<?> getVirtualModel() {
+	public FlexoConcept getFlexoConcept() {
 		return getAction().getFocusedObject();
 	}
 
