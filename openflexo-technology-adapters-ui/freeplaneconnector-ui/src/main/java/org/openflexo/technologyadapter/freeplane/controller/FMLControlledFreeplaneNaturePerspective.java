@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.freeplane.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
@@ -84,14 +84,12 @@ public class FMLControlledFreeplaneNaturePerspective extends FMLRTNaturePerspect
 	}
 
 	@Override
-	protected ModuleView<View> createModuleViewForView(View view) {
+	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(AbstractVirtualModelInstance<?, ?> vmInstance) {
+		if (vmInstance instanceof VirtualModelInstance) {
+			FreeplaneListenersInitilizer.init((VirtualModelInstance) vmInstance, getController());
+			return new FMLControlledFreeplaneModuleView(getController(), (VirtualModelInstance) vmInstance, this);
+		}
 		return null;
-	}
-
-	@Override
-	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance vmInstance) {
-		FreeplaneListenersInitilizer.init(vmInstance, getController());
-		return new FMLControlledFreeplaneModuleView(getController(), vmInstance, this);
 	}
 
 	@Override
