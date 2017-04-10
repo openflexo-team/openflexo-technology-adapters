@@ -78,7 +78,7 @@ public class FMLControlledFIBViewPointNature implements ViewPointNature {
 	}
 
 	private List<VirtualModel> _getFMLControlledFIBVirtualModels(ViewPoint viewPoint) {
-		List<VirtualModel> returned = new ArrayList<VirtualModel>();
+		List<VirtualModel> returned = new ArrayList<>();
 		for (VirtualModel vm : viewPoint.getVirtualModels()) {
 			if (vm.hasNature(FMLControlledFIBVirtualModelNature.INSTANCE)) {
 				returned.add(vm);
