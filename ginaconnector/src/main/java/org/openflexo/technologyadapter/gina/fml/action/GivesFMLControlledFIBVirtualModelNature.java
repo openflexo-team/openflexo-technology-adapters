@@ -170,7 +170,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 		VariableAssignment assign = uiModelSlot.createAssignment();
 		assign.setVariable("data");
 		assign.setVariableType(FlexoConceptInstanceType.getFlexoConceptInstanceType(getFocusedObject()));
-		assign.setValue(new DataBinding<Object>("virtualModelInstance"));
+		assign.setValue(new DataBinding<>("virtualModelInstance"));
 
 		if (getFocusedObject().getAbstractCreationSchemes().size() == 0) {
 			// There is no creation scheme, create a default one
@@ -188,7 +188,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 					.makeNewEmbeddedAction(creationScheme.getControlGraph(), null, this);
 			configureModelSlotAction.setModelSlot(uiModelSlot);
 			configureModelSlotAction.setEditionActionClass(ConfigureGINAFIBComponent.class);
-			configureModelSlotAction.setAssignation(new DataBinding<Object>(getFIBModelSlotName()));
+			configureModelSlotAction.setAssignation(new DataBinding<>(getFIBModelSlotName()));
 			configureModelSlotAction.doAction();
 
 		}

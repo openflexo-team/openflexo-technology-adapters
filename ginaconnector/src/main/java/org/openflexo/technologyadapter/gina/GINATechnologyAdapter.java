@@ -182,7 +182,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	public <I> GINAResourceRepository<I> getGINAResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		GINAResourceRepository<I> returned = resourceCenter.retrieveRepository(GINAResourceRepository.class, this);
 		if (returned == null) {
-			returned = new GINAResourceRepository<I>(this, resourceCenter);
+			returned = new GINAResourceRepository<>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, GINAResourceRepository.class, this);
 		}
 		return returned;

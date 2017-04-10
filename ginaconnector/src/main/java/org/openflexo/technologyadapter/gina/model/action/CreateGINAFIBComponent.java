@@ -105,7 +105,7 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 
 	private String description;
 
-	CreateGINAFIBComponent(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	CreateGINAFIBComponent(RepositoryFolder<?, ?> focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

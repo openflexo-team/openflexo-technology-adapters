@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.gina;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
+
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
@@ -117,7 +118,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	@Override
 	public GINATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent>implements FIBComponentModelSlot {
+	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent> implements FIBComponentModelSlot {
 
 		protected String templateComponentURI;
 		private GINAFIBComponentResource templateResource;
@@ -283,7 +284,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			@Override
 			public DataBinding<Object> getValue() {
 				if (value == null) {
-					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+					value = new DataBinding<>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 				}
 				return value;
 			}
@@ -349,13 +350,14 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		}
 
 		@Override
-		public ValidationIssue<FIBComponentModelSlotMustReferenceNonNullTemplateResource, FIBComponentModelSlot> applyValidation(FIBComponentModelSlot modelSlot) {
+		public ValidationIssue<FIBComponentModelSlotMustReferenceNonNullTemplateResource, FIBComponentModelSlot> applyValidation(
+				FIBComponentModelSlot modelSlot) {
 			if (modelSlot.getTemplateResource() == null) {
-				return new ValidationError<>(this, modelSlot, "fib_component_model_slot_must_reference_nonnull_template_resource", Collections.emptyList());
+				return new ValidationError<>(this, modelSlot, "fib_component_model_slot_must_reference_nonnull_template_resource",
+						Collections.emptyList());
 			}
 			return null;
 		}
 	}
-
 
 }
