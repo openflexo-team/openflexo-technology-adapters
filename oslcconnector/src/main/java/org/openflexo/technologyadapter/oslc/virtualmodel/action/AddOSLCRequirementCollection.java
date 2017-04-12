@@ -59,8 +59,9 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 @FML("AddOSLCRequirementCollection")
 public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequirementCollection> {
 
-	public static abstract class AddOSLCRequirementCollectionImpl extends
-			TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCRequirementCollection> implements AddOSLCRequirementCollection {
+	public static abstract class AddOSLCRequirementCollectionImpl
+			extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection>
+			implements AddOSLCRequirementCollection {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirementCollection.class.getPackage().getName());
 
@@ -81,7 +82,8 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

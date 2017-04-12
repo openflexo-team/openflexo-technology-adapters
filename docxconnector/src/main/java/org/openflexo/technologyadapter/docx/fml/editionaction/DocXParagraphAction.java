@@ -43,6 +43,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
@@ -55,10 +56,10 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXParagraphAction.DocXParagraphActionImpl.class)
 public interface DocXParagraphAction
-		extends RoleSpecificAction<DocXParagraphRole, DocXModelSlot, DocXParagraph>, DocXAction<DocXParagraph> {
+		extends RoleSpecificAction<DocXParagraphRole, DocXModelSlot, DocXDocument, DocXParagraph>, DocXAction<DocXParagraph> {
 
-	public static abstract class DocXParagraphActionImpl extends RoleSpecificActionImpl<DocXParagraphRole, DocXModelSlot, DocXParagraph>
-			implements DocXParagraphAction {
+	public static abstract class DocXParagraphActionImpl
+			extends RoleSpecificActionImpl<DocXParagraphRole, DocXModelSlot, DocXDocument, DocXParagraph> implements DocXParagraphAction {
 
 		@Override
 		public Class<DocXParagraphRole> getRoleClass() {

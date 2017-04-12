@@ -97,8 +97,8 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 	@Setter(value = IS_ABOVE_KEY)
 	public void setIsAbove(DataBinding<Boolean> isAbove);
 
-	public abstract static class AddSiblingNodeActionImpl extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneNode>
-			implements AddSiblingNodeAction {
+	public abstract static class AddSiblingNodeActionImpl
+			extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> implements AddSiblingNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddSiblingNodeAction.class.getPackage().getName());
 

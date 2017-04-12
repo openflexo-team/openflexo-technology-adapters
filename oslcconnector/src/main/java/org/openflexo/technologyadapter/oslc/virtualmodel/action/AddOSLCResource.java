@@ -75,8 +75,8 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 	@Setter(CREATION_FACTORY)
 	public void setCreationFactory(DataBinding<CreationFactory> creationFactory);
 
-	public static abstract class AddOSLCResourceImpl extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCResource> implements
-			AddOSLCResource {
+	public static abstract class AddOSLCResourceImpl
+			extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements AddOSLCResource {
 
 		private DataBinding<CreationFactory> creationFactory;
 

@@ -61,6 +61,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCRMModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCRMModelConverter;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
@@ -70,7 +71,7 @@ import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
 @ImplementationClass(AddOSLCRequirement.AddOSLCRequirementImpl.class)
 @XMLElement
 @FML("AddOSLCRequirement")
-public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModelSlot, OSLCResource> {
+public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModelSlot, OSLCServiceProviderCatalog, OSLCResource> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CREATION_FACTORY = "creationFactory";
@@ -102,8 +103,8 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	@Setter(REQ_DESCRIPTION_KEY)
 	public void setReqDescription(DataBinding<String> description);
 
-	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCResource>
-			implements AddOSLCRequirement {
+	public static abstract class AddOSLCRequirementImpl
+			extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements AddOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirement.class.getPackage().getName());
 

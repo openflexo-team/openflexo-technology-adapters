@@ -133,7 +133,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram, Diagram>
 			implements CreateDiagram {
 
 		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());

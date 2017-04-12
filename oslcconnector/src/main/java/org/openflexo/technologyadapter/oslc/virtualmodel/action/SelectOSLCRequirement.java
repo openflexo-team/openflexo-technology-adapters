@@ -52,6 +52,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 
 @FIBPanel("Fib/SelectOSLCRequirementPanel.fib")
@@ -59,10 +60,10 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @ImplementationClass(SelectOSLCRequirement.SelectOSLCRequirementImpl.class)
 @XMLElement
 @FML("SelectOSLCRequirement")
-public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCRequirement> {
+public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> {
 
-	public static abstract class SelectOSLCRequirementImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCRequirement>
-			implements SelectOSLCRequirement {
+	public static abstract class SelectOSLCRequirementImpl
+			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> implements SelectOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirement.class.getPackage().getName());
 

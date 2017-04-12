@@ -89,8 +89,8 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 	@Setter(value = NODE_TEXT_KEY)
 	public void setNodeText(DataBinding<String> nodeText);
 
-	public abstract static class AddChildNodeActionImpl extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneNode> implements
-			AddChildNodeAction {
+	public abstract static class AddChildNodeActionImpl
+			extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> implements AddChildNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
 

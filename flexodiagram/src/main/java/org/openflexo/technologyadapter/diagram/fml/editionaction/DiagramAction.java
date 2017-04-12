@@ -43,22 +43,23 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DiagramAction.DiagramActionImpl.class)
-public interface DiagramAction<MS extends DiagramModelSlot, T> extends TechnologySpecificAction<MS, T> {
+public interface DiagramAction<MS extends DiagramModelSlot, T> extends TechnologySpecificAction<MS, Diagram, T> {
 
 	@Override
 	public DiagramTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T> extends TechnologySpecificActionImpl<DiagramModelSlot, T> {
+	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T> extends TechnologySpecificActionImpl<MS, Diagram, T> {
 
 		@Override
-		public DiagramModelSlot getModelSlot() {
-			DiagramModelSlot returned = (DiagramModelSlot) performSuperGetter(TechnologySpecificAction.MODEL_SLOT_KEY);
+		public MS getModelSlot() {
+			MS returned = (MS) performSuperGetter(TechnologySpecificAction.MODEL_SLOT_KEY);
 			if (returned == null) {
 				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
-					return getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
+					return (MS) getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
 				}
 			}
 			return returned;

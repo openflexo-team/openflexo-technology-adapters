@@ -64,8 +64,8 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddStatement.AddStatementImpl.class)
-public abstract interface AddStatement<S extends OWLStatement> extends TechnologySpecificAction<OWLModelSlot, S>,
-		SetPropertyValueAction<S>, OWLAction<S> {
+public abstract interface AddStatement<S extends OWLStatement>
+		extends TechnologySpecificAction<OWLModelSlot, OWLOntology, S>, SetPropertyValueAction<S>, OWLAction<S> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -81,8 +81,8 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 
 	public OWLOntology getMetaModel();
 
-	public static abstract class AddStatementImpl<S extends OWLStatement> extends TechnologySpecificActionImpl<OWLModelSlot, S> implements
-			AddStatement<S> {
+	public static abstract class AddStatementImpl<S extends OWLStatement> extends TechnologySpecificActionImpl<OWLModelSlot, OWLOntology, S>
+			implements AddStatement<S> {
 
 		private static final Logger logger = Logger.getLogger(AddStatement.class.getPackage().getName());
 

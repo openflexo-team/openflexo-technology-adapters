@@ -52,16 +52,17 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 @FIBPanel("Fib/SelectOSLCResourcePanel.fib")
 @ModelEntity
 @ImplementationClass(SelectOSLCResource.SelectOSLCResourceImpl.class)
 @XMLElement
 @FML("SelectOSLCResource")
-public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCResource> {
+public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> {
 
-	public static abstract class SelectOSLCResourceImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCResource>
-			implements SelectOSLCResource {
+	public static abstract class SelectOSLCResourceImpl
+			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements SelectOSLCResource {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCResource.class.getPackage().getName());
 

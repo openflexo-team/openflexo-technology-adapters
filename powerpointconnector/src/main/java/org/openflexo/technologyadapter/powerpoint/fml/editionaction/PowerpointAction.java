@@ -42,6 +42,7 @@ import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 /**
  * Abstract action for {@link BasicPowerpointModelSlot}
@@ -53,6 +54,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
  */
 
 @ModelEntity(isAbstract = true)
-public interface PowerpointAction<T extends PowerpointObject> extends TechnologySpecificAction<BasicPowerpointModelSlot, T> {
+public interface PowerpointAction<T extends PowerpointObject>
+		extends TechnologySpecificAction<BasicPowerpointModelSlot, PowerpointSlideshow, T> {
 
 }

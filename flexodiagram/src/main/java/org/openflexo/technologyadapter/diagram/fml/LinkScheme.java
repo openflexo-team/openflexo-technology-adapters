@@ -315,7 +315,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		 * @return newly created {@link EditionAction}
 		 */
 		@Override
-		public <A extends TechnologySpecificAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
+		public <A extends TechnologySpecificAction<?, ?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
 			A returned = super.createAction(actionClass, modelSlot);
 			if (returned instanceof AddConnector) {
 				AddConnector newAction = (AddConnector) returned;

@@ -67,8 +67,8 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
 	public void setSlideIndex(DataBinding<Integer> slideIndex);
 
-	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide>
-			implements AddPowerpointSlide {
+	public static abstract class AddPowerpointSlideImpl extends
+			TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide> implements AddPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointSlide.class.getPackage().getName());
 
@@ -84,7 +84,8 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
 			PowerpointSlide result = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
+			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(
+					evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				try {
 					SlideShow ss = modelSlotInstance.getAccessedResourceData().getSlideShow();
@@ -97,11 +98,12 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 						}
 
 						// Instanciate Wrapper.
-						result = modelSlotInstance.getAccessedResourceData().getConverter()
-								.convertPowerpointSlideToSlide(slide, modelSlotInstance.getAccessedResourceData(), null);
+						result = modelSlotInstance.getAccessedResourceData().getConverter().convertPowerpointSlideToSlide(slide,
+								modelSlotInstance.getAccessedResourceData(), null);
 						modelSlotInstance.getAccessedResourceData().addToPowerpointSlides(result);
 						modelSlotInstance.getAccessedResourceData().setIsModified();
-					} else {
+					}
+					else {
 						logger.warning("Create a sheet requires a workbook");
 					}
 				} catch (TypeMismatchException e) {
@@ -114,7 +116,8 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

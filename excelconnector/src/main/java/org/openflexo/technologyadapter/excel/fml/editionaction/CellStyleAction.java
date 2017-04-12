@@ -68,6 +68,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellBorderS
 import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellPatternStyleFeature;
 import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
 import org.openflexo.technologyadapter.excel.model.ExcelStyleObject;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
@@ -156,8 +157,8 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 
 	public boolean isPatternStyle();
 
-	public static abstract class CellStyleActionImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelStyleObject> implements
-			CellStyleAction {
+	public static abstract class CellStyleActionImpl
+			extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelStyleObject> implements CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 

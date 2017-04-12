@@ -43,6 +43,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 /**
@@ -54,10 +55,10 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXFragmentAction.DocXFragmentActionImpl.class)
-public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXFragment> {
+public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXDocument, DocXFragment> {
 
-	public static abstract class DocXFragmentActionImpl extends RoleSpecificActionImpl<DocXFragmentRole, DocXModelSlot, DocXFragment>
-			implements DocXFragmentAction {
+	public static abstract class DocXFragmentActionImpl
+			extends RoleSpecificActionImpl<DocXFragmentRole, DocXModelSlot, DocXDocument, DocXFragment> implements DocXFragmentAction {
 
 		@Override
 		public Class<DocXFragmentRole> getRoleClass() {

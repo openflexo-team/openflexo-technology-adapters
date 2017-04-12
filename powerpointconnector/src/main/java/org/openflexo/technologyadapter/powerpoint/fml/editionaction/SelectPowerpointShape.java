@@ -50,15 +50,16 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(SelectPowerpointShape.SelectPowerpointShapeImpl.class)
 @XMLElement
 @FML("SelectPowerpointShape")
-public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModelSlot, PowerpointShape> {
+public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> {
 
-	public static abstract class SelectPowerpointShapeImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointShape> implements
-			SelectPowerpointShape {
+	public static abstract class SelectPowerpointShapeImpl
+			extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> implements SelectPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointShape.class.getPackage().getName());
 
@@ -80,14 +81,14 @@ public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModel
 			}
 
 			/*ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getResourceData();
-
+			
 			List<ExcelCell> selectedExcelCells = new ArrayList<ExcelCell>(0);
 			for(ExcelSheet excelSheet : excelWorkbook.getExcelSheets()){
 				for(ExcelRow excelRow : excelSheet.getExcelRows()){
 					selectedExcelCells.addAll(excelRow.getExcelCells());
 				}
 			}
-
+			
 			List<ExcelCell> returned = filterWithConditions(selectedExcelCells, action);*/
 
 			return null;

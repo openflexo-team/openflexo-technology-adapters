@@ -46,6 +46,7 @@ import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.toolbox.StringUtils;
 
@@ -54,7 +55,7 @@ import org.openflexo.toolbox.StringUtils;
 public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> extends DiagramAction<DiagramModelSlot, T> {
 
 	public static abstract class AddDiagramElementActionImpl<T extends DiagramElement<?>>
-			extends TechnologySpecificActionImpl<DiagramModelSlot, T> implements AddDiagramElementAction<T> {
+			extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram, T> implements AddDiagramElementAction<T> {
 
 		@Override
 		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {

@@ -42,6 +42,7 @@ import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
+import org.openflexo.technologyadapter.owl.model.OWLOntology;
 
 /**
  * Abstract action for {@link OWLModelSlot}
@@ -53,6 +54,6 @@ import org.openflexo.technologyadapter.owl.model.OWLObject;
  */
 
 @ModelEntity(isAbstract = true)
-public interface OWLAction<T extends OWLObject> extends TechnologySpecificAction<OWLModelSlot, T> {
+public interface OWLAction<T extends OWLObject> extends TechnologySpecificAction<OWLModelSlot, OWLOntology, T> {
 
 }

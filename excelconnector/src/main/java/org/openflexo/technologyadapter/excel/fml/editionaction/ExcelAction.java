@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.excel.fml.editionaction;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 /**
  * Abstract action for {@link BasicExcelModelSlot}
@@ -52,6 +53,6 @@ import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
  */
 
 @ModelEntity(isAbstract = true)
-public interface ExcelAction<T extends Object> extends TechnologySpecificAction<BasicExcelModelSlot, T> {
+public interface ExcelAction<T extends Object> extends TechnologySpecificAction<BasicExcelModelSlot, ExcelWorkbook, T> {
 
 }

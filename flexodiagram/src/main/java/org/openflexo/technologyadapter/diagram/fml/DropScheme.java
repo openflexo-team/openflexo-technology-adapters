@@ -181,7 +181,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		public void setTopTarget(boolean flag) {
 			if (flag) {
 				_setTarget(TOP);
-			} else {
+			}
+			else {
 				_setTarget("");
 			}
 		}
@@ -215,7 +216,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when property inheritance will be in use !!!
 					return getTargetShapeRole() == null || getTargetShapeRole().getRoleName().equals(contextRole.getRoleName());
-				} else {
+				}
+				else {
 					return true;
 				}
 			}
@@ -268,7 +270,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		 * @return newly created {@link EditionAction}
 		 */
 		@Override
-		public <A extends TechnologySpecificAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
+		public <A extends TechnologySpecificAction<?, ?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
 			A newAction = super.createAction(actionClass, modelSlot);
 			if (newAction instanceof AddShape) {
 				if (isTopTarget()) {

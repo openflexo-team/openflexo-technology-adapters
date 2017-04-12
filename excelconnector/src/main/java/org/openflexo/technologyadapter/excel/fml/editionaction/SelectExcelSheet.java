@@ -57,9 +57,9 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ImplementationClass(SelectExcelSheet.SelectExcelSheetImpl.class)
 @XMLElement
 @FML("SelectExcelSheet")
-public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelSheet> {
+public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> {
 
-	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelSheet>
+	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet>
 			implements SelectExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(SelectExcelSheet.class.getPackage().getName());

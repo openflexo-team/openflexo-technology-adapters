@@ -69,8 +69,8 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 	public void setPowerpointSlide(DataBinding<PowerpointSlide> powerpointSlide);
 
-	public static abstract class AddPowerpointShapeImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointShape>
-			implements AddPowerpointShape {
+	public static abstract class AddPowerpointShapeImpl extends
+			TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> implements AddPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointShape.class.getPackage().getName());
 
@@ -88,7 +88,8 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 			PowerpointShape powerpointShape = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
+			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(
+					evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
 				try {
@@ -97,11 +98,12 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 						AutoShape shape = new AutoShape(ShapeTypes.Chevron);
 
-						powerpointShape = modelSlotInstance.getAccessedResourceData().getConverter()
-								.convertPowerpointShapeToShape(shape, powerpointSlide, null);
+						powerpointShape = modelSlotInstance.getAccessedResourceData().getConverter().convertPowerpointShapeToShape(shape,
+								powerpointSlide, null);
 						powerpointSlide.getSlide().addShape(shape);
 						modelSlotInstance.getResourceData().setIsModified();
-					} else {
+					}
+					else {
 						logger.warning("Create a row requires a sheet");
 					}
 
@@ -116,7 +118,8 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 					e.printStackTrace();
 				}
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

@@ -43,6 +43,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 /**
@@ -54,10 +55,10 @@ import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXTableAction.DocXTableActionImpl.class)
-public interface DocXTableAction extends RoleSpecificAction<DocXTableRole, DocXModelSlot, DocXTable>, DocXAction<DocXTable> {
+public interface DocXTableAction extends RoleSpecificAction<DocXTableRole, DocXModelSlot, DocXDocument, DocXTable>, DocXAction<DocXTable> {
 
-	public static abstract class DocXTableActionImpl extends RoleSpecificActionImpl<DocXTableRole, DocXModelSlot, DocXTable> implements
-			DocXTableAction {
+	public static abstract class DocXTableActionImpl extends RoleSpecificActionImpl<DocXTableRole, DocXModelSlot, DocXDocument, DocXTable>
+			implements DocXTableAction {
 
 		@Override
 		public Class<DocXTableRole> getRoleClass() {

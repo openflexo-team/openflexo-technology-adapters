@@ -69,10 +69,10 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 @ImplementationClass(ConfigureGINAFIBComponent.ConfigureGINAFIBComponentImpl.class)
 @XMLElement
 @FML("ConfigureGINAFIBComponent")
-public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBComponentModelSlot, GINAFIBComponent> {
+public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> {
 
-	public static abstract class ConfigureGINAFIBComponentImpl extends TechnologySpecificActionImpl<FIBComponentModelSlot, GINAFIBComponent>
-			implements ConfigureGINAFIBComponent {
+	public static abstract class ConfigureGINAFIBComponentImpl extends
+			TechnologySpecificActionImpl<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> implements ConfigureGINAFIBComponent {
 
 		private static final Logger logger = Logger.getLogger(ConfigureGINAFIBComponentImpl.class.getPackage().getName());
 

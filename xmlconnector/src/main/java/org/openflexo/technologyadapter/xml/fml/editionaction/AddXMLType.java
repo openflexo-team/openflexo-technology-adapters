@@ -110,7 +110,8 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AddXMLTypeImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLType> implements AddXMLType {
+	public static abstract class AddXMLTypeImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLModel, XMLType>
+			implements AddXMLType {
 
 		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
 
@@ -141,14 +142,16 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 								.createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName, isSimpleType());
 
 						newClass.setSuperType(father);
-					} else {
+					}
+					else {
 
 						newClass = getModelSlotInstance(evaluationContext).getAccessedResourceData().getMetaModel()
 								.createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
 					}
 					logger.info("Added class " + newClass.getName() + " as " + father);
 
-				} else {
+				}
+				else {
 					logger.warning("CANNOT create a new type in a null MetaModel!");
 				}
 			} catch (TypeMismatchException e) {

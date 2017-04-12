@@ -57,8 +57,8 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @FML("GetXMLDocumentRoot")
 public interface GetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividual> {
 
-	public static abstract class GetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
-			GetXMLDocumentRoot {
+	public static abstract class GetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLModel, XMLIndividual>
+			implements GetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(GetXMLDocumentRoot.class.getPackage().getName());
 
@@ -69,7 +69,7 @@ public interface GetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		@Override
 		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
-			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(evaluationContext);
+			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();
 
 			XMLIndividual rootIndiv = model.getRoot();

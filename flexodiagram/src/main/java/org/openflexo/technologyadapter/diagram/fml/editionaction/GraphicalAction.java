@@ -74,6 +74,7 @@ import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalFeature;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -118,7 +119,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 	public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures();
 
-	public static abstract class GraphicalActionImpl extends TechnologySpecificActionImpl<TypedDiagramModelSlot, DiagramElement<?>>
+	public static abstract class GraphicalActionImpl extends TechnologySpecificActionImpl<TypedDiagramModelSlot, Diagram, DiagramElement<?>>
 			implements GraphicalAction {
 
 		private static final Logger logger = Logger.getLogger(GraphicalAction.class.getPackage().getName());

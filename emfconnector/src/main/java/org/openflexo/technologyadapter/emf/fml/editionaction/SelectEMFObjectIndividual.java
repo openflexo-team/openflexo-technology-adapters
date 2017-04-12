@@ -71,9 +71,9 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ImplementationClass(SelectEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
 @XMLElement
 @FML("SelectEMFObjectIndividual")
-public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot, EMFObjectIndividual> {
+public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual> {
 
-	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual>
+	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFModel, EMFObjectIndividual>
 			implements SelectEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(SelectEMFObjectIndividual.class.getPackage().getName());

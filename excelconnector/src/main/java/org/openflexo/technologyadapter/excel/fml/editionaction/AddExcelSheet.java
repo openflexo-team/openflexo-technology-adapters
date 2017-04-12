@@ -97,7 +97,7 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 	@Setter(OVERRIDE_KEY)
 	public void setOverride(boolean override);
 
-	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelSheet>
+	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet>
 			implements AddExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(AddExcelSheet.class.getPackage().getName());
