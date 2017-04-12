@@ -170,7 +170,12 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 		VariableAssignment assign = uiModelSlot.createAssignment();
 		assign.setVariable("data");
 		assign.setVariableType(FlexoConceptInstanceType.getFlexoConceptInstanceType(getFocusedObject()));
-		assign.setValue(new DataBinding<>("virtualModelInstance"));
+		if (getFocusedObject() instanceof AbstractVirtualModel) {
+			assign.setValue(new DataBinding<>("virtualModelInstance"));
+		}
+		else {
+			assign.setValue(new DataBinding<>("flexoConceptInstance"));
+		}
 
 		if (getFocusedObject().getAbstractCreationSchemes().size() == 0) {
 			// There is no creation scheme, create a default one

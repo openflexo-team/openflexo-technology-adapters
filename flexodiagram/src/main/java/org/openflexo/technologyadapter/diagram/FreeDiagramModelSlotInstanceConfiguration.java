@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
@@ -58,9 +58,8 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected DiagramResource diagramResource;
 
-	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 		setRelativePath("/Diagram");
 		setFilename("myDiagram.diagram");
 	}

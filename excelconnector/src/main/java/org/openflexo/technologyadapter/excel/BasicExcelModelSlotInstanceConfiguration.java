@@ -41,8 +41,7 @@ package org.openflexo.technologyadapter.excel;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
@@ -58,9 +57,8 @@ public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInsta
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> modelResource;
 
-	protected BasicExcelModelSlotInstanceConfiguration(BasicExcelModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected BasicExcelModelSlotInstanceConfiguration(BasicExcelModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 		setRelativePath("/Models");
 		setFilename("myExcelResource.xls");
 	}

@@ -38,8 +38,7 @@
 
 package org.openflexo.technologyadapter.emf;
 
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.UMLEMFModelSlot.UMLEMFModelSlotImpl;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -55,16 +54,15 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 
 public class UMLEMFModelSlotInstanceConfiguration extends EMFModelSlotInstanceConfiguration {
 
-	protected UMLEMFModelSlotInstanceConfiguration(UMLEMFModelSlotImpl emfModelSlotImpl,
-			AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+	protected UMLEMFModelSlotInstanceConfiguration(UMLEMFModelSlotImpl emfModelSlotImpl, FlexoConceptInstance fci,
+			FlexoResourceCenter<?> rc) {
 
-		super(emfModelSlotImpl, virtualModelInstance, rc);
+		super(emfModelSlotImpl, fci, rc);
 		setModelUri(rc.getDefaultBaseURI() + "/Models/myUMLModel");
 		setRelativePath("/");
-		setFilename("myUMLModel"
-				+ getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
-						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
-		
+		setFilename("myUMLModel" + getModelSlot().getModelSlotTechnologyAdapter()
+				.getExpectedModelExtension((EMFMetaModelResource) getModelSlot().getMetaModelResource()));
+
 	}
 
 }

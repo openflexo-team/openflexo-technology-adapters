@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -95,16 +95,16 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OSLCRMModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new OSLCRMModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public OSLCRMModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new OSLCRMModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OSLCRequirementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirement";
-			} else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirementCollection";
 			}
 			return null;
@@ -112,7 +112,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 
 		@Override
 		public String getURIForObject(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
+				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
+				Object o) {
 			/*if (o instanceof IFlexoOntologyObject) {
 				return ((IFlexoOntologyObject) o).getURI();
 			}*/

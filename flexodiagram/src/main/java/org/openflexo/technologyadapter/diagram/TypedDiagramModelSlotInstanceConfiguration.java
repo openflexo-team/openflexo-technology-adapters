@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -56,9 +56,8 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 public class TypedDiagramModelSlotInstanceConfiguration
 		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
-	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 		setModelUri(null);
 		setRelativePath("/Diagram");
 		setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);

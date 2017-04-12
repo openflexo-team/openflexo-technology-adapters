@@ -50,7 +50,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -90,7 +90,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 @FML("FreeDiagramModelSlot")
 public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramModelSlot {
 
-	public abstract class FreeDiagramModelSlotImpl extends FreeModelSlotImpl<Diagram>implements FreeDiagramModelSlot {
+	public abstract class FreeDiagramModelSlotImpl extends FreeModelSlotImpl<Diagram> implements FreeDiagramModelSlot {
 
 		private static final Logger logger = Logger.getLogger(FreeDiagramModelSlot.class.getPackage().getName());
 
@@ -115,9 +115,8 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new FreeDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new FreeDiagramModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

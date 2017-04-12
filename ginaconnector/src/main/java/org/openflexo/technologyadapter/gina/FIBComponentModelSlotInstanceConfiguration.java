@@ -24,8 +24,7 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -42,9 +41,10 @@ public class FIBComponentModelSlotInstanceConfiguration
 		/**
 		 * Use the component given as template in model slot, do not modify it
 		 */
-		ReadOnlyUseFIBComponent, /**
-									 * Use the component given as template in model slot, and allow to dynamically modify it
-									 */
+		ReadOnlyUseFIBComponent,
+		/**
+		 * Use the component given as template in model slot, and allow to dynamically modify it
+		 */
 		ReadWriteFIBComponent;
 
 		@Override
@@ -53,9 +53,8 @@ public class FIBComponentModelSlotInstanceConfiguration
 		}
 	}
 
-	protected FIBComponentModelSlotInstanceConfiguration(FIBComponentModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected FIBComponentModelSlotInstanceConfiguration(FIBComponentModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 	}
 
 	@Override

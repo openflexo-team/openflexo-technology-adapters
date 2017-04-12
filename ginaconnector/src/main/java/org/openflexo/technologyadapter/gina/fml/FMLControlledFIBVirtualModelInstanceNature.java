@@ -126,7 +126,7 @@ public class FMLControlledFIBVirtualModelInstanceNature<VMI extends AbstractVirt
 					.createConfiguration(virtualModelInstance, virtualModelInstance.getResourceCenter());
 			msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
 			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getView());
-			virtualModelInstance.addToModelSlotInstances(returned);
+			virtualModelInstance.addToActors(returned);
 		}
 
 		if (returned.getAccessedResourceData() == null) {

@@ -32,7 +32,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -133,8 +133,8 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		 */
 		@Override
 		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<GINAFIBComponent>, GINAFIBComponent> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
-			return new FIBComponentModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new FIBComponentModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

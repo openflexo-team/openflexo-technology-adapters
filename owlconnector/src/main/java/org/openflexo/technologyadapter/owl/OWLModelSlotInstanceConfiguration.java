@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -55,12 +55,11 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
 
-	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
-		if (virtualModelInstance != null) {
-			setModelUri(virtualModelInstance.getResourceCenter().getDefaultBaseURI() + "/Models/myOntology");
+		if (fci != null) {
+			setModelUri(fci.getResourceCenter().getDefaultBaseURI() + "/Models/myOntology");
 		}
 		setRelativePath("/");
 		setFilename("myOntology" + OWLOntologyResourceFactory.OWL_FILE_EXTENSION);

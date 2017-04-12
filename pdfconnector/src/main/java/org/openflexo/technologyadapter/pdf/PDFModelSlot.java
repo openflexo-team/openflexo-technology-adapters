@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 public interface PDFModelSlot extends FreeModelSlot<PDFDocument> {
 
 	// Implem
-	public static abstract class PDFModelSlotImpl extends FreeModelSlotImpl<PDFDocument>implements PDFModelSlot {
+	public static abstract class PDFModelSlotImpl extends FreeModelSlotImpl<PDFDocument> implements PDFModelSlot {
 
 		private static final Logger logger = Logger.getLogger(PDFModelSlot.class.getPackage().getName());
 
@@ -66,9 +66,8 @@ public interface PDFModelSlot extends FreeModelSlot<PDFDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public PDFModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new PDFModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public PDFModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new PDFModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

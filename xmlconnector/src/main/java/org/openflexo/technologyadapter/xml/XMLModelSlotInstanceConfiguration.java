@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.xml;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -47,9 +47,8 @@ import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
 
 public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
-	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 		setModelUri(rc.getDefaultBaseURI() + "/Models/myXMLFile");
 		setRelativePath("/");
 		setFilename("myXMLFile" + XMLFileResourceFactory.XML_EXTENSION);
