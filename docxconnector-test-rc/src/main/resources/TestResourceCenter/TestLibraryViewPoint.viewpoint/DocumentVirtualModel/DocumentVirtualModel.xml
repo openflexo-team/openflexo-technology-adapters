@@ -5,7 +5,7 @@
     <FlexoConceptInstanceRole id="3" flexoID="5" useSpecificDescriptions="false" userID="FLX" name="book" flexoConceptTypeURI="http://openflexo.org/docx-test/TestLibraryViewPoint/LibraryVirtualModel#Book" cloningStrategy="Reference" cardinality="ZeroOne">
       <FMLRTModelSlot idref="4" />
     </FlexoConceptInstanceRole>
-    <DocXFragmentRole id="5" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="11" name="section" cardinality="ZeroOne" fragment="http://openflexo.org/docx-test/TestResourceCenter/ExampleLibrary.docx:2936B416:395C1CE1">
+    <DocXFragmentRole id="5" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="11" name="section" cardinality="ZeroOne" fragment="http://openflexo.org/docx-test/ExampleLibrary.docx:2936B416:395C1CE1">
       <TextBinding id="6" name="TitleBinding" flexoID="6" useSpecificDescriptions="false" userID="FLX" value="book.title" isMultiline="false">
         <TextSelection id="7" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="2936B416" endRunId="1" flexoID="-1" startElementId="2936B416" endCharId="-1" startRunId="0" />
       </TextBinding>
@@ -30,7 +30,7 @@
         </ControlGraph1_AssignationAction>
         <ControlGraph2_Sequence id="21" flexoID="17" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
           <ControlGraph1_AssignationAction id="22" userID="FLX" useSpecificDescriptions="false" flexoID="18" ownerContext="controlGraph1" assign="section">
-            <AssignableAction_AddDocXFragment id="23" locationSemantics="InsertBeforeLastChild" location="booksDescriptionSection.startElement" useSpecificDescriptions="false" userID="FLX" flexoID="19" fragment="http://openflexo.org/docx-test/TestResourceCenter/ExampleLibrary.docx:2936B416:395C1CE1">
+            <AssignableAction_AddDocXFragment id="23" locationSemantics="InsertBeforeLastChild" location="booksDescriptionSection.startElement" useSpecificDescriptions="false" userID="FLX" flexoID="19" fragment="http://openflexo.org/docx-test/ExampleLibrary.docx:2936B416:395C1CE1">
               <DocXModelSlot idref="16" />
             </AssignableAction_AddDocXFragment>
           </ControlGraph1_AssignationAction>
@@ -66,7 +66,7 @@
     <DocXModelSlot idref="16" />
   </DocXFragmentRole>
   <FMLRTModelSlot id="4" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Reference" flexoID="4" isRequired="true" name="library" isReadOnly="false" virtualModelURI="http://openflexo.org/docx-test/TestLibraryViewPoint/LibraryVirtualModel" cardinality="ZeroOne" />
-  <DocXModelSlot id="16" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Reference" templateDocumentURI="http://openflexo.org/docx-test/ExampleLibrary.docx" flexoID="12" isRequired="true" name="document" isReadOnly="false" cardinality="ZeroOne" />
+  <DocXModelSlot id="16" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Reference" templateDocumentURI="http://openflexo.org/docx-test/ExampleLibrary.docx" flexoID="12" isRequired="true" name="document" isReadOnly="false" cardinality="ZeroOne"/>
   <ActionScheme id="34" userID="FLX" useSpecificDescriptions="false" width="800" label="generateDocument" definePopupDefaultSize="false" height="600" flexoID="18" skipConfirmationPanel="false" name="generateDocument">
     <BehaviourControlGraph_Sequence id="35" flexoID="8" userID="FLX" useSpecificDescriptions="false">
       <ControlGraph1_GenerateDocXDocument id="36" flexoID="9" ownerContext="controlGraph1" userID="FLX" useSpecificDescriptions="false">
