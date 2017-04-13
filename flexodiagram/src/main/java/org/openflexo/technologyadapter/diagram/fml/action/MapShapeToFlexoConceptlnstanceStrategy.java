@@ -184,7 +184,7 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 
 		// AddFlexoConceptInstance action
 		AddFlexoConceptInstance<?> newAddFCI = getTransformationAction().getFactory().newInstance(AddFlexoConceptInstance.class);
-		newAddFCI.setVirtualModelInstance(new DataBinding(getVirtualModelInstance().toString()));
+		newAddFCI.setReceiver(new DataBinding(getVirtualModelInstance().toString()));
 		newAddFCI.setFlexoConceptType(getTypeConcept());
 		if (getTypeConcept() != null && getTypeConcept().getCreationSchemes().size() > 0) {
 			newAddFCI.setCreationScheme(getTypeConcept().getCreationSchemes().get(0));

@@ -1142,7 +1142,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		MatchFlexoConceptInstance matchFlexoConceptInstance = (MatchFlexoConceptInstance) createMatchFlexoConceptInstanceAction
 				.getNewEditionAction();
 		matchFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
-		matchFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		matchFlexoConceptInstance.setReceiver(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
 
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 

@@ -977,7 +977,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		MatchFlexoConceptInstance matchFlexoConceptInstance = (MatchFlexoConceptInstance) createMatchFlexoConceptInstanceAction
 				.getNewEditionAction();
 		matchFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
-		matchFlexoConceptInstance.setVirtualModelInstance(new DataBinding<>("virtualModelInstance"));
+		matchFlexoConceptInstance.setReceiver(new DataBinding<>("virtualModelInstance"));
 
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 

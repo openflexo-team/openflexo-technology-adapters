@@ -37,6 +37,7 @@ import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -146,15 +147,29 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 		@Override
 		public DocXDocumentResource getTemplateResource() {
+
 			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
 					&& getServiceManager().getResourceManager() != null) {
+
+				FlexoTask activateTA = getServiceManager().activateTechnologyAdapter(getModelSlotTechnologyAdapter());
+				if (activateTA != null) {
+					getServiceManager().getTaskManager().waitTask(activateTA);
+				}
+
 				// System.out.println("Looking up " + templateDocumentURI);
 				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI);
-				// System.out.println("templateResource = " + returned);
+				// System.out.println("templateResource = " + templateResource);
+				// for (FlexoResourceCenter<?> rc : getServiceManager().getResourceCenterService().getResourceCenters()) {
+				// System.out.println("* rc=" + rc);
+				// for (FlexoResource r : rc.getAllResources(null)) {
+				// System.out.println(" >> " + r);
+				// }
+				// }
 				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
 				// System.out.println("> " + r.getURI());
 				// }
 			}
+
 			return templateResource;
 		}
 
