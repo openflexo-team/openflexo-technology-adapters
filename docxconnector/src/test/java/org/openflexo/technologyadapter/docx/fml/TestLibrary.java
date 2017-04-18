@@ -585,12 +585,13 @@ public class TestLibrary extends AbstractTestDocX {
 		CreateTechnologyRole createIntroductionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createIntroductionSectionRole.setRoleName("introductionSection");
-		// createIntroductionSectionRole.setModelSlot(docXModelSlot);
+		createIntroductionSectionRole.setModelSlot(docXModelSlot);
 		createIntroductionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createIntroductionSectionRole.getModelSlot());
 		createIntroductionSectionRole.doAction();
 		assertTrue(createIntroductionSectionRole.hasActionExecutionSucceeded());
 		introductionFragmentRole = (DocXFragmentRole) createIntroductionSectionRole.getNewFlexoRole();
+		assertEquals(docXModelSlot, introductionFragmentRole.getModelSlot());
 		DocXParagraph startParagraph1 = (DocXParagraph) templateDocument.getElements().get(2);
 		DocXParagraph endParagraph1 = (DocXParagraph) templateDocument.getElements().get(3);
 		System.out.println("Introduction:");
@@ -605,7 +606,7 @@ public class TestLibrary extends AbstractTestDocX {
 		CreateTechnologyRole createBooksDescriptionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createBooksDescriptionSectionRole.setRoleName("booksDescriptionSection");
-		// createBooksDescriptionSectionRole.setModelSlot(docXModelSlot);
+		createBooksDescriptionSectionRole.setModelSlot(docXModelSlot);
 		createBooksDescriptionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createBooksDescriptionSectionRole.getModelSlot());
 		createBooksDescriptionSectionRole.doAction();
@@ -624,7 +625,7 @@ public class TestLibrary extends AbstractTestDocX {
 		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createConclusionSectionRole.setRoleName("conclusionSection");
-		// createConclusionSectionRole.setModelSlot(docXModelSlot);
+		createConclusionSectionRole.setModelSlot(docXModelSlot);
 		createConclusionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createConclusionSectionRole.getModelSlot());
 		createConclusionSectionRole.doAction();
@@ -654,7 +655,6 @@ public class TestLibrary extends AbstractTestDocX {
 
 		assertTrue(documentVirtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(documentVirtualModel));
-
 	}
 
 	private FlexoConcept createBookDescriptionSection() throws FragmentConsistencyException {
@@ -881,6 +881,7 @@ public class TestLibrary extends AbstractTestDocX {
 		createSelectIntroductionSection.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createSelectIntroductionSection.getNewEditionAction();
 		assertTrue(action1.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action1.getAssignableAction()).getReceiver().setUnparsedBinding("introductionSection");
 
 		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -889,6 +890,7 @@ public class TestLibrary extends AbstractTestDocX {
 		createSelectBooksDescriptionSection.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createSelectBooksDescriptionSection.getNewEditionAction();
 		assertTrue(action2.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action2.getAssignableAction()).getReceiver().setUnparsedBinding("booksDescriptionSection");
 
 		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -897,6 +899,7 @@ public class TestLibrary extends AbstractTestDocX {
 		createSelectConclusionSection.doAction();
 		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
 		assertTrue(action3.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action3.getAssignableAction()).getReceiver().setUnparsedBinding("conclusionSection");
 
 		return generateDocumentActionScheme;
 
@@ -931,7 +934,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("book");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("library"));
+		selectFlexoConceptInstance.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -980,7 +983,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration2.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
+		selectFlexoConceptInstance2.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
 
@@ -1015,7 +1018,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
+		selectFlexoConceptInstance.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1545,8 +1548,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
 		if (newViewResource.getVirtualModelResource() == null) {
-			System.out.println("pas normal ca !!!");
-			System.exit(-1);
+			fail();
 		}
 
 		assertNotNull(newViewResource);
@@ -1575,6 +1577,13 @@ public class TestLibrary extends AbstractTestDocX {
 				.getFlexoBehaviour("updateBookDescriptionSection"));
 		assertNotNull(bookDescriptionSectionReinjectScheme = (ActionScheme) bookDescriptionSection
 				.getFlexoBehaviour("reinjectDataFromBookDescriptionSection"));
+		assertNotNull(docXModelSlot = (DocXModelSlot) documentVirtualModel.getModelSlot("document"));
+		assertNotNull(introductionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleRole("introductionSection"));
+		assertEquals(docXModelSlot, introductionFragmentRole.getModelSlot());
+		assertNotNull(booksDescriptionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleRole("booksDescriptionSection"));
+		assertEquals(docXModelSlot, booksDescriptionFragmentRole.getModelSlot());
+		assertNotNull(conclusionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleRole("conclusionSection"));
+		assertEquals(docXModelSlot, conclusionFragmentRole.getModelSlot());
 
 		assertEquals(2, newViewResource.getVirtualModelInstanceResources().size());
 

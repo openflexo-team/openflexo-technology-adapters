@@ -63,7 +63,7 @@ public interface ReinjectTextBindings extends DocXFragmentAction {
 		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext
-					.getFlexoConceptInstance().getActorReference(getFlexoRole());
+					.getFlexoConceptInstance().getActorReference(getInferedFlexoRole());
 
 			actorReference.reinjectDataFromDocument();
 

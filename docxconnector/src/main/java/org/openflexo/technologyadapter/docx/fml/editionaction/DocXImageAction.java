@@ -43,7 +43,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
-import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 
 /**
@@ -55,16 +54,15 @@ import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXImageAction.DocXImageActionImpl.class)
-public interface DocXImageAction
-		extends RoleSpecificAction<DocXImageRole, DocXModelSlot, DocXDocument, DocXDrawingRun>, DocXAction<DocXDrawingRun> {
+public interface DocXImageAction extends RoleSpecificAction<DocXImageRole, DocXModelSlot, DocXDrawingRun> {
 
-	public static abstract class DocXImageActionImpl
-			extends RoleSpecificActionImpl<DocXImageRole, DocXModelSlot, DocXDocument, DocXDrawingRun> implements DocXImageAction {
+	public static abstract class DocXImageActionImpl extends RoleSpecificActionImpl<DocXImageRole, DocXModelSlot, DocXDrawingRun>
+			implements DocXImageAction {
 
-		@Override
+		/*@Override
 		public Class<DocXImageRole> getRoleClass() {
 			return DocXImageRole.class;
-		}
+		}*/
 
 		@Override
 		public Class<DocXDrawingRun> getAssignableType() {

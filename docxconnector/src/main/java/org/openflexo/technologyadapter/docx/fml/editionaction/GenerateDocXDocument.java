@@ -138,7 +138,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 			try {
 
-				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
+				DocXDocumentResource templateResource = getInferedModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
 				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
@@ -161,7 +161,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 							.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 					generatedResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
-							resourceName, true, getModelSlot().getIdStrategy());
+							resourceName, true, getInferedModelSlot().getIdStrategy());
 
 				}
 

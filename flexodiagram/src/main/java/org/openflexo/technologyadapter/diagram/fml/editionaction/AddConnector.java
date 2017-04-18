@@ -118,7 +118,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	@Override
 	public ConnectorRole getAssignedFlexoProperty();
 
-	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector>implements AddConnector {
+	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
 
 		private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 
@@ -133,7 +133,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
 			out.append(getClass().getSimpleName() + " conformTo ConnectorSpecification from "
-					+ (getModelSlot() != null ? getModelSlot().getName() : "null") + " {" + StringUtils.LINE_SEPARATOR, context);
+					+ (getReceiver().isValid() ? getReceiver().toString() : "null") + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {

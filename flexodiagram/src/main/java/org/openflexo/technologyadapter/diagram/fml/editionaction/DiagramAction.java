@@ -54,7 +54,7 @@ public interface DiagramAction<MS extends DiagramModelSlot, T> extends Technolog
 
 	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T> extends TechnologySpecificActionImpl<MS, Diagram, T> {
 
-		@Override
+		/*@Override
 		public MS getModelSlot() {
 			MS returned = (MS) performSuperGetter(TechnologySpecificAction.MODEL_SLOT_KEY);
 			if (returned == null) {
@@ -63,7 +63,7 @@ public interface DiagramAction<MS extends DiagramModelSlot, T> extends Technolog
 				}
 			}
 			return returned;
-		}
+		}*/
 
 		@Override
 		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {

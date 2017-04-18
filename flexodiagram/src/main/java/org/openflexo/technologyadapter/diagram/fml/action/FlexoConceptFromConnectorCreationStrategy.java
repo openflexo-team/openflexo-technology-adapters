@@ -88,7 +88,7 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 	@Override
 	public void normalizeGraphicalRepresentation(GraphicalRepresentation gr) {
 		if (gr instanceof ConnectorGraphicalRepresentation) {
-			ConnectorGraphicalRepresentation connectorGR = (ConnectorGraphicalRepresentation) gr;
+			// ConnectorGraphicalRepresentation connectorGR = (ConnectorGraphicalRepresentation) gr;
 			// Anything to do ???
 		}
 	}
@@ -226,7 +226,8 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 
 			// Add connector action
 			AddConnector newAddConnector = getTransformationAction().getFactory().newInstance(AddConnector.class);
-			newAddConnector.setModelSlot(getTransformationAction().getDiagramModelSlot());
+			newAddConnector.getReceiver().setUnparsedBinding(getTransformationAction().getDiagramModelSlot().getModelSlotName());
+			// newAddConnector.setModelSlot(getTransformationAction().getDiagramModelSlot());
 			AssignationAction<DiagramConnector> assignationAction = getTransformationAction().getFactory()
 					.newAssignationAction(newAddConnector);
 			assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));

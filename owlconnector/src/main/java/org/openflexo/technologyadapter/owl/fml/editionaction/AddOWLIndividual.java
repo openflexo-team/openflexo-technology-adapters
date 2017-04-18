@@ -170,7 +170,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLOntolog
 					}
 				}
 				else {
-					logger.warning("No model slot instance defined for " + getModelSlot());
+					logger.warning("No model slot instance defined for " + getReceiver());
 				}
 				return newIndividual;
 			} catch (DuplicateURIException e) {

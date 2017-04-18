@@ -65,8 +65,7 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 	public void setFragment(DocXFragment fragment);
 
 	public static abstract class DocXFragmentRoleImpl
-			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>
-			implements DocXFragmentRole {
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter> implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -99,8 +98,8 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 		@Override
 		public String getTypeDescription() {
 			try {
-				return TypeUtils.simpleRepresentation(getType()) + "("
-						+ getFMLModelFactory().getStringEncoder().toString(getFragment()) + ")";
+				return TypeUtils.simpleRepresentation(getType()) + "(" + getFMLModelFactory().getStringEncoder().toString(getFragment())
+						+ ")";
 			} catch (InvalidDataException e) {
 				return super.getTypeDescription();
 			}

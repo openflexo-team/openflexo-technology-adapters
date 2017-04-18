@@ -155,11 +155,10 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(
-					getClass().getSimpleName()
-							/*+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")*/
-							+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR,
-					context);
+			out.append(getClass().getSimpleName()
+					/*+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")*/
+					+ (getReceiver().isValid() ? getReceiver().toString() : "") + " from " + getReceiver().toString() + " {"
+					+ StringUtils.LINE_SEPARATOR, context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
 				out.append(")", context);
@@ -287,10 +286,10 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			if (getAssignedFlexoProperty() instanceof DiagramRole) {
 				return getAssignedFlexoProperty().getDiagramSpecificationResource();
 			}
-			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI) && getModelSlot() != null
-					&& getModelSlot().getModelSlotTechnologyAdapter() != null) {
-				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getModelSlotTechnologyAdapter()
-						.getTechnologyContextManager().getResourceWithURI(diagramSpecificationURI);
+			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)
+					&& getModelSlotTechnologyAdapter() != null) {
+				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlotTechnologyAdapter().getTechnologyContextManager()
+						.getResourceWithURI(diagramSpecificationURI);
 				logger.info("Looked-up " + diagramSpecificationResource);
 			}
 			return diagramSpecificationResource;

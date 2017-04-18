@@ -129,7 +129,11 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		@Override
 		public XMLMetaModel getMetamodel() {
-			return this.getModelSlot().getMetamodel();
+			if (getInferedModelSlot() != null) {
+				return getInferedModelSlot().getMetamodel();
+			}
+			return null;
+			// return this.getModelSlot().getMetamodel();
 		}
 
 		@Override
@@ -148,8 +152,8 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		private void rebindTypeURI() {
 			String aTypeURI = getTypeURI();
-			if (aTypeURI != null && getModelSlot() != null) {
-				XMLType t = getModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
+			if (aTypeURI != null && getInferedModelSlot() != null) {
+				XMLType t = getInferedModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
 
 				if (t instanceof XMLComplexType) {
 					xmlType = (XMLComplexType) t;

@@ -181,12 +181,13 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 	protected void initializeDropScheme(DropScheme newDropScheme) {
 		// Add shape/connector actions
 		boolean mainFlexoRole = true;
-		for (GraphicalElementRole graphicalElementRole : newGraphicalElementRoles.values()) {
+		for (GraphicalElementRole<?, ?> graphicalElementRole : newGraphicalElementRoles.values()) {
 			if (graphicalElementRole instanceof ShapeRole) {
 				ShapeRole grFlexoRole = (ShapeRole) graphicalElementRole;
 				// Add shape action
 				AddShape newAddShape = getTransformationAction().getFactory().newInstance(AddShape.class);
-				newAddShape.setModelSlot(getTransformationAction().getDiagramModelSlot());
+				newAddShape.getReceiver().setUnparsedBinding(getTransformationAction().getDiagramModelSlot().getModelSlotName());
+				// newAddShape.setModelSlot(getTransformationAction().getDiagramModelSlot());
 				AssignationAction<DiagramShape> assignationAction = getTransformationAction().getFactory()
 						.newAssignationAction(newAddShape);
 				assignationAction.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));

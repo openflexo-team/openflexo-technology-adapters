@@ -105,7 +105,11 @@ public abstract interface AddStatement<S extends OWLStatement>
 
 		@Override
 		public OWLOntology getMetaModel() {
-			return this.getModelSlot().getMetaModelResource().getMetaModelData();
+			// return this.getModelSlot().getMetaModelResource().getMetaModelData();
+			if (getInferedModelSlot() != null) {
+				return getInferedModelSlot().getMetaModelResource().getMetaModelData();
+			}
+			return null;
 		}
 
 		/*@Override
