@@ -51,6 +51,7 @@ import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -59,6 +60,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -166,14 +168,17 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 				document = fragment.getFlexoDocument();
 			}
 			else {
+				// TODO: refactor this to make it nicer
 				// In this case, the role is null, and we are about to initialize it
 				// The idea is to access the underying role, and then the document via the model slot
 				if (getInferedFlexoRole() != null && getInferedFlexoRole().getModelSlot() != null) {
-					document = (DocXDocument) evaluationContext.getFlexoConceptInstance()
-							.getModelSlotInstance(getInferedFlexoRole().getModelSlot()).getAccessedResourceData();
+					DocXModelSlot modelSlot = (DocXModelSlot) getInferedFlexoRole().getModelSlot();
+					// Try with the FlexoConceptInstance
+					document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot).getAccessedResourceData();
 					if (document == null) {
-						document = (DocXDocument) evaluationContext.getVirtualModelInstance()
-								.getModelSlotInstance(getInferedFlexoRole().getModelSlot()).getAccessedResourceData();
+						// Try with the parent VirtualModelInstance
+						ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
+						document = (DocXDocument) msi.getAccessedResourceData();
 					}
 				}
 			}
