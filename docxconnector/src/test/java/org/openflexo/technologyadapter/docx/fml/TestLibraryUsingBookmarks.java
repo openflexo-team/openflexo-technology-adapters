@@ -618,7 +618,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		CreateTechnologyRole createIntroductionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createIntroductionSectionRole.setRoleName("introductionSection");
-		// createIntroductionSectionRole.setModelSlot(docXModelSlot);
+		createIntroductionSectionRole.setModelSlot(docXModelSlot);
 		createIntroductionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createIntroductionSectionRole.getModelSlot());
 		createIntroductionSectionRole.doAction();
@@ -638,7 +638,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		CreateTechnologyRole createBooksDescriptionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createBooksDescriptionSectionRole.setRoleName("booksDescriptionSection");
-		// createBooksDescriptionSectionRole.setModelSlot(docXModelSlot);
+		createBooksDescriptionSectionRole.setModelSlot(docXModelSlot);
 		createBooksDescriptionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createBooksDescriptionSectionRole.getModelSlot());
 		createBooksDescriptionSectionRole.doAction();
@@ -657,7 +657,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				_editor);
 		createConclusionSectionRole.setRoleName("conclusionSection");
-		// createConclusionSectionRole.setModelSlot(docXModelSlot);
+		createConclusionSectionRole.setModelSlot(docXModelSlot);
 		createConclusionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		assertEquals(docXModelSlot, createConclusionSectionRole.getModelSlot());
 		createConclusionSectionRole.doAction();
@@ -914,6 +914,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createSelectIntroductionSection.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createSelectIntroductionSection.getNewEditionAction();
 		assertTrue(action1.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action1.getAssignableAction()).getReceiver().setUnparsedBinding("introductionSection");
 
 		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -922,6 +923,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createSelectBooksDescriptionSection.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createSelectBooksDescriptionSection.getNewEditionAction();
 		assertTrue(action2.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action2.getAssignableAction()).getReceiver().setUnparsedBinding("booksDescriptionSection");
 
 		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -930,6 +932,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createSelectConclusionSection.doAction();
 		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
 		assertTrue(action3.getAssignation().isValid());
+		((SelectGeneratedDocXFragment) action3.getAssignableAction()).getReceiver().setUnparsedBinding("conclusionSection");
 
 		return generateDocumentActionScheme;
 
