@@ -29,7 +29,7 @@
 					value="false" />
 				<Assignment variable="component.selectAnnotationProperties"
 					value="false" />
-				<Assignment variable="component.modelSlot" value="data.modelSlot" />
+				<Assignment variable="component.modelSlot" value="data.inferedModelSlot" />
 				<Dependancy componentName="AddObjectPropertyStatementAssignCC" />
 			</Custom>
 			<Label label="object" align="right" index="10" data=""

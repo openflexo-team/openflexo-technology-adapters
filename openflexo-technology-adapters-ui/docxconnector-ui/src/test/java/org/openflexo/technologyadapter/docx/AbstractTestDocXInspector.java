@@ -104,7 +104,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 		System.out.println("resourceCenter=" + resourceCenter);
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
