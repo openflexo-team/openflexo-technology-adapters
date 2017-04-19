@@ -350,7 +350,9 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	private void updateAsNormalMode() {
-		((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
+		if (componentView != null && componentView.getController() != null) {
+			((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
+		}
 		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
 			try {
 				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());

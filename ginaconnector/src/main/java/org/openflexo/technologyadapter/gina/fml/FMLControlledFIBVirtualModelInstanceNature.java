@@ -116,6 +116,14 @@ public class FMLControlledFIBVirtualModelInstanceNature<VMI extends AbstractVirt
 
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> _getModelSlotInstance(
 			AbstractVirtualModelInstance<?, ?> virtualModelInstance) {
+
+		if (virtualModelInstance == null) {
+			return null;
+		}
+		if (virtualModelInstance.getVirtualModel() == null) {
+			return null;
+		}
+
 		FIBComponentModelSlot fibMS = virtualModelInstance.getVirtualModel().getModelSlots(FIBComponentModelSlot.class).get(0);
 
 		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> returned = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) virtualModelInstance
