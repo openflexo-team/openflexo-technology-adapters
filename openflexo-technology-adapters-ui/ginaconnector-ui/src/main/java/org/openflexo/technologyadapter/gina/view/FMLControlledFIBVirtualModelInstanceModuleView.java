@@ -352,21 +352,23 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	private void updateAsNormalMode() {
 		if (componentView != null && componentView.getController() != null) {
 			((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
-		}
-		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
-			try {
-				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
-				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
-				componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (modelSlotInstance != null && modelSlotInstance.getModelSlot() != null) {
+				for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
+					try {
+						Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
+						// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
+						componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		perspective.setTopRightView(null);
