@@ -74,6 +74,8 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		component.bindTo(representedObject, modelSlot);
 
+		component.getComponent().setCustomTypeEditorProvider(controller.getApplicationContext().getTechnologyAdapterControllerService());
+
 		// TODO: if we set flag to true, a dead-lock happen here.
 		// Please investigate to find an elegant solution
 		editorController = getFIBEditor(false).openFIBComponent(

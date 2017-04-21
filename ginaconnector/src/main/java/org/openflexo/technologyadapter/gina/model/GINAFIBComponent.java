@@ -143,6 +143,8 @@ public interface GINAFIBComponent
 
 			getComponent().setBindingFactory(new FlexoConceptBindingFactory(concept.getViewPoint()));
 
+			getComponent().setCustomTypeManager(getResource().getServiceManager().getTechnologyAdapterService());
+
 			if (modelSlot != null) {
 				for (VariableAssignment variableAssign : modelSlot.getAssignments()) {
 					FIBVariable<?> returned = getComponent().getVariable(variableAssign.getVariable());

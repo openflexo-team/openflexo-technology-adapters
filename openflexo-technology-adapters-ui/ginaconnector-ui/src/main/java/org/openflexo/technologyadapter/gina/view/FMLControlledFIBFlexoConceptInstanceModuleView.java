@@ -94,9 +94,9 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 		// modelSlotInstance = FMLControlledFIBVirtualModelInstanceNature.getModelSlotInstance(representedObject);
 		component = FMLControlledFIBFlexoConceptInstanceNature.getGINAFIBComponent(representedObject);
 
-		if (component != null && component.getComponent() != null && component.getComponent().getModelFactory() != null) {
+		/*if (component != null && component.getComponent() != null && component.getComponent().getModelFactory() != null) {
 			System.out.println(component.getComponent().getModelFactory().stringRepresentation(component.getComponent()));
-		}
+		}*/
 
 		if (getRepresentedObject() != null && component != null) {
 			component.bindTo(getRepresentedObject().getFlexoConcept(),
@@ -104,6 +104,9 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 		}
 
 		if (component != null) {
+			component.getComponent()
+					.setCustomTypeEditorProvider(controller.getApplicationContext().getTechnologyAdapterControllerService());
+
 			if (component.getComponent().getControllerClass() != null
 					&& !FMLControlledFIBController.class.isAssignableFrom(component.getComponent().getControllerClass())) {
 				// If declared controller class is not a subclass of FMLControlledFIBController, force it
