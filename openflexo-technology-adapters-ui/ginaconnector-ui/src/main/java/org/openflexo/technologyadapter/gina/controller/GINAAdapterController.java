@@ -269,7 +269,8 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 				}
 			};
 
-			FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(), progress) {
+			FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(getTechnologyAdapter().getTechnologyAdapterService()),
+					progress) {
 				@Override
 				public boolean activate(FIBEditorController editorController) {
 					// centerPanel.add(controller.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());

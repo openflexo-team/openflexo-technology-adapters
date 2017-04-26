@@ -76,7 +76,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 	private RelativePathResourceConverter relativePathResourceConverter;
 
 	public GINAFactory(GINAFIBComponentResource resource, FlexoServiceManager serviceManager) throws ModelDefinitionException {
-		super(GINAFIBComponent.class);
+		super(serviceManager.getTechnologyAdapterService(), GINAFIBComponent.class);
 
 		addConverter(typeConverter = new TypeConverter(serviceManager.getTechnologyAdapterService().getCustomTypeFactories()));
 
@@ -87,8 +87,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		this.resource = resource;
 		setEditingContext(serviceManager.getEditingContext());
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getIODelegate() != null
-				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
+		if (resource != null && resource.getIODelegate() != null && resource.getIODelegate().getSerializationArtefactAsResource() != null) {
 			relativePathResourceConverter
 					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
