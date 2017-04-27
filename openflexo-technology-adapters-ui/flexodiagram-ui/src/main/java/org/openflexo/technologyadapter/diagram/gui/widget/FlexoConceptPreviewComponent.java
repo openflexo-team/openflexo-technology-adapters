@@ -38,16 +38,14 @@
 
 package org.openflexo.technologyadapter.diagram.gui.widget;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
+import javax.swing.*;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.gina.controller.FIBController;
@@ -114,8 +112,9 @@ public class FlexoConceptPreviewComponent extends JPanel
 				previewController = null;
 			}
 			if (object != null) {
-				previewController = new FlexoConceptPreviewController(object, selectionManager);
-				add(previewController.getDrawingView(), BorderLayout.CENTER);
+				JDrawingView<FlexoConcept> drawingView = previewController.getDrawingView();
+				previewController = new FlexoConceptPreviewController(object, selectionManager, drawingView.getFGEGraphics().getFactory());
+				add(drawingView, BorderLayout.CENTER);
 			}
 			revalidate();
 			repaint();

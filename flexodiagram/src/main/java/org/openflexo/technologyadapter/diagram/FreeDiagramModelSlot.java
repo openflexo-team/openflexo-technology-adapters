@@ -40,11 +40,6 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
-
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
@@ -151,6 +146,7 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		/**
 		 * Overrides super implementation by providing default graphical representations
 		 */
+		/*
 		@Override
 		public <PR extends FlexoRole<?>> PR makeFlexoRole(Class<PR> flexoRoleClass) {
 			PR returned = super.makeFlexoRole(flexoRoleClass);
@@ -170,7 +166,7 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 			}
 			return returned;
 		}
-
+		*/
 	}
 
 }
