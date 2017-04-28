@@ -40,12 +40,9 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
-
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction.TechnologySpecificActionImpl;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -53,7 +50,6 @@ import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-@FIBPanel("Fib/AddOSLCServiceProviderPanel.fib")
 @ModelEntity
 @ImplementationClass(AddOSLCServiceProvider.AddOSLCServiceProviderImpl.class)
 @XMLElement

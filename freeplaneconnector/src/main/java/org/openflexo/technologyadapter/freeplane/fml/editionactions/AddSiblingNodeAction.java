@@ -42,7 +42,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
@@ -51,7 +50,6 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -69,7 +67,6 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
  * Edition Action to allow an add of a sibling to a «selected» node. Parametrized in dialog with above or behind current node.
  */
 @ModelEntity
-@FIBPanel("Fib/AddSiblingNodePanel.fib")
 @XMLElement
 @ImplementationClass(value = AddSiblingNodeActionImpl.class)
 @FML("AddSiblingNodeAction")

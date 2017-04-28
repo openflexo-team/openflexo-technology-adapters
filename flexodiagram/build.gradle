@@ -4,6 +4,8 @@ dependencies {
   compile flexoOntology()
   compile pamela()
   compile connie()
+  compile diana()
+
   // external dep
   compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.12'
 

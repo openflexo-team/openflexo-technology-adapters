@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
-
 import org.eclipse.lyo.client.oslc.OSLCConstants;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
@@ -51,7 +50,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -66,7 +64,6 @@ import org.openflexo.technologyadapter.oslc.model.io.OSLCRMModelConverter;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
 
-@FIBPanel("Fib/AddOSLCRequirementPanel.fib")
 @ModelEntity
 @ImplementationClass(AddOSLCRequirement.AddOSLCRequirementImpl.class)
 @XMLElement

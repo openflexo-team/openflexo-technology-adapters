@@ -41,14 +41,12 @@ package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -64,7 +62,6 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 @ModelEntity
 @XMLElement
-@FIBPanel("Fib/AddChildNodePanel.fib")
 @ImplementationClass(value = AddChildNodeActionImpl.class)
 @FML("AddChildNodeAction")
 public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
