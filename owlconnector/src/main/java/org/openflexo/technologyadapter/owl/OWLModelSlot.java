@@ -95,6 +95,7 @@ import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLIndividual;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.CreateOWLResource;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
@@ -108,8 +109,8 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
  */
 @DeclareFlexoRoles({ OWLIndividualRole.class, OWLClassRole.class, OWLDataPropertyRole.class, OWLObjectPropertyRole.class,
 		OWLPropertyRole.class, DataPropertyStatementRole.class, ObjectPropertyStatementRole.class, SubClassStatementRole.class })
-@DeclareEditionActions({ AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class, AddObjectPropertyStatement.class,
-		AddRestrictionStatement.class, AddSubClassStatement.class })
+@DeclareEditionActions({ CreateOWLResource.class, AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class,
+		AddObjectPropertyStatement.class, AddRestrictionStatement.class, AddSubClassStatement.class })
 @DeclareFlexoBehaviourParameters({ ClassParameter.class, IndividualParameter.class, PropertyParameter.class })
 @DeclareInspectorEntries({ ClassInspectorEntry.class, IndividualInspectorEntry.class, PropertyInspectorEntry.class,
 		DataPropertyInspectorEntry.class, ObjectPropertyInspectorEntry.class })
