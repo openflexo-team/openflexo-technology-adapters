@@ -83,10 +83,8 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 
 /**
- * The {@link OWLOntologyLibrary} works in conjunction with a
- * {@link FlexoResourceCenterService}. It provides the mechanism to keep
- * reference to all {@link OWLOntology} known in the scope provided by the
- * {@link FlexoResourceCenterService}
+ * The {@link OWLOntologyLibrary} works in conjunction with a {@link FlexoResourceCenterService}. It provides the mechanism to keep
+ * reference to all {@link OWLOntology} known in the scope provided by the {@link FlexoResourceCenterService}
  * 
  * @author sylvain
  * 
@@ -120,7 +118,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
-		} else {
+		}
+		else {
 			StatementWithProperty returned = new StatementWithProperty(aProperty);
 			statementsWithProperty.put(aProperty, returned);
 			return returned;
@@ -218,8 +217,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	}
 
 	/**
-	 * Return ontology with supplied URI, look in all repositories of all known
-	 * resource centers
+	 * Return ontology with supplied URI, look in all repositories of all known resource centers
 	 * 
 	 * @param ontologyUri
 	 * @return
@@ -315,7 +313,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			 */
 			logger.warning("Not implemented yet !!!");
 			return null;
-		} else {
+		}
+		else {
 			throw new DoesNotExistException(name);
 		}
 	}
@@ -397,8 +396,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	}
 
 	/**
-	 * Return true if URI is well formed and valid regarding its unicity (no one
-	 * other object has same URI)
+	 * Return true if URI is well formed and valid regarding its unicity (no one other object has same URI)
 	 * 
 	 * @param uri
 	 * @return
@@ -410,8 +408,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 		if (StringUtils.isEmpty(conceptURI.trim())) {
 			return false;
 		}
-		return conceptURI.equals(ToolBox.getJavaName(conceptURI, true, false))
-				&& !isDuplicatedURI(ontologyURI, conceptURI);
+		return conceptURI.equals(ToolBox.getJavaName(conceptURI, true, false)) && !isDuplicatedURI(ontologyURI, conceptURI);
 	}
 
 	/**
@@ -451,17 +448,17 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			return allImportedOntologiesMapCache.get(ontology);
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+			System.err.println("Caused by: ");
+			e.getCause().printStackTrace();
 			return null;
 		}
 	}
 
 	/**
-	 * This cache stores all imported ontologies of a related ontology
-	 * (transitiviy)
+	 * This cache stores all imported ontologies of a related ontology (transitiviy)
 	 */
-	private final LoadingCache<OWLOntology, Set<OWLOntology>> allImportedOntologiesMapCache = CacheBuilder.newBuilder()
-			.maximumSize(10000).expireAfterWrite(10, TimeUnit.MINUTES).removalListener(this)
-			.build(new CacheLoader<OWLOntology, Set<OWLOntology>>() {
+	private final LoadingCache<OWLOntology, Set<OWLOntology>> allImportedOntologiesMapCache = CacheBuilder.newBuilder().maximumSize(10000)
+			.expireAfterWrite(10, TimeUnit.MINUTES).removalListener(this).build(new CacheLoader<OWLOntology, Set<OWLOntology>>() {
 				@Override
 				public Set<OWLOntology> load(OWLOntology ontology) {
 					return OntologyUtils.getAllImportedOntologies(ontology);
