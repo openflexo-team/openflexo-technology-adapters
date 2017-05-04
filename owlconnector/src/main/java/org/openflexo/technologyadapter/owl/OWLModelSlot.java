@@ -49,6 +49,7 @@ import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
@@ -96,6 +97,8 @@ import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertySt
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.CreateOWLResource;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLClass;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
@@ -111,6 +114,7 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 		OWLPropertyRole.class, DataPropertyStatementRole.class, ObjectPropertyStatementRole.class, SubClassStatementRole.class })
 @DeclareEditionActions({ CreateOWLResource.class, AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class,
 		AddObjectPropertyStatement.class, AddRestrictionStatement.class, AddSubClassStatement.class })
+@DeclareFetchRequests({ SelectOWLClass.class, SelectOWLIndividual.class })
 @DeclareFlexoBehaviourParameters({ ClassParameter.class, IndividualParameter.class, PropertyParameter.class })
 @DeclareInspectorEntries({ ClassInspectorEntry.class, IndividualInspectorEntry.class, PropertyInspectorEntry.class,
 		DataPropertyInspectorEntry.class, ObjectPropertyInspectorEntry.class })

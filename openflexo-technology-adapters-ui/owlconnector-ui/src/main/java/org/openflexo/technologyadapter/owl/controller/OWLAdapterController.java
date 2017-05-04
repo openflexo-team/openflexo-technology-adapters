@@ -68,6 +68,9 @@ import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLIndividual;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.CreateOWLResource;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLClass;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLIndividual;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyView;
@@ -258,6 +261,15 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 		}
 		else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.DUPLICATE);
+		}
+		else if (CreateOWLResource.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLOntology.class), IconLibrary.DUPLICATE);
+		}
+		else if (SelectOWLIndividual.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLIndividual.class), IconLibrary.IMPORT);
+		}
+		else if (SelectOWLClass.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
