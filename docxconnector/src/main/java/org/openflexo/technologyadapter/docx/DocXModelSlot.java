@@ -28,6 +28,7 @@ import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.ImageActorReference;
 import org.openflexo.foundation.doc.fml.ParagraphActorReference;
 import org.openflexo.foundation.doc.fml.TableActorReference;
+import org.openflexo.foundation.doc.fml.TextSelectionActorReference;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -50,6 +51,7 @@ import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTextSelectionRole;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
@@ -76,12 +78,13 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class })
+@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class,
+		DocXTextSelectionRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
 		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class, CreateEmptyDocXResource.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
-		ImageActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class, ImageActorReference.class,
+		TextSelectionActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
