@@ -354,7 +354,7 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 		// getFIBEditor(false).getInspector().setVisible(true);
 	}
 
-	private void updateAsNormalMode() {
+	protected void updateAsNormalMode() {
 
 		FIBComponentModelSlot fibComponentModelSlot = FMLControlledFIBFlexoConceptNature
 				.getFIBComponentModelSlot(getRepresentedObject().getFlexoConcept());

@@ -352,7 +352,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		// getFIBEditor(false).getInspector().setVisible(true);
 	}
 
-	private void updateAsNormalMode() {
+	protected void updateAsNormalMode() {
 		if (componentView != null && componentView.getController() != null) {
 			((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
 			if (modelSlotInstance != null && modelSlotInstance.getModelSlot() != null) {
