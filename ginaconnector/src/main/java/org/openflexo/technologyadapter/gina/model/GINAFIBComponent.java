@@ -46,7 +46,6 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.binding.FMLBindingFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -141,7 +140,7 @@ public interface GINAFIBComponent
 				return;
 			}
 
-			getComponent().setBindingFactory(new FMLBindingFactory(concept.getViewPoint()));
+			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getViewPoint()));
 
 			getComponent().setCustomTypeManager(getResource().getServiceManager().getTechnologyAdapterService());
 
