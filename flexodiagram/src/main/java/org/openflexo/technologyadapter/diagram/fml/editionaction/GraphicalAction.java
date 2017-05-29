@@ -307,7 +307,12 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				logger.fine("Feature is " + getGraphicalFeature());
 				logger.fine("Value is " + value);
 			}
-			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(), value);
+
+			Object castedValue = null;
+			castedValue = TypeUtils.castTo(value, ((GraphicalFeature) getGraphicalFeature()).getType());
+
+			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(),
+					castedValue);
 			return graphicalElement;
 		}
 
