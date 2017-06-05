@@ -58,6 +58,8 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
 
+	protected static final boolean DISPLAY_RIGHT_BROWSER = false;
+
 	protected static SwingGraphicalContextDelegate gcDelegate;
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {

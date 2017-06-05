@@ -66,7 +66,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ImplementationClass(SelectExcelRow.SelectExcelRowImpl.class)
 @XMLElement
 @FML("SelectExcelRow")
-public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelRow> {
+public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelRow> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String EXCEL_SHEET_KEY = "excelSheet";
@@ -78,7 +78,8 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 	@Setter(EXCEL_SHEET_KEY)
 	public void setExcelSheet(DataBinding<ExcelSheet> excelSheet);
 
-	public static abstract class SelectExcelRowImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelRow> implements SelectExcelRow {
+	public static abstract class SelectExcelRowImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow>
+			implements SelectExcelRow {
 
 		private static final Logger logger = Logger.getLogger(SelectExcelRow.class.getPackage().getName());
 

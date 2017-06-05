@@ -42,6 +42,7 @@ import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.AEMFModelObjectImpl;
+import org.openflexo.technologyadapter.emf.model.EMFModel;
 
 /**
  * Abstract action for {@link EMFModelSlot}
@@ -53,6 +54,6 @@ import org.openflexo.technologyadapter.emf.model.AEMFModelObjectImpl;
  */
 
 @ModelEntity(isAbstract = true)
-public interface EMFAction<T extends AEMFModelObjectImpl<?>> extends TechnologySpecificAction<EMFModelSlot, T> {
+public interface EMFAction<T extends AEMFModelObjectImpl<?>> extends TechnologySpecificAction<EMFModelSlot, EMFModel, T> {
 
 }

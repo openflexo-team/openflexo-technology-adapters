@@ -51,7 +51,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.fml.ClassParameter;
@@ -121,9 +121,8 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public EMFModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new EMFModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public EMFModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new EMFModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

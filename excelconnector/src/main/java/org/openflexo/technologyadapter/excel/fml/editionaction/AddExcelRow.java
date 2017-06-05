@@ -98,7 +98,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
-	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow>
+	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow>
 			implements AddExcelRow {
 
 		private static final Logger logger = Logger.getLogger(AddExcelRow.class.getPackage().getName());

@@ -33,10 +33,11 @@ import javax.swing.JPanel;
 import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.gina.swing.editor.FIBEditor;
@@ -67,14 +68,14 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance> {
+public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<AbstractVirtualModelInstance<?, ?>> {
 
 	protected static final Logger logger = FlexoLogger
 			.getLogger(FMLControlledFIBVirtualModelInstanceModuleView.class.getPackage().getName());
 
 	private final FlexoController controller;
 	private final FlexoPerspective perspective;
-	private final VirtualModelInstance virtualModelInstance;
+	private final AbstractVirtualModelInstance<?, ?> virtualModelInstance;
 
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
@@ -83,7 +84,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 	private LocalizedDelegate locales;
 
-	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance representedObject, FlexoController controller,
+	public FMLControlledFIBVirtualModelInstanceModuleView(AbstractVirtualModelInstance<?, ?> representedObject, FlexoController controller,
 			FlexoPerspective perspective, LocalizedDelegate locales) {
 		super(new BorderLayout());
 
@@ -105,6 +106,9 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		}
 
 		if (component != null) {
+			component.getComponent()
+					.setCustomTypeEditorProvider(controller.getApplicationContext().getTechnologyAdapterControllerService());
+
 			if (component.getComponent().getControllerClass() != null
 					&& !FMLControlledFIBController.class.isAssignableFrom(component.getComponent().getControllerClass())) {
 				// If declared controller class is not a subclass of FMLControlledFIBController, force it
@@ -348,22 +352,26 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		// getFIBEditor(false).getInspector().setVisible(true);
 	}
 
-	private void updateAsNormalMode() {
-		((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
-		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
-			try {
-				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
-				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
-				componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	protected void updateAsNormalMode() {
+		if (componentView != null && componentView.getController() != null) {
+			((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
+			if (modelSlotInstance != null && modelSlotInstance.getModelSlot() != null) {
+				for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
+					try {
+						Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
+						// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
+						componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		perspective.setTopRightView(null);
@@ -419,7 +427,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	@Override
-	public VirtualModelInstance getRepresentedObject() {
+	public AbstractVirtualModelInstance<?, ?> getRepresentedObject() {
 		return virtualModelInstance;
 	}
 }

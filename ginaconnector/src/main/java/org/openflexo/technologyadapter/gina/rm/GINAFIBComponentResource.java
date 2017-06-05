@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.gina.rm;
 
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -34,14 +33,16 @@ import org.openflexo.technologyadapter.gina.model.GINAFactory;
 
 @ModelEntity
 @ImplementationClass(GINAFIBComponentResourceImpl.class)
-public abstract interface GINAFIBComponentResource extends FlexoResource<GINAFIBComponent>,
-		TechnologyAdapterResource<GINAFIBComponent, GINATechnologyAdapter>, PamelaResource<GINAFIBComponent, GINAFactory> {
+public interface GINAFIBComponentResource extends
+		TechnologyAdapterResource<GINAFIBComponent, GINATechnologyAdapter>,
+		PamelaResource<GINAFIBComponent, GINAFactory>
+{
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+	String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
 	@Getter(value = "technologyContextManager", ignoreType = true)
-	public GINATechnologyContextManager getTechnologyContextManager();
+	GINATechnologyContextManager getTechnologyContextManager();
 
 	@Setter("technologyContextManager")
-	public void setTechnologyContextManager(GINATechnologyContextManager paramGINTechnologyContextManager);
+	void setTechnologyContextManager(GINATechnologyContextManager paramGINTechnologyContextManager);
 }

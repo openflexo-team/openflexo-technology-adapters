@@ -43,18 +43,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -210,9 +205,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new TypedDiagramModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
@@ -325,6 +319,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		/**
 		 * Overrides super implementation by providing default graphical representations
 		 */
+		/*
 		@Override
 		public <PR extends FlexoRole<?>> PR makeFlexoRole(Class<PR> flexoRoleClass) {
 			PR returned = super.makeFlexoRole(flexoRoleClass);
@@ -344,6 +339,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			}
 			return returned;
 		}
+		*/
 
 		// TODO
 		/*	@Override

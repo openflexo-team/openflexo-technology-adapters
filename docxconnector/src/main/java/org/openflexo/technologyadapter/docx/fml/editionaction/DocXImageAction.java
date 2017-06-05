@@ -54,15 +54,15 @@ import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXImageAction.DocXImageActionImpl.class)
-public interface DocXImageAction extends RoleSpecificAction<DocXImageRole, DocXModelSlot, DocXDrawingRun>, DocXAction<DocXDrawingRun> {
+public interface DocXImageAction extends RoleSpecificAction<DocXImageRole, DocXModelSlot, DocXDrawingRun> {
 
 	public static abstract class DocXImageActionImpl extends RoleSpecificActionImpl<DocXImageRole, DocXModelSlot, DocXDrawingRun>
 			implements DocXImageAction {
 
-		@Override
+		/*@Override
 		public Class<DocXImageRole> getRoleClass() {
 			return DocXImageRole.class;
-		}
+		}*/
 
 		@Override
 		public Class<DocXDrawingRun> getAssignableType() {

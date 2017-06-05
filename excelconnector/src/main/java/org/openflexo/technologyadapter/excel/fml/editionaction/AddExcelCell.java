@@ -137,7 +137,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
-	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell>
+	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelCell>
 			implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());

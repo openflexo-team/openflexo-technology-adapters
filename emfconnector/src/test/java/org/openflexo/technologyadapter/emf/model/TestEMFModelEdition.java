@@ -391,7 +391,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			FMLModelFactory factory) throws FlexoException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
-		removeObject.setModelSlot(newModelSlot);
+		// removeObject.setModelSlot(newModelSlot);
 		// removeObject.setEMFModelResource(emfModelResource);
 		// removeObject.setObjectIndividual(objectIndividual);
 		try {

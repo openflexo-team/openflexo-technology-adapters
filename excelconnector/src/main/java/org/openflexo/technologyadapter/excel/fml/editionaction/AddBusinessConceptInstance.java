@@ -39,26 +39,25 @@
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
 import java.lang.reflect.Type;
-
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInstance;
+import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 
-@FIBPanel("Fib/AddBusinessConceptInstancePanel.fib")
 @ModelEntity
 @ImplementationClass(AddBusinessConceptInstance.AddBusinessConceptInstanceImpl.class)
 @XMLElement
 @FML("AddBusinessConceptInstance")
-public interface AddBusinessConceptInstance extends TechnologySpecificAction<SemanticsExcelModelSlot, BusinessConceptInstance> {
+public interface AddBusinessConceptInstance extends TechnologySpecificAction<SemanticsExcelModelSlot, ExcelModel, BusinessConceptInstance> {
 
 	public static abstract class AddBusinessConceptInstanceImpl
-			extends TechnologySpecificActionImpl<SemanticsExcelModelSlot, BusinessConceptInstance>implements AddBusinessConceptInstance {
+			extends TechnologySpecificActionImpl<SemanticsExcelModelSlot, ExcelModel, BusinessConceptInstance>
+			implements AddBusinessConceptInstance {
 
 		@Override
 		public Type getAssignableType() {

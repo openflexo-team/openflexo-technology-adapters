@@ -79,8 +79,8 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 	@Setter(value = PARAMETER_KEY)
 	public void setParameter(DataBinding<Object> param);
 
-	public static abstract class SetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
-			SetXMLDocumentRoot {
+	public static abstract class SetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLModel, XMLIndividual>
+			implements SetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(SetXMLDocumentRoot.class.getPackage().getName());
 
@@ -121,7 +121,7 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		@Override
 		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
-			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(evaluationContext);
+			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();
 			XMLModelSlot modelSlot = modelSlotInstance.getModelSlot();
 
@@ -131,7 +131,8 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 				Object o = getParameter().getBindingValue(evaluationContext);
 				if (o instanceof XMLIndividual) {
 					rootIndiv = (XMLIndividual) o;
-				} else {
+				}
+				else {
 					logger.warning("Invalid value in Binding :" + getParameter().getUnparsedBinding());
 				}
 			} catch (TypeMismatchException e) {

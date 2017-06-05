@@ -116,8 +116,8 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 	public XMLMetaModel getMetamodel();
 
-	public abstract static class AddXMLIndividualImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
-			AddXMLIndividual {
+	public abstract static class AddXMLIndividualImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLModel, XMLIndividual>
+			implements AddXMLIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddXMLIndividualImpl.class.getPackage().getName());
 
@@ -129,7 +129,11 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		@Override
 		public XMLMetaModel getMetamodel() {
-			return this.getModelSlot().getMetamodel();
+			if (getInferedModelSlot() != null) {
+				return getInferedModelSlot().getMetamodel();
+			}
+			return null;
+			// return this.getModelSlot().getMetamodel();
 		}
 
 		@Override
@@ -148,12 +152,13 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		private void rebindTypeURI() {
 			String aTypeURI = getTypeURI();
-			if (aTypeURI != null && getModelSlot() != null) {
-				XMLType t = getModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
+			if (aTypeURI != null && getInferedModelSlot() != null) {
+				XMLType t = getInferedModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
 
 				if (t instanceof XMLComplexType) {
 					xmlType = (XMLComplexType) t;
-				} else {
+				}
+				else {
 					logger.warning("Did not found XMLComplextType corresponding to URI " + aTypeURI);
 				}
 			}
@@ -186,11 +191,11 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 			try {
 
 				if (getXMLType() != null) {
-					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = (ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel>) getModelSlotInstance(evaluationContext);
+					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = getModelSlotInstance(evaluationContext);
 					XMLModel model = modelSlotInstance.getAccessedResourceData();
 					XMLModelSlot modelSlot = (XMLModelSlot) modelSlotInstance.getModelSlot();
 
-					newIndividual = (XMLIndividual) model.addNewIndividual(getXMLType());
+					newIndividual = model.addNewIndividual(getXMLType());
 					modelSlotInstance.getResourceData().setIsModified();
 
 					for (XMLDataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
@@ -214,7 +219,8 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 						}
 
 						return newIndividual;
-					} else {
+					}
+					else {
 						// TODO Provide a way to push an error message to the user!
 						logger.warning("Error while creating Individual of type " + getXMLType().getURI());
 						if (newIndividual != null) {

@@ -402,8 +402,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @return
 	 */
 	public Set<OWLOntology> getAllImportedOntologies() {
-		// Set<OWLOntology> returned = OntologyUtils.getAllImportedOntologies(this);
-		// return returned;
+		if (isLoading) {
+			// When loading,
+			Set<OWLOntology> returned = new HashSet<>();
+			returned.add(this);
+			return returned;
+		}
 		return getOntologyLibrary().getAllImportedOntology(this);
 	}
 
@@ -1397,10 +1401,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 	public boolean loadWhenUnloaded() {
 		if (!isLoaded && !isLoading) {
-			isLoading = true;
 			// logger.info("Perform load "+getURI());
 			load();
-			isLoading = false;
 			return true;
 		}
 		else {
@@ -1441,132 +1443,138 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + ontologyURI);
 		logger.info("Try to load ontology " + ontologyURI);
 
-		ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, _library, null);
-
-		// FIXES add strict to FALSE (XtoF)
-		// FIXES OPENFLEXO-39, OPENFLEXO-40, OPENFLEXO-41, OPENFLEXO-42, OPENFLEXO-43, OPENFLEXO-44
-		// ontModel.setStrictMode(false);
-
-		// we have a local copy of flexo concept ontology
-		if (alternativeLocalResource != null) {
-			logger.fine("Alternative local file: " + alternativeLocalResource.getURI());
-			// try {
-			ontModel.getDocumentManager().addAltEntry(ontologyURI, alternativeLocalResource.getURI());
-			/*} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}*/
-		}
-
-		// read the source document
 		try {
-			logger.fine("BEGIN Read " + ontologyURI);
-			ontModel.read(alternativeLocalResource.openInputStream(), ontologyURI);
-			logger.fine("END read " + ontologyURI);
-		} catch (Exception e) {
-			logger.warning("Unexpected exception while reading ontology " + ontologyURI);
-			logger.warning("Exception " + e.getMessage() + ". See logs for details");
-			e.printStackTrace();
+			isLoading = true;
+
+			ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, _library, null);
+
+			// FIXES add strict to FALSE (XtoF)
+			// FIXES OPENFLEXO-39, OPENFLEXO-40, OPENFLEXO-41, OPENFLEXO-42, OPENFLEXO-43, OPENFLEXO-44
+			// ontModel.setStrictMode(false);
+
+			// we have a local copy of flexo concept ontology
+			if (alternativeLocalResource != null) {
+				logger.fine("Alternative local file: " + alternativeLocalResource.getURI());
+				// try {
+				ontModel.getDocumentManager().addAltEntry(ontologyURI, alternativeLocalResource.getURI());
+				/*} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}*/
+			}
+
+			// read the source document
+			try {
+				logger.fine("BEGIN Read " + ontologyURI);
+				ontModel.read(alternativeLocalResource.openInputStream(), ontologyURI);
+				logger.fine("END read " + ontologyURI);
+			} catch (Exception e) {
+				logger.warning("Unexpected exception while reading ontology " + ontologyURI);
+				logger.warning("Exception " + e.getMessage() + ". See logs for details");
+				e.printStackTrace();
+			}
+
+			for (Object o : ontModel.listImportedOntologyURIs()) {
+				OWLOntology importedOnt = _library.getOntology((String) o);
+				if (importedOnt != null) {
+					importedOnt.loadWhenUnloaded();
+					importedOntologies.add(importedOnt);
+				}
+			}
+
+			// logger.info("Loaded ontology " + ontologyURI + " imported ontologies = " + getImportedOntologies());
+			// logger.info("Loaded ontology " + ontologyURI + " search for concepts and properties");
+
+			createConceptsAndProperties();
+
+			// Now we iterate on all imported ontologies to bind original definitions of entities (class, individual and properties)
+			for (OWLOntology o : getImportedOntologies()) {
+				logger.fine("Bind original definition for imported ontology: " + o);
+				for (OWLClass c : getClasses()) {
+					OWLClass classInImportedOntolgy = o.getClass(c.getURI());
+					if (classInImportedOntolgy != null) {
+						if (classInImportedOntolgy != c) {
+							if (c.getOriginalDefinition() == classInImportedOntolgy) {
+								// Fine, this is done
+							}
+							else if (c.getOriginalDefinition() == null) {
+								// We have to set the redefinition
+								c.setOriginalDefinition(classInImportedOntolgy);
+							}
+							else if (!c.isRootConcept()) {
+								logger.warning("Inconsistent data while trying to bind original definition for OWLClass " + c
+										+ " classInImportedOntolgy=" + classInImportedOntolgy + " while actual original definition is "
+										+ c.getOriginalDefinition());
+							}
+						}
+					}
+				}
+				for (OWLIndividual i : getIndividuals()) {
+					OWLIndividual individualInImportedOntology = o.getIndividual(i.getURI());
+					if (individualInImportedOntology != null) {
+						if (individualInImportedOntology != i) {
+							if (i.getOriginalDefinition() == individualInImportedOntology) {
+								// Fine, this is done
+							}
+							else if (i.getOriginalDefinition() == null) {
+								// We have to set the redefinition
+								i.setOriginalDefinition(individualInImportedOntology);
+							}
+							else {
+								logger.warning("Inconsistent data while trying to bind original definition for OWLIndividual " + i
+										+ " individualInImportedOntology=" + individualInImportedOntology
+										+ " while actual original definition is " + i.getOriginalDefinition());
+							}
+						}
+					}
+				}
+				for (OWLObjectProperty p : getObjectProperties()) {
+					OWLObjectProperty objectPropertyInImportedOntology = o.getObjectProperty(p.getURI());
+					if (objectPropertyInImportedOntology != null) {
+						if (objectPropertyInImportedOntology != p) {
+							if (p.getOriginalDefinition() == objectPropertyInImportedOntology) {
+								// Fine, this is done
+							}
+							else if (p.getOriginalDefinition() == null) {
+								// We have to set the redefinition
+								p.setOriginalDefinition(objectPropertyInImportedOntology);
+							}
+							else {
+								logger.warning("Inconsistent data while trying to bind original definition for OWLObjectProperty " + p
+										+ " objectPropertyInImportedOntology=" + objectPropertyInImportedOntology
+										+ " while actual original definition is " + p.getOriginalDefinition());
+							}
+						}
+					}
+				}
+				for (OWLDataProperty p : getDataProperties()) {
+					OWLDataProperty dataPropertyInImportedOntology = o.getDataProperty(p.getURI());
+					if (dataPropertyInImportedOntology != null) {
+						if (dataPropertyInImportedOntology != p) {
+							if (p.getOriginalDefinition() == dataPropertyInImportedOntology) {
+								// Fine, this is done
+							}
+							else if (p.getOriginalDefinition() == null) {
+								// We have to set the redefinition
+								p.setOriginalDefinition(dataPropertyInImportedOntology);
+							}
+							else {
+								logger.warning("Inconsistent data while trying to bind original definition for OWLDataProperty " + p
+										+ " dataPropertyInImportedOntology=" + dataPropertyInImportedOntology
+										+ " while actual original definition is " + p.getOriginalDefinition());
+							}
+						}
+					}
+				}
+			}
+
+			isLoaded = true;
+
+			logger.info("Finished loading ontology " + ontologyURI);
+
+			clearIsModified();
+		} finally {
+			isLoading = false;
 		}
-
-		for (Object o : ontModel.listImportedOntologyURIs()) {
-			OWLOntology importedOnt = _library.getOntology((String) o);
-			if (importedOnt != null) {
-				importedOnt.loadWhenUnloaded();
-				importedOntologies.add(importedOnt);
-			}
-		}
-
-		// logger.info("Loaded ontology " + ontologyURI + " imported ontologies = " + getImportedOntologies());
-		// logger.info("Loaded ontology " + ontologyURI + " search for concepts and properties");
-
-		createConceptsAndProperties();
-
-		// Now we iterate on all imported ontologies to bind original definitions of entities (class, individual and properties)
-		for (OWLOntology o : getImportedOntologies()) {
-			logger.fine("Bind original definition for imported ontology: " + o);
-			for (OWLClass c : getClasses()) {
-				OWLClass classInImportedOntolgy = o.getClass(c.getURI());
-				if (classInImportedOntolgy != null) {
-					if (classInImportedOntolgy != c) {
-						if (c.getOriginalDefinition() == classInImportedOntolgy) {
-							// Fine, this is done
-						}
-						else if (c.getOriginalDefinition() == null) {
-							// We have to set the redefinition
-							c.setOriginalDefinition(classInImportedOntolgy);
-						}
-						else if (!c.isRootConcept()) {
-							logger.warning("Inconsistent data while trying to bind original definition for OWLClass " + c
-									+ " classInImportedOntolgy=" + classInImportedOntolgy + " while actual original definition is "
-									+ c.getOriginalDefinition());
-						}
-					}
-				}
-			}
-			for (OWLIndividual i : getIndividuals()) {
-				OWLIndividual individualInImportedOntology = o.getIndividual(i.getURI());
-				if (individualInImportedOntology != null) {
-					if (individualInImportedOntology != i) {
-						if (i.getOriginalDefinition() == individualInImportedOntology) {
-							// Fine, this is done
-						}
-						else if (i.getOriginalDefinition() == null) {
-							// We have to set the redefinition
-							i.setOriginalDefinition(individualInImportedOntology);
-						}
-						else {
-							logger.warning("Inconsistent data while trying to bind original definition for OWLIndividual " + i
-									+ " individualInImportedOntology=" + individualInImportedOntology
-									+ " while actual original definition is " + i.getOriginalDefinition());
-						}
-					}
-				}
-			}
-			for (OWLObjectProperty p : getObjectProperties()) {
-				OWLObjectProperty objectPropertyInImportedOntology = o.getObjectProperty(p.getURI());
-				if (objectPropertyInImportedOntology != null) {
-					if (objectPropertyInImportedOntology != p) {
-						if (p.getOriginalDefinition() == objectPropertyInImportedOntology) {
-							// Fine, this is done
-						}
-						else if (p.getOriginalDefinition() == null) {
-							// We have to set the redefinition
-							p.setOriginalDefinition(objectPropertyInImportedOntology);
-						}
-						else {
-							logger.warning("Inconsistent data while trying to bind original definition for OWLObjectProperty " + p
-									+ " objectPropertyInImportedOntology=" + objectPropertyInImportedOntology
-									+ " while actual original definition is " + p.getOriginalDefinition());
-						}
-					}
-				}
-			}
-			for (OWLDataProperty p : getDataProperties()) {
-				OWLDataProperty dataPropertyInImportedOntology = o.getDataProperty(p.getURI());
-				if (dataPropertyInImportedOntology != null) {
-					if (dataPropertyInImportedOntology != p) {
-						if (p.getOriginalDefinition() == dataPropertyInImportedOntology) {
-							// Fine, this is done
-						}
-						else if (p.getOriginalDefinition() == null) {
-							// We have to set the redefinition
-							p.setOriginalDefinition(dataPropertyInImportedOntology);
-						}
-						else {
-							logger.warning("Inconsistent data while trying to bind original definition for OWLDataProperty " + p
-									+ " dataPropertyInImportedOntology=" + dataPropertyInImportedOntology
-									+ " while actual original definition is " + p.getOriginalDefinition());
-						}
-					}
-				}
-			}
-		}
-
-		isLoaded = true;
-
-		logger.info("Finished loading ontology " + ontologyURI);
-
-		clearIsModified();
 	}
 
 	public void describe() {

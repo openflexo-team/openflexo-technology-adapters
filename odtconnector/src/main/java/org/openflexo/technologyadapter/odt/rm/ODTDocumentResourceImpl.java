@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -42,7 +41,7 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocument>implements ODTDocumentResource {
+public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocument> implements ODTDocumentResource {
 	private static final Logger logger = Logger.getLogger(ODTDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
@@ -108,11 +107,13 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(getFile());
-			StreamResult result = new StreamResult(out);
+			// Unused StreamResult result =
+			new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
-			Transformer transformer = factory.newTransformer();
+			// Unused Transformer transformer =
+			factory.newTransformer();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

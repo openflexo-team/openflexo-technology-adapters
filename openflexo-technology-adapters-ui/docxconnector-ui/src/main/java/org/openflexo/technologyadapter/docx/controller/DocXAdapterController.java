@@ -24,8 +24,10 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.doc.fml.TextBinding;
+import org.openflexo.foundation.doc.fml.TextSelectionRole;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -111,6 +113,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			return DocXIconLibrary.IMAGE_ICON;
 		}
 		else if (object instanceof DocXFragment) {
+			return DocXIconLibrary.FRAGMENT_ICON;
+		}
+		else if (object instanceof TextSelection) {
 			return DocXIconLibrary.FRAGMENT_ICON;
 		}
 		else if (object instanceof TextBinding) {
@@ -209,6 +214,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 		}
 		if (DocXImageRole.class.isAssignableFrom(roleClass)) {
 			return DocXIconLibrary.IMAGE_ICON;
+		}
+		if (TextSelectionRole.class.isAssignableFrom(roleClass)) {
+			return DocXIconLibrary.FRAGMENT_ICON;
 		}
 		return null;
 	}

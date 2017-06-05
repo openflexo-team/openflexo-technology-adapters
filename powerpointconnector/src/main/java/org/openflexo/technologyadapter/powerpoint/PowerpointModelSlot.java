@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -65,7 +65,8 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (Slide.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
-			} else if (AutoShape.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (AutoShape.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
 			logger.warning("Unexpected pattern property: " + patternRoleClass.getName());
@@ -83,7 +84,8 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 		}
 
 		@Override
-		public String getURIForObject(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance, Object o) {
+		public String getURIForObject(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance,
+				Object o) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -97,7 +99,7 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
 			// TODO Auto-generated method stub
 			return null;
 		}

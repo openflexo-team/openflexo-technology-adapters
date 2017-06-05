@@ -31,7 +31,7 @@ public class GINATechnologyContextManager extends TechnologyContextManager<GINAT
 
 	public GINATechnologyContextManager(GINATechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
-		fibLibrary = FIBLibraryImpl.createInstance();
+		fibLibrary = FIBLibraryImpl.createInstance(resourceCenterService.getServiceManager().getTechnologyAdapterService());
 	}
 
 	public FIBLibrary getFIBLibrary() {

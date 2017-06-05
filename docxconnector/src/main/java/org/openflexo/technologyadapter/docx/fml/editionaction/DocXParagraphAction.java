@@ -54,16 +54,15 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXParagraphAction.DocXParagraphActionImpl.class)
-public interface DocXParagraphAction
-		extends RoleSpecificAction<DocXParagraphRole, DocXModelSlot, DocXParagraph>, DocXAction<DocXParagraph> {
+public interface DocXParagraphAction extends RoleSpecificAction<DocXParagraphRole, DocXModelSlot, DocXParagraph> {
 
 	public static abstract class DocXParagraphActionImpl extends RoleSpecificActionImpl<DocXParagraphRole, DocXModelSlot, DocXParagraph>
 			implements DocXParagraphAction {
 
-		@Override
+		/*@Override
 		public Class<DocXParagraphRole> getRoleClass() {
 			return DocXParagraphRole.class;
-		}
+		}*/
 
 		@Override
 		public Class<DocXParagraph> getAssignableType() {

@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
-
 import org.eclipse.lyo.client.oslc.OSLCConstants;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
@@ -51,7 +50,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -61,16 +59,16 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCRMModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCRMModelConverter;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
 
-@FIBPanel("Fib/AddOSLCRequirementPanel.fib")
 @ModelEntity
 @ImplementationClass(AddOSLCRequirement.AddOSLCRequirementImpl.class)
 @XMLElement
 @FML("AddOSLCRequirement")
-public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModelSlot, OSLCResource> {
+public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModelSlot, OSLCServiceProviderCatalog, OSLCResource> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CREATION_FACTORY = "creationFactory";
@@ -102,8 +100,8 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	@Setter(REQ_DESCRIPTION_KEY)
 	public void setReqDescription(DataBinding<String> description);
 
-	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCResource>
-			implements AddOSLCRequirement {
+	public static abstract class AddOSLCRequirementImpl
+			extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements AddOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirement.class.getPackage().getName());
 

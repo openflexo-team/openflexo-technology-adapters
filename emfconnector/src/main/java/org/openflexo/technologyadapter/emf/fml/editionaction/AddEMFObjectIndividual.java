@@ -82,7 +82,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
 @FML("AddEMFObjectIndividual")
-public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
+public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CONTAINER_KEY = "container";
@@ -94,7 +94,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 	@Setter(CONTAINER_KEY)
 	public void setContainer(DataBinding<List> containerReference);
 
-	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFObjectIndividual>
+	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFModel, EMFObjectIndividual>
 			implements AddEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddEMFObjectIndividual.class.getPackage().getName());

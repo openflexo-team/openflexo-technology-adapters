@@ -59,9 +59,9 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 @ImplementationClass(AddOWLClass.AddOWLClassImpl.class)
 @XMLElement
 @FML("AddOWLClass")
-public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction<OWLClass> {
+public interface AddOWLClass extends AddClass<OWLModelSlot, OWLOntology, OWLClass>, OWLAction<OWLClass> {
 
-	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLClass> implements AddOWLClass {
+	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLOntology, OWLClass> implements AddOWLClass {
 
 		private static final Logger logger = Logger.getLogger(AddOWLClass.class.getPackage().getName());
 

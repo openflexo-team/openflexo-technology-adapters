@@ -29,6 +29,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.odt.ODTModelSlot;
+import org.openflexo.technologyadapter.odt.model.ODTDocument;
 import org.openflexo.technologyadapter.odt.model.ODTParagraph;
 
 /**
@@ -41,10 +42,10 @@ import org.openflexo.technologyadapter.odt.model.ODTParagraph;
 @ModelEntity
 @ImplementationClass(AddODTParagraph.AddODTParagraphImpl.class)
 @XMLElement
-public interface AddODTParagraph extends TechnologySpecificAction<ODTModelSlot, ODTParagraph> {
+public interface AddODTParagraph extends TechnologySpecificAction<ODTModelSlot, ODTDocument, ODTParagraph> {
 
-	public static abstract class AddODTParagraphImpl extends TechnologySpecificActionImpl<ODTModelSlot, ODTParagraph> implements
-			AddODTParagraph {
+	public static abstract class AddODTParagraphImpl extends TechnologySpecificActionImpl<ODTModelSlot, ODTDocument, ODTParagraph>
+			implements AddODTParagraph {
 
 		private static final Logger logger = Logger.getLogger(AddODTParagraph.class.getPackage().getName());
 

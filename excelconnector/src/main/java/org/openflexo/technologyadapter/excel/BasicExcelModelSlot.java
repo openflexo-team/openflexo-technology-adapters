@@ -53,7 +53,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
@@ -208,9 +208,9 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<BasicExcelModelSlot, ExcelWorkbook> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
-			return new BasicExcelModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public ModelSlotInstanceConfiguration<BasicExcelModelSlot, ExcelWorkbook> createConfiguration(FlexoConceptInstance fci,
+				FlexoResourceCenter<?> rc) {
+			return new BasicExcelModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

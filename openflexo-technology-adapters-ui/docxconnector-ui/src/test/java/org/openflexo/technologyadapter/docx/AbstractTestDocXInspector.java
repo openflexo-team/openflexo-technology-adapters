@@ -167,7 +167,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
 		initGUI();
 	}
 

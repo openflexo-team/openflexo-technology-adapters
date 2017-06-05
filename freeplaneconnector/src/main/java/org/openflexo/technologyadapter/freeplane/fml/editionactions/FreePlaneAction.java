@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
+import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 /**
@@ -53,6 +54,6 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
  */
 
 @ModelEntity(isAbstract = true)
-public interface FreePlaneAction<T extends IFreeplaneNode> extends TechnologySpecificAction<FreeplaneModelSlot, T> {
+public interface FreePlaneAction<T extends IFreeplaneNode> extends TechnologySpecificAction<FreeplaneModelSlot, IFreeplaneMap, T> {
 
 }

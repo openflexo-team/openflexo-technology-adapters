@@ -42,7 +42,7 @@
   <GetSetProperty id="29" flexoID="5" useSpecificDescriptions="false" userID="FLX" name="books">
     <SetControlGraph_EmptyControlGraph id="30" flexoID="4" ownerContext="setControlGraph" userID="FLX" useSpecificDescriptions="false" />
     <GetControlGraph_ReturnStatement id="31" flexoID="6" ownerContext="getControlGraph" useSpecificDescriptions="false" userID="FLX">
-      <AssignableAction_SelectFlexoConceptInstance id="32" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="virtualModelInstance" flexoID="7" flexoConceptTypeURI="http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel#Book" />
+      <AssignableAction_SelectFlexoConceptInstance id="32" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="virtualModelInstance" flexoID="7" flexoConceptTypeURI="http://openflexo.org/docx-test/TestLibraryViewPoint2/LibraryVirtualModel#Book" />
     </GetControlGraph_ReturnStatement>
   </GetSetProperty>
 </VirtualModel>

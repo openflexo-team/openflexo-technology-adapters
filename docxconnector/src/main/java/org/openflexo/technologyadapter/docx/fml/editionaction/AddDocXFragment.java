@@ -57,7 +57,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 @ModelEntity
 @ImplementationClass(AddDocXFragment.AddDocXFragmentImpl.class)
 @XMLElement
-public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot, DocXFragment> {
+public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot, DocXDocument, DocXFragment> {
 
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
@@ -102,7 +102,7 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 		InsertAfter, InsertBefore, InsertAfterLastChild, InsertBeforeLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends TechnologySpecificActionImpl<DocXModelSlot, DocXFragment>
+	public static abstract class AddDocXFragmentImpl extends TechnologySpecificActionImpl<DocXModelSlot, DocXDocument, DocXFragment>
 			implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());

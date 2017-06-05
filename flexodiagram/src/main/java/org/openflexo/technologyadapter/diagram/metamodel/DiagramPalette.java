@@ -43,14 +43,13 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.ScreenshotBuilder;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;

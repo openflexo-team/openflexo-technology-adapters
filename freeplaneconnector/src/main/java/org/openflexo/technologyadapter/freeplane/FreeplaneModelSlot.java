@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -90,7 +90,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 @FML("FreeplaneModelSlot")
 public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
-	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap>implements FreeplaneModelSlot {
+	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements FreeplaneModelSlot {
 
 		private static final Logger LOGGER = Logger.getLogger(FreeplaneModelSlot.class.getPackage().getName());
 		private final Map<String, IFreeplaneMap> uriCache = new HashMap<String, IFreeplaneMap>();
@@ -104,9 +104,8 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		 * Instantiate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public FreeplaneModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new FreeplaneModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public FreeplaneModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new FreeplaneModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

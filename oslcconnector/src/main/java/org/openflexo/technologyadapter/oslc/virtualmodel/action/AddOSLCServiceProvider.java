@@ -40,11 +40,9 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
-
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -52,14 +50,14 @@ import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-@FIBPanel("Fib/AddOSLCServiceProviderPanel.fib")
 @ModelEntity
 @ImplementationClass(AddOSLCServiceProvider.AddOSLCServiceProviderImpl.class)
 @XMLElement
 @FML("AddOSLCServiceProvider")
 public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvider> {
 
-	public static abstract class AddOSLCServiceProviderImpl extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCServiceProvider>
+	public static abstract class AddOSLCServiceProviderImpl
+			extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCServiceProvider>
 			implements AddOSLCServiceProvider {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCServiceProvider.class.getPackage().getName());
@@ -78,10 +76,12 @@ public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvid
 
 			OSLCServiceProvider cdlActivity = null;
 
-			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
+			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(
+					evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

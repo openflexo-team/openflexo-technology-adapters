@@ -40,9 +40,8 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewNature;
@@ -103,23 +102,20 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	}
 
 	@Override
-	protected ModuleView<ViewPoint> createModuleViewForViewPoint(ViewPoint viewPoint) {
-		// return new ViewPointView(viewPoint, getController(), this);
-		return new EmptyPanel<ViewPoint>(getController(), this, viewPoint);
-	}
+	protected ModuleView<AbstractVirtualModel<?>> createModuleViewForVirtualModel(AbstractVirtualModel<?> virtualModel) {
 
-	@Override
-	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
+		System.out.println("je cree la module view pour " + virtualModel);
+		System.out.println("has nature = "+virtualModel.hasNature(getVirtualModelNature()));
 		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
 		}
-		return new EmptyPanel<VirtualModel>(getController(), this, virtualModel);
+		return new EmptyPanel<>(getController(), this, virtualModel);
 	}
 
 	@Override
 	protected ModuleView<FlexoConcept> createModuleViewForFlexoConcept(FlexoConcept flexoConcept) {
 		// return new DiagramFlexoConceptView(flexoConcept, getController(), this);
-		return new EmptyPanel<FlexoConcept>(getController(), this, flexoConcept);
+		return new EmptyPanel<>(getController(), this, flexoConcept);
 	}
 
 }

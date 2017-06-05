@@ -40,15 +40,13 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
-import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLRTNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
@@ -91,12 +89,8 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 	}
 
 	@Override
-	protected ModuleView<View> createModuleViewForView(View view) {
-		return new EmptyPanel<View>(getController(), this, view);
-	}
-
-	@Override
-	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance vmInstance) {
+	protected ModuleView<AbstractVirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
+			AbstractVirtualModelInstance<?, ?> vmInstance) {
 		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
 				getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
 	}

@@ -60,9 +60,10 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @ImplementationClass(SelectAllNodesImpl.class)
 @XMLElement
 @FML("SelectAllNodes")
-public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreeplaneNode> {
+public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> {
 
-	public abstract class SelectAllNodesImpl extends FetchRequestImpl<FreeplaneModelSlot, IFreeplaneNode> implements SelectAllNodes {
+	public abstract class SelectAllNodesImpl extends FetchRequestImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode>
+			implements SelectAllNodes {
 
 		private static final Logger LOGGER = Logger.getLogger(SelectAllNodes.class.getPackage().getName());
 

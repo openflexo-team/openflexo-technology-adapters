@@ -45,7 +45,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
-import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -110,10 +110,10 @@ public interface GINAFIBComponent
 	 * Ensure that the whole binding context (BindingFactory and BindingModel) is bound to an {@link AbstractVirtualModel} using the
 	 * specifications given by a {@link FIBComponentModelSlot}
 	 * 
-	 * @param virtualModel
+	 * @param concept
 	 * @param modelSlot
 	 */
-	public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot);
+	public void bindTo(FlexoConcept concept, FIBComponentModelSlot modelSlot);
 
 	public abstract static class GINAFIBComponentImpl extends FlexoObjectImpl implements GINAFIBComponent {
 
@@ -133,14 +133,16 @@ public interface GINAFIBComponent
 		 * @param modelSlot
 		 */
 		@Override
-		public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot) {
+		public void bindTo(FlexoConcept concept, FIBComponentModelSlot modelSlot) {
 			// System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
 
 			if (getComponent() == null) {
 				return;
 			}
 
-			getComponent().setBindingFactory(new FlexoConceptBindingFactory(virtualModel.getViewPoint()));
+			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getViewPoint()));
+
+			getComponent().setCustomTypeManager(getResource().getServiceManager().getTechnologyAdapterService());
 
 			if (modelSlot != null) {
 				for (VariableAssignment variableAssign : modelSlot.getAssignments()) {

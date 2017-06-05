@@ -38,17 +38,16 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.awt.Image;
-import java.awt.Point;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.DimensionConstraints;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
@@ -61,7 +60,6 @@ import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;

@@ -407,7 +407,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	public Font makeFont(RFonts rFonts, DocXDocument document) {
-		System.out.println("Comment faire une fonte avec " + rFonts);
+		/*System.out.println("Comment faire une fonte avec " + rFonts);
 		System.out.println("ascii=" + rFonts.getAscii());
 		System.out.println("hAnsi=" + rFonts.getHAnsi());
 		System.out.println("cs=" + rFonts.getCs());
@@ -417,7 +417,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		System.out.println("hAnsiT=" + rFonts.getCstheme());
 		System.out.println("csT=" + rFonts.getHAnsiTheme());
 		System.out.println("hint=" + rFonts.getHint());
-		System.out.println("parent=" + rFonts.getParent());
+		System.out.println("parent=" + rFonts.getParent());*/
 
 		String defaultFont = "";
 
@@ -467,12 +467,12 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 				}
 			}
 		}
-		System.out.println("! FOUND " + defaultFont);
+		// System.out.println("! FOUND " + defaultFont);
 		return new Font(defaultFont, Font.PLAIN, 12);
 	}
 
 	private ThemePart getThemePart(DocXDocument document) {
-		System.out.println("document=" + document);
+		// System.out.println("document=" + document);
 		if (document == null) {
 			return null;
 		}

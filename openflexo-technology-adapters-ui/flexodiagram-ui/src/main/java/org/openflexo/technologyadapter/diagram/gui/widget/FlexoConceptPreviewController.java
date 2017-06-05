@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.gui.widget;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
-
+import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.selection.SelectionManagingDianaEditor;
@@ -61,17 +61,17 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 	 * @param flexoConcept
 	 * @return
 	 */
-	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept) {
+	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept, FGEModelFactory factory) {
 		FlexoConceptPreviewRepresentation returned = flexoConceptPreviewRepresentations.get(flexoConcept);
 		if (returned == null) {
-			returned = new FlexoConceptPreviewRepresentation(flexoConcept);
+			returned = new FlexoConceptPreviewRepresentation(flexoConcept, factory);
 			flexoConceptPreviewRepresentations.put(flexoConcept, returned);
 		}
 		return returned;
 	}
 
-	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm) {
-		super(obtainFlexoConceptPreviewRepresentations(flexoConcept), sm, flexoConcept.getFMLModelFactory(), null);
+	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm, FGEModelFactory factory) {
+		super(obtainFlexoConceptPreviewRepresentations(flexoConcept, factory), sm, factory, null);
 	}
 
 	@Override

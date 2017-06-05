@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -95,7 +95,8 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "XMLType";
-			} else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "XMLIndividual";
 			}
 			return null;
@@ -132,7 +133,7 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<XMLMetaModel>, XMLMetaModel> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
 			// TODO
 			return null;
 		}

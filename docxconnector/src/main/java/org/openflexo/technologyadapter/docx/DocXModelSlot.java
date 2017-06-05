@@ -28,15 +28,17 @@ import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.ImageActorReference;
 import org.openflexo.foundation.doc.fml.ParagraphActorReference;
 import org.openflexo.foundation.doc.fml.TableActorReference;
+import org.openflexo.foundation.doc.fml.TextSelectionActorReference;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -49,6 +51,7 @@ import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTextSelectionRole;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
@@ -75,12 +78,13 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class })
+@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class,
+		DocXTextSelectionRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
 		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class, CreateEmptyDocXResource.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
-		ImageActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class, ImageActorReference.class,
+		TextSelectionActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
@@ -107,7 +111,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setIdStrategy(IdentifierManagementStrategy idStrat);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -120,9 +124,8 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public DocXModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new DocXModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public DocXModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new DocXModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
@@ -147,15 +150,29 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 		@Override
 		public DocXDocumentResource getTemplateResource() {
+
 			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
 					&& getServiceManager().getResourceManager() != null) {
+
+				FlexoTask activateTA = getServiceManager().activateTechnologyAdapter(getModelSlotTechnologyAdapter());
+				if (activateTA != null) {
+					getServiceManager().getTaskManager().waitTask(activateTA);
+				}
+
 				// System.out.println("Looking up " + templateDocumentURI);
 				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI);
-				// System.out.println("templateResource = " + returned);
+				// System.out.println("templateResource = " + templateResource);
+				// for (FlexoResourceCenter<?> rc : getServiceManager().getResourceCenterService().getResourceCenters()) {
+				// System.out.println("* rc=" + rc);
+				// for (FlexoResource r : rc.getAllResources(null)) {
+				// System.out.println(" >> " + r);
+				// }
+				// }
 				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
 				// System.out.println("> " + r.getURI());
 				// }
 			}
+
 			return templateResource;
 		}
 

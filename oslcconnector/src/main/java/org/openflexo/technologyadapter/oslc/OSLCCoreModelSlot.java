@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -97,9 +97,8 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OSLCCoreModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new OSLCCoreModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public OSLCCoreModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new OSLCCoreModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
@@ -112,7 +111,8 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 
 		@Override
 		public String getURIForObject(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
+				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
+				Object o) {
 			/*if (o instanceof IFlexoOntologyObject) {
 				return ((IFlexoOntologyObject) o).getURI();
 			}*/

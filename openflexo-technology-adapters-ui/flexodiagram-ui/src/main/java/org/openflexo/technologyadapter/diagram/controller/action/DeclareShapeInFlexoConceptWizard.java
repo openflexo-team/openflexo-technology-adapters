@@ -38,18 +38,17 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.awt.Image;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;

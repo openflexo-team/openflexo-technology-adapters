@@ -48,8 +48,10 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -58,6 +60,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -156,20 +159,29 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 		@Override
 		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
+			System.out.println(getRootOwner().getFMLRepresentation());
 
-			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			DocXDocument document = null;
+			DocXFragment fragment = getReceiver(evaluationContext);
 
-			/*System.out.println("document: " + document);
-			System.out.println("getAssignedFlexoProperty()=" + getAssignedFlexoProperty());
-			System.out.println("getTemplateFragment()= " + getTemplateFragment());*/
+			if (fragment != null) {
+				document = fragment.getFlexoDocument();
+			}
+			else {
+				// TODO: refactor this to make it nicer
+				// In this case, the role is null, and we are about to initialize it
+				// The idea is to access the underying role, and then the document via the model slot
+				if (getInferedFlexoRole() != null && getInferedFlexoRole().getModelSlot() != null) {
+					DocXModelSlot modelSlot = (DocXModelSlot) getInferedFlexoRole().getModelSlot();
+					// Try with the FlexoConceptInstance
+					document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot).getAccessedResourceData();
+					if (document == null) {
+						// Try with the parent VirtualModelInstance
+						ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
+						document = (DocXDocument) msi.getAccessedResourceData();
+					}
+				}
+			}
 
 			int startIndex = -1;
 			int endIndex = -1;
@@ -214,6 +226,12 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 
 			logger.warning("Could not find fragment matching template fragment. Abort.");
 			return null;
+		}
+
+		@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			// TODO Auto-generated method stub
+			return super.getFMLRepresentation(context);
 		}
 	}
 }

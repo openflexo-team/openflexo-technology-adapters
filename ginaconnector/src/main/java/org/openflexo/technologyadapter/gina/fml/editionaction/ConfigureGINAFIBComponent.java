@@ -46,7 +46,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
@@ -69,10 +69,10 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 @ImplementationClass(ConfigureGINAFIBComponent.ConfigureGINAFIBComponentImpl.class)
 @XMLElement
 @FML("ConfigureGINAFIBComponent")
-public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBComponentModelSlot, GINAFIBComponent> {
+public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> {
 
-	public static abstract class ConfigureGINAFIBComponentImpl extends TechnologySpecificActionImpl<FIBComponentModelSlot, GINAFIBComponent>
-			implements ConfigureGINAFIBComponent {
+	public static abstract class ConfigureGINAFIBComponentImpl extends
+			TechnologySpecificActionImpl<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> implements ConfigureGINAFIBComponent {
 
 		private static final Logger logger = Logger.getLogger(ConfigureGINAFIBComponentImpl.class.getPackage().getName());
 
@@ -95,18 +95,15 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 				System.out.println("FCI=" + evaluationContext.getFlexoConceptInstance());
 				System.out.println("VMI=" + evaluationContext.getVirtualModelInstance());
 
-				if (evaluationContext.getFlexoConceptInstance() instanceof AbstractVirtualModelInstance) {
-					AbstractVirtualModelInstance<?, ?> vmi = (AbstractVirtualModelInstance<?, ?>) evaluationContext
-							.getFlexoConceptInstance();
-					ModelSlotInstance<FIBComponentModelSlot, GINAFIBComponent> msi = vmi.getModelSlotInstance(modelSlot);
-					if (msi == null) {
-						FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) modelSlot
-								.createConfiguration(vmi, vmi.getResourceCenter());
-						msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
-						msi = msiConfig.createModelSlotInstance(vmi, vmi.getView());
-						vmi.addToModelSlotInstances(msi);
-						System.out.println("Hop, on vient de creer le msi " + msi);
-					}
+				FlexoConceptInstance fci = evaluationContext.getFlexoConceptInstance();
+				ModelSlotInstance<FIBComponentModelSlot, GINAFIBComponent> msi = fci.getModelSlotInstance(modelSlot);
+				if (msi == null) {
+					FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) modelSlot
+							.createConfiguration(fci, fci.getResourceCenter());
+					msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
+					msi = msiConfig.createModelSlotInstance(fci, fci.getView());
+					fci.addToActors(msi);
+					System.out.println("Hop, on vient de creer le msi " + msi);
 				}
 
 				if (modelSlot.getTemplateResource() == null) {

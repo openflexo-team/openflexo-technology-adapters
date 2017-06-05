@@ -92,7 +92,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
-		ViewPoint viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestLibraryViewPoint2");
+		ViewPoint viewPoint = vpLib.getViewPoint("http://openflexo.org/docx-test/TestLibraryViewPoint2");
 		assertNotNull(viewPoint);
 		VirtualModel virtualModel = viewPoint.getVirtualModelNamed("DocumentVirtualModel");
 		assertNotNull(virtualModel);

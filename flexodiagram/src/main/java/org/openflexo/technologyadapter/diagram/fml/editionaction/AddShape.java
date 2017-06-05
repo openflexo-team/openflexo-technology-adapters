@@ -121,7 +121,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	@Override
 	public ShapeRole getAssignedFlexoProperty();
 
-	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape>implements AddShape {
+	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
 
 		private static final Logger logger = Logger.getLogger(AddShape.class.getPackage().getName());
 
@@ -137,7 +137,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append((getModelSlot() != null ? getModelSlot().getName() + "." : "") + getTechnologyAdapterIdentifier() + "::"
+			out.append((getReceiver().isValid() ? getReceiver().toString() + "." : "") + getTechnologyAdapterIdentifier() + "::"
 					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);

@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -118,7 +117,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	@Override
 	public ConnectorRole getAssignedFlexoProperty();
 
-	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector>implements AddConnector {
+	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
 
 		private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 
@@ -133,7 +132,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
 			out.append(getClass().getSimpleName() + " conformTo ConnectorSpecification from "
-					+ (getModelSlot() != null ? getModelSlot().getName() : "null") + " {" + StringUtils.LINE_SEPARATOR, context);
+					+ (getReceiver().isValid() ? getReceiver().toString() : "null") + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
@@ -311,7 +310,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 					// If no GR is defined for this shape, create a default one
 					if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
 						System.out.println("No GR, creating ");
-						grToUse = getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE);
+						grToUse = factory.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
 						System.out.println("Creating " + grToUse);
 						getAssignedFlexoProperty().setGraphicalRepresentation(grToUse);
 					}

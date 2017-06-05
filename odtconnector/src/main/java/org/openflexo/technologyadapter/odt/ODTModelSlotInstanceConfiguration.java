@@ -20,21 +20,20 @@
 
 package org.openflexo.technologyadapter.odt;
 
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
 public class ODTModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ODTDocument, ODTModelSlot> {
 
-	protected ODTModelSlotInstanceConfiguration(ODTModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoResourceCenter<?> rc) {
-		super(ms, virtualModelInstance, rc);
+	protected ODTModelSlotInstanceConfiguration(ODTModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+		super(ms, fci, rc);
 	}
 
 	@Override
-	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(
+			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		// TODO : add specific options here
 	}

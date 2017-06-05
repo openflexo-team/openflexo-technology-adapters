@@ -77,11 +77,11 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	@Override
 	@Getter(value = ACTION_KEY, inverse = AddXMLIndividual.DATA_ASSERTIONS_KEY)
-	public AddIndividual<?, ?> getAction();
+	public AddIndividual<?, ?, ?> getAction();
 
 	@Override
 	@Setter(ACTION_KEY)
-	public void setAction(AddIndividual<?, ?> action);
+	public void setAction(AddIndividual<?, ?, ?> action);
 
 	@Getter(value = DATA_PROPERTY_NAME_KEY)
 	@XMLAttribute

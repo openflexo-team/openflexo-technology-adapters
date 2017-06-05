@@ -68,9 +68,10 @@ import org.openflexo.technologyadapter.owl.model.OWLProperty;
 @ImplementationClass(AddOWLIndividual.AddOWLIndividualImpl.class)
 @XMLElement
 @FML("AddOWLIndividual")
-public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndividual>, OWLAction<OWLIndividual> {
+public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLOntology, OWLIndividual>, OWLAction<OWLIndividual> {
 
-	public static abstract class AddOWLIndividualImpl extends AddIndividualImpl<OWLModelSlot, OWLIndividual> implements AddOWLIndividual {
+	public static abstract class AddOWLIndividualImpl extends AddIndividualImpl<OWLModelSlot, OWLOntology, OWLIndividual>
+			implements AddOWLIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddOWLIndividual.class.getPackage().getName());
 
@@ -114,8 +115,8 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 					if (getModelSlotInstance(evaluationContext).getResourceData() != null) {
 						logger.info("Adding individual individualName=" + getIndividualName() + " father =" + getOntologyClass());
 						logger.info("Adding individual individualName=" + individualName + " father =" + father);
-						newIndividual = getModelSlotInstance(evaluationContext).getAccessedResourceData().createOntologyIndividual(
-								individualName, father);
+						newIndividual = getModelSlotInstance(evaluationContext).getAccessedResourceData()
+								.createOntologyIndividual(individualName, father);
 						logger.info("********* Added individual " + newIndividual.getName() + " as " + father);
 
 						for (DataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
@@ -140,7 +141,8 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 										if (value != null) {
 											newIndividual.addPropertyStatement(property, value);
 										}
-									} else {
+									}
+									else {
 										OWLConcept<?> assertionObject = (OWLConcept<?>) objectPropertyAssertion
 												.getAssertionObject(evaluationContext);
 										if (assertionObject != null) {
@@ -155,17 +157,20 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 										&& assertionObject instanceof OWLConcept) {
 									newIndividual.getOntResource().addProperty(property.getOntProperty(),
 											((OWLConcept) assertionObject).getOntResource());
-								} else {
+								}
+								else {
 									// logger.info("assertion object is null");
 								}
 							}
 						}
 						newIndividual.updateOntologyStatements();
-					} else {
+					}
+					else {
 						logger.warning("No model defined for ModelSlotInstance " + getModelSlotInstance(evaluationContext));
 					}
-				} else {
-					logger.warning("No model slot instance defined for " + getModelSlot());
+				}
+				else {
+					logger.warning("No model slot instance defined for " + getReceiver());
 				}
 				return newIndividual;
 			} catch (DuplicateURIException e) {

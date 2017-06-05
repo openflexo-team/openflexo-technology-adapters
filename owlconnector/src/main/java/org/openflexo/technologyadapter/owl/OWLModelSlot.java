@@ -49,11 +49,12 @@ import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.fml.ClassParameter;
 import org.openflexo.foundation.ontology.fml.IndividualParameter;
@@ -95,6 +96,9 @@ import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLIndividual;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.CreateOWLResource;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLClass;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
@@ -108,8 +112,9 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
  */
 @DeclareFlexoRoles({ OWLIndividualRole.class, OWLClassRole.class, OWLDataPropertyRole.class, OWLObjectPropertyRole.class,
 		OWLPropertyRole.class, DataPropertyStatementRole.class, ObjectPropertyStatementRole.class, SubClassStatementRole.class })
-@DeclareEditionActions({ AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class, AddObjectPropertyStatement.class,
-		AddRestrictionStatement.class, AddSubClassStatement.class })
+@DeclareEditionActions({ CreateOWLResource.class, AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class,
+		AddObjectPropertyStatement.class, AddRestrictionStatement.class, AddSubClassStatement.class })
+@DeclareFetchRequests({ SelectOWLClass.class, SelectOWLIndividual.class })
 @DeclareFlexoBehaviourParameters({ ClassParameter.class, IndividualParameter.class, PropertyParameter.class })
 @DeclareInspectorEntries({ ClassInspectorEntry.class, IndividualInspectorEntry.class, PropertyInspectorEntry.class,
 		DataPropertyInspectorEntry.class, ObjectPropertyInspectorEntry.class })
@@ -157,9 +162,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoResourceCenter<?> rc) {
-			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
+		public OWLModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
+			return new OWLModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

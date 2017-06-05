@@ -43,9 +43,11 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -64,7 +66,8 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
  * @author sylvain
  * 
  */
-public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelInstanceNature, ScreenshotableNature<VirtualModelInstance> {
+public class FMLControlledFIBVirtualModelInstanceNature<VMI extends AbstractVirtualModelInstance<VMI, VM>, VM extends AbstractVirtualModel<VM>>
+		implements AbstractVirtualModelInstanceNature<VMI, VM>, ScreenshotableNature<VMI> {
 
 	static final Logger logger = Logger.getLogger(FMLControlledFIBVirtualModelInstanceNature.class.getPackage().getName());
 
@@ -78,7 +81,7 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-controlled FIBComponent
 	 */
 	@Override
-	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
+	public boolean hasNature(VMI virtualModelInstance) {
 
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
 		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledFIBVirtualModelNature.INSTANCE)) {
@@ -102,17 +105,25 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 	}
 
 	public static FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> getModelSlotInstance(
-			VirtualModelInstance virtualModelInstance) {
+			AbstractVirtualModelInstance<?, ?> virtualModelInstance) {
 		return INSTANCE._getModelSlotInstance(virtualModelInstance);
 
 	}
 
-	public static GINAFIBComponent getGINAFIBComponent(VirtualModelInstance virtualModelInstance) {
+	public static GINAFIBComponent getGINAFIBComponent(AbstractVirtualModelInstance<?, ?> virtualModelInstance) {
 		return INSTANCE._getGINAFIBComponent(virtualModelInstance);
 	}
 
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> _getModelSlotInstance(
-			VirtualModelInstance virtualModelInstance) {
+			AbstractVirtualModelInstance<?, ?> virtualModelInstance) {
+
+		if (virtualModelInstance == null) {
+			return null;
+		}
+		if (virtualModelInstance.getVirtualModel() == null) {
+			return null;
+		}
+
 		FIBComponentModelSlot fibMS = virtualModelInstance.getVirtualModel().getModelSlots(FIBComponentModelSlot.class).get(0);
 
 		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> returned = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) virtualModelInstance
@@ -123,7 +134,7 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 					.createConfiguration(virtualModelInstance, virtualModelInstance.getResourceCenter());
 			msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
 			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getView());
-			virtualModelInstance.addToModelSlotInstances(returned);
+			virtualModelInstance.addToActors(returned);
 		}
 
 		if (returned.getAccessedResourceData() == null) {
@@ -147,7 +158,7 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 
 	}
 
-	private GINAFIBComponent _getGINAFIBComponent(VirtualModelInstance virtualModelInstance) {
+	private GINAFIBComponent _getGINAFIBComponent(AbstractVirtualModelInstance<?, ?> virtualModelInstance) {
 
 		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance = _getModelSlotInstance(virtualModelInstance);
 
@@ -162,7 +173,7 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 	}
 
 	@Override
-	public BufferedImage getScreenshot(VirtualModelInstance object) {
+	public BufferedImage getScreenshot(VMI object) {
 		System.out.println("Please perform the screenshot here !!!!!!!!!");
 		return null;
 	}

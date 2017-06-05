@@ -38,10 +38,9 @@
 
 package org.openflexo.technologyadapter.diagram.gui.widget;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Hashtable;
 import java.util.logging.Logger;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
@@ -58,7 +57,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -89,18 +87,14 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	private final Hashtable<FlexoRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
-	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
-		super(model, model.getFMLModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
+	public FlexoConceptPreviewRepresentation(FlexoConcept model, FGEModelFactory factory) {
+		super(model, factory, PersistenceMode.UniqueGraphicalRepresentations);
 		// Sylvain: commented this because not movable nor rezizable shapes
 		// setEditable(false);
-
-		factory = model.getFMLModelFactory();
 
 		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
 		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
 	}
-
-	private final FMLModelFactory factory;
 
 	@Override
 	public void init() {

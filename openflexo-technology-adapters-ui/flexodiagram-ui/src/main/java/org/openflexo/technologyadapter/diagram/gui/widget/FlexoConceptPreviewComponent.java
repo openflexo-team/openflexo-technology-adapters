@@ -48,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.gina.controller.FIBController;
@@ -113,9 +114,10 @@ public class FlexoConceptPreviewComponent extends JPanel
 				previewController.delete();
 				previewController = null;
 			}
-			if (object != null) {
-				previewController = new FlexoConceptPreviewController(object, selectionManager);
-				add(previewController.getDrawingView(), BorderLayout.CENTER);
+			if (object != null && previewController != null) {
+				JDrawingView<FlexoConcept> drawingView = previewController.getDrawingView();
+				previewController = new FlexoConceptPreviewController(object, selectionManager, drawingView.getFGEGraphics().getFactory());
+				add(drawingView, BorderLayout.CENTER);
 			}
 			revalidate();
 			repaint();
