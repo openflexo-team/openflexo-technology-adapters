@@ -38,6 +38,10 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
+import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
+import java.util.logging.Logger;
+
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
@@ -54,10 +58,6 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
-
-import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 /**
  * {@link EditionAction} used to create an empty Excel resource
@@ -103,6 +103,8 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
 						".xlsx", true);
 				System.out.println("Return new excel workbook resource: " + newResource);
+
+				newResource.setIsModified();
 
 				ExcelWorkbook workbook = newResource.getResourceData(null);
 
