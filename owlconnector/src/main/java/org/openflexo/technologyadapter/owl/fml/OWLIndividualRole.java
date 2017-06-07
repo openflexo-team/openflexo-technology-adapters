@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 @FML("OWLIndividualRole")
 public interface OWLIndividualRole extends IndividualRole<OWLIndividual> {
 
-	public static abstract class OWLIndividualRoleImpl extends IndividualRoleImpl<OWLIndividual>implements OWLIndividualRole {
+	public static abstract class OWLIndividualRoleImpl extends IndividualRoleImpl<OWLIndividual> implements OWLIndividualRole {
 
 		public OWLIndividualRoleImpl() {
 			super();
@@ -62,6 +62,11 @@ public interface OWLIndividualRole extends IndividualRole<OWLIndividual> {
 		@Override
 		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
 			return OWLTechnologyAdapter.class;
+		}
+
+		@Override
+		public Class<OWLIndividual> getOntologyIndividualClass() {
+			return OWLIndividual.class;
 		}
 
 	}

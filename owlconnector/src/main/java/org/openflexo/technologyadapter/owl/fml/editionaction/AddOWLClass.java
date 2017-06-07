@@ -97,9 +97,16 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLOntology, OWLClas
 			}
 			OWLClass newClass = null;
 			try {
+				OWLOntology ontology = getReceiver(evaluationContext);
 				logger.info("Adding class " + newClassName + " as " + father);
-				newClass = getModelSlotInstance(evaluationContext).getAccessedResourceData().createOntologyClass(newClassName, father);
-				logger.info("Added class " + newClass.getName() + " as " + father);
+				logger.info("ontology=" + ontology);
+				if (ontology != null) {
+					newClass = ontology.createOntologyClass(newClassName, father);
+					logger.info("Added class " + newClass.getName() + " as " + father);
+				}
+				else {
+					logger.warning("Could not access ontology " + getReceiver());
+				}
 			} catch (DuplicateURIException e) {
 				e.printStackTrace();
 			}

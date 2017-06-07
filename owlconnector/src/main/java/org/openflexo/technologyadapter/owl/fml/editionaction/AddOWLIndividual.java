@@ -48,6 +48,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
@@ -91,13 +92,51 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLOntolog
 			return OWLIndividual.class;
 		}
 
+		private DataBinding<IFlexoOntologyClass<?>> dynamicType;
+
+		@Override
+		public DataBinding<IFlexoOntologyClass<?>> getDynamicType() {
+			if (dynamicType == null) {
+				dynamicType = new DataBinding<IFlexoOntologyClass<?>>(this, OWLClass.class, DataBinding.BindingDefinitionType.GET);
+				dynamicType.setBindingName("dynamicType");
+			}
+			return dynamicType;
+		}
+
+		@Override
+		public void setDynamicType(DataBinding<IFlexoOntologyClass<?>> dynamicType) {
+			if (dynamicType != null) {
+				dynamicType.setOwner(this);
+				dynamicType.setDeclaredType(OWLClass.class);
+				dynamicType.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				dynamicType.setBindingName("dynamicType");
+			}
+			this.dynamicType = dynamicType;
+		}
+
 		@Override
 		public OWLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
-			OWLClass father = getOntologyClass();
-			// IFlexoOntologyConcept father = action.getOntologyObject(getProject());
-			// System.out.println("Individual name param = "+action.getIndividualNameParameter());
-			// String individualName = (String)getParameterValues().get(action.getIndividualNameParameter().getName());
+			OWLClass father = null;
+
+			if (getDynamicType().isValid()) {
+				try {
+					father = (OWLClass) getDynamicType().getBindingValue(evaluationContext);
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				father = getOntologyClass();
+			}
+
 			String individualName = null;
 			try {
 				individualName = getIndividualName().getBindingValue(evaluationContext);
@@ -172,6 +211,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLOntolog
 				else {
 					logger.warning("No model slot instance defined for " + getReceiver());
 				}
+				logger.info("Return " + newIndividual);
 				return newIndividual;
 			} catch (DuplicateURIException e) {
 				e.printStackTrace();

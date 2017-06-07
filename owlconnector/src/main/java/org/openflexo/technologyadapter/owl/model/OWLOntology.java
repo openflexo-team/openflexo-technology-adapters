@@ -172,7 +172,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		logger.info("Register ontology " + anURI + " file: " + owlResource);
 
 		ontologyURI = anURI;
-		if (owlResource != null /*&& owlResource.exists()*/) {
+		if (owlResource != null && owlResource.exists()) {
 			name = findOntologyName(owlResource);
 		}
 		if (name == null) {
@@ -1733,22 +1733,20 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @throws DuplicateURIException
 	 */
 	public OWLIndividual createOntologyIndividual(String name, OWLClass type) throws DuplicateURIException {
-		if (type instanceof OWLClass) {
+		if (type != null) {
 			assumeOntologyImportForReference(type);
-			OntModel ontModel = getOntModel();
-			String uri = makeURI(name);
-			if (testValidURI(name)) {
-				Individual individual = ontModel.createIndividual(uri, type.getOntResource());
-				OWLIndividual returned = makeNewIndividual(individual);
-				returned.init();
-				return returned;
-			}
-			else {
-				throw new DuplicateURIException(uri);
-			}
 		}
-		logger.warning("Type is not an OWLClass");
-		return null;
+		OntModel ontModel = getOntModel();
+		String uri = makeURI(name);
+		if (testValidURI(name)) {
+			Individual individual = ontModel.createIndividual(uri, type != null ? type.getOntResource() : null);
+			OWLIndividual returned = makeNewIndividual(individual);
+			returned.init();
+			return returned;
+		}
+		else {
+			throw new DuplicateURIException(uri);
+		}
 	}
 
 	/**
@@ -1772,25 +1770,27 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @throws DuplicateURIException
 	 */
 	public OWLClass createOntologyClass(String name, OWLClass father) throws DuplicateURIException {
-		if (father instanceof OWLClass) {
+		// if (father instanceof OWLClass) {
+		if (father != null) {
 			assumeOntologyImportForReference(father);
-			OntModel ontModel = getOntModel();
-			String uri = makeURI(name);
-			if (testValidURI(name)) {
-				OntClass aClass = ontModel.createClass(uri);
-				if (father != null) {
-					aClass.addSuperClass(father.getOntResource());
-				}
-				OWLClass returned = makeNewClass(aClass);
-				returned.init();
-				return returned;
-			}
-			else {
-				throw new DuplicateURIException(uri);
-			}
 		}
+		OntModel ontModel = getOntModel();
+		String uri = makeURI(name);
+		if (testValidURI(name)) {
+			OntClass aClass = ontModel.createClass(uri);
+			if (father != null) {
+				aClass.addSuperClass(father.getOntResource());
+			}
+			OWLClass returned = makeNewClass(aClass);
+			returned.init();
+			return returned;
+		}
+		else {
+			throw new DuplicateURIException(uri);
+		}
+		/*}
 		logger.warning("Type is not an OWLClass");
-		return null;
+		return null;*/
 	}
 
 	/**
