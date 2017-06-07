@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -95,6 +96,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	/**
 	 * Reset graphical representation to be the one defined in related pattern property
 	 */
+
 	/*@Override
 	public void resetGraphicalRepresentation() {
 		getGraphicalRepresentation().setsWith(getPatternRole().getGraphicalRepresentation(), GraphicalRepresentation.TEXT,
@@ -132,31 +134,31 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	/*public Vector<DiagramConnector> getIncomingConnectors() {
 		return incomingConnectors;
 	}
-
+	
 	public void setIncomingConnectors(Vector<DiagramConnector> incomingConnectors) {
 		this.incomingConnectors = incomingConnectors;
 	}
-
+	
 	public void addToIncomingConnectors(DiagramConnector connector) {
 		incomingConnectors.add(connector);
 	}
-
+	
 	public void removeFromIncomingConnectors(DiagramConnector connector) {
 		incomingConnectors.remove(connector);
 	}
-
+	
 	public Vector<DiagramConnector> getOutgoingConnectors() {
 		return outgoingConnectors;
 	}
-
+	
 	public void setOutgoingConnectors(Vector<DiagramConnector> outgoingConnectors) {
 		this.outgoingConnectors = outgoingConnectors;
 	}
-
+	
 	public void addToOutgoingConnectors(DiagramConnector connector) {
 		outgoingConnectors.add(connector);
 	}
-
+	
 	public void removeFromOutgoingConnectors(DiagramConnector connector) {
 		outgoingConnectors.remove(connector);
 	}*/
@@ -172,26 +174,26 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 			this.dropScheme = dropScheme;
 			this.linkScheme = linkScheme;
 		}
-
+	
 		public DropScheme dropScheme;
 		public LinkScheme linkScheme;
-
+	
 	}
-
+	
 	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(FlexoConcept targetFlexoConcept) {
 		if (getFlexoConcept() == null) {
 			return null;
 		}
-
+	
 		Vector<DropAndLinkScheme> availableLinkSchemeFromThisShape = null;
-
+	
 		ViewPoint viewPoint = getDiagram().getViewPoint();
 		if (viewPoint == null) {
 			return null;
 		}
-
+	
 		availableLinkSchemeFromThisShape = new Vector<DropAndLinkScheme>();
-
+	
 		for (FlexoConcept ep1 : getDiagramSpecification().getFlexoConcepts()) {
 			for (DropScheme ds : ep1.getDropSchemes()) {
 				if (ds.getTargetFlexoConcept() == targetFlexoConcept || ds.getTopTarget() && targetFlexoConcept == null) {
@@ -207,24 +209,24 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				}
 			}
 		}
-
+	
 		return availableLinkSchemeFromThisShape;
 	}
-
+	
 	public Vector<LinkScheme> getAvailableLinkSchemeFromThisShape() {
 		if (getFlexoConcept() == null) {
 			return null;
 		}
-
+	
 		Vector<LinkScheme> availableLinkSchemeFromThisShape = null;
-
+	
 		ViewPoint calc = getDiagram().getViewPoint();
 		if (calc == null) {
 			return null;
 		}
-
+	
 		availableLinkSchemeFromThisShape = new Vector<LinkScheme>();
-
+	
 		for (FlexoConcept ep : getDiagramSpecification().getFlexoConcepts()) {
 			for (LinkScheme ls : ep.getLinkSchemes()) {
 				if (ls.getFromTargetFlexoConcept() != null && ls.getFromTargetFlexoConcept().isAssignableFrom(getFlexoConcept())
@@ -234,10 +236,10 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				}
 			}
 		}
-
+	
 		return availableLinkSchemeFromThisShape;
 	}
-
+	
 	@Override
 	public ShapeRole getPatternRole() {
 		return (ShapeRole) super.getPatternRole();
@@ -319,10 +321,17 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				logger.info("Try to delete undeleted DiagramConnector " + connector);
 				connector.delete();
 				logger.info("DiagramConnector " + connector + " has been successfully deleted");
-			} else {
+			}
+			else {
 				logger.info("DiagramConnector " + connector + " has already been successfully deleted");
 			}
 		}
 		return super.delete(context);
 	}
+
+	@Override
+	protected String getDefaultName() {
+		return "Shape" + getFlexoID();
+	}
+
 }

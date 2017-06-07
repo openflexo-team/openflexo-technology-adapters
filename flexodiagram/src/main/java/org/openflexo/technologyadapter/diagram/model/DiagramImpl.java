@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
@@ -62,7 +63,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * @author sylvain
  * 
  */
-public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGraphicalRepresentation>implements Diagram {
+public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGraphicalRepresentation> implements Diagram {
 
 	private static final Logger logger = Logger.getLogger(DiagramImpl.class.getPackage().getName());
 
@@ -165,6 +166,14 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	public synchronized void setIsModified() {
 		super.setIsModified();
 		screenshotModified = true;
+	}
+
+	@Override
+	protected String getDefaultName() {
+		if (getResource() != null) {
+			return getResource().getName();
+		}
+		return "Diagram" + getFlexoID();
 	}
 
 	@Override
