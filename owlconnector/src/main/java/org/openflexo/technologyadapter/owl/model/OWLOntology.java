@@ -402,12 +402,13 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @return
 	 */
 	public Set<OWLOntology> getAllImportedOntologies() {
-		if (isLoading) {
+		// TODO: try to understand why following lines of code cause failing tests
+		/*if (isLoading) {
 			// When loading,
 			Set<OWLOntology> returned = new HashSet<>();
 			returned.add(this);
 			return returned;
-		}
+		}*/
 		return getOntologyLibrary().getAllImportedOntology(this);
 	}
 
