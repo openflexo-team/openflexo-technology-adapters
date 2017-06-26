@@ -952,7 +952,12 @@ public class TestLibrary extends AbstractTestDocX {
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 
 		// We check here that matching criterias were updated
-		assertEquals(2, matchFlexoConceptInstance.getMatchingCriterias().size());
+		System.out.println(documentVirtualModel.getFMLRepresentation());
+		System.out.println("criterias" + matchFlexoConceptInstance.getMatchingCriterias());
+		for (MatchingCriteria mc : matchFlexoConceptInstance.getMatchingCriterias()) {
+			System.out.println("mc: " + mc.getFlexoProperty());
+		}
+		assertEquals(7, matchFlexoConceptInstance.getMatchingCriterias().size());
 
 		MatchingCriteria bookCriteria = matchFlexoConceptInstance.getMatchingCriteria(bookDescriptionSection.getAccessibleProperty("book"));
 		MatchingCriteria sectionCriteria = matchFlexoConceptInstance
