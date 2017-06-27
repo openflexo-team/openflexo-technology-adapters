@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<WorkBook xmlns:p="http://www.openflexo.org/SimpleWorkbook">
+  <WorkBook.Id>cycle3\cd4081.xlsx</WorkBook.Id>
+  <WorkBook.Name>cd4081</WorkBook.Name>
+  <WorkBook.Instances>
+    <WorkBook.Instance n="1">
+      <WorkSheet>
+        <WorkSheet.Id>2</WorkSheet.Id>
+        <WorkSheet.Name>Zones cachées(c)</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>9</WorkSheet.Id>
+        <WorkSheet.Name>Fourchettes(c)</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>5</WorkSheet.Id>
+        <WorkSheet.Name>Ecritures(c)</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>15</WorkSheet.Id>
+        <WorkSheet.Name>Fact non parvenues</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells>
+          <Cell id="2576" user="ml" date="636341007056314243">20000</Cell>
+          <!--F10-->
+          <Cell id="1294" user="ml" date="636340988244070945">0,00</Cell>
+          <!--I5-->
+          <Cell id="2065" user="ml" date="636340988244778982">0,00</Cell>
+          <!--I8-->
+          <Cell id="2575" user="ml" date="636340990811713042">999200</Cell>
+          <!--E10-->
+          <Cell id="2573" user="ml" date="636340990718044165">sdf</Cell>
+          <!--C10-->
+          <Cell id="2574" user="ml" date="636340990787220549">19,60 %</Cell>
+          <!--D10-->
+        </WorkSheet.Cells>
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>6</WorkSheet.Id>
+        <WorkSheet.Name>Recopies(c)</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>16</WorkSheet.Id>
+        <WorkSheet.Name>Avoirs à obtenir</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+      <WorkSheet>
+        <WorkSheet.Id>12</WorkSheet.Id>
+        <WorkSheet.Name>Liasses(c)</WorkSheet.Name>
+        <WorkSheet.Duplicatas />
+        <WorkSheet.Cells />
+      </WorkSheet>
+    </WorkBook.Instance>
+  </WorkBook.Instances>
+</WorkBook>

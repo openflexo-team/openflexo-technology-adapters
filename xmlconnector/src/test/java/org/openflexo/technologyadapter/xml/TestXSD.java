@@ -86,7 +86,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		assertNotNull(mmRepository);
 		assertNotNull(modelRepository);
-		assertEquals(3, mmRepository.getAllResources().size());
+		assertEquals(4, mmRepository.getAllResources().size());
 	}
 
 	@Test

@@ -100,7 +100,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 		assertNotNull(mmRepository);
-		assertEquals(3, mmRepository.getAllResources().size());
+		assertEquals(4, mmRepository.getAllResources().size());
 		assertTrue(modelRepository.getAllResources().size() > 2);
 	}
 

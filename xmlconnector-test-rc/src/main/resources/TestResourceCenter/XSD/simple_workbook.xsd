@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://www.openflexo.org/SimpleWorkbook" 
+		xmlns=http://www.openflexo.org/SimpleWorkbook
+		xmlns:tns="http://www.openflexo.org/SimpleWorkbook" 
+		elementFormDefault="qualified">
+		
+<xs:element name="WorkBook" type="WorkBookType" />
+
+  <xs:complexType name="WorkBookType">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="WorkBook.Id" type="xs:string" />
+      <xs:element maxOccurs="1" minOccurs="1" name="WorkBook.Name" type="xs:string" />
+      <xs:element maxOccurs="1" minOccurs="1" name="WorkBook.Instances" type="InstancesType" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="InstancesType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="WorkBook.Instance" type="InstanceType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InstanceType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0"  name="WorkSheet" type="WorkSheetType" />
+    </xs:sequence>
+    <xs:attribute name="n" type="xs:integer" />
+  </xs:complexType>
+  
+  <xs:complexType name="WorkSheetType">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1"  name="WorkSheet.Id" type="xs:string" />
+      <xs:element maxOccurs="1" minOccurs="1"  name="WorkSheet.Name" type="xs:string" />
+      <xs:element maxOccurs="1" minOccurs="1"  name="WorkSheet.Duplicatas" type="xs:string" />
+      <xs:element maxOccurs="1" minOccurs="1"  name="WorkSheet.Cells" type="CellsType" />
+    </xs:sequence>
+    <xs:attribute name="n" type="xs:integer" />
+  </xs:complexType>
+    
+  <xs:complexType name="CellsType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0"  name="Cell" type="CellType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CellType">
+    <xs:attribute name="id" type="xs:integer" />
+    <xs:attribute name="user" type="xs:string" />
+    <xs:attribute name="date" type="xs:long" />
+  </xs:complexType>
+ 
+ </xs:schema>
+  
