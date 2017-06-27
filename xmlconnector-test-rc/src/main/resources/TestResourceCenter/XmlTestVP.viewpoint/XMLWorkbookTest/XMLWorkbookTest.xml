@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" version="0.1" name="XMLWorkbookTest" userID="FLX" description="" flexoID="2">
+  <UseModelSlotDeclaration id="1" modelSlotClass="org.openflexo.technologyadapter.xml.XMLModelSlot" userID="FLX" flexoID="-1" />
+  <XMLModelSlot id="2" metaModelURI="file:/u01/Sourcecode/openflexo-technology-adapters/xmlconnector-test-rc/src/main/resources/TestResourceCenter/XSD/simple_workbook.xsd" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="xml" userID="FLX" flexoID="6" />
+  <Inspector id="3" inspectorTitle="XMLWorkbookTest" userID="FLX" flexoID="1" />
+</VirtualModel>
