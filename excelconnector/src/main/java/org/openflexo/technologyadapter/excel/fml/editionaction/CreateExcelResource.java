@@ -38,6 +38,10 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
+import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
+import java.util.logging.Logger;
+
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
@@ -55,10 +59,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 
-import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
-import java.util.logging.Logger;
-
 /**
  * {@link EditionAction} used to create an empty Excel resource
  * 
@@ -72,7 +72,7 @@ import java.util.logging.Logger;
 public interface CreateExcelResource extends AbstractCreateResource<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	public static abstract class CreateExcelResourceImpl
-			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter>implements CreateExcelResource {
+			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> implements CreateExcelResource {
 
 		private static final Logger logger = Logger.getLogger(CreateExcelResourceImpl.class.getPackage().getName());
 
@@ -84,16 +84,9 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 		@Override
 		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			System.out.println("OK, on cree un fichier excel ");
-
 			String resourceName = getResourceName(evaluationContext);
 			String resourceURI = getResourceURI(evaluationContext);
 			FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
-
-			System.out.println("name=" + resourceName);
-			System.out.println("uri=" + resourceURI);
-			System.out.println("relative path=" + getRelativePath());
-			System.out.println("rc=" + rc);
 
 			ExcelTechnologyAdapter excelTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
@@ -102,11 +95,9 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 			try {
 				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
 						".xlsx", true);
-				System.out.println("Return new excel workbook resource: " + newResource);
 
 				ExcelWorkbook workbook = newResource.getResourceData(null);
 
-				System.out.println("Return " + workbook);
 				return workbook;
 			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {
 				throw new FlexoException(e);
