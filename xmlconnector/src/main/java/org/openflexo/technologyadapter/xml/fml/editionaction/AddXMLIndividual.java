@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.xml.fml.editionaction;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
@@ -48,7 +49,6 @@ import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -191,12 +191,10 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 			try {
 
 				if (getXMLType() != null) {
-					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = getModelSlotInstance(evaluationContext);
-					XMLModel model = modelSlotInstance.getAccessedResourceData();
-					XMLModelSlot modelSlot = (XMLModelSlot) modelSlotInstance.getModelSlot();
+					XMLModel model = this.getReceiver().getBindingValue(evaluationContext);
 
 					newIndividual = model.addNewIndividual(getXMLType());
-					modelSlotInstance.getResourceData().setIsModified();
+					model.setIsModified();
 
 					for (XMLDataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
 						if (dataPropertyAssertion.evaluateCondition(evaluationContext)) {
@@ -209,6 +207,9 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 					// add it to the model
 					// Two phase creation, then addition, to be able to process URIs once you have the property values
 					// and verify that there is no duplicate URIs
+
+					XMLModelSlot modelSlot = this.getInferedModelSlot();
+					ModelSlotInstance modelSlotInstance = this.getModelSlotInstance(evaluationContext);
 
 					String processedURI = modelSlot.getURIForObject(modelSlotInstance, newIndividual);
 					if (processedURI != null) {
@@ -229,7 +230,8 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 					}
 				}
 				return null;
-			} catch (DuplicateURIException e) {
+			} catch (Exception e) {
+				logger.log(Level.WARNING, "Can't create individual for '" + getReceiver() + "'", e);
 				e.printStackTrace();
 				return null;
 			}

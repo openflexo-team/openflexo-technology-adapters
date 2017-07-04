@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0" p:modelEntity="org.openflexo.gina.utils.FIBInspector" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,12" layout="border" borderRight="0" controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController" font="SansSerif,0,12" name="Inspector">
+  <TabPanel id="1" constraints="border(location=center)" name="Tab">
+    <Tab id="2" title="Basic" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11" layout="twocols" borderRight="0" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="0" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11" name="BasicTab">
+      <Label id="3" label="type" align="left" localize="true" index="0" constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="EditionActionTypeLabel" />
+      <TextField id="4" columns="10" localize="true" readOnly="true" data="data.implementedInterface.simpleName" index="1" constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="EditionActionTypeTextField" />
+      <Label id="5" label="receiver" align="left" localize="true" index="2" constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="ReceiverLabel" />
+      <Custom id="6" componentClassName="org.openflexo.gina.swing.utils.BindingSelector" dataClassForComponent="org.openflexo.connie.DataBinding" manageDynamicModel="true" data="data.receiver" index="3" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="ReceiverSelector">
+        <Assignment id="7" variable="component.bindable" mandatory="true" />
+      </Custom>
+      <Label id="8" label="parameter" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="parameterLabel" description="" />
+      <Custom id="9" componentClassName="org.openflexo.gina.swing.utils.BindingSelector" dataClassForComponent="org.openflexo.connie.DataBinding" manageDynamicModel="true" data="data.parameter" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="CustomSelector">
+        <Assignment id="10" variable="component.bindable" mandatory="true" />
+      </Custom>
+      <Label id="11" label="description" align="left" localize="true" index="10000" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="DescriptionLabel" />
+      <TextArea id="12" rows="3" columns="8" validateOnReturn="true" text="TextArea" data="data.description" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="10001" constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" name="Description" />
+    </Tab>
+    <Tab id="13" title="Advanced" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11" layout="twocols" borderRight="0" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="2" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11" name="AdvancedTab" />
+    <Tab id="14" title="FML" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11" layout="twocols" borderRight="0" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="3" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11" name="FMLTab">
+      <Editor id="15" rows="3" tokenMarkerStyle="FML" columns="8" validateOnReturn="true" text="Editor" localize="true" data="data.fMLRepresentation" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" width="120" font="SansSerif,0,13" height="120" name="Editor" />
+    </Tab>
+    <Tab id="16" title="Doc" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11" layout="twocols" borderRight="0" useScrollBar="true" opaque="false" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" index="10" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11" name="DocTab">
+      <Custom id="17" componentClassName="org.openflexo.components.widget.FIBDescriptionWidget" dataClassForComponent="org.openflexo.foundation.FlexoObject" localize="true" manageDynamicModel="true" data="data" index="5" constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="SpecificDescriptions" />
+    </Tab>
+  </TabPanel>
+  <FIBVariable id="18" type="org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot" name="data" />
+  <LocalizedDictionary id="19">
+    <Localized id="20" lang="French" value="Avancé" key="Advanced" />
+    <Localized id="21" lang="French" value="Basique" key="Basic" />
+  </LocalizedDictionary>
+  <Parameter id="22" name="title" value="SetXMLDocumentRoot action" />
+</Inspector>

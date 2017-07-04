@@ -73,6 +73,7 @@ import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.fml.XMLActorReference;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.editionaction.CreateXMLResource;
 import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -94,7 +95,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
  */
 @DeclareFlexoRoles({ XMLIndividualRole.class })
 @DeclareActorReferences({ XMLActorReference.class })
-@DeclareEditionActions({ AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
+@DeclareEditionActions({ AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class, CreateXMLResource.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)
@@ -108,9 +109,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 	@Getter(value = METAMODEL)
 	public XMLMetaModel getMetamodel();
 
-	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements
-	// XMLModelSlot {
-	// TODO : check for multiple inheritance issues in PAMELA
 	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
@@ -393,7 +391,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		@Override
 		public Type getType() {
-			return XMLModelSlot.class;
+			return XMLModel.class;
 		}
 
 		@Override

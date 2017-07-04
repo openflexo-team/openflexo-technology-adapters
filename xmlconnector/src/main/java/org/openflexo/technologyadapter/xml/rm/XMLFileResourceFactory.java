@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
@@ -51,7 +52,22 @@ public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource
 
 	@Override
 	public XMLModel makeEmptyResourceData(XMLFileResource resource) {
-		return XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+
+		if (resource.getIODelegate() instanceof StreamIODelegate) {
+			return createXMLResource((StreamIODelegate) resource.getIODelegate());
+		}
+
+		logger.severe("Cannot create XML Resource for this io delegate: " + resource.getIODelegate());
+		return null;
+
+	}
+
+	protected static <I> XMLModel createXMLResource(StreamIODelegate<I> ioDelegate) {
+		XMLModel model = null;
+		if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xml")) {
+			model = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+		}
+		return model;
 	}
 
 	@Override

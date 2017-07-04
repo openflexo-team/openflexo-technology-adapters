@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VirtualModel id="0" modelVersion="1.0" version="0.1" name="XMLWorkbookTest" userID="FLX" description="" flexoID="2">
   <UseModelSlotDeclaration id="1" modelSlotClass="org.openflexo.technologyadapter.xml.XMLModelSlot" userID="FLX" flexoID="-1" />
-  <XMLModelSlot id="2" metaModelURI="file:/u01/Sourcecode/openflexo-technology-adapters/xmlconnector-test-rc/src/main/resources/TestResourceCenter/XSD/simple_workbook.xsd" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="xml" userID="FLX" flexoID="6" />
-  <Inspector id="3" inspectorTitle="XMLWorkbookTest" userID="FLX" flexoID="1" />
+  <XMLModelSlot id="2" metaModelURI="http://www.openflexo.org/SimpleWorkbook" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="xml" userID="FLX" flexoID="6" />
+  <CreationScheme id="3" width="800" name="create" label="create" height="600" userID="FLX" flexoID="10">
+    <BehaviourControlGraph_Sequence id="4" userID="FLX" flexoID="25">
+      <ControlGraph2_Sequence id="5" ownerContext="controlGraph2" userID="FLX" flexoID="33">
+        <ControlGraph2_SetXMLDocumentRoot id="6" parameter="xmlRoot" receiver="xml" ownerContext="controlGraph2" userID="FLX" description="" flexoID="24" />
+        <ControlGraph1_DeclarationAction id="7" variable="xmlRoot" ownerContext="controlGraph1" userID="FLX" flexoID="32">
+          <AssignableAction_AddXMLIndividual id="8" typeURI="http://www.openflexo.org/SimpleWorkbook#WorkBook" userID="FLX" description="" flexoID="31" receiver="xml" />
+        </ControlGraph1_DeclarationAction>
+      </ControlGraph2_Sequence>
+      <ControlGraph1_AssignationAction id="9" assign="xml" ownerContext="controlGraph1" userID="FLX" flexoID="37">
+        <AssignableAction_CreateXMLResource id="10" resourceCenter="project" relativePath="model" resourceName="&quot;prout.xml&quot;" resourceURI="&quot;http://monmodel.xml&quot;" receiver="xml" ownerContext="controlGraph1" userID="FLX" description="" flexoID="18" />
+      </ControlGraph1_AssignationAction>
+    </BehaviourControlGraph_Sequence>
+  </CreationScheme>
+  <Inspector id="11" inspectorTitle="XMLWorkbookTest" userID="FLX" flexoID="1" />
 </VirtualModel>
