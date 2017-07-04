@@ -66,15 +66,15 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceFactory;
  *
  */
 @ModelEntity
-@ImplementationClass(CreateOWLResource.CreateExcelResourceImpl.class)
+@ImplementationClass(CreateOWLResource.CreateOwlResourceImpl.class)
 @XMLElement
 @FML("CreateOWLResource")
 public interface CreateOWLResource extends AbstractCreateResource<OWLModelSlot, OWLOntology, OWLTechnologyAdapter> {
 
-	public static abstract class CreateExcelResourceImpl extends AbstractCreateResourceImpl<OWLModelSlot, OWLOntology, OWLTechnologyAdapter>
+	public static abstract class CreateOwlResourceImpl extends AbstractCreateResourceImpl<OWLModelSlot, OWLOntology, OWLTechnologyAdapter>
 			implements CreateOWLResource {
 
-		private static final Logger logger = Logger.getLogger(CreateExcelResourceImpl.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(CreateOwlResourceImpl.class.getPackage().getName());
 
 		@Override
 		public Type getAssignableType() {
