@@ -97,12 +97,13 @@ public interface CreateXMLResource extends AbstractCreateResource<XMLModelSlot, 
 
 			XMLResourceFactory resourceFactory = (XMLResourceFactory) technologyAdapter.getResourceFactory(resourceFactoryClass);
 
-			if (modelSlot != null)
+			if (modelSlot != null) {
 				rsc.setMetaModelResource(
 						(FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>) modelSlot.getMetaModelResource());
-
-			if (createEmptyContents) {
-				resourceFactory.makeEmptyResourceData(rsc);
+			}
+			if (createEmptyContents && rsc != null) {
+				XMLModel model = resourceFactory.makeEmptyResourceData(rsc);
+				model.setResource(rsc);
 			}
 
 			rsc.save(null);

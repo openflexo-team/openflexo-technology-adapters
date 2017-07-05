@@ -159,11 +159,12 @@ public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implem
 
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
-				factory.setContext(resourceData);
-
-				factory.deserialize(getInputStream());
-
-				factory.resetContext();
+				// Should not de-serialize if file does not exist
+				if (getFlexoIOStreamDelegate().exists()) {
+					factory.setContext(resourceData);
+					factory.deserialize(getInputStream());
+					factory.resetContext();
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
