@@ -36,11 +36,11 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.IOException;
 
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -71,5 +71,7 @@ public interface XMLResource extends TechnologyAdapterResource<XMLModel, XMLTech
 
 	// initializes the Metamodel property of XMLModel, given the reference provided by metamodelResource property
 	public void attachMetamodel();
+
+	public void _saveResourceData(boolean clearIsModified) throws SaveResourceException;
 
 }

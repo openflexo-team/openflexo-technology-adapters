@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2017, Openflexo
  * Copyright (c) 2012-2012, AgileBirds
  * 
  * This file is part of Xmlconnector, a component of the software infrastructure 
@@ -39,24 +39,12 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 
 @ModelEntity
 @ImplementationClass(XMLFileResourceImpl.class)
+@Deprecated
 public interface XMLFileResource extends XMLResource {
-
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
-
-	@Override
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public XMLTechnologyContextManager getTechnologyContextManager();
-
-	@Override
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(XMLTechnologyContextManager technologyContextManager);
 
 }

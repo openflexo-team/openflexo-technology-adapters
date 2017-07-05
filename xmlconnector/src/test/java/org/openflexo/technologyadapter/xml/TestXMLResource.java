@@ -53,7 +53,6 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
@@ -92,7 +91,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		baseUrl = resourceCenter.getDefaultBaseURI();
 		assertNotNull(modelRepository);
 
-		for (XMLFileResource r : modelRepository.getAllResources()) {
+		for (XMLResource r : modelRepository.getAllResources()) {
 			System.out.println(" > " + r.getURI() + " mm=" + r.getMetaModelResource());
 		}
 

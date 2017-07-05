@@ -61,8 +61,8 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -75,8 +75,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl;
 
-	public void testLoadFileAndDump(XMLFileResource resource)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testLoadFileAndDump(XMLResource resource) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testLoadFileAndDump() " + resource.getName());
 
@@ -120,9 +119,9 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
+		XMLResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
 
-		for (XMLFileResource r : modelRepository.getAllResources()) {
+		for (XMLResource r : modelRepository.getAllResources()) {
 			System.out.println("Found: " + r.getURI() + " : " + r);
 		}
 
@@ -149,7 +148,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_1.xml");
+		XMLResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_1.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		testLoadFileAndDump(modelRes);
@@ -171,7 +170,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_2.xml");
+		XMLResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_2.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		testLoadFileAndDump(modelRes);
@@ -191,7 +190,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		for (XMLFileResource modelRes : modelRepository.getFolderWithName("XML").getResources()) {
+		for (XMLResource modelRes : modelRepository.getFolderWithName("XML").getResources()) {
 			assertNotNull(modelRes);
 			testLoadFileAndDump(modelRes);
 			assertTrue(modelRes.isLoaded());
@@ -222,7 +221,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 			// File xmlFile = new File(fileURI);
 
-			XMLFileResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile,
+			XMLResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile,
 					(FileSystemBasedResourceCenter) resourceCenter, xmlAdapter.getTechnologyContextManager(), true);
 
 			// XMLFileResource modelRes =

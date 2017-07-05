@@ -194,7 +194,11 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
 		@Override
 		public AbstractVirtualModel<?> getVirtualModel() {
-			return getModelSlot().getVirtualModel();
+			AbstractXMLModelSlot ms = getModelSlot();
+			if (ms != null)
+				return ms.getVirtualModel();
+			else
+				return null;
 		}
 
 		@Override

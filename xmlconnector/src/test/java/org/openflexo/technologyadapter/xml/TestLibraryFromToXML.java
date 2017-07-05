@@ -55,8 +55,8 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -121,7 +121,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 		String resourceURI = baseUrl + "/TestResourceCenter/XML/example_library_1.xml";
 		System.out.println("ResourceURI: " + resourceURI);
 
-		XMLFileResource libraryRes = modelRepository.getResource(resourceURI);
+		XMLResource libraryRes = modelRepository.getResource(resourceURI);
 
 		assertNotNull(libraryRes);
 

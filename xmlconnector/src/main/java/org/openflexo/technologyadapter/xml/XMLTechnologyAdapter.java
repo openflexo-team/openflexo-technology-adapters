@@ -53,8 +53,8 @@ import org.openflexo.technologyadapter.xml.fml.binding.XMLBindingFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLResourceFactory;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceFactory;
 
@@ -66,7 +66,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceFactory;
 
 @DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
 @DeclareRepositoryType({ XMLModelRepository.class, XSDMetaModelRepository.class })
-@DeclareResourceTypes({ XSDMetaModelResourceFactory.class, XMLFileResourceFactory.class })
+@DeclareResourceTypes({ XSDMetaModelResourceFactory.class, XMLResourceFactory.class })
 public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(XMLTechnologyAdapter.class.getPackage().getName());
@@ -162,14 +162,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public XMLTechnologyContextManager getTechnologyContextManager() {
 		return (XMLTechnologyContextManager) super.getTechnologyContextManager();
 	}
-
-	/*public String getExpectedModelExtension(FlexoResource<?> metaModel) {
-		return XML_EXTENSION;
-	}
-	
-	public String getExpectedMetaModelExtension() {
-		return XSD_EXTENSION;
-	}*/
 
 	/*@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
@@ -379,52 +371,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	/*@Override
-	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		if (contents instanceof File) {
-			File candidateFile = (File) contents;
-			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
-				// This is a meta-model, this one has just been registered
-				return true;
-			}
-			else {
-	
-				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, this);
-				// Check if it's not yet registered
-				boolean found = false;
-				for (XMLFileResource r : modelRepository.getAllResources()) {
-					found = found || getFileFlexoIODelegate(r).getFile().equals(candidateFile);
-				}
-				if (!found) {
-					return (tryToLookupModel(resourceCenter, candidateFile) != null);
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
-		return false;
-	}*/
-
-	/*private FileFlexoIODelegate getFileFlexoIODelegate(FlexoResource resource) {
-		return (FileFlexoIODelegate) resource.getFlexoIODelegate();
-	}*/
-
 	public <I> XSDMetaModelRepository<I> getXSDMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		XSDMetaModelRepository<I> returned = resourceCenter.retrieveRepository(XSDMetaModelRepository.class, this);
 		if (returned == null) {
@@ -443,28 +389,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}
 
-	/**
-	 * 
-	 * Create a XMLModel repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
-	 * 
-	 */
-	/*public XSDMetaModelRepository createXMLMetaModelRepository(FlexoResourceCenter<?> resourceCenter) {
-		XSDMetaModelRepository returned = new XSDMetaModelRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, XSDMetaModelRepository.class, this);
-		return returned;
-	}*/
-
-	/**
-	 * 
-	 * Create a XMLModel repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
-	 * 
-	 */
-	/*public XMLModelRepository createXMLModelRepository(FlexoResourceCenter<?> resourceCenter) {
-		XMLModelRepository returned = new XMLModelRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, XMLModelRepository.class, this);
-		return returned;
-	}*/
-
 	public XMLModelFactory getXMLModelFactory() {
 		return xmlModelFactory;
 	}
@@ -479,8 +403,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return "XML";
 	}
 
-	public XMLFileResourceFactory getXMLFileResourceFactory() {
-		return getResourceFactory(XMLFileResourceFactory.class);
+	public XMLResourceFactory getXMLFileResourceFactory() {
+		return getResourceFactory(XMLResourceFactory.class);
 	}
 
 	public XSDMetaModelResourceFactory getXSDMetaModelResourceFactory() {

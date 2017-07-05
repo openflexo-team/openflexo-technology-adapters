@@ -57,7 +57,7 @@ import org.openflexo.foundation.test.fml.AbstractModelFactoryIntegrationTestCase
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
+import org.openflexo.technologyadapter.xml.rm.XMLResourceFactory;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -137,7 +137,7 @@ public class TestCreateXMLResource extends AbstractModelFactoryIntegrationTestCa
 		XMLResource rsc = null;
 
 		try {
-			rsc = xmlTA.createResource(XMLFileResourceFactory.class, resourceCenter, "aTest.xml", "http://test.openflexo.org/aTest.xml",
+			rsc = xmlTA.createResource(XMLResourceFactory.class, resourceCenter, "aTest.xml", "http://test.openflexo.org/aTest.xml",
 					"model", ".xml", true);
 		} catch (SaveResourceException e) {
 			// TODO Auto-generated catch block

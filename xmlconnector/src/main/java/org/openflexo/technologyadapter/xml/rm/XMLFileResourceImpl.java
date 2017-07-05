@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2017, Openflexo
  * 
  * This file is part of Xmlconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -39,264 +39,23 @@
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.commons.io.IOUtils;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceImpl;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.foundation.resource.StreamIODelegate;
-import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
-import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
-import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.IProgress;
-import org.openflexo.xml.XMLRootElementInfo;
-import org.openflexo.xml.XMLRootElementReader;
 
 /**
  * @author xtof
  * 
  */
-public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLFileResource {
+@Deprecated
+public abstract class XMLFileResourceImpl extends XMLResourceImpl implements XMLFileResource {
 
-	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
-	protected static XMLRootElementReader REreader = new XMLRootElementReader();
-
-	/**
-	 * Save the &quot;real&quot; resource data of this resource.
-	 * 
-	 * @throws SaveResourceException
-	 */
-	@Override
-	public final void save(IProgress progress) throws SaveResourceException {
-		if (progress != null) {
-			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
-		}
-		if (!isLoaded()) {
-			return;
-		}
-		if (!isDeleted()) {
-			saveResourceData(true);
-			resourceData.clearIsModified(false);
-		}
-
-	}
-
-	/**
-	 * Retrieves the target Namespace from the file when not loaded or from MetamModel when it is loaded and exists
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	@Override
-	public String getTargetNamespace() throws IOException {
-
-		if (!isLoaded()) {
-			XMLRootElementInfo rootInfo;
-			rootInfo = REreader.readRootElement(getIODelegate().getSerializationArtefactAsResource());
-			return rootInfo.getURI();
-		}
-		else {
-			return this.getModel().getMetaModel().getURI();
-		}
-
-	}
-
-	public static final String getTargetNamespace(File f) throws IOException {
-		if (f != null && f.exists()) {
-			XMLRootElementInfo rootInfo;
-			rootInfo = REreader.readRootElement(f);
-			return rootInfo.getURI();
-		}
-		else {
-			throw new IOException("File Not Found ");
-		}
-	}
-
-	@Override
-	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-
-		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
-		}
-
-		if (!isLoaded()) {
-
-			try {
-
-				resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-
-				attachMetamodel();
-
-				resourceData.setResource(this);
-
-				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
-
-				factory.setContext(resourceData);
-
-				factory.deserialize(getInputStream());
-
-				factory.resetContext();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		return resourceData;
-	}
-
-	// TODO: Ask Sylvain if this could no be tractable with Pamela => Code
-	// duplication ?!?
-
-	@Override
-	public XMLModel getModel() {
-		return getModelData();
-	}
-
-	@Override
-	public XMLModel getModelData() {
-
-		try {
-			return getResourceData(null);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
-	@Override
-	public void attachMetamodel() {
-
-		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
-		if (mmRes != null) {
-			resourceData.setMetaModel(mmRes.getMetaModelData());
-		}
-		else {
-			// Create default meta-model, on the fly
-
-			XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
-			mm.setURI(getURI() + "/Metamodel");
-			mm.setReadOnly(false);
-
-			resourceData.setMetaModel(mm);
-		}
-
-		if (resourceData.getMetaModel() == null) {
-			logger.warning("Setting a null Metamodel for Model " + this.getURI());
-		}
-	}
-
-	@Override
-	public Class<XMLModel> getResourceDataClass() {
-		return XMLModel.class;
-
-	}
-
-	@Override
-	public synchronized XMLModel getResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-
-		if (isLoading()) {
-			logger.warning("trying to load a resource data from itself, please investigate");
-			return null;
-		}
-		if (isLoadable() && !isLoaded()) {
-			setLoading(true);
-			resourceData = loadResourceData(progress);
-			setLoading(false);
-			// That's fine, resource is loaded, now let's notify the loading of
-			// the resources
-			notifyResourceLoaded();
-		}
-		return resourceData;
-	}
-
-	/**
-	 * Return a FlexoIOStreamDelegate associated to this flexo resource
-	 * 
-	 * @return
-	 */
-	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
-		if (getIODelegate() instanceof StreamIODelegate) {
-			return (StreamIODelegate<?>) getIODelegate();
-		}
-		return null;
-	}
-
-	public InputStream getInputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getInputStream();
-		}
-		return null;
-	}
-
-	public OutputStream getOutputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getOutputStream();
-		}
-		return null;
-	}
-
-	/**
-	 * Save current resource data to current XML resource file.<br>
-	 * Forces XML version to be the latest one.
-	 * 
-	 * @return
-	 */
-	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
-		// System.out.println("PamelaResourceImpl Saving " + getFile());
-		if (!getIODelegate().hasWritePermission()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getIODelegate().toString());
-			}
-			throw new SaveResourcePermissionDeniedException(getIODelegate());
-		}
-		if (resourceData != null) {
-			_saveResourceData(clearIsModified);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Succeeding to save Resource " + this + " : " + getIODelegate().getSerializationArtefact());
-			}
-		}
-		if (clearIsModified) {
-			try {
-				getResourceData(null).clearIsModified(false);
-				// No need to reset the last memory update since it is valid
-				notifyResourceSaved();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
+	public void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());
@@ -351,22 +110,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		if (clearIsModified) {
 			notifyResourceStatusChanged();
 		}
-	}
-
-	private void write(OutputStream out) throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
-
-		try {
-			System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
-			OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8");
-			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, outSW);
-			writer.writeDocument();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getIODelegate());
-		} finally {
-			IOUtils.closeQuietly(out);
-		}
-		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
 	private void makeLocalCopy(File file) throws IOException {

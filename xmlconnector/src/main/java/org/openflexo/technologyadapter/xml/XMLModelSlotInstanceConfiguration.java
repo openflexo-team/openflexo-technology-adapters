@@ -43,7 +43,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
+import org.openflexo.technologyadapter.xml.rm.XMLResourceFactory;
 
 public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
@@ -51,7 +51,7 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		super(ms, fci, rc);
 		setModelUri(rc.getDefaultBaseURI() + "/Models/myXMLFile");
 		setRelativePath("/");
-		setFilename("myXMLFile" + XMLFileResourceFactory.XML_EXTENSION);
+		setFilename("myXMLFile" + XMLResourceFactory.XML_EXTENSION);
 
 		// ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
 		// .getExpectedModelExtension(getModelSlot().getMetaModelResource()));
@@ -85,7 +85,7 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = XMLFileResourceFactory.XML_EXTENSION;
+		String expectedSuffix = XMLResourceFactory.XML_EXTENSION;
 		// ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
 		// .getExpectedModelExtension(getModelSlot().getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {

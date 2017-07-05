@@ -56,7 +56,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
+import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.xml.XMLCst;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -132,8 +132,8 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 	}
 
 	@Override
-	public XMLFileResource getResource() {
-		return (XMLFileResource) xmlResource;
+	public XMLResource getResource() {
+		return (XMLResource) xmlResource;
 	}
 
 	@Override
@@ -148,12 +148,6 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 		}
 		else
 			return NO_URI;
-	}
-
-	@Override
-	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -203,7 +197,7 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		XMLFileResource rsc = this.getResource();
+		XMLResource rsc = this.getResource();
 		if (rsc != null)
 			return rsc.getTechnologyAdapter();
 		return null;

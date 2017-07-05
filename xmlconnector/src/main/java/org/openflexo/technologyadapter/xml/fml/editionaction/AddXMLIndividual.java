@@ -214,7 +214,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 					String processedURI = modelSlot.getURIForObject(modelSlotInstance, newIndividual);
 					if (processedURI != null) {
 						Object o = modelSlot.retrieveObjectWithURI(modelSlotInstance, processedURI);
-						if (o != null) {
+						if (o != null && o != newIndividual) {
 							model.removeFromIndividuals(newIndividual);
 							throw new DuplicateURIException("Error while creating Individual of type " + getXMLType().getURI());
 						}

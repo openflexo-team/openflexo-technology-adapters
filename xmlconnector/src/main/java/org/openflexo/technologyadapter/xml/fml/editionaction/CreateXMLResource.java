@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -48,16 +47,20 @@ import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.FlexoResourceFactory;
+import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
+import org.openflexo.technologyadapter.xml.rm.XMLResourceFactory;
 
 /**
  * {@link EditionAction} used to create an empty XML resource
@@ -82,6 +85,39 @@ public interface CreateXMLResource extends AbstractCreateResource<XMLModelSlot, 
 		}
 
 		@Override
+		protected <I, R extends TechnologyAdapterResource<XMLModel, XMLTechnologyAdapter>, RF extends FlexoResourceFactory<R, XMLModel, XMLTechnologyAdapter>> R createResource(
+				XMLTechnologyAdapter technologyAdapter, Class<RF> resourceFactoryClass, FlexoResourceCenter<I> resourceCenter,
+				String resourceName, String resourceURI, String relativePath, String extension, boolean createEmptyContents)
+				throws SaveResourceException, ModelDefinitionException {
+
+			XMLResource rsc = (XMLResource) super.createResource(technologyAdapter, resourceFactoryClass, resourceCenter, resourceName,
+					resourceURI, relativePath, extension, false);
+
+			XMLModelSlot modelSlot = this.getInferedModelSlot();
+
+			XMLResourceFactory resourceFactory = (XMLResourceFactory) technologyAdapter.getResourceFactory(resourceFactoryClass);
+
+			if (modelSlot != null)
+				rsc.setMetaModelResource(
+						(FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>) modelSlot.getMetaModelResource());
+
+			if (createEmptyContents) {
+				resourceFactory.makeEmptyResourceData(rsc);
+			}
+
+			rsc.save(null);
+
+			return (R) rsc;
+
+		}
+
+		@Override
+		public String editionActionRepresentation() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
 		public XMLModel execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			String resourceName = getResourceName(evaluationContext);
@@ -92,14 +128,12 @@ public interface CreateXMLResource extends AbstractCreateResource<XMLModelSlot, 
 
 			XMLResource newResource;
 			try {
-				newResource = createResource(xmlTA, XMLFileResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(), ".xml",
+				newResource = createResource(xmlTA, XMLResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(), ".xml",
 						true);
-				newResource.save(null);
 
-				XMLModel model = newResource.getResourceData(null);
+				return newResource.getModel();
 
-				return model;
-			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {
+			} catch (ModelDefinitionException e) {
 				throw new FlexoException(e);
 			}
 

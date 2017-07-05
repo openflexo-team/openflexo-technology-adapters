@@ -89,22 +89,4 @@ public class XSDMetaModelResourceFactory extends FlexoResourceFactory<XSDMetaMod
 		return returned;
 	}
 
-	/*public static XSDMetaModelResource makeXSDMetaModelResource(File xsdMetaModelFile, String uri,
-			XMLTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					XSDMetaModelResource.class));
-			XSDMetaModelResource returned = factory.newInstance(XSDMetaModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setURI(uri);
-			returned.initName("Unnamed");
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xsdMetaModelFile, factory));
-	
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}*/
-
 }

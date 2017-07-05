@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 //public class XMLModelRepository extends TechnologyAdapterResourceRepository<XMLResource,  XMLTechnologyAdapter, XMLModel> {
 public class XMLModelRepository<I>
-		extends ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter, I> {
+		extends ModelRepository<XMLResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter, I> {
 	public XMLModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}
