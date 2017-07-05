@@ -62,7 +62,9 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
@@ -209,6 +211,17 @@ public class TestBasicWorkbookXMLView extends OpenflexoProjectAtRunTimeTestCase 
 
 		assertEquals(virtualModel, newVirtualModelInstance.getFlexoConcept());
 		assertEquals(virtualModel, newVirtualModelInstance.getVirtualModel());
+
+		// Save All Attempt:
+		for (FlexoResource<?> r : serviceManager.getResourceManager().getUnsavedResources()) {
+			try {
+				System.out.println("SAVING: " + r.getURI());
+				r.save(null);
+			} catch (SaveResourceException e) {
+				System.out.println("Unable to save: " + r.getURI());
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

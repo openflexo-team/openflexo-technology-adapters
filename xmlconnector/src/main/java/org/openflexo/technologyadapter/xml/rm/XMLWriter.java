@@ -56,6 +56,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
+import org.openflexo.technologyadapter.xml.model.XMLPropertyValue;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.xml.XMLCst;
 
@@ -188,15 +189,11 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 			// Data Properties
 			if (prop instanceof XMLDataProperty) {
-				if(prop.isFromXMLElement()) {
-					List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
-					if (valueList != null && valueList.size() > 0) {
+				if (prop.isFromXMLElement()) {
+					XMLPropertyValue pv = indiv.getPropertyValue(prop.getName());
+					if (pv != null) {
 						myWriter.writeStartElement(prop.getName());
-						for (Object o : valueList) {
-							if (o != null) {
-								myWriter.writeCharacters(o.toString());
-							}
-						}
+						myWriter.writeCharacters(pv.getStringValue());
 						myWriter.writeEndElement();
 						myWriter.writeCharacters(LINE_SEP);
 					}
