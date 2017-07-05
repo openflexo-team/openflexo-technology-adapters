@@ -54,11 +54,11 @@ import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -79,10 +79,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
-
-	// Properties
-
-	private boolean isLoaded = false;
 
 	/**
 	 * Save the &quot;real&quot; resource data of this resource.
@@ -105,8 +101,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	/**
-	 * Retrieves the target Namespace from the file when not loaded or from
-	 * MetamModel when it is loaded and exists
+	 * Retrieves the target Namespace from the file when not loaded or from MetamModel when it is loaded and exists
 	 * 
 	 * @throws IOException
 	 * 
@@ -118,7 +113,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(getIODelegate().getSerializationArtefactAsResource());
 			return rootInfo.getURI();
-		} else {
+		}
+		else {
 			return this.getModel().getMetaModel().getURI();
 		}
 
@@ -129,14 +125,14 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(f);
 			return rootInfo.getURI();
-		} else {
+		}
+		else {
 			throw new IOException("File Not Found ");
 		}
 	}
 
 	@Override
-	public XMLModel loadResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
@@ -167,8 +163,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				if (mmRes != null) {
 					resourceData.setMetaModel(mmRes.getMetaModelData());
 				}
-
-				isLoaded = true;
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -226,7 +220,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
 		if (mmRes != null) {
 			resourceData.setMetaModel(mmRes.getMetaModelData());
-		} else {
+		}
+		else {
 			// Create default meta-model, on the fly
 
 			XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
@@ -248,8 +243,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException,
-			ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public synchronized XMLModel getResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
@@ -264,13 +259,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			notifyResourceLoaded();
 		}
 		return resourceData;
-	}
-
-	// Lifecycle Management
-
-	@Override
-	public boolean isLoaded() {
-		return isLoaded;
 	}
 
 	/**
@@ -305,8 +293,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	 * 
 	 * @return
 	 */
-	protected final void saveResourceData(boolean clearIsModified)
-			throws SaveResourceException, SaveResourcePermissionDeniedException {
+	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
 		// System.out.println("PamelaResourceImpl Saving " + getFile());
 		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
@@ -317,8 +304,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		if (resourceData != null) {
 			_saveResourceData(clearIsModified);
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Succeeding to save Resource " + this + " : "
-						+ getIODelegate().getSerializationArtefact());
+				logger.fine("Succeeding to save Resource " + this + " : " + getIODelegate().getSerializationArtefact());
 			}
 		}
 		if (clearIsModified) {
@@ -351,7 +337,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				// Make local copy
 				makeLocalCopy(fileToSave);
 				// Using temporary file
-				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".OF_TEMP.xml");
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
@@ -369,7 +355,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 				throw new SaveResourceException(getIODelegate(), e);
 			}
-		} else {
+		}
+		else {
 			try {
 				write(getOutputStream());
 			} catch (Exception e) {
@@ -388,8 +375,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		}
 	}
 
-	private void write(OutputStream out)
-			throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
+	private void write(OutputStream out) throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
 
 		try {
 			System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());

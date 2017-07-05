@@ -71,6 +71,7 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 	// Constants
 
 	private static final String Version = "0";
+	private static final String NO_URI = "http://www.openflexo.org/NO-URI/";
 
 	// Attributes
 
@@ -142,7 +143,11 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	@Override
 	public String getURI() {
-		return xmlResource.getURI();
+		if (xmlResource != null) {
+			return xmlResource.getURI();
+		}
+		else
+			return NO_URI;
 	}
 
 	@Override

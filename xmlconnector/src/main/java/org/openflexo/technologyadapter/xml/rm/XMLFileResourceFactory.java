@@ -40,6 +40,7 @@ import org.openflexo.xml.XMLRootElementInfo;
  * @author sylvain
  *
  */
+
 public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource, XMLModel, XMLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(XMLFileResourceFactory.class.getPackage().getName());
