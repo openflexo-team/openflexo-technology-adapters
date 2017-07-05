@@ -52,11 +52,11 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.model.io.BasicPowerpointModelConverter;
 import org.openflexo.toolbox.FileUtils;
@@ -77,8 +77,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not
-	 *            immediately available.
+	 *            a progress monitor in case the resource data is not immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
 	 * @throws ResourceDependencyLoopException
@@ -202,8 +201,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * 
 	 * @return
 	 */
-	protected final void saveResourceData(boolean clearIsModified)
-			throws SaveResourceException, SaveResourcePermissionDeniedException {
+	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
 		// System.out.println("PamelaResourceImpl Saving " + getFile());
 		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
@@ -228,8 +226,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 		}
 	}
 
-	protected void _saveResourceData(PowerpointSlideshow slideShow, boolean clearIsModified)
-			throws SaveResourceException {
+	protected void _saveResourceData(PowerpointSlideshow slideShow, boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());
@@ -248,7 +245,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 				// Make local copy
 				makeLocalCopy(fileToSave);
 				// Using temporary file
-				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".OF_TEMP.pptx");
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
@@ -266,7 +263,8 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 				throw new SaveResourceException(getIODelegate(), e);
 			}
-		} else {
+		}
+		else {
 			write(slideShow.getSlideShow(), getOutputStream());
 		}
 
