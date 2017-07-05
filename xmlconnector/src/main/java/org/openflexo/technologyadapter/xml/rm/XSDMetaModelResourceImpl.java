@@ -44,11 +44,12 @@ import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
@@ -99,8 +100,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not
-	 *            immediately available.
+	 *            a progress monitor in case the resource data is not immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
@@ -164,7 +164,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
@@ -181,12 +182,15 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					XMLType owner = resourceData.getTypeFromURI(ownerUri);
 					if (owner != null && owner instanceof XMLComplexType) {
 						// TODO: better manage types
-						((XMLComplexType) owner).createProperty(element.getName(),
+						XMLProperty prop = ((XMLComplexType) owner).createProperty(element.getName(),
 								resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-					} else {
+						prop.setIsFromElement(true);
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner for : " + uri);
 				}
 
@@ -205,10 +209,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					// TODO: better manage types
 					((XMLComplexType) owner).createProperty(attribute.getName(),
 							resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
-			} else {
+			}
+			else {
 				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
@@ -233,7 +239,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(name, t);
-					} else {
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
@@ -264,7 +271,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			loadDataProperties();
 			loadObjectProperties();
 			isLoaded = true;
-		} else
+		}
+		else
 			logger.info("I've not been able to parse the stream" + getInputStream());
 		isLoading = false;
 		return isLoaded;
