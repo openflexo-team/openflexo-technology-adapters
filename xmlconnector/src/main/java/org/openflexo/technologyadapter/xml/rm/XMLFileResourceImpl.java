@@ -138,19 +138,15 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
 		}
 
-		if (resourceData == null) {
-			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-			resourceData.setResource(this);
-
-			attachMetamodel();
-
-		}
-
 		if (!isLoaded()) {
 
 			try {
 
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
+				resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+
+				attachMetamodel();
+
+				resourceData.setResource(this);
 
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
@@ -159,10 +155,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				factory.deserialize(getInputStream());
 
 				factory.resetContext();
-
-				if (mmRes != null) {
-					resourceData.setMetaModel(mmRes.getMetaModelData());
-				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -198,20 +190,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		}
 		return null;
 
-		/*
-		 * if (resourceData == null) { resourceData =
-		 * XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-		 * resourceData.setResource(this); }
-		 */
-		// TODO : check lifecycle for Resource.... should it be loaded on
-		// getModelData?
-		/*
-		 * if (!isLoaded()) { try { resourceData = loadResourceData(null); }
-		 * catch (FileNotFoundException e) { e.printStackTrace(); } catch
-		 * (ResourceLoadingCancelledException e) { e.printStackTrace(); } catch
-		 * (FlexoException e) { e.printStackTrace(); } }
-		 */
-		// return resourceData;
 	}
 
 	@Override
