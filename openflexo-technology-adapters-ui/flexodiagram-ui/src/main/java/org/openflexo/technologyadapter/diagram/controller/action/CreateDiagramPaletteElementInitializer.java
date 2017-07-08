@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
@@ -68,18 +65,15 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 
 	@Override
 	protected FlexoActionInitializer<CreateDiagramPaletteElement> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramPaletteElement>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPaletteElement action) {
-				/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
-					return true;*/
+		return (e, action) -> {
+			/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
+				return true;*/
 
-				action.setNewElementName(FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_element")));
-				if (action.getGraphicalRepresentation() == null) {
-					action.setGraphicalRepresentation(makePaletteElementGraphicalRepresentation(ShapeType.RECTANGLE, action));
-				}
-				return true;
+			action.setNewElementName(FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_element")));
+			if (action.getGraphicalRepresentation() == null) {
+				action.setGraphicalRepresentation(makePaletteElementGraphicalRepresentation(ShapeType.RECTANGLE, action));
 			}
+			return true;
 		};
 	}
 
@@ -103,12 +97,9 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramPaletteElement> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramPaletteElement>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPaletteElement action) {
-				getController().getSelectionManager().setSelectedObject(action.getNewElement());
-				return true;
-			}
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewElement());
+			return true;
 		};
 	}
 

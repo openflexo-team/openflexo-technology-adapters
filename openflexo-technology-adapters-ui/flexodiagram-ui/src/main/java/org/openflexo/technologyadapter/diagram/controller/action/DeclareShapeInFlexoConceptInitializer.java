@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -69,45 +66,39 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 
 	@Override
 	protected FlexoActionInitializer<DeclareShapeInFlexoConcept> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeclareShapeInFlexoConcept>() {
-			@Override
-			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
+		return (e, action) -> {
 
-				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
-					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
-					action.setVirtualModelResource(
-							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
-				}
-
-				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
-					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
-							.getCurrentModuleView();
-					action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
-				}
-
-				Wizard wizard = new DeclareShapeInFlexoConceptWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
-				// return instanciateAndShowDialog(action, DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
+			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+				FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
+				action.setVirtualModelResource(
+						(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
 			}
+
+			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
+				FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+						.getCurrentModuleView();
+				action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
+			}
+
+			Wizard wizard = new DeclareShapeInFlexoConceptWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
+			// return instanciateAndShowDialog(action, DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeclareShapeInFlexoConcept> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeclareShapeInFlexoConcept>() {
-			@Override
-			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
-				// TODO: try to switch first to ViewPointModeller !!!
-				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
-				getController().getSelectionManager().setSelectedObject(action.getFlexoConcept());
-				return true;
-			}
+		return (e, action) -> {
+			// TODO: try to switch first to ViewPointModeller !!!
+			getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
+			getController().getSelectionManager().setSelectedObject(action.getFlexoConcept());
+			return true;
 		};
 	}
 

@@ -40,10 +40,7 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
-import org.openflexo.foundation.FlexoException;
+import javax.swing.*;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
@@ -132,27 +129,21 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagram> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagram>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagram action) {
-				// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
-				getController().selectAndFocusObject(action.getNewDiagram());
-				return true;
-			}
+		return (e, action) -> {
+			// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+			getController().selectAndFocusObject(action.getNewDiagram());
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoExceptionHandler<CreateDiagram> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<CreateDiagram>() {
-			@Override
-			public boolean handleException(FlexoException exception, CreateDiagram action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 
