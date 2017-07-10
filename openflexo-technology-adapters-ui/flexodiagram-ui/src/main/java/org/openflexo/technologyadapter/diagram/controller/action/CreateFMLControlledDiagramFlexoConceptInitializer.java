@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
@@ -68,49 +65,43 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 
 	@Override
 	protected FlexoActionInitializer<CreateFlexoConcept> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFlexoConcept>() {
-			@Override
-			public boolean run(EventObject e, CreateFlexoConcept action) {
-				action.setDefineSomeBehaviours(true);
-				Wizard wizard;
+		return (e, action) -> {
+			action.setDefineSomeBehaviours(true);
+			Wizard wizard;
 
-				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView
-						&& action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
-					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
-							.getCurrentModuleView();
-					wizard = new CreateFMLControlledDiagramFlexoConceptWizard(action, getController());
-					action.addToPostProcessing(
-							((CreateFMLControlledDiagramFlexoConceptWizard) wizard).getConfigurePaletteElementForNewFlexoConcept());
-				}
-				else {
-					wizard = new CreateFlexoConceptWizard(action, getController());
-				}
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
+			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView
+					&& action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+				FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+						.getCurrentModuleView();
+				wizard = new CreateFMLControlledDiagramFlexoConceptWizard(action, getController());
+				action.addToPostProcessing(
+						((CreateFMLControlledDiagramFlexoConceptWizard) wizard).getConfigurePaletteElementForNewFlexoConcept());
 			}
+			else {
+				wizard = new CreateFlexoConceptWizard(action, getController());
+			}
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFlexoConcept> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFlexoConcept>() {
-			@Override
-			public boolean run(EventObject e, CreateFlexoConcept action) {
-				if (action.switchNewlyCreatedFlexoConcept) {
-					if (action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
-						DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-								.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-						getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
-					}
-					getController().setCurrentEditedObjectAsModuleView(action.getNewFlexoConcept());
+		return (e, action) -> {
+			if (action.switchNewlyCreatedFlexoConcept) {
+				if (action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+					DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+							.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+					getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
 				}
-				return true;
+				getController().setCurrentEditedObjectAsModuleView(action.getNewFlexoConcept());
 			}
+			return true;
 		};
 	}
 

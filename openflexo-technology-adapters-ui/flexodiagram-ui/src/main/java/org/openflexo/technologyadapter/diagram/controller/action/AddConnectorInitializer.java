@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.swing.view.JConnectorView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -65,70 +62,64 @@ public class AddConnectorInitializer extends ActionInitializer {
 
 	@Override
 	protected FlexoActionInitializer<AddConnector> getDefaultInitializer() {
-		return new FlexoActionInitializer<AddConnector>() {
-			@Override
-			public boolean run(EventObject e, AddConnector action) {
-				if (action.getAutomaticallyCreateConnector()) {
-					/*String newName = FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_connector"));
-					if (newName == null || StringUtils.isEmpty(newName)) {
-						return false;
-					}*/
-					action.setNewConnectorName("");
-					return true;
-				}
-
-				/*	DynamicDropDownParameter<Role> roles = new DynamicDropDownParameter<Role>("parentRole", "role_that_will_be_specialized", availableRoles, availableRoles.firstElement());
-				roles.setShowReset(false);
-				roles.setFormatter("name");
-				TextFieldParameter annotation = new TextFieldParameter("Annotation","annotation","");
-
-				AskParametersDialog dialog = AskParametersDialog.createAskParametersDialog(getProject(), null, FlexoLocalization.localizedForKey("specialize_a_new_role"), FlexoLocalization.localizedForKey("please_select_a_role"), roles, annotation);
-				if (dialog.getStatus() == AskParametersDialog.VALIDATE) {
-					Role parentRole =  roles.getValue();
-					if (parentRole == null)
-						return false;
-					action.setNewParentRole(parentRole);
-					action.setAnnotation(annotation.getValue());
-					return true;
-				} else {
+		return (e, action) -> {
+			if (action.getAutomaticallyCreateConnector()) {
+				/*String newName = FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_connector"));
+				if (newName == null || StringUtils.isEmpty(newName)) {
 					return false;
 				}*/
-
-				return false;
+				action.setNewConnectorName("");
+				return true;
 			}
+
+			/*	DynamicDropDownParameter<Role> roles = new DynamicDropDownParameter<Role>("parentRole", "role_that_will_be_specialized", availableRoles, availableRoles.firstElement());
+			roles.setShowReset(false);
+			roles.setFormatter("name");
+			TextFieldParameter annotation = new TextFieldParameter("Annotation","annotation","");
+
+			AskParametersDialog dialog = AskParametersDialog.createAskParametersDialog(getProject(), null, FlexoLocalization.localizedForKey("specialize_a_new_role"), FlexoLocalization.localizedForKey("please_select_a_role"), roles, annotation);
+			if (dialog.getStatus() == AskParametersDialog.VALIDATE) {
+				Role parentRole =  roles.getValue();
+				if (parentRole == null)
+					return false;
+				action.setNewParentRole(parentRole);
+				action.setAnnotation(annotation.getValue());
+				return true;
+			} else {
+				return false;
+			}*/
+
+			return false;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<AddConnector> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<AddConnector>() {
-			@Override
-			public boolean run(EventObject e, AddConnector action) {
-				if (action.getConnector() != null) {
-					getController().getSelectionManager().setSelectedObject(action.getConnector());
-					ConnectorNode<DiagramConnector> connectorNode = null;
-					JConnectorView<DiagramConnector> connectorView = null;
-					if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView) {
-						connectorNode = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
-								.getConnectorNode(action.getConnector());
-						connectorView = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawingView()
-								.connectorViewForNode(connectorNode);
-					} else if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
-						connectorNode = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
-								.getConnectorNode(action.getConnector());
-						connectorView = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor()
-								.getDrawingView().connectorViewForNode(connectorNode);
-					}
-					if (connectorView != null && action.getConnector() != null) {
-						if (connectorView.getLabelView() != null) {
-							connectorNode.setContinuousTextEditing(true);
-							connectorView.getLabelView().startEdition();
-						}
-					}
-
+		return (e, action) -> {
+			if (action.getConnector() != null) {
+				getController().getSelectionManager().setSelectedObject(action.getConnector());
+				ConnectorNode<DiagramConnector> connectorNode = null;
+				JConnectorView<DiagramConnector> connectorView = null;
+				if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView) {
+					connectorNode = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
+							.getConnectorNode(action.getConnector());
+					connectorView = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawingView()
+							.connectorViewForNode(connectorNode);
+				} else if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+					connectorNode = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
+							.getConnectorNode(action.getConnector());
+					connectorView = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor()
+							.getDrawingView().connectorViewForNode(connectorNode);
 				}
-				return true;
+				if (connectorView != null && action.getConnector() != null) {
+					if (connectorView.getLabelView() != null) {
+						connectorNode.setContinuousTextEditing(true);
+						connectorView.getLabelView().startEdition();
+					}
+				}
+
 			}
+			return true;
 		};
 	}
 

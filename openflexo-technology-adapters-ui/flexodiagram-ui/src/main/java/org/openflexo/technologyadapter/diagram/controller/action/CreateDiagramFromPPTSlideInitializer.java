@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.FMLObject;
@@ -64,22 +61,14 @@ public class CreateDiagramFromPPTSlideInitializer extends ActionInitializer<Crea
 
 	@Override
 	protected FlexoActionInitializer<CreateDiagramFromPPTSlide> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramFromPPTSlide>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
-			}
-		};
+		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramFromPPTSlide> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramFromPPTSlide>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
-				return true;
-			}
+		return (e, action) -> {
+			getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
+			return true;
 		};
 	}
 

@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -71,33 +68,27 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 
 	@Override
 	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModel action) {
-				Wizard wizard = new CreateFMLControlledDiagramVirtualModelWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
-				// return instanciateAndShowDialog(action, VPMCst.CREATE_VIRTUAL_MODEL_DIALOG_FIB);
+		return (e, action) -> {
+			Wizard wizard = new CreateFMLControlledDiagramVirtualModelWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
 			}
+			return true;
+			// return instanciateAndShowDialog(action, VPMCst.CREATE_VIRTUAL_MODEL_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModel action) {
-				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-				getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
-				getController().selectAndFocusObject(action.getNewVirtualModel());
-				return true;
-			}
+		return (e, action) -> {
+			DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+					.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+			getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
+			getController().selectAndFocusObject(action.getNewVirtualModel());
+			return true;
 		};
 	}
 

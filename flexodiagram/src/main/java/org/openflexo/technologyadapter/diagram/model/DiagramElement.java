@@ -82,6 +82,8 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public static final String NAME = "name";
 	public static final String PARENT = "parent";
 
+	public String getIdentifier();
+
 	/**
 	 * Return name of this diagram element
 	 * 

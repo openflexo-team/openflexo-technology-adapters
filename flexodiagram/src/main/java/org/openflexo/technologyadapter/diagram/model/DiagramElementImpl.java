@@ -59,6 +59,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.toolbox.StringUtils;
 
 public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl
 		implements DiagramElement<G>, PropertyChangeListener {
@@ -257,4 +258,14 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 		}
 	}
 
+	@Override
+	public String getIdentifier() {
+		String returned = getName();
+		if (StringUtils.isEmpty(returned)) {
+			return getDefaultName();
+		}
+		return returned;
+	}
+
+	protected abstract String getDefaultName();
 }

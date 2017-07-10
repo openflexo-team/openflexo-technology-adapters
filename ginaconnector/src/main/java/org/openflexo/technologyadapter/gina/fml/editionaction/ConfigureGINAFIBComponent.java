@@ -84,16 +84,16 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 		@Override
 		public GINAFIBComponent execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FlexoException {
 
-			System.out.println("ConfigureGINAFIBComponent for :" + getAssignedFlexoProperty());
+			// System.out.println("ConfigureGINAFIBComponent for :" + getAssignedFlexoProperty());
 
 			if (getAssignedFlexoProperty() instanceof FIBComponentModelSlot) {
 
 				FIBComponentModelSlot modelSlot = ((FIBComponentModelSlot) getAssignedFlexoProperty());
 
-				System.out.println("Le template: " + modelSlot.getTemplateResource());
+				// System.out.println("Le template: " + modelSlot.getTemplateResource());
 
-				System.out.println("FCI=" + evaluationContext.getFlexoConceptInstance());
-				System.out.println("VMI=" + evaluationContext.getVirtualModelInstance());
+				// System.out.println("FCI=" + evaluationContext.getFlexoConceptInstance());
+				// System.out.println("VMI=" + evaluationContext.getVirtualModelInstance());
 
 				FlexoConceptInstance fci = evaluationContext.getFlexoConceptInstance();
 				ModelSlotInstance<FIBComponentModelSlot, GINAFIBComponent> msi = fci.getModelSlotInstance(modelSlot);
@@ -103,7 +103,7 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 					msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
 					msi = msiConfig.createModelSlotInstance(fci, fci.getView());
 					fci.addToActors(msi);
-					System.out.println("Hop, on vient de creer le msi " + msi);
+					// System.out.println("Hop, on vient de creer le msi " + msi);
 				}
 
 				if (modelSlot.getTemplateResource() == null) {

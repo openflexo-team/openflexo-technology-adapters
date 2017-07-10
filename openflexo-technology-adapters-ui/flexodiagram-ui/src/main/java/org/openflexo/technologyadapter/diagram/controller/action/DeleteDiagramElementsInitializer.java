@@ -38,12 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
@@ -64,26 +60,20 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 
 	@Override
 	protected FlexoActionInitializer<DeleteDiagramElements> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				getController().getSelectionManager().resetSelection();
-				return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
-			}
+		return (e, action) -> {
+			getController().getSelectionManager().resetSelection();
+			return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagramElements> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
-						&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
-					getControllerActionInitializer().getController().getSelectionManager().resetSelection();
-				}
-				return true;
+		return (e, action) -> {
+			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
+					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
+				getControllerActionInitializer().getController().getSelectionManager().resetSelection();
 			}
+			return true;
 		};
 	}
 
