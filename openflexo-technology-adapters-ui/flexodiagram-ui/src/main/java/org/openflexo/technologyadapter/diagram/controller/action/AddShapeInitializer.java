@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -69,57 +66,51 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 
 	@Override
 	protected FlexoActionInitializer<AddShape> getDefaultInitializer() {
-		return new FlexoActionInitializer<AddShape>() {
-			@Override
-			public boolean run(EventObject e, AddShape action) {
-				if ((action.getNewShapeName() != null || action.isNameSetToNull()) && action.getParent() != null) {
-					return true;
-				}
-
-				DiagramElement<?> parent = action.getParent();
-				if (parent != null) {
-					String newName = FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_shape"));
-					if (newName == null || StringUtils.isEmpty(newName)) {
-						return false;
-					}
-					action.setNewShapeName(newName);
-					return true;
-				}
-				return false;
+		return (e, action) -> {
+			if ((action.getNewShapeName() != null || action.isNameSetToNull()) && action.getParent() != null) {
+				return true;
 			}
+
+			DiagramElement<?> parent = action.getParent();
+			if (parent != null) {
+				String newName = FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_shape"));
+				if (newName == null || StringUtils.isEmpty(newName)) {
+					return false;
+				}
+				action.setNewShapeName(newName);
+				return true;
+			}
+			return false;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<AddShape> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<AddShape>() {
-			@Override
-			public boolean run(EventObject e, AddShape action) {
+		return (e, action) -> {
 
-				getController().getSelectionManager().setSelectedObject(action.getNewShape());
+			getController().getSelectionManager().setSelectedObject(action.getNewShape());
 
-				// System.out.println("Searching module view for " + action.getNewShape().getDiagram());
+			// System.out.println("Searching module view for " + action.getNewShape().getDiagram());
 
-				ModuleView<?> moduleView = getController().moduleViewForObject(action.getNewShape().getDiagram(), false);
+			ModuleView<?> moduleView = getController().moduleViewForObject(action.getNewShape().getDiagram(), false);
 
-				if (moduleView != null) {
+			if (moduleView != null) {
 
-					// System.out.println("moduleView=" + moduleView);
-					// System.out.println("editor=" + ((FreeDiagramModuleView) moduleView).getEditor());
-					// System.out.println("drawing=" + ((FreeDiagramModuleView) moduleView).getEditor().getDrawing());
-					ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
-							.getShapeNode(action.getNewShape());
-					JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
-							.shapeViewForNode(shapeNode);
-					if (action.getNewShape() != null) {
-						if (shapeView.getLabelView() != null) {
-							shapeNode.setContinuousTextEditing(true);
-							shapeView.getLabelView().startEdition();
-						}
+				// System.out.println("moduleView=" + moduleView);
+				// System.out.println("editor=" + ((FreeDiagramModuleView) moduleView).getEditor());
+				// System.out.println("drawing=" + ((FreeDiagramModuleView) moduleView).getEditor().getDrawing());
+				ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
+						.getShapeNode(action.getNewShape());
+				JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
+						.shapeViewForNode(shapeNode);
+				if (action.getNewShape() != null) {
+					if (shapeView.getLabelView() != null) {
+						shapeNode.setContinuousTextEditing(true);
+						shapeView.getLabelView().startEdition();
 					}
 				}
-				return true;
 			}
+			return true;
 		};
 	}
 

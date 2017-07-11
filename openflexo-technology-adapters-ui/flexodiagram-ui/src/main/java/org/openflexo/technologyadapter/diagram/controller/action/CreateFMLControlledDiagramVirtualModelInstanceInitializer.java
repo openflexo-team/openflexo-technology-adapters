@@ -38,14 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
@@ -78,92 +74,83 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 
 	@Override
 	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
+		return (e, action) -> {
 
-				if (action.skipChoosePopup()) {
-					return true;
-				}
-				else {
-					if (action.getFocusedObject() != null && action.getFocusedObject().getViewPoint() != null) {
-						// @Brutal
-						// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
-						action.getFocusedObject().getViewPoint().loadVirtualModelsWhenUnloaded();
-					}
-					Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
-					WizardDialog dialog = new WizardDialog(wizard, getController());
-					dialog.showDialog();
-					if (dialog.getStatus() != Status.VALIDATED) {
-						// Operation cancelled
-						return false;
-					}
-					return true;
-				}
-
-				/*if (action.skipChoosePopup) {
-					return true;
-				} else {
-					int step = 0;
-					boolean shouldContinue = true;
-					while (shouldContinue) {
-						Status result;
-						if (step == 0) {
-							result = instanciateShowDialogAndReturnStatus(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-						} else if (step == action.getStepsNumber() - 1 && action.getVirtualModel() != null
-								&& action.getVirtualModel().hasCreationScheme()) {
-							result = chooseAndConfigureCreationScheme(action);
-						}else {
-							ModelSlot<?> configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
-							result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
-									getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
-						}
-						if (result == Status.CANCELED) {
-							return false;
-						} else if (result == Status.VALIDATED) {
-							return true;
-						} else if (result == Status.NEXT && step + 1 <= action.getStepsNumber()) {
-							step = step + 1;
-						} else if (result == Status.BACK && step - 1 >= 0) {
-							step = step - 1;
-						}
-					}
-				
-					return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-				}*/
-
-				// logger.warning("!!!!!!! Please reimplement me");
-				// return false;
+			if (action.skipChoosePopup()) {
+				return true;
 			}
+			else {
+				if (action.getFocusedObject() != null && action.getFocusedObject().getViewPoint() != null) {
+					// @Brutal
+					// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
+					action.getFocusedObject().getViewPoint().loadVirtualModelsWhenUnloaded();
+				}
+				Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
+				WizardDialog dialog = new WizardDialog(wizard, getController());
+				dialog.showDialog();
+				if (dialog.getStatus() != Status.VALIDATED) {
+					// Operation cancelled
+					return false;
+				}
+				return true;
+			}
+
+			/*if (action.skipChoosePopup) {
+				return true;
+			} else {
+				int step = 0;
+				boolean shouldContinue = true;
+				while (shouldContinue) {
+					Status result;
+					if (step == 0) {
+						result = instanciateShowDialogAndReturnStatus(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
+					} else if (step == action.getStepsNumber() - 1 && action.getVirtualModel() != null
+							&& action.getVirtualModel().hasCreationScheme()) {
+						result = chooseAndConfigureCreationScheme(action);
+					}else {
+						ModelSlot<?> configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
+						result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
+								getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
+					}
+					if (result == Status.CANCELED) {
+						return false;
+					} else if (result == Status.VALIDATED) {
+						return true;
+					} else if (result == Status.NEXT && step + 1 <= action.getStepsNumber()) {
+						step = step + 1;
+					} else if (result == Status.BACK && step - 1 >= 0) {
+						step = step - 1;
+					}
+				}
+
+				return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
+			}*/
+
+			// logger.warning("!!!!!!! Please reimplement me");
+			// return false;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
+		return (e, action) -> {
 
-				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-				getController().setCurrentEditedObjectAsModuleView(action.getNewVirtualModelInstance(),
-						diagramTAController.getFMLRTControlledDiagramNaturePerspective());
-				return true;
-			}
+			DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+					.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+			getController().setCurrentEditedObjectAsModuleView(action.getNewVirtualModelInstance(),
+					diagramTAController.getFMLRTControlledDiagramNaturePerspective());
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoExceptionHandler<CreateFMLControlledDiagramVirtualModelInstance> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<CreateFMLControlledDiagramVirtualModelInstance>() {
-			@Override
-			public boolean handleException(FlexoException exception, CreateFMLControlledDiagramVirtualModelInstance action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 

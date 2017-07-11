@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
@@ -68,22 +65,12 @@ public class CreateFMLDiagramPaletteElementBindingInitializer
 
 	@Override
 	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLDiagramPaletteElementBinding action) {
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB);
-			}
-		};
+		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB);
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBinding> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLDiagramPaletteElementBinding>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLDiagramPaletteElementBinding action) {
-				return true;
-			}
-		};
+		return (e, action) -> true;
 	}
 
 	@Override

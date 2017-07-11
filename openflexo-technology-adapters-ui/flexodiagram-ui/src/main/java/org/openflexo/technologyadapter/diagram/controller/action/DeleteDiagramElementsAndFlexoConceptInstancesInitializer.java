@@ -38,12 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -65,26 +61,20 @@ public class DeleteDiagramElementsAndFlexoConceptInstancesInitializer
 
 	@Override
 	protected FlexoActionInitializer<DeleteDiagramElementsAndFlexoConceptInstances> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteDiagramElementsAndFlexoConceptInstances>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElementsAndFlexoConceptInstances action) {
-				getController().getSelectionManager().resetSelection();
-				return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB);
-			}
+		return (e, action) -> {
+			getController().getSelectionManager().resetSelection();
+			return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagramElementsAndFlexoConceptInstances> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagramElementsAndFlexoConceptInstances>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElementsAndFlexoConceptInstances action) {
-				if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
-						&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
-					getControllerActionInitializer().getController().getSelectionManager().resetSelection();
-				}
-				return true;
+		return (e, action) -> {
+			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
+					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
+				getControllerActionInitializer().getController().getSelectionManager().resetSelection();
 			}
+			return true;
 		};
 	}
 

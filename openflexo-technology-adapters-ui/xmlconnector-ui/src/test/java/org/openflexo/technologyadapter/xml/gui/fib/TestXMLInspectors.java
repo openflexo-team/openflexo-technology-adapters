@@ -66,6 +66,11 @@ public class TestXMLInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testSetXMLDocumentRootInspector() {
+		validateFIB("Inspectors/XML/EditionAction/SetXMLDocumentRoot.inspector");
+	}
+
+	@Test
 	public void testFreeXMLModelSlotInspector() {
 		validateFIB("Inspectors/XML/ModelSlot/FreeXMLModelSlot.inspector");
 	}

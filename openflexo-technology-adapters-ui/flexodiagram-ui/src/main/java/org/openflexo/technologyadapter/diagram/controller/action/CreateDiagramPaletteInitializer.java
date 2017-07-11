@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
@@ -72,51 +69,45 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 
 	@Override
 	protected FlexoActionInitializer<CreateDiagramPalette> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramPalette>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
+		return (e, action) -> {
 
-				try {
-					FGEModelFactory factory = new FGEModelFactoryImpl();
-					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
-				} catch (ModelDefinitionException e1) {
-					e1.printStackTrace();
-				}
-
-				Wizard wizard = new CreateDiagramPaletteWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
-
-				/*FGEModelFactory factory;
-				try {
-					FGEModelFactory factory = new FGEModelFactoryImpl();
-					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
-					return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
-				} catch (ModelDefinitionException e1) {
-					e1.printStackTrace();
-					return false;
-				}*/
+			try {
+				FGEModelFactory factory = new FGEModelFactoryImpl();
+				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
+			} catch (ModelDefinitionException e1) {
+				e1.printStackTrace();
 			}
+
+			Wizard wizard = new CreateDiagramPaletteWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
+
+			/*FGEModelFactory factory;
+			try {
+				FGEModelFactory factory = new FGEModelFactoryImpl();
+				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
+				return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
+			} catch (ModelDefinitionException e1) {
+				e1.printStackTrace();
+				return false;
+			}*/
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramPalette>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
-				if (getController().getCurrentPerspective() instanceof TechnologyPerspective
-						&& ((TechnologyPerspective) getController().getCurrentPerspective())
-								.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
-					getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
-				}
-				return true;
+		return (e, action) -> {
+			if (getController().getCurrentPerspective() instanceof TechnologyPerspective
+					&& ((TechnologyPerspective) getController().getCurrentPerspective())
+							.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
+				getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
 			}
+			return true;
 		};
 	}
 

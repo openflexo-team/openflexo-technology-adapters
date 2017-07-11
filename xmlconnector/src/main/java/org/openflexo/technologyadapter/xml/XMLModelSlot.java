@@ -76,6 +76,7 @@ import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.fml.editionaction.CreateXMLResource;
 import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -157,7 +158,10 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				Object o) {
 
 			if (o instanceof XMLIndividual) {
-				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
+				XMLComplexType t = ((XMLIndividual) o).getType();
+				XMLURIProcessor p = null;
+				if (t != null)
+					p = retrieveURIProcessorForType(t);
 				if (p != null) {
 					return p.getURIForObject(msInstance, (XMLObject) o);
 				}

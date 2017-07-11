@@ -80,7 +80,6 @@ public interface XMLIndividual extends XMLObject {
 	public static final String MODEL = "containerModel";
 	public static final String CHILD = "children";
 	public static final String PARENT = "parent";
-	public static final String PROPERTIES_VALUES = "propertiesValues";
 
 	public static final String TEXT = "text";
 
@@ -122,7 +121,6 @@ public interface XMLIndividual extends XMLObject {
 	@PastingPoint
 	public void addChild(XMLIndividual ind);
 
-	@Getter(value = PROPERTIES_VALUES, cardinality = Cardinality.MAP)
 	public Map<? extends XMLProperty, ? extends XMLPropertyValue> getPropertiesValues();
 
 	public XMLPropertyValue getPropertyValue(String pname);
@@ -131,14 +129,12 @@ public interface XMLIndividual extends XMLObject {
 
 	public String getPropertyStringValue(XMLProperty prop);
 
-	@Adder(value = PROPERTIES_VALUES)
 	public void addPropertyValue(XMLProperty prop, XMLPropertyValue value);
 
 	public void addPropertyValue(String name, Object value);
 
 	public void addPropertyValue(XMLProperty prop, Object value);
 
-	@Remover(value = PROPERTIES_VALUES)
 	public void deletePropertyValues(XMLProperty attr);
 
 	@Getter(TEXT)

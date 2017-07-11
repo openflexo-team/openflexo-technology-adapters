@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
@@ -92,7 +93,8 @@ public interface XMLActorReference<T extends XMLObject> extends ActorReference<T
 				if (msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}
@@ -117,7 +119,11 @@ public interface XMLActorReference<T extends XMLObject> extends ActorReference<T
 		public String getObjectURI() {
 			if (object != null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				if (msInstance != null) {
+					ModelSlot ms = msInstance.getModelSlot();
+					if (ms != null)
+						objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				}
 			}
 			return objectURI;
 		}

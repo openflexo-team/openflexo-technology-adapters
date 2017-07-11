@@ -38,11 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
@@ -70,50 +67,44 @@ public class CreatePaletteElementFromShapeInitializer extends ActionInitializer<
 
 	@Override
 	protected FlexoActionInitializer<CreatePaletteElementFromShape> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreatePaletteElementFromShape>() {
-			@Override
-			public boolean run(EventObject e, CreatePaletteElementFromShape action) {
+		return (e, action) -> {
 
-				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
-					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
-					action.setVirtualModelResource(
-							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
-				}
-
-				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
-					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
-							.getCurrentModuleView();
-					action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
-				}
-
-				Wizard wizard = new CreatePaletteElementFromShapeWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
-				// action.setImage((DiagramIconLibrary.DIAGRAM_PALETTE_ICON).getImage());
-				// return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
+			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+				FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
+				action.setVirtualModelResource(
+						(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
 			}
+
+			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
+				FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+						.getCurrentModuleView();
+				action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
+			}
+
+			Wizard wizard = new CreatePaletteElementFromShapeWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
+			// action.setImage((DiagramIconLibrary.DIAGRAM_PALETTE_ICON).getImage());
+			// return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreatePaletteElementFromShape> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreatePaletteElementFromShape>() {
-			@Override
-			public boolean run(EventObject e, CreatePaletteElementFromShape action) {
-				// Switch to palette if in DiagramPerspective
-				if (getController().getCurrentPerspective() instanceof TechnologyPerspective
-						&& ((TechnologyPerspective) getController().getCurrentPerspective())
-								.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
-					getController().setCurrentEditedObjectAsModuleView(action.getPalette());
-					getController().getSelectionManager().setSelectedObject(action.getNewPaletteElement());
-				}
-				return true;
+		return (e, action) -> {
+			// Switch to palette if in DiagramPerspective
+			if (getController().getCurrentPerspective() instanceof TechnologyPerspective
+					&& ((TechnologyPerspective) getController().getCurrentPerspective())
+							.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
+				getController().setCurrentEditedObjectAsModuleView(action.getPalette());
+				getController().getSelectionManager().setSelectedObject(action.getNewPaletteElement());
 			}
+			return true;
 		};
 	}
 

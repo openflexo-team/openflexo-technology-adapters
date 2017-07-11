@@ -96,9 +96,11 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 
 	@Override
 	public String getContentDATA() {
-		XMLProperty attr = this.getType().getPropertyByName(XMLCst.CDATA_ATTR_NAME);
-		if (attr != null) {
-			return this.getPropertyStringValue(attr);
+		if (this.getType() != null) {
+			XMLProperty attr = this.getType().getPropertyByName(XMLCst.CDATA_ATTR_NAME);
+			if (attr != null) {
+				return this.getPropertyStringValue(attr);
+			}
 		}
 		return "";
 	}
@@ -113,7 +115,11 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 
 	@Override
 	public String getName() {
-		return getType().getName();
+		XMLComplexType t = getType();
+		if (t != null)
+			return t.getName();
+		else
+			return "";
 	}
 
 	@Override
@@ -156,7 +162,6 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		}
 	}
 
-	@Override
 	public Map<? extends XMLProperty, XMLPropertyValue> getPropertiesValues() {
 		return propertiesValues;
 	}
