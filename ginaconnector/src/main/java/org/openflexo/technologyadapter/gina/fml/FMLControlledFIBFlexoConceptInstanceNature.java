@@ -80,7 +80,7 @@ public class FMLControlledFIBFlexoConceptInstanceNature implements FlexoConceptI
 			return false;
 		}
 
-		FIBComponentModelSlot fibMS = flexoConceptInstance.getFlexoConcept().getModelSlots(FIBComponentModelSlot.class).get(0);
+		FIBComponentModelSlot fibMS = flexoConceptInstance.getFlexoConcept().getDeclaredProperties(FIBComponentModelSlot.class).get(0);
 
 		GINAFIBComponent fibComponent = flexoConceptInstance.getFlexoPropertyValue(fibMS);
 

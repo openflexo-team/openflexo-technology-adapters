@@ -71,11 +71,11 @@ public class FMLControlledFIBFlexoConceptNature implements FlexoConceptNature {
 	public boolean hasNature(FlexoConcept flexoConcept) {
 
 		// VirtualModel should have one and only one FIBComponentModelSlot
-		if (flexoConcept.getModelSlots(FIBComponentModelSlot.class).size() != 1) {
+		if (flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).size() != 1) {
 			return false;
 		}
 
-		FIBComponentModelSlot fibMS = flexoConcept.getModelSlots(FIBComponentModelSlot.class).get(0);
+		FIBComponentModelSlot fibMS = flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).get(0);
 
 		// The unique FIBComponentModelSlot should have one template resource
 		if (fibMS.getTemplateResource() == null) {
@@ -109,8 +109,8 @@ public class FMLControlledFIBFlexoConceptNature implements FlexoConceptNature {
 	}
 
 	private FIBComponentModelSlot _getFIBComponentModelSlot(FlexoConcept flexoConcept) {
-		if (flexoConcept != null && flexoConcept.getModelSlots(FIBComponentModelSlot.class).size() == 1) {
-			return flexoConcept.getModelSlots(FIBComponentModelSlot.class).get(0);
+		if (flexoConcept != null && flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).size() == 1) {
+			return flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).get(0);
 		}
 		return null;
 	}
