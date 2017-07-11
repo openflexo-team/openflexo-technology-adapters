@@ -61,6 +61,11 @@ public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndivid
 		}
 
 		@Override
+		public Class<EMFObjectIndividual> getOntologyIndividualClass() {
+			return EMFObjectIndividual.class;
+		}
+
+		@Override
 		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
 			return EMFTechnologyAdapter.class;
 		}
