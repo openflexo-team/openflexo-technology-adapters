@@ -56,20 +56,15 @@ import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
@@ -107,13 +102,13 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	static FlexoEditor editor;
 	static EMFTechnologyAdapter technologicalAdapter;
-	static ViewPoint newViewPoint;
+	static VirtualModel newViewPoint;
 	static VirtualModel newVirtualModel;
 	static EMFModelSlot newModelSlot = null;
 	static EMFModelResource emfModelResource = null;
 	static EMFMetaModelResource emfMetaModelResource = null;
 	private static FlexoProject project;
-	private static View newView;
+	private static VirtualModelInstance newView;
 	private static VirtualModelInstance newVirtualModelInstance;
 	private static FlexoConcept flexoConcept;
 	private static CreateFlexoBehaviour creationEditionScheme;
@@ -141,9 +136,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
-		ViewPointResource newViewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		VirtualModelResource newViewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
@@ -156,8 +151,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newViewPoint.getResource()).getDirectory().exists());
 		// assertTrue(((ViewPointResource)
 		// newViewPoint.getResource()).getFile().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
+		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
 	}
 
 	/**
@@ -180,9 +175,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, newViewPoint.getViewPointResource(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME,
+				newViewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// newVirtualModel =
@@ -191,8 +186,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newVirtualModel.getResource()).getDirectory().exists());
 		// assertTrue(((VirtualModelResource)
 		// newVirtualModel.getResource()).getFile().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
+		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
 		newModelSlot = technologicalAdapter.makeModelSlot(EMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(emfMetaModelResource);
 		assertNotNull(newModelSlot);
@@ -245,13 +240,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(5)
 	public void testCreateVMI() {
 
-		CreateViewInFolder viewAction = CreateViewInFolder.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
-		viewAction.setNewViewName("MyView");
-		viewAction.setNewViewTitle("Test creation of a new view");
-		viewAction.setViewpointResource((ViewPointResource) newViewPoint.getResource());
+		CreateBasicVirtualModelInstance viewAction = CreateBasicVirtualModelInstance.actionType
+				.makeNewAction(project.getVirtualModelInstanceRepository().getRootFolder(), null, editor);
+		viewAction.setNewVirtualModelInstanceName("MyView");
+		viewAction.setNewVirtualModelInstanceTitle("Test creation of a new view");
+		viewAction.setVirtualModel(newViewPoint);
 		viewAction.doAction();
 		assertTrue(viewAction.hasActionExecutionSucceeded());
-		newView = viewAction.getNewView();
+		newView = viewAction.getNewVirtualModelInstance();
 
 		CreateBasicVirtualModelInstance vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		vmiAction.setNewVirtualModelInstanceName("MyVMI");
