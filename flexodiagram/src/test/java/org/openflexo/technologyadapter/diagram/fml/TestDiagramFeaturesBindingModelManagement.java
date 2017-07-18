@@ -59,7 +59,7 @@ import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointLibrary;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
@@ -262,7 +262,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
@@ -289,7 +289,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = vmFactory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		virtualModel = newVMResource.getLoadedResourceData();
@@ -397,9 +397,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
-				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed("shape"));
 		assertEquals(DiagramShape.class, dropScheme.getBindingModel().bindingVariableNamed("shape").getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
@@ -486,9 +486,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
-				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed("shape"));
 		assertEquals(DiagramShape.class, linkScheme.getBindingModel().bindingVariableNamed("shape").getType());
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
@@ -549,7 +549,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(retrievedDSResource);
 		assertEquals(1, retrievedDSResource.getDiagramSpecification().getPalettes().size());
 
-		ViewPointResource retrievedVPResource = serviceManager.getViewPointLibrary().getViewPointResource(VIEWPOINT_URI);
+		ViewPointResource retrievedVPResource = serviceManager.getVirtualModelLibrary().getViewPointResource(VIEWPOINT_URI);
 		assertNotNull(retrievedVPResource);
 
 		assertEquals(1, retrievedVPResource.getVirtualModelResources().size());
@@ -604,9 +604,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
-				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed("shape"));
 		assertEquals(DiagramShape.class, dropScheme.getBindingModel().bindingVariableNamed("shape").getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
@@ -630,7 +630,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	@TestOrder(9)
 	public void testLoadViewPointAndVirtualModel() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
+		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint");
 		assertNotNull(viewPoint);
@@ -670,7 +670,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	public void testLoadViewPointAndVirtualModelFromJar() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
-		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
+		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint2");
 		assertNotNull(viewPoint);
@@ -727,9 +727,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
-				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed("shape"));
 		assertEquals(DiagramShape.class, dropScheme.getBindingModel().bindingVariableNamed("shape").getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
@@ -757,9 +757,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(FCLink),
-				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_DEFINITION_PROPERTY));
@@ -809,9 +809,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				dropScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
-				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				dropScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed("shape"));
 		assertEquals(DiagramShape.class, dropScheme.getBindingModel().bindingVariableNamed("shape").getType());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
@@ -839,9 +839,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel),
 				linkScheme.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(FCLink),
-				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+				linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_PROPERTY));
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoBehaviourBindingModel.PARAMETERS_DEFINITION_PROPERTY));

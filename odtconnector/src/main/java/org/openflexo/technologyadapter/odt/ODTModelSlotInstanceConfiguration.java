@@ -25,6 +25,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
+@Deprecated
 public class ODTModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ODTDocument, ODTModelSlot> {
 
 	protected ODTModelSlotInstanceConfiguration(ODTModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

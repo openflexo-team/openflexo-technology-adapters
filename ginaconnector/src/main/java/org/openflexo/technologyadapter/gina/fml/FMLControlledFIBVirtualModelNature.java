@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.gina.fml;
 import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -69,7 +69,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 	 * Return boolean indicating if supplied {@link VirtualModel} might be interpreted as a FML-controlled FIBComponent
 	 */
 	@Override
-	public boolean hasNature(AbstractVirtualModel<?> virtualModel) {
+	public boolean hasNature(VirtualModel virtualModel) {
 
 		// VirtualModel should have one and only one FIBComponentModelSlot
 		if (virtualModel.getModelSlots(FIBComponentModelSlot.class).size() != 1) {
@@ -86,11 +86,11 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 		return true;
 	}
 
-	public static FIBComponentModelSlot getFIBComponentModelSlot(AbstractVirtualModel<?> virtualModel) {
+	public static FIBComponentModelSlot getFIBComponentModelSlot(VirtualModel virtualModel) {
 		return INSTANCE._getFIBComponentModelSlot(virtualModel);
 	}
 
-	public static GINAFIBComponent getFIBComponent(AbstractVirtualModel<?> virtualModel) {
+	public static GINAFIBComponent getFIBComponent(VirtualModel virtualModel) {
 		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(virtualModel);
 		if (modelSlot != null && modelSlot.getTemplateResource() != null) {
 			try {
@@ -109,7 +109,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 		return null;
 	}
 
-	private FIBComponentModelSlot _getFIBComponentModelSlot(AbstractVirtualModel<?> virtualModel) {
+	private FIBComponentModelSlot _getFIBComponentModelSlot(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(FIBComponentModelSlot.class).size() == 1) {
 			return virtualModel.getModelSlots(FIBComponentModelSlot.class).get(0);
 		}

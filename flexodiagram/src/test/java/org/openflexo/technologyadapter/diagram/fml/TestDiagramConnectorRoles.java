@@ -51,7 +51,7 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointLibrary;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
@@ -125,7 +125,7 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 	@TestOrder(2)
 	public void testLoadViewPointAndVirtualModel() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
+		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint(VIEWPOINT_URI);
 		assertNotNull(viewPoint);

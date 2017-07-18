@@ -43,6 +43,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
+@Deprecated
 public class OSLCCoreModelSlotInstanceConfiguration
 		extends FreeModelSlotInstanceConfiguration<OSLCServiceProviderCatalog, OSLCCoreModelSlot> {
 

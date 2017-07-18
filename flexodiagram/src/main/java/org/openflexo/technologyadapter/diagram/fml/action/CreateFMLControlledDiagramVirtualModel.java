@@ -212,7 +212,7 @@ public class CreateFMLControlledDiagramVirtualModel
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 
 		try {
 			VirtualModelResource vmResource = factory.makeVirtualModelResource(getNewVirtualModelName(),

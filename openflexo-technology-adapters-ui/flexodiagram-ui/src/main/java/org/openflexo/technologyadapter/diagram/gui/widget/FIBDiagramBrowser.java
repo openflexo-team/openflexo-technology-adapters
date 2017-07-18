@@ -80,7 +80,7 @@ public class FIBDiagramBrowser extends FIBBrowserView<Diagram> {
 	
 		TestApplicationContext testApplicationContext = new TestApplicationContext(
 				new FileResource("src/test/resources/TestResourceCenter"));
-		final ViewPointLibrary viewPointLibrary = testApplicationContext.getViewPointLibrary();
+		final VirtualModelLibrary viewPointLibrary = testApplicationContext.getViewPointLibrary();
 	
 		ViewPointResource vpRes = viewPointLibrary
 				.getViewPointResource("http://www.agilebirds.com/openflexo/ViewPoints/Basic/BasicOntology.owl");

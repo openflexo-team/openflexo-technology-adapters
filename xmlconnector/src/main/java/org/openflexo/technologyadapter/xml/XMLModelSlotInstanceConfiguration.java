@@ -45,6 +45,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
 
+@Deprecated
 public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
 	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

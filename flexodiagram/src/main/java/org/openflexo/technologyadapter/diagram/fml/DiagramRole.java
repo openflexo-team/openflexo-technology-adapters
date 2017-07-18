@@ -45,7 +45,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.View;
@@ -179,7 +179,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 		@Override
 		public ModelObjectActorReference<Diagram> makeActorReference(Diagram object, FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<Diagram> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);

@@ -43,6 +43,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
+@Deprecated
 public class FreeXMLModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<XMLModel, FreeXMLModelSlot> {
 
 	protected FreeXMLModelSlotInstanceConfiguration(FreeXMLModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

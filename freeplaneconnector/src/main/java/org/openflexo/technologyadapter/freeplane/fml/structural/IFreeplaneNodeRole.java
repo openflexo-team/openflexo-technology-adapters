@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
@@ -105,7 +105,7 @@ public interface IFreeplaneNodeRole extends FlexoRole<IFreeplaneNode> {
 		 */
 		@Override
 		public ActorReference<IFreeplaneNode> makeActorReference(final IFreeplaneNode object, final FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<IFreeplaneNode> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);

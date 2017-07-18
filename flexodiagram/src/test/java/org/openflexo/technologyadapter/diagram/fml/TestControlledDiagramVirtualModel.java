@@ -252,7 +252,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
@@ -281,7 +281,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getViewPointResourceFactory()
+		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getVirtualModelResourceFactory()
 				.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = vmFactory.makeVirtualModelResource(VIRTUAL_MODEL_NAME,
 				viewPoint.getViewPointResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
@@ -384,7 +384,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertNotNull(retrievedDSResource);
 		assertEquals(1, retrievedDSResource.getDiagramSpecification().getPalettes().size());
 
-		ViewPointResource retrievedVPResource = serviceManager.getViewPointLibrary()
+		ViewPointResource retrievedVPResource = serviceManager.getVirtualModelLibrary()
 				.getViewPointResource(VIEWPOINT_URI);
 		assertNotNull(retrievedVPResource);
 

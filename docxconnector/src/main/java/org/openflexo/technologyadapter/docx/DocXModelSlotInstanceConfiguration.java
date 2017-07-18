@@ -27,6 +27,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
+@Deprecated
 public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<DocXDocument, DocXModelSlot> {
 
 	protected DocXModelSlotInstanceConfiguration(DocXModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> resourceCenter) {

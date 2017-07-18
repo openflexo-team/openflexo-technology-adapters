@@ -55,7 +55,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointLibrary;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -120,7 +120,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
+		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint");
 		assertNotNull(viewPoint);

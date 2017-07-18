@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -76,7 +76,7 @@ public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extend
 			return getAction().getAdressedFlexoMetaModel();
 		}
 
-		public AbstractVirtualModel<?> getAdressedVirtualModel() {
+		public VirtualModel getAdressedVirtualModel() {
 			return getAction().getAdressedVirtualModel();
 		}
 

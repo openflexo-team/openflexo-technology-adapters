@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -102,7 +102,7 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	}
 
 	@Override
-	protected ModuleView<AbstractVirtualModel<?>> createModuleViewForVirtualModel(AbstractVirtualModel<?> virtualModel) {
+	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
 
 		System.out.println("je cree la module view pour " + virtualModel);
 		System.out.println("has nature = "+virtualModel.hasNature(getVirtualModelNature()));

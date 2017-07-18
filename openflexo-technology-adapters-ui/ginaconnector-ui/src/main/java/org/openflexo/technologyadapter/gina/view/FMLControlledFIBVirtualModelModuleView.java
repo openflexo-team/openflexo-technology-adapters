@@ -24,7 +24,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -38,17 +38,17 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * A {@link ModuleView} suitable for {@link AbstractVirtualModel} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
+ * A {@link ModuleView} suitable for {@link VirtualModel} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
  * Display an editable FIB view in {@link FIBEditor}
  * 
  * @author sylvain
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelModuleView extends JPanel implements ModuleView<AbstractVirtualModel<?>> {
+public class FMLControlledFIBVirtualModelModuleView extends JPanel implements ModuleView<VirtualModel> {
 
 	private final FlexoController controller;
-	private final AbstractVirtualModel<?> representedObject;
+	private final VirtualModel representedObject;
 	private final FlexoPerspective perspective;
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
@@ -63,7 +63,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	 *            GINModel object that will be represented
 	 * @param perspective
 	 */
-	public FMLControlledFIBVirtualModelModuleView(AbstractVirtualModel<?> representedObject, FlexoController controller,
+	public FMLControlledFIBVirtualModelModuleView(VirtualModel representedObject, FlexoController controller,
 			FlexoPerspective perspective) {
 		super(new BorderLayout());
 		this.controller = controller;
@@ -142,7 +142,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	}
 
 	@Override
-	public AbstractVirtualModel<?> getRepresentedObject() {
+	public VirtualModel getRepresentedObject() {
 		return representedObject;
 	}
 

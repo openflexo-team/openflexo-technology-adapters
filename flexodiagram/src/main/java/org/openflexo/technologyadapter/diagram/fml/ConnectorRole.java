@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -162,7 +162,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			AbstractVirtualModel<?> vm = getOwningVirtualModel();
+			VirtualModel vm = getOwningVirtualModel();
 			if (vm != null) {
 				out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getOwningVirtualModel().getName() + ";",
 						context);

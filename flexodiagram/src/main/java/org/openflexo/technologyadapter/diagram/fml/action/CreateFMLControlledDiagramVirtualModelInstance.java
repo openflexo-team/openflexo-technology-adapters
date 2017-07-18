@@ -46,45 +46,51 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateFMLRTVirtualModelInstance;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramContainerNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 
 public class CreateFMLControlledDiagramVirtualModelInstance
-		extends CreateVirtualModelInstance<CreateFMLControlledDiagramVirtualModelInstance> {
+		extends CreateFMLRTVirtualModelInstance<CreateFMLControlledDiagramVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModelInstance.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject> actionType = new FlexoActionType<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject>(
+	public static FlexoActionType<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> actionType = new FlexoActionType<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject>(
 			"create_fml_controlled_diagram", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledDiagramVirtualModelInstance makeNewAction(View focusedObject, Vector<FlexoObject> globalSelection,
+		public CreateFMLControlledDiagramVirtualModelInstance makeNewAction(FlexoObject focusedObject, Vector<FlexoObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledDiagramVirtualModelInstance(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(View view, Vector<FlexoObject> globalSelection) {
-			return view.hasNature(FMLControlledDiagramViewNature.INSTANCE);
+		public boolean isVisibleForSelection(FlexoObject container, Vector<FlexoObject> globalSelection) {
+			if (container instanceof AbstractVirtualModelInstance) {
+				VirtualModel containerVirtualModel = ((AbstractVirtualModelInstance<?, ?>) container).getVirtualModel();
+				if (containerVirtualModel.hasNature(FMLControlledDiagramContainerNature.INSTANCE)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(View view, Vector<FlexoObject> globalSelection) {
-			return isVisibleForSelection(view, globalSelection);
+		public boolean isEnabledForSelection(FlexoObject container, Vector<FlexoObject> globalSelection) {
+			return isVisibleForSelection(container, globalSelection);
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModelInstance.actionType, View.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModelInstance.actionType, AbstractVirtualModelInstance.class);
 	}
 
-	CreateFMLControlledDiagramVirtualModelInstance(View focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledDiagramVirtualModelInstance(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

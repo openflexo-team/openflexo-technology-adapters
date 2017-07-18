@@ -28,7 +28,7 @@ import java.util.Map;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.openflexo.foundation.doc.FlexoDocument;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.task.Progress;
@@ -193,7 +193,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 		}
 
 		/**
-		 * Return the URI of the {@link AbstractVirtualModel}<br>
+		 * Return the URI of the {@link VirtualModel}<br>
 		 * The convention for URI are following: <viewpoint_uri>/<virtual_model_name >#<flexo_concept_name>.<edition_scheme_name> <br>
 		 * eg<br>
 		 * http://www.mydomain.org/MyViewPoint/MyVirtualModel#MyFlexoConcept. MyEditionScheme

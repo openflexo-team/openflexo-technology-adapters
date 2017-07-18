@@ -53,10 +53,10 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointRepository;
+import org.openflexo.foundation.fml.VirtualModelRepository;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
-import org.openflexo.foundation.fml.action.CreateVirtualModel;
+import org.openflexo.foundation.fml.action.CreateContainedVirtualModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -114,7 +114,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
@@ -135,7 +135,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		// newViewPoint.getResource()).getFile().exists());
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getIODelegate().exists());
-		CreateVirtualModel action = CreateVirtualModel.actionType.makeNewAction(newViewPoint, null, editor);
+		CreateContainedVirtualModel action = CreateContainedVirtualModel.actionType.makeNewAction(newViewPoint, null, editor);
 		action.setNewVirtualModelName("TestVirtualModel");
 		action.doAction();
 		assertTrue(action.hasActionExecutionSucceeded());
@@ -149,7 +149,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	@Test
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException {
-		CreateVirtualModel action = CreateVirtualModel.actionType.makeNewAction(newViewPoint, null, editor);
+		CreateContainedVirtualModel action = CreateContainedVirtualModel.actionType.makeNewAction(newViewPoint, null, editor);
 		action.setNewVirtualModelName(VIRTUAL_MODEL_NAME);
 		action.doAction();
 		assertTrue(action.hasActionExecutionSucceeded());
@@ -330,7 +330,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		System.out.println("view in " + newViewResource.getIODelegate().getSerializationArtefact());
 
-		ViewPointRepository<?> vpRep = newResourceCenter.getViewPointRepository();
+		VirtualModelRepository<?> vpRep = newResourceCenter.getViewPointRepository();
 		for (ViewPointResource r : vpRep.getAllResources()) {
 			System.out.println("> " + r.getURI());
 		}

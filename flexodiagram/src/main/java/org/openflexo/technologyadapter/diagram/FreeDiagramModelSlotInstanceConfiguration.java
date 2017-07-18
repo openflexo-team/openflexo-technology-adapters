@@ -49,6 +49,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
+@Deprecated
 public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<Diagram, FreeDiagramModelSlot> {
 
 	private static final Logger logger = Logger.getLogger(ModelSlotInstanceConfiguration.class.getPackage().getName());

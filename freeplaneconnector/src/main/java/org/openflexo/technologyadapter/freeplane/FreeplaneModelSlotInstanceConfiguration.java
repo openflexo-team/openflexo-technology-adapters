@@ -43,6 +43,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
+@Deprecated
 public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, FreeplaneModelSlot> {
 
 	public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
@@ -51,6 +51,7 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceFactory;
 import org.openflexo.toolbox.StringUtils;
 
+@Deprecated
 public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<OWLOntology, OWLOntology, OWLModelSlot> {
 
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
@@ -67,7 +68,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	@Override
 	protected TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> configureModelSlotInstance(
-			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance, View view) {
+			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance, AbstractVirtualModelInstance<?, ?> view) {
 		if (getOption() == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelResource = createSharedEmptyModel(msInstance, getModelSlot());
 			if (modelResource != null) {

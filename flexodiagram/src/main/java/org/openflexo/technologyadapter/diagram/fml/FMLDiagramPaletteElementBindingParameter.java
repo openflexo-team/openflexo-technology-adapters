@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -118,7 +118,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			if (getDiagramPaletteElementBinding() != null) {
 				return getDiagramPaletteElementBinding().getVirtualModel();
 			}

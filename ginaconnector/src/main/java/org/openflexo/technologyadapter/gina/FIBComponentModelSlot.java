@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -322,7 +322,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			}
 
 			@Override
-			public AbstractVirtualModel<?> getResourceData() {
+			public VirtualModel getResourceData() {
 				if (getOwner() != null) {
 					return getOwner().getResourceData();
 				}

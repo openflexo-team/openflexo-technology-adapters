@@ -48,6 +48,7 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfigura
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
+@Deprecated
 public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ExcelWorkbook, BasicExcelModelSlot> {
 
 	private static final Logger logger = Logger.getLogger(ModelSlotInstanceConfiguration.class.getPackage().getName());

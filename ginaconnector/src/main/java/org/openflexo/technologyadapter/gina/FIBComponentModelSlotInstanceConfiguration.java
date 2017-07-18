@@ -31,6 +31,7 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
+@Deprecated
 public class FIBComponentModelSlotInstanceConfiguration
 		extends FreeModelSlotInstanceConfiguration<GINAFIBComponent, FIBComponentModelSlot> {
 

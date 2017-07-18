@@ -48,7 +48,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -73,7 +73,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Gives {@link FMLControlledFIBVirtualModelNature} to this {@link AbstractVirtualModel}.<br>
+ * Gives {@link FMLControlledFIBVirtualModelNature} to this {@link VirtualModel}.<br>
  * 
  * More pragmatically, this action will add a new {@link FIBComponentModelSlot} connected to a {@link GINAFIBComponent} which is intented to
  * represent underlying {@link VirtualModel}
@@ -148,7 +148,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
@@ -170,7 +170,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 		VariableAssignment assign = uiModelSlot.createAssignment();
 		assign.setVariable("data");
 		assign.setVariableType(FlexoConceptInstanceType.getFlexoConceptInstanceType(getFocusedObject()));
-		if (getFocusedObject() instanceof AbstractVirtualModel) {
+		if (getFocusedObject() instanceof VirtualModel) {
 			assign.setValue(new DataBinding<>("virtualModelInstance"));
 		}
 		else {

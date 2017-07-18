@@ -116,7 +116,7 @@ public class DiagramSpecificationResourceFactory extends
 			FlexoResourceCenter<I> resourceCenter, TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);
 
-		// Register the resource in the ViewPointRepository of supplied resource center
+		// Register the resource in the VirtualModelRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
 				technologyContextManager.getTechnologyAdapter().getDiagramSpecificationRepository(resourceCenter));
 

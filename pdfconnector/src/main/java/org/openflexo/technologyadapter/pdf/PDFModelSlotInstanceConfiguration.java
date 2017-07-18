@@ -25,6 +25,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 
+@Deprecated
 public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<PDFDocument, PDFModelSlot> {
 
 	protected PDFModelSlotInstanceConfiguration(PDFModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

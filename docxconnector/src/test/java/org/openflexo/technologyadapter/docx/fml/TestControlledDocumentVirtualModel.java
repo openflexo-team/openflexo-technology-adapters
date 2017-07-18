@@ -272,7 +272,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
@@ -308,7 +308,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		virtualModel = newVMResource.getLoadedResourceData();

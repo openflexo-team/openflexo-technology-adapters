@@ -46,7 +46,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviour;
@@ -221,7 +221,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			if (getDiagramModelSlot() != null) {
 				return getDiagramModelSlot().getVirtualModel();
 			}
@@ -231,7 +231,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		@Override
 		public TypedDiagramModelSlot getDiagramModelSlot() {
 			if (diagramModelSlot == null && dropScheme != null) {
-				AbstractVirtualModel<?> vm = dropScheme.getOwningVirtualModel();
+				VirtualModel vm = dropScheme.getOwningVirtualModel();
 				if (vm != null && vm.getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 					diagramModelSlot = vm.getModelSlots(TypedDiagramModelSlot.class).get(0);
 				}

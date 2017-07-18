@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -126,7 +126,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<DropAndLinkScheme>();
-			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (DropScheme ds : c.getFlexoBehaviours(DropScheme.class)) {
@@ -162,7 +162,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
-			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (LinkScheme ls : c.getFlexoBehaviours(LinkScheme.class)) {
@@ -194,7 +194,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
-			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (LinkScheme ls : c.getFlexoBehaviours(LinkScheme.class)) {

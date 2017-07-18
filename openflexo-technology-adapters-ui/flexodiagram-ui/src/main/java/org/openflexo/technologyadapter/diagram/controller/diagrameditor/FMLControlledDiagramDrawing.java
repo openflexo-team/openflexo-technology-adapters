@@ -60,7 +60,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.model.ModelContextLibrary;
@@ -118,7 +118,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 			e.printStackTrace();
 		}
 		if ((virtualModelInstance != null) && (virtualModelInstance.getVirtualModel() != null)) {
-			BindingFactory bindingFactory = new FMLBindingFactory(virtualModelInstance.getVirtualModel().getViewPoint());
+			BindingFactory bindingFactory = new FMLBindingFactory(virtualModelInstance.getVirtualModel().getContainerVirtualModel());
 			fmlControlledShapeBinding.setBindingFactory(bindingFactory);
 			fmlControlledConnectorBinding.setBindingFactory(bindingFactory);
 		}

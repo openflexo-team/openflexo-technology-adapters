@@ -48,6 +48,7 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfigura
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
 
+@Deprecated
 public class BasicPowerpointModelSlotInstanceConfiguration
 		extends FreeModelSlotInstanceConfiguration<PowerpointSlideshow, BasicPowerpointModelSlot> {
 

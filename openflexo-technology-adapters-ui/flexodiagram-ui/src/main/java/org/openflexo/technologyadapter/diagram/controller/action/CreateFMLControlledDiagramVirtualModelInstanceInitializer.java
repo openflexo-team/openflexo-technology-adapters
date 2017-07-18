@@ -80,10 +80,10 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 				return true;
 			}
 			else {
-				if (action.getFocusedObject() != null && action.getFocusedObject().getViewPoint() != null) {
+				if (action.getFocusedObject() != null && action.getFocusedObject().getContainerVirtualModel() != null) {
 					// @Brutal
 					// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
-					action.getFocusedObject().getViewPoint().loadVirtualModelsWhenUnloaded();
+					action.getFocusedObject().getContainerVirtualModel().loadVirtualModelsWhenUnloaded();
 				}
 				Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
 				WizardDialog dialog = new WizardDialog(wizard, getController());

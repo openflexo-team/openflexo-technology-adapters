@@ -93,7 +93,7 @@ import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -101,7 +101,7 @@ import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelSlot;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -368,7 +368,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
@@ -419,7 +419,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeVirtualModelResource(LIBRARY_VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		libraryVirtualModel = newVMResource.getLoadedResourceData();
@@ -669,7 +669,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
@@ -683,7 +683,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, _editor);
 		createLibraryModelSlot
 				.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FMLTechnologyAdapter.class));
-		createLibraryModelSlot.setModelSlotClass(VirtualModelInstanceModelSlot.class);
+		createLibraryModelSlot.setModelSlotClass(FMLRTVirtualModelInstanceModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
 		createLibraryModelSlot.setVmRes((VirtualModelResource) libraryVirtualModel.getResource());
 		createLibraryModelSlot.doAction();

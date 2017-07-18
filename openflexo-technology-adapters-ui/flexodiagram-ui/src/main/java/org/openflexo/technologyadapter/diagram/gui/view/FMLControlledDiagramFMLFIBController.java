@@ -42,7 +42,7 @@ package org.openflexo.technologyadapter.diagram.gui.view;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.controller.FMLFIBController;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.gina.view.widget.FIBCustomWidget;
@@ -77,7 +77,7 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		super(component, viewFactory);
 	}
 
-	public DiagramSpecification getDiagramSpecification(AbstractVirtualModel<?> virtualModel) {
+	public DiagramSpecification getDiagramSpecification(VirtualModel virtualModel) {
 		TypedDiagramModelSlot typedDiagramModelSlot = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel);
 		if (typedDiagramModelSlot != null) {
 			return typedDiagramModelSlot.getDiagramSpecification();

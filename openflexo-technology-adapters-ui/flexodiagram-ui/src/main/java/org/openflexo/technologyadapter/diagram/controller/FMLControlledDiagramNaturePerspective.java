@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.controller;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.controller.view.ViewPointView;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -49,7 +49,7 @@ import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewPointNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramContainerNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.view.DiagramFlexoConceptView;
@@ -77,7 +77,7 @@ public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective 
 	static final Logger logger = Logger.getLogger(FMLControlledDiagramNaturePerspective.class.getPackage().getName());
 
 	public FMLControlledDiagramNaturePerspective(FlexoController controller) {
-		super(FMLControlledDiagramViewPointNature.INSTANCE, FMLControlledDiagramVirtualModelNature.INSTANCE,
+		super(FMLControlledDiagramContainerNature.INSTANCE, FMLControlledDiagramVirtualModelNature.INSTANCE,
 				FMLControlledDiagramFlexoConceptNature.INSTANCE, controller.getFMLTechnologyAdapter(),
 				controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
 	}
@@ -98,7 +98,7 @@ public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective 
 	}
 
 	@Override
-	protected ModuleView<AbstractVirtualModel<?>> createModuleViewForVirtualModel(AbstractVirtualModel<?> virtualModel) {
+	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
 		if (virtualModel instanceof ViewPoint) {
 			return (ModuleView) new ViewPointView((ViewPoint) virtualModel, getController(), this);
 		}

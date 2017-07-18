@@ -36,32 +36,55 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.nature;
+package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.doc.nature.FMLControlledDocumentViewNature;
-import org.openflexo.foundation.fml.rt.View;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.technologyadapter.docx.DocXModelSlot;
 
 /**
- * Define the "controlled-diagram" nature of a {@link View}<br>
+ * Define the "controlled-document" nature of a {@link VirtualModel} as a container of one or more {@link VirtualModel} that have the
+ * {@link FMLControlledDiagramVirtualModelNature}<br>
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDocXViewNature extends FMLControlledDocumentViewNature<DocXModelSlot> {
+public class FMLControlledDiagramContainerNature implements VirtualModelNature {
 
-	public static FMLControlledDocXViewNature INSTANCE = new FMLControlledDocXViewNature();
+	public static FMLControlledDiagramContainerNature INSTANCE = new FMLControlledDiagramContainerNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocXViewNature() {
+	private FMLControlledDiagramContainerNature() {
 	}
 
 	/**
 	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled diagram
 	 */
 	@Override
-	public boolean hasNature(View view) {
-		return hasNature(view, FMLControlledDocXViewPointNature.INSTANCE);
+	public boolean hasNature(VirtualModel container) {
+		for (VirtualModel vm : container.getVirtualModels()) {
+			if (vm.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+				return true;
+			}
+		}
+		return false;
 	}
+
+	public static List<VirtualModel> getControlledDiagramVirtualModels(VirtualModel container) {
+		return INSTANCE._getControlledDiagramVirtualModels(container);
+	}
+
+	private List<VirtualModel> _getControlledDiagramVirtualModels(VirtualModel container) {
+		List<VirtualModel> returned = new ArrayList<VirtualModel>();
+		for (VirtualModel vm : container.getVirtualModels()) {
+			if (vm.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+				returned.add(vm);
+			}
+		}
+		return returned;
+	}
+
 }

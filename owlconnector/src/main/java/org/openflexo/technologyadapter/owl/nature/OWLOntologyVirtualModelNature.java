@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.owl.nature;
 
 import java.util.List;
 
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.nature.FlexoOntologyVirtualModelNature;
@@ -73,7 +73,7 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 	 * Return boolean indicating if supplied {@link VirtualModel} has at least a {@link FlexoOntologyModelSlot}
 	 */
 	@Override
-	public boolean hasNature(AbstractVirtualModel<?> virtualModel) {
+	public boolean hasNature(VirtualModel virtualModel) {
 
 		if (virtualModel == null) {
 			return false;
@@ -87,11 +87,11 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 		return false;
 	}
 
-	public static List<OWLModelSlot> getOWLOntologyModelSlots(AbstractVirtualModel<?> virtualModel) {
+	public static List<OWLModelSlot> getOWLOntologyModelSlots(VirtualModel virtualModel) {
 		return INSTANCE._getOWLOntologyModelSlots(virtualModel);
 	}
 
-	private List<OWLModelSlot> _getOWLOntologyModelSlots(AbstractVirtualModel<?> virtualModel) {
+	private List<OWLModelSlot> _getOWLOntologyModelSlots(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(OWLModelSlot.class).size() > 0) {
 			return virtualModel.getModelSlots(OWLModelSlot.class);
 		}
@@ -99,15 +99,15 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 	}
 
 	/**
-	 * Retrieve {@link IFlexoOntologyObject} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link IFlexoOntologyObject} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link FlexoOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static IFlexoOntologyObject<?> getOntologyObject(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static IFlexoOntologyObject<?> getOntologyObject(String uri, VirtualModel virtualModel) {
 		Object returned = getObject(uri, virtualModel);
 		if (returned instanceof IFlexoOntologyObject) {
 			return (IFlexoOntologyObject) returned;
@@ -116,67 +116,67 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 	}
 
 	/**
-	 * Retrieve {@link OWLClass} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link OWLClass} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link OWLOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static OWLClass getOWLClass(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static OWLClass getOWLClass(String uri, VirtualModel virtualModel) {
 		return (OWLClass) getOntologyClass(uri, virtualModel);
 	}
 
 	/**
-	 * Retrieve {@link OWLIndividual} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link OWLIndividual} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link OWLOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static OWLIndividual getOWLIndividual(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static OWLIndividual getOWLIndividual(String uri, VirtualModel virtualModel) {
 		return (OWLIndividual) getOntologyIndividual(uri, virtualModel);
 	}
 
 	/**
-	 * Retrieve {@link OWLProperty} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link OWLProperty} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link OWLOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static OWLProperty getOWLProperty(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static OWLProperty getOWLProperty(String uri, VirtualModel virtualModel) {
 		return (OWLProperty) getOntologyProperty(uri, virtualModel);
 	}
 
 	/**
-	 * Retrieve {@link OWLObjectProperty} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link OWLObjectProperty} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link OWLOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static OWLObjectProperty getOWLObjectProperty(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static OWLObjectProperty getOWLObjectProperty(String uri, VirtualModel virtualModel) {
 		return (OWLObjectProperty) getOntologyObjectProperty(uri, virtualModel);
 	}
 
 	/**
-	 * Retrieve {@link OWLDataProperty} referenced by its URI, asserting that supplied {@link AbstractVirtualModel} has the
+	 * Retrieve {@link OWLDataProperty} referenced by its URI, asserting that supplied {@link VirtualModel} has the
 	 * {@link OWLOntologyVirtualModelNature}<br>
 	 * 
 	 * @param uri
 	 * @param virtualModel
-	 *            the {@link AbstractVirtualModel} used to define search scope
+	 *            the {@link VirtualModel} used to define search scope
 	 * @return
 	 */
-	public static OWLDataProperty getOWLDataProperty(String uri, AbstractVirtualModel<?> virtualModel) {
+	public static OWLDataProperty getOWLDataProperty(String uri, VirtualModel virtualModel) {
 		return (OWLDataProperty) getOntologyDataProperty(uri, virtualModel);
 	}
 }

@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.FlexoProperty;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
@@ -193,7 +193,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			AbstractXMLModelSlot ms = getModelSlot();
 			if (ms != null) {
 				return ms.getVirtualModel();

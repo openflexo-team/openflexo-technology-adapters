@@ -155,7 +155,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		ViewPointResource viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
@@ -168,7 +168,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		// resourceCenterDirectory,
 		// testApplicationContext.getViewPointLibrary(), resourceCenter);
 
-		assertNotNull(testApplicationContext.getViewPointLibrary().getViewPoint(VIEWPOINT_URI));
+		assertNotNull(testApplicationContext.getVirtualModelLibrary().getViewPoint(VIEWPOINT_URI));
 
 		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(
 				VIRTUAL_MODEL_NAME, viewPointResource, fmlTechnologyAdapter.getTechnologyContextManager(), true);
@@ -275,7 +275,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		log("Testing ViewPoint loading: " + viewPointURI);
 		System.out.println("resourceCenter=" + resourceCenter);
 		System.out.println("resourceCenter.getViewPointRepository()=" + resourceCenter.getViewPointRepository());
-		ViewPointResource viewPointResource = testApplicationContext.getViewPointLibrary()
+		ViewPointResource viewPointResource = testApplicationContext.getVirtualModelLibrary()
 				.getViewPointResource(viewPointURI);
 		assertNotNull(viewPointResource);
 		ViewPoint viewPoint = viewPointResource.getViewPoint();

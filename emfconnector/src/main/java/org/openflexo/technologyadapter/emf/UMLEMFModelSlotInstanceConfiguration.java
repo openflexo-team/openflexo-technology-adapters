@@ -51,7 +51,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * @author xtof
  *
  */
-
+@Deprecated
 public class UMLEMFModelSlotInstanceConfiguration extends EMFModelSlotInstanceConfiguration {
 
 	protected UMLEMFModelSlotInstanceConfiguration(UMLEMFModelSlotImpl emfModelSlotImpl, FlexoConceptInstance fci,

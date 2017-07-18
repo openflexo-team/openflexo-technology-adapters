@@ -123,7 +123,8 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 
 			if (reflexivePaste) {
 				returned.setPasteProperty(REFLEXIVE_PASTE, "true");
-			} else {
+			}
+			else {
 				returned.setPasteProperty(REFLEXIVE_PASTE, "false");
 			}
 		}
@@ -174,18 +175,19 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 					if (diagramClipboard.getSingleContents() instanceof DiagramShape) {
 						DiagramShape shapeBeingPasted = (DiagramShape) diagramClipboard.getSingleContents();
 						System.out.println("La shape que je decale: " + shapeBeingPasted);
-						shapeBeingPasted.getGraphicalRepresentation().setX(
-								shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
-						shapeBeingPasted.getGraphicalRepresentation().setY(
-								shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setX(shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setY(shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
 					}
-				} else {
+				}
+				else {
 					for (Object o : diagramClipboard.getMultipleContents()) {
 						if (o instanceof DiagramShape) {
-							((DiagramShape) o).getGraphicalRepresentation().setX(
-									((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
-							((DiagramShape) o).getGraphicalRepresentation().setY(
-									((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
+							((DiagramShape) o).getGraphicalRepresentation()
+									.setX(((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
+							((DiagramShape) o).getGraphicalRepresentation()
+									.setY(((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
 						}
 					}
 				}
@@ -195,12 +197,13 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 				if (diagramClipboard.isSingleObject()) {
 					if (diagramClipboard.getSingleContents() instanceof DiagramShape) {
 						DiagramShape shapeBeingPasted = (DiagramShape) diagramClipboard.getSingleContents();
-						shapeBeingPasted.getGraphicalRepresentation().setX(
-								((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getX());
-						shapeBeingPasted.getGraphicalRepresentation().setY(
-								((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getY());
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setX(((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getX());
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setY(((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getY());
 					}
-				} else {
+				}
+				else {
 					boolean deltaSet = false;
 					double deltaX = Double.NaN;
 					double deltaY = Double.NaN;

@@ -46,10 +46,10 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.doc.fml.action.CreateFMLControlledDocumentVirtualModelInstance;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
-import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXViewNature;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXContainerNature;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 
 public class CreateFMLControlledDocXVirtualModelInstance
@@ -58,20 +58,20 @@ public class CreateFMLControlledDocXVirtualModelInstance
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDocXVirtualModelInstance.class.getPackage().getName());
 
 	public static CreateFMLControlledDocumentVirtualModelInstanceActionType<CreateFMLControlledDocXVirtualModelInstance> actionType = new CreateFMLControlledDocumentVirtualModelInstanceActionType<CreateFMLControlledDocXVirtualModelInstance>(
-			FMLControlledDocXViewNature.INSTANCE) {
+			FMLControlledDocXContainerNature.INSTANCE) {
 
 		@Override
-		public CreateFMLControlledDocXVirtualModelInstance makeNewAction(View focusedObject, Vector<FlexoObject> globalSelection,
+		public CreateFMLControlledDocXVirtualModelInstance makeNewAction(FlexoObject focusedObject, Vector<FlexoObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledDocXVirtualModelInstance(focusedObject, globalSelection, editor);
 		}
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLControlledDocXVirtualModelInstance.actionType, View.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledDocXVirtualModelInstance.actionType, AbstractVirtualModelInstance.class);
 	}
 
-	CreateFMLControlledDocXVirtualModelInstance(View focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledDocXVirtualModelInstance(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

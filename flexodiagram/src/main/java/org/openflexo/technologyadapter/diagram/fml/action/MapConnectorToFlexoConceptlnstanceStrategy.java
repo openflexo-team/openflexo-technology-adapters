@@ -41,13 +41,13 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.lang.reflect.Type;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.editionaction.AddFlexoConceptInstance;
@@ -96,27 +96,27 @@ public class MapConnectorToFlexoConceptlnstanceStrategy extends FlexoConceptFrom
 		}
 	}
 
-	private DataBinding<AbstractVirtualModelInstance> virtualModelInstance;
+	private DataBinding<VirtualModelInstance> virtualModelInstance;
 
-	public DataBinding<AbstractVirtualModelInstance> getVirtualModelInstance() {
+	public DataBinding<VirtualModelInstance> getVirtualModelInstance() {
 		if (virtualModelInstance == null) {
-			virtualModelInstance = new DataBinding<>(this, AbstractVirtualModelInstance.class, DataBinding.BindingDefinitionType.GET);
+			virtualModelInstance = new DataBinding<>(this, VirtualModelInstance.class, DataBinding.BindingDefinitionType.GET);
 			virtualModelInstance.setBindingName("virtualModelInstance");
 		}
 		return virtualModelInstance;
 	}
 
-	public void setVirtualModelInstance(DataBinding<AbstractVirtualModelInstance> aVirtualModelInstance) {
+	public void setVirtualModelInstance(DataBinding<VirtualModelInstance> aVirtualModelInstance) {
 		if (aVirtualModelInstance != null) {
 			aVirtualModelInstance.setOwner(this);
 			aVirtualModelInstance.setBindingName("virtualModelInstance");
-			aVirtualModelInstance.setDeclaredType(AbstractVirtualModelInstance.class);
+			aVirtualModelInstance.setDeclaredType(VirtualModelInstance.class);
 			aVirtualModelInstance.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 		}
 		this.virtualModelInstance = aVirtualModelInstance;
 	}
 
-	public AbstractVirtualModel<?> getVirtualModelType() {
+	public VirtualModel getVirtualModelType() {
 		if (getVirtualModelInstance().isSet() && getVirtualModelInstance().isValid()) {
 			Type type = getVirtualModelInstance().getAnalyzedType();
 			if (type instanceof VirtualModelInstanceType) {

@@ -17,5 +17,6 @@ object_type=Object type
 please_choose_a_strategy=Please choose a strategy
 please_provide_a_folder_for_the_new_component=Please provide a folder for the new component
 please_provide_a_name_for_the_new_component=Please provide a name for the new component
+please_provide_a_valid_model_slot_name=Please provide a valid model slot name
 please_supply_valid_virtual_model_name=please_supply_valid_virtual_model_name
 switching_to_edit_mode=Switching to edit mode

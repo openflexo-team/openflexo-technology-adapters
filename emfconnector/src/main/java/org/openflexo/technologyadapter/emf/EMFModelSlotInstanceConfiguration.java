@@ -45,6 +45,7 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 
+@Deprecated
 public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<EMFModel, EMFMetaModel, EMFModelSlot> {
 
 	protected EMFModelSlotInstanceConfiguration(EMFModelSlot ms, FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {

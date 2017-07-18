@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.docx.nature;
 
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -66,12 +66,12 @@ public class FMLControlledDocXVirtualModelNature extends FMLControlledDocumentVi
 		return DocXModelSlot.class;
 	}
 
-	public static boolean hasDocumentTemplate(AbstractVirtualModel<?> virtualModel, DocXDocumentResource templateResource) {
+	public static boolean hasDocumentTemplate(VirtualModel virtualModel, DocXDocumentResource templateResource) {
 		return (getDocumentModelSlot(virtualModel).getTemplateResource() != null
 				&& getDocumentModelSlot(virtualModel).getTemplateResource().equals(templateResource));
 	}
 
-	public static DocXModelSlot getDocumentModelSlot(AbstractVirtualModel<?> virtualModel) {
+	public static DocXModelSlot getDocumentModelSlot(VirtualModel virtualModel) {
 		return INSTANCE._getDocumentModelSlot(virtualModel);
 	}
 

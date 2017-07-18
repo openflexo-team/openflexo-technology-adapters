@@ -45,7 +45,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointLibrary;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.rm.ResourceLocator;
@@ -90,7 +90,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 	@TestOrder(3)
 	public void loadConcepts() {
 
-		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
+		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
 		ViewPoint viewPoint = vpLib.getViewPoint("http://openflexo.org/docx-test/TestLibraryViewPoint2");
 		assertNotNull(viewPoint);

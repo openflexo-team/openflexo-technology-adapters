@@ -53,6 +53,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
  * @author sylvain
  * 
  */
+@Deprecated
 public class TypedDiagramModelSlotInstanceConfiguration
 		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 

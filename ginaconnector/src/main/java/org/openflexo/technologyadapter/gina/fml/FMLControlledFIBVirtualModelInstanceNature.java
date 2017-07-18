@@ -43,9 +43,9 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceNature;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.nature.ScreenshotableNature;
@@ -66,8 +66,8 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
  * @author sylvain
  * 
  */
-public class FMLControlledFIBVirtualModelInstanceNature<VMI extends AbstractVirtualModelInstance<VMI, VM>, VM extends AbstractVirtualModel<VM>>
-		implements AbstractVirtualModelInstanceNature<VMI, VM>, ScreenshotableNature<VMI> {
+public class FMLControlledFIBVirtualModelInstanceNature<VMI extends VirtualModelInstance<VMI, VM>, VM extends VirtualModel<VM>>
+		implements VirtualModelInstanceNature<VMI, VM>, ScreenshotableNature<VMI> {
 
 	static final Logger logger = Logger.getLogger(FMLControlledFIBVirtualModelInstanceNature.class.getPackage().getName());
 

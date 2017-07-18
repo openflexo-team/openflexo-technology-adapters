@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -110,8 +110,8 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 			}
 
-			if (concept instanceof AbstractVirtualModel) {
-				for (FlexoConcept child : ((AbstractVirtualModel<?>) concept).getFlexoConcepts()) {
+			if (concept instanceof VirtualModel) {
+				for (FlexoConcept child : ((VirtualModel) concept).getFlexoConcepts()) {
 					appendElementsToIgnore(child, elementsToIgnore);
 				}
 			}

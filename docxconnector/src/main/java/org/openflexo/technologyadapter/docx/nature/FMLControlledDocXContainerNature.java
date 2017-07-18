@@ -40,36 +40,36 @@ package org.openflexo.technologyadapter.docx.nature;
 
 import java.util.List;
 
-import org.openflexo.foundation.doc.nature.FMLControlledDocumentViewPointNature;
-import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.doc.nature.FMLControlledDocumentContainerNature;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 
 /**
- * Define the "controlled-document" nature of a {@link ViewPoint}<br>
+ * Define the "controlled-document" nature of a {@link VirtualModel} as a container of one or more {@link VirtualModel} that have the
+ * {@link FMLControlledDocXVirtualModelNature}<br>
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDocXViewPointNature extends FMLControlledDocumentViewPointNature<DocXModelSlot> {
+public class FMLControlledDocXContainerNature extends FMLControlledDocumentContainerNature<DocXModelSlot> {
 
-	public static FMLControlledDocXViewPointNature INSTANCE = new FMLControlledDocXViewPointNature();
+	public static FMLControlledDocXContainerNature INSTANCE = new FMLControlledDocXContainerNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocXViewPointNature() {
+	private FMLControlledDocXContainerNature() {
 	}
 
 	/**
 	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled document
 	 */
 	@Override
-	public boolean hasNature(ViewPoint viewPoint) {
-		return hasNature(viewPoint, FMLControlledDocXVirtualModelNature.INSTANCE);
+	public boolean hasNature(VirtualModel virtualModel) {
+		return hasNature(virtualModel, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
-	public static List<VirtualModel> getControlledDocumentVirtualModels(ViewPoint viewPoint) {
-		return INSTANCE._getControlledDocumentVirtualModels(viewPoint, FMLControlledDocXVirtualModelNature.INSTANCE);
+	public static List<VirtualModel> getControlledDocumentVirtualModels(VirtualModel container) {
+		return INSTANCE._getControlledDocumentVirtualModels(container, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
 }
