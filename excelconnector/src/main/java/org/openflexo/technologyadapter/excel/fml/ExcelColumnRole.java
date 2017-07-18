@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 @FML("ExcelColumnRole")
 public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 
-	public abstract static class ExcelColumnRoleImpl extends FlexoRoleImpl<ExcelColumn>implements ExcelColumnRole {
+	public abstract static class ExcelColumnRoleImpl extends FlexoRoleImpl<ExcelColumn> implements ExcelColumnRole {
 
 		@Override
 		public Type getType() {
@@ -88,7 +88,7 @@ public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 
 		@Override
 		public ActorReference<ExcelColumn> makeActorReference(ExcelColumn object, FlexoConceptInstance fci) {
-			VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ExcelActorReference<ExcelColumn> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
