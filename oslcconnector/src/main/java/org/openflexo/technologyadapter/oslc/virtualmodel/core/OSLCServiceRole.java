@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCService;
 @FML("OSLCServiceRole")
 public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 
-	public static abstract class OSLCServiceRoleImpl extends FlexoRoleImpl<OSLCService>implements OSLCServiceRole {
+	public static abstract class OSLCServiceRoleImpl extends FlexoRoleImpl<OSLCService> implements OSLCServiceRole {
 
 		@Override
 		public Type getType() {
@@ -83,7 +83,7 @@ public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 
 		@Override
 		public ActorReference<OSLCService> makeActorReference(OSLCService object, FlexoConceptInstance fci) {
-			VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<OSLCService> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
