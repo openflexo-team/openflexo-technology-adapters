@@ -297,7 +297,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		System.out.println("view in " + newViewResource.getIODelegate().getSerializationArtefact());
 
-		VirtualModelRepository<?> vpRep = newResourceCenter.getViewPointRepository();
+		VirtualModelRepository<?> vpRep = newResourceCenter.getVirtualModelRepository();
 		for (VirtualModelResource r : vpRep.getAllResources()) {
 			System.out.println("> " + r.getURI());
 		}

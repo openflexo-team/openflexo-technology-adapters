@@ -270,7 +270,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("Testing ViewPoint loading: " + viewPointURI);
 		System.out.println("resourceCenter=" + resourceCenter);
-		System.out.println("resourceCenter.getViewPointRepository()=" + resourceCenter.getViewPointRepository());
+		System.out.println("resourceCenter.getViewPointRepository()=" + resourceCenter.getVirtualModelRepository());
 		VirtualModelResource viewPointResource = testApplicationContext.getVirtualModelLibrary().getVirtualModelResource(viewPointURI);
 		assertNotNull(viewPointResource);
 		VirtualModel viewPoint = viewPointResource.getVirtualModel();
