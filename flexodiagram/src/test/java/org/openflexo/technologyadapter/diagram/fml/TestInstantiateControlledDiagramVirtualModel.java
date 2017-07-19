@@ -54,20 +54,15 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
-import org.openflexo.foundation.fml.rt.rm.ViewResource;
-import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
+import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -101,7 +96,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	private static FlexoEditor editor;
 	private static FlexoProject project;
 
-	private static ViewPoint viewPoint;
+	private static VirtualModel viewPoint;
 	private static VirtualModel virtualModel;
 	private static FlexoConcept flexoConcept;
 	private static DropScheme dropScheme;
@@ -109,20 +104,24 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	private static DiagramPalette palette;
 	private static DiagramPaletteElement paletteElement;
 
-	private static View newView;
+	private static VirtualModelInstance newView;
 	private static VirtualModelInstance newVirtualModelInstance;
 	private static Diagram diagram;
 
 	/**
 	 * Retrieve the ViewPoint
+	 * 
+	 * @throws FlexoException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FileNotFoundException
 	 */
 	@Test
 	@TestOrder(1)
-	public void testLoadViewPoint() {
+	public void testLoadViewPoint() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
-		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint");
+		viewPoint = vpLib.getVirtualModel("http://openflexo.org/test/TestResourceCenter/TestControlledDiagramViewPoint.fml");
 		assertNotNull(viewPoint);
 
 		virtualModel = viewPoint.getVirtualModelNamed("TestVirtualModel");
@@ -169,17 +168,19 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	@Test
 	@TestOrder(3)
 	public void testCreateView() {
-		CreateViewInFolder action = CreateViewInFolder.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
-		action.setNewViewName("MyView");
-		action.setNewViewTitle("Test creation of a new view");
-		action.setViewpointResource((ViewPointResource) viewPoint.getResource());
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType
+				.makeNewAction(project.getVirtualModelInstanceRepository().getRootFolder(), null, editor);
+		action.setNewVirtualModelInstanceName("MyView");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new view");
+		action.setVirtualModel(viewPoint);
 		action.doAction();
 		assertTrue(action.hasActionExecutionSucceeded());
-		newView = action.getNewView();
+		newView = action.getNewVirtualModelInstance();
 		assertNotNull(newView);
 		assertNotNull(newView.getResource());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
+				.exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 	}
 
 	/**
@@ -220,8 +221,9 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		newVirtualModelInstance = action.getNewVirtualModelInstance();
 		assertNotNull(newVirtualModelInstance);
 		assertNotNull(newVirtualModelInstance.getResource());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
+				.exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());
 
 		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> diagramMSInstance = (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) newVirtualModelInstance
@@ -253,7 +255,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		log("testPopulateVirtualModelInstance()");
 		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
+		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) newVirtualModelInstance.getResource();
 
 		assertFalse(diagram.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
@@ -302,7 +304,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
 
 		newVirtualModelInstance.getResource().save(null);
-		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getIODelegate().exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newVirtualModelInstance.getResource()).getIODelegate().exists());
 		assertFalse(newVirtualModelInstance.isModified());
 
 		diagram.getResource().save(null);
@@ -340,14 +342,15 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertEquals(3, project.getAllResources().size());
 		assertNotNull(project.getResource(newView.getURI()));
 
-		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
+		FMLRTVirtualModelInstanceResource newViewResource = project.getVirtualModelInstanceRepository()
+				.getVirtualModelInstance(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
-		assertNotNull(newView = newViewResource.getView());
+		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
-		VirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
+		FMLRTVirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
 		assertNotNull(vmiResource);
 		assertNull(vmiResource.getLoadedResourceData());
 		vmiResource.loadResourceData(null);

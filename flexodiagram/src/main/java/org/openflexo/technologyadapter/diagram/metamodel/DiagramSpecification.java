@@ -314,8 +314,7 @@ public interface DiagramSpecification
 			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
-			if (!palettes.contains(aPalette)) {
-				System.out.println("Adding palette " + aPalette.hashCode());
+			if (aPalette != null && !palettes.contains(aPalette)) {
 				palettes.add(aPalette);
 				getPropertyChangeSupport().firePropertyChange("palettes", null, aPalette);
 			}
@@ -326,7 +325,7 @@ public interface DiagramSpecification
 			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
-			if (palettes.contains(aPalette)) {
+			if (aPalette != null && palettes.contains(aPalette)) {
 				palettes.remove(aPalette);
 				getPropertyChangeSupport().firePropertyChange("palettes", aPalette, null);
 			}

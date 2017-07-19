@@ -55,7 +55,7 @@ import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionType;
@@ -71,8 +71,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author vincent, sylvain
  *
  */
-public class DeleteDiagramElementsAndFlexoConceptInstances extends
-		FlexoAction<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
+public class DeleteDiagramElementsAndFlexoConceptInstances
+		extends FlexoAction<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramElementsAndFlexoConceptInstances.class.getPackage().getName());
 
@@ -116,7 +116,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 		// A diagram element is deleteable
 		if (deleteableSelected(focusedObject)) {
 			return true;
-		} else {
+		}
+		else {
 			for (FlexoObject object : globalSelection) {
 				if (deleteableSelected(object)) {
 					return true;
@@ -129,7 +130,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 	private static boolean deleteableSelected(FlexoObject focusedObject) {
 		if (focusedObject instanceof DiagramElement) {
 			return true;
-		} else if (focusedObject instanceof FlexoConceptInstance) {
+		}
+		else if (focusedObject instanceof FlexoConceptInstance) {
 			// A flexo concept instance is deleatable if only it contains a deletion scheme
 			FlexoConceptInstance fci = (FlexoConceptInstance) focusedObject;
 			if (!fci.getFlexoConcept().getDeletionSchemes().isEmpty()) {
@@ -161,8 +163,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 				AbstractVirtualModelInstance<?, ?> vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
 				DeletionSchemeActionType deletionSchemeActionType = new DeletionSchemeActionType(fciEntry.currentDeletionScheme,
 						fciEntry.getFlexoConceptInstance());
-				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionType.makeNewEmbeddedAction(
-						fciEntry.getFlexoConceptInstance(), null, this);
+				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionType
+						.makeNewEmbeddedAction(fciEntry.getFlexoConceptInstance(), null, this);
 				deletionSchemeAction.setVirtualModelInstance(vmi);
 				// deletionSchemeAction.setDeletionScheme(fciEntry.currentDeletionScheme);
 				deletionSchemeAction.doAction();
@@ -199,7 +201,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 			if (!diagramElt.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + diagramElt);
 				diagramElt.delete();
-			} else {
+			}
+			else {
 				logger.info("DiagramElement " + diagramElt + " has been successfully deleted");
 			}
 		}

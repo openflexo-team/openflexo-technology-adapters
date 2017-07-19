@@ -40,14 +40,15 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
+
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -115,7 +116,8 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+		public DiagramResource createProjectSpecificEmptyResource(AbstractVirtualModelInstance<?, ?> view, String filename,
+				String modelUri) {
 			return null;
 		}
 

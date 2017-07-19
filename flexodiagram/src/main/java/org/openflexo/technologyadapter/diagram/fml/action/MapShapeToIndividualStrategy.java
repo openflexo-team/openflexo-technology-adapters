@@ -45,8 +45,9 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.FlexoBehaviourParameter;
+import org.openflexo.foundation.fml.FlexoBehaviourParameter.WidgetType;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.URIParameter;
 import org.openflexo.foundation.fml.binding.ModelSlotBindingVariable;
 import org.openflexo.foundation.fml.binding.VirtualModelModelSlotPathElement;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
@@ -220,7 +221,8 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 		FlexoOntologyModelSlot<?, ?, ?> flexoOntologyModelSlot = getFlexoOntologyModelSlot();
 
 		if (flexoOntologyModelSlot != null) {
-			URIParameter uriParameter = getTransformationAction().getFactory().newURIParameter();
+			FlexoBehaviourParameter uriParameter = getTransformationAction().getFactory().newParameter(newDropScheme);
+			uriParameter.setWidget(WidgetType.TEXT_FIELD);
 			uriParameter.setName("uri");
 			newDropScheme.addToParameters(uriParameter);
 

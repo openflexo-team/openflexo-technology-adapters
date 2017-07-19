@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.lang.reflect.Type;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
@@ -49,26 +50,19 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.CheckboxParameter;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
-import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
-import org.openflexo.foundation.fml.FloatParameter;
-import org.openflexo.foundation.fml.TextFieldParameter;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
+import org.openflexo.foundation.fml.action.CreateGenericBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -87,12 +81,12 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateFMLControlledDiagramVirtualModel
-		extends AbstractCreateVirtualModel<CreateFMLControlledDiagramVirtualModel, ViewPoint, FMLObject> {
+		extends AbstractCreateVirtualModel<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledDiagramVirtualModel, ViewPoint, FMLObject> actionType = new FlexoActionType<CreateFMLControlledDiagramVirtualModel, ViewPoint, FMLObject>(
+	public static FlexoActionType<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionType<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject>(
 			"create_diagram_virtual_model", FlexoActionType.newVirtualModelMenu, FlexoActionType.defaultGroup,
 			FlexoActionType.ADD_ACTION_TYPE) {
 
@@ -100,25 +94,25 @@ public class CreateFMLControlledDiagramVirtualModel
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledDiagramVirtualModel makeNewAction(ViewPoint focusedObject, Vector<FMLObject> globalSelection,
+		public CreateFMLControlledDiagramVirtualModel makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledDiagramVirtualModel(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(ViewPoint object, Vector<FMLObject> globalSelection) {
+		public boolean isVisibleForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(ViewPoint object, Vector<FMLObject> globalSelection) {
+		public boolean isEnabledForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModel.actionType, ViewPoint.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModel.actionType, VirtualModel.class);
 	}
 
 	private String newVirtualModelName;
@@ -137,13 +131,14 @@ public class CreateFMLControlledDiagramVirtualModel
 	private String newDiagramSpecificationName;
 	private String newDiagramSpecificationURI;
 
-	CreateFMLControlledDiagramVirtualModel(ViewPoint focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledDiagramVirtualModel(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 
-		FlexoResource<ViewPoint> resource = focusedObject.getResource();
+		FlexoResource<VirtualModel> resource = focusedObject.getResource();
 		if (resource != null && resource.getResourceCenter() instanceof ResourceRepository) {
 			ResourceRepository resourceCenter = (ResourceRepository) resource.getResourceCenter();
-			RepositoryFolder repositoryFolder = resourceCenter.getFolderWithName(resource.getName() + ViewPointResourceFactory.VIEWPOINT_SUFFIX);
+			RepositoryFolder repositoryFolder = resourceCenter
+					.getFolderWithName(resource.getName() + VirtualModelResourceFactory.FML_SUFFIX);
 			if (repositoryFolder != null) {
 				setRepositoryFolder(repositoryFolder);
 			}
@@ -163,34 +158,14 @@ public class CreateFMLControlledDiagramVirtualModel
 	}
 
 	private FlexoBehaviourParameter createParameter(FlexoBehaviour behaviour, String parameterName, Type parameterType) {
-		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType.makeNewEmbeddedAction(behaviour, null,
+		CreateGenericBehaviourParameter createParameter = CreateGenericBehaviourParameter.actionType.makeNewEmbeddedAction(behaviour, null,
 				this);
 		createParameter.setParameterName(parameterName);
-
-		if (parameterType.equals(String.class)) {
-			createParameter.setFlexoBehaviourParameterClass(TextFieldParameter.class);
-		}
-		else if (parameterType.equals(Boolean.class) || parameterType.equals(Boolean.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(TextFieldParameter.class);
-		}
-		else if (parameterType.equals(Integer.class) || parameterType.equals(Integer.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(CheckboxParameter.class);
-		}
-		else if (parameterType.equals(Float.class) || parameterType.equals(Float.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(FloatParameter.class);
-		}
-		else if (parameterType.equals(Double.class) || parameterType.equals(Double.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(FloatParameter.class);
-		}
-		else if (parameterType instanceof FlexoConceptInstanceType) {
-			createParameter.setFlexoBehaviourParameterClass(FlexoConceptInstanceParameter.class);
-		}
+		createParameter.setParameterType(parameterType);
 		createParameter.doAction();
 		FlexoBehaviourParameter returned = createParameter.getNewParameter();
 		if (parameterType instanceof FlexoConceptInstanceType) {
-			((FlexoConceptInstanceParameter) returned).setFlexoConceptType(((FlexoConceptInstanceType) parameterType).getFlexoConcept());
-			((FlexoConceptInstanceParameter) returned)
-					.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+			createParameter.setContainer(new DataBinding<VirtualModelInstance>("this"));
 		}
 		return returned;
 	}
@@ -212,11 +187,11 @@ public class CreateFMLControlledDiagramVirtualModel
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		try {
-			VirtualModelResource vmResource = factory.makeVirtualModelResource(getNewVirtualModelName(),
-					(ViewPointResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			VirtualModelResource vmResource = factory.makeContainedVirtualModelResource(getNewVirtualModelName(),
+					(VirtualModelResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 			newVirtualModel = vmResource.getLoadedResourceData();
 			newVirtualModel.setDescription(newVirtualModelDescription);
 		} catch (SaveResourceException e) {
@@ -331,7 +306,6 @@ public class CreateFMLControlledDiagramVirtualModel
 		setNewDiagramSpecificationURI(getFocusedObject().getURI() + "/" + newVirtualModelName + "/" + getNewDiagramSpecificationName());
 
 		getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, newVirtualModelName);
-
 
 	}
 

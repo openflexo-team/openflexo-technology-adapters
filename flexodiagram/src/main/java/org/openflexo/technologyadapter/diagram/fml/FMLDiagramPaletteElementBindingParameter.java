@@ -38,12 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
+import java.security.URIParameter;
+
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.URIParameter;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -133,9 +134,9 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		@Override
 		public String getValue() {
 			if (getParameter() != null) {
-				if (getParameter() instanceof URIParameter) {
+				/*if (getParameter() instanceof URIParameter) {
 					return "< Computed URI >";
-				}
+				}*/
 				/*if (getParameter().getUsePaletteLabelAsDefaultValue()) {
 					return "< Takes palette element label >";
 				}*/
@@ -183,7 +184,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getViewPoint().getBindingModel();
+			return getVirtualModel().getBindingModel();
 		}
 
 		@Override

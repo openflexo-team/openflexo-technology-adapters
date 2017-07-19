@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.diagram.rm;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceFactory;
@@ -88,7 +87,7 @@ public class DiagramSpecificationResourceFactory extends
 		if (resourceCenter.exists(serializationArtefact) && resourceCenter.isDirectory(serializationArtefact)
 				&& resourceCenter.canRead(serializationArtefact)
 				&& (resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX)
-		/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
+				/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
 			/*final String baseName = candidateFile.getName().substring(0,
 					candidateFile.getName().length() - ViewPointResource.DIAGRAM_SPECIFICATION_SUFFIX.length());
 			final File xmlFile = new File(candidateFile, baseName + ".xml");
@@ -101,7 +100,7 @@ public class DiagramSpecificationResourceFactory extends
 	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
 			RepositoryFolder<DiagramSpecificationResource, I> folder,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-					throws SaveResourceException, ModelDefinitionException {
+			throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = folder.getResourceRepository().getResourceCenter();
 
@@ -130,7 +129,7 @@ public class DiagramSpecificationResourceFactory extends
 	@Override
 	protected <I> DiagramSpecificationResource initResourceForCreation(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, String name, String uri)
-					throws ModelDefinitionException {
+			throws ModelDefinitionException {
 		DiagramSpecificationResource returned = super.initResourceForCreation(serializationArtefact, resourceCenter,
 				technologyContextManager, name, uri);
 
