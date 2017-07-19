@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" flexoID="4" name="TestVirtualModel">
+  <FlexoConcept id="1" useSpecificDescriptions="false" userID="FLX" flexoID="10" name="TestConcept">
+    <Inspector id="2" flexoID="5" useSpecificDescriptions="false" userID="FLX" />
+    <ShapeRole id="3" exampleLabel="label" userID="FLX" useSpecificDescriptions="false" cloningStratgey="Clone" flexoID="11" name="shape">
+      <TypedDiagramModelSlot idref="4" />
+    </ShapeRole>
+    <DropScheme id="6" userID="FLX" width="800" useSpecificDescriptions="false" label="drop" definePopupDefaultSize="false" height="600" flexoID="6" skipConfirmationPanel="false" name="drop" target="top">
+      <AddShape id="7" flexoID="9" assignation="shape" container="topLevel" userID="FLX" useSpecificDescriptions="false" extendParentBoundsToHostThisShape="false">
+        <TypedDiagramModelSlot idref="4" />
+      </AddShape>
+    </DropScheme>
+  </FlexoConcept>
+  <FlexoConcept id="8" useSpecificDescriptions="false" userID="FLX" flexoID="15" name="TestConcept2">
+    <Inspector id="9" flexoID="14" useSpecificDescriptions="false" userID="FLX" inspectorTitle="TestConcept2" />
+    <ShapeRole id="10" exampleLabel="label" userID="FLX" useSpecificDescriptions="false" cloningStratgey="Clone" flexoID="-1" name="shape">
+      <ShapeGraphicalRepresentation id="11" minimalHeight="0.0" relativeTextX="0.5" transparency="1.0" drawControlPointsWhenFocused="true" height="50.0" hasFocusedBackground="false" verticalTextAlignment="MIDDLE" adjustMinimalWidthToLabelWidth="true" width="80.0" hasFocusedForeground="false" hasSelectedBackground="false" allowToLeaveBounds="true" isFocusable="true" drawControlPointsWhenSelected="true" isSelectable="true" isLabelEditable="true" relativeTextY="0.5" continuousTextEditing="true" minimalWidth="0.0" identifier="e697363" lineWrap="false" locationConstraints="FREELY_MOVABLE" adjustMinimalHeightToLabelHeight="true" horizontalTextAlignment="CENTER" adaptBoundsToContents="false" maximalHeight="Infinity" isVisible="true" dimensionConstraints="FREELY_RESIZABLE" isReadOnly="false" adjustMaximalHeightToLabelHeight="false" isFloatingLabel="false" hasSelectedForeground="false" paragraphAlignment="CENTER" absoluteTextX="0.0" layer="1" absoluteTextY="0.0" adjustMaximalWidthToLabelWidth="false" isMultilineAllowed="false" y="40.0" maximalWidth="Infinity" x="160.0">
+        <FocusedForegroundStyle id="12" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+        <SelectedColorBackgroundStyle id="13" color="192,192,192" transparencyLevel="0.5" useTransparency="false" />
+        <TextStyle id="14" orientation="0" color="0,0,0" backgroundColor="255,255,255" font="SansSerif,1,11" isBackgroundColored="false" />
+        <ShapeBorder id="15" bottom="2" left="2" right="2" top="2" />
+        <ForegroundStyle id="16" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+        <SelectedForegroundStyle id="17" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+        <FocusedColorBackgroundStyle id="18" color="192,192,192" transparencyLevel="0.5" useTransparency="false" />
+        <RectangleShape id="19" arcSize="30.0" isRounded="false" />
+        <ShadowStyle id="20" shadowDepth="2" shadowBlur="4" drawShadow="true" shadowDarkness="150" />
+        <ColorBackgroundStyle id="21" color="192,192,192" transparencyLevel="0.5" useTransparency="false" />
+      </ShapeGraphicalRepresentation>
+      <TypedDiagramModelSlot idref="4" />
+    </ShapeRole>
+  </FlexoConcept>
+  <FlexoConcept id="22" useSpecificDescriptions="false" userID="FLX" flexoID="17" name="TestLink">
+    <Inspector id="23" flexoID="16" useSpecificDescriptions="false" userID="FLX" inspectorTitle="TestLink" />
+    <ConnectorRole id="24" exampleLabel="label" useSpecificDescriptions="false" userID="FLX" cloningStratgey="Clone" flexoID="-1" name="connector">
+      <ConnectorGraphicalRepresentation id="25" lineWrap="false" horizontalTextAlignment="CENTER" transparency="1.0" drawControlPointsWhenFocused="true" isVisible="true" isReadOnly="false" paragraphAlignment="CENTER" hasSelectedForeground="false" verticalTextAlignment="MIDDLE" hasFocusedForeground="false" applyForegroundToSymbols="true" layer="64" absoluteTextX="0.0" absoluteTextY="0.0" isFocusable="true" drawControlPointsWhenSelected="true" isSelectable="true" isLabelEditable="true" continuousTextEditing="true" isMultilineAllowed="false" identifier="3516fc14">
+        <SelectedForegroundStyle id="26" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+        <FocusedForegroundStyle id="27" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+        <LineConnectorSpecification id="28" relativeMiddleSymbolLocation="0.5" startSymbolSize="10.0" middleSymbol="NONE" lineConnectorType="MINIMAL_LENGTH" middleSymbolSize="10.0" endSymbolSize="10.0" startSymbol="NONE" endSymbol="NONE" />
+        <TextStyle id="29" orientation="0" color="0,0,0" backgroundColor="255,255,255" font="SansSerif,1,11" isBackgroundColored="false" />
+        <ForegroundStyle id="30" dashStyle="PLAIN_STROKE" color="0,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" capStyle="CAP_SQUARE" joinStyle="JOIN_MITER" />
+      </ConnectorGraphicalRepresentation>
+      <TypedDiagramModelSlot idref="4" />
+    </ConnectorRole>
+    <LinkScheme id="31" northDirectionSupported="true" fromTarget="http://openflexo.org/test/TestControlledDiagramViewPoint/TestVirtualModel#TestConcept" toTarget="http://openflexo.org/test/TestControlledDiagramViewPoint/TestVirtualModel#TestConcept2" userID="FLX" width="800" useSpecificDescriptions="false" label="link" definePopupDefaultSize="false" southDirectionSupported="true" westDirectionSupported="true" isAvailableWithFloatingPalette="true" flexoID="18" height="600" skipConfirmationPanel="false" name="link" eastDirectionSupported="true">
+      <AddConnector id="32" useSpecificDescriptions="false" userID="FLX" flexoID="19" assignation="connector" fromShape="fromTarget.shape" toShape="toTarget.shape">
+        <TypedDiagramModelSlot idref="4" />
+      </AddConnector>
+    </LinkScheme>
+  </FlexoConcept>
+  <Inspector id="33" flexoID="2" useSpecificDescriptions="false" userID="FLX" inspectorTitle="TestVirtualModel" />
+  <ModelSlot_TypedDiagramModelSlot id="4" useSpecificDescriptions="false" userID="FLX" cloningStratgey="Reference" flexoID="8" isRequired="true" name="diagram" metaModelURI="http://openflexo.org/test/TestDiagramSpecification" isReadOnly="false">
+    <FMLDiagramPaletteElementBinding id="5" paletteElementId="http://openflexo.org/test/TestDiagramSpecification/TestPalette.palette#TestPaletteElement" useSpecificDescriptions="false" userID="FLX" flexoID="7">
+      <DropScheme idref="6" />
+    </FMLDiagramPaletteElementBinding>
+  </ModelSlot_TypedDiagramModelSlot>
+</VirtualModel>
