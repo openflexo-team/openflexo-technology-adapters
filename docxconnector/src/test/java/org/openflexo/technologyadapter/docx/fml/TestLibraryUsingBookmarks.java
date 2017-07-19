@@ -65,46 +65,38 @@ import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.TextFieldParameter;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.action.CreateFlexoConceptInstanceRole;
+import org.openflexo.foundation.fml.action.CreateGenericBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.controlgraph.IterationAction;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.editionaction.CreateFlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.rt.editionaction.MatchFlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.editionaction.MatchingCriteria;
 import org.openflexo.foundation.fml.rt.editionaction.SelectFlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.rm.ViewResource;
-import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
+import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -151,14 +143,14 @@ import org.openflexo.toolbox.StringUtils;
 @RunWith(OrderedRunner.class)
 public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
-	private static final String VIEWPOINT_NAME = "TestLibraryUsingBookmarksViewPoint";
-	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestLibraryUsingBookmarksViewPoint";
+	private static final String VIEWPOINT_NAME = "TestLibraryUsingBookmarksVirtualModel";
+	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestLibraryUsingBookmarksVirtualModel.fml";
 	private static final String LIBRARY_VIRTUAL_MODEL_NAME = "LibraryVirtualModel";
 	private static final String DOCUMENT_VIRTUAL_MODEL_NAME = "DocumentVirtualModel";
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository<?> repository;
-	public static View newView;
+	public static VirtualModelInstance newView;
 	public static VirtualModelInstance libraryVMI;
 	public static VirtualModelInstance documentVMI;
 
@@ -166,8 +158,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public static DocXDocument templateDocument;
 	public static DocXDocument generatedDocument;
 
-	public static ViewPoint viewPoint;
-	public static ViewPointResource viewPointResource;
+	public static VirtualModel viewPoint;
+	public static VirtualModelResource viewPointResource;
 
 	public static VirtualModel libraryVirtualModel;
 	public static FlexoConcept bookConcept;
@@ -341,30 +333,30 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	}
 
 	/**
-	 * Creates a new empty ViewPoint in the _project
+	 * Creates a new empty VirtualModel in the _project
 	 * 
 	 * @throws ModelDefinitionException
 	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(4)
-	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
+	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		log("testCreateViewPoint()");
+		log("testCreateVirtualModel()");
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
-		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
-		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
+		// viewPoint = VirtualModelImpl.newVirtualModel(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// _project.getDirectory(),
-		// serviceManager.getViewPointLibrary(),
+		// serviceManager.getVirtualModelLibrary(),
 		// resourceCenter);
-		// viewPointResource = (ViewPointResource) viewPoint.getResource();
+		// viewPointResource = (VirtualModelResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
 		assertTrue(viewPointResource.getIODelegate().exists());
@@ -375,7 +367,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	 * We create here a VirtualModel without model slot, but with Book FlexoConcept
 	 * 
 	 * <code>
-	 * VirtualModel LibraryVirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint/LibraryVirtualModel" {
+	 * VirtualModel LibraryVirtualModel uri="http://openflexo.org/test/TestLibraryVirtualModel/LibraryVirtualModel" {
 	 * 
 	 *   FlexoConcept Book {  
 	 *     FlexoRole title as String cardinality=ZeroOne;  
@@ -405,9 +397,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeVirtualModelResource(LIBRARY_VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(LIBRARY_VIRTUAL_MODEL_NAME,
+				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		libraryVirtualModel = newVMResource.getLoadedResourceData();
 
 		// libraryVirtualModel =
@@ -458,38 +450,38 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createCreationScheme.doAction();
 		bookCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 
-		CreateFlexoBehaviourParameter createParameter1 = CreateFlexoBehaviourParameter.actionType.makeNewAction(bookCreationScheme, null,
-				_editor);
-		createParameter1.setFlexoBehaviourParameterClass(TextFieldParameter.class);
+		CreateGenericBehaviourParameter createParameter1 = CreateGenericBehaviourParameter.actionType.makeNewAction(bookCreationScheme,
+				null, _editor);
 		createParameter1.setParameterName("aTitle");
+		createParameter1.setParameterType(String.class);
 		createParameter1.doAction();
 		titleParam = createParameter1.getNewParameter();
 
-		CreateFlexoBehaviourParameter createParameter2 = CreateFlexoBehaviourParameter.actionType.makeNewAction(bookCreationScheme, null,
-				_editor);
-		createParameter2.setFlexoBehaviourParameterClass(TextFieldParameter.class);
+		CreateGenericBehaviourParameter createParameter2 = CreateGenericBehaviourParameter.actionType.makeNewAction(bookCreationScheme,
+				null, _editor);
 		createParameter2.setParameterName("anAuthor");
+		createParameter2.setParameterType(String.class);
 		createParameter2.doAction();
 		authorParam = createParameter2.getNewParameter();
 
-		CreateFlexoBehaviourParameter createParameter3 = CreateFlexoBehaviourParameter.actionType.makeNewAction(bookCreationScheme, null,
-				_editor);
-		createParameter3.setFlexoBehaviourParameterClass(TextFieldParameter.class);
+		CreateGenericBehaviourParameter createParameter3 = CreateGenericBehaviourParameter.actionType.makeNewAction(bookCreationScheme,
+				null, _editor);
 		createParameter3.setParameterName("anEdition");
+		createParameter3.setParameterType(String.class);
 		createParameter3.doAction();
 		editionParam = createParameter3.getNewParameter();
 
-		CreateFlexoBehaviourParameter createParameter4 = CreateFlexoBehaviourParameter.actionType.makeNewAction(bookCreationScheme, null,
-				_editor);
-		createParameter4.setFlexoBehaviourParameterClass(TextFieldParameter.class);
+		CreateGenericBehaviourParameter createParameter4 = CreateGenericBehaviourParameter.actionType.makeNewAction(bookCreationScheme,
+				null, _editor);
 		createParameter4.setParameterName("aType");
+		createParameter4.setParameterType(String.class);
 		createParameter4.doAction();
 		typeParam = createParameter4.getNewParameter();
 
-		CreateFlexoBehaviourParameter createParameter5 = CreateFlexoBehaviourParameter.actionType.makeNewAction(bookCreationScheme, null,
-				_editor);
-		createParameter5.setFlexoBehaviourParameterClass(TextFieldParameter.class);
+		CreateGenericBehaviourParameter createParameter5 = CreateGenericBehaviourParameter.actionType.makeNewAction(bookCreationScheme,
+				null, _editor);
 		createParameter5.setParameterName("aDescription");
+		createParameter5.setParameterType(String.class);
 		createParameter5.doAction();
 		descriptionParam = createParameter5.getNewParameter();
 
@@ -579,9 +571,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
+				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
@@ -807,10 +799,10 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createCreationScheme.doAction();
 		bookDescriptionSectionCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 
-		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType
+		CreateGenericBehaviourParameter createParameter = CreateGenericBehaviourParameter.actionType
 				.makeNewAction(bookDescriptionSectionCreationScheme, null, _editor);
-		createParameter.setFlexoBehaviourParameterClass(FlexoConceptInstanceParameter.class);
 		createParameter.setParameterName("aBook");
+		createParameter.setParameterType(bookConcept.getInstanceType());
 		createParameter.doAction();
 		// Unused FlexoBehaviourParameter bookParam =
 		createParameter.getNewParameter();
@@ -980,7 +972,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		MatchFlexoConceptInstance matchFlexoConceptInstance = (MatchFlexoConceptInstance) createMatchFlexoConceptInstanceAction
 				.getNewEditionAction();
 		matchFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
-		matchFlexoConceptInstance.setReceiver(new DataBinding<>("virtualModelInstance"));
+		matchFlexoConceptInstance.setReceiver(new DataBinding<>("this"));
 
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 
@@ -1016,7 +1008,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		fetchRequestIteration2.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance2.setReceiver(new DataBinding<>("virtualModelInstance"));
+		selectFlexoConceptInstance2.setReceiver(new DataBinding<>("this"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
 
@@ -1051,7 +1043,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setReceiver(new DataBinding<>("virtualModelInstance"));
+		selectFlexoConceptInstance.setReceiver(new DataBinding<>("this"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1067,22 +1059,24 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in _project a View conform to the ViewPoint
+	 * Instantiate in _project a View conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(7)
 	public void testCreateView() {
-		CreateViewInFolder action = CreateViewInFolder.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
-		action.setNewViewName("MyLibraryView");
-		action.setNewViewTitle("Test creation of a new view");
-		action.setViewpointResource((ViewPointResource) viewPoint.getResource());
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType
+				.makeNewAction(_project.getVirtualModelInstanceRepository().getRootFolder(), null, _editor);
+		action.setNewVirtualModelInstanceName("MyLibraryView");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new view");
+		action.setVirtualModel(viewPoint);
 		action.doAction();
 		assertTrue(action.hasActionExecutionSucceeded());
-		newView = action.getNewView();
+		newView = action.getNewVirtualModelInstance();
 		assertNotNull(newView);
 		assertNotNull(newView.getResource());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
+				.exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 	}
 
 	public static final String LES_MISERABLES_DESCRIPTION = "Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.";
@@ -1118,8 +1112,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		libraryVMI = action.getNewVirtualModelInstance();
 		assertNotNull(libraryVMI);
 		assertNotNull(libraryVMI.getResource());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
+				.exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 
 		// Creation of book1
 		CreationSchemeAction createBook1 = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
@@ -1172,7 +1167,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		assertFalse(libraryVMI.isModified());
 
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) libraryVMI.getResource();
+		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) libraryVMI.getResource();
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
 	}
@@ -1209,7 +1204,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertNotNull(libraryModelSlotInstanceConfiguration);
 		libraryModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingVirtualModel);
 		libraryModelSlotInstanceConfiguration
-				.setAddressedVirtualModelInstanceResource((VirtualModelInstanceResource) libraryVMI.getResource());
+				.setAddressedVirtualModelInstanceResource((FMLRTVirtualModelInstanceResource) libraryVMI.getResource());
 		assertTrue(libraryModelSlotInstanceConfiguration.isValidConfiguration());
 
 		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
@@ -1231,8 +1226,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		documentVMI = action.getNewVirtualModelInstance();
 		assertNotNull(documentVMI);
 		assertNotNull(documentVMI.getResource());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
-		assertTrue(((ViewResource) newView.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
+				.exists());
+		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 		assertEquals(2, documentVMI.getModelSlotInstances().size());
 
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) documentVMI
@@ -1265,7 +1261,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		log("testGenerateDocument()");
 
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
+		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) documentVMI.getResource();
 
 		// template resource has been modified because in "Bookmark" mode,
 		// bookmarks have been inserted
@@ -1341,7 +1337,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(5);
 		assertEquals(generatedDocument.getFragment(booksTitle, booksLastPar), documentVMI.getFlexoActor("booksDescriptionSection"));
 
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
+		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) documentVMI.getResource();
 
 		assertFalse(templateResource.isModified());
 
@@ -1593,16 +1589,17 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		// System.out.println("All resources=" + _project.getAllResources());
 		assertNotNull(_project.getResource(newView.getURI()));
 
-		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
+		FMLRTVirtualModelInstanceResource newViewResource = _project.getVirtualModelInstanceRepository()
+				.getVirtualModelInstance(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
-		assertNotNull(newView = newViewResource.getView());
+		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		// TAKE CARE TO RELOAD all static fields as they are still pointing on
 		// old references
-		assertNotNull(libraryVirtualModel = newView.getViewPoint().getVirtualModelNamed("LibraryVirtualModel"));
-		assertNotNull(documentVirtualModel = newView.getViewPoint().getVirtualModelNamed("DocumentVirtualModel"));
+		assertNotNull(libraryVirtualModel = newView.getVirtualModel().getVirtualModelNamed("LibraryVirtualModel"));
+		assertNotNull(documentVirtualModel = newView.getVirtualModel().getVirtualModelNamed("DocumentVirtualModel"));
 		assertNotNull(bookConcept = libraryVirtualModel.getFlexoConcept("Book"));
 		assertNotNull(bookCreationScheme = bookConcept.getCreationSchemes().get(0));
 		assertNotNull(titleParam = bookCreationScheme.getParameter("aTitle"));
@@ -1624,7 +1621,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertEquals(2, newViewResource.getVirtualModelInstanceResources().size());
 
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).size());
-		VirtualModelInstanceResource libraryVmiResource = newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).get(0);
+		FMLRTVirtualModelInstanceResource libraryVmiResource = newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).get(0);
 		assertNotNull(libraryVmiResource);
 		assertNull(libraryVmiResource.getLoadedResourceData());
 		libraryVmiResource.loadResourceData(null);
@@ -1636,7 +1633,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		}
 
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources(documentVirtualModel).size());
-		VirtualModelInstanceResource documentVmiResource = newViewResource.getVirtualModelInstanceResources(documentVirtualModel).get(0);
+		FMLRTVirtualModelInstanceResource documentVmiResource = newViewResource.getVirtualModelInstanceResources(documentVirtualModel)
+				.get(0);
 		assertNotNull(documentVmiResource);
 		assertNull(documentVmiResource.getLoadedResourceData());
 		documentVmiResource.loadResourceData(null);

@@ -41,7 +41,7 @@
     </ActionScheme>
     <Inspector id="27" inspectorTitle="BookDescriptionSection" userID="FLX" flexoID="3" />
   </FlexoConcept>
-  <UseModelSlotDeclaration id="28" modelSlotClass="org.openflexo.foundation.fml.rt.VirtualModelInstanceModelSlot" userID="FLX" flexoID="-1" />
+  <UseModelSlotDeclaration id="28" modelSlotClass="org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot" userID="FLX" flexoID="-1" />
   <UseModelSlotDeclaration id="29" modelSlotClass="org.openflexo.technologyadapter.docx.DocXModelSlot" userID="FLX" flexoID="-1" />
   <DocXFragmentRole id="30" fragment="http://openflexo.org/docx-test/TestResourceCenter/ExampleLibrary2.docx:37BD979B:37BD979B" container="document" cloningStrategy="Clone" cardinality="ZeroOne" name="introductionSection" userID="FLX" flexoID="9" />
   <DocXFragmentRole id="31" cloningStrategy="Clone" cardinality="ZeroOne" name="booksDescriptionSection" userID="FLX" flexoID="10" />

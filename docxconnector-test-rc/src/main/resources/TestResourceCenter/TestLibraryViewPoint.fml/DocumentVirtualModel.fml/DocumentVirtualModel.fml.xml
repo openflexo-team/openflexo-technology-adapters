@@ -41,7 +41,7 @@
     </ActionScheme>
     <Inspector id="27" inspectorTitle="BookDescriptionSection" userID="FLX" flexoID="3" />
   </FlexoConcept>
-  <UseModelSlotDeclaration id="28" modelSlotClass="org.openflexo.foundation.fml.rt.VirtualModelInstanceModelSlot" userID="FLX" flexoID="-1" />
+  <UseModelSlotDeclaration id="28" modelSlotClass="org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot" userID="FLX" flexoID="-1" />
   <UseModelSlotDeclaration id="29" modelSlotClass="org.openflexo.technologyadapter.docx.DocXModelSlot" userID="FLX" flexoID="-1" />
   <DocXFragmentRole id="30" fragment="http://openflexo.org/docx-test/TestResourceCenter/ExampleLibrary.docx:520AEBFC:4565B83C" container="document" cloningStrategy="Clone" cardinality="ZeroOne" name="introductionSection" userID="FLX" flexoID="5" />
   <DocXFragmentRole id="31" fragment="http://openflexo.org/docx-test/TestResourceCenter/ExampleLibrary.docx:344ACD8A:63872413" container="document" cloningStrategy="Clone" cardinality="ZeroOne" name="booksDescriptionSection" userID="FLX" flexoID="6" />
@@ -69,12 +69,12 @@
   <ActionScheme id="46" skipConfirmationPanel="false" name="updateDocument" width="800" label="updateDocument" height="600" userID="FLX" flexoID="28">
     <BehaviourControlGraph_Sequence id="47" userID="FLX" flexoID="19">
       <ControlGraph2_IterationAction id="48" iteratorName="bookSection" ownerContext="controlGraph2" userID="FLX" flexoID="26">
-        <Iteration_SelectFlexoConceptInstance id="49" flexoConceptTypeURI="http://openflexo.org/docx-test/TestLibraryViewPoint/DocumentVirtualModel#BookDescriptionSection" receiver="virtualModelInstance" ownerContext="iterationControlGraph" userID="FLX" flexoID="27" />
+        <Iteration_SelectFlexoConceptInstance id="49" flexoConceptTypeURI="http://openflexo.org/docx-test/TestResourceCenter/TestLibraryViewPoint.fml/DocumentVirtualModel.fml#BookDescriptionSection" receiver="virtualModelInstance" ownerContext="iterationControlGraph" userID="FLX" flexoID="27" />
         <ControlGraph_ExpressionAction id="50" expression="bookSection.updateBookDescriptionSection()" ownerContext="controlGraph" userID="FLX" flexoID="25" />
       </ControlGraph2_IterationAction>
       <ControlGraph1_IterationAction id="51" iteratorName="book" ownerContext="controlGraph1" userID="FLX" flexoID="23">
         <Iteration_SelectFlexoConceptInstance id="52" flexoConceptTypeURI="http://openflexo.org/docx-test/TestLibraryViewPoint/LibraryVirtualModel#Book" receiver="library" ownerContext="iterationControlGraph" userID="FLX" flexoID="24" />
-        <ControlGraph_MatchFlexoConceptInstance id="53" creationSchemeURI="http://openflexo.org/docx-test/TestLibraryViewPoint/DocumentVirtualModel#BookDescriptionSection.createBookDescriptionSection" receiver="virtualModelInstance" ownerContext="controlGraph" userID="FLX" flexoID="22">
+        <ControlGraph_MatchFlexoConceptInstance id="53" creationSchemeURI="http://openflexo.org/docx-test/TestResourceCenter/TestLibraryViewPoint.fml/DocumentVirtualModel.fml#BookDescriptionSection.createBookDescriptionSection" receiver="virtualModelInstance" ownerContext="controlGraph" userID="FLX" flexoID="22">
           <MatchingCriteria id="54" patternRoleName="book" value="book" userID="FLX" flexoID="20" />
           <MatchingCriteria id="55" patternRoleName="section" userID="FLX" flexoID="21" />
           <CreateFlexoConceptInstanceParameter id="56" paramName="aBook" value="book" userID="FLX" flexoID="26" />
@@ -84,7 +84,7 @@
   </ActionScheme>
   <ActionScheme id="57" skipConfirmationPanel="false" name="reinjectFromDocument" width="800" label="reinjectFromDocument" height="600" userID="FLX" flexoID="32">
     <BehaviourControlGraph_IterationAction id="58" iteratorName="bookSection" userID="FLX" flexoID="30">
-      <Iteration_SelectFlexoConceptInstance id="59" flexoConceptTypeURI="http://openflexo.org/docx-test/TestLibraryViewPoint/DocumentVirtualModel#BookDescriptionSection" receiver="virtualModelInstance" ownerContext="iterationControlGraph" userID="FLX" flexoID="31" />
+      <Iteration_SelectFlexoConceptInstance id="59" flexoConceptTypeURI="http://openflexo.org/docx-test/TestResourceCenter/TestLibraryViewPoint.fml/DocumentVirtualModel.fml#BookDescriptionSection" receiver="virtualModelInstance" ownerContext="iterationControlGraph" userID="FLX" flexoID="31" />
       <ControlGraph_ExpressionAction id="60" expression="bookSection.reinjectDataFromBookDescriptionSection()" ownerContext="controlGraph" userID="FLX" flexoID="29" />
     </BehaviourControlGraph_IterationAction>
   </ActionScheme>

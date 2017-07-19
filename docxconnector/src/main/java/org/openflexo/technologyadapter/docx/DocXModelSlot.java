@@ -33,8 +33,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -186,7 +186,8 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		}
 
 		@Override
-		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(AbstractVirtualModelInstance<?, ?> view,
+				String filename, String modelUri) {
 
 			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getResourceCenter(), filename, true, getIdStrategy());
 		}

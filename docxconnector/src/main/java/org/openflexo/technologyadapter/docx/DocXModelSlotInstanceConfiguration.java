@@ -20,9 +20,9 @@
 
 package org.openflexo.technologyadapter.docx;
 
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -58,7 +58,18 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 	}
 
 	@Override
-	public FreeModelSlotInstance<DocXDocument, DocXModelSlot> createModelSlotInstance(FlexoConceptInstance fci, View view) {
+	public FreeModelSlotInstance<DocXDocument, DocXModelSlot> createModelSlotInstance(FlexoConceptInstance fci,
+			AbstractVirtualModelInstance<?, ?> view) {
+
+		System.out.println("createModelSlotInstance for " + fci + " view=" + view);
+
 		return super.createModelSlotInstance(fci, view);
+	}
+
+	@Override
+	protected FreeModelSlotInstance<DocXDocument, DocXModelSlot> configureModelSlotInstance(
+			FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance) {
+		System.out.println("Et on configure avec l'option " + getOption());
+		return super.configureModelSlotInstance(msInstance);
 	}
 }

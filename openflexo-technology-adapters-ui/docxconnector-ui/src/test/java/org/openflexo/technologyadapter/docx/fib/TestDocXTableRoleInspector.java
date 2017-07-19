@@ -41,12 +41,15 @@ package org.openflexo.technologyadapter.docx.fib;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModelLibrary;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
@@ -88,11 +91,11 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(3)
-	public void loadConcepts() {
+	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
 		assertNotNull(vpLib);
-		ViewPoint viewPoint = vpLib.getViewPoint("http://openflexo.org/docx-test/TestLibraryViewPoint2");
+		VirtualModel viewPoint = vpLib.getVirtualModel("http://openflexo.org/docx-test/TestResourceCenter/TestLibraryViewPoint2.fml");
 		assertNotNull(viewPoint);
 		VirtualModel virtualModel = viewPoint.getVirtualModelNamed("DocumentVirtualModel");
 		assertNotNull(virtualModel);
