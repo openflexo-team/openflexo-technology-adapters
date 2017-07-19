@@ -53,14 +53,11 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -74,7 +71,7 @@ import org.openflexo.test.TestOrder;
 public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static final String VIEWPOINT_NAME = "TestPPTViewPoint";
-	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint";
+	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint.fml";
 	private static final String VIRTUAL_MODEL_NAME = "TestPPTVirtualModel";
 
 	protected static final Logger logger = Logger.getLogger(TestPowerpointModel.class.getPackage().getName());
@@ -102,8 +99,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		resourceCenter = makeNewDirectoryResourceCenter();
 
 		resourceCenterDirectory = resourceCenter.getDirectory();
-		powerpointAdapter = testApplicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
+		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 		/*
 		 * for (FlexoResourceCenter rc :
@@ -114,8 +110,8 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		 * System.out.println(">>> rc=" + rc + " modelRepository=" +
 		 * modelRepository); }
 		 */
-		modelRepository = powerpointAdapter.getPowerpointSlideShowRepository(testApplicationContext
-				.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/ppt-test"));
+		modelRepository = powerpointAdapter.getPowerpointSlideShowRepository(
+				testApplicationContext.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/ppt-test"));
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getSize() > 0);
 		logger.info("Found " + modelRepository.getSize() + " powerpoint files");
@@ -144,23 +140,25 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 	 * 
 	 * @throws IOException
 	 * @throws ModelDefinitionException
-	 * @throws SaveResourceException
+	 * @throws FlexoException
+	 * @throws ResourceLoadingCancelledException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreatePowerpointViewpoint() throws IOException, SaveResourceException, ModelDefinitionException {
+	public void testCreatePowerpointViewpoint()
+			throws IOException, ModelDefinitionException, ResourceLoadingCancelledException, FlexoException {
 		logger.info("testCreatePowerpointViewpoint()");
 
 		System.out.println("resourceCenterDirectory=" + resourceCenterDirectory);
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
-		ViewPointResource viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		VirtualModelResource viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
-		ViewPoint newViewPoint = viewPointResource.getLoadedResourceData();
+		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
 
 		// ViewPoint newViewPoint =
 		// ViewPointImpl.newViewPoint("TestPPTViewPoint",
@@ -168,10 +166,10 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		// resourceCenterDirectory,
 		// testApplicationContext.getViewPointLibrary(), resourceCenter);
 
-		assertNotNull(testApplicationContext.getVirtualModelLibrary().getViewPoint(VIEWPOINT_URI));
+		assertNotNull(testApplicationContext.getVirtualModelLibrary().getVirtualModel(VIEWPOINT_URI));
 
-		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(
-				VIRTUAL_MODEL_NAME, viewPointResource, fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource,
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// VirtualModel newVirtualModel = null;
@@ -233,8 +231,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		PowerpointSlideshowResourceFactory factory = pptTechnologyAdapter.getPowerpointSlideshowResourceFactory();
 
-		modelRes = factory.makeResource(pptFile, resourceCenter, pptTechnologyAdapter.getTechnologyContextManager(),
-				true);
+		modelRes = factory.makeResource(pptFile, resourceCenter, pptTechnologyAdapter.getTechnologyContextManager(), true);
 		// modelRes =
 		// PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(),
 		// pptFile,
@@ -254,31 +251,29 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(5)
 	public void testLoadPowerpointViewpoints() throws IOException {
-		ViewPoint test1ViewPoint = loadViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint");
+		VirtualModel test1ViewPoint = loadViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint.fml");
 		assertNotNull(test1ViewPoint);
 
-		System.out.println("dir=" + ((ViewPointResource) test1ViewPoint.getResource()).getDirectory());
+		System.out.println("dir=" + ((VirtualModelResource) test1ViewPoint.getResource()).getDirectory());
 		System.out.println("VMs=" + test1ViewPoint.getVirtualModels());
 
 		VirtualModel vm = test1ViewPoint.getVirtualModelNamed("TestPPTVirtualModel");
 		assertNotNull(vm);
 		assertNotNull(vm.getModelSlots(BasicPowerpointModelSlot.class));
 		assertTrue(vm.getModelSlots(BasicPowerpointModelSlot.class).size() > 0);
-		BasicPowerpointModelSlot basicPowerpointModelslot = (BasicPowerpointModelSlot) vm
-				.getModelSlot("powerpointBasicModelSlot");
+		BasicPowerpointModelSlot basicPowerpointModelslot = (BasicPowerpointModelSlot) vm.getModelSlot("powerpointBasicModelSlot");
 		assertNotNull(basicPowerpointModelslot);
 
 	}
 
-	private ViewPoint loadViewPoint(String viewPointURI) {
+	private VirtualModel loadViewPoint(String viewPointURI) {
 
 		log("Testing ViewPoint loading: " + viewPointURI);
 		System.out.println("resourceCenter=" + resourceCenter);
 		System.out.println("resourceCenter.getViewPointRepository()=" + resourceCenter.getViewPointRepository());
-		ViewPointResource viewPointResource = testApplicationContext.getVirtualModelLibrary()
-				.getViewPointResource(viewPointURI);
+		VirtualModelResource viewPointResource = testApplicationContext.getVirtualModelLibrary().getVirtualModelResource(viewPointURI);
 		assertNotNull(viewPointResource);
-		ViewPoint viewPoint = viewPointResource.getViewPoint();
+		VirtualModel viewPoint = viewPointResource.getVirtualModel();
 		assertTrue(viewPointResource.isLoaded());
 		return viewPoint;
 	}

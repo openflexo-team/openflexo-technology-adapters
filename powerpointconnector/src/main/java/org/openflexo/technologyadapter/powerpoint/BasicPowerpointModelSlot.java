@@ -47,9 +47,9 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -151,7 +151,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+		public PowerpointSlideshowResource createProjectSpecificEmptyResource(AbstractVirtualModelInstance<?, ?> view, String filename,
+				String modelUri) {
 			try {
 				return getModelSlotTechnologyAdapter().createNewSlideshow((FlexoResourceCenter<File>) view.getResourceCenter(), filename,
 						modelUri);

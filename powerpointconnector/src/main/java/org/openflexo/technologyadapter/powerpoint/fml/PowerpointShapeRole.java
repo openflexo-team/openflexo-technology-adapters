@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @FML("PowerpointShapeRole")
 public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 
-	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide>implements PowerpointShapeRole {
+	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> implements PowerpointShapeRole {
 
 		@Override
 		public Type getType() {
@@ -87,7 +87,7 @@ public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 
 		@Override
 		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance fci) {
-			VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);

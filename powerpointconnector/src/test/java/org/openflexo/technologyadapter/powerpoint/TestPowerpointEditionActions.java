@@ -47,7 +47,6 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
@@ -68,7 +67,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	private static String baseDirName;
 	private static PowerpointSlideshowResource modelRes;
 	private static BasicPowerpointModelSlot modelSlot;
-	private static ViewPoint newViewPoint;
+	private static VirtualModel newViewPoint;
 	private static VirtualModel newVirtualModel;
 
 	/*
@@ -116,8 +115,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 		log("test0InstantiateResourceCenter()");
 		testApplicationContext = instanciateTestServiceManager(PowerpointTechnologyAdapter.class);
 		assertNotNull(testApplicationContext);
-		powerpointAdapter = testApplicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
+		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
 			if (powerpointAdapter.getPowerpointSlideShowRepository(rc) != null) {

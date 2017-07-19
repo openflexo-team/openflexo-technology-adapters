@@ -21,17 +21,14 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.resource.GitIODelegate;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.GitIODelegate;
 import org.openflexo.foundation.resource.GitResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.test.OpenFlexoTestCaseWithGit;
 import org.openflexo.model.ModelContextLibrary;
@@ -72,8 +69,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		testApplicationContext = instanciateTestServiceManager(PowerpointTechnologyAdapter.class);
 		assertNotNull(testApplicationContext);
 
-		powerpointAdapter = testApplicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
+		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
@@ -123,40 +119,31 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	 * 
 	 * @throws IOException
 	 * @throws ModelDefinitionException
-	 * @throws SaveResourceException
+	 * @throws FlexoException
+	 * @throws ResourceLoadingCancelledException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreatePowerpointViewpoint() throws IOException, SaveResourceException, ModelDefinitionException {
+	public void testCreatePowerpointViewpoint()
+			throws IOException, ModelDefinitionException, ResourceLoadingCancelledException, FlexoException {
 		logger.info("testCreatePowerpointViewpoint()");
 
 		System.out.println("resourceCenterDirectory=" + gitResourceCenterDirectory);
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		ViewPointResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
-		ViewPointResource viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		VirtualModelResource viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(gitResourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
-		ViewPoint newViewPoint = viewPointResource.getLoadedResourceData();
+		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
 
-		/*
-		 * Create a new Ressource and put it in the GitRessourceCenter
-		 */
-		/*
-		 * ViewPoint newViewPoint =
-		 * ViewPointImpl.newGitViewPoint("TestPPTViewPoint",
-		 * "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint",
-		 * gitResourceCenter.getGitRepository().getWorkTree(),
-		 * gitResourceCenter.getGitRepository(),
-		 * testApplicationContext.getViewPointLibrary(), gitResourceCenter);
-		 */
 		assertNotNull(testApplicationContext.getVirtualModelLibrary()
-				.getViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
+				.getVirtualModel("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint.fml"));
 
-		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(
-				VIRTUAL_MODEL_NAME, viewPointResource, fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource,
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
 
 		FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
@@ -195,15 +182,14 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@TestOrder(4)
 	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(GitIODelegate.class,
-				PowerpointSlideshowResource.class));
+		ModelFactory factory = new ModelFactory(
+				ModelContextLibrary.getCompoundModelContext(GitIODelegate.class, PowerpointSlideshowResource.class));
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
 			// flexoResource.setFlexoIODelegate(FlexoIOGitDelegateImpl.makeFlexoIOGitDelegate(flexoResource.getName(),
 			// factory,
 			// gitRepository.getWorkTree(), gitRepository));
-			flexoResource
-					.setIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
+			flexoResource.setIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
 			GitIODelegate gitDelegate = (GitIODelegate) flexoResource.getIODelegate();
 			try {
 				gitDelegate.save(flexoResource);
@@ -220,7 +206,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 					fileTree.next(1);
 				}
 				System.out.println("File retrieved :" + fileTree.getEntryFile().getName());
-			} else {
+			}
+			else {
 				logger.warning("Null commitId !!! Please investigate");
 			}
 		}
@@ -255,8 +242,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		PowerpointSlideshowResourceFactory factory = pptTechnologyAdapter.getPowerpointSlideshowResourceFactory();
 
 		System.out.println("avant la resource pptFile = " + pptFile);
-		modelRes = factory.makeResource(pptFile, gitResourceCenter, pptTechnologyAdapter.getTechnologyContextManager(),
-				true);
+		modelRes = factory.makeResource(pptFile, gitResourceCenter, pptTechnologyAdapter.getTechnologyContextManager(), true);
 		System.out.println("apres: " + modelRes.getIODelegate().getSerializationArtefact());
 
 		// modelRes =
@@ -275,45 +261,15 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		pptFile.delete();
 	}
 
-	/**
-	 * Load powerpoint viewpoint
-	 * 
-	 * @throws IOException
-	 */
-	/*
-	 * @Test
-	 * 
-	 * @TestOrder(6) public void testLoadPowerpointViewpoints() throws
-	 * IOException { ViewPoint test1ViewPoint = loadViewPoint(
-	 * "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint");
-	 * assertNotNull(test1ViewPoint);
-	 * 
-	 * System.out.println("dir=" + ((ViewPointResource)
-	 * test1ViewPoint.getResource()).getDirectory()); System.out.println("VMs="
-	 * + test1ViewPoint.getVirtualModels());
-	 * 
-	 * VirtualModel vm =
-	 * test1ViewPoint.getVirtualModelNamed("TestPPTVirtualModel");
-	 * assertNotNull(vm);
-	 * assertNotNull(vm.getModelSlots(BasicPowerpointModelSlot.class));
-	 * assertTrue(vm.getModelSlots(BasicPowerpointModelSlot.class).size() > 0);
-	 * BasicPowerpointModelSlot basicPowerpointModelslot =
-	 * (BasicPowerpointModelSlot) vm.getModelSlot("powerpointBasicModelSlot");
-	 * assertNotNull(basicPowerpointModelslot);
-	 * 
-	 * }
-	 */
-
-	private ViewPoint loadViewPoint(String viewPointURI) {
+	private VirtualModel loadViewPoint(String viewPointURI) {
 
 		log("Testing ViewPoint loading: " + viewPointURI);
 		// System.out.println("resourceCenter=" + resourceCenter);
 		// System.out.println("resourceCenter.getViewPointRepository()=" +
 		// resourceCenter.getViewPointRepository());
-		ViewPointResource viewPointResource = testApplicationContext.getVirtualModelLibrary()
-				.getViewPointResource(viewPointURI);
+		VirtualModelResource viewPointResource = testApplicationContext.getVirtualModelLibrary().getVirtualModelResource(viewPointURI);
 		assertNotNull(viewPointResource);
-		ViewPoint viewPoint = viewPointResource.getViewPoint();
+		VirtualModel viewPoint = viewPointResource.getVirtualModel();
 		assertTrue(viewPointResource.isLoaded());
 		return viewPoint;
 	}
