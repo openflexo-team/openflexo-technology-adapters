@@ -1,12 +1,12 @@
 dependencies {
   // openflexo dep
-  compile project(':flexo-foundation')
-  compile project(':flexo-documentation')
+  compile flexoFoundation()
+  compile flexoDocumentation()
   // external dep
   compile 'org.docx4j:docx4j:3.3.0'
   // testing dep
-  testCompile project(':testutils')
-  testCompile project(':flexo-foundation-test')
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
   
   // Test resource center
   testRuntime project(':docxconnector-test-rc')
