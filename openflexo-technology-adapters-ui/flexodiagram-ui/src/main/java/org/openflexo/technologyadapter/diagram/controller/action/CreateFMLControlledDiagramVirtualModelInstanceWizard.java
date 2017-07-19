@@ -85,7 +85,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 	 * 
 	 */
 	@FIBPanel("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib")
-	public class ChooseVirtualModel extends AbstractChooseVirtualModel<VirtualModel> {
+	public class ChooseVirtualModel extends AbstractChooseVirtualModel {
 
 		@Override
 		public String getTitle() {
@@ -95,8 +95,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 	}
 
 	@FIBPanel("Fib/Wizard/ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel.fib")
-	public class ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel
-			extends AbstractChooseAndConfigureCreationScheme<VirtualModel> {
+	public class ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel extends AbstractChooseAndConfigureCreationScheme {
 
 		public ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel() {
 			super(action.getCreationSchemeAction());

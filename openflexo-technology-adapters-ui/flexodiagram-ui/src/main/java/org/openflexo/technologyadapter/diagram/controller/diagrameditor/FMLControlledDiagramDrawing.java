@@ -60,7 +60,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance.ObjectLookupResult;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.model.ModelContextLibrary;
@@ -180,7 +180,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setDiagramElement(shape);
 				registerNewFMLControlledDiagramElement(returned);
 				// shape.setName(returned.getLabel());
-			} else {
+			}
+			else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}
 		}
@@ -200,7 +201,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setRole((ConnectorRole) r.property);
 				returned.setDiagramElement(connector);
 				registerNewFMLControlledDiagramElement(returned);
-			} else {
+			}
+			else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}
 		}
@@ -357,7 +359,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlShape != null) {
 						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawShape(fmlControlledShapeBinding, fmlShape, diagram);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, diagram);
 					}
@@ -371,7 +374,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						drawConnector(fmlControlledConnectorBinding, fmlConnector,
 								fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), diagram);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal connector, we just display the connector
 						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), diagram);
@@ -388,7 +392,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlShape != null) {
 						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawShape(fmlControlledShapeBinding, fmlShape, aShape);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, aShape);
 					}
@@ -402,7 +407,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						drawConnector(fmlControlledConnectorBinding, fmlConnector,
 								fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal connector, we just display the connector
 						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
@@ -420,7 +426,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						if (fmlShape != null) {
 							// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 							drawShape(fmlControlledShapeBinding, fmlShape, aShape);
-						} else {
+						}
+						else {
 							// Otherwise, this is a normal shape, we just display the shape
 							drawShape(shapeBinding, shape, aShape);
 						}
@@ -435,7 +442,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 							drawConnector(fmlControlledConnectorBinding, fmlConnector,
 									fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 									fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
-						} else {
+						}
+						else {
 							// Otherwise, this is a normal connector, we just display the connector
 							drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 									fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
@@ -503,20 +511,20 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		return returned;
 	}*/
 
-/*	@Override
-	public <O> org.openflexo.fge.Drawing.ConnectorNode<O> createNewConnectorNode(org.openflexo.fge.Drawing.ContainerNode<?, ?> parentNode,
-			ConnectorGRBinding<O> binding, O drawable, org.openflexo.fge.Drawing.ShapeNode<?> fromNode,
-			org.openflexo.fge.Drawing.ShapeNode<?> toNode) {
-		System.out.println(">>>>>>>>>>>>>>>>> Tiens on le cree vraiment le ConnectorNode !!!!!!!");
-		System.out.println("parentNode=" + parentNode);
-		System.out.println("binding=" + binding);
-		System.out.println("drawable=" + drawable);
-		System.out.println("fromNode=" + fromNode);
-		System.out.println("toNode=" + toNode);
-		org.openflexo.fge.Drawing.ConnectorNode<O> returned = super.createNewConnectorNode(parentNode, binding, drawable, fromNode, toNode);
-		System.out.println("GR=" + returned.getGraphicalRepresentation());
-		System.out.println("CS=" + returned.getGraphicalRepresentation().getConnectorSpecification());
-		return returned;
-	}*/
+	/*	@Override
+		public <O> org.openflexo.fge.Drawing.ConnectorNode<O> createNewConnectorNode(org.openflexo.fge.Drawing.ContainerNode<?, ?> parentNode,
+				ConnectorGRBinding<O> binding, O drawable, org.openflexo.fge.Drawing.ShapeNode<?> fromNode,
+				org.openflexo.fge.Drawing.ShapeNode<?> toNode) {
+			System.out.println(">>>>>>>>>>>>>>>>> Tiens on le cree vraiment le ConnectorNode !!!!!!!");
+			System.out.println("parentNode=" + parentNode);
+			System.out.println("binding=" + binding);
+			System.out.println("drawable=" + drawable);
+			System.out.println("fromNode=" + fromNode);
+			System.out.println("toNode=" + toNode);
+			org.openflexo.fge.Drawing.ConnectorNode<O> returned = super.createNewConnectorNode(parentNode, binding, drawable, fromNode, toNode);
+			System.out.println("GR=" + returned.getGraphicalRepresentation());
+			System.out.println("CS=" + returned.getGraphicalRepresentation().getConnectorSpecification());
+			return returned;
+		}*/
 
 }

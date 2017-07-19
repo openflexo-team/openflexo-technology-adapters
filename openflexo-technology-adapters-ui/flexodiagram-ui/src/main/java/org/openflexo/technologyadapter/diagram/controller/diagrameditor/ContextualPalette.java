@@ -275,7 +275,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		else if (availableDropSchemes.size() > 1) {
 			JPopupMenu popup = new JPopupMenu();
 			for (final DropScheme dropScheme : availableDropSchemes) {
-				JMenuItem menuItem = new JMenuItem(dropScheme.getContainerVirtualModel().getLocalizedDictionary()
+				JMenuItem menuItem = new JMenuItem(dropScheme.getDeclaringVirtualModel().getLocalizedDictionary()
 						.localizedForKey(dropScheme.getLabel() != null ? dropScheme.getLabel() : dropScheme.getName()));
 				menuItem.addActionListener(new DrawingShapeActionListener(editor, dropScheme, container, parentFlexoConceptInstance,
 						parentShapeRole, paletteElement, dropLocation));

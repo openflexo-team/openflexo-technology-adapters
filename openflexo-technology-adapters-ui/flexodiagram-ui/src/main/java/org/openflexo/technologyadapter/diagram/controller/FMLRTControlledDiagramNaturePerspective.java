@@ -40,16 +40,14 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
-import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLRTNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
@@ -72,8 +70,8 @@ public class FMLRTControlledDiagramNaturePerspective extends FMLRTNaturePerspect
 	static final Logger logger = Logger.getLogger(FMLRTControlledDiagramNaturePerspective.class.getPackage().getName());
 
 	public FMLRTControlledDiagramNaturePerspective(FlexoController controller) {
-		super(FMLControlledDiagramViewNature.INSTANCE, FMLControlledDiagramVirtualModelInstanceNature.INSTANCE, null,
-				controller.getFMLRTTechnologyAdapter(), controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
+		super(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE, null, controller.getFMLRTTechnologyAdapter(),
+				controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
 	}
 
 	/**

@@ -40,16 +40,11 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fml.controller.view.ViewPointView;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramContainerNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.view.DiagramFlexoConceptView;
@@ -77,9 +72,8 @@ public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective 
 	static final Logger logger = Logger.getLogger(FMLControlledDiagramNaturePerspective.class.getPackage().getName());
 
 	public FMLControlledDiagramNaturePerspective(FlexoController controller) {
-		super(FMLControlledDiagramContainerNature.INSTANCE, FMLControlledDiagramVirtualModelNature.INSTANCE,
-				FMLControlledDiagramFlexoConceptNature.INSTANCE, controller.getFMLTechnologyAdapter(),
-				controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
+		super(FMLControlledDiagramVirtualModelNature.INSTANCE, FMLControlledDiagramFlexoConceptNature.INSTANCE,
+				controller.getFMLTechnologyAdapter(), controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
 	}
 
 	/**
@@ -99,11 +93,8 @@ public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective 
 
 	@Override
 	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
-		if (virtualModel instanceof ViewPoint) {
-			return (ModuleView) new ViewPointView((ViewPoint) virtualModel, getController(), this);
-		}
-		else if (virtualModel instanceof VirtualModel) {
-			return (ModuleView) new FMLControlledDiagramVirtualModelView((VirtualModel) virtualModel, getController(), this);
+		if (virtualModel instanceof VirtualModel) {
+			return new FMLControlledDiagramVirtualModelView(virtualModel, getController(), this);
 		}
 		return new EmptyPanel(getController(), this, virtualModel);
 	}

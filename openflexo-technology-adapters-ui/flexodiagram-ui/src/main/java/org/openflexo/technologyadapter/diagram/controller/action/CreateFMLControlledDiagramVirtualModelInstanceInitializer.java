@@ -39,7 +39,9 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
@@ -47,7 +49,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
@@ -58,7 +60,7 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
 public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
-		extends ActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject> {
+		extends ActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -80,10 +82,12 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 				return true;
 			}
 			else {
-				if (action.getFocusedObject() != null && action.getFocusedObject().getContainerVirtualModel() != null) {
+				if (action.getFocusedObject() instanceof VirtualModelInstance
+						&& ((VirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel() != null) {
 					// @Brutal
 					// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
-					action.getFocusedObject().getContainerVirtualModel().loadVirtualModelsWhenUnloaded();
+					((VirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel()
+							.loadContainedVirtualModelsWhenUnloaded();
 				}
 				Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
 				WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -122,7 +126,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 						step = step - 1;
 					}
 				}
-
+			
 				return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
 			}*/
 

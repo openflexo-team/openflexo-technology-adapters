@@ -419,7 +419,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		else {
 			JPopupMenu popup = new JPopupMenu();
 			for (final DropAndLinkScheme dropAndLinkScheme : allDropAndLinkSchemes) {
-				LocalizedDelegate localizedDictionary = dropAndLinkScheme.linkScheme.getContainerVirtualModel().getLocalizedDictionary();
+				LocalizedDelegate localizedDictionary = dropAndLinkScheme.linkScheme.getDeclaringVirtualModel().getLocalizedDictionary();
 				String linkLabel = dropAndLinkScheme.linkScheme.getLabel() != null ? dropAndLinkScheme.linkScheme.getLabel()
 						: dropAndLinkScheme.linkScheme.getName();
 				String localizedLinkLabel = localizedDictionary.localizedForKeyAndLanguage(linkLabel,
@@ -476,7 +476,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				for (final LinkScheme linkScheme : availableLinkSchemes) {
 					// final CalcPaletteConnector connector = availableConnectors.get(linkScheme);
 					// System.out.println("Available: "+paletteConnector.getEditionPattern().getName());
-					LocalizedDelegate localizedDictionary = linkScheme.getContainerVirtualModel().getLocalizedDictionary();
+					LocalizedDelegate localizedDictionary = linkScheme.getDeclaringVirtualModel().getLocalizedDictionary();
 					String label = linkScheme.getLabel() != null ? linkScheme.getLabel() : linkScheme.getName();
 					String localized = localizedDictionary.localizedForKeyAndLanguage(label, FlexoLocalization.getCurrentLanguage());
 					if (localized == null) {
