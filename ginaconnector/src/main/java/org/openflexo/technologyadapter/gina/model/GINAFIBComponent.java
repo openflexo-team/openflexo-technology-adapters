@@ -44,8 +44,8 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -107,8 +107,8 @@ public interface GINAFIBComponent
 	public void setTechnologyAdapter(GINATechnologyAdapter technologyAdapter);
 
 	/**
-	 * Ensure that the whole binding context (BindingFactory and BindingModel) is bound to an {@link VirtualModel} using the
-	 * specifications given by a {@link FIBComponentModelSlot}
+	 * Ensure that the whole binding context (BindingFactory and BindingModel) is bound to an {@link VirtualModel} using the specifications
+	 * given by a {@link FIBComponentModelSlot}
 	 * 
 	 * @param concept
 	 * @param modelSlot
@@ -140,7 +140,7 @@ public interface GINAFIBComponent
 				return;
 			}
 
-			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getViewPoint()));
+			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getDeclaringVirtualModel()));
 
 			getComponent().setCustomTypeManager(getResource().getServiceManager().getTechnologyAdapterService());
 

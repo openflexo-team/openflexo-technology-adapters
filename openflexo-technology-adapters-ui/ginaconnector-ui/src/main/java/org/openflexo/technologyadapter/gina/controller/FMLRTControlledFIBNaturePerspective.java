@@ -40,11 +40,10 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
-import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
 import org.openflexo.view.ModuleView;
@@ -69,8 +68,8 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 	static final Logger logger = Logger.getLogger(FMLRTControlledFIBNaturePerspective.class.getPackage().getName());
 
 	public FMLRTControlledFIBNaturePerspective(FlexoController controller) {
-		super(FMLControlledFIBViewNature.INSTANCE, FMLControlledFIBVirtualModelInstanceNature.INSTANCE, null,
-				controller.getFMLRTTechnologyAdapter(), controller.getTechnologyAdapter(GINATechnologyAdapter.class), controller);
+		super(FMLControlledFIBVirtualModelInstanceNature.INSTANCE, null, controller.getFMLRTTechnologyAdapter(),
+				controller.getTechnologyAdapter(GINATechnologyAdapter.class), controller);
 	}
 
 	/**

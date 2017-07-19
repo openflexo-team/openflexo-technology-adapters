@@ -53,38 +53,27 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.CheckboxParameter;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
-import org.openflexo.foundation.fml.FlexoBehaviour;
-import org.openflexo.foundation.fml.FlexoBehaviourParameter;
-import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.FloatParameter;
 import org.openflexo.foundation.fml.PrimitiveRole;
 import org.openflexo.foundation.fml.PropertyCardinality;
-import org.openflexo.foundation.fml.TextFieldParameter;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateFlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
@@ -105,12 +94,12 @@ import org.openflexo.toolbox.StringUtils;
  *
  */
 public class CreateFMLControlledFIBVirtualModel
-		extends AbstractCreateVirtualModel<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject> {
+		extends AbstractCreateVirtualModel<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledFIBVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject> actionType = new FlexoActionType<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject>(
+	public static FlexoActionType<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionType<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject>(
 			"create_screen_virtual_model", FlexoActionType.newVirtualModelMenu, FlexoActionType.defaultGroup,
 			FlexoActionType.ADD_ACTION_TYPE) {
 
@@ -118,25 +107,25 @@ public class CreateFMLControlledFIBVirtualModel
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledFIBVirtualModel makeNewAction(ViewPoint focusedObject, Vector<FMLObject> globalSelection,
+		public CreateFMLControlledFIBVirtualModel makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledFIBVirtualModel(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(ViewPoint object, Vector<FMLObject> globalSelection) {
+		public boolean isVisibleForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(ViewPoint object, Vector<FMLObject> globalSelection) {
+		public boolean isEnabledForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLControlledFIBVirtualModel.actionType, ViewPoint.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledFIBVirtualModel.actionType, VirtualModel.class);
 	}
 
 	private String newVirtualModelName;
@@ -154,7 +143,7 @@ public class CreateFMLControlledFIBVirtualModel
 	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
-	CreateFMLControlledFIBVirtualModel(ViewPoint focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledFIBVirtualModel(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		apiEntries = new ArrayList<>();
 	}
@@ -180,39 +169,6 @@ public class CreateFMLControlledFIBVirtualModel
 		return createStringRole.getNewFlexoRole();
 	}
 
-	private FlexoBehaviourParameter createParameter(FlexoBehaviour behaviour, String parameterName, Type parameterType) {
-		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType.makeNewEmbeddedAction(behaviour, null,
-				this);
-		createParameter.setParameterName(parameterName);
-
-		if (parameterType.equals(String.class)) {
-			createParameter.setFlexoBehaviourParameterClass(TextFieldParameter.class);
-		}
-		else if (parameterType.equals(Boolean.class) || parameterType.equals(Boolean.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(TextFieldParameter.class);
-		}
-		else if (parameterType.equals(Integer.class) || parameterType.equals(Integer.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(CheckboxParameter.class);
-		}
-		else if (parameterType.equals(Float.class) || parameterType.equals(Float.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(FloatParameter.class);
-		}
-		else if (parameterType.equals(Double.class) || parameterType.equals(Double.TYPE)) {
-			createParameter.setFlexoBehaviourParameterClass(FloatParameter.class);
-		}
-		else if (parameterType instanceof FlexoConceptInstanceType) {
-			createParameter.setFlexoBehaviourParameterClass(FlexoConceptInstanceParameter.class);
-		}
-		createParameter.doAction();
-		FlexoBehaviourParameter returned = createParameter.getNewParameter();
-		if (parameterType instanceof FlexoConceptInstanceType) {
-			((FlexoConceptInstanceParameter) returned).setFlexoConceptType(((FlexoConceptInstanceType) parameterType).getFlexoConcept());
-			((FlexoConceptInstanceParameter) returned)
-					.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
-		}
-		return returned;
-	}
-
 	@Override
 	protected void doAction(Object context) throws FlexoException {
 
@@ -220,11 +176,11 @@ public class CreateFMLControlledFIBVirtualModel
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		try {
-			VirtualModelResource vmResource = factory.makeVirtualModelResource(getNewVirtualModelName(),
-					(ViewPointResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			VirtualModelResource vmResource = factory.makeContainedVirtualModelResource(getNewVirtualModelName(),
+					(VirtualModelResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 			newVirtualModel = vmResource.getLoadedResourceData();
 			newVirtualModel.setDescription(newVirtualModelDescription);
 		} catch (SaveResourceException e) {
@@ -265,15 +221,6 @@ public class CreateFMLControlledFIBVirtualModel
 				}
 				else if (apiEntry.getType().equals(Double.class) || apiEntry.getType().equals(Double.TYPE)) {
 					newRole = createPrimitiveRole(newVirtualModel, apiEntry.getName(), PrimitiveType.Double);
-				}
-				else if (apiEntry.getType() instanceof ViewType) {
-					CreateFlexoConceptInstanceRole createViewRole = CreateFlexoConceptInstanceRole.actionType
-							.makeNewEmbeddedAction(newVirtualModel, null, this);
-					createViewRole.setRoleName(apiEntry.getName());
-					createViewRole.setFlexoConceptInstanceType(((ViewType) apiEntry.getType()).getViewPoint());
-					createViewRole.setCardinality(PropertyCardinality.ZeroOne);
-					createViewRole.doAction();
-					newRole = createViewRole.getNewFlexoRole();
 				}
 				else if (apiEntry.getType() instanceof VirtualModelInstanceType) {
 					CreateFlexoConceptInstanceRole createViewRole = CreateFlexoConceptInstanceRole.actionType

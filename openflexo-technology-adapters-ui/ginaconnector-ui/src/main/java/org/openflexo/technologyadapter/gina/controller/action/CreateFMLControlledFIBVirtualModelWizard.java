@@ -48,7 +48,6 @@ import java.util.logging.Logger;
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.fml.controller.action.AbstractCreateVirtualModelWizard;
-import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -98,7 +97,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 	}
 
 	@Override
-	public ViewPoint getViewPoint() {
+	public VirtualModel getContainerVirtualModel() {
 		return getAction().getFocusedObject();
 	}
 

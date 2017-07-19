@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
-import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -63,8 +63,8 @@ public class FMLFIBBindingFactory extends FMLBindingFactory {
 
 	static final Logger logger = Logger.getLogger(FMLFIBBindingFactory.class.getPackage().getName());
 
-	public FMLFIBBindingFactory(ViewPoint viewPoint) {
-		super(viewPoint);
+	public FMLFIBBindingFactory(VirtualModel virtualModel) {
+		super(virtualModel);
 	}
 
 	@Override

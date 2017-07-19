@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.lang.reflect.Type;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -53,19 +52,14 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
-import org.openflexo.foundation.fml.FlexoBehaviour;
-import org.openflexo.foundation.fml.FlexoBehaviourParameter;
-import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateGenericBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -155,19 +149,6 @@ public class CreateFMLControlledDiagramVirtualModel
 
 	public DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-	}
-
-	private FlexoBehaviourParameter createParameter(FlexoBehaviour behaviour, String parameterName, Type parameterType) {
-		CreateGenericBehaviourParameter createParameter = CreateGenericBehaviourParameter.actionType.makeNewEmbeddedAction(behaviour, null,
-				this);
-		createParameter.setParameterName(parameterName);
-		createParameter.setParameterType(parameterType);
-		createParameter.doAction();
-		FlexoBehaviourParameter returned = createParameter.getNewParameter();
-		if (parameterType instanceof FlexoConceptInstanceType) {
-			createParameter.setContainer(new DataBinding<VirtualModelInstance>("this"));
-		}
-		return returned;
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation() throws ModelDefinitionException {

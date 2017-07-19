@@ -40,12 +40,11 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
-import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewNature;
-import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewPointNature;
+import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBFlexoConceptInstanceNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelModuleView;
@@ -72,8 +71,8 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	static final Logger logger = Logger.getLogger(FMLControlledFIBNaturePerspective.class.getPackage().getName());
 
 	public FMLControlledFIBNaturePerspective(FlexoController controller) {
-		super(FMLControlledFIBViewPointNature.INSTANCE, FMLControlledFIBVirtualModelNature.INSTANCE, null,
-				controller.getFMLTechnologyAdapter(), controller.getTechnologyAdapter(GINATechnologyAdapter.class), controller);
+		super(FMLControlledFIBVirtualModelNature.INSTANCE, null, controller.getFMLTechnologyAdapter(),
+				controller.getTechnologyAdapter(GINATechnologyAdapter.class), controller);
 	}
 
 	/**
@@ -92,11 +91,6 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	}
 
 	@Override
-	public FMLControlledFIBViewPointNature getViewpointNature() {
-		return (FMLControlledFIBViewPointNature) super.getViewpointNature();
-	}
-
-	@Override
 	public FMLControlledFIBVirtualModelNature getVirtualModelNature() {
 		return (FMLControlledFIBVirtualModelNature) super.getVirtualModelNature();
 	}
@@ -105,7 +99,7 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
 
 		System.out.println("je cree la module view pour " + virtualModel);
-		System.out.println("has nature = "+virtualModel.hasNature(getVirtualModelNature()));
+		System.out.println("has nature = " + virtualModel.hasNature(getVirtualModelNature()));
 		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
 		}

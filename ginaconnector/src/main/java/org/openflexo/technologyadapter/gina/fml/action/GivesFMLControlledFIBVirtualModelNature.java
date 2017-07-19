@@ -48,17 +48,14 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.localization.LocalizedDelegate;
@@ -146,10 +143,6 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 
 		Progress.progress(getLocales().localizedForKey("gives_fml_controlled_component_nature"));
 
-		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
-				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory().getVirtualModelResourceFactory();
-
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
 					this);
@@ -184,7 +177,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 			createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
 			createCreationScheme.setFlexoBehaviourName("init");
 			createCreationScheme.doAction();
-			CreationScheme initBehaviour = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+			// CreationScheme initBehaviour = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 		}
 
 		// Update init behaviour(s) by appending ui=ConfigureGINAFIBComponent() to the end of all control graphs

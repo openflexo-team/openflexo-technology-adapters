@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.gina.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
@@ -43,7 +43,7 @@ public interface FIBComponentRole extends FlexoRole<GINAFIBComponent> {
 
 	public GINATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public abstract static class FIBComponentRoleImpl extends FlexoRoleImpl<GINAFIBComponent>implements FIBComponentRole {
+	public abstract static class FIBComponentRoleImpl extends FlexoRoleImpl<GINAFIBComponent> implements FIBComponentRole {
 
 		@Override
 		public Type getType() {
@@ -63,7 +63,7 @@ public interface FIBComponentRole extends FlexoRole<GINAFIBComponent> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public ActorReference<GINAFIBComponent> makeActorReference(final GINAFIBComponent object, final FlexoConceptInstance fci) {
-			final VirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			final AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			final ModelObjectActorReference<GINAFIBComponent> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
