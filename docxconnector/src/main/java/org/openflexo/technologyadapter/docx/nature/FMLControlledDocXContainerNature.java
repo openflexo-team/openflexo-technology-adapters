@@ -42,7 +42,7 @@ import java.util.List;
 
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentContainerNature;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 
 /**
@@ -61,7 +61,7 @@ public class FMLControlledDocXContainerNature extends FMLControlledDocumentConta
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled document
+	 * Return boolean indicating if supplied {@link FMLRTVirtualModelInstance} might be interpreted as a FML-Controlled document
 	 */
 	@Override
 	public boolean hasNature(VirtualModel virtualModel) {

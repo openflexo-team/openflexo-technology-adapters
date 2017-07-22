@@ -45,7 +45,7 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FlexoBehaviour;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.localization.LocalizedDelegate;
@@ -95,7 +95,7 @@ public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
-			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram((VirtualModelInstance) getVirtualModelInstance());
+			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram((FMLRTVirtualModelInstance) getVirtualModelInstance());
 		}
 		return super.getValue(variable);
 	}

@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.List;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -74,7 +74,7 @@ public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepr
 	public DiagramContainerElement<?> getParent();
 
 	@Override
-	public ShapeRole getPatternRole(VirtualModelInstance vmInstance);
+	public ShapeRole getPatternRole(FMLRTVirtualModelInstance vmInstance);
 
 	@Getter(value = START_CONNECTORS, cardinality = Cardinality.LIST, inverse = DiagramConnector.START_SHAPE)
 	@CloningStrategy(StrategyType.IGNORE)

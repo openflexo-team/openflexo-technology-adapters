@@ -33,9 +33,9 @@ import javax.swing.JPanel;
 import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.task.FlexoTask;
@@ -60,22 +60,22 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * A {@link ModuleView} suitable for {@link VirtualModelInstance} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
- * Display a FIB view bound to {@link VirtualModelInstance} evaluation context.<br>
+ * A {@link ModuleView} suitable for {@link FMLRTVirtualModelInstance} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
+ * Display a FIB view bound to {@link FMLRTVirtualModelInstance} evaluation context.<br>
  * This view allow to switch beeween normal and edit mode
  * 
  * @author sylvain
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<AbstractVirtualModelInstance<?, ?>> {
+public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance<?, ?>> {
 
 	protected static final Logger logger = FlexoLogger
 			.getLogger(FMLControlledFIBVirtualModelInstanceModuleView.class.getPackage().getName());
 
 	private final FlexoController controller;
 	private final FlexoPerspective perspective;
-	private final AbstractVirtualModelInstance<?, ?> virtualModelInstance;
+	private final VirtualModelInstance<?, ?> virtualModelInstance;
 
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
@@ -84,7 +84,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 	private LocalizedDelegate locales;
 
-	public FMLControlledFIBVirtualModelInstanceModuleView(AbstractVirtualModelInstance<?, ?> representedObject, FlexoController controller,
+	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance<?, ?> representedObject, FlexoController controller,
 			FlexoPerspective perspective, LocalizedDelegate locales) {
 		super(new BorderLayout());
 
@@ -427,7 +427,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	@Override
-	public AbstractVirtualModelInstance<?, ?> getRepresentedObject() {
+	public VirtualModelInstance<?, ?> getRepresentedObject() {
 		return virtualModelInstance;
 	}
 }

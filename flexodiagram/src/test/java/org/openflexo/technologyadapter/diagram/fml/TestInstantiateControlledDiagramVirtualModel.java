@@ -59,7 +59,7 @@ import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
@@ -104,8 +104,8 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	private static DiagramPalette palette;
 	private static DiagramPaletteElement paletteElement;
 
-	private static VirtualModelInstance newView;
-	private static VirtualModelInstance newVirtualModelInstance;
+	private static FMLRTVirtualModelInstance newView;
+	private static FMLRTVirtualModelInstance newVirtualModelInstance;
 	private static Diagram diagram;
 
 	/**
@@ -184,7 +184,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(4)
@@ -202,7 +202,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
-		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance");
 		action.setVirtualModel(virtualModel);
 
 		TypedDiagramModelSlotInstanceConfiguration diagramModelSlotInstanceConfiguration = (TypedDiagramModelSlotInstanceConfiguration) action
@@ -244,7 +244,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	}
 
 	/**
-	 * Try to populate VirtualModelInstance
+	 * Try to populate FMLRTVirtualModelInstance
 	 * 
 	 * @throws SaveResourceException
 	 */
@@ -320,7 +320,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws FlexoException
 	 * @throws ResourceLoadingCancelledException

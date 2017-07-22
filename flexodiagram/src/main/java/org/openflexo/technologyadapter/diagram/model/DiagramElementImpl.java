@@ -51,7 +51,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
@@ -204,14 +204,14 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	/**
 	 * Return {@link FlexoConceptInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
 	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
-	 * {@link VirtualModelInstance}
+	 * {@link FMLRTVirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
 	@Override
-	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance) {
+	public FlexoConceptInstance getFlexoConceptInstance(FMLRTVirtualModelInstance vmInstance) {
 		ModelSlotInstance<DiagramModelSlot, Diagram> diagramModelSlotInstance = null;
 		for (ModelSlotInstance<?, ?> msInstance : vmInstance.getModelSlotInstances()) {
 			if (msInstance.getModelSlot() instanceof DiagramModelSlot && msInstance.getAccessedResourceData() == getDiagram()) {
@@ -234,14 +234,14 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	/**
 	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting that
 	 * this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in
-	 * {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * {@link VirtualModel} of supplied {@link FMLRTVirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
 	@Override
-	public GraphicalElementRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
+	public GraphicalElementRole<?, ?> getPatternRole(FMLRTVirtualModelInstance vmInstance) {
 		FlexoConceptInstance epi = getFlexoConceptInstance(vmInstance);
 		if (epi != null) {
 			return (GraphicalElementRole<?, ?>) epi.getPropertyForActor(this);

@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -98,6 +98,6 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	public DiagramContainerElement<?> getParent();
 
 	@Override
-	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance);
+	public ConnectorRole getPatternRole(FMLRTVirtualModelInstance vmInstance);
 
 }

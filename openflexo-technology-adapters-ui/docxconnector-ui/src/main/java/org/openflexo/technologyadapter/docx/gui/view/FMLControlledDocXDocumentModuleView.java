@@ -56,7 +56,7 @@ import org.openflexo.foundation.action.FlexoActionSource;
 import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.ActionScheme;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -69,20 +69,20 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 import org.openflexo.view.listener.FlexoActionButton;
 
 /**
- * A {@link ModuleView} for a federated document inside a {@link VirtualModelInstance}<br>
- * It is stated that the related {@link VirtualModelInstance} has the {@link FMLControlledDocumentVirtualModelInstanceNature}
+ * A {@link ModuleView} for a federated document inside a {@link FMLRTVirtualModelInstance}<br>
+ * It is stated that the related {@link FMLRTVirtualModelInstance} has the {@link FMLControlledDocumentVirtualModelInstanceNature}
  * 
  * @author sylvain
  *
  */
 @SuppressWarnings("serial")
 public class FMLControlledDocXDocumentModuleView extends JPanel
-		implements ModuleView<VirtualModelInstance>, FlexoActionSource, PropertyChangeListener {
+		implements ModuleView<FMLRTVirtualModelInstance>, FlexoActionSource, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDocXDocumentModuleView.class.getPackage().getName());
 
-	private final VirtualModelInstance virtualModelInstance;
+	private final FMLRTVirtualModelInstance virtualModelInstance;
 	private final FlexoPerspective perspective;
 
 	private final FlexoDocumentEditor<?, ?> editor;
@@ -90,14 +90,14 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	private final FIBFlexoDocumentBrowser browser;
 	private final JPanel topPanel;
 
-	public FMLControlledDocXDocumentModuleView(VirtualModelInstance virtualModelInstance, FlexoPerspective perspective) {
+	public FMLControlledDocXDocumentModuleView(FMLRTVirtualModelInstance virtualModelInstance, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
 		this.virtualModelInstance = virtualModelInstance;
 		this.perspective = perspective;
 
 		if (!virtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE)) {
-			logger.severe("Supplied VirtualModelInstance does not have the FMLControlledDocXVirtualModelInstanceNature");
+			logger.severe("Supplied FMLRTVirtualModelInstance does not have the FMLControlledDocXVirtualModelInstanceNature");
 		}
 
 		editor = new FlexoDocumentEditor<>(getDocument());
@@ -126,7 +126,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
 	}
 
-	public VirtualModelInstance getVirtualModelInstance() {
+	public FMLRTVirtualModelInstance getVirtualModelInstance() {
 		return virtualModelInstance;
 	}
 
@@ -147,7 +147,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	}
 
 	@Override
-	public VirtualModelInstance getRepresentedObject() {
+	public FMLRTVirtualModelInstance getRepresentedObject() {
 		return getVirtualModelInstance();
 	}
 

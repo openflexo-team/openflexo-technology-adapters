@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 
 public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorGraphicalRepresentation> implements DiagramConnector {
@@ -200,7 +200,7 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	}*/
 
 	@Override
-	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance) {
+	public ConnectorRole getPatternRole(FMLRTVirtualModelInstance vmInstance) {
 		return (ConnectorRole) super.getPatternRole(vmInstance);
 	}
 

@@ -55,7 +55,7 @@ import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionType;
@@ -160,7 +160,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 		// First delete Flexo Concept Instance via their selected deletion scheme
 		for (FlexoConceptInstanceElementEntry fciEntry : getFlexoConceptInstancesToBeDeleted()) {
 			if (fciEntry.getCurrentDeletionScheme() != null) {
-				AbstractVirtualModelInstance<?, ?> vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
+				VirtualModelInstance<?, ?> vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
 				DeletionSchemeActionType deletionSchemeActionType = new DeletionSchemeActionType(fciEntry.currentDeletionScheme,
 						fciEntry.getFlexoConceptInstance());
 				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionType

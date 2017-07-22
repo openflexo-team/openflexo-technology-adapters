@@ -44,8 +44,8 @@ import java.util.Map;
 
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance.ObjectLookupResult;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
@@ -56,7 +56,7 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 	private final Map<NodeModel, IFreeplaneNode> nodesMap;
 	private final FlexoController controller;
 	private final boolean isFMLControlled;
-	private VirtualModelInstance vmi;
+	private FMLRTVirtualModelInstance vmi;
 
 	public FreeplaneNodeSelectionListener(final IFreeplaneMap map, final FlexoController controller) {
 		this(map, controller, false);
@@ -71,7 +71,7 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 		this.isFMLControlled = isFMLControlled;
 	}
 
-	public FreeplaneNodeSelectionListener(final VirtualModelInstance vmi, final FlexoController controller) {
+	public FreeplaneNodeSelectionListener(final FMLRTVirtualModelInstance vmi, final FlexoController controller) {
 		this(FMLControlledFreeplaneVirtualModelInstanceNature.getMap(vmi), controller, true);
 		this.vmi = vmi;
 	}

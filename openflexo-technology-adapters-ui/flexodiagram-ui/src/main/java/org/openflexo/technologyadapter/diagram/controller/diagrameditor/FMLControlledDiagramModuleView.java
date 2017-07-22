@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -54,7 +54,7 @@ import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 @SuppressWarnings("serial")
-public class FMLControlledDiagramModuleView extends JPanel implements ModuleView<VirtualModelInstance>, PropertyChangeListener {
+public class FMLControlledDiagramModuleView extends JPanel implements ModuleView<FMLRTVirtualModelInstance>, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramModuleView.class.getPackage().getName());
@@ -106,7 +106,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	}
 
 	@Override
-	public VirtualModelInstance getRepresentedObject() {
+	public FMLRTVirtualModelInstance getRepresentedObject() {
 		return editor.getVirtualModelInstance();
 	}
 

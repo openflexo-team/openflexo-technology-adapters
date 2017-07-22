@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -139,7 +139,7 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 
 		@Override
 		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createProjectSpecificEmptyResource(
-				AbstractVirtualModelInstance<?, ?> view, String filename, String modelUri) {
+				VirtualModelInstance<?, ?> view, String filename, String modelUri) {
 			// TODO Auto-generated method stub
 			return null;
 		}

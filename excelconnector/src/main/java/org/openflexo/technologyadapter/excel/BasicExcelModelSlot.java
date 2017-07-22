@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
@@ -268,7 +268,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ExcelWorkbookResource createProjectSpecificEmptyResource(AbstractVirtualModelInstance<?, ?> view, String filename,
+		public ExcelWorkbookResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename,
 				String modelUri) {
 			try {
 				return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename/*, modelUri*/);

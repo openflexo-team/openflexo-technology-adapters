@@ -47,7 +47,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.NavigationScheme;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.NavigationSchemeAction;
@@ -69,10 +69,10 @@ public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl
 
 	private GraphicalElementRole<?, ?> patternRole = null;
 	private GraphicalElementAction.ActionMask mask;
-	private VirtualModelInstance vmInstance;
+	private FMLRTVirtualModelInstance vmInstance;
 
 	public FMLControlledDiagramMouseClickControl(GraphicalElementAction.ActionMask mask, GraphicalElementRole<?, ?> patternRole,
-			VirtualModelInstance vmInstance, EditingContext editingContext) {
+			FMLRTVirtualModelInstance vmInstance, EditingContext editingContext) {
 		super(mask.name(), MouseButton.LEFT, mask == ActionMask.DoubleClick ? 2 : 1, null, mask == ActionMask.ShiftClick,
 				mask == ActionMask.CtrlClick, mask == ActionMask.MetaClick, mask == ActionMask.AltClick, editingContext);
 		this.vmInstance = vmInstance;

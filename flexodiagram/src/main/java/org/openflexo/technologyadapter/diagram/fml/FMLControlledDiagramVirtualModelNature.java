@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -49,7 +49,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 /**
  * Define the "controlled-diagram" nature of a {@link VirtualModel}<br>
  * 
- * A {@link FMLControlledDiagramVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDiagramVirtualModelNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 

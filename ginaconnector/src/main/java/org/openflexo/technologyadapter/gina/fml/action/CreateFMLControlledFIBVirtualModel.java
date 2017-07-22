@@ -73,7 +73,7 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
@@ -231,7 +231,7 @@ public class CreateFMLControlledFIBVirtualModel
 					createViewRole.doAction();
 					newRole = createViewRole.getNewFlexoRole();
 					((FlexoConceptInstanceRole) newRole)
-							.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("view"));
+							.setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>("view"));
 				}
 				else if (apiEntry.getType() instanceof FlexoConceptInstanceType) {
 					CreateFlexoConceptInstanceRole createViewRole = CreateFlexoConceptInstanceRole.actionType
@@ -242,7 +242,7 @@ public class CreateFMLControlledFIBVirtualModel
 					createViewRole.doAction();
 					newRole = createViewRole.getNewFlexoRole();
 					((FlexoConceptInstanceRole) newRole)
-							.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
+							.setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>("virtualModelInstance"));
 				}
 			}
 		}

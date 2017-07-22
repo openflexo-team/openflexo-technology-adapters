@@ -60,9 +60,9 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -89,7 +89,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramDrawing.class.getPackage().getName());
 
-	private final VirtualModelInstance virtualModelInstance;
+	private final FMLRTVirtualModelInstance virtualModelInstance;
 
 	private ModelFactory MODEL_FACTORY = null;
 
@@ -102,7 +102,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 	private final List<FMLControlledDiagramFloatingPalette> floatingPalettes;
 
-	public FMLControlledDiagramDrawing(VirtualModelInstance vmInstance, boolean readOnly) {
+	public FMLControlledDiagramDrawing(FMLRTVirtualModelInstance vmInstance, boolean readOnly) {
 		super(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(vmInstance), readOnly);
 		this.virtualModelInstance = vmInstance;
 		floatingPalettes = new ArrayList<FMLControlledDiagramFloatingPalette>();
@@ -133,7 +133,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		super.delete();
 	}
 
-	public VirtualModelInstance getVirtualModelInstance() {
+	public FMLRTVirtualModelInstance getVirtualModelInstance() {
 		return virtualModelInstance;
 	}
 

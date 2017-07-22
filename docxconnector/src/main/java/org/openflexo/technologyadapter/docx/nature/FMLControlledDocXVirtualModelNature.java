@@ -41,14 +41,14 @@ package org.openflexo.technologyadapter.docx.nature;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
  * Define the "controlled-document" nature of a {@link VirtualModel} in DocX context<br>
  * 
- * A {@link FMLControlledDocXVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDocXVirtualModelNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 

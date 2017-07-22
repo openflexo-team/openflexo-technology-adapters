@@ -79,7 +79,7 @@ import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.ontology.fml.action.CreateIndividualRole;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -112,10 +112,10 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	static FlexoConcept flexoConceptA;
 
 	static FlexoProject project;
-	static VirtualModelInstance newView;
-	static VirtualModelInstance vmi1;
-	static VirtualModelInstance vmi2;
-	static VirtualModelInstance vmi3;
+	static FMLRTVirtualModelInstance newView;
+	static FMLRTVirtualModelInstance vmi1;
+	static FMLRTVirtualModelInstance vmi2;
+	static FMLRTVirtualModelInstance vmi3;
 	static FlexoConceptInstance fci;
 	static private boolean renameWasNotified;
 	static private boolean typeChangedWasNotified;

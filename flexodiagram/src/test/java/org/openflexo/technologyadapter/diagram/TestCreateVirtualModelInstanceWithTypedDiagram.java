@@ -59,7 +59,7 @@ import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
@@ -73,7 +73,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * This unit test is intented to test VirtualModelInstance using a {@link TypedDiagramModelSlot}
+ * This unit test is intented to test FMLRTVirtualModelInstance using a {@link TypedDiagramModelSlot}
  * 
  * @author sylvain
  * 
@@ -90,8 +90,8 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	private static VirtualModel newVirtualModel;
 	private static FlexoEditor editor;
 	private static FlexoProject project;
-	private static VirtualModelInstance newView;
-	private static VirtualModelInstance newVirtualModelInstance;
+	private static FMLRTVirtualModelInstance newView;
+	private static FMLRTVirtualModelInstance newVirtualModelInstance;
 
 	private static DirectoryResourceCenter newResourceCenter;
 
@@ -217,14 +217,14 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(5)
 	public void testCreateVirtualModelInstance() {
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
-		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance");
 		action.setVirtualModel(newVirtualModel);
 
 		TypedDiagramModelSlot diagramModelSlot = newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);

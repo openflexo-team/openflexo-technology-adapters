@@ -46,7 +46,7 @@ import javax.swing.Icon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
@@ -56,7 +56,7 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
 public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
-		extends ActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> {
+		extends ActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());

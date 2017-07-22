@@ -40,14 +40,14 @@ package org.openflexo.technologyadapter.docx.nature;
 
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 /**
- * Define the "controlled-document" nature of a {@link VirtualModelInstance}<br>
+ * Define the "controlled-document" nature of a {@link FMLRTVirtualModelInstance}<br>
  * 
- * A {@link FMLControlledDocXVirtualModelInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDocXVirtualModelInstanceNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 
@@ -67,25 +67,25 @@ public class FMLControlledDocXVirtualModelInstanceNature
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled document
+	 * Return boolean indicating if supplied {@link FMLRTVirtualModelInstance} might be interpreted as a FML-Controlled document
 	 */
 	@Override
-	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
+	public boolean hasNature(FMLRTVirtualModelInstance virtualModelInstance) {
 
 		return hasNature(virtualModelInstance, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
-	public static DocXModelSlot getModelSlot(VirtualModelInstance virtualModelInstance) {
+	public static DocXModelSlot getModelSlot(FMLRTVirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getModelSlot(virtualModelInstance);
 
 	}
 
-	public static ModelSlotInstance<DocXModelSlot, DocXDocument> getModelSlotInstance(VirtualModelInstance virtualModelInstance) {
+	public static ModelSlotInstance<DocXModelSlot, DocXDocument> getModelSlotInstance(FMLRTVirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getModelSlotInstance(virtualModelInstance);
 
 	}
 
-	public static DocXDocument getDocument(VirtualModelInstance virtualModelInstance) {
+	public static DocXDocument getDocument(FMLRTVirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getDocument(virtualModelInstance);
 	}
 }

@@ -50,7 +50,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoGUIAction;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -79,12 +79,12 @@ public class ExportFMLControlledDiagramToImageAction
 
 		@Override
 		public boolean isVisibleForSelection(FlexoConceptInstance object, Vector<FlexoConceptInstance> globalSelection) {
-			if (object instanceof VirtualModelInstance) {
-				return ((VirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+			if (object instanceof FMLRTVirtualModelInstance) {
+				return ((FMLRTVirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 			}
 			else {
-				if (object != null && object.getVirtualModelInstance() instanceof VirtualModelInstance) {
-					VirtualModelInstance vmi = (VirtualModelInstance) object.getVirtualModelInstance();
+				if (object != null && object.getVirtualModelInstance() instanceof FMLRTVirtualModelInstance) {
+					FMLRTVirtualModelInstance vmi = (FMLRTVirtualModelInstance) object.getVirtualModelInstance();
 					if (vmi != null)
 						return vmi.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 				}
@@ -189,13 +189,13 @@ public class ExportFMLControlledDiagramToImageAction
 		FMLControlledDiagramEditor editor = null;
 		FMLControlledDiagramScreenshotBuilder builder = (FMLControlledDiagramScreenshotBuilder) getDiagramTechnologyAdapter()
 				.getFMLControlledDiagramElementScreenshotBuilder();
-		if (getFocusedObject() instanceof VirtualModelInstance) {
-			builder.setDrawing(new FMLControlledDiagramEditor((VirtualModelInstance) getFocusedObject(), true, null, null));
+		if (getFocusedObject() instanceof FMLRTVirtualModelInstance) {
+			builder.setDrawing(new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) getFocusedObject(), true, null, null));
 			screenshotImage = builder
-					.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram((VirtualModelInstance) getFocusedObject()));
+					.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram((FMLRTVirtualModelInstance) getFocusedObject()));
 		}
 		else if (getFocusedObject() instanceof FlexoConceptInstance) {
-			editor = new FMLControlledDiagramEditor((VirtualModelInstance) getFocusedObject().getVirtualModelInstance(), true, null, null);
+			editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) getFocusedObject().getVirtualModelInstance(), true, null, null);
 			FMLControlledDiagramElement element = editor.getDrawing().getFMLControlledDiagramElements(getFocusedObject()).get(0);
 			builder.setDrawing(editor);
 			screenshotImage = builder.getImage(element.getDiagramElement());

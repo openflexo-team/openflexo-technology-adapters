@@ -88,14 +88,14 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -164,9 +164,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
-	public static VirtualModelInstance newView;
-	public static VirtualModelInstance libraryVMI;
-	public static VirtualModelInstance documentVMI;
+	public static FMLRTVirtualModelInstance newView;
+	public static FMLRTVirtualModelInstance libraryVMI;
+	public static FMLRTVirtualModelInstance documentVMI;
 
 	public static DocXDocumentResource templateResource;
 	public static DocXDocument templateDocument;
@@ -559,7 +559,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		createAllBooksProperty.setPropertyName("books");
 
 		SelectFlexoConceptInstance selectBooks = bookConcept.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectBooks.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("this"));
+		selectBooks.setReceiver(new DataBinding<VirtualModelInstance<?, ?>>("this"));
 		selectBooks.setFlexoConceptType(bookConcept);
 		createAllBooksProperty.setGetControlGraph(bookConcept.getFMLModelFactory().newReturnStatement(selectBooks));
 
@@ -1122,7 +1122,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("book");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("library"));
+		selectFlexoConceptInstance.setReceiver(new DataBinding<VirtualModelInstance<?, ?>>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1135,7 +1135,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		MatchFlexoConceptInstance matchFlexoConceptInstance = (MatchFlexoConceptInstance) createMatchFlexoConceptInstanceAction
 				.getNewEditionAction();
 		matchFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
-		matchFlexoConceptInstance.setReceiver(new DataBinding<VirtualModelInstance>("this"));
+		matchFlexoConceptInstance.setReceiver(new DataBinding<FMLRTVirtualModelInstance>("this"));
 
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 
@@ -1171,7 +1171,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		fetchRequestIteration2.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance2.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("this"));
+		selectFlexoConceptInstance2.setReceiver(new DataBinding<VirtualModelInstance<?, ?>>("this"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
 
@@ -1215,7 +1215,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setReceiver(new DataBinding<AbstractVirtualModelInstance<?, ?>>("this"));
+		selectFlexoConceptInstance.setReceiver(new DataBinding<VirtualModelInstance<?, ?>>("this"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1259,7 +1259,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = "Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
 
 	/**
-	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws SaveResourceException
 	 * @throws InvocationTargetException
@@ -1355,7 +1355,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(9)
@@ -1378,7 +1378,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, _editor);
 		action.setNewVirtualModelInstanceName("GeneratedDocumentVMI");
-		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance for document generation");
 		action.setVirtualModel(documentVirtualModel);
 
 		FMLRTModelSlotInstanceConfiguration libraryModelSlotInstanceConfiguration = (FMLRTModelSlotInstanceConfiguration) action
@@ -1752,7 +1752,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 	/**
 	 * Reload _project<br>
-	 * Check that the two {@link VirtualModelInstance} are correct and that generated document is correct
+	 * Check that the two {@link FMLRTVirtualModelInstance} are correct and that generated document is correct
 	 */
 	@Test
 	@TestOrder(12)

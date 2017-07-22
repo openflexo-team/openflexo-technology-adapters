@@ -68,7 +68,7 @@ import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -114,8 +114,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
-	public static VirtualModelInstance newView;
-	public static VirtualModelInstance newVirtualModelInstance;
+	public static FMLRTVirtualModelInstance newView;
+	public static FMLRTVirtualModelInstance newVirtualModelInstance;
 
 	public static DocXDocumentResource templateResource;
 	public static DocXDocument templateDocument;
@@ -410,7 +410,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws SaveResourceException
 	 */
@@ -430,7 +430,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, _editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
-		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance for document generation");
 		action.setVirtualModel(virtualModel);
 
 		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
@@ -484,7 +484,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	}
 
 	/**
-	 * Try to generate the document in VirtualModelInstance
+	 * Try to generate the document in FMLRTVirtualModelInstance
 	 * 
 	 * @throws FlexoException
 	 * @throws ResourceLoadingCancelledException

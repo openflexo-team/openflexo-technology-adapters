@@ -44,7 +44,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -52,7 +52,7 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 /**
  * Define the "FML-controlled FIBComponent" nature of a {@link VirtualModel}<br>
  * 
- * A {@link FMLControlledFIBVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledFIBVirtualModelNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 

@@ -63,7 +63,7 @@ import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
@@ -108,8 +108,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	static EMFModelResource emfModelResource = null;
 	static EMFMetaModelResource emfMetaModelResource = null;
 	private static FlexoProject project;
-	private static VirtualModelInstance newView;
-	private static VirtualModelInstance newVirtualModelInstance;
+	private static FMLRTVirtualModelInstance newView;
+	private static FMLRTVirtualModelInstance newVirtualModelInstance;
 	private static FlexoConcept flexoConcept;
 	private static CreateFlexoBehaviour creationEditionScheme;
 	private static CreationScheme creationScheme;
@@ -261,7 +261,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		modelSlotInstanceConfiguration.setModelResource(emfModelResource);
 		assertTrue(modelSlotInstanceConfiguration.isValidConfiguration());
 
-		logger.info("Creating a new VirtualModelInstance");
+		logger.info("Creating a new FMLRTVirtualModelInstance");
 		vmiAction.doAction();
 		newVirtualModelInstance = vmiAction.getNewVirtualModelInstance();
 

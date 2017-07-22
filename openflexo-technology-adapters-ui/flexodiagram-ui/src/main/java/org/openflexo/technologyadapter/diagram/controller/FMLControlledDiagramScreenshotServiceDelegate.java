@@ -5,20 +5,20 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.nature.ScreenshotService.ScreenshotServiceDelegate;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 
 /**
- * Handle screenshot for a {@link VirtualModelInstance} having {@link FMLControlledDiagramVirtualModelInstanceNature}
+ * Handle screenshot for a {@link FMLRTVirtualModelInstance} having {@link FMLControlledDiagramVirtualModelInstanceNature}
  * 
  * @author sylvain
  *
  */
 public class FMLControlledDiagramScreenshotServiceDelegate
-		implements ScreenshotServiceDelegate<VirtualModelInstance, FMLControlledDiagramVirtualModelInstanceNature> {
+		implements ScreenshotServiceDelegate<FMLRTVirtualModelInstance, FMLControlledDiagramVirtualModelInstanceNature> {
 
 	private static final Logger logger = FlexoLogger.getLogger(FMLControlledDiagramScreenshotServiceDelegate.class.getPackage().getName());
 
@@ -28,7 +28,7 @@ public class FMLControlledDiagramScreenshotServiceDelegate
 	}
 
 	@Override
-	public BufferedImage generateScreenshot(VirtualModelInstance virtualModelInstance) {
+	public BufferedImage generateScreenshot(FMLRTVirtualModelInstance virtualModelInstance) {
 
 		logger.info("Generate screenshot for " + virtualModelInstance + " and " + getNatureClass());
 

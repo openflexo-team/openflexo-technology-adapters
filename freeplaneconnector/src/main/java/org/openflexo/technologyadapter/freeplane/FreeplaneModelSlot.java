@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -156,7 +156,7 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
 		@Override
 		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(
-				final AbstractVirtualModelInstance<?, ?> view, final String modelName, final String modelUri) {
+				final VirtualModelInstance<?, ?> view, final String modelName, final String modelUri) {
 
 			FreeplaneTechnologyAdapter freeplaneTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(FreeplaneTechnologyAdapter.class);

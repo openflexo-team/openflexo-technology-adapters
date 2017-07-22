@@ -46,7 +46,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.doc.fml.action.CreateFMLControlledDocumentVirtualModelInstance;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXContainerNature;
@@ -68,7 +68,7 @@ public class CreateFMLControlledDocXVirtualModelInstance
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLControlledDocXVirtualModelInstance.actionType, AbstractVirtualModelInstance.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledDocXVirtualModelInstance.actionType, VirtualModelInstance.class);
 	}
 
 	CreateFMLControlledDocXVirtualModelInstance(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {

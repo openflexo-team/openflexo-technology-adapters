@@ -58,7 +58,7 @@ import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
@@ -219,7 +219,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 		if (getEditor() instanceof FMLControlledDiagramEditor) {
 
-			VirtualModelInstance vmi = ((FMLControlledDiagramEditor) getEditor()).getVirtualModelInstance();
+			FMLRTVirtualModelInstance vmi = ((FMLControlledDiagramEditor) getEditor()).getVirtualModelInstance();
 			TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(vmi.getVirtualModel());
 
 			ArrayList<DropScheme> availableDropSchemes = new ArrayList<DropScheme>();

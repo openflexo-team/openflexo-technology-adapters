@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
@@ -90,9 +90,9 @@ public class FMLRTControlledDiagramNaturePerspective extends FMLRTNaturePerspect
 	}
 
 	@Override
-	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(AbstractVirtualModelInstance<?, ?> vmInstance) {
-		if (vmInstance instanceof VirtualModelInstance) {
-			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor((VirtualModelInstance) vmInstance, false, getController(),
+	protected ModuleView<FMLRTVirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance<?, ?> vmInstance) {
+		if (vmInstance instanceof FMLRTVirtualModelInstance) {
+			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) vmInstance, false, getController(),
 					getHandlingTechnologyAdapterController().getToolFactory());
 			return new FMLControlledDiagramModuleView(editor, this);
 		}

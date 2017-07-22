@@ -49,7 +49,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
@@ -82,11 +82,11 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 				return true;
 			}
 			else {
-				if (action.getFocusedObject() instanceof VirtualModelInstance
-						&& ((VirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel() != null) {
+				if (action.getFocusedObject() instanceof FMLRTVirtualModelInstance
+						&& ((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel() != null) {
 					// @Brutal
 					// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
-					((VirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel()
+					((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel()
 							.loadContainedVirtualModelsWhenUnloaded();
 				}
 				Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());

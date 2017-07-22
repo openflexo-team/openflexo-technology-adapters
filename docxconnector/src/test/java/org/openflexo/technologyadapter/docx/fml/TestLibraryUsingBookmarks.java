@@ -86,7 +86,7 @@ import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -150,9 +150,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository<?> repository;
-	public static VirtualModelInstance newView;
-	public static VirtualModelInstance libraryVMI;
-	public static VirtualModelInstance documentVMI;
+	public static FMLRTVirtualModelInstance newView;
+	public static FMLRTVirtualModelInstance libraryVMI;
+	public static FMLRTVirtualModelInstance documentVMI;
 
 	public static DocXDocumentResource templateResource;
 	public static DocXDocument templateDocument;
@@ -1087,7 +1087,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = "Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
 
 	/**
-	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws SaveResourceException
 	 */
@@ -1173,7 +1173,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a FMLRTVirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(9)
@@ -1196,7 +1196,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, _editor);
 		action.setNewVirtualModelInstanceName("GeneratedDocumentVMI");
-		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
+		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance for document generation");
 		action.setVirtualModel(documentVirtualModel);
 
 		FMLRTModelSlotInstanceConfiguration libraryModelSlotInstanceConfiguration = (FMLRTModelSlotInstanceConfiguration) action
@@ -1553,7 +1553,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 	/**
 	 * Reload _project<br>
-	 * Check that the two {@link VirtualModelInstance} are correct and that generated document is correct
+	 * Check that the two {@link FMLRTVirtualModelInstance} are correct and that generated document is correct
 	 */
 	@Test
 	@TestOrder(12)

@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -88,8 +88,8 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 	}
 
 	@Override
-	protected ModuleView<AbstractVirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
-			AbstractVirtualModelInstance<?, ?> vmInstance) {
+	protected ModuleView<VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
+			VirtualModelInstance<?, ?> vmInstance) {
 		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
 				getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
 	}

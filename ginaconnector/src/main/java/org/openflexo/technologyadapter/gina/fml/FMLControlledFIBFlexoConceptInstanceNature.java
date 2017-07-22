@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstanceNature;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -70,7 +70,7 @@ public class FMLControlledFIBFlexoConceptInstanceNature implements FlexoConceptI
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-controlled FIBComponent
+	 * Return boolean indicating if supplied {@link FMLRTVirtualModelInstance} might be interpreted as a FML-controlled FIBComponent
 	 */
 	@Override
 	public boolean hasNature(FlexoConceptInstance flexoConceptInstance) {

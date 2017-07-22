@@ -54,7 +54,7 @@ import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -72,41 +72,41 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 /**
  * Tooling for DropScheme in Openflexo<br>
  * This feature is wrapped into a {@link FlexoAction}<br>
- * The focused object is a VirtualModelInstance with a FMLControlledDiagramVirtualModelInstanceNature
+ * The focused object is a FMLRTVirtualModelInstance with a FMLControlledDiagramVirtualModelInstanceNature
  * 
  * @author sylvain
  * 
  */
-public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
+public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, FMLRTVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject>(
+	public static FlexoActionType<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
 			"drop_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DropSchemeAction makeNewAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
+		public DropSchemeAction makeNewAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
 				FlexoEditor editor) {
 			return new DropSchemeAction(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
+		public boolean isVisibleForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			return false;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
+		public boolean isEnabledForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			return object.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(actionType, VirtualModelInstance.class);
+		FlexoObjectImpl.addActionForClass(actionType, FMLRTVirtualModelInstance.class);
 	}
 
 	private DiagramPaletteElement _paletteElement;
@@ -118,7 +118,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 
 	private FGEPoint dropLocation;
 
-	DropSchemeAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
+	DropSchemeAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -214,7 +214,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	public VirtualModelInstance retrieveVirtualModelInstance() {
+	public FMLRTVirtualModelInstance retrieveVirtualModelInstance() {
 		return getFocusedObject();
 	}
 

@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
@@ -246,7 +246,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	}*/
 
 	@Override
-	public ShapeRole getPatternRole(VirtualModelInstance vmInstance) {
+	public ShapeRole getPatternRole(FMLRTVirtualModelInstance vmInstance) {
 		return (ShapeRole) super.getPatternRole(vmInstance);
 	}
 

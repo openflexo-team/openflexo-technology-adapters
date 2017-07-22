@@ -176,7 +176,7 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 					// Try with the FlexoConceptInstance
 					document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot).getAccessedResourceData();
 					if (document == null) {
-						// Try with the parent VirtualModelInstance
+						// Try with the parent FMLRTVirtualModelInstance
 						ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
 						document = (DocXDocument) msi.getAccessedResourceData();
 					}

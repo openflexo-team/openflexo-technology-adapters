@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -116,7 +116,7 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyResource(AbstractVirtualModelInstance<?, ?> view, String filename,
+		public DiagramResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename,
 				String modelUri) {
 			return null;
 		}

@@ -48,7 +48,7 @@ import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.action.FMLControlledDiagramPasteHandler;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -68,7 +68,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	private final FMLControlledDiagramPasteHandler pasteHandler;
 
-	public FMLControlledDiagramEditor(VirtualModelInstance vmInstance, boolean readOnly, FlexoController controller,
+	public FMLControlledDiagramEditor(FMLRTVirtualModelInstance vmInstance, boolean readOnly, FlexoController controller,
 			SwingToolFactory swingToolFactory) {
 		super(new FMLControlledDiagramDrawing(vmInstance, readOnly), readOnly, controller, swingToolFactory);
 		// We have to switch properly between those paste handlers
@@ -86,7 +86,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 		super.delete();
 	}
 
-	public VirtualModelInstance getVirtualModelInstance() {
+	public FMLRTVirtualModelInstance getVirtualModelInstance() {
 		return getDrawing().getVirtualModelInstance();
 	}
 

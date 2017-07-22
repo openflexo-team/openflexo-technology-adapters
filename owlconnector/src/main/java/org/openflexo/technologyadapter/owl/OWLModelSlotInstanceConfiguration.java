@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -68,7 +68,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	@Override
 	protected TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> configureModelSlotInstance(
-			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance, AbstractVirtualModelInstance<?, ?> view) {
+			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance, VirtualModelInstance<?, ?> view) {
 		if (getOption() == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelResource = createSharedEmptyModel(msInstance, getModelSlot());
 			if (modelResource != null) {
