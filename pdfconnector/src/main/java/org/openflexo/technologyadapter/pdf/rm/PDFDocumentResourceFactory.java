@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.pdf.rm;
 
 import java.util.logging.Logger;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -60,6 +61,11 @@ public class PDFDocumentResourceFactory extends PamelaResourceFactory<PDFDocumen
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 		String name = resourceCenter.retrieveName(serializationArtefact);
 		return StringUtils.hasExtension(name, PDF_FILE_EXTENSION);
+	}
+
+	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
 	}
 
 	@Override

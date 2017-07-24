@@ -72,9 +72,14 @@ public class DiagramPaletteResourceFactory
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_PALETTE_SUFFIX);
 	}
 
+	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
 	public <I> DiagramPaletteResource retrievePaletteResource(I serializationArtefact,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, DiagramSpecificationResource dsResource)
-					throws ModelDefinitionException, IOException {
+			throws ModelDefinitionException, IOException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		String name = resourceCenter.retrieveName(serializationArtefact);
@@ -92,7 +97,7 @@ public class DiagramPaletteResourceFactory
 
 	public <I> DiagramPaletteResource makeDiagramPaletteResource(String name, DiagramSpecificationResource dsResource,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-					throws SaveResourceException, ModelDefinitionException {
+			throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		I serializationArtefact = resourceCenter.createEntry(

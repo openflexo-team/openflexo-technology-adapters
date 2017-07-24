@@ -59,6 +59,11 @@ public class OSLCResourceFactory extends FlexoResourceFactory<OSLCResourceResour
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> OSLCResourceResource registerResource(OSLCResourceResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<OSLCTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

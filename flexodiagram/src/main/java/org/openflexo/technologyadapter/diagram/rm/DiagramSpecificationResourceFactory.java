@@ -97,6 +97,11 @@ public class DiagramSpecificationResourceFactory extends
 		return false;
 	}
 
+	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
 	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
 			RepositoryFolder<DiagramSpecificationResource, I> folder,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)

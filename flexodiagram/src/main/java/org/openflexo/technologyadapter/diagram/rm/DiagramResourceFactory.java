@@ -70,6 +70,11 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SUFFIX);
 	}
 
+	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
 	public <I> DiagramResource makeDiagramResource(String baseName, String uri, DiagramSpecificationResource diagramSpecificationResource,
 			RepositoryFolder<DiagramResource, I> folder, TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager,
 			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {

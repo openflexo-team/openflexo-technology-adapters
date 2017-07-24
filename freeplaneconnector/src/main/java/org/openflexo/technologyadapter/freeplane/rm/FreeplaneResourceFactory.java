@@ -105,6 +105,11 @@ public class FreeplaneResourceFactory extends FlexoResourceFactory<IFreeplaneRes
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> IFreeplaneResource registerResource(IFreeplaneResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<FreeplaneTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

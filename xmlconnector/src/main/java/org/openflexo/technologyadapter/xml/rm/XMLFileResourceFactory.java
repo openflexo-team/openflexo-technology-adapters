@@ -60,6 +60,11 @@ public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

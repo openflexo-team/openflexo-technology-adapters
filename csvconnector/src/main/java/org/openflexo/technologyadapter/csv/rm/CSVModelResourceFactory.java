@@ -56,6 +56,11 @@ public class CSVModelResourceFactory extends FlexoResourceFactory<CSVModelResour
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> CSVModelResource registerResource(CSVModelResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<CSVTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

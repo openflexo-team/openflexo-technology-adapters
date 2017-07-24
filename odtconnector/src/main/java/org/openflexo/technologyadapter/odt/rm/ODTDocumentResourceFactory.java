@@ -57,6 +57,11 @@ public class ODTDocumentResourceFactory extends FlexoResourceFactory<ODTDocument
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> ODTDocumentResource registerResource(ODTDocumentResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<ODTTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

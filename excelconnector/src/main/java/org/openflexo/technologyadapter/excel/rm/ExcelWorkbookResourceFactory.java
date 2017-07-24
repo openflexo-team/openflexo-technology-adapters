@@ -98,6 +98,11 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

@@ -59,6 +59,11 @@ public class PowerpointSlideshowResourceFactory
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> PowerpointSlideshowResource registerResource(PowerpointSlideshowResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<PowerpointTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

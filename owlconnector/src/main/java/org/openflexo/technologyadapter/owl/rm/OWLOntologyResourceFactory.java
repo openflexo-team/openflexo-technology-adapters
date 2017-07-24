@@ -59,6 +59,11 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> OWLOntologyResource registerResource(OWLOntologyResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);

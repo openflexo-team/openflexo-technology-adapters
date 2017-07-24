@@ -67,6 +67,11 @@ public class GINAFIBComponentResourceFactory
 				|| resourceCenter.retrieveName(serializationArtefact).endsWith(GINA_INSPECTOR_EXTENSION);
 	}
 
+	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
 	public <I> GINAFIBComponentResource makeGINAFIBComponentResource(String baseName, RepositoryFolder<GINAFIBComponentResource, I> folder,
 			TechnologyContextManager<GINATechnologyAdapter> technologyContextManager, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {

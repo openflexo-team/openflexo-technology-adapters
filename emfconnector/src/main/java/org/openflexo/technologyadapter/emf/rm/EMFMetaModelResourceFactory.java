@@ -110,6 +110,11 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 	}
 
 	@Override
+	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+		return null;
+	}
+
+	@Override
 	protected <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter,
 			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);
@@ -134,7 +139,7 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 
 	public <I> EMFMetaModelResource retrieveResourceFromClassPath(String metaModelName, String metaModelURI, String metaModelExtension,
 			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager)
-					throws ModelDefinitionException {
+			throws ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = null;
 
