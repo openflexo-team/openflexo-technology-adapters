@@ -39,7 +39,9 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
@@ -70,7 +72,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 			Wizard wizard;
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView
-					&& action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+					&& action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 				FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
 						.getCurrentModuleView();
 				wizard = new CreateFMLControlledDiagramFlexoConceptWizard(action, getController());
@@ -94,7 +96,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 	protected FlexoActionFinalizer<CreateFlexoConcept> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (action.switchNewlyCreatedFlexoConcept) {
-				if (action.getFocusedObject().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+				if (action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 					DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
 							.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
 					getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());

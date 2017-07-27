@@ -41,9 +41,9 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.view.controller.FlexoController;
 
@@ -59,7 +59,7 @@ public class CreateFMLControlledDiagramFlexoConceptWizard extends CreateFlexoCon
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramFlexoConceptWizard.class.getPackage().getName());
 
-	private ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, VirtualModel, FMLObject> configurePaletteElementForNewFlexoConcept;
+	private ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, FlexoConceptObject, FMLObject> configurePaletteElementForNewFlexoConcept;
 
 	public CreateFMLControlledDiagramFlexoConceptWizard(CreateFlexoConcept action, FlexoController controller) {
 		super(action, controller);
@@ -118,7 +118,7 @@ public class CreateFMLControlledDiagramFlexoConceptWizard extends CreateFlexoCon
 		});*/
 	}
 
-	public ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, VirtualModel, FMLObject> getConfigurePaletteElementForNewFlexoConcept() {
+	public ConfigurePaletteElementForNewFlexoConcept<CreateFlexoConcept, FlexoConceptObject, FMLObject> getConfigurePaletteElementForNewFlexoConcept() {
 		return configurePaletteElementForNewFlexoConcept;
 	}
 
