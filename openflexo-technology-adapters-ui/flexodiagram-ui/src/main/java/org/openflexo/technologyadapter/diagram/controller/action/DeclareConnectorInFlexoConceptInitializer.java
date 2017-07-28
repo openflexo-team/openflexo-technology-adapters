@@ -44,6 +44,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.gina.controller.FIBController.Status;
@@ -109,7 +110,7 @@ public class DeclareConnectorInFlexoConceptInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 }

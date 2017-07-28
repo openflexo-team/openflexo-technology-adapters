@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagramFromPPTSlide;
@@ -74,7 +75,7 @@ public class CreateExampleDiagramFromPPTSlideInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

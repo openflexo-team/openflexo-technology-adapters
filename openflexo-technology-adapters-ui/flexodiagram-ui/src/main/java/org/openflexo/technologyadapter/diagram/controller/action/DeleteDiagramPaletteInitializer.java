@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -58,7 +59,7 @@ public class DeleteDiagramPaletteInitializer extends ActionInitializer<DeleteDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

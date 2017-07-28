@@ -48,6 +48,7 @@ import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.IconFactory;
@@ -95,7 +96,7 @@ public class CreateGINAFIBComponentInitializer extends ActionInitializer<CreateG
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_ICON, IconLibrary.NEW_MARKER);
 	}
 

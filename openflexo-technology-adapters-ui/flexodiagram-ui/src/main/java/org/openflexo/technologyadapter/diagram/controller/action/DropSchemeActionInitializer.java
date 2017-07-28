@@ -45,6 +45,7 @@ import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -133,7 +134,7 @@ public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAct
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

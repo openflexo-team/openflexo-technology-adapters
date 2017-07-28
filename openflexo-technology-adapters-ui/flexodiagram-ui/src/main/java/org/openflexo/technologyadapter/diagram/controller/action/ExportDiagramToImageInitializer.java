@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 import java.util.logging.Logger;
 import javax.swing.*;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ExportDiagramToImageAction;
@@ -61,7 +62,7 @@ public class ExportDiagramToImageInitializer extends ActionInitializer<ExportDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return IconLibrary.EXPORT_ICON;
 	}
 

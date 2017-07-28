@@ -48,6 +48,7 @@ import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -112,7 +113,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionType actionType) {
 		return FMLIconLibrary.VIEWPOINT_ICON;
 	}
 
