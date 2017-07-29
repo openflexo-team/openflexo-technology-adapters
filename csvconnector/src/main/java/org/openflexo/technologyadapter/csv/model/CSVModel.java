@@ -253,4 +253,10 @@ public class CSVModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter>
 
 	public void loadWhenUnloaded() {
 	}
+
+	@Override
+	public String getDescription() {
+		return null;
+	}
+
 }

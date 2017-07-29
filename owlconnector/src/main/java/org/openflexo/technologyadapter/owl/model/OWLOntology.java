@@ -219,6 +219,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 	}
 
+	@Override
+	public String getDescription() {
+		// TODO
+		return null;
+	}
+
 	/*public static void main(String[] args) throws MalformedURLException, LocatorNotFoundException {
 	
 		FileSystemResourceLocatorImpl rl = new FileSystemResourceLocatorImpl();
@@ -1600,11 +1606,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	@Override
 	public OWLOntology getFlexoOntology() {
 		return this;
-	}
-
-	@Override
-	public void setDescription(String description) {
-		// TODO
 	}
 
 	public void save(FlexoProgress progress) throws SaveResourceException {

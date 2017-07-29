@@ -93,6 +93,11 @@ public class OWLDataType extends OWLObject implements IFlexoOntologyDataType<OWL
 	}
 
 	@Override
+	public String getDescription() {
+		return getDisplayableDescription();
+	}
+
+	@Override
 	public String getDisplayableDescription() {
 		return getURI();
 	}

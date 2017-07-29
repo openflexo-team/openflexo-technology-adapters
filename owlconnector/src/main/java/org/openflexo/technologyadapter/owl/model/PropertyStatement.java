@@ -93,6 +93,12 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 	private float floatValue = 0;
 	private double doubleValue = 0;
 
+	@Override
+	public String getDescription() {
+		// TODO
+		return null;
+	}
+
 	public final Language getLanguage() {
 		if (getLiteral() == null) {
 			return null;

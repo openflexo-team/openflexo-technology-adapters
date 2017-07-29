@@ -191,7 +191,6 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		return null;
 	}
 
-	@Override
 	public void setDescription(String aDescription) {
 		if (getOntResource() != null) {
 			getOntResource().setComment(aDescription, FlexoLocalization.getCurrentLanguage().getTag());

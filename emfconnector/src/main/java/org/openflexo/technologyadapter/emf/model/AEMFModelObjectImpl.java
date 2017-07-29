@@ -113,4 +113,9 @@ public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntolo
 		return object;
 	}
 
+	@Override
+	public String getDescription() {
+		// TODO
+		return null;
+	}
 }

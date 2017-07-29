@@ -89,6 +89,8 @@ public interface DiagramSpecification
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
 	public static final String EXAMPLE_DIAGRAMS_KEY = "exampleDiagrams";
+	@PropertyIdentifier(type = String.class)
+	String DESCRIPTION_KEY = "description";
 
 	/**
 	 * Return title of this DiagramSpecification
@@ -104,6 +106,13 @@ public interface DiagramSpecification
 	 */
 	@Setter(value = NAME_KEY)
 	public void setName(String name);
+
+	@Getter(value = DESCRIPTION_KEY)
+	@XMLAttribute
+	public String getDescription();
+
+	@Setter(DESCRIPTION_KEY)
+	public void setDescription(String description);
 
 	@Override
 	@Getter(value = URI_KEY)

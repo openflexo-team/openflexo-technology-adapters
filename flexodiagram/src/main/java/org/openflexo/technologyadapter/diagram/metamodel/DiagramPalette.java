@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
@@ -59,6 +60,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.validation.Validable;
@@ -76,6 +78,15 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 	public static final String PALETTE_ELEMENTS_KEY = "elements";
 	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
+	@PropertyIdentifier(type = String.class)
+	String DESCRIPTION_KEY = "description";
+
+	@Getter(value = DESCRIPTION_KEY)
+	@XMLAttribute
+	public String getDescription();
+
+	@Setter(DESCRIPTION_KEY)
+	public void setDescription(String description);
 
 	/**
 	 * Return palette element identified by its name

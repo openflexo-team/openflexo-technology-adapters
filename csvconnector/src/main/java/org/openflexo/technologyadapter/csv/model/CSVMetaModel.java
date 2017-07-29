@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv.model;
 
 import java.util.List;
@@ -56,8 +55,8 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 
-public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter> implements FlexoMetaModel<CSVMetaModel>,
-		IFlexoOntology<CSVTechnologyAdapter> {
+public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter>
+		implements FlexoMetaModel<CSVMetaModel>, IFlexoOntology<CSVTechnologyAdapter> {
 	@Override
 	public FlexoResource<CSVMetaModel> getResource() {
 		return null;
@@ -249,4 +248,10 @@ public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter> 
 	public String getFullyQualifiedName() {
 		return null;
 	}
+
+	@Override
+	public String getDescription() {
+		return null;
+	}
+
 }

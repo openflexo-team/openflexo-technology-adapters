@@ -62,6 +62,11 @@ public abstract class OWLStatement extends OWLObject {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		return getDisplayableDescription();
+	}
+
 	/**
 	 * Not relevant since an OWL Statement has no name, return {@link #getDisplayableDescription()}
 	 */
