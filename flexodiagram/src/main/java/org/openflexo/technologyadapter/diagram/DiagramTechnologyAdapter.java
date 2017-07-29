@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.foundation.FlexoProject;
@@ -53,6 +54,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -60,6 +62,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.DiagramType;
+import org.openflexo.technologyadapter.diagram.model.DiagramType.DiagramTypeFactory;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
@@ -516,6 +519,20 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void initTechnologySpecificTypes(TechnologyAdapterService taService) {
+		taService.registerTypeClass(DiagramType.class, getDiagramTypeFactory());
+	}
+
+	private DiagramTypeFactory diagramTypeFactory = null;
+
+	public DiagramTypeFactory getDiagramTypeFactory() {
+		if (diagramTypeFactory == null) {
+			diagramTypeFactory = new DiagramTypeFactory(this);
+		}
+		return diagramTypeFactory;
 	}
 
 	@Override
