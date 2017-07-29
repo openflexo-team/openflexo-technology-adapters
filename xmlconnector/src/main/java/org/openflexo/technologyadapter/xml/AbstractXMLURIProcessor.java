@@ -45,9 +45,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.FlexoProperty;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -233,7 +232,8 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		@Override
 		public void setAttributeName(String aName) {
 			attributeName = aName;
-			if (aName != null && mappedXMLType != null) {
+			// TODO: re-write this !!!
+			/*if (aName != null && mappedXMLType != null) {
 				FlexoProperty dataP = mappedXMLType.getPropertyNamed(aName);
 				attributeName = aName;
 				if (dataP != null) {
@@ -245,7 +245,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 				}
 			}
 			else
-				logger.warning("Unable to set attribute name for uri processor : null XMLType ");
+				logger.warning("Unable to set attribute name for uri processor : null XMLType ");*/
 
 		}
 
