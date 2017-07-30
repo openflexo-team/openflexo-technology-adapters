@@ -112,7 +112,10 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 
 	@Override
 	public TechnologyAdapter getSpecificTechnologyAdapter() {
-		return getDiagramSpecification().getTechnologyAdapter();
+		if (getDiagramSpecification() != null) {
+			return getDiagramSpecification().getTechnologyAdapter();
+		}
+		return null;
 	}
 
 	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<DiagramSpecification, DiagramType>();
