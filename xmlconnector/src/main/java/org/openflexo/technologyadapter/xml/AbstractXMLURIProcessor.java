@@ -193,9 +193,9 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
 		@Override
 		public VirtualModel getVirtualModel() {
-			AbstractXMLModelSlot ms = getModelSlot();
+			AbstractXMLModelSlot<?> ms = getModelSlot();
 			if (ms != null) {
-				return ms.getVirtualModel();
+				return (VirtualModel) ms.getOwningVirtualModel();
 			}
 			else
 				return null;
@@ -217,36 +217,6 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 			setModelSlot(null);
 			setMappingStyle(null);
 			setBasePropertyForURI(null);
-		}
-
-		@Override
-		public String getAttributeName() {
-			if (baseDataPropertyForURI != null) {
-				return baseDataPropertyForURI.getName();
-			}
-			else {
-				return attributeName;
-			}
-		}
-
-		@Override
-		public void setAttributeName(String aName) {
-			attributeName = aName;
-			// TODO: re-write this !!!
-			/*if (aName != null && mappedXMLType != null) {
-				FlexoProperty dataP = mappedXMLType.getPropertyNamed(aName);
-				attributeName = aName;
-				if (dataP != null) {
-					baseDataPropertyForURI = (XMLDataProperty) dataP;
-				}
-				else {
-					logger.warning(
-							"Unable to set attribute name for uri processor : property not found in XMLType " + mappedXMLType.getName());
-				}
-			}
-			else
-				logger.warning("Unable to set attribute name for uri processor : null XMLType ");*/
-
 		}
 
 		@Override

@@ -36,10 +36,8 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ModelEntity;
@@ -51,7 +49,7 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
  * 
  */
 @ModelEntity(isAbstract = true)
-public interface XMLObject extends FlexoObject, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLObject extends TechnologyObject<XMLTechnologyAdapter> {
 
 	public static final String NAME = "name";
 

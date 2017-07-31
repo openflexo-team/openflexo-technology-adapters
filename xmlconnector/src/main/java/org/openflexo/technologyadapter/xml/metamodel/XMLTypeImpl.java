@@ -38,10 +38,9 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
-public abstract class XMLTypeImpl extends FlexoObjectImpl implements XMLType {
+public abstract class XMLTypeImpl implements XMLType {
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
@@ -60,9 +59,11 @@ public abstract class XMLTypeImpl extends FlexoObjectImpl implements XMLType {
 	public String getDisplayableDescription() {
 		if (this instanceof XMLComplexType) {
 			return "Complex XML Type named : " + this.getName();
-		} else if (this instanceof XMLSimpleType) {
+		}
+		else if (this instanceof XMLSimpleType) {
 			return "Simple XML Type named : " + this.getName();
-		} else
+		}
+		else
 			return "(Unknown)";
 	}
 
