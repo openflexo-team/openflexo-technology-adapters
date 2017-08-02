@@ -38,9 +38,10 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
-public abstract class XMLTypeImpl implements XMLType {
+public abstract class XMLTypeImpl extends FlexoObjectImpl implements XMLType {
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
