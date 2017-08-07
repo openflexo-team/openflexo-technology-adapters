@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLogger;
@@ -68,6 +69,7 @@ public class GINAFIBController extends FlexoFIBController {
 	}
 
 	@Override
+	@NotificationUnsafe
 	public ImageIcon iconForObject(Object object) {
 		if (object instanceof GINAFIBComponentAPIEntry) {
 			return GINAIconLibrary.VARIABLE_ASSIGNMENT_ICON;

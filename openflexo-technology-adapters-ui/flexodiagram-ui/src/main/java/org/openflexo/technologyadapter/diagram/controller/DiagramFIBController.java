@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBTab;
@@ -94,6 +95,7 @@ public class DiagramFIBController extends FlexoFIBController {
 	}
 
 	@Override
+	@NotificationUnsafe
 	public ImageIcon iconForObject(Object object) {
 		// TODO Auto-generated method stub
 		if (object instanceof FlexoObject) {
