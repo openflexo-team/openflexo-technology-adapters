@@ -60,9 +60,11 @@ public abstract class XMLTypeImpl extends FlexoObjectImpl implements XMLType {
 	public String getDisplayableDescription() {
 		if (this instanceof XMLComplexType) {
 			return "Complex XML Type named : " + this.getName();
-		} else if (this instanceof XMLSimpleType) {
+		}
+		else if (this instanceof XMLSimpleType) {
 			return "Simple XML Type named : " + this.getName();
-		} else
+		}
+		else
 			return "(Unknown)";
 	}
 

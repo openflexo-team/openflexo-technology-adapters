@@ -54,7 +54,7 @@ public interface XMLType extends XMLObject, Type {
 	public final String MM = "metamodel";
 
 	// TODO : manage the calculation of FQN
-	// TODO: check emnboitage avec URI et NSPrexiw => FQN
+	// TODO: check emboitage avec URI et NSPrexiw => FQN
 	public final String FQN = "fullyQualifiedName";
 	public final String SUPERTYPE = "superType";
 	public final String ABSTRACT = "abstract";
