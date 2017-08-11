@@ -12,3 +12,4 @@
 .settings
 .gradle/
 /.DS_Store
+**/out/
