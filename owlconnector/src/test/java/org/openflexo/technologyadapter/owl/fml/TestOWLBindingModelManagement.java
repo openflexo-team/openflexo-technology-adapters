@@ -70,6 +70,7 @@ import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.PrimitiveRole;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
@@ -78,8 +79,8 @@ import org.openflexo.foundation.fml.binding.FlexoPropertyBindingVariable;
 import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.ontology.fml.action.CreateIndividualRole;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -225,6 +226,10 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	@Test
 	@TestOrder(4)
 	public void testCreateOWLModelSlot() throws SaveResourceException {
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel1, null, editor);
+		useDeclarationAction.setModelSlotClass(OWLModelSlot.class);
+		useDeclarationAction.doAction();
 
 		newModelSlot = technologicalAdapter.makeModelSlot(OWLModelSlot.class, virtualModel1);
 		newModelSlot.setName(OWL_MODEL_SLOT_NAME);

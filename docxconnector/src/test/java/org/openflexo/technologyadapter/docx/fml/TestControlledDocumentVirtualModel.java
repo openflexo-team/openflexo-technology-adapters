@@ -60,15 +60,16 @@ import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -311,6 +312,10 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) virtualModel.getResource()).getIODelegate().exists());
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel, null, _editor);
+		useDeclarationAction.setModelSlotClass(DocXModelSlot.class);
+		useDeclarationAction.doAction();
 
 		docXModelSlot = technologicalAdapter.makeModelSlot(DocXModelSlot.class, virtualModel);
 		docXModelSlot.setTemplateResource(templateResource);

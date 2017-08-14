@@ -57,13 +57,14 @@ import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
@@ -188,6 +189,11 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newVirtualModel.getResource()).getFile().exists());
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
+		useDeclarationAction.setModelSlotClass(EMFModelSlot.class);
+		useDeclarationAction.doAction();
+
 		newModelSlot = technologicalAdapter.makeModelSlot(EMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(emfMetaModelResource);
 		assertNotNull(newModelSlot);

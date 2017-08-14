@@ -22,6 +22,7 @@ import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -149,7 +150,10 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
 		newVirtualModel.addToFlexoConcepts(newFlexoConcept);
 		if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
-			for (Class msType : powerpointAdapter.getAvailableModelSlotTypes()) {
+			for (Class<? extends ModelSlot<?>> msType : powerpointAdapter.getAvailableModelSlotTypes()) {
+				AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
+				useDeclarationAction.setModelSlotClass(msType);
+				useDeclarationAction.doAction();
 				ModelSlot modelSlot = powerpointAdapter.makeModelSlot(msType, newVirtualModel);
 				modelSlot.setName("powerpointBasicModelSlot");
 				assertNotNull(modelSlot);

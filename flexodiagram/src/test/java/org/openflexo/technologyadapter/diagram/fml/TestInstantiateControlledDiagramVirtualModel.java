@@ -56,10 +56,10 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelLibrary;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
@@ -160,6 +160,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
 		assertTrue(project.getProjectDataResource().getIODelegate().exists());
+
 	}
 
 	/**
@@ -168,6 +169,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	@Test
 	@TestOrder(3)
 	public void testCreateView() {
+
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType
 				.makeNewAction(project.getVirtualModelInstanceRepository().getRootFolder(), null, editor);
 		action.setNewVirtualModelInstanceName("MyView");
@@ -181,6 +183,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
 				.exists());
 		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
+
 	}
 
 	/**
@@ -253,7 +256,6 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	public void testPopulateVirtualModelInstance() throws SaveResourceException {
 
 		log("testPopulateVirtualModelInstance()");
-		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 
 		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) newVirtualModelInstance.getResource();
 
