@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" flexoID="4" name="TestVirtualModel">
+  <UseModelSlotDeclaration modelSlotClass="org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot" userID="FLX" flexoID="-1" />
   <FlexoConcept id="1" useSpecificDescriptions="false" userID="FLX" flexoID="10" name="TestConcept">
     <Inspector id="2" flexoID="5" useSpecificDescriptions="false" userID="FLX" />
     <ShapeRole id="3" exampleLabel="label" userID="FLX" useSpecificDescriptions="false" cloningStratgey="Clone" flexoID="11" name="shape">
