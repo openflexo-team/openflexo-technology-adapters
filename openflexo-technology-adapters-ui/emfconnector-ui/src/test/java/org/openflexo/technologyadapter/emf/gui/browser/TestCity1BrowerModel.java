@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.emf.gui.browser;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Logger;
@@ -53,34 +52,39 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.gui.EMFModelBrowserModel;
 import org.openflexo.technologyadapter.emf.gui.EMFModelView;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test Class for OntologyBrowser on an ECore Model
+ * Test Class for OntologyBrowser on an UMLModel
  * 
  * @author xtof
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
-	protected static final Logger logger = Logger.getLogger(TestEcoreOntologyBrowerModel.class.getPackage().getName());
+public class TestCity1BrowerModel extends OpenflexoTestCaseWithGUI {
+	protected static final Logger logger = Logger.getLogger(TestCity1BrowerModel.class.getPackage().getName());
 
 	static EMFTechnologyAdapter technologicalAdapter;
-	static EMFModelResource ecoreModelResource = null;
-	static EMFModel ecoreModel = null;
+	static EMFModelResource city1ModelResource = null;
+	static EMFModel city1Model = null;
+
+	private static String CITY1_MM_URI = "http://www.thalesgroup.com/openflexo/emf/model/city1";
 
 	private static SwingGraphicalContextDelegate gcDelegate;
 
-	static String ecoreModelResourceRelativeURI = "TestResourceCenter/EMF/Ecore/example.ecore";
+	static String city1ModelResourceRelativeURI = "TestResourceCenter/EMF/Model/city1/first.city1";
 
 	@BeforeClass
 	public static void setupClass() {
@@ -92,15 +96,38 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
 		// But in this test environment, we need to "force" the update to be done synchronously
-		// FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
 
-		// We don't do it synchronously because it takes too much time
-		// I don't have time yet to investigate on this
 	}
 
 	@Test
 	@TestOrder(1)
-	public void TestLoadECOREModel() {
+	public void TestLoadCity1EMFMetaModel() {
+
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
+			assertNotNull(metaModelRepository);
+
+			EMFMetaModelResource metaModelResource = metaModelRepository.getResource(CITY1_MM_URI);
+
+			if (metaModelResource != null) {
+
+				System.out.println("\t Loading " + metaModelResource.getURI());
+
+				EMFMetaModel metamodel = metaModelResource.getMetaModelData();
+
+				assertNotNull(metamodel);
+			}
+		}
+	}
+
+	@Test
+	@TestOrder(2)
+	public void TestLoadCity1EMFModel() {
+
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
 			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
@@ -108,17 +135,18 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			System.out.println(
+					"Loading from RC :" + resourceCenter + " " + resourceCenter.getDefaultBaseURI() + "/" + city1ModelResourceRelativeURI);
 
 			EMFModelResource modelResource = modelRepository
-					.getResource(resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+					.getResource(resourceCenter.getDefaultBaseURI() + "/" + city1ModelResourceRelativeURI);
 
 			if (modelResource != null) {
-				ecoreModelResource = modelResource;
-				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+				city1ModelResource = modelResource;
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + city1ModelResourceRelativeURI);
 			}
 			else {
-				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + city1ModelResourceRelativeURI);
 				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
 					System.out.println(" > " + r.getURI());
 				}
@@ -126,13 +154,11 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		}
 
-		System.out.println("ecoreModelResource=" + ecoreModelResource);
-		assertNotNull(ecoreModelResource);
+		assertNotNull(city1ModelResource);
 
-		ecoreModel = ecoreModelResource.getModel();
-		assertNotNull(ecoreModel);
-		assertNotNull(ecoreModel.getMetaModel());
-		assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
+		city1Model = city1ModelResource.getModel();
+		assertNotNull(city1Model);
+		assertNotNull(city1Model.getMetaModel());
 	}
 
 	@Test
@@ -140,11 +166,10 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestCreateOntologyBrowser() {
 
 		long previousDate, currentDate;
-		int latency_time = 0;
 
 		long startTime = System.currentTimeMillis();
 
-		OntologyBrowserModel<EMFTechnologyAdapter> obm = new EMFModelBrowserModel(ecoreModel);
+		OntologyBrowserModel<EMFTechnologyAdapter> obm = new EMFModelBrowserModel(city1Model);
 
 		long endTime = System.currentTimeMillis();
 
@@ -165,109 +190,108 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		obm.setShowIndividuals(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowClasses(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowClasses took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowClasses took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowDataProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowObjectProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowAnnotationProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println(" recomputeStructure took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" recomputeStructure took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowClasses(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowClasses took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowClasses took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowDataProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowObjectProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowAnnotationProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowIndividuals(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println(" recomputeStructure took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" recomputeStructure took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowIndividuals(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowIndividuals took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
-		System.out.println(" setShowClasses took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowClasses took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowDataProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowDataProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowObjectProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowObjectProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.setShowAnnotationProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" setShowAnnotationProperties took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println(" recomputeStructure took: " + (currentDate - previousDate - latency_time));
+		System.out.println(" recomputeStructure took: " + (currentDate - previousDate));
 		previousDate = currentDate;
 	}
 
 	@Test
 	@TestOrder(4)
-	public void TestCreateEMFModelView() throws InterruptedException {
+	public void TestCreateEMFModelView() {
 		long previousDate, currentDate;
-		int latency_time = 1000;
 
 		logger.info("TestCreateEMFModelView");
 
 		previousDate = System.currentTimeMillis();
 
-		EMFModelView modelView = new EMFModelView(ecoreModel, null, null);
+		EMFModelView modelView = new EMFModelView(city1Model, null, null);
 		currentDate = System.currentTimeMillis();
-		System.out.println(" initial creation of view took : " + (currentDate - previousDate - latency_time));
+		System.out.println(" initial creation of view took : " + (currentDate - previousDate));
 		previousDate = currentDate;
 
-		gcDelegate.addTab("umlView", modelView.getFIBController());
+		gcDelegate.addTab("City1", modelView.getFIBController());
 
 		previousDate = System.currentTimeMillis();
 
@@ -277,87 +301,63 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			i--;
 			modelView.setShowIndividuals(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowIndividuals (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowIndividuals (FALSE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
 
 			modelView.setShowClasses(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowClasses (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowClasses (FALSE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowDataProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowDataProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowDataProperties (FALSE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowObjectProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowAnnotationProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println(" update   took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" update   took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
-
-			// showing only individuals
-
-			modelView.setShowIndividuals(true);
-			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowIndividuals (TRUE) took: " + (currentDate - previousDate - latency_time));
-			previousDate = currentDate;
-			Thread.sleep(latency_time);
-
-			modelView.setShowIndividuals(false);
-			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowIndividuals (FALSE) took: " + (currentDate - previousDate - latency_time));
-			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowClasses(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowClasses (TRUE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowClasses (TRUE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowDataProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowDataProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowDataProperties (TRUE) took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowObjectProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowObjectProperties (TRUE)  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowObjectProperties (TRUE)  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
 
 			modelView.setShowAnnotationProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowIndividuals(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println(" setShowIndividuals (TRUE) took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" setShowIndividuals (TRUE) took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println(" update  took: " + (currentDate - previousDate - latency_time));
+			System.out.println(" update  took: " + (currentDate - previousDate));
 			previousDate = currentDate;
-			Thread.sleep(latency_time);
 
 			int mb = 1024 * 1024;
 
@@ -382,7 +382,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(TestEcoreOntologyBrowerModel.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestCity1BrowerModel.class.getSimpleName());
 	}
 
 	@AfterClass

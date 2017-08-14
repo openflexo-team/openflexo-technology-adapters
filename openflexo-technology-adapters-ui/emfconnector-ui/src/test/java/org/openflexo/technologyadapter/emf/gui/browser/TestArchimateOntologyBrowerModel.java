@@ -52,7 +52,6 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.gui.EMFModelBrowserModel;
@@ -96,7 +95,10 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
 		// But in this test environment, we need to "force" the update to be done synchronously
-		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
+		// FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
+
+		// We don't do it synchronously because it takes too much time
+		// I don't have time yet to investigate on this
 
 	}
 
