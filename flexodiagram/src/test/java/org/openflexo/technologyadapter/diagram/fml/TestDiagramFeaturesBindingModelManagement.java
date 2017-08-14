@@ -62,6 +62,7 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelLibrary;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
@@ -293,6 +294,10 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		// viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) virtualModel.getResource()).getIODelegate().exists());
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel, null, editor);
+		useDeclarationAction.setModelSlotClass(TypedDiagramModelSlot.class);
+		useDeclarationAction.doAction();
 
 		typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, virtualModel);
 		typedDiagramModelSlot.setMetaModelResource(diagramSpecificationResource);
@@ -580,6 +585,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(viewPoint);
 
 		virtualModel = viewPoint.getVirtualModelNamed("TestVirtualModel");
+
 		assertNotNull(virtualModel);
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 
