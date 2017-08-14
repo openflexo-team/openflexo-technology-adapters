@@ -8,17 +8,15 @@
   <Panel id="6" borderLeft="0" sizeAdjustment="OriginalSize" opaque="false" border="rounded3d" borderRight="0" trackViewPortWidth="true" index="3" align="left" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;location=right;padX=0;padY=0;weightX=0.0;weightY=1.0)" borderBottom="2" borderTitle="" titleFont="Lucida Grande,0,11" borderTop="2" trackViewPortHeight="true" layout="twocols" name="FIBPanel">
     <Label id="7" name="VirtualModelLabel" index="5" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="virtual_model" />
     <Custom id="8" manageDynamicModel="true" dataClassForComponent="org.openflexo.foundation.fml.rm.VirtualModelResource" componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector" name="virtualModelSelector" data="data.virtualModelResource" index="6" localize="true" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=1;index=6;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)" readOnly="true">
-      <Assignment id="9" mandatory="true" variable="component.viewPoint" />
       <Assignment id="10" mandatory="true" variable="component.serviceManager" />
       <Assignment id="11" mandatory="true" variable="component.flexoController" />
       <Assignment id="12" mandatory="true" variable="component.selectableCondition" />
-      <Assignment id="13" mandatory="true" value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
+      <Assignment id="13" mandatory="true" value="data.serviceManager.virtualModelLibrary" variable="component.virtualModelLibrary" />
       <Assignment id="14" mandatory="true" value="data.diagramSpecification" variable="component.diagramSpecification" />
     </Custom>
     <Label id="15" name="FlexoConceptLabel" index="7" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=0;index=7;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="flexo_concept" />
     <Custom id="16" manageDynamicModel="true" dataClassForComponent="org.openflexo.foundation.fml.FlexoConcept" componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector" name="conceptSelector" data="data.flexoConcept" index="4" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right)" readOnly="true">
-      <Assignment id="17" mandatory="true" variable="component.viewPointLibrary" />
-      <Assignment id="18" mandatory="true" variable="component.viewPoint" />
+      <Assignment id="17" mandatory="true" variable="component.virtualModelLibrary" />
       <Assignment id="19" mandatory="true" variable="component.serviceManager" />
       <Assignment id="20" mandatory="true" variable="component.flexoController" />
       <Assignment id="21" mandatory="true" variable="component.selectableCondition" />

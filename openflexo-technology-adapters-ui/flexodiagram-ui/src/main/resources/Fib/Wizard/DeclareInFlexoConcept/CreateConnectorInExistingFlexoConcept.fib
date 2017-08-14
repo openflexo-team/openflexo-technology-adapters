@@ -14,8 +14,6 @@
 		componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
 		name="conceptSelector" data="data.flexoConcept" index="4"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right)">
-		<Assignment id="3" mandatory="true" variable="component.viewPoint" />
-		<Assignment id="4" mandatory="true" variable="component.viewPointLibrary" />
 		<Assignment id="5" mandatory="true" variable="component.serviceManager" />
 		<Assignment id="6" mandatory="true" variable="component.flexoController" />
 		<Assignment id="7" mandatory="true"

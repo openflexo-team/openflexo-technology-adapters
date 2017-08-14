@@ -54,9 +54,6 @@
 					name="structural" />
 				<Children data="flexoConcept.behaviouralFacet" cast=""
 					name="behavioural" />
-				<BrowserCustomAction
-					method="controller.duplicateFlexoConcept(selected,(selected.name + &quot;Copy&quot;))"
-					name="duplicate" />
 			</BrowserElement>
 
 			<BrowserElement dataClassName="org.openflexo.foundation.fml.FlexoRole"

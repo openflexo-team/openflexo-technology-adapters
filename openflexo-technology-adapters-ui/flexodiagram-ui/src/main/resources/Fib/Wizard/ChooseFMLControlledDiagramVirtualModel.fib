@@ -17,9 +17,7 @@
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=5;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)"
 		readOnly="false">
 		<Assignment mandatory="true"
-			value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
-		<Assignment mandatory="true"
-			value="data.action.containerViewpointResource" variable="component.viewPoint" />
+			value="data.serviceManager.virtualModelLibrary" variable="component.virtualModelLibrary" />
 	</Custom>
 	<Label id="8" label="virtual_model_instance_name" align="left"
 		localize="true" index="3"

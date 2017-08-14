@@ -16,8 +16,8 @@
 				localize="true" manageDynamicModel="true" index="7"
 				data="data.fromTargetFlexoConcept"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-				<Assignment variable="component.viewPoint" value="data.viewPoint" />
-				<Assignment variable="component.viewPointLibrary" value="data.viewPointLibrary" />
+				<Assignment variable="component.virtualModel" value="data.declaringVirtualModel" />
+				<Assignment variable="component.virtualModelLibrary" value="data.virtualModelLibrary" />
 			</Custom>
 			<Label label="to" align="right" index="8"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
@@ -26,8 +26,8 @@
 				localize="true" manageDynamicModel="true" index="9"
 				data="data.toTargetFlexoConcept"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-				<Assignment variable="component.viewPoint" value="data.viewPoint" />
-				<Assignment variable="component.viewPointLibrary" value="data.viewPointLibrary" />
+				<Assignment variable="component.virtualModel" value="data.declaringVirtualModel" />
+				<Assignment variable="component.virtualModelLibrary" value="data.virtualModelLibrary" />
 			</Custom>
 			<CheckBox selected="true" index="10"
 				data="data.inverseDirectionWhenComposed"
