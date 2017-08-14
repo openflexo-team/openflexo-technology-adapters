@@ -55,6 +55,7 @@ import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -171,6 +172,11 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
+		useDeclarationAction.setModelSlotClass(UMLEMFModelSlot.class);
+		useDeclarationAction.doAction();
+
 		newModelSlot = technologicalAdapter.makeModelSlot(UMLEMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(umlMetaModelResource);
 		assertNotNull(newModelSlot);
