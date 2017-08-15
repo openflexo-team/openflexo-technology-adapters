@@ -46,7 +46,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviour;
@@ -303,11 +302,13 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			if (paletteElement == null && getDiagramModelSlot() != null && paletteElementId != null && paletteElementId.indexOf("#") > 0) {
 				String paletteURI = paletteElementId.substring(0, paletteElementId.indexOf("#"));
 				String elementName = paletteElementId.substring(paletteElementId.indexOf("#") + 1);
-				DiagramSpecification ds = getDiagramModelSlot().getMetaModelResource().getMetaModelData();
-				if (ds != null) {
-					DiagramPalette palette = ds.getPalette(paletteURI);
-					if (palette != null) {
-						paletteElement = palette.getPaletteElement(elementName);
+				if (getDiagramModelSlot().getMetaModelResource() != null) {
+					DiagramSpecification ds = getDiagramModelSlot().getMetaModelResource().getMetaModelData();
+					if (ds != null) {
+						DiagramPalette palette = ds.getPalette(paletteURI);
+						if (palette != null) {
+							paletteElement = palette.getPaletteElement(elementName);
+						}
 					}
 				}
 			}
