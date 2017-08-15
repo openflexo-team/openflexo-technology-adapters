@@ -403,7 +403,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
 					}
-					else if (getOwningVirtualModel() != null) {
+					else if (getOwningVirtualModel() != null && getFMLModelFactory() != null) {
 						FMLModelFactory factory = getFMLModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);
