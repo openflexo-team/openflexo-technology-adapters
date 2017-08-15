@@ -54,9 +54,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.technologyadapter.owl.OWLModelSlot.OWLModelSlotImpl;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
@@ -147,18 +147,18 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 	}
 
 	@DefineValidationRule
-	public static class ObjectPropertyStatementPatternRoleMustDefineAValidProperty
-			extends ValidationRule<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> {
-		public ObjectPropertyStatementPatternRoleMustDefineAValidProperty() {
-			super(ObjectPropertyStatementRole.class, "pattern_role_must_define_a_valid_object_property");
+	public static class ObjectPropertyStatementRoleMustDefineAValidProperty
+			extends ValidationRule<ObjectPropertyStatementRoleMustDefineAValidProperty, ObjectPropertyStatementRole> {
+		public ObjectPropertyStatementRoleMustDefineAValidProperty() {
+			super(ObjectPropertyStatementRole.class, "statement_role_must_define_a_valid_object_property");
 		}
 
 		@Override
-		public ValidationIssue<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
+		public ValidationIssue<ObjectPropertyStatementRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
 				ObjectPropertyStatementRole patternRole) {
 			if (patternRole.getObjectProperty() == null) {
-				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(this,
-						patternRole, "pattern_role_does_not_define_any_valid_object_property");
+				return new ValidationWarning<ObjectPropertyStatementRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(this,
+						patternRole, "statement_role_does_not_define_any_valid_object_property");
 			}
 			return null;
 		}
