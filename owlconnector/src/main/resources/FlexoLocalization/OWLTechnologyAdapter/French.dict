@@ -33,6 +33,7 @@ lang=Langue
 lower=lower
 name=Nom
 object_properties=object_properties
+object_type=object_type
 present_properties_in_classes=present_properties_in_classes
 properties_declared_in_this_class=properties_declared_in_this_class
 property=Propri\u00E9t\u00E9

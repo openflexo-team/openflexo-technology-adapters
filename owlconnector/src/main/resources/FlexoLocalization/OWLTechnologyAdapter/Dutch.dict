@@ -33,6 +33,7 @@ lang=Taal
 lower=Lower
 name=Naam
 object_properties=Object properties
+object_type=Object type
 present_properties_in_classes=Present properties in classes
 properties_declared_in_this_class=Properties declared in this class
 property=Eigenschap
