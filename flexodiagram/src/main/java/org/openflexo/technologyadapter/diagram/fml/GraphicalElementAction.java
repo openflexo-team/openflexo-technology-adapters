@@ -97,7 +97,6 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
 
 	@Getter(value = CONDITIONAL_KEY)
-	@XMLElement
 	public DataBinding<Boolean> getConditional();
 
 	@Setter(CONDITIONAL_KEY)
@@ -132,7 +131,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		public GraphicalElementRole getGraphicalElementPatternRole() {
 			return graphicalElementPatternRole;
 		}
-
+		
 		@Override
 		public void setGraphicalElementPatternRole(GraphicalElementRole graphicalElementPatternRole) {
 			this.graphicalElementPatternRole = graphicalElementPatternRole;
