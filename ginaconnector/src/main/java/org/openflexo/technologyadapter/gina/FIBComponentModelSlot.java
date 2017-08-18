@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.gina;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
-
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
@@ -176,6 +175,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		@Override
 		public GINAFIBComponentResource getTemplateResource() {
 			if (templateResource == null && StringUtils.isNotEmpty(templateComponentURI)
+					&& getServiceManager() != null
 					&& getServiceManager().getResourceManager() != null) {
 				// System.out.println("Looking up " + templateDocumentURI);
 				templateResource = (GINAFIBComponentResource) getServiceManager().getResourceManager().getResource(templateComponentURI);
