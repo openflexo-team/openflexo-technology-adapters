@@ -40,14 +40,10 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.util.List;
 
-import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -56,10 +52,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
-import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.toolbox.StringUtils;
 
 @FIBPanel("Fib/DropSchemePanel.fib")
@@ -102,7 +95,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 	public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
-	public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole);
+	public boolean isValidTarget(FlexoConcept aTarget, FlexoRole<?> contextRole);
 
 	public List<ShapeRole> getAvailableTargetShapeRoles();
 
@@ -211,7 +204,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		}
 
 		@Override
-		public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole) {
+		public boolean isValidTarget(FlexoConcept aTarget, FlexoRole<?> contextRole) {
 			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when property inheritance will be in use !!!
@@ -229,61 +222,5 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 			return new DropSchemeBindingModel(this);
 		}
 
-		/*@Override
-		protected void appendContextualBindingVariables(BindingModel bindingModel) {
-			super.appendContextualBindingVariables(bindingModel);
-			// bindingModelNeedToBeRecomputed = false;
-			bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TOP_LEVEL, Diagram.class));
-			if (getTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
-			} else if (_getTarget() != null && !_getTarget().equals("top")) {
-				// logger.warning("Cannot find flexo concept " + _getTarget() + " !!!!!!!!!!!!!!");
-				// bindingModelNeedToBeRecomputed = true;
-				}
-		}*/
-
-		// private boolean bindingModelNeedToBeRecomputed = false;
-		// private boolean isUpdatingBindingModel = false;
-
-		/*@Override
-		public BindingModel getBindingModel() {
-			if (bindingModelNeedToBeRecomputed && !isUpdatingBindingModel) {
-				isUpdatingBindingModel = true;
-				bindingModelNeedToBeRecomputed = false;
-				updateBindingModels();
-				isUpdatingBindingModel = false;
-			}
-			return super.getBindingModel();
-		}*/
-
-		/*@Override
-		protected void rebuildActionsBindingModel() {
-			if (!bindingModelNeedToBeRecomputed) {
-				super.rebuildActionsBindingModel();
-			}
-		}*/
-
-		/**
-		 * Overrides {@link #createAction(Class, ModelSlot)} by providing default value for top level container
-		 * 
-		 * @return newly created {@link EditionAction}
-		 */
-		@Override
-		public <A extends TechnologySpecificAction<?, ?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
-			A newAction = super.createAction(actionClass, modelSlot);
-			if (newAction instanceof AddShape) {
-				if (isTopTarget()) {
-					((AddShape) newAction)
-							.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
-				}
-			}
-			return newAction;
-		}
-
-		/*@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		}*/
 	}
 }

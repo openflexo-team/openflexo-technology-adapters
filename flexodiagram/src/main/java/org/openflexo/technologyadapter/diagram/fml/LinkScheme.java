@@ -38,13 +38,9 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -54,8 +50,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
 
 @FIBPanel("Fib/LinkSchemePanel.fib")
@@ -250,98 +244,9 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 					&& getToTargetFlexoConcept() != null && getToTargetFlexoConcept().isAssignableFrom(actualToTarget);
 		}
 
-		/*private void appendFromTargetBindingVariable(BindingModel bindingModel) {
-			if (getFromTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(LinkSchemeBindingModel.FROM_TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
-			}
-		}
-		
-		private void appendToTargetBindingVariable(BindingModel bindingModel) {
-			if (getToTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(LinkSchemeBindingModel.TO_TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
-			}
-		}*/
-
 		@Override
 		protected LinkSchemeBindingModel makeBindingModel() {
 			return new LinkSchemeBindingModel(this);
-		}
-
-		/*@Override
-		protected void appendContextualBindingVariables(BindingModel bindingModel) {
-			super.appendContextualBindingVariables(bindingModel);
-			// bindingModelNeedToBeRecomputed = false;
-			bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TOP_LEVEL, Diagram.class));
-			if (getFromTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.FROM_TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
-			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
-				// bindingModelNeedToBeRecomputed = true;
-			}
-			if (getToTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TO_TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
-			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
-				//bindingModelNeedToBeRecomputed = true;
-				}
-		}*/
-
-		// private boolean bindingModelNeedToBeRecomputed = false;
-		// private boolean isUpdatingBindingModel = false;
-
-		/*@Override
-		public BindingModel getBindingModel() {
-			if (bindingModelNeedToBeRecomputed && !isUpdatingBindingModel) {
-				isUpdatingBindingModel = true;
-				bindingModelNeedToBeRecomputed = false;
-				updateBindingModels();
-				isUpdatingBindingModel = false;
-			}
-			return super.getBindingModel();
-		}
-		
-		@Override
-		protected void rebuildActionsBindingModel() {
-			if (!bindingModelNeedToBeRecomputed) {
-				super.rebuildActionsBindingModel();
-			}
-		}*/
-
-		/**
-		 * Overrides {@link #createAction(Class, ModelSlot)} by providing default value for from and to targets
-		 * 
-		 * @return newly created {@link EditionAction}
-		 */
-		@Override
-		public <A extends TechnologySpecificAction<?, ?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
-			A returned = super.createAction(actionClass, modelSlot);
-			if (returned instanceof AddConnector) {
-				AddConnector newAction = (AddConnector) returned;
-				FlexoConcept fromFlexoConcept = this.getFromTargetFlexoConcept();
-				if (fromFlexoConcept != null) {
-					ShapeRole fromShapeRole = getDefaultShapeRole(fromFlexoConcept);
-					if (fromShapeRole != null) {
-						newAction.setFromShape(new DataBinding<DiagramShape>("fromTarget." + fromShapeRole.getName()));
-					}
-				}
-				FlexoConcept toFlexoConcept = this.getToTargetFlexoConcept();
-				if (toFlexoConcept != null) {
-					ShapeRole toShapeRole = getDefaultShapeRole(toFlexoConcept);
-					if (toShapeRole != null) {
-						newAction.setToShape(new DataBinding<DiagramShape>("toTarget." + toShapeRole.getName()));
-					}
-				}
-			}
-			return returned;
-		}
-
-		private ShapeRole getDefaultShapeRole(FlexoConcept ep) {
-			if (ep.getDeclaredProperties(ShapeRole.class).size() > 0) {
-				return ep.getDeclaredProperties(ShapeRole.class).get(0);
-			}
-			return null;
 		}
 
 		@Override

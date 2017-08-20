@@ -38,14 +38,11 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -53,10 +50,8 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionType;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -338,7 +333,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 		}
 
 		private void computeDeletedElements() {
-			try {
+			/*try {
 				deletedElements.clear();
 				if (currentDeletionScheme != null && currentDeletionScheme.getActions() != null) {
 					for (EditionAction ea : currentDeletionScheme.getActions()) {
@@ -358,7 +353,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 		private void update() {
