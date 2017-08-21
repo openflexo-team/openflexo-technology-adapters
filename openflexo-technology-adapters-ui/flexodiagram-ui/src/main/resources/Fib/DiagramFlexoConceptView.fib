@@ -175,8 +175,6 @@
 				label="" icon="controller.iconForObject(controlStructureAction)"
 				tooltip="" enabled="" isEditable="false" editableLabel="" filtered="false"
 				defaultVisible="true" dynamicFont="" name="controlStructureAction">
-				<Children data="controlStructureAction.actions" cast=""
-					name="children" />
 			</BrowserElement>
 			<BrowserElement
 				dataClassName="org.openflexo.foundation.fml.FlexoConceptStructuralFacet"
