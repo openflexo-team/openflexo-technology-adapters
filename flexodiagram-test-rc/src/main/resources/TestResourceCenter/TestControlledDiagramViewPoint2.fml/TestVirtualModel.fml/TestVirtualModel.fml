@@ -1,0 +1,45 @@
+use org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+
+/**
+ * 
+ * @version 0.1
+ */
+@VirtualModel(uri="http://openflexo.org/test/TestResourceCenter/TestControlledDiagramViewPoint2.fml/TestVirtualModel.fml")
+public class TestVirtualModel {
+
+  @TypedDiagramModelSlot(metamodel="http://openflexo.org/test/TestDiagramSpecification",cardinality=ZeroOne,readOnly=false)  
+  public DiagramType<TestDiagramSpecification> diagram;
+
+  @FlexoConcept  
+  public class TestConcept {  
+  
+    FlexoRole shape as ShapeSpecification from TestVirtualModel;  
+  
+    @DropScheme    
+    TestConcept:drop() {    
+      shape = diagram.DIAGRAM::AddShape {      
+      };    
+    }    
+  
+  }  
+
+  @FlexoConcept  
+  public class TestConcept2 {  
+  
+    FlexoRole shape as ShapeSpecification from TestVirtualModel;  
+  }  
+
+  @FlexoConcept  
+  public class TestLink {  
+  
+    FlexoRole connector as ConnectorSpecification from TestVirtualModel;  
+  
+    @LinkScheme    
+    TestLink:link() {    
+      connector = AddConnector$AddConnectorImpl_$$_jvste0e_7d conformTo ConnectorSpecification from diagram {      
+      };    
+    }    
+  
+  }  
+
+}
