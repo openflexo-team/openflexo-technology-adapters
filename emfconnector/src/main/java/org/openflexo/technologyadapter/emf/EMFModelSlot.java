@@ -48,16 +48,10 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
-import org.openflexo.foundation.ontology.fml.inspector.ClassInspectorEntry;
-import org.openflexo.foundation.ontology.fml.inspector.DataPropertyInspectorEntry;
-import org.openflexo.foundation.ontology.fml.inspector.IndividualInspectorEntry;
-import org.openflexo.foundation.ontology.fml.inspector.ObjectPropertyInspectorEntry;
-import org.openflexo.foundation.ontology.fml.inspector.PropertyInspectorEntry;
 import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -90,8 +84,6 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
 @DeclareEditionActions({ AddEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
-@DeclareInspectorEntries({ ClassInspectorEntry.class, IndividualInspectorEntry.class, PropertyInspectorEntry.class,
-		DataPropertyInspectorEntry.class, ObjectPropertyInspectorEntry.class })
 @DeclareActorReferences({ ConceptActorReference.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
