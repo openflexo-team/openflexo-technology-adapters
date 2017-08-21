@@ -7,9 +7,9 @@
       <TypedDiagramModelSlot idref="4" />
     </ShapeRole>
     <DropScheme id="6" userID="FLX" width="800" useSpecificDescriptions="false" label="drop" definePopupDefaultSize="false" height="600" flexoID="6" skipConfirmationPanel="false" name="drop" target="top">
-      <AddShape id="7" flexoID="9" assignation="shape" container="topLevel" userID="FLX" useSpecificDescriptions="false" extendParentBoundsToHostThisShape="false">
+      <BehaviourControlGraph_AddShape id="7" flexoID="9" assignation="shape" container="topLevel" userID="FLX" useSpecificDescriptions="false" extendParentBoundsToHostThisShape="false">
         <TypedDiagramModelSlot idref="4" />
-      </AddShape>
+      </BehaviourControlGraph_AddShape>
     </DropScheme>
   </FlexoConcept>
   <FlexoConcept id="8" useSpecificDescriptions="false" userID="FLX" flexoID="15" name="TestConcept2">
@@ -43,9 +43,9 @@
       <TypedDiagramModelSlot idref="4" />
     </ConnectorRole>
     <LinkScheme id="31" northDirectionSupported="true" fromTarget="http://openflexo.org/test/TestControlledDiagramViewPoint/TestVirtualModel#TestConcept" toTarget="http://openflexo.org/test/TestControlledDiagramViewPoint/TestVirtualModel#TestConcept2" userID="FLX" width="800" useSpecificDescriptions="false" label="link" definePopupDefaultSize="false" southDirectionSupported="true" westDirectionSupported="true" isAvailableWithFloatingPalette="true" flexoID="18" height="600" skipConfirmationPanel="false" name="link" eastDirectionSupported="true">
-      <AddConnector id="32" useSpecificDescriptions="false" userID="FLX" flexoID="19" assignation="connector" fromShape="fromTarget.shape" toShape="toTarget.shape">
+      <BehaviourControlGraph_AddConnector id="32" useSpecificDescriptions="false" userID="FLX" flexoID="19" assignation="connector" fromShape="fromTarget.shape" toShape="toTarget.shape">
         <TypedDiagramModelSlot idref="4" />
-      </AddConnector>
+      </BehaviourControlGraph_AddConnector>
     </LinkScheme>
   </FlexoConcept>
   <Inspector id="33" flexoID="2" useSpecificDescriptions="false" userID="FLX" inspectorTitle="TestVirtualModel" />
