@@ -46,7 +46,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.TextBinding;
@@ -59,8 +59,8 @@ public class CreateTextBinding extends FlexoAction<CreateTextBinding, DocXFragme
 
 	private static final Logger logger = Logger.getLogger(CreateTextBinding.class.getPackage().getName());
 
-	public static FlexoActionType<CreateTextBinding, DocXFragmentRole, FMLObject> actionType = new FlexoActionType<CreateTextBinding, DocXFragmentRole, FMLObject>(
-			"create_text_binding", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateTextBinding, DocXFragmentRole, FMLObject> actionType = new FlexoActionFactory<CreateTextBinding, DocXFragmentRole, FMLObject>(
+			"create_text_binding", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

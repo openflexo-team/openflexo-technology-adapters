@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
@@ -63,12 +63,13 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @param <ES>
  * @param <O>
  */
-public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction<A, ES, O>, ES extends FlexoBehaviour & DiagramFlexoBehaviour, O extends VirtualModelInstanceObject>
+// TODO: inherits from AbstractCreationSchemeAction
+public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction<A, ES, O>, ES extends FlexoBehaviour & DiagramFlexoBehaviour, O extends FMLRTVirtualModelInstance>
 		extends FlexoBehaviourAction<A, ES, O> {
 
 	private static final Logger logger = Logger.getLogger(DiagramFlexoBehaviourAction.class.getPackage().getName());
 
-	DiagramFlexoBehaviourAction(FlexoActionType<A, O, VirtualModelInstanceObject> actionType, O focusedObject,
+	DiagramFlexoBehaviourAction(FlexoActionFactory<A, O, VirtualModelInstanceObject> actionType, O focusedObject,
 			Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
@@ -80,15 +81,6 @@ public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction
 		}
 		return super.getLocales();
 	}
-
-	/*@Override
-	public Diagram getVirtualModelInstance() {
-		return (Diagram) super.getVirtualModelInstance();
-	}
-	
-	public Diagram getDiagram() {
-		return getVirtualModelInstance();
-	}*/
 
 	public abstract Diagram getDiagram();
 

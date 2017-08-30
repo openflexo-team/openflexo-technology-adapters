@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
@@ -52,8 +52,8 @@ public class DeleteDiagramPaletteElement extends FlexoAction<DeleteDiagramPalett
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> actionType = new FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject>(
-			"delete_palette_element", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> actionType = new FlexoActionFactory<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject>(
+			"delete_palette_element", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method

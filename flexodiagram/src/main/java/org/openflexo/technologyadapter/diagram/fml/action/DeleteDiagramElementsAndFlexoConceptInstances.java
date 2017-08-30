@@ -47,7 +47,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -71,8 +71,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramElementsAndFlexoConceptInstances.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> actionType = new FlexoActionType<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject>(
-			"delete", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> actionType = new FlexoActionFactory<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject>(
+			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method

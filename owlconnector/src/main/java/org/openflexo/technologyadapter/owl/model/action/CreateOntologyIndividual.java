@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
@@ -60,8 +60,8 @@ public class CreateOntologyIndividual extends FlexoAction<CreateOntologyIndividu
 
 	private static final Logger logger = Logger.getLogger(CreateOntologyIndividual.class.getPackage().getName());
 
-	public static FlexoActionType<CreateOntologyIndividual, OWLObject, OWLConcept> actionType = new FlexoActionType<CreateOntologyIndividual, OWLObject, OWLConcept>(
-			"create_individual", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateOntologyIndividual, OWLObject, OWLConcept> actionType = new FlexoActionFactory<CreateOntologyIndividual, OWLObject, OWLConcept>(
+			"create_individual", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

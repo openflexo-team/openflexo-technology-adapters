@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -54,8 +54,8 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramSpecification.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, FMLObject> actionType = new FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, FMLObject>(
-			"delete_diagram_specification", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramSpecification, DiagramSpecification, FMLObject> actionType = new FlexoActionFactory<DeleteDiagramSpecification, DiagramSpecification, FMLObject>(
+			"delete_diagram_specification", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method

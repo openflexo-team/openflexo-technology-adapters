@@ -46,13 +46,14 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -69,29 +70,29 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeAction, LinkScheme, VirtualModelInstanceObject> {
+public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeAction, LinkScheme, FMLRTVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionType<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> actionType = new FlexoActionType<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject>(
-			"link_palette_connector", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
+			"link_palette_connector", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public LinkSchemeAction makeNewAction(VirtualModelInstanceObject focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
+		public LinkSchemeAction makeNewAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
 				FlexoEditor editor) {
 			return new LinkSchemeAction(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModelInstanceObject object, Vector<VirtualModelInstanceObject> globalSelection) {
+		public boolean isVisibleForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			return false;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModelInstanceObject object, Vector<VirtualModelInstanceObject> globalSelection) {
+		public boolean isEnabledForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			// return object instanceof Diagram || object instanceof DiagramElement<?>;
 			return true;
 		}
@@ -101,7 +102,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	static {
 		// VirtualModelInstanceObject.addActionForClass(actionType, DiagramElement.class);
 		// VirtualModelInstanceObject.addActionForClass(actionType, Diagram.class);
-		FlexoObjectImpl.addActionForClass(actionType, FlexoConceptInstance.class);
+		FlexoObjectImpl.addActionForClass(actionType, FMLRTVirtualModelInstance.class);
 	}
 
 	private DiagramShape _fromShape;
@@ -110,7 +111,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 	private LinkScheme _linkScheme;
 
-	LinkSchemeAction(VirtualModelInstanceObject focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
+	LinkSchemeAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -162,7 +163,11 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	}
 
 	@Override
-	public FlexoConceptInstance getFlexoConceptInstance() {
+	public FMLRTVirtualModelInstance getFlexoConceptInstance() {
+		return (FMLRTVirtualModelInstance) getVirtualModelInstance();
+	}
+
+	public FlexoConceptInstance getNewFlexoConceptInstance() {
 		return flexoConceptInstance;
 	}
 

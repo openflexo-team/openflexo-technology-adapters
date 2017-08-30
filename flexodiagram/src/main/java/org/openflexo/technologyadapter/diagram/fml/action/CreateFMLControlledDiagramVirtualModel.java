@@ -48,7 +48,7 @@ import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -80,9 +80,9 @@ public class CreateFMLControlledDiagramVirtualModel
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionType<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject>(
-			"create_diagram_virtual_model", FlexoActionType.newVirtualModelMenu, FlexoActionType.defaultGroup,
-			FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject>(
+			"create_diagram_virtual_model", FlexoActionFactory.newVirtualModelMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

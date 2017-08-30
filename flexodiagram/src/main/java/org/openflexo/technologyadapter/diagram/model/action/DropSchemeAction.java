@@ -49,12 +49,12 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -81,8 +81,8 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionType<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
-			"drop_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionFactory<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
+			"drop_palette_element", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -209,7 +209,11 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	public FlexoConceptInstance getFlexoConceptInstance() {
+	public FMLRTVirtualModelInstance getFlexoConceptInstance() {
+		return (FMLRTVirtualModelInstance) getVirtualModelInstance();
+	}
+
+	public FlexoConceptInstance getNewFlexoConceptInstance() {
 		return flexoConceptInstance;
 	}
 

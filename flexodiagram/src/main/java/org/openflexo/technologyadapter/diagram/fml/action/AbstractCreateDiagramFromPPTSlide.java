@@ -101,7 +101,7 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.rm.ResourceLocator;
@@ -137,7 +137,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private File file;
 	private Slide slide;
 
-	public AbstractCreateDiagramFromPPTSlide(FlexoActionType<A, T, FMLObject> actionType, T focusedObject,
+	public AbstractCreateDiagramFromPPTSlide(FlexoActionFactory<A, T, FMLObject> actionType, T focusedObject,
 			Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}

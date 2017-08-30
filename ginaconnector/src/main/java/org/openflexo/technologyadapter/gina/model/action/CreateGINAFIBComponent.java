@@ -47,7 +47,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -68,8 +68,8 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 
 	private static final Logger logger = Logger.getLogger(CreateGINAFIBComponent.class.getPackage().getName());
 
-	public static FlexoActionType<CreateGINAFIBComponent, RepositoryFolder, FlexoObject> actionType = new FlexoActionType<CreateGINAFIBComponent, RepositoryFolder, FlexoObject>(
-			"create_component", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder, FlexoObject> actionType = new FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder, FlexoObject>(
+			"create_component", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

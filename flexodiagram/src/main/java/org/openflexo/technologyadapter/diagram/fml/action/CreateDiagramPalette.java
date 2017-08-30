@@ -47,7 +47,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -60,8 +60,8 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramPalette.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionType = new FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject>(
-			"create_new_palette", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionType = new FlexoActionFactory<CreateDiagramPalette, DiagramSpecification, FlexoObject>(
+			"create_new_palette", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

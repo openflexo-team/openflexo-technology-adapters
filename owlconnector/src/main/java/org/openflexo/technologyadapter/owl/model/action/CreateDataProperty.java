@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
@@ -61,8 +61,8 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 
 	private static final Logger logger = Logger.getLogger(CreateDataProperty.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDataProperty, OWLObject, OWLConcept> actionType = new FlexoActionType<CreateDataProperty, OWLObject, OWLConcept>(
-			"create_data_property", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept> actionType = new FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept>(
+			"create_data_property", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

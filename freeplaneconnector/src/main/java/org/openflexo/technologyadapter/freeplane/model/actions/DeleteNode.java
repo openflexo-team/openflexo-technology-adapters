@@ -46,7 +46,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
@@ -54,10 +54,10 @@ import java.util.Vector;
 
 public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreeplaneMap> {
 
-	private static final class DeleteNodeActionType extends FlexoActionType<DeleteNode, IFreeplaneNode, IFreeplaneMap> {
+	private static final class DeleteNodeActionType extends FlexoActionFactory<DeleteNode, IFreeplaneNode, IFreeplaneMap> {
 
 		public DeleteNodeActionType() {
-			super("delete_node", NewChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE);
+			super("delete_node", NewChildNode.FREEPLANE_MENU, FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE);
 		}
 
 		@Override
@@ -78,7 +78,7 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
 
 	}
 
-	public static final FlexoActionType<DeleteNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new DeleteNodeActionType();
+	public static final FlexoActionFactory<DeleteNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new DeleteNodeActionType();
 
 	static {
 		FlexoObjectImpl.addActionForClass(ACTION_TYPE, IFreeplaneNode.class);

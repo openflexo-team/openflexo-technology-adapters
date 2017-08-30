@@ -46,7 +46,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.fml.FMLObject;
@@ -58,8 +58,8 @@ public class CreateColumnTableBinding extends FlexoAction<CreateColumnTableBindi
 
 	private static final Logger logger = Logger.getLogger(CreateColumnTableBinding.class.getPackage().getName());
 
-	public static FlexoActionType<CreateColumnTableBinding, DocXTableRole, FMLObject> actionType = new FlexoActionType<CreateColumnTableBinding, DocXTableRole, FMLObject>(
-			"create_column_table_binding", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateColumnTableBinding, DocXTableRole, FMLObject> actionType = new FlexoActionFactory<CreateColumnTableBinding, DocXTableRole, FMLObject>(
+			"create_column_table_binding", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

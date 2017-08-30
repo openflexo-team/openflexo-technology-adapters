@@ -52,7 +52,7 @@ import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -99,9 +99,9 @@ public class CreateFMLControlledFIBVirtualModel
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledFIBVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionType<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject>(
-			"create_screen_virtual_model", FlexoActionType.newVirtualModelMenu, FlexoActionType.defaultGroup,
-			FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject>(
+			"create_screen_virtual_model", FlexoActionFactory.newVirtualModelMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

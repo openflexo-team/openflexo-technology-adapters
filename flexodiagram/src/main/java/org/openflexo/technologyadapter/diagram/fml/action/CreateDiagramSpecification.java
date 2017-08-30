@@ -47,7 +47,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -62,9 +62,9 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramSpecification.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject>(
-			"create_diagram_specification", FlexoActionType.newMenu, FlexoActionType.defaultGroup,
-			FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramSpecification, RepositoryFolder, FMLObject> actionType = new FlexoActionFactory<CreateDiagramSpecification, RepositoryFolder, FMLObject>(
+			"create_diagram_specification", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -64,8 +64,8 @@ public class RefreshDiagramElement extends FlexoAction<RefreshDiagramElement, Di
 
 	private static final Logger logger = Logger.getLogger(RefreshDiagramElement.class.getPackage().getName());
 
-	public static FlexoActionType<RefreshDiagramElement, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionType<RefreshDiagramElement, DiagramElement<?>, DiagramElement<?>>(
-			"refresh", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionFactory<RefreshDiagramElement, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<RefreshDiagramElement, DiagramElement<?>, DiagramElement<?>>(
+			"refresh", FlexoActionFactory.defaultGroup, FlexoActionFactory.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method

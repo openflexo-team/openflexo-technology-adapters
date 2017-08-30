@@ -45,7 +45,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
@@ -53,10 +53,10 @@ import java.util.Vector;
 
 public class NewSiblingAboveNode extends FlexoAction<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> {
 
-	private static final class NewSiblingAboveNodeActionType extends FlexoActionType<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> {
+	private static final class NewSiblingAboveNodeActionType extends FlexoActionFactory<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> {
 
 		public NewSiblingAboveNodeActionType() {
-			super("add_sibling_above_node", NewChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+			super("add_sibling_above_node", NewChildNode.FREEPLANE_MENU, FlexoActionFactory.editGroup, FlexoActionFactory.ADD_ACTION_TYPE);
 		}
 
 		@Override
@@ -77,7 +77,7 @@ public class NewSiblingAboveNode extends FlexoAction<NewSiblingAboveNode, IFreep
 
 	}
 
-	public static final FlexoActionType<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new NewSiblingAboveNodeActionType();
+	public static final FlexoActionFactory<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new NewSiblingAboveNodeActionType();
 
 	static {
 		FlexoObjectImpl.addActionForClass(ACTION_TYPE, IFreeplaneNode.class);

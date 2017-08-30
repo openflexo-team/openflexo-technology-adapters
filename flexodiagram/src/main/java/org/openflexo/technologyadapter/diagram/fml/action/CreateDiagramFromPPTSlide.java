@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -60,8 +60,8 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
-			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
+			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

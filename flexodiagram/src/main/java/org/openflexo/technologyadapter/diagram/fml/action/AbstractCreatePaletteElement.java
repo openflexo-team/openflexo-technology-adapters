@@ -55,7 +55,7 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -122,7 +122,7 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 	private static final int X_OFFSET = 10;
 	private static final int Y_OFFSET = 10;
 
-	protected AbstractCreatePaletteElement(FlexoActionType<A, T1, T2> actionType, T1 focusedObject, Vector<T2> globalSelection,
+	protected AbstractCreatePaletteElement(FlexoActionFactory<A, T1, T2> actionType, T1 focusedObject, Vector<T2> globalSelection,
 			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		diagramElementEntries = new Vector<GraphicalElementEntry>();

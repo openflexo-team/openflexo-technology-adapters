@@ -47,7 +47,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoGUIAction;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.swing.ImageUtils;
@@ -65,8 +65,8 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 
 	private static final Logger logger = Logger.getLogger(ExportDiagramToImageAction.class.getPackage().getName());
 
-	public static final FlexoActionType<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionType<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>>(
-			"export_diagram_to_image", FlexoActionType.docGroup) {
+	public static final FlexoActionFactory<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>>(
+			"export_diagram_to_image", FlexoActionFactory.docGroup) {
 
 		@Override
 		public boolean isEnabledForSelection(DiagramElement<?> object, Vector<DiagramElement<?>> globalSelection) {

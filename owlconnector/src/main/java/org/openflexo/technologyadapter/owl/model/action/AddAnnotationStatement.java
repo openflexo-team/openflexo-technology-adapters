@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
@@ -54,8 +54,8 @@ public class AddAnnotationStatement extends FlexoAction<AddAnnotationStatement, 
 
 	private static final Logger logger = Logger.getLogger(AddAnnotationStatement.class.getPackage().getName());
 
-	public static FlexoActionType<AddAnnotationStatement, OWLConcept, OWLConcept> actionType = new FlexoActionType<AddAnnotationStatement, OWLConcept, OWLConcept>(
-			"add_annotation", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<AddAnnotationStatement, OWLConcept, OWLConcept> actionType = new FlexoActionFactory<AddAnnotationStatement, OWLConcept, OWLConcept>(
+			"add_annotation", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

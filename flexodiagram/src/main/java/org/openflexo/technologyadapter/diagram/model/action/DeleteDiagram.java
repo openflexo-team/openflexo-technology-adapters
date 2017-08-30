@@ -45,7 +45,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -55,8 +55,8 @@ public class DeleteDiagram extends FlexoAction<DeleteDiagram, Diagram, FlexoObje
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagram.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagram, Diagram, FlexoObject> actionType = new FlexoActionType<DeleteDiagram, Diagram, FlexoObject>(
-			"delete_diagram", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagram, Diagram, FlexoObject> actionType = new FlexoActionFactory<DeleteDiagram, Diagram, FlexoObject>(
+			"delete_diagram", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method

@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -63,8 +63,8 @@ public class CreateFMLDiagramPaletteElementBinding
 
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBinding.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject>(
-			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType = new FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject>(
+			"create_new_palette_binding", FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

@@ -46,7 +46,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
@@ -83,8 +83,8 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(GivesFMLControlledFIBVirtualModelNature.class.getPackage().getName());
 
-	public static FlexoActionType<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> actionType = new FlexoActionType<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject>(
-			"gives_screen", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionFactory<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> actionType = new FlexoActionFactory<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject>(
+			"gives_screen", FlexoActionFactory.defaultGroup, FlexoActionFactory.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method

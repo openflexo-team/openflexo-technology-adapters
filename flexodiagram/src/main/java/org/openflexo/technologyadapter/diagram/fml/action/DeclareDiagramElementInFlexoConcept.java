@@ -44,7 +44,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept;
 import org.openflexo.foundation.action.transformation.FlexoConceptCreationStrategy;
 import org.openflexo.foundation.action.transformation.FlexoRoleCreationStrategy;
@@ -99,7 +99,7 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 	 * @param globalSelection
 	 * @param editor
 	 */
-	DeclareDiagramElementInFlexoConcept(FlexoActionType<A, T, DiagramElement<?>> actionType, T focusedObject,
+	DeclareDiagramElementInFlexoConcept(FlexoActionFactory<A, T, DiagramElement<?>> actionType, T focusedObject,
 			Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 

@@ -45,7 +45,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -58,10 +58,10 @@ public class NewFreeplaneMap
 		extends FlexoAction<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource, ?>, RepositoryFolder<IFreeplaneResource, ?>> {
 
 	private static final class CreateFreeplaneMapActionType
-			extends FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource, ?>, RepositoryFolder<IFreeplaneResource, ?>> {
+			extends FlexoActionFactory<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource, ?>, RepositoryFolder<IFreeplaneResource, ?>> {
 
 		protected CreateFreeplaneMapActionType() {
-			super("create_mind_map", FlexoActionType.newMenu, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+			super("create_mind_map", FlexoActionFactory.newMenu, FlexoActionFactory.editGroup, FlexoActionFactory.ADD_ACTION_TYPE);
 		}
 
 		@Override
@@ -83,7 +83,7 @@ public class NewFreeplaneMap
 		}
 	}
 
-	public static final FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource, ?>, RepositoryFolder<IFreeplaneResource, ?>> ACTION_TYPE = new CreateFreeplaneMapActionType();
+	public static final FlexoActionFactory<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource, ?>, RepositoryFolder<IFreeplaneResource, ?>> ACTION_TYPE = new CreateFreeplaneMapActionType();
 
 	private static final Logger LOGGER = Logger.getLogger(NewFreeplaneMap.class.getSimpleName());
 

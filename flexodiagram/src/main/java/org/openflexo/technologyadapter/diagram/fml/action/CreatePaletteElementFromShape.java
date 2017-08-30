@@ -46,7 +46,7 @@ import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -67,8 +67,8 @@ public class CreatePaletteElementFromShape
 
 	private static final Logger logger = Logger.getLogger(CreatePaletteElementFromShape.class.getPackage().getName());
 
-	public static FlexoActionType<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>>(
-			"put_to_palette", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionFactory<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> actionType = new FlexoActionFactory<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>>(
+			"put_to_palette", FlexoActionFactory.defaultGroup, FlexoActionFactory.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method

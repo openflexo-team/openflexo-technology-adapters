@@ -45,7 +45,7 @@ import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -58,8 +58,8 @@ public class CreatePaletteElementFromFlexoConcept
 
 	private static final Logger logger = Logger.getLogger(CreatePaletteElementFromFlexoConcept.class.getPackage().getName());
 
-	public static FlexoActionType<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> actionType = new FlexoActionType<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject>(
-			"put_to_palette", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionFactory<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> actionType = new FlexoActionFactory<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject>(
+			"put_to_palette", FlexoActionFactory.defaultGroup, FlexoActionFactory.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method

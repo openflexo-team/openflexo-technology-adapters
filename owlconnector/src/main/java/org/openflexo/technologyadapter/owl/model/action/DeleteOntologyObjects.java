@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.localization.LocalizedDelegate;
@@ -60,8 +60,8 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 
 	private static final Logger logger = Logger.getLogger(DeleteOntologyObjects.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteOntologyObjects, OWLConcept, OWLConcept> actionType = new FlexoActionType<DeleteOntologyObjects, OWLConcept, OWLConcept>(
-			"delete", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteOntologyObjects, OWLConcept, OWLConcept> actionType = new FlexoActionFactory<DeleteOntologyObjects, OWLConcept, OWLConcept>(
+			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method

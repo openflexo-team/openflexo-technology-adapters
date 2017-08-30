@@ -49,16 +49,16 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.ActionMenu;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 
-	private static final class AddChildNodeActionType extends FlexoActionType<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
+	private static final class AddChildNodeActionType extends FlexoActionFactory<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 
 		protected AddChildNodeActionType() {
-			super("add_child_node", NewChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+			super("add_child_node", NewChildNode.FREEPLANE_MENU, FlexoActionFactory.editGroup, FlexoActionFactory.ADD_ACTION_TYPE);
 		}
 
 		@Override
@@ -77,9 +77,9 @@ public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFre
 		}
 	}
 
-	public static final ActionMenu FREEPLANE_MENU = new ActionMenu("freeplane_actions", FlexoActionType.defaultGroup);
+	public static final ActionMenu FREEPLANE_MENU = new ActionMenu("freeplane_actions", FlexoActionFactory.defaultGroup);
 
-	public static final FlexoActionType<NewChildNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new AddChildNodeActionType();
+	public static final FlexoActionFactory<NewChildNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new AddChildNodeActionType();
 
 	private NewChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
 		super(ACTION_TYPE, focusedObject, globalSelection, editor);
