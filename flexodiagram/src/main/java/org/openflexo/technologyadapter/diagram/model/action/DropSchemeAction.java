@@ -73,33 +73,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
-	/*public static AbstractCreationSchemeActionFactory<DropSchemeAction, DropScheme, FMLRTVirtualModelInstance> actionType = new AbstractCreationSchemeActionFactory<DropSchemeAction, DropScheme, FMLRTVirtualModelInstance>(
-			"drop_palette_element", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
-	
-		@Override
-		public DropSchemeAction makeNewAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
-				FlexoEditor editor) {
-			return new DropSchemeAction(focusedObject, globalSelection, editor);
-		}
-	
-		@Override
-		public boolean isVisibleForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return false;
-		}
-	
-		@Override
-		public boolean isEnabledForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return object.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
-		}
-	
-	};
-	
-	static {
-		FlexoObjectImpl.addActionForClass(actionType, FMLRTVirtualModelInstance.class);
-	}*/
-
 	private DiagramPaletteElement paletteElement;
-	// private DropScheme _dropScheme;
 	private DiagramShape primaryShape;
 
 	private FlexoConceptInstance parentConceptInstance;
@@ -107,9 +81,30 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 
 	private FGEPoint dropLocation;
 
+	/**
+	 * Constructor to be used for creating a new action without factory
+	 * 
+	 * @param dropScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param editor
+	 */
 	public DropSchemeAction(DropScheme dropScheme, FMLRTVirtualModelInstance focusedObject,
 			Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(dropScheme, focusedObject, globalSelection, editor);
+	}
+
+	/**
+	 * Constructor to be used for creating a new action as an action embedded in another one
+	 * 
+	 * @param dropScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param ownerAction
+	 */
+	public DropSchemeAction(DropScheme dropScheme, FMLRTVirtualModelInstance focusedObject,
+			Vector<VirtualModelInstanceObject> globalSelection, FlexoAction<?, ?, ?> ownerAction) {
+		super(dropScheme, focusedObject, globalSelection, ownerAction);
 	}
 
 	@Override
@@ -230,7 +225,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	public <T> void hasPerformedAction(EditionAction anAction, T object) {
 		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddShape) {
-			AddShape action = (AddShape) anAction;
+			// AddShape action = (AddShape) anAction;
 			DiagramShape newShape = (DiagramShape) object;
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
@@ -363,7 +358,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 		return super.getValue(variable);
 	}
 
-	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole patternRole) {
+	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole<?, ?> patternRole) {
 		/*if (getPaletteElement() != null) {
 			if (getPaletteElement().getOverridingGraphicalRepresentation(patternRole) != null) {
 				return getPaletteElement().getOverridingGraphicalRepresentation(patternRole);

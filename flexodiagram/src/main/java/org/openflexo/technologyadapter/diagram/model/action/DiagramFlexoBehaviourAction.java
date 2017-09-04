@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
@@ -68,9 +69,30 @@ public abstract class DiagramFlexoBehaviourAction<A extends DiagramFlexoBehaviou
 
 	private static final Logger logger = Logger.getLogger(DiagramFlexoBehaviourAction.class.getPackage().getName());
 
-	DiagramFlexoBehaviourAction(ES abstractCreationScheme, O focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
+	/**
+	 * Constructor to be used for creating a new action without factory
+	 * 
+	 * @param creationScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param editor
+	 */
+	public DiagramFlexoBehaviourAction(ES abstractCreationScheme, O focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
 			FlexoEditor editor) {
 		super(abstractCreationScheme, focusedObject, globalSelection, editor);
+	}
+
+	/**
+	 * Constructor to be used for creating a new action as an action embedded in another one
+	 * 
+	 * @param creationScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param ownerAction
+	 */
+	public DiagramFlexoBehaviourAction(ES abstractCreationScheme, O focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
+			FlexoAction<?, ?, ?> ownerAction) {
+		super(abstractCreationScheme, focusedObject, globalSelection, ownerAction);
 	}
 
 	@Override
