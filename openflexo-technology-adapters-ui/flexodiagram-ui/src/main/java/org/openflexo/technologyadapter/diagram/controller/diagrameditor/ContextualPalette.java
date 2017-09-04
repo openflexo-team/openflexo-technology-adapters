@@ -57,8 +57,8 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
@@ -284,9 +284,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			popup.show(editor.getDrawingView(), (int) dropLocation.x, (int) dropLocation.y);
 		}
 		else { // availableDropSchemes.size() == 1
-			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(editor.getVirtualModelInstance(), null,
+			DropSchemeAction action = new DropSchemeAction(availableDropSchemes.get(0), editor.getVirtualModelInstance(), null,
 					editor.getFlexoController().getEditor());
-			action.setDropScheme(availableDropSchemes.get(0));
 			action.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);
@@ -332,9 +331,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(), null,
+			DropSchemeAction action = new DropSchemeAction(dropScheme, controller.getVirtualModelInstance(), null,
 					controller.getFlexoController().getEditor());
-			action.setDropScheme(dropScheme);
 			action.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);

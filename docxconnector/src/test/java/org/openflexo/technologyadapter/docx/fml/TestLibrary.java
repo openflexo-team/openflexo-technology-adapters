@@ -80,16 +80,16 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
@@ -1089,8 +1089,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 
 		// Creation of book1
-		CreationSchemeAction createBook1 = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
-		createBook1.setCreationScheme(bookCreationScheme);
+		CreationSchemeAction createBook1 = new CreationSchemeAction(bookCreationScheme, libraryVMI, null, _editor);
 		createBook1.setParameterValue(titleParam, "Les misérables");
 		createBook1.setParameterValue(authorParam, "Victor Hugo");
 		createBook1.setParameterValue(editionParam, "Dunod");
@@ -1104,8 +1103,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertEquals(bookConcept, book1.getFlexoConcept());
 
 		// Creation of book2
-		CreationSchemeAction createBook2 = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
-		createBook2.setCreationScheme(bookCreationScheme);
+		CreationSchemeAction createBook2 = new CreationSchemeAction(bookCreationScheme, libraryVMI, null, _editor);
 		createBook2.setParameterValue(titleParam, "Germinal");
 		createBook2.setParameterValue(authorParam, "Emile Zola");
 		createBook2.setParameterValue(editionParam, "Gil Blas");
@@ -1119,8 +1117,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertEquals(bookConcept, book2.getFlexoConcept());
 
 		// Creation of book3
-		CreationSchemeAction createBook3 = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
-		createBook3.setCreationScheme(bookCreationScheme);
+		CreationSchemeAction createBook3 = new CreationSchemeAction(bookCreationScheme, libraryVMI, null, _editor);
 		createBook3.setParameterValue(titleParam, "La chartreuse de Parme");
 		createBook3.setParameterValue(authorParam, "Stendhal");
 		createBook3.setParameterValue(editionParam, "J. Hetzel, 1846");
@@ -1241,7 +1238,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
-		ActionSchemeActionType actionType = new ActionSchemeActionType(generateDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(generateDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -1311,7 +1308,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		assertFalse(templateResource.isModified());
 
-		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(updateDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -1660,8 +1657,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println("AVANT LE ADD: Generated document:\n" + generatedDocument.debugStructuredContents());
 
 		// Creation of new book
-		CreationSchemeAction createNewBook = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, _editor);
-		createNewBook.setCreationScheme(bookCreationScheme);
+		CreationSchemeAction createNewBook = new CreationSchemeAction(bookCreationScheme, libraryVMI, null, _editor);
 		createNewBook.setParameterValue(titleParam, "Le rouge et le noir");
 		createNewBook.setParameterValue(authorParam, "Stendhal");
 		createNewBook.setParameterValue(editionParam, "Levasseur, 1830");
@@ -1688,7 +1684,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
 
 		// Launch updateDocument actions
-		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(updateDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -1810,7 +1806,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
 
 		// Launch updateDocument actions
-		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(updateDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -1931,7 +1927,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
 
 		// Launch updateDocument actions
-		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -2018,7 +2014,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
 
 		// Launch updateDocument actions
-		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
@@ -2123,7 +2119,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
 
 		// Launch updateDocument actions
-		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();

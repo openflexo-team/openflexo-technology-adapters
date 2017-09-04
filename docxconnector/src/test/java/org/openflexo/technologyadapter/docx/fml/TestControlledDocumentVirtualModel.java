@@ -71,7 +71,7 @@ import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
@@ -513,7 +513,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println("Executing FML:");
 		System.out.println(actionScheme.getFMLRepresentation());
 
-		ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, newVirtualModelInstance);
+		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(actionScheme, newVirtualModelInstance);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();

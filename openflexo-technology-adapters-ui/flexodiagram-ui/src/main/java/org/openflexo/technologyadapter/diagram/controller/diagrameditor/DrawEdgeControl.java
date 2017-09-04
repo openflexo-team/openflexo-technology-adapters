@@ -357,9 +357,8 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(), null,
+				LinkSchemeAction action = new LinkSchemeAction(linkScheme, controller.getVirtualModelInstance(), null,
 						controller.getFlexoController().getEditor());
-				action.setLinkScheme(linkScheme);
 				action.setFromShape(sourceShape);
 				action.setToShape(targetShape);
 				action.doAction();

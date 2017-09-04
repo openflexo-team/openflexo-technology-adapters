@@ -57,7 +57,7 @@ import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
@@ -116,7 +116,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 		topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		for (ActionScheme actionScheme : virtualModelInstance.getVirtualModel().getActionSchemes()) {
-			ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, virtualModelInstance);
+			ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(actionScheme, virtualModelInstance);
 			topPanel.add(new FlexoActionButton(actionType, this, perspective.getController()));
 		}
 		add(topPanel, BorderLayout.NORTH);

@@ -76,8 +76,8 @@ import org.openflexo.fge.geom.FGEShape;
 import org.openflexo.fge.graphics.FGEGraphics;
 import org.openflexo.fge.swing.paint.FGEPaintManager;
 import org.openflexo.fge.swing.view.JShapeView;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramShape.DropAndLinkScheme;
@@ -462,10 +462,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 					.getAvailableLinkSchemes(toShape.getFlexoConceptInstance().getFlexoConcept());
 
 			if (availableLinkSchemes.size() == 1) {
-				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
-						getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+				LinkSchemeAction action = new LinkSchemeAction(availableLinkSchemes.get(0),
+						(FMLRTVirtualModelInstance) getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
 						controller.getFlexoController().getEditor());
-				action.setLinkScheme(availableLinkSchemes.get(0));
 				action.setFromShape(getNode().getDrawable().getDiagramElement());
 				action.setToShape(toShape.getDiagramElement());
 				action.escapeParameterRetrievingWhenValid = true;
@@ -487,10 +486,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// System.out.println("Action "+paletteConnector.getEditionPattern().getName());
-							LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
-									getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
-									controller.getFlexoController().getEditor());
-							action.setLinkScheme(linkScheme);
+							LinkSchemeAction action = new LinkSchemeAction(linkScheme,
+									(FMLRTVirtualModelInstance) getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(),
+									null, controller.getFlexoController().getEditor());
 							action.setFromShape(getNode().getDrawable().getDiagramElement());
 							action.setToShape(toShape.getDiagramElement());
 							action.escapeParameterRetrievingWhenValid = true;
@@ -549,10 +547,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, /*DiagramContainerElement<?> container*/
 			FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DropScheme dropScheme) {
 
-		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction(
+		DropSchemeAction dropSchemeAction = new DropSchemeAction(dropScheme,
 				(FMLRTVirtualModelInstance) getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
 				controller.getFlexoController().getEditor());
-		dropSchemeAction.setDropScheme(dropScheme);
 		// dropSchemeAction.setParent(container);
 		dropSchemeAction.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 		dropSchemeAction.setDropLocation(dropLocation);
@@ -566,10 +563,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private FMLControlledDiagramConnector createNewConnector(FMLControlledDiagramShape from, FMLControlledDiagramShape to,
 			LinkScheme linkScheme) {
 
-		LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
-				getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+		LinkSchemeAction action = new LinkSchemeAction(linkScheme,
+				(FMLRTVirtualModelInstance) getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
 				controller.getFlexoController().getEditor());
-		action.setLinkScheme(linkScheme);
 		action.setFromShape(getNode().getDrawable().getDiagramElement());
 		action.setToShape(to.getDiagramElement());
 		action.escapeParameterRetrievingWhenValid = true;

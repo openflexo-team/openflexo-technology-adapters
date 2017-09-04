@@ -52,6 +52,12 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * A creation behaviour triggered while connecting two shapes
+ * 
+ * @author sylvain
+ *
+ */
 @FIBPanel("Fib/LinkSchemePanel.fib")
 @ModelEntity
 @ImplementationClass(LinkScheme.LinkSchemeImpl.class)

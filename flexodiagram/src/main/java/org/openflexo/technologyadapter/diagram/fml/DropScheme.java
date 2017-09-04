@@ -55,6 +55,12 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * A creation behaviour triggered while dropping a shape from a palette
+ * 
+ * @author sylvain
+ *
+ */
 @FIBPanel("Fib/DropSchemePanel.fib")
 @ModelEntity
 @ImplementationClass(DropScheme.DropSchemeImpl.class)

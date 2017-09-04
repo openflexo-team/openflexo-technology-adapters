@@ -44,19 +44,11 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.InvalidParametersException;
-import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
-import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
@@ -74,102 +66,101 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 	private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
-			"link_palette_connector", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
-
-		/**
-		 * Factory method
-		 */
+	/*public static FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>(
+			"link_shapes", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
+	
 		@Override
 		public LinkSchemeAction makeNewAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
 				FlexoEditor editor) {
 			return new LinkSchemeAction(focusedObject, globalSelection, editor);
 		}
-
+	
 		@Override
 		public boolean isVisibleForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			return false;
 		}
-
+	
 		@Override
 		public boolean isEnabledForSelection(FMLRTVirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			// return object instanceof Diagram || object instanceof DiagramElement<?>;
 			return true;
 		}
-
+	
 	};
-
+	
 	static {
 		// VirtualModelInstanceObject.addActionForClass(actionType, DiagramElement.class);
 		// VirtualModelInstanceObject.addActionForClass(actionType, Diagram.class);
 		FlexoObjectImpl.addActionForClass(actionType, FMLRTVirtualModelInstance.class);
-	}
+	}*/
 
 	private DiagramShape _fromShape;
 	private DiagramShape _toShape;
 	private DiagramConnector _newConnector;
 
-	private LinkScheme _linkScheme;
+	// private LinkScheme _linkScheme;
 
-	LinkSchemeAction(FMLRTVirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
-		super(actionType, focusedObject, globalSelection, editor);
+	public LinkSchemeAction(LinkScheme linkScheme, FMLRTVirtualModelInstance focusedObject,
+			Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
+		super(linkScheme, focusedObject, globalSelection, editor);
 	}
 
-	@Override
+	/*@Override
 	public LocalizedDelegate getLocales() {
 		if (getServiceManager() != null) {
 			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
 		}
 		return super.getLocales();
-	}
+	}*/
 
 	// private Hashtable<EditionAction,VirtualModelInstanceObject> createdObjects;
 
-	public LinkScheme getLinkScheme() {
+	/*public LinkScheme getLinkScheme() {
 		return _linkScheme;
 	}
-
+	
 	public void setLinkScheme(LinkScheme linkScheme) {
 		_linkScheme = linkScheme;
-	}
+	}*/
 
-	private FlexoConceptInstance flexoConceptInstance;
+	// private FlexoConceptInstance flexoConceptInstance;
 
-	@Override
+	/*@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
 		logger.info("Execute LinkSchemeAction");
-
+	
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
-
+	
 		// System.out.println("First i create the FCI with concept " + getFlexoConcept());
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 		// System.out.println("Done. Created " + flexoConceptInstance);
-
+	
 		// System.out.println("Executing " + getLinkScheme().getFMLRepresentation());
-
+	
 		executeControlGraph();
-
+	
 		// System.out.println("new connector = " + getNewConnector());
-
+	
 	}
-
+	
 	@Override
 	public LinkScheme getFlexoBehaviour() {
 		return getLinkScheme();
-	}
+	}*/
 
 	public DiagramConnector getNewConnector() {
 		return _newConnector;
 	}
 
-	@Override
+	/*@Override
 	public FMLRTVirtualModelInstance getFlexoConceptInstance() {
 		return (FMLRTVirtualModelInstance) getVirtualModelInstance();
 	}
-
+	
+	@Override
 	public FlexoConceptInstance getNewFlexoConceptInstance() {
 		return flexoConceptInstance;
-	}
+	}*/
 
 	public DiagramShape getFromShape() {
 		return _fromShape;
@@ -187,10 +178,10 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 		_toShape = toShape;
 	}
 
-	@Override
+	/*@Override
 	public VirtualModelInstance<?, ?> retrieveVirtualModelInstance() {
 		return getFocusedObject().getVirtualModelInstance();
-	}
+	}*/
 
 	@Override
 	public Diagram getDiagram() {
@@ -224,7 +215,8 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(LinkSchemeBindingModel.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(LinkSchemeBindingModel.FROM_TARGET)
+				&& getFlexoBehaviour().getFromTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
 				for (ActorReference<?> actor : fci.getActors()) {
@@ -235,7 +227,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 			}
 
 		}
-		if (variable.getVariableName().equals(LinkSchemeBindingModel.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(LinkSchemeBindingModel.TO_TARGET) && getFlexoBehaviour().getToTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
 				for (ActorReference<?> actor : fci.getActors()) {

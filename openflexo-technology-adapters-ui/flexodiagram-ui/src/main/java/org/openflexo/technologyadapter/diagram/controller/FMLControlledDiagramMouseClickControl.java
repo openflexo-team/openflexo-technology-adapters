@@ -49,9 +49,9 @@ import org.openflexo.foundation.fml.NavigationScheme;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.NavigationSchemeAction;
-import org.openflexo.foundation.fml.rt.action.NavigationSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.NavigationSchemeActionFactory;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction;
@@ -98,12 +98,12 @@ public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl
 				for (GraphicalElementAction action : patternRole.getActions(mask)) {
 					if (action.evaluateCondition(epi)) {
 						if (action.getAbstractActionScheme() instanceof NavigationScheme) {
-							NavigationSchemeAction navigationAction = new NavigationSchemeActionType(
+							NavigationSchemeAction navigationAction = new NavigationSchemeActionFactory(
 									(NavigationScheme) action.getAbstractActionScheme(), epi).makeNewAction(epi, null, editor);
 							navigationAction.doAction();
 							return true;
 						} else if (action.getAbstractActionScheme() instanceof ActionScheme) {
-							ActionSchemeAction actionAction = new ActionSchemeActionType((ActionScheme) action.getAbstractActionScheme(),
+							ActionSchemeAction actionAction = new ActionSchemeActionFactory((ActionScheme) action.getAbstractActionScheme(),
 									epi).makeNewAction(epi, null, editor);
 							actionAction.doAction();
 							return true;

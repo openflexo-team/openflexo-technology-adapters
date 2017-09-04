@@ -307,8 +307,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			creationScheme = (CreationScheme) creationEditionScheme.getNewFlexoBehaviour();
 			assertNotNull(creationScheme);
 
-			creationSchemeCreationAction = CreationSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
-			creationSchemeCreationAction.setCreationScheme(creationScheme);
+			creationSchemeCreationAction = new CreationSchemeAction(creationScheme, newVirtualModelInstance, null, editor);
 			assertNotNull(creationSchemeCreationAction);
 
 			/*

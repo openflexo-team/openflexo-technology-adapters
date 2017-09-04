@@ -44,11 +44,12 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -59,12 +60,13 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.ParametersRetriever;
 
 public class LinkSchemeActionInitializer
-		extends ActionInitializer<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> {
+		extends ActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public LinkSchemeActionInitializer(ControllerActionInitializer actionInitializer) {
-		super(LinkSchemeAction.actionType, actionInitializer);
+		super(LinkSchemeAction.class, actionInitializer);
 	}
 
 	@Override
@@ -109,7 +111,7 @@ public class LinkSchemeActionInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

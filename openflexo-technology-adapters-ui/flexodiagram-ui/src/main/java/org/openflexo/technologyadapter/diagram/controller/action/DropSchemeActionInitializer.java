@@ -40,12 +40,14 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.EventObject;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -60,12 +62,14 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
+public class DropSchemeActionInitializer
+		extends ActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public DropSchemeActionInitializer(ControllerActionInitializer actionInitializer) {
-		super(DropSchemeAction.actionType, actionInitializer);
+		super(DropSchemeAction.class, actionInitializer);
 	}
 
 	@Override
@@ -134,7 +138,7 @@ public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAct
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

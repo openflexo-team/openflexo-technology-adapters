@@ -53,7 +53,7 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeAction;
-import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -156,11 +156,11 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 		for (FlexoConceptInstanceElementEntry fciEntry : getFlexoConceptInstancesToBeDeleted()) {
 			if (fciEntry.getCurrentDeletionScheme() != null) {
 				VirtualModelInstance<?, ?> vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
-				DeletionSchemeActionType deletionSchemeActionType = new DeletionSchemeActionType(fciEntry.currentDeletionScheme,
+				DeletionSchemeActionFactory deletionSchemeActionFactory = new DeletionSchemeActionFactory(fciEntry.currentDeletionScheme,
 						fciEntry.getFlexoConceptInstance());
-				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionType
+				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionFactory
 						.makeNewEmbeddedAction(fciEntry.getFlexoConceptInstance(), null, this);
-				deletionSchemeAction.setVirtualModelInstance(vmi);
+				// deletionSchemeAction.setVirtualModelInstance(vmi);
 				// deletionSchemeAction.setDeletionScheme(fciEntry.currentDeletionScheme);
 				deletionSchemeAction.doAction();
 				vmi.removeFromFlexoConceptInstances(fciEntry.getFlexoConceptInstance());
