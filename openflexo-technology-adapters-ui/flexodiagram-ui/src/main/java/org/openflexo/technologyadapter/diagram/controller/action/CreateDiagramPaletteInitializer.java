@@ -39,21 +39,25 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.gina.controller.FIBController.Status;
-import org.openflexo.icon.FMLIconLibrary;
+import org.openflexo.icon.IconFactory;
+import org.openflexo.icon.IconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
+import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -104,7 +108,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (getController().getCurrentPerspective() instanceof TechnologyPerspective
-					&& ((TechnologyPerspective) getController().getCurrentPerspective())
+					&& ((TechnologyPerspective<?>) getController().getCurrentPerspective())
 							.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
 				getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
 			}
@@ -113,8 +117,8 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
-		return FMLIconLibrary.VIEWPOINT_ICON;
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
+		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_PALETTE_ICON, IconLibrary.NEW_MARKER);
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(FGEModelFactory factory) {
