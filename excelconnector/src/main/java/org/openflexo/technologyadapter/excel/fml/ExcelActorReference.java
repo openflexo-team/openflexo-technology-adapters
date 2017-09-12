@@ -77,8 +77,8 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public abstract static class ExcelActorReferenceImpl<T extends ExcelObject> extends ActorReferenceImpl<T> implements
-			ExcelActorReference<T> {
+	public abstract static class ExcelActorReferenceImpl<T extends ExcelObject> extends ActorReferenceImpl<T>
+			implements ExcelActorReference<T> {
 
 		private static final Logger logger = FlexoLogger.getLogger(ExcelActorReference.class.getPackage().toString());
 
@@ -93,13 +93,14 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 		}
 
 		@Override
-		public T getModellingElement() {
+		public T getModellingElement(boolean forceLoading) {
 			if (object == null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				if (msInstance != null && msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}

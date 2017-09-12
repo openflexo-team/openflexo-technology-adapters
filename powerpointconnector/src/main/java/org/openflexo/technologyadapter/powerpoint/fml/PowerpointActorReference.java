@@ -63,8 +63,8 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public static abstract class PowerpointActorReferenceImpl<T extends PowerpointObject> extends ActorReferenceImpl<T> implements
-			PowerpointActorReference<T> {
+	public static abstract class PowerpointActorReferenceImpl<T extends PowerpointObject> extends ActorReferenceImpl<T>
+			implements PowerpointActorReference<T> {
 
 		private static final Logger logger = FlexoLogger.getLogger(PowerpointActorReferenceImpl.class.getPackage().toString());
 
@@ -79,13 +79,14 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 		}
 
 		@Override
-		public T getModellingElement() {
+		public T getModellingElement(boolean forceLoading) {
 			if (object == null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				if (msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}

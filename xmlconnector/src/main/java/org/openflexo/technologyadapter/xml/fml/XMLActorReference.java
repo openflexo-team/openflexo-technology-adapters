@@ -86,13 +86,14 @@ public interface XMLActorReference<T extends XMLObject> extends ActorReference<T
 		}
 
 		@Override
-		public T getModellingElement() {
+		public T getModellingElement(boolean forceLoading) {
 			if (object == null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				if (msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}
