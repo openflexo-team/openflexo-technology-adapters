@@ -40,54 +40,56 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.fml.controller.view.StandardFlexoConceptView;
+import org.openflexo.fml.controller.view.VirtualModelView;
+import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBFlexoConceptInstanceNature;
+import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBFlexoConceptNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
+import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelModuleView;
-import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
-import org.openflexo.view.controller.FMLNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.SpecificNaturePerspective;
 
 /**
- * A perspective representing all the resources interpretable by a {@link FMLRTTechnologyAdapter} according to FML-controlled diagram
+ * A perspective representing all the resources interpretable by {@link GINATechnologyAdapter} according to FML-controlled fib
  * perspectives:<br>
  * <ul>
- * <li>{@link FMLControlledFIBViewNature}</li>
+ * <li>{@link FMLControlledFIBVirtualModelNature}</li>
+ * <li>{@link FMLControlledFIBFlexoConceptNature}</li>
  * <li>{@link FMLControlledFIBVirtualModelInstanceNature}</li>
  * <li>{@link FMLControlledFIBFlexoConceptInstanceNature}</li>
  * </ul>
  * 
  * @author sylvain
  * 
- * @param <TA>
  */
-public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
+public class FMLControlledFIBNaturePerspective extends SpecificNaturePerspective<GINATechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(FMLControlledFIBNaturePerspective.class.getPackage().getName());
 
 	public FMLControlledFIBNaturePerspective(FlexoController controller) {
-		super(FMLControlledFIBVirtualModelNature.INSTANCE, null, controller.getFMLTechnologyAdapter(),
-				controller.getTechnologyAdapter(GINATechnologyAdapter.class), controller);
-	}
-
-	/**
-	 * Return the technology adapter handling specific natures
-	 * 
-	 * @return
-	 */
-	@Override
-	public GINATechnologyAdapter getHandlingTechnologyAdapter() {
-		return (GINATechnologyAdapter) super.getHandlingTechnologyAdapter();
+		super(controller.getTechnologyAdapter(GINATechnologyAdapter.class), FMLControlledFIBVirtualModelNature.INSTANCE,
+				FMLControlledFIBFlexoConceptNature.INSTANCE, FMLControlledFIBVirtualModelInstanceNature.INSTANCE,
+				FMLControlledFIBFlexoConceptInstanceNature.INSTANCE, controller);
 	}
 
 	@Override
-	public GINAAdapterController getHandlingTechnologyAdapterController() {
-		return (GINAAdapterController) super.getHandlingTechnologyAdapterController();
+	public String getName() {
+		return "GUI_perspective";
+	}
+
+	@Override
+	public GINAAdapterController getTechnologyAdapterController() {
+		return (GINAAdapterController) super.getTechnologyAdapterController();
 	}
 
 	@Override
@@ -98,18 +100,30 @@ public class FMLControlledFIBNaturePerspective extends FMLNaturePerspective {
 	@Override
 	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
 
-		System.out.println("je cree la module view pour " + virtualModel);
-		System.out.println("has nature = " + virtualModel.hasNature(getVirtualModelNature()));
 		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
 		}
-		return new EmptyPanel<>(getController(), this, virtualModel);
+		return new VirtualModelView(virtualModel, getController(), this);
 	}
 
 	@Override
 	protected ModuleView<FlexoConcept> createModuleViewForFlexoConcept(FlexoConcept flexoConcept) {
-		// return new DiagramFlexoConceptView(flexoConcept, getController(), this);
-		return new EmptyPanel<>(getController(), this, flexoConcept);
+		return new StandardFlexoConceptView(flexoConcept, getController(), this);
+	}
+
+	@Override
+	protected ModuleView<? extends VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
+			FMLRTVirtualModelInstance vmInstance) {
+		if (vmInstance.hasNature(getVirtualModelInstanceNature())) {
+			return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
+					getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
+		}
+		return new VirtualModelInstanceView(vmInstance, getController(), this);
+	}
+
+	@Override
+	protected ModuleView<FlexoConceptInstance> createModuleViewForFlexoConceptInstance(FlexoConceptInstance flexoConceptInstance) {
+		return null;
 	}
 
 }

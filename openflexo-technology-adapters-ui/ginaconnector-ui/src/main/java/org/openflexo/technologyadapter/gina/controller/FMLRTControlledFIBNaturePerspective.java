@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
@@ -63,6 +63,7 @@ import org.openflexo.view.controller.FlexoController;
  * 
  * @param <TA>
  */
+@Deprecated
 public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective {
 
 	static final Logger logger = Logger.getLogger(FMLRTControlledFIBNaturePerspective.class.getPackage().getName());
@@ -88,8 +89,7 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 	}
 
 	@Override
-	protected ModuleView<VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
-			VirtualModelInstance<?, ?> vmInstance) {
+	protected ModuleView<VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(VirtualModelInstance<?, ?> vmInstance) {
 		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
 				getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
 	}

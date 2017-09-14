@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.freeplane.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.listeners.FreeplaneListenersInitilizer;
@@ -59,6 +59,7 @@ import org.openflexo.view.controller.FlexoController;
  * @author sylvain
  * 
  */
+@Deprecated
 public class FMLControlledFreeplaneNaturePerspective extends FMLRTNaturePerspective {
 
 	static final Logger logger = Logger.getLogger(FMLControlledFreeplaneNaturePerspective.class.getPackage().getName());

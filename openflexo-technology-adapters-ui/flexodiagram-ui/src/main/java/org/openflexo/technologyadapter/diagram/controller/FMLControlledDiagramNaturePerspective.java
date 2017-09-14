@@ -40,68 +40,90 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.fml.controller.view.StandardFlexoConceptView;
+import org.openflexo.fml.controller.view.VirtualModelView;
+import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.view.DiagramFlexoConceptView;
 import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
-import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
-import org.openflexo.view.controller.FMLNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.SpecificNaturePerspective;
 
 /**
- * A perspective representing all the resources interpretable by a {@link FMLRTTechnologyAdapter} according to FML-controlled diagram
+ * A perspective representing all the resources interpretable by {@link DiagramTechnologyAdapter} according to FML-controlled diagram
  * perspectives:<br>
  * <ul>
- * <li>{@link FMLControlledDiagramViewNature}</li>
+ * <li>{@link FMLControlledDiagramVirtualModelNature}</li>
+ * <li>{@link FMLControlledDiagramFlexoConceptNature}</li>
  * <li>{@link FMLControlledDiagramVirtualModelInstanceNature}</li>
  * <li>{@link FMLControlledDiagramFlexoConceptInstanceNature}</li>
  * </ul>
  * 
  * @author sylvain
  * 
- * @param <TA>
  */
-public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective {
+public class FMLControlledDiagramNaturePerspective extends SpecificNaturePerspective<DiagramTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(FMLControlledDiagramNaturePerspective.class.getPackage().getName());
 
 	public FMLControlledDiagramNaturePerspective(FlexoController controller) {
-		super(FMLControlledDiagramVirtualModelNature.INSTANCE, FMLControlledDiagramFlexoConceptNature.INSTANCE,
-				controller.getFMLTechnologyAdapter(), controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), controller);
-	}
-
-	/**
-	 * Return the technology adapter handling specific natures
-	 * 
-	 * @return
-	 */
-	@Override
-	public DiagramTechnologyAdapter getHandlingTechnologyAdapter() {
-		return (DiagramTechnologyAdapter) super.getHandlingTechnologyAdapter();
+		super(controller.getTechnologyAdapter(DiagramTechnologyAdapter.class), FMLControlledDiagramVirtualModelNature.INSTANCE,
+				FMLControlledDiagramFlexoConceptNature.INSTANCE, FMLControlledDiagramVirtualModelInstanceNature.INSTANCE,
+				FMLControlledDiagramFlexoConceptInstanceNature.INSTANCE, controller);
 	}
 
 	@Override
-	public DiagramTechnologyAdapterController getHandlingTechnologyAdapterController() {
-		return (DiagramTechnologyAdapterController) super.getHandlingTechnologyAdapterController();
+	public String getName() {
+		return "diagram_perspective";
+	}
+
+	@Override
+	public DiagramTechnologyAdapterController getTechnologyAdapterController() {
+		return (DiagramTechnologyAdapterController) super.getTechnologyAdapterController();
 	}
 
 	@Override
 	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
-		if (virtualModel instanceof VirtualModel) {
+		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledDiagramVirtualModelView(virtualModel, getController(), this);
 		}
-		return new EmptyPanel(getController(), this, virtualModel);
+		return new VirtualModelView(virtualModel, getController(), this);
 	}
 
 	@Override
 	protected ModuleView<FlexoConcept> createModuleViewForFlexoConcept(FlexoConcept flexoConcept) {
-		return new DiagramFlexoConceptView(flexoConcept, getController(), this);
+		if (flexoConcept.hasNature(getFlexoConceptNature())) {
+			return new DiagramFlexoConceptView(flexoConcept, getController(), this);
+		}
+		return new StandardFlexoConceptView(flexoConcept, getController(), this);
+	}
+
+	@Override
+	protected ModuleView<? extends VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
+			FMLRTVirtualModelInstance vmInstance) {
+		if (vmInstance.hasNature(getVirtualModelInstanceNature())) {
+			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, getController(),
+					getTechnologyAdapterController().getToolFactory());
+			return new FMLControlledDiagramModuleView(editor, this);
+		}
+		return new VirtualModelInstanceView(vmInstance, getController(), this);
+	}
+
+	@Override
+	protected ModuleView<FlexoConceptInstance> createModuleViewForFlexoConceptInstance(FlexoConceptInstance flexoConceptInstance) {
+		return null;
 	}
 
 }

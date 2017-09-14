@@ -40,13 +40,14 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTTechnologyAdapter;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLRTNaturePerspective;
@@ -65,6 +66,7 @@ import org.openflexo.view.controller.FlexoController;
  * 
  * @param <TA>
  */
+@Deprecated
 public class FMLRTControlledDiagramNaturePerspective extends FMLRTNaturePerspective {
 
 	static final Logger logger = Logger.getLogger(FMLRTControlledDiagramNaturePerspective.class.getPackage().getName());
@@ -92,8 +94,8 @@ public class FMLRTControlledDiagramNaturePerspective extends FMLRTNaturePerspect
 	@Override
 	protected ModuleView<FMLRTVirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance<?, ?> vmInstance) {
 		if (vmInstance instanceof FMLRTVirtualModelInstance) {
-			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) vmInstance, false, getController(),
-					getHandlingTechnologyAdapterController().getToolFactory());
+			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) vmInstance, false,
+					getController(), getHandlingTechnologyAdapterController().getToolFactory());
 			return new FMLControlledDiagramModuleView(editor, this);
 		}
 		return null;
