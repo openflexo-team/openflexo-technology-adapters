@@ -65,15 +65,16 @@ public class DiagramIconLibrary extends IconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DiagramIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource DIAGRAM_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram_big.png"));
+	public static final ImageIconResource DIAGRAM_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/Diagram-64x64.png"));
 	public static final ImageIconResource DIAGRAM_MEDIUM_ICON = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/Diagram_medium.png"));
+			ResourceLocator.locateResource("Icons/Diagram-32x32.png"));
 
 	public static final ImageIconResource DIAGRAM_PALETTE_BIG_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramPalette64x64.png"));
 	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramPalette.png"));
-	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram.png"));
+	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram-16x16.png"));
 	public static final ImageIconResource SHAPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramShape.png"));
 	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramConnector.png"));
