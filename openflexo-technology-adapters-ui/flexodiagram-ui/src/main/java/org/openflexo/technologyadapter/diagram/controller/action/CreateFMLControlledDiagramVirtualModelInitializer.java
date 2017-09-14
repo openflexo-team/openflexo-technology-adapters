@@ -44,16 +44,15 @@ import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModel;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -80,23 +79,20 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 				return false;
 			}
 			return true;
-			// return instanciateAndShowDialog(action, VPMCst.CREATE_VIRTUAL_MODEL_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel> getDefaultFinalizer() {
 		return (e, action) -> {
-			DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-					.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-			getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().selectAndFocusObject(action.getNewVirtualModel());
 			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 

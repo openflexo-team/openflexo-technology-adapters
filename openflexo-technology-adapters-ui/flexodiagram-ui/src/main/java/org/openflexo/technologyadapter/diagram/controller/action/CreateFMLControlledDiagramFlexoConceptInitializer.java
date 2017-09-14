@@ -45,21 +45,24 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionInitializer {
+public class CreateFMLControlledDiagramFlexoConceptInitializer
+		extends ActionInitializer<CreateFlexoConcept, FlexoConceptObject, FMLObject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public CreateFMLControlledDiagramFlexoConceptInitializer(ControllerActionInitializer actionInitializer) {
@@ -74,8 +77,8 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView
 					&& action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
-				FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
-						.getCurrentModuleView();
+				// FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+				// .getCurrentModuleView();
 				wizard = new CreateFMLControlledDiagramFlexoConceptWizard(action, getController());
 				action.addToPostProcessing(
 						((CreateFMLControlledDiagramFlexoConceptWizard) wizard).getConfigurePaletteElementForNewFlexoConcept());
@@ -98,9 +101,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 		return (e, action) -> {
 			if (action.switchNewlyCreatedFlexoConcept) {
 				if (action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
-					DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-							.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-					getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
+					getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 				}
 				getController().setCurrentEditedObjectAsModuleView(action.getNewFlexoConcept());
 			}
@@ -109,7 +110,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer extends ActionIni
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
 		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 

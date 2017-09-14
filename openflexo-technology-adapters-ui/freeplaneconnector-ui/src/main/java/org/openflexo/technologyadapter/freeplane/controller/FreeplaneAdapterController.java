@@ -159,10 +159,4 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 		return object instanceof IFreeplaneMap;
 	}
 
-	@Override
-	public void installFMLRTNatureSpecificPerspectives(FlexoController controller) {
-		super.installFMLRTNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(new FMLControlledFreeplaneNaturePerspective(controller));
-	}
-
 }

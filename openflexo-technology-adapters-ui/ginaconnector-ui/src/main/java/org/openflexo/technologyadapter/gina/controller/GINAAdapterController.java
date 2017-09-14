@@ -60,11 +60,6 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	private InspectorGroup ginaInspectorGroup;
 	private FIBEditorInspectorController inspectors;
 
-	private FMLControlledFIBNaturePerspective fmlControlledFIBNaturePerspective;
-	private FMLRTControlledFIBNaturePerspective fmlRTControlledFIBNaturePerspective;
-
-	// private FIBInspectors inspectors;
-
 	public GINAAdapterController() {
 	}
 
@@ -209,26 +204,6 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject<GINATechnologyAdapter> obj, FlexoController controller) {
 		return obj instanceof GINAFIBComponent;
-	}
-
-	@Override
-	public void installFMLNatureSpecificPerspectives(FlexoController controller) {
-		super.installFMLNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(fmlControlledFIBNaturePerspective = new FMLControlledFIBNaturePerspective(controller));
-	}
-
-	public FMLControlledFIBNaturePerspective getFMLControlledFIBNaturePerspective() {
-		return fmlControlledFIBNaturePerspective;
-	}
-
-	@Override
-	public void installFMLRTNatureSpecificPerspectives(FlexoController controller) {
-		super.installFMLRTNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(fmlRTControlledFIBNaturePerspective = new FMLRTControlledFIBNaturePerspective(controller));
-	}
-
-	public FMLRTControlledFIBNaturePerspective getFMLRTControlledFIBNaturePerspective() {
-		return fmlRTControlledFIBNaturePerspective;
 	}
 
 	public class LoadFIBEditor extends FlexoTask {

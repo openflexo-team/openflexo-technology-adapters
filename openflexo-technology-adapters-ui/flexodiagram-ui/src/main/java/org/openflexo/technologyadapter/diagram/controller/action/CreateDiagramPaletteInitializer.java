@@ -61,7 +61,6 @@ import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
-import org.openflexo.view.controller.TechnologyPerspective;
 
 public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDiagramPalette, DiagramSpecification, FlexoObject> {
 
@@ -107,11 +106,8 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
 		return (e, action) -> {
-			if (getController().getCurrentPerspective() instanceof TechnologyPerspective
-					&& ((TechnologyPerspective<?>) getController().getCurrentPerspective())
-							.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
-				getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
-			}
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
+			getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
 			return true;
 		};
 	}

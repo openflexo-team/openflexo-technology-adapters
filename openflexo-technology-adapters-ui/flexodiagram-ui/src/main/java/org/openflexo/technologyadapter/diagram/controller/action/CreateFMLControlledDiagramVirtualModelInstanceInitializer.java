@@ -45,15 +45,14 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -68,11 +67,6 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 
 	public CreateFMLControlledDiagramVirtualModelInstanceInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateFMLControlledDiagramVirtualModelInstance.actionType, actionInitializer);
-	}
-
-	// TODO: reimplement this
-	private Status chooseAndConfigureCreationScheme(CreateFMLControlledDiagramVirtualModelInstance action) {
-		return instanciateShowDialogAndReturnStatus(action, null /*CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB*/);
 	}
 
 	@Override
@@ -99,51 +93,13 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 				}
 				return true;
 			}
-
-			/*if (action.skipChoosePopup) {
-				return true;
-			} else {
-				int step = 0;
-				boolean shouldContinue = true;
-				while (shouldContinue) {
-					Status result;
-					if (step == 0) {
-						result = instanciateShowDialogAndReturnStatus(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-					} else if (step == action.getStepsNumber() - 1 && action.getVirtualModel() != null
-							&& action.getVirtualModel().hasCreationScheme()) {
-						result = chooseAndConfigureCreationScheme(action);
-					}else {
-						ModelSlot<?> configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
-						result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
-								getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
-					}
-					if (result == Status.CANCELED) {
-						return false;
-					} else if (result == Status.VALIDATED) {
-						return true;
-					} else if (result == Status.NEXT && step + 1 <= action.getStepsNumber()) {
-						step = step + 1;
-					} else if (result == Status.BACK && step - 1 >= 0) {
-						step = step - 1;
-					}
-				}
-			
-				return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-			}*/
-
-			// logger.warning("!!!!!!! Please reimplement me");
-			// return false;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultFinalizer() {
 		return (e, action) -> {
-
-			DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-					.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-			getController().setCurrentEditedObjectAsModuleView(action.getNewVirtualModelInstance(),
-					diagramTAController.getFMLRTControlledDiagramNaturePerspective());
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			return true;
 		};
 	}
@@ -159,26 +115,8 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 		};
 	}
 
-	/**
-	 * @author Vincent This method has to be removed as soon as we will have a real Wizard Management. Its purpose is to handle the
-	 *         separation of FIBs for Model Slot Configurations.
-	 * @return File that correspond to the FIB
-	 */
-	/*private Resource getModelSlotInstanceConfigurationFIB(Class<? extends ModelSlot> modelSlotClass) {
-		if (TypeAwareModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_TYPE_AWARE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
-		}
-		if (FreeModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_FREE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
-		}
-		if (FMLRTModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
-		}
-		return null;
-	}*/
-
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

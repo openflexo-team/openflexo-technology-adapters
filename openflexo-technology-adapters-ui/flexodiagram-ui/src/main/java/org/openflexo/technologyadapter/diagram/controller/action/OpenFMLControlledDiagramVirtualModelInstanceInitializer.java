@@ -44,9 +44,9 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -93,18 +93,15 @@ public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
 		return new FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
-				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
-						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-				// getController().switchToPerspective(diagramTAController.getFmlRTControlledDiagramNaturePerspective());
-				getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject(),
-						diagramTAController.getFMLRTControlledDiagramNaturePerspective());
+				getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
+				getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject());
 				return true;
 			}
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

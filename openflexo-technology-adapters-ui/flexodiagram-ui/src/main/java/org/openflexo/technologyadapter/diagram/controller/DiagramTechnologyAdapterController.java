@@ -443,26 +443,4 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
 	}
 
-	private FMLControlledDiagramNaturePerspective fmlControlledDiagramNaturePerspective;
-	private FMLRTControlledDiagramNaturePerspective fmlRTControlledDiagramNaturePerspective;
-
-	@Override
-	public void installFMLNatureSpecificPerspectives(FlexoController controller) {
-		super.installFMLNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(fmlControlledDiagramNaturePerspective = new FMLControlledDiagramNaturePerspective(controller));
-	}
-
-	@Override
-	public void installFMLRTNatureSpecificPerspectives(FlexoController controller) {
-		super.installFMLRTNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(fmlRTControlledDiagramNaturePerspective = new FMLRTControlledDiagramNaturePerspective(controller));
-	}
-
-	public FMLControlledDiagramNaturePerspective getFMLControlledDiagramNaturePerspective() {
-		return fmlControlledDiagramNaturePerspective;
-	}
-
-	public FMLRTControlledDiagramNaturePerspective getFMLRTControlledDiagramNaturePerspective() {
-		return fmlRTControlledDiagramNaturePerspective;
-	}
 }

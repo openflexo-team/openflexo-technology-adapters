@@ -45,16 +45,15 @@ import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
-import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
 import org.openflexo.technologyadapter.gina.fml.action.GivesFMLControlledFIBVirtualModelNature;
 import org.openflexo.view.controller.ActionInitializer;
@@ -93,9 +92,7 @@ public class GivesFMLControlledFIBVirtualModelNatureInitializer
 			@Override
 			public boolean run(EventObject e, GivesFMLControlledFIBVirtualModelNature action) {
 
-				GINAAdapterController diagramTAController = (GINAAdapterController) getController()
-						.getTechnologyAdapterController(GINATechnologyAdapter.class);
-				getController().switchToPerspective(diagramTAController.getFMLControlledFIBNaturePerspective());
+				getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
 				getController().selectAndFocusObject(action.getFocusedObject());
 				return true;
 			}
@@ -103,7 +100,7 @@ public class GivesFMLControlledFIBVirtualModelNatureInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
 		return IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 
