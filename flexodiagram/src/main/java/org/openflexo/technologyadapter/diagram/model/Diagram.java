@@ -62,8 +62,8 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 @ModelEntity
 @ImplementationClass(DiagramImpl.class)
 @XMLElement(xmlTag = "Diagram")
-public interface Diagram extends DiagramContainerElement<DrawingGraphicalRepresentation>, FlexoModel<Diagram, DiagramSpecification>,
-		ResourceData<Diagram> {
+public interface Diagram
+		extends DiagramContainerElement<DrawingGraphicalRepresentation>, FlexoModel<Diagram, DiagramSpecification>, ResourceData<Diagram> {
 
 	public static final String URI = "uri";
 	public static final String TITLE = "title";
@@ -167,4 +167,5 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	 * @return
 	 */
 	public ScreenshotImage<Diagram> getScreenshotImage();
+
 }

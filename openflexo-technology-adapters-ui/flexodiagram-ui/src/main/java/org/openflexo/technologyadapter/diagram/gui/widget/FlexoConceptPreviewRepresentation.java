@@ -38,9 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.gui.widget;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Hashtable;
 import java.util.logging.Logger;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
@@ -111,22 +112,29 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 						return returned;
 					}
 				});
-		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole", new ShapeGRProvider<ShapeRole>() {
+		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapeRole", new ShapeGRProvider<ShapeRole>() {
 			@Override
 			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
-				if (drawable.getGraphicalRepresentation() == null) {
+				/*if (drawable.getGraphicalRepresentation() == null) {
 					drawable.setGraphicalRepresentation(makeDefaultShapeGR());
-				}
+				}*/
 				return drawable.getGraphicalRepresentation();
 			}
 		});
+
+		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.exampleLabel"), true);
+		shapeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.previewX"), true);
+		shapeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.previewY"), true);
+		shapeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.WIDTH, new DataBinding<Double>("drawable.previewWidth"), true);
+		shapeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.HEIGHT, new DataBinding<Double>("drawable.previewHeight"), true);
+
 		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
 					@Override
 					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
-						if (drawable.getGraphicalRepresentation() == null) {
+						/*if (drawable.getGraphicalRepresentation() == null) {
 							drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
-						}
+						}*/
 						return drawable.getGraphicalRepresentation();
 					}
 				});

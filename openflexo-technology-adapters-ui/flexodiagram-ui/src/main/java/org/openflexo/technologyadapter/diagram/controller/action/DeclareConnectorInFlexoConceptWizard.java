@@ -156,9 +156,9 @@ public class DeclareConnectorInFlexoConceptWizard
 		@Override
 		public void cancelled() {
 			super.cancelled();
-			if (getFlexoConcept() != null && getFlexoRole() != null) {
+			/*if (getFlexoConcept() != null && getFlexoRole() != null) {
 				getFlexoRole().updateGraphicalRepresentation(initialRepresentations.get(getFlexoRole()));
-			}
+			}*/
 			initialRepresentations.clear();
 		}
 
@@ -203,15 +203,15 @@ public class DeclareConnectorInFlexoConceptWizard
 		public void setFlexoRole(ConnectorRole connectorRole) {
 			if (connectorRole != getFlexoRole()) {
 				ConnectorRole oldValue = getFlexoRole();
-				if (oldValue != null) {
+				/*if (oldValue != null) {
 					oldValue.updateGraphicalRepresentation(initialRepresentations.get(oldValue));
-				}
+				}*/
 				getStrategy().setFlexoRole(connectorRole);
-				if (connectorRole != null) {
+				/*if (connectorRole != null) {
 					connectorRole.updateGraphicalRepresentation((ConnectorGraphicalRepresentation) getStrategy().getTransformationAction()
 							.getFocusedObject().getGraphicalRepresentation().clone());
 					getStrategy().normalizeGraphicalRepresentation(connectorRole);
-				}
+				}*/
 				getPropertyChangeSupport().firePropertyChange("connectorRole", oldValue, connectorRole);
 				checkValidity();
 			}

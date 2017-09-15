@@ -59,6 +59,8 @@ public abstract class GraphicalElementRoleCreationStrategy<A extends DeclareDiag
 		super(transformationAction);
 	}
 
+	// public abstract void bindTo(R role, T diagramElement);
+
 	@Override
 	public R createNewFlexoRole() {
 		String newRoleName = getNewRoleName();
@@ -66,14 +68,15 @@ public abstract class GraphicalElementRoleCreationStrategy<A extends DeclareDiag
 		newRole.setRoleName(newRoleName);
 		newRole.setModelSlot(getTransformationAction().getTypedDiagramModelSlot());
 		newRole.setReadOnlyLabel(true);
-		newRole.setExampleLabel(getTransformationAction().getFocusedObject().getName());
-		newRole.setGraphicalRepresentation((GR) getTransformationAction().getFocusedObject().getGraphicalRepresentation().clone());
+
+		newRole.bindTo(getTransformationAction().getFocusedObject());
+
 		getTransformationAction().getFlexoConcept().addToFlexoProperties(newRole);
-		normalizeGraphicalRepresentation(newRole);
+
 		return newRole;
 	}
 
-	public abstract void normalizeGraphicalRepresentation(R role);
+	// public abstract void normalizeGraphicalRepresentation(R role);
 
 	public void dismissNewFlexoRole() {
 		if (getNewFlexoRole() != null) {

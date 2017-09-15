@@ -51,12 +51,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
@@ -71,11 +67,9 @@ import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.JarResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -106,7 +100,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase {
+public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 
 	private final String DIAGRAM_SPECIFICATION_NAME = "myDiagramSpecification";
 	private final String DIAGRAM_SPECIFICATION_URI = "http://myDiagramSpecification";
@@ -116,11 +110,6 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	private final String VIEWPOINT_NAME = "TestViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestViewPoint.fml";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
-
-	public static DiagramTechnologyAdapter technologicalAdapter;
-	public static FlexoServiceManager applicationContext;
-	// public static DiagramSpecificationRepository<?> repository;
-	public static FlexoEditor editor;
 
 	public static DiagramSpecificationResource diagramSpecificationResource;
 	public static DiagramPaletteResource paletteResource;
@@ -139,36 +128,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	public static DropScheme dropScheme;
 	public static LinkScheme linkScheme;
 
-	private static FlexoResourceCenter<?> diagramTestResourceCenter;
-	private static DirectoryResourceCenter newResourceCenter;
-
-	/**
-	 * Initialize
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	@TestOrder(1)
-	public void testInitialize() throws IOException {
-
-		log("testInitialize()");
-
-		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-
-		diagramTestResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/diagram-test");
-
-		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
-
-		assertNotNull(diagramTestResourceCenter);
-
-		editor = new FlexoTestEditor(null, applicationContext);
-
-		assertNotNull(applicationContext);
-		assertNotNull(technologicalAdapter);
-		assertNotNull(diagramTestResourceCenter);
-	}
+	private static Diagram exampleDiagram;
 
 	/**
 	 * Test Create diagram specification resource
@@ -185,6 +145,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		CreateDiagramSpecification action = CreateDiagramSpecification.actionType.makeNewAction(repository.getRootFolder(), null, editor);
 		action.setNewDiagramSpecificationName(DIAGRAM_SPECIFICATION_NAME);
 		action.setNewDiagramSpecificationURI(DIAGRAM_SPECIFICATION_URI);
+		action.setMakeDefaultExampleDiagram(true);
 
 		action.doAction();
 
@@ -194,6 +155,8 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		assertNotNull(diagramSpecificationResource);
 		assertTrue(diagramSpecificationResource.getIODelegate().exists());
+
+		assertNotNull(exampleDiagram = action.getNewDiagramSpecification().getExampleDiagrams().get(0));
 
 	}
 
@@ -318,11 +281,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
 
 		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
-		FMLModelFactory factory = flexoConcept.getFMLModelFactory();
-		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
-		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
-		shapeGR.setShapeSpecification(rectangleShape);
-		role.setGraphicalRepresentation(shapeGR);
+
+		DiagramShape newShape = createShapeInDiagram(exampleDiagram, "TestShape");
+		role.bindTo(newShape);
 
 		virtualModel.getResource().save(null);
 
@@ -496,9 +457,9 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		log("testReloadDiagramSpecification()");
 
-		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
+		serviceManager = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		serviceManager.getResourceCenterService()
 				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),

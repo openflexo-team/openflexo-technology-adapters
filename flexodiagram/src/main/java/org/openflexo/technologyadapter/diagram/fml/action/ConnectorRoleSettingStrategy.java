@@ -61,8 +61,4 @@ public class ConnectorRoleSettingStrategy extends
 		return ConnectorRole.class;
 	}
 
-	@Override
-	public void normalizeGraphicalRepresentation(ConnectorRole role) {
-		// TODO Auto-generated method stub
-	}
 }

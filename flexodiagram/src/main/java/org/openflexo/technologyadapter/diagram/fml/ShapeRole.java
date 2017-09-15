@@ -42,12 +42,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -58,8 +58,9 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 @ModelEntity
@@ -68,8 +69,17 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 @FML("ShapeRole")
 public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraphicalRepresentation> {
 
-	@PropertyIdentifier(type = GraphicalRepresentation.class)
-	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_X_KEY = "previewX";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_Y_KEY = "previewY";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_WIDTH_KEY = "previewWidth";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_HEIGHT_KEY = "previewHeight";
+
+	// @PropertyIdentifier(type = GraphicalRepresentation.class)
+	// public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String PARENT_SHAPE_ROLE_KEY = "parentShapeRole";
 
@@ -181,15 +191,16 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			RELATIVE_TEXT_X_FEATURE, RELATIVE_TEXT_Y_FEATURE, ABSOLUTE_TEXT_X_FEATURE, ABSOLUTE_TEXT_Y_FEATURE };
 
 	@Override
-	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@Deprecated
+	@Getter(value = "DeprecatedGraphicalRepresentation")
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
-	public ShapeGraphicalRepresentation getGraphicalRepresentation();
+	public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation();
 
-	@Override
-	@Setter(GRAPHICAL_REPRESENTATION_KEY)
-	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
+	@Deprecated
+	@Setter(value = "DeprecatedGraphicalRepresentation")
+	public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = PARENT_SHAPE_ROLE_KEY)
 	@XMLElement(context = "Parent")
@@ -211,6 +222,46 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	 * @return
 	 */
 	public List<ShapeRole> getPossibleParentShapeRoles();
+
+	@Getter(value = PREVIEW_X_KEY, defaultValue = "3.14")
+	@XMLAttribute
+	public double getPreviewX();
+
+	@Setter(value = PREVIEW_X_KEY)
+	public void setPreviewX(double aValue);
+
+	@Getter(value = PREVIEW_Y_KEY, defaultValue = "3.14")
+	@XMLAttribute
+	public double getPreviewY();
+
+	@Setter(value = PREVIEW_Y_KEY)
+	public void setPreviewY(double aValue);
+
+	@Getter(value = PREVIEW_WIDTH_KEY, defaultValue = "50.0")
+	@XMLAttribute
+	public double getPreviewWidth();
+
+	@Setter(value = PREVIEW_WIDTH_KEY)
+	public void setPreviewWidth(double aValue);
+
+	@Getter(value = PREVIEW_HEIGHT_KEY, defaultValue = "40.0")
+	@XMLAttribute
+	public double getPreviewHeight();
+
+	@Setter(value = PREVIEW_HEIGHT_KEY)
+	public void setPreviewHeight(double aValue);
+
+	/**
+	 * Called to configure a {@link ShapeRole} using prototyping {@link DiagramShape} from metamodel
+	 * 
+	 * Example label is retrieved from name of shape<br>
+	 * Preview size is normalized on a 250:200 rectangle when bigger<br>
+	 * Preview location is centered on a 250:200 rectangle
+	 * 
+	 * @param metaModelShape
+	 */
+	@Override
+	public void bindTo(DiagramShape metaModelShape);
 
 	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
 			implements ShapeRole {
@@ -244,6 +295,33 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 
 		}
 
+		@Deprecated
+		private ShapeGraphicalRepresentation deprecatedShapeGraphicalRepresentation;
+
+		@Override
+		@Deprecated
+		public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
+			if (getMetamodelElement() != null) {
+				return null;
+			}
+			return deprecatedShapeGraphicalRepresentation;
+		}
+
+		@Override
+		@Deprecated
+		public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
+			System.out.println("Tiens, je trouve une ShapeGraphicalRepresentation depreciee: " + graphicalRepresentation);
+			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
+		}
+
+		@Override
+		public DiagramShape makeDiagramElementInMetaModel(Diagram exampleDiagram, ShapeGraphicalRepresentation graphicalRepresentation) {
+			DiagramShape returned = exampleDiagram.getDiagramFactory().makeNewShape("Shape", exampleDiagram);
+			// returned.setGraphicalRepresentation(graphicalRepresentation);
+			returned.getGraphicalRepresentation().setsWith(graphicalRepresentation);
+			return returned;
+		}
+
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
@@ -262,7 +340,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("shape");
 		}
 
-		public void tryToFindAGR() {
+		/*public void tryToFindAGR() {
 			if (getGraphicalRepresentation() == null && getModelSlot() instanceof TypedDiagramModelSlot) {
 				// Try to find one somewhere
 				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getModelSlot();
@@ -272,7 +350,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					}
 				}
 			}
-		}
+		}*/
 
 		@Override
 		public Type getType() {
@@ -383,6 +461,46 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				}
 			}
 			return returned;
+		}
+
+		/**
+		 * Called to configure a {@link ShapeRole} using prototyping {@link DiagramShape} from metamodel
+		 * 
+		 * Example label is retrieved from name of shape<br>
+		 * Preview size is normalized on a 250:200 rectangle when bigger<br>
+		 * Preview location is centered on a 250:200 rectangle
+		 * 
+		 * @param metaModelShape
+		 */
+		@Override
+		public void bindTo(DiagramShape metaModelShape) {
+
+			if (metaModelShape == null) {
+				logger.warning("Could not bind to a null " + metaModelShape);
+				return;
+			}
+
+			setMetamodelElement(metaModelShape);
+
+			setExampleLabel(metaModelShape.getName());
+
+			if (metaModelShape.getGraphicalRepresentation().getWidth() > 230) {
+				setPreviewWidth(230);
+			}
+			else {
+				setPreviewWidth(metaModelShape.getGraphicalRepresentation().getWidth());
+			}
+
+			if (metaModelShape.getGraphicalRepresentation().getHeight() > 230) {
+				setPreviewHeight(230);
+			}
+			else {
+				setPreviewHeight(metaModelShape.getGraphicalRepresentation().getHeight());
+			}
+
+			setPreviewX((250 - getPreviewWidth()) / 2);
+			setPreviewY((200 - getPreviewHeight()) / 2);
+
 		}
 
 	}

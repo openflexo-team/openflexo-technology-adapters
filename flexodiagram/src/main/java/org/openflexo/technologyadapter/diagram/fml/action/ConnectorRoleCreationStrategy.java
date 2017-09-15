@@ -80,11 +80,6 @@ public class ConnectorRoleCreationStrategy extends
 		return returned;
 	}
 
-	@Override
-	public void normalizeGraphicalRepresentation(ConnectorRole role) {
-		// TODO Auto-generated method stub
-	}
-
 	public FlexoConcept getFromFlexoConcept() {
 		return fromFlexoConcept;
 	}

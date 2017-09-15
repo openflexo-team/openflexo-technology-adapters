@@ -61,14 +61,4 @@ public class ShapeRoleSettingStrategy
 		return ShapeRole.class;
 	}
 
-	@Override
-	public void normalizeGraphicalRepresentation(ShapeRole role) {
-		ShapeGraphicalRepresentation gr = role.getGraphicalRepresentation();
-		// Center shape in preview
-		gr.setX((250 - gr.getWidth()) / 2);
-		gr.setY((200 - gr.getHeight()) / 2);
-		// Forces GR to be displayed in view
-		gr.setAllowToLeaveBounds(false);
-	}
-
 }

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -60,6 +61,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -159,6 +161,10 @@ public interface DiagramSpecification
 	public DiagramSpecificationResource getResource();
 
 	public List<DiagramPaletteElement> getAllPaletteElements();
+
+	public Diagram getDefaultExampleDiagram();
+
+	public Diagram createDefaultExampleDiagram(FlexoEditor editor);
 
 	public static abstract class DiagramSpecificationImpl extends FlexoObjectImpl implements DiagramSpecification {
 
@@ -538,6 +544,23 @@ public interface DiagramSpecification
 			deleteObservers();
 			// isDeleted = true;
 			return true;
+		}
+
+		@Override
+		public Diagram getDefaultExampleDiagram() {
+			if (getExampleDiagrams().size() > 0) {
+				return getExampleDiagrams().get(0);
+			}
+			return null;
+		}
+
+		@Override
+		public Diagram createDefaultExampleDiagram(FlexoEditor editor) {
+			CreateExampleDiagram createDiagramAction = CreateExampleDiagram.actionType.makeNewAction(this, null, editor);
+			createDiagramAction.setNewDiagramName("DefaultExampleDiagram");
+			createDiagramAction.setNewDiagramTitle("Default example diagram");
+			createDiagramAction.doAction();
+			return createDiagramAction.getNewDiagram();
 		}
 	}
 

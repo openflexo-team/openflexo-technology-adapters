@@ -244,35 +244,44 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			DiagramFactory factory = diagram.getDiagramFactory();
 			DiagramShape newShape = factory.newInstance(DiagramShape.class);
 
-			// If no GR is defined for this shape, create a default one
-			if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
-				getAssignedFlexoProperty().setGraphicalRepresentation(factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
-			}
+			ShapeGraphicalRepresentation grToUse = null;
 
-			ShapeGraphicalRepresentation grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+			if (getAssignedFlexoProperty() != null) {
 
-			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
-			newGR.setsWith(grToUse);
-			newShape.setGraphicalRepresentation(newGR);
+				// If no GR is defined for this shape, create a default one
+				if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
+					System.out.println("No GR, creating ");
+					grToUse = factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+					System.out.println("Creating " + grToUse);
+				}
+				else {
+					grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+				}
 
-			// Handle default ShapeSpecification when not set
-			if (newGR.getShapeSpecification() == null) {
-				newGR.setShapeSpecification(factory.makeShape(ShapeType.RECTANGLE));
-				newGR.setWidth(50);
-				newGR.setHeight(40);
-			}
-			// Handle default Foreground when not set
-			if (newGR.getForeground() == null) {
-				newGR.setForeground(factory.makeDefaultForegroundStyle());
-			}
-			// Handle default Background when not set
-			if (newGR.getBackground() == null) {
-				newGR.setBackground(factory.makeDefaultBackgroundStyle());
-			}
-			// Handle default Border when not set
-			/*if (newGR.getBorder() == null) {
+				ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
+				newGR.setsWith(grToUse);
+				newShape.setGraphicalRepresentation(newGR);
+
+				// Handle default ShapeSpecification when not set
+				if (newGR.getShapeSpecification() == null) {
+					newGR.setShapeSpecification(factory.makeShape(ShapeType.RECTANGLE));
+					newGR.setWidth(50);
+					newGR.setHeight(40);
+				}
+				// Handle default Foreground when not set
+				if (newGR.getForeground() == null) {
+					newGR.setForeground(factory.makeDefaultForegroundStyle());
+				}
+				// Handle default Background when not set
+				if (newGR.getBackground() == null) {
+					newGR.setBackground(factory.makeDefaultBackgroundStyle());
+				}
+				// Handle default Border when not set
+				/*if (newGR.getBorder() == null) {
 				newGR.setBorder(factory.makeShapeBorder());
-			}*/
+				}*/
+
+			}
 
 			// Register reference
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());

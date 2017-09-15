@@ -48,11 +48,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -63,9 +59,7 @@ import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -75,6 +69,8 @@ import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramSpecifica
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -88,7 +84,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
+public class TestControlledDiagramVirtualModel extends DiagramTestCase {
 
 	private final String DIAGRAM_SPECIFICATION_NAME = "myDiagramSpecification";
 	private final String DIAGRAM_SPECIFICATION_URI = "http://myDiagramSpecification";
@@ -98,10 +94,6 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 	private final String VIEWPOINT_NAME = "TestViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestViewPoint.fml";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
-
-	public static DiagramTechnologyAdapter technologicalAdapter;
-	public static FlexoServiceManager applicationContext;
-	public static FlexoEditor editor;
 
 	public static DiagramSpecificationResource diagramSpecificationResource;
 	public static DiagramPaletteResource paletteResource;
@@ -115,38 +107,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 	public static VirtualModel virtualModel;
 	public static DropScheme dropScheme;
 
-	private static FlexoResourceCenter<?> diagramTestResourceCenter;
-	private static DirectoryResourceCenter newResourceCenter;
-
-	/**
-	 * Initialize
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	@TestOrder(1)
-	public void testInitialize() throws IOException {
-
-		log("testInitialize()");
-
-		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-
-		diagramTestResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/diagram-test");
-
-		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
-
-		assertNotNull(diagramTestResourceCenter);
-
-		DiagramSpecificationRepository<?> repository = technologicalAdapter.getDiagramSpecificationRepository(diagramTestResourceCenter);
-		assertNotNull(repository);
-
-		editor = new FlexoTestEditor(null, applicationContext);
-
-		assertNotNull(applicationContext);
-		assertNotNull(technologicalAdapter);
-	}
+	private static Diagram exampleDiagram;
 
 	/**
 	 * Test Create diagram specification resource
@@ -165,6 +126,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		CreateDiagramSpecification action = CreateDiagramSpecification.actionType.makeNewAction(repository.getRootFolder(), null, editor);
 		action.setNewDiagramSpecificationName(DIAGRAM_SPECIFICATION_NAME);
 		action.setNewDiagramSpecificationURI(DIAGRAM_SPECIFICATION_URI);
+		action.setMakeDefaultExampleDiagram(true);
 
 		action.doAction();
 
@@ -178,6 +140,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		System.out.println("Hop, je viens creer un DS dans " + diagramSpecificationResource.getIODelegate().getSerializationArtefact());
 
 		diagramSpecificationResource.save(null);
+
+		assertNotNull(exampleDiagram = action.getNewDiagramSpecification().getExampleDiagrams().get(0));
 
 	}
 
@@ -304,11 +268,9 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
 
 		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
-		FMLModelFactory factory = flexoConcept.getFMLModelFactory();
-		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
-		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
-		shapeGR.setShapeSpecification(rectangleShape);
-		role.setGraphicalRepresentation(shapeGR);
+
+		DiagramShape newShape = createShapeInDiagram(exampleDiagram, "TestShape");
+		role.bindTo(newShape);
 
 		CreateFlexoBehaviour createDropScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		createDropScheme.setFlexoBehaviourName("drop");
@@ -349,9 +311,9 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		log("testReloadDiagramSpecification()");
 
-		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
+		serviceManager = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		serviceManager.getResourceCenterService()
 				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),

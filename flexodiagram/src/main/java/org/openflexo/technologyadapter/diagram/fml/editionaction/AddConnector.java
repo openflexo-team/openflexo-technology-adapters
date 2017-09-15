@@ -43,6 +43,7 @@ import java.lang.reflect.Type;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -312,10 +313,11 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 						System.out.println("No GR, creating ");
 						grToUse = factory.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
 						System.out.println("Creating " + grToUse);
-						getAssignedFlexoProperty().setGraphicalRepresentation(grToUse);
+						// getAssignedFlexoProperty().setGraphicalRepresentation(grToUse);
 					}
-
-					grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+					else {
+						grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+					}
 
 					ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
 					newGR.setsWith(grToUse);

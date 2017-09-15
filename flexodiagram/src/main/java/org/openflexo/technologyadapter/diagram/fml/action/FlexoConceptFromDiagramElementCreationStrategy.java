@@ -41,11 +41,9 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.action.transformation.FlexoConceptCreationStrategy;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -69,6 +67,8 @@ import org.openflexo.toolbox.StringUtils;
  */
 public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends DeclareDiagramElementInFlexoConcept<A, ?>>
 		extends FlexoConceptCreationStrategy<A> {
+
+	private static final Logger logger = Logger.getLogger(FlexoConceptFromDiagramElementCreationStrategy.class.getPackage().getName());
 
 	protected LinkedHashMap<DrawingObjectEntry, GraphicalElementRole<?, ?>> newGraphicalElementRoles;
 
@@ -95,24 +95,13 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 					ShapeRole newShapeRole = getTransformationAction().getFactory().newInstance(ShapeRole.class);
 					newShapeRole.setRoleName(entry.flexoRoleName);
 					newShapeRole.setModelSlot(getTransformationAction().getTypedDiagramModelSlot());
-					/*if (mainPropertyDescriptor != null && entry.isMainEntry()) {
-						newShapeFlexoRole.setLabel(new DataBinding<String>(getIndividualFlexoRoleName() + "."
-								+ mainPropertyDescriptor.property.getName()));
-					} else {*/
 					newShapeRole.setReadOnlyLabel(true);
 					if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
 						newShapeRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 					}
-					// }
 
-					// newShapeRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
-					newShapeRole.setExampleLabel(grShape.getName());
-					// We clone here the GR (fixed unfocusable GR bug)
-					newShapeRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape.getGraphicalRepresentation().clone());
-					// Forces GR to be displayed in view
-					normalizeGraphicalRepresentation(newShapeRole.getGraphicalRepresentation());
+					newShapeRole.bindTo(grShape);
 
-					newShapeRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
 					newFlexoConcept.addToFlexoProperties(newShapeRole);
 					if (entry.getParentEntry() != null) {
 						newShapeRole.setParentShapeRole((ShapeRole) newGraphicalElementRoles.get(entry.getParentEntry()));
@@ -130,9 +119,9 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 					if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
 						newConnectorRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 					}
-					newConnectorRole.setExampleLabel(grConnector.getName());
-					newConnectorRole.setGraphicalRepresentation(
-							(ConnectorGraphicalRepresentation) grConnector.getGraphicalRepresentation().clone());
+
+					newConnectorRole.bindTo(grConnector);
+
 					newFlexoConcept.addToFlexoProperties(newConnectorRole);
 					// Set the source/target
 					// newConnectorFlexoRole.setEndShapeFlexoRole(endShapeFlexoRole);
@@ -199,7 +188,7 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 		return newFlexoConcept;
 	}
 
-	public abstract void normalizeGraphicalRepresentation(GraphicalRepresentation gr);
+	// public abstract void normalizeGraphicalRepresentation(GraphicalRepresentation gr);
 
 	private ArrayList<FlexoBehaviourConfiguration> flexoBehaviours;
 

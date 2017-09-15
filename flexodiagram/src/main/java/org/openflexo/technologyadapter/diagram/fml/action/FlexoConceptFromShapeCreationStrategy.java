@@ -41,8 +41,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -95,7 +93,7 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 		}
 	}
 
-	@Override
+	/*@Override
 	public void normalizeGraphicalRepresentation(GraphicalRepresentation gr) {
 		if (gr instanceof ShapeGraphicalRepresentation) {
 			ShapeGraphicalRepresentation shapeGR = (ShapeGraphicalRepresentation) gr;
@@ -105,7 +103,7 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 			// Forces GR to be displayed in view
 			shapeGR.setAllowToLeaveBounds(false);
 		}
-	}
+	}*/
 
 	public String getDropSchemeName() {
 		if (StringUtils.isEmpty(dropSchemeName)) {

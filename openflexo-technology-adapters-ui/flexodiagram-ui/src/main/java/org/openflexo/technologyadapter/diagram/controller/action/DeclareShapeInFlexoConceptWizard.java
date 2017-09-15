@@ -38,11 +38,12 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
@@ -246,9 +247,9 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		@Override
 		public void cancelled() {
 			super.cancelled();
-			if (getFlexoConcept() != null && getFlexoRole() != null) {
+			/*if (getFlexoConcept() != null && getFlexoRole() != null) {
 				getFlexoRole().updateGraphicalRepresentation(initialRepresentations.get(getFlexoRole()));
-			}
+			}*/
 			initialRepresentations.clear();
 		}
 
@@ -293,15 +294,15 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		public void setFlexoRole(ShapeRole shapeRole) {
 			if (shapeRole != getFlexoRole()) {
 				ShapeRole oldValue = getFlexoRole();
-				if (oldValue != null) {
+				/*if (oldValue != null) {
 					oldValue.updateGraphicalRepresentation(initialRepresentations.get(oldValue));
-				}
+				}*/
 				getStrategy().setFlexoRole(shapeRole);
-				if (shapeRole != null) {
+				/*if (shapeRole != null) {
 					shapeRole.updateGraphicalRepresentation((ShapeGraphicalRepresentation) getStrategy().getTransformationAction()
 							.getFocusedObject().getGraphicalRepresentation().clone());
 					getStrategy().normalizeGraphicalRepresentation(shapeRole);
-				}
+				}*/
 				getPropertyChangeSupport().firePropertyChange("shapeRole", oldValue, shapeRole);
 				checkValidity();
 			}

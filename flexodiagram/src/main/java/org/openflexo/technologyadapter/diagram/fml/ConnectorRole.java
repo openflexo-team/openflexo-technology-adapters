@@ -45,9 +45,9 @@ import java.util.logging.Logger;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -58,6 +58,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationChanged;
 
@@ -81,15 +82,16 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static GraphicalFeature<?, ?>[] AVAILABLE_CONNECTOR_FEATURES = {};
 
 	@Override
-	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@Deprecated
+	@Getter(value = "DeprecatedGraphicalRepresentation")
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
-	public ConnectorGraphicalRepresentation getGraphicalRepresentation();
+	public ConnectorGraphicalRepresentation getDeprecatedGraphicalRepresentation();
 
-	@Override
-	@Setter(GRAPHICAL_REPRESENTATION_KEY)
-	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
+	@Deprecated
+	@Setter(value = "DeprecatedGraphicalRepresentation")
+	public void setDeprecatedGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
 	@XMLElement(context = "ArtifactFromGraphicalRepresentation_")
@@ -129,6 +131,18 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 	public List<ShapeRole> getAvailableShapeRoles();
 
+	/**
+	 * Called to configure a {@link ConnectorRole} using prototyping {@link DiagramConnector} from metamodel
+	 * 
+	 * Example label is retrieved from name of connector<br>
+	 * Sets placeholders positions
+	 * 
+	 * @param connectorRole
+	 * @param metaModelConnector
+	 */
+	@Override
+	public void bindTo(DiagramConnector metaModelConnector);
+
 	public static abstract class ConnectorRoleImpl extends GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation>
 			implements ConnectorRole {
 
@@ -157,6 +171,33 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 				}
 			}
 			handlePendingGRSpecs();
+		}
+
+		@Deprecated
+		private ConnectorGraphicalRepresentation deprecatedShapeGraphicalRepresentation;
+
+		@Override
+		@Deprecated
+		public ConnectorGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
+			if (getMetamodelElement() != null) {
+				return null;
+			}
+			return deprecatedShapeGraphicalRepresentation;
+		}
+
+		@Override
+		@Deprecated
+		public void setDeprecatedGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation) {
+			System.out.println("Tiens, je trouve une ConnectorGraphicalRepresentation depreciee: " + graphicalRepresentation);
+			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
+		}
+
+		@Override
+		public DiagramConnector makeDiagramElementInMetaModel(Diagram exampleDiagram,
+				ConnectorGraphicalRepresentation graphicalRepresentation) {
+			DiagramConnector returned = exampleDiagram.getDiagramFactory().makeNewConnector("Connector", null, null, exampleDiagram);
+			returned.setGraphicalRepresentation(graphicalRepresentation);
+			return returned;
 		}
 
 		@Override
@@ -267,5 +308,28 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			}
 			return null;
 		}
+
+		/**
+		 * Called to configure a {@link ConnectorRole} using prototyping {@link DiagramConnector} from metamodel
+		 * 
+		 * Example label is retrieved from name of connector<br>
+		 * Sets placeholders positions
+		 * 
+		 * @param metaModelConnector
+		 */
+		@Override
+		public void bindTo(DiagramConnector metaModelConnector) {
+
+			if (metaModelConnector == null) {
+				logger.warning("Could not bind to a null " + metaModelConnector);
+				return;
+			}
+
+			setMetamodelElement(metaModelConnector);
+
+			setExampleLabel(metaModelConnector.getName());
+
+		}
+
 	}
 }
