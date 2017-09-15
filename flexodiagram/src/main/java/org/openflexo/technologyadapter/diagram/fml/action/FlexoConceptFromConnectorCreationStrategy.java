@@ -46,6 +46,7 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -238,6 +239,11 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 			}
 			if (toFlexoConcept.getDeclaredProperties(ShapeRole.class).size() > 0) {
 				toPatternRole = toFlexoConcept.getDeclaredProperties(ShapeRole.class).get(0);
+			}
+
+			List<TypedDiagramModelSlot> msList = newConnectorRole.getFlexoConcept().getAccessibleProperties(TypedDiagramModelSlot.class);
+			if (msList.size() > 0) {
+				newAddConnector.setReceiver(new DataBinding<>(msList.get(0).getName()));
 			}
 
 			newAddConnector

@@ -57,7 +57,8 @@ public class CreateFMLControlledDiagramVirtualModelInstance
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModelInstance.class.getPackage().getName());
 
 	public static FlexoActionFactory<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> actionType = new FlexoActionFactory<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject>(
-			"create_fml_controlled_diagram", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
+			"create_fml_controlled_diagram", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -72,7 +73,7 @@ public class CreateFMLControlledDiagramVirtualModelInstance
 		public boolean isVisibleForSelection(FlexoObject container, Vector<FlexoObject> globalSelection) {
 			if (container instanceof VirtualModelInstance) {
 				VirtualModel containerVirtualModel = ((VirtualModelInstance<?, ?>) container).getVirtualModel();
-				if (containerVirtualModel.hasNature(FMLControlledDiagramContainerNature.INSTANCE)) {
+				if (containerVirtualModel != null && containerVirtualModel.hasNature(FMLControlledDiagramContainerNature.INSTANCE)) {
 					return true;
 				}
 			}

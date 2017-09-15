@@ -96,7 +96,10 @@ public class CreateFMLControlledDiagramVirtualModelWizard extends AbstractCreate
 
 	@Override
 	public VirtualModel getContainerVirtualModel() {
-		return getAction().getFocusedObject();
+		if (getAction().getFocusedObject() instanceof VirtualModel) {
+			return (VirtualModel) getAction().getFocusedObject();
+		}
+		return null;
 	}
 
 	/**
@@ -156,7 +159,13 @@ public class CreateFMLControlledDiagramVirtualModelWizard extends AbstractCreate
 				setIssueMessage(getAction().getLocales().localizedForKey("please_supply_valid_virtual_model_name"), IssueMessageType.ERROR);
 				return false;
 			}
-			else if (getAction().getFocusedObject().getVirtualModelNamed(getNewVirtualModelName()) != null) {
+			else if (getAction().getFocusedObject() instanceof VirtualModel
+					&& ((VirtualModel) getAction().getFocusedObject()).getVirtualModelNamed(getNewVirtualModelName()) != null) {
+				setIssueMessage(getAction().getLocales().localizedForKey("duplicated_virtual_model_name"), IssueMessageType.ERROR);
+				return false;
+			}
+			else if (getAction().getFocusedObject() instanceof RepositoryFolder
+					&& ((RepositoryFolder) getAction().getFocusedObject()).getResourceWithName(getNewVirtualModelName()) != null) {
 				setIssueMessage(getAction().getLocales().localizedForKey("duplicated_virtual_model_name"), IssueMessageType.ERROR);
 				return false;
 			}

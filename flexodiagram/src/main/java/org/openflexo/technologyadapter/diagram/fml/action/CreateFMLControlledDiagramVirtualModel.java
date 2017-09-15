@@ -47,40 +47,37 @@ import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
+import org.openflexo.foundation.fml.action.AbstractCreateNatureSpecificVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
-import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
-import org.openflexo.toolbox.StringUtils;
 
 public class CreateFMLControlledDiagramVirtualModel
-		extends AbstractCreateVirtualModel<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> {
+		extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledDiagramVirtualModel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, VirtualModel, FMLObject>(
+	public static FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, FlexoObject, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, FlexoObject, FMLObject>(
 			"create_diagram_virtual_model", FlexoActionFactory.newVirtualModelMenu, FlexoActionFactory.defaultGroup,
 			FlexoActionFactory.ADD_ACTION_TYPE) {
 
@@ -88,18 +85,18 @@ public class CreateFMLControlledDiagramVirtualModel
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledDiagramVirtualModel makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
+		public CreateFMLControlledDiagramVirtualModel makeNewAction(FlexoObject focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledDiagramVirtualModel(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
+		public boolean isVisibleForSelection(FlexoObject object, Vector<FMLObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
+		public boolean isEnabledForSelection(FlexoObject object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -107,10 +104,9 @@ public class CreateFMLControlledDiagramVirtualModel
 
 	static {
 		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModel.actionType, VirtualModel.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledDiagramVirtualModel.actionType, RepositoryFolder.class);
 	}
 
-	private String newVirtualModelName;
-	private String newVirtualModelDescription;
 	private VirtualModel newVirtualModel;
 
 	private String diagramModelSlotName = "diagram";
@@ -125,29 +121,12 @@ public class CreateFMLControlledDiagramVirtualModel
 	private String newDiagramSpecificationName;
 	private String newDiagramSpecificationURI;
 
-	CreateFMLControlledDiagramVirtualModel(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledDiagramVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-
-		FlexoResource<VirtualModel> resource = focusedObject.getResource();
-		if (resource != null && resource.getResourceCenter() instanceof ResourceRepository) {
-			ResourceRepository resourceCenter = (ResourceRepository) resource.getResourceCenter();
-			RepositoryFolder repositoryFolder = resourceCenter
-					.getFolderWithName(resource.getName() + VirtualModelResourceFactory.FML_SUFFIX);
-			if (repositoryFolder != null) {
-				setRepositoryFolder(repositoryFolder);
-			}
-		}
 	}
 
 	@Override
-	public LocalizedDelegate getLocales() {
-		if (getServiceManager() != null) {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
-		}
-		return super.getLocales();
-	}
-
-	public DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
+	public DiagramTechnologyAdapter getTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 	}
 
@@ -166,15 +145,10 @@ public class CreateFMLControlledDiagramVirtualModel
 
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
-		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
-				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
-
 		try {
-			VirtualModelResource vmResource = factory.makeContainedVirtualModelResource(getNewVirtualModelName(),
-					(VirtualModelResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			VirtualModelResource vmResource = makeVirtualModelResource();
 			newVirtualModel = vmResource.getLoadedResourceData();
-			newVirtualModel.setDescription(newVirtualModelDescription);
+			newVirtualModel.setDescription(getNewVirtualModelDescription());
 		} catch (SaveResourceException e) {
 			throw new SaveResourceException(null);
 		} catch (ModelDefinitionException e) {
@@ -221,7 +195,7 @@ public class CreateFMLControlledDiagramVirtualModel
 		Progress.progress(getLocales().localizedForKey("create_model_slot") + " " + getDiagramModelSlotName());
 		CreateModelSlot action = CreateModelSlot.actionType.makeNewEmbeddedAction(getNewVirtualModel(), null, this);
 		action.setModelSlotName(getDiagramModelSlotName());
-		action.setTechnologyAdapter(getDiagramTechnologyAdapter());
+		action.setTechnologyAdapter(getTechnologyAdapter());
 		action.setModelSlotClass(TypedDiagramModelSlot.class);
 		action.setMmRes(getDiagramSpecificationResource());
 		action.doAction();
@@ -246,29 +220,11 @@ public class CreateFMLControlledDiagramVirtualModel
 				.getAssignableAction();
 		createDiagramAction.setDiagramSpecificationResource(getDiagramSpecificationResource());
 		createDiagramAction.setDiagramName(new DataBinding<String>("'diagram'"));
-		createDiagramAction.setResourceCenter(new DataBinding<FlexoResourceCenter<?>>("project"));
+		createDiagramAction.setResourceCenter(new DataBinding<FlexoResourceCenter<?>>("this.resourceCenter"));
 		createDiagramAction.setRelativePath("/Diagrams");
 
 		newVirtualModel.getPropertyChangeSupport().firePropertyChange("name", null, newVirtualModel.getName());
 		newVirtualModel.getResource().getPropertyChangeSupport().firePropertyChange("name", null, newVirtualModel.getName());
-	}
-
-	public boolean isNewVirtualModelNameValid() {
-		if (StringUtils.isEmpty(newVirtualModelName)) {
-			return false;
-		}
-		if (getFocusedObject().getVirtualModelNamed(newVirtualModelName) != null) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean isValid() {
-		if (!isNewVirtualModelNameValid()) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -276,32 +232,13 @@ public class CreateFMLControlledDiagramVirtualModel
 		return newVirtualModel;
 	}
 
-	public String getNewVirtualModelName() {
-		return newVirtualModelName;
-	}
-
+	@Override
 	public void setNewVirtualModelName(String newVirtualModelName) {
-		this.newVirtualModelName = newVirtualModelName;
 
 		setNewDiagramSpecificationName(newVirtualModelName + "Spec");
-		setNewDiagramSpecificationURI(getFocusedObject().getURI() + "/" + newVirtualModelName + "/" + getNewDiagramSpecificationName());
+		// setNewDiagramSpecificationURI(getFocusedObject().getURI() + "/" + newVirtualModelName + "/" + getNewDiagramSpecificationName());
 
-		getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, newVirtualModelName);
-
-	}
-
-	public String getNewVirtualModelDescription() {
-		return newVirtualModelDescription;
-	}
-
-	public void setNewVirtualModelDescription(String newVirtualModelDescription) {
-		this.newVirtualModelDescription = newVirtualModelDescription;
-		getPropertyChangeSupport().firePropertyChange("newVirtualModelDescription", null, newVirtualModelDescription);
-	}
-
-	@Override
-	public int getExpectedProgressSteps() {
-		return 15;
+		super.setNewVirtualModelName(newVirtualModelName);
 	}
 
 	public String getDiagramModelSlotName() {
@@ -368,6 +305,22 @@ public class CreateFMLControlledDiagramVirtualModel
 	}
 
 	public RepositoryFolder<DiagramSpecificationResource, ?> getRepositoryFolder() {
+		if (repositoryFolder == null) {
+			FlexoResourceCenter<?> rc = null;
+			if (getFocusedObject() instanceof RepositoryFolder) {
+				rc = ((RepositoryFolder) getFocusedObject()).getResourceRepository().getResourceCenter();
+			}
+			else if (getFocusedObject() instanceof VirtualModel) {
+				FlexoResource<VirtualModel> resource = ((VirtualModel) getFocusedObject()).getResource();
+				rc = resource.getResourceCenter();
+			}
+			if (rc != null) {
+				DiagramSpecificationRepository<?> diagramSpecificationRepository = getTechnologyAdapter()
+						.getDiagramSpecificationRepository(rc);
+				return diagramSpecificationRepository.getRootFolder();
+			}
+			return null;
+		}
 		return repositoryFolder;
 	}
 

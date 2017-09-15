@@ -51,11 +51,11 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -63,7 +63,7 @@ import org.openflexo.foundation.fml.PrimitiveRole;
 import org.openflexo.foundation.fml.PropertyCardinality;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
-import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
+import org.openflexo.foundation.fml.action.AbstractCreateNatureSpecificVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConceptInstanceRole;
@@ -72,12 +72,10 @@ import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
-import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
@@ -93,13 +91,12 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  *
  */
-public class CreateFMLControlledFIBVirtualModel
-		extends AbstractCreateVirtualModel<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> {
+public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledFIBVirtualModel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledFIBVirtualModel.class.getPackage().getName());
 
-	public static FlexoActionFactory<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledFIBVirtualModel, VirtualModel, FMLObject>(
+	public static FlexoActionFactory<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> actionType = new FlexoActionFactory<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject>(
 			"create_screen_virtual_model", FlexoActionFactory.newVirtualModelMenu, FlexoActionFactory.defaultGroup,
 			FlexoActionFactory.ADD_ACTION_TYPE) {
 
@@ -107,18 +104,18 @@ public class CreateFMLControlledFIBVirtualModel
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledFIBVirtualModel makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
+		public CreateFMLControlledFIBVirtualModel makeNewAction(FlexoObject focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledFIBVirtualModel(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
+		public boolean isVisibleForSelection(FlexoObject object, Vector<FMLObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
+		public boolean isEnabledForSelection(FlexoObject object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -126,6 +123,7 @@ public class CreateFMLControlledFIBVirtualModel
 
 	static {
 		FlexoObjectImpl.addActionForClass(CreateFMLControlledFIBVirtualModel.actionType, VirtualModel.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLControlledFIBVirtualModel.actionType, RepositoryFolder.class);
 	}
 
 	private String newVirtualModelName;
@@ -143,20 +141,13 @@ public class CreateFMLControlledFIBVirtualModel
 	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
-	CreateFMLControlledFIBVirtualModel(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledFIBVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		apiEntries = new ArrayList<>();
 	}
 
 	@Override
-	public LocalizedDelegate getLocales() {
-		if (getServiceManager() != null) {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales();
-		}
-		return super.getLocales();
-	}
-
-	public GINATechnologyAdapter getGINATechnologyAdapter() {
+	public GINATechnologyAdapter getTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 	}
 
@@ -174,15 +165,12 @@ public class CreateFMLControlledFIBVirtualModel
 
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
-		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
-				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
 		try {
-			VirtualModelResource vmResource = factory.makeContainedVirtualModelResource(getNewVirtualModelName(),
-					(VirtualModelResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			VirtualModelResource vmResource = makeVirtualModelResource();
 			newVirtualModel = vmResource.getLoadedResourceData();
-			newVirtualModel.setDescription(newVirtualModelDescription);
+			newVirtualModel.setDescription(getNewVirtualModelDescription());
 		} catch (SaveResourceException e) {
 			throw new SaveResourceException(null);
 		} catch (ModelDefinitionException e) {
@@ -230,8 +218,7 @@ public class CreateFMLControlledFIBVirtualModel
 					createViewRole.setCardinality(PropertyCardinality.ZeroOne);
 					createViewRole.doAction();
 					newRole = createViewRole.getNewFlexoRole();
-					((FlexoConceptInstanceRole) newRole)
-							.setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>("view"));
+					((FlexoConceptInstanceRole) newRole).setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>("view"));
 				}
 				else if (apiEntry.getType() instanceof FlexoConceptInstanceType) {
 					CreateFlexoConceptInstanceRole createViewRole = CreateFlexoConceptInstanceRole.actionType
@@ -251,7 +238,7 @@ public class CreateFMLControlledFIBVirtualModel
 		Progress.progress(getLocales().localizedForKey("create_model_slot") + " " + getFIBModelSlotName());
 		CreateModelSlot action = CreateModelSlot.actionType.makeNewEmbeddedAction(getNewVirtualModel(), null, this);
 		action.setModelSlotName(getFIBModelSlotName());
-		action.setTechnologyAdapter(getGINATechnologyAdapter());
+		action.setTechnologyAdapter(getTechnologyAdapter());
 		action.setModelSlotClass(FIBComponentModelSlot.class);
 		action.doAction();
 		FIBComponentModelSlot uiModelSlot = (FIBComponentModelSlot) action.getNewModelSlot();
@@ -313,51 +300,9 @@ public class CreateFMLControlledFIBVirtualModel
 		newVirtualModel.getResource().getPropertyChangeSupport().firePropertyChange("name", null, newVirtualModel.getName());
 	}
 
-	public boolean isNewVirtualModelNameValid() {
-		if (StringUtils.isEmpty(newVirtualModelName)) {
-			return false;
-		}
-		if (getFocusedObject().getVirtualModelNamed(newVirtualModelName) != null) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean isValid() {
-		if (!isNewVirtualModelNameValid()) {
-			return false;
-		}
-		return true;
-	}
-
 	@Override
 	public VirtualModel getNewVirtualModel() {
 		return newVirtualModel;
-	}
-
-	public String getNewVirtualModelName() {
-		return newVirtualModelName;
-	}
-
-	public void setNewVirtualModelName(String newVirtualModelName) {
-		this.newVirtualModelName = newVirtualModelName;
-		getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, newVirtualModelName);
-
-	}
-
-	public String getNewVirtualModelDescription() {
-		return newVirtualModelDescription;
-	}
-
-	public void setNewVirtualModelDescription(String newVirtualModelDescription) {
-		this.newVirtualModelDescription = newVirtualModelDescription;
-		getPropertyChangeSupport().firePropertyChange("newVirtualModelDescription", null, newVirtualModelDescription);
-	}
-
-	@Override
-	public int getExpectedProgressSteps() {
-		return 15;
 	}
 
 	public String getFIBModelSlotName() {
@@ -534,12 +479,18 @@ public class CreateFMLControlledFIBVirtualModel
 
 		@Override
 		public BindingFactory getBindingFactory() {
-			return getFocusedObject().getBindingFactory();
+			if (getFocusedObject() instanceof VirtualModel) {
+				return ((VirtualModel) getFocusedObject()).getBindingFactory();
+			}
+			return null;
 		}
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getFocusedObject().getBindingModel();
+			if (getFocusedObject() instanceof VirtualModel) {
+				return ((VirtualModel) getFocusedObject()).getBindingModel();
+			}
+			return null;
 		}
 
 		@Override

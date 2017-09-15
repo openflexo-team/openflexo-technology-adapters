@@ -63,4 +63,9 @@ public class TestDiagramFibs extends GenericFIBTestCase {
 		validateFIB("Fib/DiagramSpecificationView.fib");
 	}
 
+	@Test
+	public void testFMLControlledDiagramVirtualModelView() {
+		validateFIB("Fib/FMLControlledDiagramVirtualModelView.fib");
+	}
+
 }

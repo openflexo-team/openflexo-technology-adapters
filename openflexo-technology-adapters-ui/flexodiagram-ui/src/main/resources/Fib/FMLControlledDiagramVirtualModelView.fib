@@ -111,9 +111,6 @@
         <BrowserAddAction id="86" method="controller.createInspectorEntry(data)" name="add_inspector_entry" />
       </BrowserElement>
       <BrowserElement id="87" dataClassName="org.openflexo.foundation.fml.inspector.InspectorEntry" icon="controller.iconForObject(inspectorEntry)" label="inspectorEntry.name" editableLabel="inspectorEntry.name" isEditable="false" name="inspectorEntry" />
-      <BrowserElement id="88" dataClassName="org.openflexo.foundation.fml.controlgraph.ControlStructureAction" icon="controller.iconForObject(controlStructureAction)" isEditable="false" name="controlStructureAction">
-        <Children id="89" data="controlStructureAction.actions" name="children" />
-      </BrowserElement>
       <BrowserElement id="90" dataClassName="org.openflexo.foundation.fml.FlexoConceptStructuralFacet" icon="controller.iconForObject(flexoConceptStructuralFacet)" label="&quot;Structural&quot;" isEditable="false" name="flexoConceptStructuralFacet">
         <Children id="91" data="flexoConceptStructuralFacet.properties" name="flexoProperties" />
         <BrowserAddAction id="92" method="controller.createModelSlot(selected.flexoConcept)" name="new_model_slot" />
@@ -130,10 +127,10 @@
         <BrowserAddAction id="102" method="controller.createAdvancedScheme(selected.flexoConcept)" name="new_behaviour" />
       </BrowserElement>
       <BrowserElement id="103" dataClassName="org.openflexo.foundation.fml.InnerConceptsFacet" icon="controller.iconForObject(innerConceptsFacet)" label="&quot;Inner concepts&quot;" isEditable="false" name="innerConceptsFacet">
-        <Children id="104" data="innerConceptsFacet.inheritanceRootFlexoConcepts" name="children" />
-        <BrowserAddAction id="105" method="controller.createFlexoConcept(selected.virtualModel)" name="add_flexo_concept" />
-        <BrowserRemoveAction id="106" method="controller.deleteFlexoConcept(selected.virtualModel)" name="remove_flexo_concept" />
-      </BrowserElement>
+        <Children id="104" data="innerConceptsFacet.embeddingRootFlexoConcepts" name="children" />
+        <BrowserAddAction id="105" method="controller.createFlexoConcept(selected.flexoConcept)" name="add_flexo_concept" />
+        <BrowserRemoveAction id="106" method="controller.deleteFlexoConcept(selected.flexoConcept)" name="remove_flexo_concept" />
+      </BrowserElement> 
       <BrowserElement id="107" dataClassName="org.openflexo.foundation.fml.FlexoConcept" icon="controller.iconForObject(flexoConcept)" label="flexoConcept.name" editableLabel="flexoConcept.name" isEditable="false" name="flexoConcept">
         <Children id="108" data="flexoConcept.embeddedFlexoConcepts" name="children" />
         <BrowserAddAction id="109" method="controller.createFlexoConcept(selected)" name="add_flexo_concept" />

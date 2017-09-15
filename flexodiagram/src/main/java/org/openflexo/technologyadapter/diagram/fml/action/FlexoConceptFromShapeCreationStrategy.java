@@ -38,11 +38,14 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.util.List;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -193,6 +196,12 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 				assignationAction.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
 
 				newDropScheme.getControlGraph().sequentiallyAppend(assignationAction);
+
+				List<TypedDiagramModelSlot> msList = graphicalElementRole.getFlexoConcept()
+						.getAccessibleProperties(TypedDiagramModelSlot.class);
+				if (msList.size() > 0) {
+					newAddShape.setReceiver(new DataBinding<>(msList.get(0).getName()));
+				}
 
 				if (mainFlexoRole) {
 					if (isTopLevel()) {
