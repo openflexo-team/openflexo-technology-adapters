@@ -49,7 +49,6 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -64,6 +63,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -164,19 +164,6 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 				out.append(")", context);
 			}*/
 			return out.toString();
-		}
-
-		@Override
-		public DiagramRole getAssignedFlexoProperty() {
-			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
-			if (superFlexoRole instanceof DiagramRole) {
-				return (DiagramRole) superFlexoRole;
-			}
-			else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
-				return null;
-			}
-			return null;
 		}
 
 		public String getDiagramName(RunTimeEvaluationContext evaluationContext) {
@@ -284,7 +271,10 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 		@Override
 		public DiagramSpecificationResource getDiagramSpecificationResource() {
 			if (getAssignedFlexoProperty() instanceof DiagramRole) {
-				return getAssignedFlexoProperty().getDiagramSpecificationResource();
+				return ((DiagramRole) getAssignedFlexoProperty()).getDiagramSpecificationResource();
+			}
+			if (getAssignedFlexoProperty() instanceof TypedDiagramModelSlot) {
+				return (DiagramSpecificationResource) ((TypedDiagramModelSlot) getAssignedFlexoProperty()).getMetaModelResource();
 			}
 			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)
 					&& getModelSlotTechnologyAdapter() != null) {
@@ -298,7 +288,10 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 		@Override
 		public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
 			if (getAssignedFlexoProperty() instanceof DiagramRole) {
-				getAssignedFlexoProperty().setDiagramSpecificationResource(diagramSpecificationResource);
+				((DiagramRole) getAssignedFlexoProperty()).setDiagramSpecificationResource(diagramSpecificationResource);
+			}
+			if (getAssignedFlexoProperty() instanceof TypedDiagramModelSlot) {
+				((TypedDiagramModelSlot) getAssignedFlexoProperty()).setMetaModelResource(diagramSpecificationResource);
 			}
 			this.diagramSpecificationResource = diagramSpecificationResource;
 		}
@@ -337,11 +330,10 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 		@Override
 		public Diagram execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			/*System.out.println("DiagSpec = " + getDiagramSpecification());
+			System.out.println("DiagSpec = " + getDiagramSpecification());
 			System.out.println("name=" + getDiagramName(evaluationContext));
 			System.out.println("uri=" + getDiagramURI(evaluationContext));
 			System.out.println("rc=" + getResourceCenter(evaluationContext));
-			 */
 
 			DiagramResource newDiagramResource;
 			try {
@@ -353,47 +345,6 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			}
 			return newDiagramResource.getLoadedResourceData();
 
-			/*FlexoResourceCenter<?> resourceCenter = getResourceCenter(evaluationContext);
-			
-			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-			
-			//diagramTA.getGlobalRepository(resourceCenter).getRepositoryFolder(serializationArtefact, createWhenNonExistent)
-			
-			//resourceCenter.createEntry(name, parentDirectory);
-			
-			//resourceCenter.getRepositoryFolder(ioDelegate, diagramTA.getGlobalRepository(resourceCenter));
-			
-			File newFile = null;
-			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-				String relativePath = getRelativePath();
-				if (!relativePath.endsWith(File.separator)) {
-					relativePath = relativePath + File.separator;
-				}
-				relativePath = relativePath + JavaUtils.getClassName(getDiagramName(evaluationContext));
-				if (!relativePath.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
-					relativePath = relativePath + DiagramResourceFactory.DIAGRAM_SUFFIX;
-				}
-				//newFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), relativePath);
-				
-				
-				DiagramResource newDiagramResource;
-				try {
-					diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, resourceCenter, technologyContextManager, uri, createEmptyContents)
-					
-					newDiagramResource = diagramTA.createNewDiagram(getDiagramName(evaluationContext), getDiagramURI(evaluationContext),
-							newFile, getDiagramSpecificationResource(), resourceCenter);
-					return newDiagramResource.getDiagram();
-				} catch (SaveResourceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-			}
-			
-			logger.warning("Cannot create Diagram !");
-			
-			return null;*/
 		}
 
 		private <I> DiagramResource _makeDiagram(RunTimeEvaluationContext evaluationContext)
@@ -417,6 +368,27 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
 					diagramTA.getTechnologyContextManager(), true);
 			newDiagramResource.setMetaModelResource(getDiagramSpecificationResource());
+
+			System.out.println("model slot = " + getAssignedFlexoProperty());
+
+			if (getAssignedFlexoProperty() instanceof TypedDiagramModelSlot) {
+				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getAssignedFlexoProperty();
+				if (ms.getTemplateDiagram() != null) {
+					System.out.println("newDiagramResource.getDiagram().getGraphicalRepresentation()="
+							+ newDiagramResource.getDiagram().getGraphicalRepresentation());
+					System.out.println(
+							"ms.getTemplateDiagram().getGraphicalRepresentation()=" + ms.getTemplateDiagram().getGraphicalRepresentation());
+					Diagram newDiagram = newDiagramResource.getDiagram();
+					if (newDiagram.getGraphicalRepresentation() == null) {
+						newDiagram.setGraphicalRepresentation(newDiagramResource.getFactory().makeDrawingGraphicalRepresentation());
+					}
+					newDiagramResource.getDiagram().getGraphicalRepresentation()
+							.setsWith(ms.getTemplateDiagram().getGraphicalRepresentation());
+					if (ms.initializeWithContents()) {
+						logger.warning("Please implement initializeWithContents");
+					}
+				}
+			}
 
 			return newDiagramResource;
 		}

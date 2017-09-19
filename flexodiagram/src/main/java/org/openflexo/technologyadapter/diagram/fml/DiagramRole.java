@@ -41,9 +41,9 @@ package org.openflexo.technologyadapter.diagram.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -62,12 +62,11 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
-// TODO: change View to Diagram
 @ModelEntity
 @ImplementationClass(DiagramRole.DiagramRoleImpl.class)
 @XMLElement
 @FML("DiagramRole")
-public interface DiagramRole extends FlexoRole<Diagram> {
+public interface DiagramRole extends GraphicalElementRole<Diagram, DrawingGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
@@ -89,7 +88,20 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 	public DiagramTechnologyAdapter getDiagramTechnologyAdapter();
 
-	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram> implements DiagramRole {
+	/**
+	 * Called to configure a {@link DiagramRole} using prototyping {@link Diagram} from metamodel
+	 * 
+	 * Example label is retrieved from name of connector<br>
+	 * Sets placeholders positions
+	 * 
+	 * @param connectorRole
+	 * @param metaModelConnector
+	 */
+	@Override
+	public void bindTo(Diagram metaModelDiagram);
+
+	public static abstract class DiagramRoleImpl extends GraphicalElementRoleImpl<Diagram, DrawingGraphicalRepresentation>
+			implements DiagramRole {
 
 		private static final Logger logger = Logger.getLogger(DiagramRole.class.getPackage().getName());
 
@@ -194,6 +206,24 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 		@Override
 		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
 			return DiagramTechnologyAdapter.class;
+		}
+
+		@Override
+		@Deprecated
+		public DrawingGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
+			return null;
+		}
+
+		@Override
+		public Diagram makeDiagramElementInMetaModel(Diagram exampleDiagram, DrawingGraphicalRepresentation graphicalRepresentation) {
+			// Not applicable
+			return null;
+		}
+
+		@Override
+		public Diagram getMetamodelElement() {
+			// TODO Auto-generated method stub
+			return super.getMetamodelElement();
 		}
 
 	}

@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
@@ -56,10 +55,8 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -67,6 +64,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
@@ -105,20 +103,25 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 @FML("TypedDiagramModelSlot")
 public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
-	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
-	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
-
+	// @PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
+	// public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 	@PropertyIdentifier(type = List.class)
 	public static final String PALETTE_ELEMENTS_BINDING_KEY = "paletteElementBindings";
+	@PropertyIdentifier(type = Diagram.class)
+	String TEMPLATE_DIAGRAM_KEY = "templateDiagram";
+	@PropertyIdentifier(type = FlexoObjectReference.class)
+	String TEMPLATE_DIAGRAM_REFERENCE_KEY = "templateDiagramReference";
+	@PropertyIdentifier(type = Boolean.class)
+	String INITIALIZE_WITH_CONTENTS_KEY = "initializeWithContents";
 
-	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	/*@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
 	public DrawingGraphicalRepresentation getGraphicalRepresentation();
-
+	
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
-	public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation);
+	public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation);*/
 
 	@Getter(
 			value = PALETTE_ELEMENTS_BINDING_KEY,
@@ -143,6 +146,26 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 	public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding();
 
 	public DiagramSpecification getDiagramSpecification();
+
+	@Getter(TEMPLATE_DIAGRAM_KEY)
+	public Diagram getTemplateDiagram();
+
+	@Setter(TEMPLATE_DIAGRAM_KEY)
+	public void setTemplateDiagram(Diagram aDiagram);
+
+	@Getter(value = TEMPLATE_DIAGRAM_REFERENCE_KEY, isStringConvertable = true)
+	@XMLAttribute
+	public FlexoObjectReference<Diagram> getTemplateDiagramReference();
+
+	@Setter(TEMPLATE_DIAGRAM_REFERENCE_KEY)
+	public void setTemplateDiagramReference(FlexoObjectReference<Diagram> anElementReference);
+
+	@Getter(value = INITIALIZE_WITH_CONTENTS_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean initializeWithContents();
+
+	@Setter(INITIALIZE_WITH_CONTENTS_KEY)
+	public void setInitializeWithContents(boolean value);
 
 	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification>
 			implements TypedDiagramModelSlot {
@@ -317,51 +340,37 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			return null;
 		}
 
-		/**
-		 * Overrides super implementation by providing default graphical representations
-		 */
-		/*
-		@Override
-		public <PR extends FlexoRole<?>> PR makeFlexoRole(Class<PR> flexoRoleClass) {
-			PR returned = super.makeFlexoRole(flexoRoleClass);
-			if (ShapeRole.class.isAssignableFrom(flexoRoleClass)) {
-				ShapeRole shapeRole = (ShapeRole) returned;
-				ShapeGraphicalRepresentation gr = getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
-				gr.setWidth(80);
-				gr.setHeight(50);
-				gr.setX(20);
-				gr.setY(20);
-				gr.setIsFloatingLabel(false);
-				shapeRole.setGraphicalRepresentation(gr);
-			}
-			if (ConnectorRole.class.isAssignableFrom(flexoRoleClass)) {
-				ConnectorRole connectorRole = (ConnectorRole) returned;
-				connectorRole.setGraphicalRepresentation(getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE));
-			}
-			return returned;
-		}
-		*/
+		private FlexoObjectReference<Diagram> templateDiagramReference;
 
-		// TODO
-		/*	@Override
-			public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
-				return paletteElementBindings;
+		@Override
+		public Diagram getTemplateDiagram() {
+			if (templateDiagramReference != null) {
+				return templateDiagramReference.getObject(true);
 			}
-		
-			@Override
-			public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
-				this.paletteElementBindings = paletteElementBindings;
+			return null;
+		}
+
+		@Override
+		public void setTemplateDiagram(Diagram anElement) {
+			Diagram old = (templateDiagramReference != null ? templateDiagramReference.getObject() : null);
+			if (templateDiagramReference != null) {
+				templateDiagramReference.setObject(anElement);
 			}
-		
-			@Override
-			public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
-				paletteElementBindings.add(paletteElementBinding);
+			else {
+				templateDiagramReference = new FlexoObjectReference<Diagram>(anElement);
 			}
-		
-			@Override
-			public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
-				paletteElementBindings.remove(paletteElementBinding);
-			}*/
+			getPropertyChangeSupport().firePropertyChange(TEMPLATE_DIAGRAM_KEY, old, anElement);
+		}
+
+		@Override
+		public FlexoObjectReference<Diagram> getTemplateDiagramReference() {
+			return templateDiagramReference;
+		}
+
+		@Override
+		public void setTemplateDiagramReference(FlexoObjectReference<Diagram> anElementReference) {
+			this.templateDiagramReference = anElementReference;
+		}
 
 	}
 }

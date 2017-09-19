@@ -64,4 +64,9 @@ public class TestDiagramWidgetFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Widget/FIBDiagramPaletteBrowser.fib");
 	}
 
+	@Test
+	public void testFMLControlledVirtualModelSelector() {
+		validateFIB("Fib/Widget/FMLControlledVirtualModelSelector.fib");
+	}
+
 }
