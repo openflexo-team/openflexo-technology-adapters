@@ -180,11 +180,10 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		@Override
 		public DataBinding<T> getValue() {
 			if (value == null) {
-				value = new DataBinding<T>(this, (getFeature() != null ? getFeature().getType() : Object.class),
-						DataBinding.BindingDefinitionType.GET_SET);
+				value = new DataBinding<>(this, (getFeature() != null ? getFeature().getType() : Object.class),
+						getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
 				value.setBindingName(featureName);
 				value.setMandatory(mandatory);
-				value.setBindingDefinitionType(getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
 			}
 			return value;
 		}
