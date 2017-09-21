@@ -41,16 +41,16 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.lang.reflect.Type;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
@@ -173,8 +173,7 @@ public class MapConnectorToFlexoConceptlnstanceStrategy extends FlexoConceptFrom
 		FMLModelFactory factory = getTransformationAction().getFactory();
 		flexoConceptInstanceRole = factory.newInstance(FlexoConceptInstanceRole.class);
 		flexoConceptInstanceRole.setRoleName(getFlexoConceptInstanceRoleName());
-		flexoConceptInstanceRole
-				.setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>(getVirtualModelInstance().toString()));
+		flexoConceptInstanceRole.setVirtualModelInstance(new DataBinding<VirtualModelInstance<?, ?>>(getVirtualModelInstance().toString()));
 		flexoConceptInstanceRole.setFlexoConceptType(getTypeConcept());
 		newFlexoConcept.addToFlexoProperties(flexoConceptInstanceRole);
 
@@ -187,14 +186,14 @@ public class MapConnectorToFlexoConceptlnstanceStrategy extends FlexoConceptFrom
 
 		// AddFlexoConceptInstance action
 		AddFlexoConceptInstance<?> newAddFCI = getTransformationAction().getFactory().newInstance(AddFlexoConceptInstance.class);
-		newAddFCI.setReceiver(new DataBinding(getVirtualModelInstance().toString()));
+		newAddFCI.setReceiver(new DataBinding<>(getVirtualModelInstance().toString()));
 		newAddFCI.setFlexoConceptType(getTypeConcept());
 		if (getTypeConcept() != null && getTypeConcept().getCreationSchemes().size() > 0) {
 			newAddFCI.setCreationScheme(getTypeConcept().getCreationSchemes().get(0));
 		}
 
 		AssignationAction<FlexoConceptInstance> assignationAction = getTransformationAction().getFactory().newAssignationAction(newAddFCI);
-		assignationAction.setAssignation(new DataBinding<Object>(getFlexoConceptInstanceRoleName()));
+		assignationAction.setAssignation(new DataBinding<>(getFlexoConceptInstanceRoleName()));
 
 		newLinkScheme.getControlGraph().sequentiallyAppend(assignationAction);
 

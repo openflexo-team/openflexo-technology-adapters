@@ -232,7 +232,7 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 
 			AssignationAction<?> newAssignationAction = getTransformationAction().getFactory().newAssignationAction();
 			newAssignationAction.setAssignableAction((AssignableAction) newAddIndividual);
-			newAssignationAction.setAssignation(new DataBinding(getIndividualFlexoRoleName()));
+			newAssignationAction.setAssignation(new DataBinding<>(getIndividualFlexoRoleName()));
 
 			newDropScheme.getControlGraph().sequentiallyAppend(newAssignationAction);
 

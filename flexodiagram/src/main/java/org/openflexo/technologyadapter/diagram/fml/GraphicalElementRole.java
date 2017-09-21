@@ -232,7 +232,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
 			extends FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
 
-		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
 
 		protected List<GraphicalElementSpecification<?, GR>> grSpecifications;
@@ -245,7 +244,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		public GraphicalElementRoleImpl() {
 			super();
-			pendingGRSpecs = new ArrayList<GraphicalElementSpecification<?, GR>>();
+			pendingGRSpecs = new ArrayList<>();
 			// Don't do it now: remember that this is forbidden to call from the constructor any method which has to be interpretated by
 			// PAMELA
 			// initDefaultSpecifications();
@@ -263,7 +262,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		protected void initDefaultSpecifications() {
 			if (getFMLModelFactory() != null) {
 				defaultSpecificationsInitialized = true;
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
+				grSpecifications = new ArrayList<>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					// logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
@@ -332,7 +331,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				metaModelElementReference.setObject(anElement);
 			}
 			else {
-				metaModelElementReference = new FlexoObjectReference<T>(anElement);
+				metaModelElementReference = new FlexoObjectReference<>(anElement);
 			}
 			getPropertyChangeSupport().firePropertyChange(METAMODEL_ELEMENT_KEY, old, anElement);
 		}
@@ -496,7 +495,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<ActionMask> getReferencedMasks() {
-			ArrayList<GraphicalElementAction.ActionMask> returned = new ArrayList<GraphicalElementAction.ActionMask>();
+			ArrayList<GraphicalElementAction.ActionMask> returned = new ArrayList<>();
 			for (GraphicalElementAction a : getActions()) {
 				if (!returned.contains(a.getActionMask())) {
 					returned.add(a.getActionMask());
@@ -507,7 +506,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementAction> getActions(ActionMask mask) {
-			ArrayList<GraphicalElementAction> returned = new ArrayList<GraphicalElementAction>();
+			ArrayList<GraphicalElementAction> returned = new ArrayList<>();
 			for (GraphicalElementAction a : getActions()) {
 				if (a.getActionMask() == mask) {
 					returned.add(a);
@@ -561,7 +560,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> _getDeclaredGRSpecifications() {
-			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<GraphicalElementSpecification<?, GR>>();
+			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<>();
 			if (getGrSpecifications() != null) {
 				for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
 					if (spec.getValue().isSet()) {

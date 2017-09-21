@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.UnsupportedEncodingException;
@@ -49,8 +48,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -73,8 +72,8 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 	public void setModelSlot(BasicPowerpointModelSlot powerpointModelSlot);
 
-	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends FlexoConceptObjectImpl implements
-			BasicPowerpointModelSlotURIProcessor {
+	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends FlexoConceptObjectImpl
+			implements BasicPowerpointModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlotURIProcessor.class.getPackage().getName());
 
@@ -172,7 +171,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public Collection<Validable> getEmbeddedValidableObjects() {
 			return Collections.emptyList();
 		}
 

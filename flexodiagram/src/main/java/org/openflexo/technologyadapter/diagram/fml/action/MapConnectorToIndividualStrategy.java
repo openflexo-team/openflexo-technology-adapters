@@ -232,7 +232,7 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 
 			AssignationAction<?> newAssignationAction = getTransformationAction().getFactory().newAssignationAction();
 			newAssignationAction.setAssignableAction((AssignableAction) newAddIndividual);
-			newAssignationAction.setAssignation(new DataBinding(getIndividualFlexoRoleName()));
+			newAssignationAction.setAssignation(new DataBinding<>(getIndividualFlexoRoleName()));
 
 			newLinkScheme.getControlGraph().sequentiallyAppend(newAssignationAction);
 
