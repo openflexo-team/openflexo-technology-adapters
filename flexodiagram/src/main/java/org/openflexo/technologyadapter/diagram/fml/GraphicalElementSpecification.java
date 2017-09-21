@@ -147,7 +147,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public Collection<Validable> getEmbeddedValidableObjects() {
 			return null;
 		}
 

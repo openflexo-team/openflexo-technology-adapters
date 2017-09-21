@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -223,8 +224,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
-			return getElements();
+		public Collection<Validable> getEmbeddedValidableObjects() {
+			Collection<Validable> result = new ArrayList<>();
+			for (Validable v : getElements())
+				result.add(v);
+			return result;
 		}
 
 		@Override

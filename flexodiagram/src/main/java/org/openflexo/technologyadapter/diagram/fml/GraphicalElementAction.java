@@ -123,7 +123,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public Collection<Validable> getEmbeddedValidableObjects() {
 			return null;
 		}
 
