@@ -45,13 +45,14 @@ import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
-public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
+public interface PowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> {
 
 	@Implementation
 	public abstract class PowerpointModelSlotImpl implements PowerpointModelSlot {
