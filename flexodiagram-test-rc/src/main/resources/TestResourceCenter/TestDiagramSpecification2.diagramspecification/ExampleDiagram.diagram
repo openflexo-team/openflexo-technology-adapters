@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram id="0" diagramSpecificationURI="http://openflexo.org/modellers/resources/BPMN/ProcessDiagram.diagramspecification" uri="http://openflexo.org/modellers/resources/BPMN/ProcessDiagram.diagramspecification/ExampleDiagram.diagram" name="ExampleDiagram.diagram" userID="SYL" flexoID="1">
+  <DrawingGraphicalRepresentation id="52" backgroundColor="255,255,255" drawWorkingArea="false" focusColor="255,0,0" selectionColor="0,0,255" rectangleSelectingSelectionColor="0,0,255" dimensionConstraints="FREELY_RESIZABLE" identifier="ebc74cd">
+    <GridLayoutManagerSpecification id="53" horizontalAlignment="CENTER" verticalAlignment="MIDDLE" identifier="grid" paintDecoration="true" draggingMode="ContinuousLayout" />
+    <TextStyle id="54" backgroundColor="255,255,255" color="0,0,0" font="Lucida Sans,0,11" />
+  </DrawingGraphicalRepresentation>
+</Diagram>
