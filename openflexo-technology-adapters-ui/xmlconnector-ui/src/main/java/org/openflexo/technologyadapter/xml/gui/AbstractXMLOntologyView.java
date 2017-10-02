@@ -55,7 +55,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
+public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOntology<XMLTechnologyAdapter>>
+		extends OntologyView<T, XMLTechnologyAdapter> {
 
 	public AbstractXMLOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
 		super(object, controller, perspective, controller.getTechnologyAdapter(XMLTechnologyAdapter.class).getLocales());

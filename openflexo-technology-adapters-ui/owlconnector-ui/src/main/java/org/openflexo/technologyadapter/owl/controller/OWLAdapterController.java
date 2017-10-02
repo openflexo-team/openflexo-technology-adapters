@@ -51,7 +51,6 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
-import org.openflexo.ontology.components.widget.OntologyView;
 import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.fml.DataPropertyStatementRole;
@@ -291,7 +290,7 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof OWLOntology) {
-			OntologyView<OWLOntology> returned = new OWLOntologyView((OWLOntology) object, controller, perspective);
+			OWLOntologyView returned = new OWLOntologyView((OWLOntology) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);

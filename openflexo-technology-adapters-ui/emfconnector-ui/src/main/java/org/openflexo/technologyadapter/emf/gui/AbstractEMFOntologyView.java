@@ -55,7 +55,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
+public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology<EMFTechnologyAdapter>>
+		extends OntologyView<T, EMFTechnologyAdapter> {
 
 	public AbstractEMFOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
 		super(object, controller, perspective,
