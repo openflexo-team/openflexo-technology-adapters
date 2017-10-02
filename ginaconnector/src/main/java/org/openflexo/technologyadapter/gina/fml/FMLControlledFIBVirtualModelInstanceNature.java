@@ -39,19 +39,14 @@
 package org.openflexo.technologyadapter.gina.fml;
 
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.nature.ScreenshotableNature;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
-import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration.FIBComponentModelSlotInstanceConfigurationOption;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 /**
@@ -65,7 +60,8 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
  * @author sylvain
  * 
  */
-public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelInstanceNature, ScreenshotableNature<FMLRTVirtualModelInstance> {
+public class FMLControlledFIBVirtualModelInstanceNature
+		implements VirtualModelInstanceNature, ScreenshotableNature<FMLRTVirtualModelInstance> {
 
 	static final Logger logger = Logger.getLogger(FMLControlledFIBVirtualModelInstanceNature.class.getPackage().getName());
 
@@ -123,33 +119,30 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 		}
 
 		FIBComponentModelSlot fibMS = virtualModelInstance.getVirtualModel().getModelSlots(FIBComponentModelSlot.class).get(0);
+		GINAFIBComponent fibComponent = null;
+		try {
+			fibComponent = fibMS.getTemplateResource().getResourceData(null);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 
 		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> returned = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) virtualModelInstance
 				.getModelSlotInstance(fibMS);
 		if (returned == null) {
 			// When, for some reasons, the msi is null or not weel configured, we do it again now
-			FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) fibMS
+			returned = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) fibMS.makeActorReference(fibComponent,
+					virtualModelInstance);
+			/*FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) fibMS
 					.createConfiguration(virtualModelInstance, virtualModelInstance.getResourceCenter());
 			msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
-			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getContainerVirtualModelInstance());
+			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getContainerVirtualModelInstance());*/
 			virtualModelInstance.addToActors(returned);
 		}
 
 		if (returned.getAccessedResourceData() == null) {
-			try {
-				// NPE Protection, in some cases getTemplateResource might be null
-				if (fibMS.getTemplateResource() != null)
-					returned.setAccessedResourceData(fibMS.getTemplateResource().getResourceData(null));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// NPE Protection, in some cases getTemplateResource might be null
+			if (fibMS.getTemplateResource() != null)
+				returned.setAccessedResourceData(fibComponent);
 		}
 
 		return returned;

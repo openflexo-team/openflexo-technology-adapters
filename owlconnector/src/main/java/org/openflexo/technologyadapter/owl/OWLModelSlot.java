@@ -52,7 +52,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.fml.editionaction.SelectIndividual;
 import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
@@ -143,14 +142,6 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		@Override
 		public Class<OWLTechnologyAdapter> getTechnologyAdapterClass() {
 			return OWLTechnologyAdapter.class;
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public OWLModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new OWLModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

@@ -45,8 +45,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -113,14 +111,6 @@ public interface UMLEMFModelSlot extends EMFModelSlot {
 				logger.warning("You cannot override MetaModel Resource here, I will use the default MetaModelResource for UML");
 			}
 			super.setMetaModelResource(umlMetamodelREsource);
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public UMLEMFModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new UMLEMFModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

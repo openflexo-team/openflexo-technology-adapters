@@ -47,13 +47,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
@@ -100,20 +95,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		@Override
 		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
 			return XMLTechnologyAdapter.class;
-		}
-
-		@Override
-		public TechnologyAdapterResource<XMLModel, ?> createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view,
-				String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<XMLModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath,
-				String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		@Override
@@ -218,11 +199,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		@Override
 		public void removeFromUriProcessorsList(FreeXMLURIProcessor xmluriProc) {
 			removeFromUriProcessors(xmluriProc);
-		}
-
-		@Override
-		public ModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new FreeXMLModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

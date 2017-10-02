@@ -52,17 +52,11 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot.FreeplaneModelSlotImpl;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddSiblingNodeAction;
@@ -70,8 +64,6 @@ import org.openflexo.technologyadapter.freeplane.fml.editionactions.SelectAllNod
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
-import org.openflexo.technologyadapter.freeplane.rm.FreeplaneResourceFactory;
-import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
 /**
  * Implementation of the ModelSlot class for the Freeplane technology adapter<br>
@@ -98,14 +90,6 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		@Override
 		public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
 			return FreeplaneTechnologyAdapter.class;
-		}
-
-		/**
-		 * Instantiate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public FreeplaneModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new FreeplaneModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
@@ -154,21 +138,21 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 			return uriCache.get(objectURI);
 		}
 
-		@Override
+		/*@Override
 		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(
 				final VirtualModelInstance<?, ?> view, final String modelName, final String modelUri) {
-
+		
 			FreeplaneTechnologyAdapter freeplaneTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-
+		
 			FlexoResourceCenter<?> rc = view.getResourceCenter();
 			FreeplaneResourceFactory factory = getModelSlotTechnologyAdapter().getFreeplaneResourceFactory();
-
+		
 			String artefactName = modelName.endsWith(FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION) ? modelName
 					: modelName + FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION;
-
+		
 			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
-
+		
 			IFreeplaneResource newFreeplaneResource;
 			try {
 				newFreeplaneResource = freeplaneTA.getFreeplaneResourceFactory().makeResource(serializationArtefact,
@@ -180,6 +164,6 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 				e.printStackTrace();
 			}
 			return null;
-		}
+		}*/
 	}
 }

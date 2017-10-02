@@ -44,10 +44,7 @@ import java.util.logging.Logger;
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
@@ -97,12 +94,6 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 			return null;
 		}
 
-		@Override
-		public ModelSlotInstanceConfiguration<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> createConfiguration(
-				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 }

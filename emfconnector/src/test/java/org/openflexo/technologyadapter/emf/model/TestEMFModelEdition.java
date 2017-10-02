@@ -67,7 +67,6 @@ import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -77,7 +76,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
-import org.openflexo.technologyadapter.emf.EMFModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividual;
@@ -195,6 +193,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		useDeclarationAction.doAction();
 
 		newModelSlot = technologicalAdapter.makeModelSlot(EMFModelSlot.class, newVirtualModel);
+		newModelSlot.setName("emfModel");
 		newModelSlot.setMetaModelResource(emfMetaModelResource);
 		assertNotNull(newModelSlot);
 		newVirtualModel.addToModelSlots(newModelSlot);
@@ -224,15 +223,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 					emfMetaModelResource, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.emf", "myURI",
 					true);
 
-			/*
-			 * try { RepositoryFolder<FlexoResource<?>,?> modelFolder =
-			 * project.createNewFolder("Models"); emfModelResource =
-			 * technologicalAdapter.createNewEMFModel(new
-			 * File(modelFolder.getFile(), "coucou.emf"), "myURI",
-			 * emfMetaModelResource, resourceCenter); } catch (Exception e) {
-			 * e.printStackTrace(); }
-			 */
-
 			assertNotNull(emfModelResource);
 
 			emfModelResource.save(null);
@@ -240,6 +230,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Test
@@ -260,16 +251,18 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");
 
-		EMFModelSlotInstanceConfiguration modelSlotInstanceConfiguration = (EMFModelSlotInstanceConfiguration) vmiAction
+		/*EMFModelSlotInstanceConfiguration modelSlotInstanceConfiguration = (EMFModelSlotInstanceConfiguration) vmiAction
 				.getModelSlotInstanceConfiguration(newModelSlot);
 		assertNotNull(modelSlotInstanceConfiguration);
 		modelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingModel);
 		modelSlotInstanceConfiguration.setModelResource(emfModelResource);
-		assertTrue(modelSlotInstanceConfiguration.isValidConfiguration());
+		assertTrue(modelSlotInstanceConfiguration.isValidConfiguration());*/
 
 		logger.info("Creating a new FMLRTVirtualModelInstance");
 		vmiAction.doAction();
 		newVirtualModelInstance = vmiAction.getNewVirtualModelInstance();
+
+		newVirtualModelInstance.setFlexoPropertyValue(newModelSlot, emfModelResource.getLoadedResourceData());
 
 	}
 

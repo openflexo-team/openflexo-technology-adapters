@@ -44,9 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
@@ -103,13 +101,6 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ModelSlotInstanceConfiguration<SemanticsExcelModelSlot, ExcelModel> createConfiguration(FlexoConceptInstance fci,
-				FlexoResourceCenter<?> rc) {
 			// TODO Auto-generated method stub
 			return null;
 		}

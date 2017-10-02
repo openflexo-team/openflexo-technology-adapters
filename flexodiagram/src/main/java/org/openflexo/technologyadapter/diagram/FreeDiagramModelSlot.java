@@ -46,10 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -66,7 +63,6 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
  * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
@@ -108,23 +104,6 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		@Override
 		public boolean getIsRequired() {
 			return true;
-		}
-
-		@Override
-		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new FreeDiagramModelSlotInstanceConfiguration(this, fci, rc);
-		}
-
-		@Override
-		public DiagramResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename,
-				String modelUri) {
-			return null;
-		}
-
-		@Override
-		public DiagramResource createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri) {
-			return null;
 		}
 
 		@Override

@@ -24,8 +24,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -41,12 +39,6 @@ import org.openflexo.technologyadapter.pdf.model.PDFDocument;
  * @author sylvain
  * 
  */
-/*@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class })
-@DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
-		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
-		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
-		ImageActorReference.class })*/
 @ModelEntity
 @ImplementationClass(PDFModelSlot.PDFModelSlotImpl.class)
 @XMLElement
@@ -55,6 +47,7 @@ public interface PDFModelSlot extends FreeModelSlot<PDFDocument> {
 	// Implem
 	public static abstract class PDFModelSlotImpl extends FreeModelSlotImpl<PDFDocument> implements PDFModelSlot {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(PDFModelSlot.class.getPackage().getName());
 
 		@Override
@@ -62,19 +55,8 @@ public interface PDFModelSlot extends FreeModelSlot<PDFDocument> {
 			return PDFTechnologyAdapter.class;
 		}
 
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public PDFModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new PDFModelSlotInstanceConfiguration(this, fci, rc);
-		}
-
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			/*if (DocXParagraphRole.class.isAssignableFrom(patternRoleClass)) {
-				return "document";
-			}*/
 			return null;
 		}
 
@@ -87,24 +69,5 @@ public interface PDFModelSlot extends FreeModelSlot<PDFDocument> {
 		public PDFTechnologyAdapter getModelSlotTechnologyAdapter() {
 			return (PDFTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
-
-		/*	@Override
-			public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-		
-				return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true);
-			}
-		
-			@Override
-			public TechnologyAdapterResource<DocXDocument, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
-					String relativePath, String filename, String modelUri) {
-				if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-					return getModelSlotTechnologyAdapter().createNewDocXDocumentResource((FileSystemBasedResourceCenter) resourceCenter,
-							relativePath, filename, false);
-				}
-				// TODO
-				logger.warning("Could not create docx in this kind of ResourceCenter");
-				return null;
-			}*/
-
 	}
 }

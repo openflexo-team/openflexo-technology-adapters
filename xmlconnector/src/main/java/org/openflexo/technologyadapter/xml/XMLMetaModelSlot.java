@@ -46,12 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -112,31 +107,5 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		// FIXME
-
-		@Override
-		public TechnologyAdapterResource<XMLMetaModel, ?> createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view,
-				String filename, String modelUri) {
-			// TODO
-			// return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<XMLMetaModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
-				String relativePath, String filename, String modelUri) {
-			// TODO
-			// return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
-			// relativePath,
-			// filename, modelUri, (XSDMetaModelResource) metaModelResource);
-			return null;
-		}
-
-		@Override
-		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<XMLMetaModel>, XMLMetaModel> createConfiguration(
-				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			// TODO
-			return null;
-		}
 	}
 }

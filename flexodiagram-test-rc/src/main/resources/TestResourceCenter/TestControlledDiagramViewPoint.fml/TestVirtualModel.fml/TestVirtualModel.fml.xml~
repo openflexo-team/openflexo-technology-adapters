@@ -49,9 +49,4 @@
       <DropScheme idref="FLX-6" />
     </FMLDiagramPaletteElementBinding>
   </TypedDiagramModelSlot>
-  <CreationScheme id="SYL-45" name="create" width="800" label="create" height="600" userID="SYL" flexoID="45">
-    <BehaviourControlGraph_AssignationAction id="SYL-49" assign="diagram" userID="SYL" flexoID="49">
-      <AssignableAction_CreateDiagram id="SYL-48" diagramName="&quot;TestDiagram&quot;" resourceCenter="this.resourceCenter" relativePath="/Diagrams" receiver="diagram" userID="SYL" flexoID="48" />
-    </BehaviourControlGraph_AssignationAction>
-  </CreationScheme>
 </VirtualModel>

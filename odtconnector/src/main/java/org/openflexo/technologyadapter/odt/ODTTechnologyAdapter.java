@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.odt;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -44,7 +43,6 @@ import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceFactory;
  */
 
 @DeclareModelSlots({ ODTModelSlot.class })
-@DeclareRepositoryType({ ODTDocumentRepository.class })
 @DeclareResourceTypes({ ODTDocumentResourceFactory.class })
 public class ODTTechnologyAdapter extends TechnologyAdapter {
 
@@ -214,6 +212,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}*/
 
+	@SuppressWarnings("unchecked")
 	public <I> ODTDocumentRepository<I> getODTDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		ODTDocumentRepository<I> returned = resourceCenter.retrieveRepository(ODTDocumentRepository.class, this);
 		if (returned == null) {
@@ -222,17 +221,6 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		}
 		return returned;
 	}
-
-	/*public ODTDocumentResource createNewODTDocument(FlexoProject project, String filename, String modelUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public ODTDocumentResource createNewODTDocument(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
-			String modelUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
 
 	@Override
 	public String getIdentifier() {

@@ -10,6 +10,13 @@ public class TestVirtualModel {
   @TypedDiagramModelSlot(metamodel="http://openflexo.org/test/TestDiagramSpecification",cardinality=ZeroOne,readOnly=false)  
   public DiagramType<TestDiagramSpecification> diagram;
 
+  @CreationScheme  
+  TestVirtualModel:create() {  
+    diagram = CreateDiagram$CreateDiagramImpl_$$_jvst367_93diagram from diagram {    
+    };  
+  }  
+
+
   @FlexoConcept  
   public class TestConcept {  
   
@@ -36,7 +43,7 @@ public class TestVirtualModel {
   
     @LinkScheme    
     TestLink:link() {    
-      connector = AddConnector$AddConnectorImpl_$$_jvste0e_7d conformTo ConnectorSpecification from diagram {      
+      connector = AddConnector$AddConnectorImpl_$$_jvst367_8e conformTo ConnectorSpecification from diagram {      
       };    
     }    
   

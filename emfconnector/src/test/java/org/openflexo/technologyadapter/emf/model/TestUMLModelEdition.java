@@ -63,7 +63,6 @@ import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -72,7 +71,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
-import org.openflexo.technologyadapter.emf.EMFModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.UMLEMFModelSlot;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
@@ -168,8 +166,6 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				newViewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newVirtualModel = newVMResource.getLoadedResourceData();
 
-		// newVirtualModel =
-		// VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
 
@@ -178,6 +174,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		useDeclarationAction.doAction();
 
 		newModelSlot = technologicalAdapter.makeModelSlot(UMLEMFModelSlot.class, newVirtualModel);
+		newModelSlot.setName("umlModel");
 		newModelSlot.setMetaModelResource(umlMetaModelResource);
 		assertNotNull(newModelSlot);
 		newVirtualModel.addToModelSlots(newModelSlot);
@@ -242,16 +239,11 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");
 
-		EMFModelSlotInstanceConfiguration modelSlotInstanceConfiguration = (EMFModelSlotInstanceConfiguration) vmiAction
-				.getModelSlotInstanceConfiguration(newModelSlot);
-		assertNotNull(modelSlotInstanceConfiguration);
-		modelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingModel);
-		modelSlotInstanceConfiguration.setModelResource(umlModelResource);
-		assertTrue(modelSlotInstanceConfiguration.isValidConfiguration());
-
 		logger.info("Creating a new FMLRTVirtualModelInstance");
 		vmiAction.doAction();
 		newVirtualModelInstance = vmiAction.getNewVirtualModelInstance();
+
+		newVirtualModelInstance.setFlexoPropertyValue(newModelSlot, umlModelResource.getLoadedResourceData());
 
 	}
 

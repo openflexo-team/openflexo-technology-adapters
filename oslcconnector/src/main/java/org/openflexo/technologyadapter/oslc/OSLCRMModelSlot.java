@@ -46,12 +46,8 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -89,14 +85,6 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		@Override
 		public Class<OSLCTechnologyAdapter> getTechnologyAdapterClass() {
 			return OSLCTechnologyAdapter.class;
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public OSLCRMModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new OSLCRMModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override
@@ -137,18 +125,5 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 			return (OSLCTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		@Override
-		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createProjectSpecificEmptyResource(
-				VirtualModelInstance<?, ?> view, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
-				String relativePath, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 }

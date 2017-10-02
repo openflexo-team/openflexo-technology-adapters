@@ -49,10 +49,10 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
+import org.openflexo.foundation.ontology.fml.rt.FlexoOntologyModelSlotInstance;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -84,7 +84,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
 @DeclareEditionActions({ AddEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
-@DeclareActorReferences({ ConceptActorReference.class })
+@DeclareActorReferences({ ConceptActorReference.class, FlexoOntologyModelSlotInstance.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
 @XMLElement
@@ -102,14 +102,6 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		@Override
 		public Class<EMFTechnologyAdapter> getTechnologyAdapterClass() {
 			return EMFTechnologyAdapter.class;
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public EMFModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new EMFModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

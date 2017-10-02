@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.pdf;
 
 import java.io.File;
 import java.util.logging.Logger;
+
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
@@ -87,6 +88,7 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <I> PDFDocumentRepository<I> getPDFDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		PDFDocumentRepository<I> returned = resourceCenter.retrieveRepository(PDFDocumentRepository.class, this);
 		if (returned == null) {

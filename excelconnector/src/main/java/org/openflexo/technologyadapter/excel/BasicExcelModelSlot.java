@@ -52,13 +52,8 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -68,7 +63,6 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.fml.ExcelActorReference;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelColumnRole;
@@ -201,12 +195,6 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<BasicExcelModelSlot, ExcelWorkbook> createConfiguration(FlexoConceptInstance fci,
-				FlexoResourceCenter<?> rc) {
-			return new BasicExcelModelSlotInstanceConfiguration(this, fci, rc);
-		}
-
-		@Override
 		public String getURIForObject(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance, Object o) {
 			ExcelObject excelObject = (ExcelObject) o;
 
@@ -267,25 +255,17 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			return (ExcelTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		@Override
-		public ExcelWorkbookResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename,
-				String modelUri) {
+		/*@Override
+		public ExcelWorkbookResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename, String modelUri) {
 			try {
-				return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename/*, modelUri*/);
+				return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename);
 			} catch (SaveResourceException e) {
 				e.printStackTrace();
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}
 			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> createSharedEmptyResource(
-				FlexoResourceCenter<?> resourceCenter, String relativePath, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+		}*/
 
 	}
 }

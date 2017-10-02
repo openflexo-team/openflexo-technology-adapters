@@ -81,7 +81,6 @@ import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
-import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -91,7 +90,6 @@ import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.editionaction.CreateFlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.rt.editionaction.MatchFlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.editionaction.MatchingCriteria;
@@ -105,7 +103,6 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
@@ -894,10 +891,16 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
-		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
+		// createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
+		createGenerateDocXDocumentAction.setAssignation(new DataBinding<>(docXModelSlot.getName()));
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
 		createGenerateDocXDocumentAction.doAction();
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
+
+		GenerateDocXDocument generateDocXDocument = (GenerateDocXDocument) createGenerateDocXDocumentAction.getBaseEditionAction();
+		generateDocXDocument.setResourceName(new DataBinding("'GeneratedDocument.docx'"));
+		generateDocXDocument.setRelativePath("DocX");
+		generateDocXDocument.setResourceCenter(new DataBinding("this.resourceCenter"));
 
 		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -1181,7 +1184,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertEquals(2, documentVirtualModel.getModelSlots().size());
 
 		assertEquals(1, documentVirtualModel.getModelSlots(FMLRTModelSlot.class).size());
-		FMLRTModelSlot<?, ?> libraryModelSlot = documentVirtualModel.getModelSlots(FMLRTModelSlot.class).get(0);
+		FMLRTModelSlot libraryModelSlot = documentVirtualModel.getModelSlots(FMLRTModelSlot.class).get(0);
 		assertNotNull(libraryModelSlot);
 
 		assertEquals(1, documentVirtualModel.getModelSlots(DocXModelSlot.class).size());
@@ -1196,23 +1199,6 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance for document generation");
 		action.setVirtualModel(documentVirtualModel);
 
-		FMLRTModelSlotInstanceConfiguration libraryModelSlotInstanceConfiguration = (FMLRTModelSlotInstanceConfiguration) action
-				.getModelSlotInstanceConfiguration(libraryModelSlot);
-		assertNotNull(libraryModelSlotInstanceConfiguration);
-		libraryModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingVirtualModel);
-		libraryModelSlotInstanceConfiguration
-				.setAddressedVirtualModelInstanceResource((FMLRTVirtualModelInstanceResource) libraryVMI.getResource());
-		assertTrue(libraryModelSlotInstanceConfiguration.isValidConfiguration());
-
-		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
-				.getModelSlotInstanceConfiguration(docXModelSlot);
-		assertNotNull(docXModelSlotInstanceConfiguration);
-		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource);
-		docXModelSlotInstanceConfiguration.setRelativePath("DocX");
-		docXModelSlotInstanceConfiguration.setFilename("GeneratedDocument.docx");
-		// docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
-		assertTrue(docXModelSlotInstanceConfiguration.isValidConfiguration());
-
 		action.doAction();
 
 		if (!action.hasActionExecutionSucceeded()) {
@@ -1226,23 +1212,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
 				.exists());
 		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
-		assertEquals(2, documentVMI.getModelSlotInstances().size());
 
-		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) documentVMI
-				.getModelSlotInstances().get(1);
-		assertNotNull(docXMSInstance);
-		// document is blank but not null
-		assertNotNull(docXMSInstance.getAccessedResourceData());
-		assertNotNull(docXMSInstance.getResource());
+		documentVMI.setFlexoPropertyValue(libraryModelSlot, libraryVMI);
 
-		// The VMI should have the FMLControlledDocXVirtualModelInstanceNature
-		assertTrue(documentVMI.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
+		assertEquals(1, documentVMI.getModelSlotInstances().size());
 
-		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
-		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
+		// The VMI should not have the FMLControlledDocXVirtualModelInstanceNature yet because document still null
+		assertFalse(documentVMI.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		// assertFalse(generatedDocument.isModified());
-		assertFalse(documentVMI.isModified());
+		assertTrue(documentVMI.isModified());
 
 	}
 

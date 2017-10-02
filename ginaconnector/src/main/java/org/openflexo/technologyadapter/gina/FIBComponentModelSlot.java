@@ -26,16 +26,13 @@ import java.util.List;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlotObject;
@@ -126,15 +123,6 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		@Override
 		public Class<GINATechnologyAdapter> getTechnologyAdapterClass() {
 			return GINATechnologyAdapter.class;
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<GINAFIBComponent>, GINAFIBComponent> createConfiguration(
-				FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new FIBComponentModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

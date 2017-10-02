@@ -48,20 +48,23 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelRepository;
 import org.openflexo.foundation.fml.action.CreateContainedVirtualModel;
+import org.openflexo.foundation.fml.action.CreateEditionAction;
+import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -69,6 +72,7 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -172,6 +176,27 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		TypedDiagramModelSlot diagramModelSlot = newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		assertNotNull(diagramModelSlot);
+
+		// We create a CreationScheme
+		CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(newVirtualModel, null, editor);
+		createCreationScheme.setFlexoBehaviourName("create");
+		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
+		createCreationScheme.doAction();
+		assertTrue(createCreationScheme.hasActionExecutionSucceeded());
+		CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+
+		CreateEditionAction createDiagramAction = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
+				_editor);
+		createDiagramAction.setEditionActionClass(CreateDiagram.class);
+		createDiagramAction.setAssignation(new DataBinding<>("diagram"));
+		createDiagramAction.doAction();
+		assertTrue(createDiagramAction.hasActionExecutionSucceeded());
+
+		CreateDiagram createDiagram = (CreateDiagram) createDiagramAction.getBaseEditionAction();
+		createDiagram.setDiagramName(new DataBinding<>("'TestDiagram'"));
+		createDiagram.setResourceCenter(new DataBinding<>("this.resourceCenter"));
+
+		System.out.println("FML: " + newVirtualModel.getFMLRepresentation());
 	}
 
 	@Test
@@ -226,13 +251,14 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance");
 		action.setVirtualModel(newVirtualModel);
+		action.setCreationScheme(newVirtualModel.getCreationSchemes().get(0));
 
-		TypedDiagramModelSlot diagramModelSlot = newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
+		/*TypedDiagramModelSlot diagramModelSlot = newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		assertNotNull(diagramModelSlot);
 		TypedDiagramModelSlotInstanceConfiguration diagramModelSlotInstanceConfiguration = (TypedDiagramModelSlotInstanceConfiguration) action
 				.getModelSlotInstanceConfiguration(diagramModelSlot);
 		diagramModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel);
-		assertTrue(diagramModelSlotInstanceConfiguration.isValidConfiguration());
+		assertTrue(diagramModelSlotInstanceConfiguration.isValidConfiguration());*/
 
 		action.doAction();
 		assertTrue(action.hasActionExecutionSucceeded());

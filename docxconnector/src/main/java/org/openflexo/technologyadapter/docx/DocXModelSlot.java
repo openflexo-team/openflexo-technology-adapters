@@ -33,13 +33,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.task.FlexoTask;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -120,14 +115,6 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			return DocXTechnologyAdapter.class;
 		}
 
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public DocXModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new DocXModelSlotInstanceConfiguration(this, fci, rc);
-		}
-
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (DocXParagraphRole.class.isAssignableFrom(patternRoleClass)) {
@@ -185,13 +172,13 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			}
 		}
 
-		@Override
+		/*@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view,
 				String filename, String modelUri) {
-
+		
 			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getResourceCenter(), filename, true, getIdStrategy());
 		}
-
+		
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
 				String relativePath, String filename, String modelUri) {
@@ -202,7 +189,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			// TODO
 			logger.warning("Could not create docx in this kind of ResourceCenter");
 			return null;
-		}
+		}*/
 
 		@Override
 		// returns default value to paraId when none specified, because it is less intrusive (templage management)

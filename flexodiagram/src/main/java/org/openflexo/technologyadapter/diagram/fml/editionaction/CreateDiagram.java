@@ -355,6 +355,9 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			FlexoResourceCenter<I> rc = getResourceCenter(evaluationContext);
 
 			String artefactPath = getRelativePath();
+			if (artefactPath == null) {
+				artefactPath = "";
+			}
 			if (!artefactPath.endsWith(File.separator)) {
 				artefactPath = artefactPath + File.separator;
 			}

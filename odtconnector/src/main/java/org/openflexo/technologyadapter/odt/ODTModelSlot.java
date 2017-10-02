@@ -26,8 +26,6 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -55,19 +53,12 @@ public interface ODTModelSlot extends FreeModelSlot<ODTDocument> {
 
 	public static abstract class ODTModelSlotImpl extends FreeModelSlotImpl<ODTDocument> implements ODTModelSlot {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ODTModelSlot.class.getPackage().getName());
 
 		@Override
 		public Class<ODTTechnologyAdapter> getTechnologyAdapterClass() {
 			return ODTTechnologyAdapter.class;
-		}
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public ODTModelSlotInstanceConfiguration createConfiguration(FlexoConceptInstance fci, FlexoResourceCenter<?> rc) {
-			return new ODTModelSlotInstanceConfiguration(this, fci, rc);
 		}
 
 		@Override

@@ -73,7 +73,6 @@ import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.FMLRTVirtualModelInstanceResource;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -83,7 +82,6 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
@@ -358,17 +356,18 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(),
 				null, _editor);
-		// createAddShape.actionChoice =
-		// CreateEditionActionChoice.ModelSlotSpecificAction;
-		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
+		createGenerateDocXDocumentAction.setAssignation(new DataBinding<>("document"));
 		createGenerateDocXDocumentAction.doAction();
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
 
+		GenerateDocXDocument generateAction = (GenerateDocXDocument) createGenerateDocXDocumentAction.getBaseEditionAction();
+		generateAction.setRelativePath("DocX");
+		generateAction.setResourceName(new DataBinding<>("'GeneratedDocument.docx'"));
+		generateAction.setResourceCenter(new DataBinding<>("this.resourceCenter"));
+
 		CreateEditionAction createFragmentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(), null,
 				_editor);
-		// createAddShape.actionChoice =
-		// CreateEditionActionChoice.ModelSlotSpecificAction;
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
 		createFragmentAction.setAssignation(new DataBinding<>(fragmentRole.getRoleName()));
@@ -388,6 +387,25 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		assertTrue(virtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(virtualModel));
+
+		// We create a CreationScheme
+		/*CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, _editor);
+		createCreationScheme.setFlexoBehaviourName("create");
+		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
+		createCreationScheme.doAction();
+		assertTrue(createCreationScheme.hasActionExecutionSucceeded());
+		CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+		
+		CreateEditionAction createDocXAction = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
+				_editor);
+		createDocXAction.setEditionActionClass(CreateEmptyDocXResource.class);
+		createDocXAction.setAssignation(new DataBinding<>("document"));
+		createDocXAction.doAction();
+		assertTrue(createDocXAction.hasActionExecutionSucceeded());
+		
+		CreateEmptyDocXResource createDocX = (CreateEmptyDocXResource) createDocXAction.getBaseEditionAction();
+		createDocX.setResourceName(new DataBinding<>("'TestDocX'"));
+		createDocX.setResourceCenter(new DataBinding<>("this.resourceCenter"));*/
 
 		System.out.println("VirtualModel ***************************");
 		System.out.println(virtualModel.getFMLRepresentation());
@@ -437,17 +455,6 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new FMLRTVirtualModelInstance for document generation");
 		action.setVirtualModel(virtualModel);
-
-		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
-				.getModelSlotInstanceConfiguration(ms);
-		assertNotNull(docXModelSlotInstanceConfiguration);
-		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource);
-		docXModelSlotInstanceConfiguration.setRelativePath("DocX");
-		docXModelSlotInstanceConfiguration.setFilename("GeneratedDocument.docx");
-		// docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
-
-		assertTrue(docXModelSlotInstanceConfiguration.isValidConfiguration());
-
 		action.doAction();
 
 		if (!action.hasActionExecutionSucceeded()) {
@@ -461,29 +468,14 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((FMLRTVirtualModelInstanceResource) newView.getResource()).getDirectory())
 				.exists());
 		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
-		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());
-
-		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) newVirtualModelInstance
-				.getModelSlotInstances().get(0);
-		assertNotNull(docXMSInstance);
 
 		System.out.println("FML: " + newVirtualModelInstance.getVirtualModel().getFMLRepresentation());
 
 		newVirtualModelInstance.getResource().save(null);
 
-		System.out.println("docXMSInstance=" + docXMSInstance);
-		System.out.println("docXMSInstance.getAccessedResourceData()=" + docXMSInstance.getAccessedResourceData());
+		// The VMI does not have the FMLControlledDocXVirtualModelInstanceNature, because document is still null
+		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		assertNotNull(docXMSInstance.getAccessedResourceData());
-		assertNotNull(docXMSInstance.getResource());
-
-		// The VMI should have the FMLControlledDocXVirtualModelInstanceNature
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
-
-		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
-
-		// assertFalse(generatedDocument.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
 
 	}

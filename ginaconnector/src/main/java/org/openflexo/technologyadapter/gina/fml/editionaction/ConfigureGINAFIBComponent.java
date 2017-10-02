@@ -47,6 +47,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
@@ -55,8 +56,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
-import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration.FIBComponentModelSlotInstanceConfigurationOption;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 /**
@@ -81,6 +80,7 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 			return GINAFIBComponent.class;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public GINAFIBComponent execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FlexoException {
 
@@ -97,16 +97,22 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 
 				FlexoConceptInstance fci = evaluationContext.getFlexoConceptInstance();
 				ModelSlotInstance<FIBComponentModelSlot, GINAFIBComponent> msi = fci.getModelSlotInstance(modelSlot);
-				if (msi == null) {
-					FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) modelSlot
-							.createConfiguration(fci, fci.getResourceCenter());
-					msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
-					msi = msiConfig.createModelSlotInstance(fci, fci.getVirtualModelInstance());
-					fci.addToActors(msi);
-					// System.out.println("Hop, on vient de creer le msi " + msi);
+
+				GINAFIBComponent fibComponent = null;
+				try {
+					if (modelSlot.getTemplateResource() != null) {
+						fibComponent = modelSlot.getTemplateResource().getResourceData(null);
+					}
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 
-				if (modelSlot.getTemplateResource() == null) {
+				if (msi == null) {
+					msi = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) modelSlot.makeActorReference(fibComponent, fci);
+					fci.addToActors(msi);
+				}
+
+				if (fibComponent == null) {
 					logger.warning("No template defined for " + modelSlot);
 					return null;
 				}
