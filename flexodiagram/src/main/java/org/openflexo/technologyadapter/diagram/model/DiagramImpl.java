@@ -282,4 +282,9 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	private String diagramSpecificationURI;
 
+	@Override
+	public Object getObject(String objectURI) {
+		// TODO
+		return null;
+	}
 }
