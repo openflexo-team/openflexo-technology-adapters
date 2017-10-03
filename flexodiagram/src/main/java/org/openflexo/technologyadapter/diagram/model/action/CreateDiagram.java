@@ -154,18 +154,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 		return diagramTA.getDiagramResourceFactory().makeDiagramResource(getDiagramName(), getDiagramURI(),
 				getDiagramSpecification().getResource(), getFocusedObject(), diagramTA.getTechnologyContextManager(), true);
-
-		/*FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
-		
-		String artefactName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
-				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
-		
-		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
-		
-		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-				diagramTA.getTechnologyContextManager(), true);
-		
-		return newDiagramResource;*/
 	}
 
 	private String errorMessage;
