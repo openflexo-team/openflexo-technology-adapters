@@ -70,7 +70,7 @@ public class GINAFIBController extends FlexoFIBController {
 
 	@Override
 	@NotificationUnsafe
-	public ImageIcon iconForObject(Object object) {
+	public ImageIcon retrieveIconForObject(Object object) {
 		if (object instanceof GINAFIBComponentAPIEntry) {
 			return GINAIconLibrary.VARIABLE_ASSIGNMENT_ICON;
 		}
