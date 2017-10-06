@@ -187,10 +187,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public GR getGraphicalRepresentation();
 
-	// public void setGraphicalRepresentation(GR graphicalRepresentation);
-
-	// public void updateGraphicalRepresentation(GR graphicalRepresentation);
-
 	// Convenient method to access spec for label feature
 	public DataBinding<String> getLabel();
 
@@ -235,8 +231,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
 
 		protected List<GraphicalElementSpecification<?, GR>> grSpecifications;
-
-		// private GR graphicalRepresentation;
 
 		private boolean defaultSpecificationsInitialized = false;
 
@@ -348,17 +342,17 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public final GR getGraphicalRepresentation() {
-			System.out.println("On me demande la GR de " + this);
-			System.out.println("metaModelElementReference=" + getMetamodelElementReference());
-			System.out.println("metaModelElement=" + getMetamodelElement());
+			// System.out.println("Retrieve GR of " + this);
+			// System.out.println("metaModelElementReference=" + getMetamodelElementReference());
+			// System.out.println("metaModelElement=" + getMetamodelElement());
 			if (getMetamodelElement() != null) {
-				System.out.println("return " + getMetamodelElement().getGraphicalRepresentation());
+				// System.out.println("return " + getMetamodelElement().getGraphicalRepresentation());
 				return getMetamodelElement().getGraphicalRepresentation();
 			}
 
-			System.out.println("J'arrive pas a obtenir de GR");
-			System.out.println("DS=" + getDiagramSpecification());
-			System.out.println("deprecatedGR=" + getDeprecatedGraphicalRepresentation());
+			// System.out.println("J'arrive pas a obtenir de GR");
+			// System.out.println("DS=" + getDiagramSpecification());
+			// System.out.println("deprecatedGR=" + getDeprecatedGraphicalRepresentation());
 
 			// Create the diagram element in the meta model
 			if (getDiagramSpecification() != null) {
@@ -368,7 +362,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				}
 				T newMetamodelElement = makeDiagramElementInMetaModel(exampleDiagram, getDeprecatedGraphicalRepresentation());
 				setMetamodelElement(newMetamodelElement);
-				System.out.println("newMetamodelElement=" + getMetamodelElement());
+				// System.out.println("newMetamodelElement=" + getMetamodelElement());
 				return getMetamodelElement().getGraphicalRepresentation();
 			}
 
@@ -377,34 +371,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		public abstract T makeDiagramElementInMetaModel(Diagram exampleDiagram, GR graphicalRepresentation);
-
-		/*@Override
-		public final void setGraphicalRepresentation(GR graphicalRepresentation) {
-			GR oldGR = this.graphicalRepresentation;
-			if (this.graphicalRepresentation != graphicalRepresentation) {
-				this.graphicalRepresentation = graphicalRepresentation;
-				setChanged();
-				notifyObservers(new GraphicalRepresentationChanged(this, graphicalRepresentation));
-			}
-		}*/
-
-		/*@Override
-		public final void updateGraphicalRepresentation(GR graphicalRepresentation) {
-			System.out.println("updateGraphicalRepresentation with " + graphicalRepresentation);
-			Thread.dumpStack();
-			if (getGraphicalRepresentation() != null) {
-				getGraphicalRepresentation().setsWith(graphicalRepresentation);
-				setChanged();
-				notifyObservers(new GraphicalRepresentationModified(this, graphicalRepresentation));
-			}
-			else {
-				setGraphicalRepresentation(graphicalRepresentation);
-			}
-		}*/
-
-		/*protected final void _setGraphicalRepresentationNoNotification(GR graphicalRepresentation) {
-			this.graphicalRepresentation = graphicalRepresentation;
-		}*/
 
 		// Convenient method to access spec for label feature
 		@Override
@@ -444,44 +410,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public BindingFactory getBindingFactory() {
 			return getFlexoConcept().getInspector().getBindingFactory();
 		}
-
-		/*@Override
-		public BindingModel getBindingModel() {
-			return getFlexoConcept().getInspector().getBindingModel();
-		}*/
-
-		/*public boolean getIsPrimaryRepresentationRole() {
-			if (getFlexoConcept() == null) {
-				return false;
-			}
-			return getFlexoConcept().getPrimaryRepresentationRole() == this;
-		}
-		
-		public void setIsPrimaryRepresentationRole(boolean isPrimary) {
-			if (getFlexoConcept() == null) {
-				return;
-			}
-			if (isPrimary) {
-				getFlexoConcept().setPrimaryRepresentationRole(this);
-			} else {
-				getFlexoConcept().setPrimaryRepresentationRole(null);
-			}
-		}
-		
-		public boolean isIncludedInPrimaryRepresentationRole() {
-			return getIsPrimaryRepresentationRole();
-		}
-		
-		@Override
-		public boolean getIsPrimaryRole() {
-			return getIsPrimaryRepresentationRole();
-		}
-		
-		@Override
-		public void setIsPrimaryRole(boolean isPrimary) {
-			setIsPrimaryRepresentationRole(isPrimary);
-		}
-		 */
 
 		@Override
 		public boolean containsShapes() {
