@@ -167,10 +167,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 	@Override
 	public boolean isValid() {
-		/*if (diagramSpecification == null) {
-			errorMessage = noDiagramSpecificationSelectedMessage();
-			return false;
-		}*/
 		if (StringUtils.isEmpty(diagramName)) {
 			errorMessage = noNameMessage();
 			return false;
@@ -185,10 +181,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 			errorMessage = noTitleMessage();
 			return false;
 		}
-
-		/*if (getDiagramFile() == null) {
-		
-		}*/
 
 		// TODO: handle duplicated name and uri
 		return true;
