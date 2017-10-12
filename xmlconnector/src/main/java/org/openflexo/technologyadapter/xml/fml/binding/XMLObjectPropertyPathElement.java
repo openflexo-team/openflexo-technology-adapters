@@ -36,14 +36,13 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -61,21 +60,22 @@ public class XMLObjectPropertyPathElement extends SimplePathElement {
 
 	private final XMLObjectPropertyImpl property;
 
-	public XMLObjectPropertyPathElement(BindingPathElement parent, XMLObjectPropertyImpl property) {
+	public XMLObjectPropertyPathElement(IBindingPathElement parent, XMLObjectPropertyImpl property) {
 		super(parent, property.getName(), property.getType());
 		this.property = property;
 	}
 
 	@Override
 	public Type getType() {
-		if (property  != null) {
+		if (property != null) {
 			if (property.getUpperBound() == null || (property.getUpperBound() >= 0 && property.getUpperBound() <= 1)) {
 				// Single cardinality
 				if (property.getType() != null) {
 					return property.getType();
 				}
 				return Object.class;
-			} else {
+			}
+			else {
 				if (property.getType() != null) {
 					return new ParameterizedTypeImpl(List.class, XMLIndividual.class);
 				}
@@ -91,17 +91,15 @@ public class XMLObjectPropertyPathElement extends SimplePathElement {
 		return getPropertyName();
 	}
 
-
 	@Override
 	public String getTooltipText(Type resultingType) {
 		return "DataAttribute " + property.getDisplayableDescription();
 	}
 
 	@Override
-	public Object getBindingValue(Object target,
-			BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException, InvocationTargetTransformException {
-		if (property != null){
+	public Object getBindingValue(Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException {
+		if (property != null) {
 			// FIXME => check that this actually works with ObjectProperties
 			return ((XMLIndividual) target).getPropertyValue(property);
 		}
@@ -109,9 +107,8 @@ public class XMLObjectPropertyPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target,
-			BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 
 		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
 		((XMLIndividual) target).addPropertyValue(prop, value);

@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
-import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
@@ -73,7 +73,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		if (object instanceof EMFAttributeAssociation) {
 			if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeDataProperty) {
 				return new AttributeDataPropertyFeatureAssociationPathElement(parent, (EMFAttributeAssociation) object,
@@ -111,7 +111,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 		if (parent.getType() instanceof IndividualOfClass) {
 			IndividualOfClass parentType = (IndividualOfClass) parent.getType();
 			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
@@ -131,7 +131,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
+	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
 		// TODO: implements same as above, with behavioural features
 		return super.getAccessibleFunctionPathElements(parent);
 	}

@@ -42,7 +42,7 @@ import java.io.FileNotFoundException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
@@ -123,7 +123,7 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 		if (getModel().isSet() && getModel().isValid()) {
 			if (getModel().isBindingValue()) {
 				BindingValue bv = (BindingValue) getModel().getExpression();
-				BindingPathElement bpe = bv.getLastBindingPathElement();
+				IBindingPathElement bpe = bv.getLastBindingPathElement();
 				ModelSlot<?> ms = null;
 				if (bpe instanceof ModelSlotBindingVariable) {
 					ms = ((ModelSlotBindingVariable) bpe).getModelSlot();

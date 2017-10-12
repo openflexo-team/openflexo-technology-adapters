@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EObjectEList;
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -64,7 +64,7 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 
 	private static final Logger logger = Logger.getLogger(ObjectReferenceFeatureAssociationPathElement.class.getPackage().getName());
 
-	public ObjectReferenceFeatureAssociationPathElement(BindingPathElement parent, EMFReferenceAssociation association,
+	public ObjectReferenceFeatureAssociationPathElement(IBindingPathElement parent, EMFReferenceAssociation association,
 			EMFReferenceObjectProperty property) {
 		super(parent, property.getName(), EMFObjectIndividual.class);
 		objectProperty = property;
@@ -83,7 +83,8 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange());
 			}
 			return Object.class;
-		} else {
+		}
+		else {
 			if (getObjectProperty().getRange() instanceof IFlexoOntologyClass) {
 				return new ParameterizedTypeImpl(List.class,
 						IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange()));
@@ -114,15 +115,15 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 		}
 		else {
 			returned = model.getConverter().convertIndividualReference(model, emfAnswer);
-			}
+		}
 		return returned;
 
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-	NullReferenceException {
-		if (value instanceof EMFObjectIndividual){
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
+		if (value instanceof EMFObjectIndividual) {
 			((EMFObjectIndividual) target).getObject().eSet(objectProperty.getObject(), ((EMFObjectIndividual) value).getObject());
 		}
 		else {

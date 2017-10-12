@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -59,7 +59,7 @@ public class XMLDataPropertyPathElement extends SimplePathElement {
 
 	private static final Logger logger = Logger.getLogger(XMLDataPropertyPathElement.class.getPackage().getName());
 
-	public XMLDataPropertyPathElement(BindingPathElement parent, XMLDataProperty property) {
+	public XMLDataPropertyPathElement(IBindingPathElement parent, XMLDataProperty property) {
 		super(parent, property.getName(), property.getType());
 		this.property = property;
 	}
@@ -70,14 +70,15 @@ public class XMLDataPropertyPathElement extends SimplePathElement {
 
 	@Override
 	public Type getType() {
-		if (property  != null) {
+		if (property != null) {
 			if (property.getUpperBound() == null || (property.getUpperBound() >= 0 && property.getUpperBound() <= 1)) {
 				// Single cardinality
 				if (property.getType() != null) {
 					return property.getType();
 				}
 				return Object.class;
-			} else {
+			}
+			else {
 				if (property != null && property.getType() != null) {
 					return new ParameterizedTypeImpl(List.class, property.getType());
 				}
@@ -101,15 +102,15 @@ public class XMLDataPropertyPathElement extends SimplePathElement {
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
 		XMLDataPropertyValue xsdAnswer = (XMLDataPropertyValue) ((XMLIndividual) target).getPropertyValue(getDataProperty());
 
-		if (xsdAnswer != null){
+		if (xsdAnswer != null) {
 			return xsdAnswer.getValue();
 		}
 		return null;
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-	NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
 		((XMLIndividual) target).addPropertyValue(prop, value);
 	}

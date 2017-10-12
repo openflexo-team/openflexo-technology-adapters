@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -60,7 +60,7 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 
 	private static final Logger logger = Logger.getLogger(AttributeDataPropertyFeatureAssociationPathElement.class.getPackage().getName());
 
-	public AttributeDataPropertyFeatureAssociationPathElement(BindingPathElement parent, EMFAttributeAssociation association,
+	public AttributeDataPropertyFeatureAssociationPathElement(IBindingPathElement parent, EMFAttributeAssociation association,
 			EMFAttributeDataProperty property) {
 		super(parent, property.getName(), property.getRange().getAccessedType());
 		this.association = association;
@@ -79,7 +79,8 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 				return getDataProperty().getRange().getAccessedType();
 			}
 			return Object.class;
-		} else {
+		}
+		else {
 			if (getDataProperty() != null && getDataProperty().getRange() != null) {
 				return new ParameterizedTypeImpl(List.class, getDataProperty().getRange().getAccessedType());
 			}
@@ -107,8 +108,8 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		((EMFObjectIndividual) target).getObject().eSet(dataProperty.getObject(), value);
 	}
 }
