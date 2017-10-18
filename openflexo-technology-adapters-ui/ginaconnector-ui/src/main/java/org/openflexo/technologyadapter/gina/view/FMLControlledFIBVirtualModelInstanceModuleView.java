@@ -33,16 +33,15 @@ import javax.swing.JPanel;
 import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
@@ -56,6 +55,7 @@ import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.view.ModuleView;
+import org.openflexo.view.SelectionSynchronizedFIBJPanel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -80,7 +80,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance;
-	private FIBJPanel<?> componentView;
+	private SelectionSynchronizedFIBJPanel<?> componentView;
 
 	private LocalizedDelegate locales;
 
@@ -115,7 +115,8 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 				component.getComponent().setControllerClass(FMLControlledFIBController.class);
 			}
 
-			componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
+			componentView = new SelectionSynchronizedFIBJPanel<Object>(component.getComponent(), null,
+					FlexoLocalization.getMainLocalizer()) {
 				@Override
 				public void delete() {
 				}
