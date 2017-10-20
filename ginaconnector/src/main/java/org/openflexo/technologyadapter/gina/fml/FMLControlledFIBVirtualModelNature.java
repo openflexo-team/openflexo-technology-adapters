@@ -42,7 +42,6 @@ import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -72,7 +71,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 	public boolean hasNature(VirtualModel virtualModel) {
 
 		// VirtualModel should have one and only one FIBComponentModelSlot
-		if (virtualModel.getModelSlots(FIBComponentModelSlot.class).size() != 1) {
+		if (virtualModel.getModelSlots(FIBComponentModelSlot.class).size() == 0) {
 			return false;
 		}
 
@@ -110,7 +109,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 	}
 
 	private FIBComponentModelSlot _getFIBComponentModelSlot(VirtualModel virtualModel) {
-		if (virtualModel != null && virtualModel.getModelSlots(FIBComponentModelSlot.class).size() == 1) {
+		if (virtualModel != null && virtualModel.getModelSlots(FIBComponentModelSlot.class).size() >= 1) {
 			return virtualModel.getModelSlots(FIBComponentModelSlot.class).get(0);
 		}
 		return null;

@@ -74,7 +74,7 @@ public class GINAFIBController extends FlexoFIBController {
 		if (object instanceof GINAFIBComponentAPIEntry) {
 			return GINAIconLibrary.VARIABLE_ASSIGNMENT_ICON;
 		}
-		return super.iconForObject(object);
+		return super.retrieveIconForObject(object);
 	}
 
 }

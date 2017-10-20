@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -64,7 +64,7 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 	private static final Logger logger = Logger
 			.getLogger(AttributeObjectPropertyFeatureAssociationPathElement.class.getPackage().getName());
 
-	public AttributeObjectPropertyFeatureAssociationPathElement(BindingPathElement parent, EMFAttributeAssociation association,
+	public AttributeObjectPropertyFeatureAssociationPathElement(IBindingPathElement parent, EMFAttributeAssociation association,
 			EMFAttributeObjectProperty property) {
 		super(parent, property.getName(), EMFObjectIndividual.class);
 		objectProperty = property;

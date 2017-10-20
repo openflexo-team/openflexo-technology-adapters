@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -66,7 +66,7 @@ public class StatementPropertyPathElement extends SimplePathElement {
 
 	private OWLProperty property = null;
 
-	public StatementPropertyPathElement(BindingPathElement parent) {
+	public StatementPropertyPathElement(IBindingPathElement parent) {
 		super(parent, PROPERTY, null); // Type is dynamically retrieved
 		if (parent.getType() instanceof StatementWithProperty) {
 			property = ((StatementWithProperty) parent.getType()).getProperty();

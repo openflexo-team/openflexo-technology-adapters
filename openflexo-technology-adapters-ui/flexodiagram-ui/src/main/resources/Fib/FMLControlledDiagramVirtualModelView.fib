@@ -108,7 +108,7 @@
       </BrowserElement>
       <BrowserElement id="84" dataClassName="org.openflexo.foundation.fml.inspector.FlexoConceptInspector" icon="controller.iconForObject(inspector)" label="&quot;Inspector&quot;" isEditable="false" name="inspector">
         <Children id="85" data="inspector.entries" name="entries" />
-        <BrowserAddAction id="86" method="controller.createInspectorEntry(data)" name="add_inspector_entry" />
+        <BrowserAddAction id="86" method="controller.createInspectorEntry(selected)" name="add_inspector_entry" />
       </BrowserElement>
       <BrowserElement id="87" dataClassName="org.openflexo.foundation.fml.inspector.InspectorEntry" icon="controller.iconForObject(inspectorEntry)" label="inspectorEntry.name" editableLabel="inspectorEntry.name" isEditable="false" name="inspectorEntry" />
       <BrowserElement id="90" dataClassName="org.openflexo.foundation.fml.FlexoConceptStructuralFacet" icon="controller.iconForObject(flexoConceptStructuralFacet)" label="&quot;Structural&quot;" isEditable="false" name="flexoConceptStructuralFacet">
@@ -120,8 +120,7 @@
         <BrowserAddAction id="96" method="controller.createAbstractProperty(selected.flexoConcept)" name="new_abstract_property" />
         <BrowserAddAction id="97" method="controller.createExpressionProperty(selected.flexoConcept)" name="new_expression_property" />
         <BrowserAddAction id="98" method="controller.createGetSetProperty(selected.flexoConcept)" name="new_get_set_property" />
-        <BrowserRemoveAction id="99" method="controller.deleteFlexoProperty(data,selected)" name="delete" />
-      </BrowserElement>
+       </BrowserElement>
       <BrowserElement id="100" dataClassName="org.openflexo.foundation.fml.FlexoConceptBehaviouralFacet" icon="controller.iconForObject(flexoConceptBehaviouralFacet)" label="&quot;Behavioural&quot;" isEditable="false" name="flexoConceptBehaviouralFacet">
         <Children id="101" data="flexoConceptBehaviouralFacet.flexoConcept.flexoBehaviours" name="flexoBehaviours" />
         <BrowserAddAction id="102" method="controller.createAdvancedScheme(selected.flexoConcept)" name="new_behaviour" />

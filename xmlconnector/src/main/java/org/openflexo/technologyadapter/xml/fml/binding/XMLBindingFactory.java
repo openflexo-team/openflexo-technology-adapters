@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
-import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
@@ -69,7 +69,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		if (object instanceof XMLDataProperty) {
 			XMLDataProperty attr = (XMLDataProperty) object;
 
@@ -93,7 +93,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
 		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
 
@@ -109,7 +109,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
+	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
 		return super.getAccessibleFunctionPathElements(parent);
 	}
 

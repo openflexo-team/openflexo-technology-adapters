@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
@@ -68,7 +68,7 @@ public class FMLFIBBindingFactory extends FMLBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		if (object instanceof FIBVariable) {
 			return new FIBVariablePathElement(parent, (FIBVariable<?>) object);
 		}
@@ -76,7 +76,7 @@ public class FMLFIBBindingFactory extends FMLBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
 		if (parent != null) {
 			Type pType = parent.getType();
