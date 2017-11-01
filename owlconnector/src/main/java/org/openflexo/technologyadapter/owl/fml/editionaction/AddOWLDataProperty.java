@@ -53,12 +53,12 @@ import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 
 @ModelEntity
-@ImplementationClass(AddOWLDataProperty.AddOWLIndividualImpl.class)
+@ImplementationClass(AddOWLDataProperty.AddOWLDataPropertyImpl.class)
 @XMLElement
 @FML("AddOWLIndividual")
 public interface AddOWLDataProperty extends AddDataProperty<OWLModelSlot, OWLOntology, OWLDataProperty>, OWLAction<OWLDataProperty> {
 
-	public static abstract class AddOWLIndividualImpl extends AddDataPropertyImpl<OWLModelSlot, OWLOntology, OWLDataProperty>
+	public static abstract class AddOWLDataPropertyImpl extends AddDataPropertyImpl<OWLModelSlot, OWLOntology, OWLDataProperty>
 			implements AddOWLDataProperty {
 
 		private static final Logger logger = Logger.getLogger(AddOWLDataProperty.class.getPackage().getName());
