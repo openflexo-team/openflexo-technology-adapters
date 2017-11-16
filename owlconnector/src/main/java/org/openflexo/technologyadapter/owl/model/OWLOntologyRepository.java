@@ -38,17 +38,35 @@
 
 package org.openflexo.technologyadapter.owl.model;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 
-public class OWLOntologyRepository<I>
-		/*extends TechnologyAdapterResourceRepository<OWLOntologyResource, OWLTechnologyAdapter, OWLOntology, I>*/
+@ModelEntity
+public interface OWLOntologyRepository<I>
 		extends MetaModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter, I> {
 
-	public OWLOntologyRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<I> rc) {
-		super(adapter, rc);
+	public static <I> OWLOntologyRepository<I> instanciateNewRepository(OWLTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(OWLOntologyRepository.class);
+			OWLOntologyRepository<I> newRepository = factory.newInstance(OWLOntologyRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(resourceCenter.getLocales().localizedForKey("[Metamodels]"));
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

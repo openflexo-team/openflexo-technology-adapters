@@ -41,13 +41,13 @@ package org.openflexo.technologyadapter.owl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
@@ -75,7 +75,6 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceFactory;
  * 
  */
 @DeclareModelSlots({ OWLModelSlot.class })
-@DeclareRepositoryType({ OWLOntologyRepository.class })
 @DeclareTechnologySpecificTypes({ StatementWithProperty.class })
 @DeclareResourceTypes({ OWLOntologyResourceFactory.class })
 public class OWLTechnologyAdapter extends TechnologyAdapter {
@@ -122,7 +121,12 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	public <I> OWLOntologyRepository<I> getOWLOntologyRepository(FlexoResourceCenter<I> resourceCenter) {
 		OWLOntologyRepository<I> returned = resourceCenter.retrieveRepository(OWLOntologyRepository.class, this);
 		if (returned == null) {
-			returned = new OWLOntologyRepository<I>(this, resourceCenter);
+			try {
+				returned = OWLOntologyRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);
 		}
 		return returned;
@@ -275,10 +279,10 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 		if (rc instanceof FlexoProject) {
 
-			logger.info("-------------> Create ontology for " + ((FlexoProject) rc).getProjectName());
+			logger.info("-------------> Create ontology for " + ((FlexoProject<File>) rc).getProjectName());
 
-			File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(((FlexoProject) rc)), filename);
-			OWLOntologyResource returned = getOWLOntologyResourceFactory().makeResource(owlFile, rc, getTechnologyContextManager(), true);
+			File owlFile = new File(((FlexoProject<File>) rc).getProjectDirectory(), filename);
+			OWLOntologyResource returned = getOWLOntologyResourceFactory().makeResource(owlFile, rc, true);
 			// makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), rc);
 			OWLOntology ontology = returned.getModel();
 			if (metaModel != null) {

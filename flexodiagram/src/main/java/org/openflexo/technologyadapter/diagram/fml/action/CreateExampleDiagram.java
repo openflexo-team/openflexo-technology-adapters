@@ -131,7 +131,7 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 				: getNewDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
 		DiagramResource newDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
-				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(), true);
+				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), true);
 
 		return newDiagramResource;
 	}

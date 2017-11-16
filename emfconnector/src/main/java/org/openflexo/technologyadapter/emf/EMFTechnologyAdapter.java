@@ -39,6 +39,7 @@
 
 package org.openflexo.technologyadapter.emf;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -46,7 +47,6 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -67,8 +67,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
  * 
  */
 @DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
-		UMLEMFModelSlot.class /* EMFUMLModelSlot.class */ })
-@DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
+		UMLEMFModelSlot.class })
 @DeclareResourceTypes({ EMFMetaModelResourceFactory.class, EMFModelResourceFactory.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
@@ -308,7 +307,12 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	public <I> EMFMetaModelRepository<I> getEMFMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		EMFMetaModelRepository<I> returned = resourceCenter.retrieveRepository(EMFMetaModelRepository.class, this);
 		if (returned == null) {
-			returned = new EMFMetaModelRepository<I>(this, resourceCenter);
+			try {
+				returned = EMFMetaModelRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, EMFMetaModelRepository.class, this);
 		}
 		return returned;
@@ -364,22 +368,10 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 	}
 
-	/**
-	 * 
-	 * Create a model repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
-	 * 
-	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#createModelRepository(org.openflexo.foundation.resource.FlexoResourceCenter)
-	 */
-	/*public EMFModelRepository createModelRepository(FlexoResourceCenter<?> resourceCenter) {
-		EMFModelRepository returned = new EMFModelRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, EMFModelRepository.class, this);
-		return returned;
-	}*/
-
-	public <I> EMFModelRepository<I> getEMFModelRepository(FlexoResourceCenter<I> resourceCenter) {
+	public <I> EMFModelRepository<I> getEMFModelRepository(FlexoResourceCenter<I> resourceCenter) throws IOException {
 		EMFModelRepository<I> returned = resourceCenter.retrieveRepository(EMFModelRepository.class, this);
 		if (returned == null) {
-			returned = new EMFModelRepository<I>(this, resourceCenter);
+			returned = EMFModelRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, EMFModelRepository.class, this);
 		}
 		return returned;

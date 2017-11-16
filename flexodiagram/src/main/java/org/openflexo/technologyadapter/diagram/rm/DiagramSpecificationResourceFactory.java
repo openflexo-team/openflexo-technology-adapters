@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -44,7 +44,7 @@ import org.openflexo.xml.XMLRootElementInfo;
  *
  */
 public class DiagramSpecificationResourceFactory extends
-		PamelaResourceFactory<DiagramSpecificationResource, DiagramSpecification, DiagramTechnologyAdapter, DiagramSpecificationFactory> {
+		TechnologySpecificPamelaResourceFactory<DiagramSpecificationResource, DiagramSpecification, DiagramTechnologyAdapter, DiagramSpecificationFactory> {
 
 	private static final Logger logger = Logger.getLogger(DiagramSpecificationResourceFactory.class.getPackage().getName());
 
@@ -103,8 +103,7 @@ public class DiagramSpecificationResourceFactory extends
 	}
 
 	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
-			RepositoryFolder<DiagramSpecificationResource, I> folder,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
+			RepositoryFolder<DiagramSpecificationResource, I> folder, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = folder.getResourceRepository().getResourceCenter();
@@ -112,20 +111,20 @@ public class DiagramSpecificationResourceFactory extends
 		String artefactName = baseName.endsWith(DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX) ? baseName
 				: baseName + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
 		I serializationArtefact = resourceCenter.createDirectory(artefactName, folder.getSerializationArtefact());
-		return makeResource(serializationArtefact, resourceCenter, technologyContextManager, baseName, uri, createEmptyContents);
+		return makeResource(serializationArtefact, resourceCenter, baseName, uri, createEmptyContents);
 	}
 
 	@Override
 	protected <I> DiagramSpecificationResource registerResource(DiagramSpecificationResource resource,
-			FlexoResourceCenter<I> resourceCenter, TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+			FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the VirtualModelRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getDiagramSpecificationRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getDiagramSpecificationRepository(resourceCenter));
 
 		// Now look inside
-		exploreDiagramSpecificationContents(resource, technologyContextManager);
+		exploreDiagramSpecificationContents(resource);
 
 		return resource;
 
@@ -133,10 +132,8 @@ public class DiagramSpecificationResourceFactory extends
 
 	@Override
 	protected <I> DiagramSpecificationResource initResourceForCreation(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, String name, String uri)
-			throws ModelDefinitionException {
-		DiagramSpecificationResource returned = super.initResourceForCreation(serializationArtefact, resourceCenter,
-				technologyContextManager, name, uri);
+			String name, String uri) throws ModelDefinitionException {
+		DiagramSpecificationResource returned = super.initResourceForCreation(serializationArtefact, resourceCenter, name, uri);
 
 		returned.setVersion(INITIAL_REVISION);
 		returned.setModelVersion(CURRENT_MODEL_VERSION);
@@ -145,11 +142,10 @@ public class DiagramSpecificationResourceFactory extends
 	}
 
 	@Override
-	protected <I> DiagramSpecificationResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
+	protected <I> DiagramSpecificationResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
 
-		DiagramSpecificationResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter,
-				technologyContextManager);
+		DiagramSpecificationResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 
 		String artefactName = resourceCenter.retrieveName(serializationArtefact);
 		String baseName = artefactName.endsWith(DIAGRAM_SPECIFICATION_SUFFIX)
@@ -189,14 +185,12 @@ public class DiagramSpecificationResourceFactory extends
 				this);
 	}
 
-	private void exploreDiagramSpecificationContents(DiagramSpecificationResource dsResource,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
+	private void exploreDiagramSpecificationContents(DiagramSpecificationResource dsResource) {
 
-		exploreResource(dsResource.getIODelegate().getSerializationArtefact(), dsResource, technologyContextManager);
+		exploreResource(dsResource.getIODelegate().getSerializationArtefact(), dsResource);
 	}
 
-	private <I> void exploreResource(I serializationArtefact, DiagramSpecificationResource dsResource,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
+	private <I> void exploreResource(I serializationArtefact, DiagramSpecificationResource dsResource) {
 		if (serializationArtefact == null) {
 			return;
 		}
@@ -207,7 +201,7 @@ public class DiagramSpecificationResourceFactory extends
 			if (getExampleDiagramsResourceFactory().isValidArtefact(child, resourceCenter)) {
 				try {
 					DiagramResource exampleDiagramRes = getExampleDiagramsResourceFactory().retrieveExampleDiagramResource(child,
-							technologyContextManager, dsResource);
+							dsResource);
 				} catch (ModelDefinitionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -218,8 +212,7 @@ public class DiagramSpecificationResourceFactory extends
 			}
 			else if (getPaletteResourceFactory().isValidArtefact(child, resourceCenter)) {
 				try {
-					DiagramPaletteResource paletteRes = getPaletteResourceFactory().retrievePaletteResource(child, technologyContextManager,
-							dsResource);
+					DiagramPaletteResource paletteRes = getPaletteResourceFactory().retrievePaletteResource(child, dsResource);
 				} catch (ModelDefinitionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

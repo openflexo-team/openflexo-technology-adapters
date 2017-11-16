@@ -88,15 +88,14 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 	@TestOrder(1)
 	public void test1RetrieveOntology() {
 
-		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(OWLTechnologyAdapter.class);
+		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 
 		assertNotNull(owlTA);
 
 		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager()
-				.getResource("http://www.w3.org/2004/02/skos/core", OWLOntology.class);
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.w3.org/2004/02/skos/core",
+				OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 

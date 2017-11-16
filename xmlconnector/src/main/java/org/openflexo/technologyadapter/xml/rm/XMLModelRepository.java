@@ -39,20 +39,36 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.ModelRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-// TODO : Ask Sylvain why Model & MetaModelRepository should be parameterized with et FlexoFileResource ?!?
-// FIXME : when we have discussed about FileBase....
-
-//public class XMLModelRepository extends TechnologyAdapterResourceRepository<XMLResource,  XMLTechnologyAdapter, XMLModel> {
-public class XMLModelRepository<I>
+@ModelEntity
+public interface XMLModelRepository<I>
 		extends ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter, I> {
-	public XMLModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
-		super(adapter, resourceCenter);
+
+	public static <I> XMLModelRepository<I> instanciateNewRepository(XMLTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(XMLModelRepository.class);
+			XMLModelRepository<I> newRepository = factory.newInstance(XMLModelRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(resourceCenter.getLocales().localizedForKey("[Models]"));
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

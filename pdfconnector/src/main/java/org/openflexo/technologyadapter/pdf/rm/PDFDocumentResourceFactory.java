@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.pdf.rm;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
@@ -36,7 +36,8 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  *
  */
-public class PDFDocumentResourceFactory extends PamelaResourceFactory<PDFDocumentResource, PDFDocument, PDFTechnologyAdapter, PDFFactory> {
+public class PDFDocumentResourceFactory
+		extends TechnologySpecificPamelaResourceFactory<PDFDocumentResource, PDFDocument, PDFTechnologyAdapter, PDFFactory> {
 
 	private static final Logger logger = Logger.getLogger(PDFDocumentResourceFactory.class.getPackage().getName());
 
@@ -69,14 +70,13 @@ public class PDFDocumentResourceFactory extends PamelaResourceFactory<PDFDocumen
 	}
 
 	@Override
-	protected <I> PDFDocumentResource registerResource(PDFDocumentResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<PDFTechnologyAdapter> technologyContextManager) {
+	protected <I> PDFDocumentResource registerResource(PDFDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
 
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the PDFDocumentRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getPDFDocumentRepository(resourceCenter));
+				getTechnologyAdapter(resource.getServiceManager()).getPDFDocumentRepository(resourceCenter));
 
 		return resource;
 	}

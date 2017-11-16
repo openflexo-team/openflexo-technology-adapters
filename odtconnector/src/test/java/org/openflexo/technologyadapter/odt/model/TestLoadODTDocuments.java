@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.odt.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -64,7 +65,7 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadODTDocuments.class.getPackage().getName());
 
 	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 
 	@Test
 	@TestOrder(1)
@@ -75,11 +76,10 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test

@@ -90,8 +90,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
 		assertNotNull(newResourceCenter);
@@ -123,8 +122,8 @@ public class TestDiagramResource extends OpenflexoTestCase {
 		DiagramRepository<?> repository = technologicalAdapter.getDiagramRepository(newResourceCenter);
 		assertNotNull(repository);
 
-		diagramResource = diagramTA.getDiagramResourceFactory().makeDiagramResource("exampleDiagram1",
-				EXAMPLE_DIAGRAM_URI, null, repository.getRootFolder(), diagramTA.getTechnologyContextManager(), true);
+		diagramResource = diagramTA.getDiagramResourceFactory().makeDiagramResource("exampleDiagram1", EXAMPLE_DIAGRAM_URI, null,
+				repository.getRootFolder(), true);
 
 		assertNotNull(diagramResource);
 
@@ -189,12 +188,10 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		applicationContext.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
-						applicationContext.getResourceCenterService()));
+		applicationContext.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, applicationContext.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
 		DiagramRepository<?> repository = technologicalAdapter.getDiagramRepository(newResourceCenter);

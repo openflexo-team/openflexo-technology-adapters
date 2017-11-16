@@ -141,8 +141,7 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 	private <I> GINAFIBComponentResource _makeGINAFIBComponentResource() throws SaveResourceException, ModelDefinitionException {
 		GINATechnologyAdapter ginaTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 
-		return ginaTA.getGINAFIBComponentResourceFactory().makeGINAFIBComponentResource(getComponentName(), getFocusedObject(),
-				ginaTA.getTechnologyContextManager(), true);
+		return ginaTA.getGINAFIBComponentResourceFactory().makeGINAFIBComponentResource(getComponentName(), getFocusedObject(), true);
 	}
 
 	@Override

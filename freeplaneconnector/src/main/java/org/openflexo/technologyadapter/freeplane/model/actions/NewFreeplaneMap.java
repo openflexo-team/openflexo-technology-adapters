@@ -126,7 +126,7 @@ public class NewFreeplaneMap
 		IFreeplaneResource newFreeplaneResource;
 		try {
 			newFreeplaneResource = freeplaneTA.getFreeplaneResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-					freeplaneTA.getTechnologyContextManager(), true);
+					true);
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		} catch (ModelDefinitionException e) {

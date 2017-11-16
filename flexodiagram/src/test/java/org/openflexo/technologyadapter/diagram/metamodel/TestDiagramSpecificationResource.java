@@ -109,8 +109,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		newResourceCenter = makeNewDirectoryResourceCenter(applicationContext);
 		assertNotNull(newResourceCenter);
@@ -135,13 +134,11 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		DiagramSpecificationRepository<?> repository = technologicalAdapter
-				.getDiagramSpecificationRepository(newResourceCenter);
+		DiagramSpecificationRepository<?> repository = technologicalAdapter.getDiagramSpecificationRepository(newResourceCenter);
 		assertNotNull(repository);
 
-		diagramSpecificationResource = diagramTA.getDiagramSpecificationResourceFactory()
-				.makeDiagramSpecificationResourceResource(diagramSpecificationName, diagramSpecificationURI,
-						repository.getRootFolder(), diagramTA.getTechnologyContextManager(), true);
+		diagramSpecificationResource = diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(
+				diagramSpecificationName, diagramSpecificationURI, repository.getRootFolder(), true);
 
 		diagramSpecificationResource.save(null);
 		assertTrue(diagramSpecificationResource.getIODelegate().exists());
@@ -170,8 +167,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		paletteResource = diagramTA.getDiagramSpecificationResourceFactory().getPaletteResourceFactory()
-				.makeDiagramPaletteResource(paletteName, diagramSpecificationResource,
-						diagramTA.getTechnologyContextManager(), true);
+				.makeDiagramPaletteResource(paletteName, diagramSpecificationResource, true);
 
 		// paletteResource =
 		// DiagramPaletteResourceImpl.makeDiagramPaletteResource(diagramSpecificationResource,
@@ -208,8 +204,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		exampleDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
-				.makeExampleDiagramResource("exampleDiagram1", diagramSpecificationResource,
-						diagramTA.getTechnologyContextManager(), true);
+				.makeExampleDiagramResource("exampleDiagram1", diagramSpecificationResource, true);
 
 		// Edit example diagram
 		DiagramFactory factory = exampleDiagramResource.getFactory();
@@ -235,25 +230,24 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 	/**
 	 * Reload the DiagramSpecification, tests that uri and name are persistent
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testReloadDiagramSpecification() {
+	public void testReloadDiagramSpecification() throws IOException {
 
 		log("testReloadDiagramSpecification()");
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		applicationContext.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
-						applicationContext.getResourceCenterService()));
+		applicationContext.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, applicationContext.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
-		DiagramSpecificationRepository<?> repository = technologicalAdapter
-				.getDiagramSpecificationRepository(newResourceCenter);
+		DiagramSpecificationRepository<?> repository = technologicalAdapter.getDiagramSpecificationRepository(newResourceCenter);
 		assertNotNull(repository);
 
 		DiagramSpecificationResource retrievedResource = repository.getResource(diagramSpecificationURI);

@@ -75,7 +75,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestUMLModelWithProfile.class.getPackage().getName());
 
 	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 	private static EMFTechnologyAdapter technologicalAdapter;
 	private static EMFTechnologyContextManager ctxManager;
 	private static EMFMetaModelResource umlMetaModelResource;
@@ -105,11 +105,10 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test
@@ -146,7 +145,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 		RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 		File serializationArtefact = new File(modelFolder.getSerializationArtefact(), UML_MODEL_NAME);
 		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-				umlMetaModelResource, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
+				umlMetaModelResource, newResourceCenter, UML_MODEL_NAME, "myURI", true);
 
 		assertNotNull(umlModelResource);
 		EMFModel umlModel = umlModelResource.getModel();

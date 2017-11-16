@@ -308,8 +308,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			XMLFileResource newXMLFileResource;
 			try {
-				newXMLFileResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						xmlTA.getTechnologyContextManager(), filename, modelUri, true);
+				newXMLFileResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc, filename, modelUri, true);
 				newXMLFileResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newXMLFileResource;
 			} catch (SaveResourceException e) {
@@ -354,8 +353,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			XMLTechnologyAdapter ta = getModelSlotTechnologyAdapter();
 			XMLFileResourceFactory xmlFileResourceFactory = ta.getXMLFileResourceFactory();
 
-			XMLFileResource returned = xmlFileResourceFactory.makeResource(xmlFile, modelRepository.getResourceCenter(),
-					ta.getTechnologyContextManager(), true);
+			XMLFileResource returned = xmlFileResourceFactory.makeResource(xmlFile, modelRepository.getResourceCenter(), true);
 
 			// XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
 			// (XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager(),

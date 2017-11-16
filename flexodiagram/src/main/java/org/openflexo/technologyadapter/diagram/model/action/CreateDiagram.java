@@ -153,7 +153,7 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		return diagramTA.getDiagramResourceFactory().makeDiagramResource(getDiagramName(), getDiagramURI(),
-				getDiagramSpecification().getResource(), getFocusedObject(), diagramTA.getTechnologyContextManager(), true);
+				getDiagramSpecification().getResource(), getFocusedObject(), true);
 	}
 
 	private String errorMessage;

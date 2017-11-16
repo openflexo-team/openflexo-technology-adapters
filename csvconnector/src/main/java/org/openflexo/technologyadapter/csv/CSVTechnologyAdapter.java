@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.csv;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -89,7 +90,12 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	public <I> CSVModelResourceRepository<I> getCSVModelResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		CSVModelResourceRepository<I> returned = resourceCenter.retrieveRepository(CSVModelResourceRepository.class, this);
 		if (returned == null) {
-			returned = new CSVModelResourceRepository<I>(this, resourceCenter);
+			try {
+				returned = CSVModelResourceRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, CSVModelResourceRepository.class, this);
 		}
 		return returned;

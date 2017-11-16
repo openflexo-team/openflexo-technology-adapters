@@ -230,16 +230,18 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 	/**
 	 * Reload the DiagramSpecification, tests that uri and name are persistent
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testReloadDiagramSpecification() {
+	public void testReloadDiagramSpecification() throws IOException {
 
 		log("testReloadDiagramSpecification()");
 
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		applicationContext.getResourceCenterService().addToResourceCenters(
-				resourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory, applicationContext.getResourceCenterService()));
+		applicationContext.getResourceCenterService().addToResourceCenters(resourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, applicationContext.getResourceCenterService()));
 		resourceCenter.performDirectoryWatchingNow();
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);

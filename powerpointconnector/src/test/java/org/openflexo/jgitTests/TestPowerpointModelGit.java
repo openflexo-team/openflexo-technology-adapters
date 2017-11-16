@@ -85,7 +85,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				gitResourceCenter = (GitResourceCenter) rc;
 			}
 		}
-		gitResourceCenterDirectory = gitResourceCenter.getDirectory();
+		gitResourceCenterDirectory = gitResourceCenter.getRootDirectory();
 
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getSize() > 0);
@@ -136,15 +136,13 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		VirtualModelResource viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(gitResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(gitResourceCenter).getRootFolder(), true);
 		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
 
 		assertNotNull(testApplicationContext.getVirtualModelLibrary()
 				.getVirtualModel("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint.fml"));
 
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource,
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource, true);
 		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
 
 		FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
@@ -246,7 +244,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		PowerpointSlideshowResourceFactory factory = pptTechnologyAdapter.getPowerpointSlideshowResourceFactory();
 
 		System.out.println("avant la resource pptFile = " + pptFile);
-		modelRes = factory.makeResource(pptFile, gitResourceCenter, pptTechnologyAdapter.getTechnologyContextManager(), true);
+		modelRes = factory.makeResource(pptFile, gitResourceCenter, true);
 		System.out.println("apres: " + modelRes.getIODelegate().getSerializationArtefact());
 
 		// modelRes =

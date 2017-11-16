@@ -45,6 +45,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.AfterClass;
@@ -230,10 +231,11 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 	}
 
 	/**
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(10)
-	public void testReloadDocument() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testReloadDocument() throws ResourceLoadingCancelledException, FlexoException, IOException {
 
 		log("testReloadDocument()");
 
@@ -243,8 +245,8 @@ public class TestCreateBasicDocXDocumentParaIdScheme extends AbstractTestDocX {
 
 		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
-		serviceManager.getResourceCenterService().addToResourceCenters(
-				newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
 		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()

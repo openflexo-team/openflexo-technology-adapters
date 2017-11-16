@@ -38,10 +38,10 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -58,7 +58,6 @@ import org.openflexo.technologyadapter.freeplane.rm.FreeplaneResourceRepository;
  */
 
 @DeclareModelSlots({ FreeplaneModelSlot.class })
-@DeclareRepositoryType({ FreeplaneResourceRepository.class })
 @DeclareResourceTypes({ FreeplaneResourceFactory.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
@@ -230,7 +229,12 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	public <I> FreeplaneResourceRepository<I> getFreeplaneResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		FreeplaneResourceRepository<I> returned = resourceCenter.retrieveRepository(FreeplaneResourceRepository.class, this);
 		if (returned == null) {
-			returned = new FreeplaneResourceRepository<I>(this, resourceCenter);
+			try {
+				returned = FreeplaneResourceRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, FreeplaneResourceRepository.class, this);
 		}
 		return returned;

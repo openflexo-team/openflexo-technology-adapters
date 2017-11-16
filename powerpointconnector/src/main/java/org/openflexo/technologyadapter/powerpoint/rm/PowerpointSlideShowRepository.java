@@ -39,8 +39,13 @@
 
 package org.openflexo.technologyadapter.powerpoint.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
@@ -50,11 +55,25 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  * @author sylvain, vincent
  * 
  */
-public class PowerpointSlideShowRepository<I>
+@ModelEntity
+public interface PowerpointSlideShowRepository<I>
 		extends TechnologyAdapterResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow, I> {
 
-	public PowerpointSlideShowRepository(PowerpointTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
-		super(adapter, resourceCenter);
+	public static <I> PowerpointSlideShowRepository<I> instanciateNewRepository(PowerpointTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(PowerpointSlideShowRepository.class);
+			PowerpointSlideShowRepository<I> newRepository = factory.newInstance(PowerpointSlideShowRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

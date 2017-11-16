@@ -77,7 +77,7 @@ public class TestSepelOntology extends OpenflexoTestCase {
 
 	private static OWLTechnologyAdapter owlAdapter;
 	private static OWLOntologyLibrary ontologyLibrary;
-	// private static ResourceRepository<OWLOntologyResource, ?> ontologyRepository;
+	// private static ResourceRepositoryImpl<OWLOntologyResource, ?> ontologyRepository;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -107,12 +107,12 @@ public class TestSepelOntology extends OpenflexoTestCase {
 			System.out.println(" - " + rr);
 		}
 
-		/*for (ResourceRepository<?, ?> ontoRepo : owlRepositories) {
+		/*for (ResourceRepositoryImpl<?, ?> ontoRepo : owlRepositories) {
 			mappingSpecificationResource = (OWLOntologyResource) ontoRepo
 					.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
 		
 			if (mappingSpecificationResource != null) {
-				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) ontoRepo;
+				ontologyRepository = (ResourceRepositoryImpl<OWLOntologyResource, ?>) ontoRepo;
 			}
 		}*/
 

@@ -88,7 +88,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 	private static DiagramTechnologyAdapter technologicalAdapter;
 	// private static Resource resourceCenterDirectory;
 	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 
 	private static FlexoResourceCenter rc;
 	private static Object testResourceCenterNode;
@@ -121,10 +121,9 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("testResourceCenterNode=" + testResourceCenterNode);
 
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	private int realNumberOfShapesAndConnectors = 0;
@@ -147,8 +146,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 				logger.info("Testing file " + pptFile.getName());
 				createExampleDiagramFromPPTSlide.setFile(pptFile);
 				for (Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()) {
-					logger.info(
-							"Testing Slide number " + slide.getSlideNumber() + " in file named " + pptFile.getName());
+					logger.info("Testing Slide number " + slide.getSlideNumber() + " in file named " + pptFile.getName());
 					createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
 					createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
 					createExampleDiagramFromPPTSlide.setSlide(slide);
@@ -163,9 +161,8 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 					computeExpectedNumberOfShapesAndConnectors(slide);
 					computeRealNumberOfShapesAndConnectors(diag);
 
-					logger.info("Testing file " + pptFile.getName() + " slide number " + slide.getSlideNumber()
-							+ " expecting " + expectedNumberOfShapesAndConnectors + " in reality "
-							+ realNumberOfShapesAndConnectors);
+					logger.info("Testing file " + pptFile.getName() + " slide number " + slide.getSlideNumber() + " expecting "
+							+ expectedNumberOfShapesAndConnectors + " in reality " + realNumberOfShapesAndConnectors);
 					// Sylvain: Temporary commented this line to get test
 					// successfull
 					// Vincent will fix this soon
@@ -184,7 +181,8 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			for (int i = sh.length - 1; i >= 0; i--) {
 				if (MasterSheet.isPlaceholder(sh[i])) {
 					continue;
-				} else {
+				}
+				else {
 					expectedShapes.add(sh[i]);
 				}
 			}
@@ -201,16 +199,19 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		if (shape instanceof Table) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 1
 					+ (((Table) shape).getNumberOfColumns() * ((Table) shape).getNumberOfRows());
-		} else if (shape instanceof TextBox || shape instanceof Picture) {
+		}
+		else if (shape instanceof TextBox || shape instanceof Picture) {
 			expectedNumberOfShapesAndConnectors++;
-		} else if (shape instanceof Line) {
+		}
+		else if (shape instanceof Line) {
 			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + 3;
-		} else if (shape instanceof AutoShape) {
+		}
+		else if (shape instanceof AutoShape) {
 			if (!isConnector(shape.getShapeType())) {
 				expectedNumberOfShapesAndConnectors++;
-			} else {
-				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors
-						+ elementToCreate(shape, expectedShapes);
+			}
+			else {
+				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + elementToCreate(shape, expectedShapes);
 			}
 		}
 	}
@@ -233,18 +234,18 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	private boolean isConnector(int shapeType) {
 		switch (shapeType) {
-		case ShapeTypes.CurvedConnector2:
-			return true;
-		case ShapeTypes.CurvedConnector3:
-			return true;
-		case ShapeTypes.CurvedConnector4:
-			return true;
-		case ShapeTypes.CurvedConnector5:
-			return true;
-		case ShapeTypes.Line:
-			return true;
-		case ShapeTypes.StraightConnector1:
-			return true;
+			case ShapeTypes.CurvedConnector2:
+				return true;
+			case ShapeTypes.CurvedConnector3:
+				return true;
+			case ShapeTypes.CurvedConnector4:
+				return true;
+			case ShapeTypes.CurvedConnector5:
+				return true;
+			case ShapeTypes.Line:
+				return true;
+			case ShapeTypes.StraightConnector1:
+				return true;
 		}
 		return false;
 	}
@@ -257,7 +258,8 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 			if (poiConnector.getAnchor().intersects(diagramShape.getAnchor())) {
 				if (sourceShape == null && targetShape == null) {
 					sourceShape = diagramShape;
-				} else if (sourceShape != null && targetShape == null) {
+				}
+				else if (sourceShape != null && targetShape == null) {
 					targetShape = diagramShape;
 				}
 			}

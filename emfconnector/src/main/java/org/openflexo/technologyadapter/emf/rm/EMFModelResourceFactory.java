@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
  * @author sylvain
  *
  */
-public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResource, EMFModel, EMFTechnologyAdapter> {
+public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFactory<EMFModelResource, EMFModel, EMFTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(EMFModelResourceFactory.class.getPackage().getName());
 
@@ -65,12 +65,12 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 	}
 
 	public <I> EMFModelResource makeEMFModelResource(I serializationArtefact, EMFMetaModelResource metaModelResource,
-			FlexoResourceCenter<I> resourceCenter, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager, String name,
-			String uri, boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
+			FlexoResourceCenter<I> resourceCenter, String name, String uri, boolean createEmptyContents)
+			throws SaveResourceException, ModelDefinitionException {
 
-		EMFModelResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name, uri);
+		EMFModelResource returned = initResourceForCreation(serializationArtefact, resourceCenter, name, uri);
 		returned.setMetaModelResource(metaModelResource);
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, resourceCenter);
 
 		if (createEmptyContents) {
 			createEmptyContents(returned);
@@ -81,26 +81,33 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 	}
 
 	@Override
-	protected <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the EMFModelRepository of supplied resource center
-		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getEMFModelRepository(resourceCenter));
+		try {
+			registerResourceInResourceRepository(resource,
+					getTechnologyAdapter(resourceCenter.getServiceManager()).getEMFModelRepository(resourceCenter));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return resource;
 	}
 
 	@Override
-	public <I> EMFModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
+	public <I> EMFModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+
+		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
+				resourceCenter.getServiceManager());
 
 		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
 			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
-				EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+				EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 				returned.setMetaModelResource(mmRes);
-				registerResource(returned, resourceCenter, technologyContextManager);
+				registerResource(returned, resourceCenter);
 			}
 		}
 
@@ -128,9 +135,9 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 	}
 
 	@Override
-	protected <I> EMFModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		EMFModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> EMFModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		EMFModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 
 		// TODO: uri management ???
 		/*XMLRootElementInfo xmlRootElementInfo = resourceCenter.getXMLRootElementInfo(serializationArtefact);
@@ -143,61 +150,5 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 
 		return returned;
 	}
-
-	/*
-	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
-			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-	
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-	
-			// returned.setFile(modelFile);
-			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
-			returned.setURI(modelFile.toURI().toString());
-			returned.setMetaModelResource(emfMetaModelResource);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerModel(returned);
-			// Creates the EMF model from scratch
-			EMFModelConverter converter = new EMFModelConverter();
-			EMFModel resourceData = converter.convertModel(returned.getMetaModelResource().getMetaModelData(), returned.getEMFResource());
-			returned.setResourceData(resourceData);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
-			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-	
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-	
-			returned.setURI(modelFile.toURI().toString());
-			returned.setMetaModelResource(emfMetaModelResource);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerModel(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	 */
 
 }

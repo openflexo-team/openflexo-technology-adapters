@@ -20,16 +20,35 @@
 
 package org.openflexo.technologyadapter.odt.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.odt.ODTTechnologyAdapter;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
-public class ODTDocumentRepository<I>
+@ModelEntity
+public interface ODTDocumentRepository<I>
 		extends TechnologyAdapterResourceRepository<ODTDocumentResource, ODTTechnologyAdapter, ODTDocument, I> {
 
-	public ODTDocumentRepository(ODTTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
-		super(adapter, resourceCenter);
+	public static <I> ODTDocumentRepository<I> instanciateNewRepository(ODTTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(ODTDocumentRepository.class);
+			ODTDocumentRepository<I> newRepository = factory.newInstance(ODTDocumentRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

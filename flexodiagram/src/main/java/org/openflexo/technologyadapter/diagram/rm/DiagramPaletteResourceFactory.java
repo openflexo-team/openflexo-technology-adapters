@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -42,8 +42,8 @@ import org.openflexo.xml.XMLRootElementInfo;
  * @author sylvain
  *
  */
-public class DiagramPaletteResourceFactory
-		extends PamelaResourceFactory<DiagramPaletteResource, DiagramPalette, DiagramTechnologyAdapter, DiagramPaletteFactory> {
+public class DiagramPaletteResourceFactory extends
+		TechnologySpecificPamelaResourceFactory<DiagramPaletteResource, DiagramPalette, DiagramTechnologyAdapter, DiagramPaletteFactory> {
 
 	private static final Logger logger = Logger.getLogger(DiagramPaletteResourceFactory.class.getPackage().getName());
 
@@ -77,40 +77,38 @@ public class DiagramPaletteResourceFactory
 		return null;
 	}
 
-	public <I> DiagramPaletteResource retrievePaletteResource(I serializationArtefact,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, DiagramSpecificationResource dsResource)
+	public <I> DiagramPaletteResource retrievePaletteResource(I serializationArtefact, DiagramSpecificationResource dsResource)
 			throws ModelDefinitionException, IOException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		String name = resourceCenter.retrieveName(serializationArtefact);
 
-		DiagramPaletteResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+		DiagramPaletteResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 		returned.setURI(dsResource.getURI() + "/" + name);
 
 		dsResource.addToContents(returned);
 		dsResource.notifyContentsAdded(returned);
 
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, resourceCenter);
 
 		return returned;
 	}
 
 	public <I> DiagramPaletteResource makeDiagramPaletteResource(String name, DiagramSpecificationResource dsResource,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-			throws SaveResourceException, ModelDefinitionException {
+			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		I serializationArtefact = resourceCenter.createEntry(
 				(name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)),
 				resourceCenter.getContainer((I) dsResource.getIODelegate().getSerializationArtefact()));
 
-		DiagramPaletteResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name,
+		DiagramPaletteResource returned = initResourceForCreation(serializationArtefact, resourceCenter, name,
 				dsResource.getURI() + "/" + (name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)));
 
 		dsResource.addToContents(returned);
 		dsResource.notifyContentsAdded(returned);
 
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, resourceCenter);
 
 		if (createEmptyContents) {
 			DiagramPalette resourceData = makeEmptyResourceData(returned);
@@ -124,9 +122,8 @@ public class DiagramPaletteResourceFactory
 	}
 
 	@Override
-	protected <I> DiagramPaletteResource registerResource(DiagramPaletteResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> DiagramPaletteResource registerResource(DiagramPaletteResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the DiagramRepository of supplied resource center
 		// registerResourceInResourceRepository(resource,
@@ -136,9 +133,9 @@ public class DiagramPaletteResourceFactory
 	}
 
 	@Override
-	protected <I> DiagramPaletteResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		DiagramPaletteResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> DiagramPaletteResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		DiagramPaletteResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 
 		PaletteInfo vmiInfo = findPaletteInfo(returned, resourceCenter);
 		if (vmiInfo != null) {

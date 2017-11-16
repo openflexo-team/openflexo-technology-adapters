@@ -99,7 +99,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 	@TestOrder(3)
 	public void createProject() {
 
-		editor = createProject("TestCreateDiagramDialog");
+		editor = createStandaloneProject("TestCreateDiagramDialog");
 
 	}
 
@@ -135,7 +135,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 		super.tearDown();
 
 		if (editor != null) {
-			File PRJDirectory = editor.getProject().getDirectory();
+			File PRJDirectory = ((FlexoProject<File>) editor.getProject()).getProjectDirectory();
 			PRJDirectory.deleteOnExit();
 		}
 	}

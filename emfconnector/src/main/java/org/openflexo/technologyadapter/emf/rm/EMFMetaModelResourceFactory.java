@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.resource.ClassLoaderIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -43,7 +43,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource.EMFMetaModelT
  * @author sylvain
  *
  */
-public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaModelResource, EMFMetaModel, EMFTechnologyAdapter> {
+public class EMFMetaModelResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<EMFMetaModelResource, EMFMetaModel, EMFTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(EMFMetaModelResourceFactory.class.getPackage().getName());
 
@@ -115,9 +116,13 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 	}
 
 	@Override
-	protected <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
+
+		System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
+		System.out.println("sm=" + resource.getServiceManager());
+
+		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(resource.getServiceManager());
 
 		// Depending on the MM Type, you must do different things
 
@@ -141,12 +146,14 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager)
 			throws ModelDefinitionException {
 
-		FlexoResourceCenter<I> resourceCenter = null;
+		// FlexoResourceCenter<I> resourceCenter = null;
 
 		EMFMetaModelResource returned = newInstance(EMFMetaModelResource.class);
 		returned.setMetaModelType(EMFMetaModelType.Standard);
 
-		returned.setResourceCenter(resourceCenter);
+		// returned.setResourceCenter(resourceCenter);
+		returned.setServiceManager(technologyContextManager.getServiceManager());
+		returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 		returned.initName(metaModelName);
 		returned.setURI(metaModelURI);
 
@@ -159,13 +166,13 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 
 		returned.setIODelegate(ioDelegate);
 
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, null);
 		return returned;
 	}
 
 	@Override
-	protected <I> EMFMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
+	protected <I> EMFMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
 		EMFMetaModelResource returned = null;
 
 		Properties properties = resourceCenter.getProperties(serializationArtefact);

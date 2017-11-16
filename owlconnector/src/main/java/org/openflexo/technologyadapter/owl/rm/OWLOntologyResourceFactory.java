@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
@@ -36,7 +35,8 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
  * @author sylvain
  *
  */
-public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntologyResource, OWLOntology, OWLTechnologyAdapter> {
+public class OWLOntologyResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<OWLOntologyResource, OWLOntology, OWLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceFactory.class.getPackage().getName());
 
@@ -64,23 +64,22 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	}
 
 	@Override
-	protected <I> OWLOntologyResource registerResource(OWLOntologyResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> OWLOntologyResource registerResource(OWLOntologyResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
-		resource.setOntologyLibrary(technologyContextManager.getTechnologyAdapter().getOntologyLibrary());
+		resource.setOntologyLibrary(getTechnologyAdapter(resourceCenter.getServiceManager()).getOntologyLibrary());
 
 		// Register the resource in the OWLOntologyRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getOWLOntologyRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getOWLOntologyRepository(resourceCenter));
 
 		return resource;
 	}
 
 	@Override
-	protected <I> OWLOntologyResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		OWLOntologyResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> OWLOntologyResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		OWLOntologyResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 		returned.setURI(OWLOntology.findOntologyURI(returned.getIODelegate().getSerializationArtefactAsResource()));
 		return returned;
 	}

@@ -29,9 +29,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.resource.StreamIODelegate;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -43,7 +42,8 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
  * @author sylvain
  *
  */
-public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
+public class ExcelWorkbookResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceFactory.class.getPackage().getName());
 
@@ -103,14 +103,13 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 	}
 
 	@Override
-	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the ExcelWorkbookRepository of supplied
 		// resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getExcelWorkbookRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getExcelWorkbookRepository(resourceCenter));
 
 		return resource;
 	}

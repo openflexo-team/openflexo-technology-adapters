@@ -38,16 +38,35 @@
 
 package org.openflexo.technologyadapter.freeplane.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public class FreeplaneResourceRepository<I>
+@ModelEntity
+public interface FreeplaneResourceRepository<I>
 		extends TechnologyAdapterResourceRepository<IFreeplaneResource, FreeplaneTechnologyAdapter, IFreeplaneMap, I> {
 
-	public FreeplaneResourceRepository(final FreeplaneTechnologyAdapter technologyAdapter, final FlexoResourceCenter<I> resourceCenter) {
-		super(technologyAdapter, resourceCenter);
+	public static <I> FreeplaneResourceRepository<I> instanciateNewRepository(FreeplaneTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(FreeplaneResourceRepository.class);
+			FreeplaneResourceRepository<I> newRepository = factory.newInstance(FreeplaneResourceRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

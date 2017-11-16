@@ -126,7 +126,7 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		String paletteName = getNewPaletteName() + (getNewPaletteName().endsWith(".palette") ? "" : ".palette");
 
 		DiagramPaletteResource newPaletteResource = diagramTA.getDiagramSpecificationResourceFactory().getPaletteResourceFactory()
-				.makeDiagramPaletteResource(paletteName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(), true);
+				.makeDiagramPaletteResource(paletteName, getFocusedObject().getResource(), true);
 
 		return newPaletteResource;
 	}

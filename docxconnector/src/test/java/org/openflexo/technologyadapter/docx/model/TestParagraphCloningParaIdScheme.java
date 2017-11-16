@@ -43,11 +43,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -56,8 +58,7 @@ import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
 public class TestParagraphCloningParaIdScheme extends AbstractTestDocX {
-	protected static final Logger logger = Logger
-			.getLogger(TestParagraphCloningParaIdScheme.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestParagraphCloningParaIdScheme.class.getPackage().getName());
 
 	private static DocXDocument simpleDocumentWithBookmarks;
 	private static DocXParagraph titleParagraph;
@@ -85,11 +86,10 @@ public class TestParagraphCloningParaIdScheme extends AbstractTestDocX {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		_editor = createProject("TestProject");
-		_project = _editor.getProject();
+		_editor = createStandaloneProject("TestProject");
+		_project = (FlexoProject<File>) _editor.getProject();
 		System.out.println("Created project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test
@@ -98,8 +98,7 @@ public class TestParagraphCloningParaIdScheme extends AbstractTestDocX {
 
 		simpleDocumentWithBookmarks = getDocument("SimpleDocumentWithBookmarks.docx");
 
-		System.out
-				.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
+		System.out.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
 
 		System.out.println("Elements: " + simpleDocumentWithBookmarks.getElements().size());
 
@@ -109,7 +108,8 @@ public class TestParagraphCloningParaIdScheme extends AbstractTestDocX {
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
 						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
 								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
-			} else {
+			}
+			else {
 				System.out.println("* Element " + element);
 			}
 		}

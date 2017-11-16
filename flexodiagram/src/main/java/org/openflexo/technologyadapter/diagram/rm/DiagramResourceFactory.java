@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -42,7 +42,8 @@ import org.openflexo.xml.XMLRootElementInfo;
  * @author sylvain
  *
  */
-public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResource, Diagram, DiagramTechnologyAdapter, DiagramFactory> {
+public class DiagramResourceFactory
+		extends TechnologySpecificPamelaResourceFactory<DiagramResource, Diagram, DiagramTechnologyAdapter, DiagramFactory> {
 
 	private static final Logger logger = Logger.getLogger(DiagramResourceFactory.class.getPackage().getName());
 
@@ -76,8 +77,8 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 	}
 
 	public <I> DiagramResource makeDiagramResource(String baseName, String uri, DiagramSpecificationResource diagramSpecificationResource,
-			RepositoryFolder<DiagramResource, I> folder, TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager,
-			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
+			RepositoryFolder<DiagramResource, I> folder, boolean createEmptyContents)
+			throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> rc = folder.getResourceRepository().getResourceCenter();
 
@@ -86,28 +87,27 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
 
-		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, baseName, uri, true);
+		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, baseName, uri, true);
 		newDiagramResource.setMetaModelResource(diagramSpecificationResource);
 
 		return newDiagramResource;
 	}
 
 	@Override
-	protected <I> DiagramResource registerResource(DiagramResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> DiagramResource registerResource(DiagramResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the DiagramRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getDiagramRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getDiagramRepository(resourceCenter));
 
 		return resource;
 	}
 
 	@Override
-	protected <I> DiagramResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		DiagramResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> DiagramResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		DiagramResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 
 		DiagramInfo vmiInfo = findDiagramInfo(returned, resourceCenter);
 		if (vmiInfo != null) {
@@ -126,8 +126,8 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 				returned.setModelVersion(CURRENT_MODEL_VERSION);
 			}
 			if (StringUtils.isNotEmpty(vmiInfo.diagramSpecificationURI)) {
-				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) technologyContextManager
-						.getResourceWithURI(vmiInfo.diagramSpecificationURI);
+				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) getTechnologyContextManager(
+						resourceCenter.getServiceManager()).getResourceWithURI(vmiInfo.diagramSpecificationURI);
 				if (dsResource == null) {
 					// DiagramSpecificationResource not found yet, but give a chance to lookup later
 					// We stored the URI of DiagramSpecification

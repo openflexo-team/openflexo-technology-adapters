@@ -21,11 +21,11 @@
 package org.openflexo.technologyadapter.docx;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -54,7 +54,6 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceFactory;
  */
 
 @DeclareModelSlots({ DocXModelSlot.class })
-@DeclareRepositoryType({ DocXDocumentRepository.class })
 @DeclareResourceTypes({ DocXDocumentResourceFactory.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
 public class DocXTechnologyAdapter extends TechnologyAdapter {
@@ -239,7 +238,12 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public <I> DocXDocumentRepository<I> getDocXDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		DocXDocumentRepository<I> returned = resourceCenter.retrieveRepository(DocXDocumentRepository.class, this);
 		if (returned == null) {
-			returned = new DocXDocumentRepository<>(this, resourceCenter);
+			try {
+				returned = DocXDocumentRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);
 		}
 		return returned;
@@ -302,12 +306,11 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 			relativePath = File.separator + relativePath;
 		}
 
-		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
+		File docXFile = new File(resourceCenter.getRootDirectory() + relativePath, filename);
 
 		DocXDocumentResource docXDocumentResource = null;
 		try {
-			docXDocumentResource = getDocXDocumentResourceFactory().makeResource(docXFile, resourceCenter, getTechnologyContextManager(),
-					true);
+			docXDocumentResource = getDocXDocumentResourceFactory().makeResource(docXFile, resourceCenter, true);
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		} catch (ModelDefinitionException e) {

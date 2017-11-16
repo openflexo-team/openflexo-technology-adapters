@@ -32,8 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
@@ -46,7 +45,8 @@ import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
  * @author sylvain
  *
  */
-public class FreeplaneResourceFactory extends FlexoResourceFactory<IFreeplaneResource, IFreeplaneMap, FreeplaneTechnologyAdapter> {
+public class FreeplaneResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<IFreeplaneResource, IFreeplaneMap, FreeplaneTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(FreeplaneResourceFactory.class.getPackage().getName());
 
@@ -110,78 +110,20 @@ public class FreeplaneResourceFactory extends FlexoResourceFactory<IFreeplaneRes
 	}
 
 	@Override
-	protected <I> IFreeplaneResource registerResource(IFreeplaneResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<FreeplaneTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> IFreeplaneResource registerResource(IFreeplaneResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the FreeplaneResourceRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getFreeplaneResourceRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getFreeplaneResourceRepository(resourceCenter));
 
 		return resource;
 	}
 
 	@Override
-	protected <I> IFreeplaneResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<FreeplaneTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		IFreeplaneResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> IFreeplaneResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		IFreeplaneResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 		return returned;
 	}
-
-	/*public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
-			final FreeplaneTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			final ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, IFreeplaneResource.class));
-			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
-	
-			returned.initName(modelFile.getName());
-			// returned.setFile(modelFile);
-	
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-	
-			returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-	
-		} catch (final ModelDefinitionException e) {
-			final String msg = "Error while initializing Freeplane model resource";
-			LOGGER.log(Level.SEVERE, msg, e);
-		}
-		return null;
-	}
-	
-	public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
-			final FreeplaneTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			final ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, IFreeplaneResource.class));
-			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
-			returned.initName(modelFile.getName());
-			// returned.setFile(modelFile);
-	
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-	
-			returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (final ModelDefinitionException e) {
-			final String msg = "Error while initializing Freeplane model resource";
-			LOGGER.log(Level.SEVERE, msg, e);
-		}
-		return null;
-	}*/
-
 }
