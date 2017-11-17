@@ -387,7 +387,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// We ignore .diagram files inside a .DIAGRAM_SPECIFICATION_SUFFIX
 		// Otherwise, both factories will register the same URI > URI clash !!!
 		if (resourceCenter.retrieveName(contents).endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
-			if (isContainedInDirectoryWithSuffix(resourceCenter, contents,
+			if (FlexoResourceCenter.isContainedInDirectoryWithSuffix(resourceCenter, contents,
 					DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
 				return true;
 			}
@@ -399,7 +399,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (resourceCenter.isDirectory(contents)) {
-			if (isContainedInDirectoryWithSuffix(resourceCenter, contents,
+			if (FlexoResourceCenter.isContainedInDirectoryWithSuffix(resourceCenter, contents,
 					DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
 				return true;
 			}
