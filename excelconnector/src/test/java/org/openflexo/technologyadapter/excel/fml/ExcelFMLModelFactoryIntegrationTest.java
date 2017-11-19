@@ -38,7 +38,11 @@
 
 package org.openflexo.technologyadapter.excel.fml;
 
-import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.logging.Logger;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -50,18 +54,12 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
-import java.util.logging.Logger;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * Test instanciation of FMLModelFactory<br>
  * Here the model factory is instanciated with all FML and FML@RT technology adapters
  * 
  */
 @RunWith(OrderedRunner.class)
-@Ignore
 public class ExcelFMLModelFactoryIntegrationTest extends AbstractModelFactoryIntegrationTestCase {
 
 	private static final Logger logger = FlexoLogger.getLogger(ExcelFMLModelFactoryIntegrationTest.class.getPackage().getName());

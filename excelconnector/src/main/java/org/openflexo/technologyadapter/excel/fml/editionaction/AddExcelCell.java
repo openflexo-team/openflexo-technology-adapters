@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -60,7 +59,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.CellType;
+import org.openflexo.technologyadapter.excel.model.ExcelCell.ExcelCellImpl.CellType;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -197,16 +196,17 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 					// If this is possible, create the cell
 					if (columnIndex != null) {
 						if (excelRow != null) {
-							Cell cell = null;
 							Object value = getValue().getBindingValue(evaluationContext);
 							// If this cell exists, just get it
-							if (excelRow.getCellAt(columnIndex) != null) {
-								excelCell = excelRow.getCellAt(columnIndex);
+							if (excelRow.getExcelCellAt(columnIndex) != null) {
+								excelCell = excelRow.getExcelCellAt(columnIndex);
 							}
 							else {
-								cell = excelRow.getRow().createCell(columnIndex);
-								excelCell = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelCellToCell(cell,
-										excelRow, null);
+								excelCell = excelRow.createCellAt(columnIndex);
+								/*Cell cell = excelRow.getRow().createCell(columnIndex);
+								BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelRow.getResourceData().getResource())
+										.getConverter();
+								excelCell = converter.convertExcelCellToCell(cell, excelRow, null);*/
 							}
 							if (value != null) {
 								excelCell.setCellValue(value);
@@ -330,7 +330,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		public List<CellType> getAvailableCellTypes() {
 			if (availableCellTypes == null) {
 				availableCellTypes = new Vector<>();
-				for (CellType cellType : ExcelCell.CellType.values()) {
+				for (CellType cellType : CellType.values()) {
 					availableCellTypes.add(cellType);
 				}
 			}

@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -125,17 +124,19 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				Workbook wb = modelSlotInstance.getAccessedResourceData().getWorkbook();
-				Sheet sheet = null;
+				// Sheet sheet = null;
 				try {
 					if (wb != null) {
 						String name = getSheetName().getBindingValue(evaluationContext);
 						if (name != null) {
 							// Create or retrieve this sheet
-							sheet = retrieveOrCreateSheet(wb, name);
+							result = modelSlotInstance.getAccessedResourceData().getConverter().newSheet(name, getOverride());
+
+							// sheet = retrieveOrCreateSheet(wb, name);
 							// Instanciate Wrapper.
-							result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
-									modelSlotInstance.getAccessedResourceData(), null);
-							modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
+							// result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
+							// modelSlotInstance.getAccessedResourceData(), null);
+							// modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
 							modelSlotInstance.getAccessedResourceData().setIsModified();
 						}
 						else {
@@ -161,31 +162,6 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 
 			return result;
 
-		}
-
-		// Create an Excel Sheet or get the existing one.
-		private Sheet retrieveOrCreateSheet(Workbook wb, String name) {
-			Sheet sheet = null;
-			// A sheet with this name already exists
-			if (wb.getSheet(name) != null) {
-				if (override) {
-					// Override it
-					wb.removeSheetAt(wb.getSheetIndex(name));
-					sheet = wb.createSheet(name);
-					logger.info("Override excel sheet with the name " + name);
-				}
-				else {
-					// Retrieve the existing one
-					sheet = wb.getSheet(name);
-					logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
-				}
-			}
-			else {
-				// Create a new one
-				sheet = wb.createSheet(name);
-				logger.info("Create a new excel sheet with the name " + name);
-			}
-			return sheet;
 		}
 
 		@Override

@@ -595,7 +595,7 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		protected Font getFont(CellStyle cellStyle) {
-			org.apache.poi.ss.usermodel.Font poiFont = sheet.getWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
+			org.apache.poi.ss.usermodel.Font poiFont = sheet.getExcelWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
 			int fontStyle = Font.PLAIN;
 			if (poiFont.getItalic()) {
 				fontStyle = Font.PLAIN;
@@ -607,7 +607,7 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		protected Color getForegroundColor(CellStyle cellStyle) {
-			org.apache.poi.ss.usermodel.Font poiFont = sheet.getWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
+			org.apache.poi.ss.usermodel.Font poiFont = sheet.getExcelWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
 			return getFontColor(poiFont);
 		}
 
@@ -616,7 +616,7 @@ public class ExcelSheetView extends JPanel {
 			int green = 0;
 			int blue = 0;
 			if (poiFont instanceof HSSFFont) {
-				HSSFColor color = ((HSSFFont) poiFont).getHSSFColor((HSSFWorkbook) sheet.getWorkbook().getWorkbook());
+				HSSFColor color = ((HSSFFont) poiFont).getHSSFColor((HSSFWorkbook) sheet.getExcelWorkbook().getWorkbook());
 				if (color == null) {
 					return new Color(0, 0, 0);
 				}
@@ -660,7 +660,7 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		private Color getColor(int colorIdx) {
-			HSSFPalette palette = ((HSSFWorkbook) sheet.getWorkbook().getWorkbook()).getCustomPalette();
+			HSSFPalette palette = ((HSSFWorkbook) sheet.getExcelWorkbook().getWorkbook()).getCustomPalette();
 			HSSFColor color = palette.getColor(colorIdx);
 			if (color == null) {
 				return null;

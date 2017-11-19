@@ -38,14 +38,25 @@
 
 package org.openflexo.technologyadapter.excel.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 
 /**
  * Represents an Excel sheet, implemented as a wrapper of a POI sheet
@@ -53,136 +64,289 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
  * @author vincent, sylvain
  * 
  */
-public class ExcelSheet extends ExcelObject {
-	private Sheet sheet;
-	private ExcelWorkbook workbook;
-	private List<ExcelRow> excelRows;
-	private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
-	private FormulaEvaluator evaluator;
+@ModelEntity
+@ImplementationClass(value = ExcelSheet.ExcelSheetImpl.class)
+@XMLElement
+public interface ExcelSheet extends ExcelObject {
 
-	public Sheet getSheet() {
-		return sheet;
-	}
+	@PropertyIdentifier(type = ExcelWorkbook.class)
+	public static final String EXCEL_WORKBOOK_KEY = "excelWorkbook";
+	@PropertyIdentifier(type = Sheet.class)
+	public static final String SHEET_KEY = "sheet";
+	@PropertyIdentifier(type = ExcelRow.class, cardinality = Cardinality.LIST)
+	public static final String EXCEL_ROWS_KEY = "excelRows";
 
-	public ExcelSheet(Sheet sheet, ExcelWorkbook workbook, ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		this.sheet = sheet;
-		this.workbook = workbook;
-		excelRows = new ArrayList<ExcelRow>();
-		evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
-	}
+	/**
+	 * Return name of the sheet
+	 * 
+	 * @return
+	 */
+	public String getName();
 
-	public FormulaEvaluator getEvaluator() {
-		return evaluator;
-	}
+	/**
+	 * Return {@link ExcelWorkbook} where this {@link ExcelSheet} is defined
+	 * 
+	 * @return
+	 */
+	@Getter(value = EXCEL_WORKBOOK_KEY)
+	public ExcelWorkbook getExcelWorkbook();
 
-	@Override
-	public String getName() {
-		return sheet.getSheetName();
-	}
+	/**
+	 * Sets {@link ExcelWorkbook} where this {@link ExcelSheet} is defined
+	 * 
+	 * @param workbook
+	 */
+	@Setter(EXCEL_WORKBOOK_KEY)
+	public void setExcelWorkbook(ExcelWorkbook workbook);
 
-	public ExcelWorkbook getWorkbook() {
-		return workbook;
-	}
+	/**
+	 * Return sheet wrapped by this {@link ExcelSheet}
+	 * 
+	 * @return
+	 */
+	@Getter(value = SHEET_KEY, ignoreType = true)
+	public Sheet getSheet();
 
-	public List<ExcelRow> getExcelRows() {
-		return excelRows;
-	}
+	/**
+	 * Sets sheet wrapped by this {@link ExcelSheet}
+	 * 
+	 * @param sheet
+	 */
+	@Setter(SHEET_KEY)
+	public void setSheet(Sheet sheet);
 
-	public void addToExcelRows(ExcelRow newExcelRow) {
-		this.excelRows.add(newExcelRow);
-		getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-	}
+	/**
+	 * Return all {@link ExcelRow} defined in this {@link ExcelSheet}
+	 * 
+	 * @return
+	 */
+	@Getter(value = EXCEL_ROWS_KEY, cardinality = Cardinality.LIST, inverse = ExcelRow.EXCEL_SHEET_KEY)
+	@XMLElement
+	@Embedded
+	@CloningStrategy(StrategyType.CLONE)
+	public List<ExcelRow> getExcelRows();
 
-	public void insertToExcelRows(ExcelRow newExcelRow, int index) {
-		this.excelRows.add(index, newExcelRow);
-		getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-	}
+	@Setter(EXCEL_ROWS_KEY)
+	public void setExcelRows(List<ExcelRow> excelRows);
 
-	public void removeFromExcelRows(ExcelRow deletedExcelRow) {
-		this.excelRows.remove(deletedExcelRow);
-		getWorkbook().removeFromAccessibleExcelObjects(deletedExcelRow);
-	}
+	@Adder(EXCEL_ROWS_KEY)
+	@PastingPoint
+	public void addToExcelRows(ExcelRow anExcelRow);
 
-	public int getMaxColNumber() {
-		int returned = 0;
-		for (ExcelRow row : getExcelRows()) {
-			if (row.getRow() != null && row.getRow().getLastCellNum() > returned) {
-				returned = row.getRow().getLastCellNum();
+	@Remover(EXCEL_ROWS_KEY)
+	public void removeFromExcelRows(ExcelRow anExcelRow);
+
+	public FormulaEvaluator getEvaluator();
+
+	public ExcelRow getRowAt(int row);
+
+	public ExcelCell getCellAt(int row, int column);
+
+	public Object getCellValue(int row, int column);
+
+	public void setCellValue(int row, int column, String value);
+
+	public Object getCellValue(String column, String row);
+
+	public void setCellValue(String column, String row, String value);
+
+	public ExcelCell getCellFromName(String name);
+
+	public Object getCellValueFromName(String name);
+
+	public void setCellValueFromName(String name, String value);
+
+	public void setCellValue(ExcelCell cell, String value);
+
+	public ExcelRow createRowAt(int rowIndex);
+
+	public int getMaxColNumber();
+
+	/**
+	 * Default base implementation for {@link ExcelSheet}
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public static abstract class ExcelSheetImpl extends ExcelObjectImpl implements ExcelSheet {
+		// private Sheet sheet;
+		// private ExcelWorkbook workbook;
+		// private List<ExcelRow> excelRows;
+
+		private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
+		private FormulaEvaluator evaluator;
+
+		public ExcelSheetImpl() {
+		}
+
+		@Override
+		public ExcelWorkbook getResourceData() {
+			return getExcelWorkbook();
+		}
+
+		@Override
+		public void setExcelWorkbook(ExcelWorkbook workbook) {
+			performSuperSetter(EXCEL_WORKBOOK_KEY, workbook);
+			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+		}
+
+		/*@Override
+		public Sheet getSheet() {
+			return sheet;
+		}*/
+
+		/*public ExcelSheet(Sheet sheet, ExcelWorkbook workbook, ExcelTechnologyAdapter adapter) {
+			super(adapter);
+			this.sheet = sheet;
+			this.workbook = workbook;
+			excelRows = new ArrayList<ExcelRow>();
+			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+		}*/
+
+		@Override
+		public FormulaEvaluator getEvaluator() {
+			return evaluator;
+		}
+
+		@Override
+		public String getName() {
+			return getSheet().getSheetName();
+		}
+
+		/*public ExcelWorkbook getWorkbook() {
+			return workbook;
+		}*/
+
+		/*@Override
+		public List<ExcelRow> getExcelRows() {
+			return excelRows;
+		}
+		
+		@Override
+		public void addToExcelRows(ExcelRow newExcelRow) {
+			this.excelRows.add(newExcelRow);
+			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
+		}
+		
+		public void insertToExcelRows(ExcelRow newExcelRow, int index) {
+			this.excelRows.add(index, newExcelRow);
+			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
+		}
+		
+		@Override
+		public void removeFromExcelRows(ExcelRow deletedExcelRow) {
+			this.excelRows.remove(deletedExcelRow);
+			getWorkbook().removeFromAccessibleExcelObjects(deletedExcelRow);
+		}*/
+
+		@Override
+		public int getMaxColNumber() {
+			int returned = 0;
+			for (ExcelRow row : getExcelRows()) {
+				if (row.getRow() != null && row.getRow().getLastCellNum() > returned) {
+					returned = row.getRow().getLastCellNum();
+				}
+			}
+			return returned;
+		}
+
+		private boolean isConverting = false;
+
+		private void ensureConversion() {
+			if (isConverting) {
+				return;
+			}
+			try {
+				isConverting = true;
+				getExcelWorkbook().getConverter().getSheetReference(getSheet()).ensureConversion();
+			} finally {
+				isConverting = false;
 			}
 		}
-		return returned;
-	}
 
-	public ExcelRow getRowAt(int row) {
-		if (row < 0) {
-			return null;
+		@Override
+		public List<ExcelRow> getExcelRows() {
+			ensureConversion();
+			return (List<ExcelRow>) performSuperGetter(EXCEL_ROWS_KEY);
 		}
-		// Append missing rows
-		while (getExcelRows().size() <= row) {
-			addToExcelRows(new ExcelRow(null, this, getTechnologyAdapter()));
+
+		@Override
+		public ExcelRow getRowAt(int row) {
+			if (row < 0) {
+				return null;
+			}
+			// Append missing rows
+			while (getExcelRows().size() <= row) {
+				addToExcelRows(getFactory().makeExcelRow());
+			}
+			return getExcelRows().get(row);
 		}
-		return getExcelRows().get(row);
-	}
 
-	public ExcelCell getCellAt(int row, int column) {
-		if (row < 0) {
-			return null;
+		@Override
+		public ExcelCell getCellAt(int row, int column) {
+			if (row < 0) {
+				return null;
+			}
+			if (column < 0) {
+				return null;
+			}
+			return getRowAt(row).getExcelCellAt(column);
 		}
-		if (column < 0) {
-			return null;
+
+		@Override
+		public Object getCellValue(int row, int column) {
+			ExcelCell cell = getCellAt(row, column);
+			return cell.getCellValue();
 		}
-		return getRowAt(row).getCellAt(column);
-	}
 
-	public Object getCellValue(int row, int column) {
-		ExcelCell cell = getCellAt(row, column);
-		return cell.getCellValue();
-	}
+		@Override
+		public void setCellValue(int row, int column, String value) {
+			ExcelCell cell = getCellAt(row, column);
+			cell.setCellValue(value);
+		}
 
-	public void setCellValue(int row, int column, String value) {
-		ExcelCell cell = getCellAt(row, column);
-		cell.setCellValue(value);
-	}
+		@Override
+		public Object getCellValue(String column, String row) {
+			ExcelCell cell = getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(column));
+			return cell.getCellValue();
+		}
 
-	public Object getCellValue(String column, String row) {
-		ExcelCell cell = getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(column));
-		return cell.getCellValue();
-	}
+		@Override
+		public void setCellValue(String column, String row, String value) {
+			ExcelCell cell = getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(column));
+			cell.setCellValue(value);
+		}
 
-	public void setCellValue(String column, String row, String value) {
-		ExcelCell cell = getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(column));
-		cell.setCellValue(value);
-	}
+		@Override
+		public ExcelCell getCellFromName(String name) {
+			Pattern id = Pattern.compile(CELL_NAME_REGEX);
+			Matcher makeMatchId = id.matcher(name);
+			makeMatchId.find();
+			String col = makeMatchId.group(1);
+			String row = makeMatchId.group(2);
+			return getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(col));
+		}
 
-	public ExcelCell getCellFromName(String name) {
-		Pattern id = Pattern.compile(CELL_NAME_REGEX);
-		Matcher makeMatchId = id.matcher(name);
-		makeMatchId.find();
-		String col = makeMatchId.group(1);
-		String row = makeMatchId.group(2);
-		return getCellAt(Integer.parseInt(row) - 1, ExcelColumn.getColumnIndex(col));
-	}
+		@Override
+		public Object getCellValueFromName(String name) {
+			return getCellFromName(name).getCellValue();
+		}
 
-	public Object getCellValueFromName(String name) {
-		return getCellFromName(name).getCellValue();
-	}
+		@Override
+		public void setCellValueFromName(String name, String value) {
+			getCellFromName(name).setCellValue(value);
+		}
 
-	public void setCellValueFromName(String name, String value) {
-		getCellFromName(name).setCellValue(value);
-	}
+		@Override
+		public void setCellValue(ExcelCell cell, String value) {
+			cell.setCellValue(value);
+		}
 
-	public void setCellValue(ExcelCell cell, String value) {
-		cell.setCellValue(value);
-	}
+		@Override
+		public ExcelRow createRowAt(int rowIndex) {
+			BasicExcelModelConverter converter = getResourceData().getConverter();
+			return converter.getSheetReference(getSheet()).newRow(rowIndex);
+		}
 
-	@Override
-	public String getUri() {
-		return getWorkbook().getUri() + "/" + getName();
-	}
-
-	@Override
-	public String toString() {
-		return getName();
 	}
 }

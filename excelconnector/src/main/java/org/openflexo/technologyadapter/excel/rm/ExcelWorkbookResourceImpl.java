@@ -48,40 +48,55 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.StreamIODelegate;
-import org.openflexo.foundation.resource.FlexoResourceImpl;
+import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.StreamIODelegate;
+import org.openflexo.technologyadapter.excel.model.BasicExcelModelConverter;
+import org.openflexo.technologyadapter.excel.model.ExcelModelFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
-import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.IProgress;
 
 /**
- * Represents the resource associated to a {@link ExcelModel}
+ * Represents the resource associated to a {@link ExcelWorkbook}
  * 
  * @author sguerin
  * 
  */
-public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelWorkbook>
+public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<ExcelWorkbook, ExcelModelFactory>
 		implements ExcelWorkbookResource {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceImpl.class.getPackage().getName());
 
 	private boolean isLoaded = false;
 
+	private final BasicExcelModelConverter converter;
+
+	public ExcelWorkbookResourceImpl() {
+		converter = new BasicExcelModelConverter(this);
+	}
+
+	@Override
+	public BasicExcelModelConverter getConverter() {
+		return converter;
+	}
+
 	/**
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not
-	 *            immediately available.
+	 *            a progress monitor in case the resource data is not immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
 	 * @throws ResourceDependencyLoopException
@@ -89,25 +104,24 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * @throws FlexoException
 	 */
 	@Override
-	public ExcelWorkbook loadResourceData(IProgress progress) throws FlexoException {
+	public ExcelWorkbook loadResourceData(IProgress progress) throws IOFlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
-			throw new FlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
+			throw new IOFlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
 		}
 
 		ExcelWorkbook resourceData = null;
 		try {
-			resourceData = ExcelWorkbookResourceFactory.createExcelWorkbook(getFlexoIOStreamDelegate());
+			resourceData = createOrLoadExcelWorkbook(getFlexoIOStreamDelegate());
 			getInputStream().close();
 		} catch (OfficeXmlFileException e) {
-			throw new InvalidExcelFormatException(this, e);
+			throw new IOFlexoException(e.getMessage());
 		} catch (IOException e) {
-			throw new FlexoException(e);
+			throw new IOFlexoException(e);
 		}
 
 		if (resourceData == null) {
-			logger.warning(
-					"canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
+			logger.warning("canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
 
@@ -180,6 +194,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * 
 	 * @return
 	 */
+	@Override
 	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
 		if (getIODelegate() instanceof StreamIODelegate) {
 			return (StreamIODelegate<?>) getIODelegate();
@@ -206,7 +221,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * 
 	 * @throws SaveResourceException
 	 */
-	@Override
+	/*@Override
 	public final void save(IProgress progress) throws SaveResourceException {
 		if (progress != null) {
 			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
@@ -218,7 +233,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 			saveResourceData(true);
 			resourceData.clearIsModified(false);
 		}
-	}
+	}*/
 
 	/**
 	 * Save current resource data to current XML resource file.<br>
@@ -226,8 +241,8 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * 
 	 * @return
 	 */
-	protected final void saveResourceData(boolean clearIsModified)
-			throws SaveResourceException, SaveResourcePermissionDeniedException {
+	/*@Override
+	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
 		// System.out.println("PamelaResourceImpl Saving " + getFile());
 		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
@@ -250,10 +265,9 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
 
-	protected void _saveResourceData(ExcelWorkbook excelWorkbook, boolean clearIsModified)
-			throws SaveResourceException {
+	protected void _saveResourceData(ExcelWorkbook excelWorkbook, boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());
@@ -290,7 +304,8 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 				throw new SaveResourceException(getIODelegate(), e);
 			}
-		} else {
+		}
+		else {
 			write(excelWorkbook.getWorkbook(), getOutputStream());
 		}
 
@@ -306,6 +321,32 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 			File localCopy = new File(file.getParentFile(), localCopyName);
 			FileUtils.copyFileToFile(file, localCopy);
 		}
+	}
+
+	@Override
+	public <I> ExcelWorkbook createOrLoadExcelWorkbook(StreamIODelegate<I> ioDelegate) {
+		Workbook wb = null;
+		ExcelWorkbook newWorkbook = null;
+		try {
+			if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xls")) {
+				wb = new HSSFWorkbook();
+				wb.createSheet("Default");
+			}
+			else if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xlsx")) {
+				wb = new XSSFWorkbook();
+				wb.createSheet("Default");
+			}
+			else {
+				wb = WorkbookFactory.create(ioDelegate.getInputStream());
+			}
+			BasicExcelModelConverter converter = getConverter();
+			newWorkbook = converter.convertExcelWorkbook(wb);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+		}
+		return newWorkbook;
 	}
 
 }

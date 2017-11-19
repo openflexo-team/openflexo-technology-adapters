@@ -48,7 +48,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
@@ -68,7 +67,6 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-@Ignore
 public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestCompareExcelSheet.class.getPackage().getName());
 
@@ -110,7 +108,7 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 									for (ExcelRow row : sheet.getExcelRows()) {
 										if (sheet != refSheet) {
 											assertNotNull(row.getRow());
-											assertNotNull(row.getCellAt(0));
+											assertNotNull(row.getExcelCellAt(0));
 											// System.out.println("row.getRow()=" + row.getRow() + " index=" + row.getRowIndex());
 											// System.out.println("refRow.getRow()=" + refRow.getRow() + " index=" + row.getRowIndex());
 											assertFalse(row.getRow() == refRow.getRow());

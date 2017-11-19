@@ -45,7 +45,6 @@ import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -62,7 +61,6 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-@Ignore
 public class TestLoadExcelDocuments extends AbstractTestExcel {
 	protected static final Logger logger = Logger.getLogger(TestLoadExcelDocuments.class.getPackage().getName());
 
@@ -94,6 +92,9 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 				}
 				assertNotNull(docResource.getLoadedResourceData());
 				System.out.println("URI of document: " + docResource.getURI());
+				for (ExcelSheet excelSheet : docResource.getLoadedResourceData().getExcelSheets()) {
+					System.out.println("Sheet " + excelSheet.getName() + " rows:" + excelSheet.getExcelRows().size());
+				}
 			}
 		}
 	}
@@ -114,27 +115,27 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		ExcelRow row3 = sheet1.getExcelRows().get(2);
 
 		assertEquals(3, row1.getExcelCells().size());
-		ExcelCell cell11 = row1.getExcelCell(0);
-		ExcelCell cell12 = row1.getExcelCell(1);
-		ExcelCell cell13 = row1.getExcelCell(2);
+		ExcelCell cell11 = row1.getExcelCellAt(0);
+		ExcelCell cell12 = row1.getExcelCellAt(1);
+		ExcelCell cell13 = row1.getExcelCellAt(2);
 		assertEquals("A", cell11.getCellValueAsString());
 		assertEquals("B", cell12.getCellValueAsString());
 		assertEquals("C", cell13.getCellValueAsString());
 
 		assertEquals(3, row2.getExcelCells().size());
-		ExcelCell cell21 = row2.getExcelCell(0);
-		ExcelCell cell22 = row2.getExcelCell(1);
-		ExcelCell cell23 = row2.getExcelCell(2);
+		ExcelCell cell21 = row2.getExcelCellAt(0);
+		ExcelCell cell22 = row2.getExcelCellAt(1);
+		ExcelCell cell23 = row2.getExcelCellAt(2);
 		assertEquals("D", cell21.getCellValueAsString());
 		assertEquals("E", cell22.getCellValueAsString());
 		assertEquals("F", cell23.getCellValueAsString());
 
 		assertEquals(5, row3.getExcelCells().size());
-		ExcelCell cell31 = row3.getExcelCell(0);
-		ExcelCell cell32 = row3.getExcelCell(1);
-		ExcelCell cell33 = row3.getExcelCell(2);
-		ExcelCell cell34 = row3.getExcelCell(3);
-		ExcelCell cell35 = row3.getExcelCell(4);
+		ExcelCell cell31 = row3.getExcelCellAt(0);
+		ExcelCell cell32 = row3.getExcelCellAt(1);
+		ExcelCell cell33 = row3.getExcelCellAt(2);
+		ExcelCell cell34 = row3.getExcelCellAt(3);
+		ExcelCell cell35 = row3.getExcelCellAt(4);
 		assertEquals(1.0, cell31.getCellValue());
 		assertEquals(2.0, cell32.getCellValue());
 		assertEquals(3.0, cell33.getCellValue());
@@ -163,11 +164,11 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		assertEquals(0, row2.getExcelCells().size());
 
 		assertEquals(5, row3.getExcelCells().size());
-		ExcelCell cell31 = row3.getExcelCell(0);
-		ExcelCell cell32 = row3.getExcelCell(1);
-		ExcelCell cell33 = row3.getExcelCell(2);
-		ExcelCell cell34 = row3.getExcelCell(3);
-		ExcelCell cell35 = row3.getExcelCell(4);
+		ExcelCell cell31 = row3.getExcelCellAt(0);
+		ExcelCell cell32 = row3.getExcelCellAt(1);
+		ExcelCell cell33 = row3.getExcelCellAt(2);
+		ExcelCell cell34 = row3.getExcelCellAt(3);
+		ExcelCell cell35 = row3.getExcelCellAt(4);
 
 		System.out.println(cell31.getCellValue() + " | " + cell32.getCellValue() + " | " + cell33.getCellValue() + " | "
 				+ cell34.getCellValue() + " | " + cell35.getCellValue());
@@ -179,14 +180,14 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		assertEquals("C", cell35.getCellValue());
 
 		assertEquals(8, row4.getExcelCells().size());
-		ExcelCell cell41 = row4.getExcelCell(0);
-		ExcelCell cell42 = row4.getExcelCell(1);
-		ExcelCell cell43 = row4.getExcelCell(2);
-		ExcelCell cell44 = row4.getExcelCell(3);
-		ExcelCell cell45 = row4.getExcelCell(4);
-		ExcelCell cell46 = row4.getExcelCell(5);
-		ExcelCell cell47 = row4.getExcelCell(6);
-		ExcelCell cell48 = row4.getExcelCell(7);
+		ExcelCell cell41 = row4.getExcelCellAt(0);
+		ExcelCell cell42 = row4.getExcelCellAt(1);
+		ExcelCell cell43 = row4.getExcelCellAt(2);
+		ExcelCell cell44 = row4.getExcelCellAt(3);
+		ExcelCell cell45 = row4.getExcelCellAt(4);
+		ExcelCell cell46 = row4.getExcelCellAt(5);
+		ExcelCell cell47 = row4.getExcelCellAt(6);
+		ExcelCell cell48 = row4.getExcelCellAt(7);
 
 		System.out.println(cell41.getCellValue() + " | " + cell42.getCellValue() + " | " + cell43.getCellValue() + " | "
 				+ cell44.getCellValue() + " | " + cell45.getCellValue() + " | " + cell46.getCellValue() + " | " + cell47.getCellValue()

@@ -39,37 +39,76 @@
 package org.openflexo.technologyadapter.excel.model;
 
 import org.apache.poi.ss.util.CellReference;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 
-public class ExcelColumn extends ExcelObject {
-	
-	private int colNumber;
-	
-	public static String getColumnLetters(int colIndex){
+/**
+ * Represents an Excel column
+ * 
+ * @author vincent, sylvain
+ * 
+ */
+@ModelEntity
+@ImplementationClass(value = ExcelCell.ExcelCellImpl.class)
+@XMLElement
+public interface ExcelColumn extends ExcelObject {
+
+	public static String getColumnLetters(int colIndex) {
 		return CellReference.convertNumToColString(colIndex);
 	}
-	
-	public static int getColumnIndex(String columnLetter){
+
+	public static int getColumnIndex(String columnLetter) {
 		return CellReference.convertColStringToIndex(columnLetter.toUpperCase());
 	}
 
-	public ExcelColumn(int colNumber, ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		this.colNumber = colNumber;
-	}
+	@PropertyIdentifier(type = Integer.class)
+	public static final String COLUMN_INDEX = "columnIndex";
+	@PropertyIdentifier(type = ExcelSheet.class)
+	public static final String EXCEL_SHEET_KEY = "excelSheet";
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Column"+colNumber;
-	}
+	/**
+	 * Return {@link ExcelSheet} where this {@link ExcelRow} is defined
+	 * 
+	 * @return
+	 */
+	@Getter(value = EXCEL_SHEET_KEY)
+	public ExcelSheet getExcelSheet();
 
-	public int getColNumber() {
-		return colNumber;
-	}
+	/**
+	 * Sets {@link ExcelSheet} where this {@link ExcelRow} is defined
+	 * 
+	 * @param workbook
+	 */
+	@Setter(EXCEL_SHEET_KEY)
+	public void setExcelSheet(ExcelSheet sheet);
 
-	public void setColNumber(int colNumber) {
-		this.colNumber = colNumber;
-	}
+	/**
+	 * Get index of column beeing represented
+	 * 
+	 * @return
+	 */
+	@Getter(value = COLUMN_INDEX, defaultValue = "-1")
+	public int getColumnIndex();
 
+	/**
+	 * Sets index of column beeing represented
+	 * 
+	 * @param sheet
+	 */
+	@Setter(COLUMN_INDEX)
+	public void setColumnIndex(int index);
+
+	/**
+	 * Default base implementation for {@link ExcelColumn}
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public static abstract class ExcelColumnImpl extends ExcelObjectImpl implements ExcelColumn {
+
+	}
 }

@@ -64,7 +64,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
  * @author sylvain, vincent, Christophe
  * 
  */
-@DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
+@DeclareModelSlots({ BasicExcelModelSlot.class })
 @DeclareResourceTypes({ ExcelWorkbookResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 

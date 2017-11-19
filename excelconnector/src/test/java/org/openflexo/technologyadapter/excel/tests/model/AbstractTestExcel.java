@@ -65,7 +65,7 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 
 		System.out.println("resourceCenter=" + resourceCenter);
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/" + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "Excel" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
 		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager().getResource(documentURI, null,
