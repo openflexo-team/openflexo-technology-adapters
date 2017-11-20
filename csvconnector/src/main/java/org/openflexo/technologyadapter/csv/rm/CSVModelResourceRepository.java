@@ -39,8 +39,13 @@
 
 package org.openflexo.technologyadapter.csv.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 
@@ -50,11 +55,25 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
  * @author sylvain
  * 
  */
-public class CSVModelResourceRepository<I>
+@ModelEntity
+public interface CSVModelResourceRepository<I>
 		extends TechnologyAdapterResourceRepository<CSVModelResource, CSVTechnologyAdapter, CSVModel, I> {
 
-	public CSVModelResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
-		super(adapter, resourceCenter);
+	public static <I> CSVModelResourceRepository<I> instanciateNewRepository(CSVTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(CSVModelResourceRepository.class);
+			CSVModelResourceRepository<I> newRepository = factory.newInstance(CSVModelResourceRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -23,8 +23,7 @@ package org.openflexo.technologyadapter.powerpoint.rm;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
@@ -36,7 +35,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  *
  */
 public class PowerpointSlideshowResourceFactory
-		extends FlexoResourceFactory<PowerpointSlideshowResource, PowerpointSlideshow, PowerpointTechnologyAdapter> {
+		extends TechnologySpecificFlexoResourceFactory<PowerpointSlideshowResource, PowerpointSlideshow, PowerpointTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceFactory.class.getPackage().getName());
 
@@ -64,79 +63,15 @@ public class PowerpointSlideshowResourceFactory
 	}
 
 	@Override
-	protected <I> PowerpointSlideshowResource registerResource(PowerpointSlideshowResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<PowerpointTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> PowerpointSlideshowResource registerResource(PowerpointSlideshowResource resource,
+			FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the PowerpointSlideshowRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getPowerpointSlideShowRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getPowerpointSlideShowRepository(resourceCenter));
 
 		return resource;
 	}
 
-	/*
-	
-		public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File powerpointFile,
-			PowerpointTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, PowerpointSlideshowResource.class));
-			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
-					.newInstance(PowerpointSlideshowResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(powerpointFile.getName());
-	
-			// returned.setFile(powerpointFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(powerpointFile);
-	
-			returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
-	
-			PowerpointSlideshow resourceData = new PowerpointSlideshow(technologyContextManager.getTechnologyAdapter());
-			returned.setResourceData(resourceData);
-			resourceData.setResource(returned);
-	
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static PowerpointSlideshowResource retrievePowerpointSlideshowResource(File modelFile,
-			PowerpointTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, PowerpointSlideshowResource.class));
-			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
-					.newInstance(PowerpointSlideshowResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-	
-			// returned.setFile(modelFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-	
-			returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
-	
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	 */
 }

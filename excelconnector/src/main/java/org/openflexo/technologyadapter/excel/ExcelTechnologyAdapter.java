@@ -39,11 +39,11 @@
 package org.openflexo.technologyadapter.excel;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -54,8 +54,6 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
-import org.openflexo.technologyadapter.excel.rm.ExcelMetaModelRepository;
-import org.openflexo.technologyadapter.excel.rm.ExcelModelRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
@@ -66,8 +64,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
  * @author sylvain, vincent, Christophe
  * 
  */
-@DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
-@DeclareRepositoryType({ ExcelWorkbookRepository.class, ExcelMetaModelRepository.class, ExcelModelRepository.class })
+@DeclareModelSlots({ BasicExcelModelSlot.class })
 @DeclareResourceTypes({ ExcelWorkbookResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
@@ -260,21 +257,25 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public <I> ExcelWorkbookRepository<I> getExcelWorkbookRepository(FlexoResourceCenter<I> resourceCenter) {
 		ExcelWorkbookRepository<I> returned = resourceCenter.retrieveRepository(ExcelWorkbookRepository.class, this);
 		if (returned == null) {
-			returned = new ExcelWorkbookRepository<I>(this, resourceCenter);
+			try {
+				returned = ExcelWorkbookRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);
 		}
 		return returned;
 	}
 
 	@Deprecated
-	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<?> rc, String excelFilename/*, String modelUri*/)
+	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<File> rc, String excelFilename/*, String modelUri*/)
 			throws SaveResourceException, ModelDefinitionException {
 
 		if (rc instanceof FlexoProject) {
-			File excelFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), excelFilename);
+			File excelFile = new File(((FlexoProject<File>) rc).getProjectDirectory(), excelFilename);
 
-			ExcelWorkbookResource workbookResource = getExcelWorkbookResourceFactory().makeResource(excelFile,
-					(FlexoResourceCenter<File>) rc, getTechnologyContextManager(), true);
+			ExcelWorkbookResource workbookResource = getExcelWorkbookResourceFactory().makeResource(excelFile, rc, true);
 
 			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
 			// getTechnologyContextManager(), rc);
@@ -298,7 +299,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			System.out.println("create workbook " + excelFile);
 
 			ExcelWorkbookResource workbookResource = getExcelWorkbookResourceFactory().makeResource(excelFile,
-					(FlexoResourceCenter<File>) resourceCenter, getTechnologyContextManager(), true);
+					(FlexoResourceCenter<File>) resourceCenter, true);
 			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
 			// getTechnologyContextManager(), resourceCenter);
 			// getTechnologyContextManager().registerResource(workbookResource);

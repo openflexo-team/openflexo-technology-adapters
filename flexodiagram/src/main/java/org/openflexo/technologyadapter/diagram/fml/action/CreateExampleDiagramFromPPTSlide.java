@@ -60,7 +60,8 @@ public class CreateExampleDiagramFromPPTSlide
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
 
 	public static FlexoActionFactory<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> actionType = new FlexoActionFactory<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject>(
-			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
+			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -120,26 +121,9 @@ public class CreateExampleDiagramFromPPTSlide
 				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
 		DiagramResource newDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
-				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(), true);
+				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), true);
 
 		return newDiagramResource;
 	}
 
-	/*@Override
-	public File getDiagramFile() {
-		if (super.getDiagramFile() == null) {
-			return getDefaultDiagramFile();
-		}
-		return super.getDiagramFile();
-	}
-	
-	@Override
-	public void setDiagramFile(File diagramFile) {
-		setDiagramFile(diagramFile);
-	}
-	
-	public File getDefaultDiagramFile() {
-		return new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()),
-				getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}*/
 }

@@ -42,7 +42,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -201,7 +200,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			String builtURI = null;
 
 			try {
-				builtURI = URLEncoder.encode(excelObject.getUri(), "UTF-8");
+				builtURI = URLEncoder.encode(excelObject.getSerializationIdentifier(), "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				logger.warning("Cannot process URI - Unexpected encoding error");
 				e.printStackTrace();
@@ -231,7 +230,9 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}
-					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
+					System.out.println("Tiens, la faut retrouver " + URLDecoder.decode(objectURI, "UTF-8"));
+					return null;
+					/*ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
 							.getAccessibleExcelObjects();
 					if (excelObject.size() > 100) {
 						logger.fine("WARNING: more than one hundred lines in Excel file");
@@ -240,10 +241,10 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 							return obj;
 						}
-					}
+					}*/
 				}
 
-				return o;
+				// return o;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

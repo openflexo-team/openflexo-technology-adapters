@@ -137,8 +137,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// resourceCenter.getDirectory(),
@@ -155,7 +154,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 		// We create a VM
 		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				viewPoint.getVirtualModelResource(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);

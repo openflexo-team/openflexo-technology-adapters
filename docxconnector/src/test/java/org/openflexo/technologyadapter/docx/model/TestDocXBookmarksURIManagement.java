@@ -44,13 +44,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -62,8 +64,7 @@ import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
 public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
-	protected static final Logger logger = Logger
-			.getLogger(TestDocXBookmarksURIManagement.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestDocXBookmarksURIManagement.class.getPackage().getName());
 
 	private static DocXDocument simpleDocumentWithBookmarks;
 	private static DocXParagraph titleParagraph;
@@ -96,11 +97,10 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		_editor = createProject("TestProject");
-		_project = _editor.getProject();
+		_editor = createStandaloneProject("TestProject");
+		_project = (FlexoProject<File>) _editor.getProject();
 		System.out.println("Created project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test
@@ -109,8 +109,7 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 
 		simpleDocumentWithBookmarks = getDocument("SimpleDocumentWithBookmarks.docx");
 
-		System.out
-				.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
+		System.out.println("SimpleDocumentWithBookmarks.docx:\n" + simpleDocumentWithBookmarks.debugStructuredContents());
 
 		System.out.println("Elements: " + simpleDocumentWithBookmarks.getElements().size());
 
@@ -120,7 +119,8 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
 						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
 								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
-			} else {
+			}
+			else {
 				System.out.println("* Element " + element);
 			}
 		}
@@ -146,23 +146,22 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 	}
 
 	/**
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(4)
-	public void testReloadDocument() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testReloadDocument() throws ResourceLoadingCancelledException, FlexoException, IOException {
 
 		log("testReloadDocument()");
 
 		DocXDocument documentBeforeReload = simpleDocumentWithBookmarks;
-		DocXDocumentResource documentResourceBeforeReload = (DocXDocumentResource) simpleDocumentWithBookmarks
-				.getResource();
+		DocXDocumentResource documentResourceBeforeReload = (DocXDocumentResource) simpleDocumentWithBookmarks.getResource();
 		assertNotNull(documentBeforeReload);
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
 
-		serviceManager.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory,
-						serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
 		DocXDocument reloadedDocument = getDocument("SimpleDocumentWithBookmarks.docx");

@@ -38,29 +38,42 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
- * A repository storing {@link DiagramSpecification}
+ * A repository storing {@link DiagramSpecificationResource}
  * 
  * @author sylvain
  * 
  */
-public class DiagramSpecificationRepository<I>
+@ModelEntity
+public interface DiagramSpecificationRepository<I>
 		extends MetaModelRepository<DiagramSpecificationResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter, I> {
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param adapter
-	 * @param resourceCenter
-	 */
-	public DiagramSpecificationRepository(DiagramTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
-		super(adapter, resourceCenter);
+	public static <I> DiagramSpecificationRepository<I> instanciateNewRepository(DiagramTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(DiagramSpecificationRepository.class);
+			DiagramSpecificationRepository<I> newRepository = factory.newInstance(DiagramSpecificationRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(resourceCenter.getLocales().localizedForKey("[Metamodels]"));
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

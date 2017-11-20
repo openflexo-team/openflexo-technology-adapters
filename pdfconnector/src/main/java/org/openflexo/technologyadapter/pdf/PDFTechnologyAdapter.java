@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.pdf;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -92,7 +93,12 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	public <I> PDFDocumentRepository<I> getPDFDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		PDFDocumentRepository<I> returned = resourceCenter.retrieveRepository(PDFDocumentRepository.class, this);
 		if (returned == null) {
-			returned = new PDFDocumentRepository<I>(this, resourceCenter);
+			try {
+				returned = PDFDocumentRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, PDFDocumentRepository.class, this);
 		}
 		return returned;
@@ -111,10 +117,11 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	 * @throws ModelDefinitionException
 	 * @throws SaveResourceException
 	 */
-	public PDFDocumentResource createNewPDFDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument)
+	public PDFDocumentResource createNewPDFDocumentResource(FlexoProject<File> project, String filename, boolean createEmptyDocument)
 			throws SaveResourceException, ModelDefinitionException {
 
-		return createNewPDFDocumentResource(project, File.separator + "PDF", filename, createEmptyDocument);
+		return createNewPDFDocumentResource((FileSystemBasedResourceCenter) project.getDelegateResourceCenter(), File.separator + "PDF",
+				filename, createEmptyDocument);
 
 	}
 
@@ -138,10 +145,9 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 			relativePath = File.separator + relativePath;
 		}
 
-		File pdfFile = new File(resourceCenter.getDirectory() + relativePath, filename);
+		File pdfFile = new File(resourceCenter.getRootDirectory() + relativePath, filename);
 
-		PDFDocumentResource pdfDocumentResource = getPDFDocumentResourceFactory().makeResource(pdfFile, resourceCenter,
-				getTechnologyContextManager(), true);
+		PDFDocumentResource pdfDocumentResource = getPDFDocumentResourceFactory().makeResource(pdfFile, resourceCenter, true);
 
 		return pdfDocumentResource;
 	}

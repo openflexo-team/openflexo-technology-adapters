@@ -368,8 +368,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 			I serializationArtefact = rc.createEntry(artefactPath, rc.getBaseArtefact());
 
-			DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-					diagramTA.getTechnologyContextManager(), true);
+			DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc, true);
 			newDiagramResource.setMetaModelResource(getDiagramSpecificationResource());
 
 			System.out.println("model slot = " + getAssignedFlexoProperty());

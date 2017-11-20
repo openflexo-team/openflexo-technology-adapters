@@ -39,11 +39,11 @@
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -65,7 +65,6 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceFactory;
  */
 
 @DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
-@DeclareRepositoryType({ XMLModelRepository.class, XSDMetaModelRepository.class })
 @DeclareResourceTypes({ XSDMetaModelResourceFactory.class, XMLFileResourceFactory.class })
 public class XMLTechnologyAdapter extends TechnologyAdapter {
 
@@ -95,7 +94,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return "FlexoLocalization/XMLTechnologyAdapter";
 	}
 
-
 	public String retrieveModelURI(File aModelFile, FlexoResource<XMLModel> metaModelResource) {
 		return aModelFile.toURI().toString();
 	}
@@ -119,7 +117,12 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public <I> XSDMetaModelRepository<I> getXSDMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		XSDMetaModelRepository<I> returned = resourceCenter.retrieveRepository(XSDMetaModelRepository.class, this);
 		if (returned == null) {
-			returned = new XSDMetaModelRepository<I>(this, resourceCenter);
+			try {
+				returned = XSDMetaModelRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, XSDMetaModelRepository.class, this);
 		}
 		return returned;
@@ -128,12 +131,16 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public <I> XMLModelRepository<I> getXMLModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		XMLModelRepository<I> returned = resourceCenter.retrieveRepository(XMLModelRepository.class, this);
 		if (returned == null) {
-			returned = new XMLModelRepository<I>(this, resourceCenter);
+			try {
+				returned = XMLModelRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, XMLModelRepository.class, this);
 		}
 		return returned;
 	}
-
 
 	public XMLModelFactory getXMLModelFactory() {
 		return xmlModelFactory;

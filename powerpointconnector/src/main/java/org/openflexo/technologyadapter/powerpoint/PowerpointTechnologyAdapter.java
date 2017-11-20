@@ -39,11 +39,11 @@
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -65,7 +65,6 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  * 
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
-@DeclareRepositoryType({ PowerpointSlideShowRepository.class })
 @DeclareResourceTypes({ PowerpointSlideshowResourceFactory.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 
@@ -230,7 +229,12 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	public <I> PowerpointSlideShowRepository<I> getPowerpointSlideShowRepository(FlexoResourceCenter<I> resourceCenter) {
 		PowerpointSlideShowRepository<I> returned = resourceCenter.retrieveRepository(PowerpointSlideShowRepository.class, this);
 		if (returned == null) {
-			returned = new PowerpointSlideShowRepository<I>(this, resourceCenter);
+			try {
+				returned = PowerpointSlideShowRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, PowerpointSlideShowRepository.class, this);
 		}
 		return returned;
@@ -252,15 +256,11 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 			throws SaveResourceException, ModelDefinitionException {
 
 		if (rc instanceof FlexoProject) {
-			File pptFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), pptFilename);
+			File pptFile = new File(((FlexoProject<File>) rc).getProjectDirectory(), pptFilename);
 
 			modelUri = pptFile.toURI().toString();
 
-			// PowerpointSlideshowResource slideshowResource = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(modelUri,
-			// pptFile, getTechnologyContextManager(), rc);
-
-			PowerpointSlideshowResource slideshowResource = getPowerpointSlideshowResourceFactory().makeResource(pptFile, rc,
-					getTechnologyContextManager(), true);
+			PowerpointSlideshowResource slideshowResource = getPowerpointSlideshowResourceFactory().makeResource(pptFile, rc, true);
 
 			getTechnologyContextManager().registerResource(slideshowResource);
 

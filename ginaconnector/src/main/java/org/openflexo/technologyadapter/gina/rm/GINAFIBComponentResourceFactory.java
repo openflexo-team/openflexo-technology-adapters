@@ -23,9 +23,9 @@ package org.openflexo.technologyadapter.gina.rm;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.gina.model.GINAFactory;
  *
  */
 public class GINAFIBComponentResourceFactory
-		extends PamelaResourceFactory<GINAFIBComponentResource, GINAFIBComponent, GINATechnologyAdapter, GINAFactory> {
+		extends TechnologySpecificPamelaResourceFactory<GINAFIBComponentResource, GINAFIBComponent, GINATechnologyAdapter, GINAFactory> {
 
 	private static final Logger logger = Logger.getLogger(GINAFIBComponentResourceFactory.class.getPackage().getName());
 
@@ -73,8 +73,7 @@ public class GINAFIBComponentResourceFactory
 	}
 
 	public <I> GINAFIBComponentResource makeGINAFIBComponentResource(String baseName, RepositoryFolder<GINAFIBComponentResource, I> folder,
-			TechnologyContextManager<GINATechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-			throws SaveResourceException, ModelDefinitionException {
+			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> rc = folder.getResourceRepository().getResourceCenter();
 
@@ -82,19 +81,18 @@ public class GINAFIBComponentResourceFactory
 
 		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
 
-		GINAFIBComponentResource newResource = makeResource(serializationArtefact, rc, technologyContextManager, true);
+		GINAFIBComponentResource newResource = makeResource(serializationArtefact, rc, true);
 
 		return newResource;
 	}
 
 	@Override
-	protected <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<GINATechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the GINAResourceRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getGINAResourceRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getGINAResourceRepository(resourceCenter));
 
 		return resource;
 	}

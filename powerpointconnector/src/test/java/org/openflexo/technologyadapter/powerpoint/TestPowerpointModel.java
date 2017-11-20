@@ -99,7 +99,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		resourceCenter = makeNewDirectoryResourceCenter();
 
-		resourceCenterDirectory = resourceCenter.getDirectory();
+		resourceCenterDirectory = resourceCenter.getRootDirectory();
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 		/*
@@ -157,8 +157,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		VirtualModelResource viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(), true);
 		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
 
 		// ViewPoint newViewPoint =
@@ -169,8 +168,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(testApplicationContext.getVirtualModelLibrary().getVirtualModel(VIEWPOINT_URI));
 
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource,
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME, viewPointResource, true);
 		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// VirtualModel newVirtualModel = null;
@@ -235,7 +233,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		PowerpointSlideshowResourceFactory factory = pptTechnologyAdapter.getPowerpointSlideshowResourceFactory();
 
-		modelRes = factory.makeResource(pptFile, resourceCenter, pptTechnologyAdapter.getTechnologyContextManager(), true);
+		modelRes = factory.makeResource(pptFile, resourceCenter, true);
 		// modelRes =
 		// PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(),
 		// pptFile,

@@ -20,16 +20,35 @@
 
 package org.openflexo.technologyadapter.gina.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
-public class GINAResourceRepository<I>
+@ModelEntity
+public interface GINAResourceRepository<I>
 		extends TechnologyAdapterResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent, I> {
 
-	public GINAResourceRepository(GINATechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
-		super(adapter, resourceCenter);
+	public static <I> GINAResourceRepository<I> instanciateNewRepository(GINATechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) throws IOException {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(GINAResourceRepository.class);
+			GINAResourceRepository<I> newRepository = factory.newInstance(GINAResourceRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

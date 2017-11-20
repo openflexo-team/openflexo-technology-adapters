@@ -100,7 +100,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	static EMFModelSlot newModelSlot = null;
 	static EMFModelResource umlModelResource = null;
 	static EMFMetaModelResource umlMetaModelResource = null;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 	private static FMLRTVirtualModelInstance newView;
 	private static FMLRTVirtualModelInstance newVirtualModelInstance;
 	private static FlexoConcept flexoConcept;
@@ -132,8 +132,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		VirtualModelResource newViewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
 
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
@@ -163,7 +162,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME,
-				newViewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				newViewPoint.getVirtualModelResource(), true);
 		newVirtualModel = newVMResource.getLoadedResourceData();
 
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
@@ -184,11 +183,10 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	@Test
@@ -201,8 +199,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.uml");
 			umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-					umlMetaModelResource, newResourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.uml", "myURI",
-					true);
+					umlMetaModelResource, newResourceCenter, "coucou.uml", "myURI", true);
 			/*
 			 * try { RepositoryFolder<FlexoResource<?>> modelFolder =
 			 * project.createNewFolder("Models"); umlModelResource =

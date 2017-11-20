@@ -25,9 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
@@ -44,39 +42,37 @@ public class ExampleDiagramResourceFactory extends DiagramResourceFactory {
 		super();
 	}
 
-	public <I> DiagramResource retrieveExampleDiagramResource(I serializationArtefact,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, DiagramSpecificationResource dsResource)
-					throws ModelDefinitionException, IOException {
+	public <I> DiagramResource retrieveExampleDiagramResource(I serializationArtefact, DiagramSpecificationResource dsResource)
+			throws ModelDefinitionException, IOException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		String name = resourceCenter.retrieveName(serializationArtefact);
 
-		DiagramResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+		DiagramResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 		returned.setURI(dsResource.getURI() + "/" + name);
 
 		dsResource.addToContents(returned);
 		dsResource.notifyContentsAdded(returned);
 
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, resourceCenter);
 
 		return returned;
 	}
 
-	public <I> DiagramResource makeExampleDiagramResource(String name, DiagramSpecificationResource dsResource,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-					throws SaveResourceException, ModelDefinitionException {
+	public <I> DiagramResource makeExampleDiagramResource(String name, DiagramSpecificationResource dsResource, boolean createEmptyContents)
+			throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		I serializationArtefact = resourceCenter.createEntry((name.endsWith(DIAGRAM_SUFFIX) ? name : (name + DIAGRAM_SUFFIX)),
 				resourceCenter.getContainer((I) dsResource.getIODelegate().getSerializationArtefact()));
 
-		DiagramResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name,
+		DiagramResource returned = initResourceForCreation(serializationArtefact, resourceCenter, name,
 				dsResource.getURI() + "/" + (name.endsWith(DIAGRAM_SUFFIX) ? name : (name + DIAGRAM_SUFFIX)));
 
 		dsResource.addToContents(returned);
 		dsResource.notifyContentsAdded(returned);
 
-		registerResource(returned, resourceCenter, technologyContextManager);
+		registerResource(returned, resourceCenter);
 
 		if (createEmptyContents) {
 			Diagram resourceData = makeEmptyResourceData(returned);

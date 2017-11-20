@@ -137,7 +137,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		return diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(newDiagramSpecificationName,
-				newDiagramSpecificationURI, getFocusedObject(), diagramTA.getTechnologyContextManager(), true);
+				newDiagramSpecificationURI, getFocusedObject(), true);
 
 	}
 

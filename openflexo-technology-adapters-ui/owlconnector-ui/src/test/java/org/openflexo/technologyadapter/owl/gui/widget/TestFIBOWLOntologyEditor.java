@@ -86,14 +86,11 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
 		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
-				.getTechnologyContextManager(owlAdapter);
-		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager()
-				.getAllRepositories(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
 		for (ResourceRepository<?, ?> ontoRep : owlRepositories) {
 			// Look for the one containing needed ontologies
-			OWLOntologyResource skosResource = (OWLOntologyResource) ontoRep
-					.getResource("http://www.w3.org/2004/02/skos/core");
+			OWLOntologyResource skosResource = (OWLOntologyResource) ontoRep.getResource("http://www.w3.org/2004/02/skos/core");
 			if (skosResource != null) {
 				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) ontoRep;
 				break;
@@ -189,8 +186,8 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	@TestOrder(6)
 	public void instanciateWidgetOnSEPELOntology() {
 
-		OWLOntologyResource sepelResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource(
-				"http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl", OWLOntology.class);
+		OWLOntologyResource sepelResource = (OWLOntologyResource) serviceManager.getResourceManager()
+				.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl", OWLOntology.class);
 
 		try {
 			sepelResource.loadResourceData(null);

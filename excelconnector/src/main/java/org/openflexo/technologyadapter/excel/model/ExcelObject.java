@@ -38,36 +38,52 @@
 
 package org.openflexo.technologyadapter.excel.model;
 
-import org.openflexo.foundation.DefaultFlexoObject;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
-public abstract class ExcelObject extends DefaultFlexoObject implements TechnologyObject<ExcelTechnologyAdapter> {
-	
-	private final ExcelTechnologyAdapter technologyAdapter;
+/**
+ * Common API for all objects involved in Excel model
+ * 
+ * @author sylvain
+ *
+ */
+@ModelEntity(isAbstract = true)
+public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkbook>, TechnologyObject<ExcelTechnologyAdapter> {
 
-	private String uri;
-
-	public ExcelObject(ExcelTechnologyAdapter adapter) {
-		super();
-		technologyAdapter = adapter;
-	}
+	public String getSerializationIdentifier();
 
 	/**
-	 * Name of Object.
+	 * Default base implementation for {@link ExcelObject}
 	 * 
-	 * @return
+	 * @author sylvain
+	 *
 	 */
-	public abstract String getName();
+	public static abstract class ExcelObjectImpl extends FlexoObjectImpl implements ExcelObject {
 
-	@Override
-	public ExcelTechnologyAdapter getTechnologyAdapter() {
-		// TODO Auto-generated method stub
-		return technologyAdapter;
+		private static final Logger logger = Logger.getLogger(ExcelObjectImpl.class.getPackage().getName());
+
+		@Override
+		public ExcelTechnologyAdapter getTechnologyAdapter() {
+			if (getResourceData() != null && getResourceData().getResource() != null) {
+				return ((ExcelWorkbookResource) getResourceData().getResource()).getTechnologyAdapter();
+			}
+			return null;
+		}
+
+		public ExcelModelFactory getFactory() {
+			return ((ExcelWorkbookResource) getResourceData().getResource()).getFactory();
+		}
+
+		@Override
+		public final String getSerializationIdentifier() {
+			return ((ExcelWorkbookResource) getResourceData().getResource()).getConverter().toSerializationIdentifier(this);
+		}
+
 	}
-
-	public String getUri() {
-		return uri;
-	}
-
 }

@@ -46,6 +46,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -56,6 +57,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
@@ -288,11 +290,10 @@ public class TestLibrary extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testCreateProject() {
-		_editor = createProject("TestProject");
-		_project = _editor.getProject();
+		_editor = createStandaloneProject("TestProject");
+		_project = (FlexoProject<File>) _editor.getProject();
 		System.out.println("Created _project " + _project.getProjectDirectory());
 		assertTrue(_project.getProjectDirectory().exists());
-		assertTrue(_project.getProjectDataResource().getIODelegate().exists());
 	}
 
 	/**
@@ -312,8 +313,7 @@ public class TestLibrary extends AbstractTestDocX {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
@@ -363,7 +363,7 @@ public class TestLibrary extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(LIBRARY_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				viewPoint.getVirtualModelResource(), true);
 		libraryVirtualModel = newVMResource.getLoadedResourceData();
 
 		// libraryVirtualModel =
@@ -538,7 +538,7 @@ public class TestLibrary extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				viewPoint.getVirtualModelResource(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
 
 		// documentVirtualModel =
@@ -1510,10 +1510,12 @@ public class TestLibrary extends AbstractTestDocX {
 	/**
 	 * Reload _project<br>
 	 * Check that the two {@link FMLRTVirtualModelInstance} are correct and that generated document is correct
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(12)
-	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testReloadProject() throws ResourceLoadingCancelledException, FlexoException, IOException {
 
 		log("testReloadProject()");
 
@@ -1522,20 +1524,20 @@ public class TestLibrary extends AbstractTestDocX {
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
-		serviceManager.getResourceCenterService().addToResourceCenters(
-				newResourceCenter = new DirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(testResourceCenterDirectory, serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
-		System.out.println("Project dir = " + _project.getDirectory());
+		System.out.println("Project dir = " + _project.getProjectDirectory());
 
-		_editor = reloadProject(_project.getDirectory());
-		_project = _editor.getProject();
+		_editor = loadProject(_project.getProjectDirectory());
+		_project = (FlexoProject<File>) _editor.getProject();
 		assertNotNull(_editor);
 		assertNotNull(_project);
 
 		System.out.println(" _project.getAllResources()=" + _project.getAllResources());
 		System.out.println(" RM.getAllResources()=" + serviceManager.getResourceManager().getRegisteredResources());
-		assertEquals(4, _project.getAllResources().size());
+		assertEquals(5, _project.getAllResources().size());
 		// System.out.println("All resources=" + _project.getAllResources());
 		assertNotNull(_project.getResource(newView.getURI()));
 

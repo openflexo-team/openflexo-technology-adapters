@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.docx.rm;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.PamelaResourceFactory;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -37,7 +37,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFactory;
  *
  */
 public class DocXDocumentResourceFactory
-		extends PamelaResourceFactory<DocXDocumentResource, DocXDocument, DocXTechnologyAdapter, DocXFactory> {
+		extends TechnologySpecificPamelaResourceFactory<DocXDocumentResource, DocXDocument, DocXTechnologyAdapter, DocXFactory> {
 
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceFactory.class.getPackage().getName());
 
@@ -70,13 +70,12 @@ public class DocXDocumentResourceFactory
 	}
 
 	@Override
-	protected <I> DocXDocumentResource registerResource(DocXDocumentResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DocXTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> DocXDocumentResource registerResource(DocXDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the DocXDocumentRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getDocXDocumentRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getDocXDocumentRepository(resourceCenter));
 
 		return resource;
 	}

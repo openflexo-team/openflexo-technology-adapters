@@ -225,8 +225,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 
 		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// ((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
@@ -251,7 +250,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory vmFactory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = vmFactory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				viewPoint.getVirtualModelResource(), true);
 		virtualModel = newVMResource.getLoadedResourceData();
 		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel",
 		// viewPoint);
@@ -450,10 +449,12 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 
 	/**
 	 * Reload the DiagramSpecification and VirtualModel
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(8)
-	public void testReloadDiagramSpecificationAndVirtualModel() {
+	public void testReloadDiagramSpecificationAndVirtualModel() throws IOException {
 
 		log("testReloadDiagramSpecification()");
 
@@ -461,9 +462,8 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		serviceManager.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),
-						serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(newResourceCenter.getRootDirectory(), serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
 		diagramTestResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/diagram-test");
@@ -568,11 +568,11 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 	 * 
 	 * @throws FlexoException
 	 * @throws ResourceLoadingCancelledException
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(10)
-	public void testLoadViewPointAndVirtualModelFromJar() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testLoadViewPointAndVirtualModelFromJar() throws ResourceLoadingCancelledException, FlexoException, IOException {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();

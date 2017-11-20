@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -39,7 +38,8 @@ import org.openflexo.xml.XMLRootElementReader;
  * @author sylvain
  *
  */
-public class XSDMetaModelResourceFactory extends FlexoResourceFactory<XSDMetaModelResource, XMLMetaModel, XMLTechnologyAdapter> {
+public class XSDMetaModelResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<XSDMetaModelResource, XMLMetaModel, XMLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceFactory.class.getPackage().getName());
 
@@ -68,21 +68,20 @@ public class XSDMetaModelResourceFactory extends FlexoResourceFactory<XSDMetaMod
 	}
 
 	@Override
-	protected <I> XSDMetaModelResource registerResource(XSDMetaModelResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> XSDMetaModelResource registerResource(XSDMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the XSDMetaModelRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getXSDMetaModelRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getXSDMetaModelRepository(resourceCenter));
 
 		return resource;
 	}
 
 	@Override
-	protected <I> XSDMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		XSDMetaModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> XSDMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		XSDMetaModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
 
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter.getXMLRootElementInfo(serializationArtefact);
 		if (xmlRootElementInfo != null) {

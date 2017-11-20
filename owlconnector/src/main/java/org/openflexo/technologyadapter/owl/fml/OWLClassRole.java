@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.owl.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.ontology.SubClassOfClass;
 import org.openflexo.foundation.ontology.fml.ClassRole;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -69,10 +68,11 @@ public interface OWLClassRole extends ClassRole<OWLClass> {
 
 		@Override
 		public Type getType() {
-			if (getOntologicType() == null) {
+			/*if (getOntologicType() == null) {
 				return OWLClass.class;
 			}
-			return SubClassOfClass.getSubClassOfClass(getOntologicType());
+			return SubClassOfClass.getSubClassOfClass(getOntologicType());*/
+			return OWLClass.class;
 		}
 
 	}

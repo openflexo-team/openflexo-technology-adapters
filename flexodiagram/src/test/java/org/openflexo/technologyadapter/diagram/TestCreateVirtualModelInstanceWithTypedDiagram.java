@@ -43,7 +43,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	private static VirtualModel newViewPoint;
 	private static VirtualModel newVirtualModel;
 	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 	private static FMLRTVirtualModelInstance newView;
 	private static FMLRTVirtualModelInstance newVirtualModelInstance;
 
@@ -118,8 +118,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		newResourceCenter = makeNewDirectoryResourceCenter(serviceManager);
 
 		newViewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
-				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(),
-				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
 
 		// newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint",
@@ -202,12 +201,10 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	@Test
 	@TestOrder(3)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
-
 	}
 
 	/**
@@ -280,41 +277,22 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	/**
 	 * Reload project, check that everything is still ok
 	 * 
-	 * @throws FileNotFoundException
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testReloadProject() throws ResourceLoadingCancelledException, FlexoException, IOException {
 
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
-		serviceManager.getResourceCenterService()
-				.addToResourceCenters(newResourceCenter = new DirectoryResourceCenter(newResourceCenter.getDirectory(),
-						serviceManager.getResourceCenterService()));
+		serviceManager.getResourceCenterService().addToResourceCenters(newResourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(newResourceCenter.getRootDirectory(), serviceManager.getResourceCenterService()));
 		newResourceCenter.performDirectoryWatchingNow();
 
-		/*
-		 * FlexoResourceCenter<?> resourceCenter =
-		 * serviceManager.getResourceCenterService()
-		 * .getFlexoResourceCenter("http://openflexo.org/diagram-test");
-		 * 
-		 * File directory =
-		 * ResourceLocator.retrieveResourceAsFile(newViewPointResource.
-		 * getDirectory()); File newDirectory = new
-		 * File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
-		 * directory.getName()); newDirectory.mkdirs();
-		 * 
-		 * try { FileUtils.copyContentDirToDir(directory, newDirectory); // We
-		 * wait here for the thread monitoring ResourceCenters to detect // new
-		 * files ((FileSystemBasedResourceCenter)
-		 * resourceCenter).performDirectoryWatchingNow(); } catch (IOException
-		 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-		 */
-
-		editor = reloadProject(project.getDirectory());
-		project = editor.getProject();
+		editor = loadProject(project.getProjectDirectory());
+		project = (FlexoProject<File>) editor.getProject();
 		assertNotNull(editor);
 		assertNotNull(project);
 		FMLRTVirtualModelInstanceResource newViewResource = project.getVirtualModelInstanceRepository()

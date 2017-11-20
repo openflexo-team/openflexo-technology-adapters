@@ -240,8 +240,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 			DiagramResource newDiagramResource;
 			try {
-				newDiagramResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
+				newDiagramResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc, diagramName, diagramUri, true);
 				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newDiagramResource;
 			} catch (SaveResourceException e) {
@@ -269,7 +268,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			DiagramResource newDiagramResource;
 			try {
 				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
+						diagramName, diagramUri, true);
 				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newDiagramResource;
 			} catch (SaveResourceException e) {

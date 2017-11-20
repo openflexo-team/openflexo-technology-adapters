@@ -144,12 +144,12 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 		// templateResource.getFlexoIODelegate()).getFile().getParent(),
 		// "Generated.docx");
 
-		File f = new File(newResourceCenter.getDirectory(), "Generated.docx");
+		File f = new File(newResourceCenter.getRootDirectory(), "Generated.docx");
 
 		System.out.println("Generating " + f);
 		technologicalAdapter.setDefaultIDStrategy(IdentifierManagementStrategy.ParaId);
 		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory().makeResource(f,
-				newResourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
+				newResourceCenter, false);
 		// FlexoResource<DocXDocument> generatedResource =
 		// DocXDocumentResourceImpl.makeDocXDocumentResource(f,
 		// technologicalAdapter.getTechnologyContextManager(), resourceCenter,

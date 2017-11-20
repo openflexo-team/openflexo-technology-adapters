@@ -115,7 +115,8 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		DiagramPalette returned = super.loadResourceData(progress);
 		// returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
 		// returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
-		if (!getContainer().getDiagramSpecification().getPalettes().contains(returned)) {
+		if (getContainer() != null && getContainer().getDiagramSpecification() != null
+				&& !getContainer().getDiagramSpecification().getPalettes().contains(returned)) {
 			getContainer().getDiagramSpecification().addToPalettes(returned);
 			setChanged();
 			notifyObservers(new DataModification("diagramPalette", null, returned));

@@ -159,8 +159,7 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 
 			EMFModelResource newEMFModelResource;
 			try {
-				newEMFModelResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						emfTA.getTechnologyContextManager(), filename, modelUri, true);
+				newEMFModelResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc, filename, modelUri, true);
 				newEMFModelResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newEMFModelResource;
 			} catch (SaveResourceException e) {
@@ -181,8 +180,7 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 				File modelFile = new File(modelDirectory, filename);
 				try {
 					return getModelSlotTechnologyAdapter().getEMFModelResourceFactory().makeResource(modelFile,
-							(FlexoResourceCenter<File>) resourceCenter, getModelSlotTechnologyAdapter().getTechnologyContextManager(),
-							true);
+							(FlexoResourceCenter<File>) resourceCenter, true);
 				} catch (SaveResourceException e) {
 					e.printStackTrace();
 				} catch (ModelDefinitionException e) {

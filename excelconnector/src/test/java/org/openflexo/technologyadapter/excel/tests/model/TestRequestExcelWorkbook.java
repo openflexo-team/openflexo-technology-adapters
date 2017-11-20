@@ -42,10 +42,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
@@ -64,15 +64,14 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-@Ignore
 public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestRequestExcelWorkbook.class.getPackage().getName());
 
 	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static FlexoProject<File> project;
 	private static ExcelWorkbookResource workbook;
 	private static String baseUrl;
-	private static ExcelWorkbookRepository excelWorkbookRepository;
+	private static ExcelWorkbookRepository<File> excelWorkbookRepository;
 
 	@Test
 	@TestOrder(1)
@@ -83,11 +82,10 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
+		editor = createStandaloneProject("TestProject");
+		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getIODelegate().exists());
 
 		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
 				.getFlexoResourceCenter("http://openflexo.org/excel-test");

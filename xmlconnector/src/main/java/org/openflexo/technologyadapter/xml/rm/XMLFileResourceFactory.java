@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
@@ -39,7 +39,7 @@ import org.openflexo.xml.XMLRootElementInfo;
  * @author sylvain
  *
  */
-public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource, XMLModel, XMLTechnologyAdapter> {
+public class XMLFileResourceFactory extends TechnologySpecificFlexoResourceFactory<XMLFileResource, XMLModel, XMLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(XMLFileResourceFactory.class.getPackage().getName());
 
@@ -65,21 +65,24 @@ public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource
 	}
 
 	@Override
-	protected <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the XMLModelRepository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getXMLModelRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getXMLModelRepository(resourceCenter));
 
 		return resource;
 	}
 
 	@Override
-	protected <I> XMLFileResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
-		XMLFileResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
+	protected <I> XMLFileResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
+			throws ModelDefinitionException, IOException {
+		XMLFileResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
+
+		TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
+				resourceCenter.getServiceManager());
+
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter.getXMLRootElementInfo(serializationArtefact);
 		if (xmlRootElementInfo != null) {
 			String mmURI = xmlRootElementInfo.getURI();

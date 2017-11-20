@@ -112,6 +112,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 
 		EMFMetaModelResource eCoreRes = technologicalAdapter.getTechnologyContextManager()
 				.getMetaModelResourceByURI(EMFTechnologyAdapter.ECORE_MM_URI);
+		System.out.println("Je cherche " + EMFTechnologyAdapter.ECORE_MM_URI + " : " + eCoreRes);
 		assertNotNull(eCoreRes);
 
 		EMFMetaModel eCoreMM = eCoreRes.loadResourceData(null);

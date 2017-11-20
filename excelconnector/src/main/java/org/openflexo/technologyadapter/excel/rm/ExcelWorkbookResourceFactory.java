@@ -20,22 +20,16 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.resource.StreamIODelegate;
+import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.model.ExcelModelFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
-import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 
 /**
  * Implementation of ResourceFactory for {@link ExcelWorkbookResource}
@@ -43,7 +37,8 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
  * @author sylvain
  *
  */
-public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter> {
+public class ExcelWorkbookResourceFactory
+		extends TechnologySpecificPamelaResourceFactory<ExcelWorkbookResource, ExcelWorkbook, ExcelTechnologyAdapter, ExcelModelFactory> {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceFactory.class.getPackage().getName());
 
@@ -57,37 +52,10 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 	@Override
 	public ExcelWorkbook makeEmptyResourceData(ExcelWorkbookResource resource) {
 		if (resource.getIODelegate() instanceof StreamIODelegate) {
-			return createExcelWorkbook((StreamIODelegate) resource.getIODelegate());
+			return resource.createOrLoadExcelWorkbook((StreamIODelegate<?>) resource.getIODelegate());
 		}
 		logger.severe("Cannot create excel workbook for this io delegate: " + resource.getIODelegate());
 		return null;
-	}
-
-	protected static <I> ExcelWorkbook createExcelWorkbook(StreamIODelegate<I> ioDelegate) {
-		Workbook wb = null;
-		ExcelWorkbook newWorkbook = null;
-
-		try {
-			if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xls")) {
-				wb = new HSSFWorkbook();
-				wb.createSheet("Default");
-			}
-			else if (!ioDelegate.exists() && ioDelegate.getSerializationArtefactName().endsWith(".xlsx")) {
-				wb = new XSSFWorkbook();
-				wb.createSheet("Default");
-			}
-			else {
-				wb = WorkbookFactory.create(ioDelegate.getInputStream());
-			}
-			BasicExcelModelConverter converter = new BasicExcelModelConverter();
-			newWorkbook = converter.convertExcelWorkbook(wb,
-					((ExcelWorkbookResource) ioDelegate.getFlexoResource()).getTechnologyAdapter());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InvalidFormatException e) {
-			e.printStackTrace();
-		}
-		return newWorkbook;
 	}
 
 	@Override
@@ -103,16 +71,21 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 	}
 
 	@Override
-	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the ExcelWorkbookRepository of supplied
 		// resource center
 		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getExcelWorkbookRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getExcelWorkbookRepository(resourceCenter));
 
 		return resource;
+	}
+
+	@Override
+	public ExcelModelFactory makeResourceDataFactory(ExcelWorkbookResource resource,
+			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+		return new ExcelModelFactory(resource, technologyContextManager.getServiceManager().getEditingContext());
 	}
 
 }

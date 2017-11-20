@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -131,16 +130,18 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 								excelRow = excelSheet.getRowAt(rowIndex);
 							}
 							else {
-								Row row = excelSheet.getSheet().createRow(rowIndex);
-								excelRow = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelRowToRow(row, excelSheet,
-										null);
-								excelSheet.addToExcelRows(excelRow);
+								excelRow = excelSheet.createRowAt(rowIndex);
+								/*Row row = excelSheet.getSheet().createRow(rowIndex);
+								BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelSheet.getResourceData().getResource())
+										.getConverter();
+								excelRow = converter.convertExcelRowToRow(row, excelSheet, null);
+								excelSheet.addToExcelRows(excelRow);*/
 							}
 							if (getExcelCells().getBindingValue(evaluationContext) != null) {
 								excelRow.getExcelCells().addAll(getExcelCells().getBindingValue(evaluationContext));
 							}
 							modelSlotInstance.getResourceData().setIsModified();
-							excelSheet.getWorkbook().getResource().setModified(true);
+							excelSheet.getExcelWorkbook().getResource().setModified(true);
 
 						}
 						else {

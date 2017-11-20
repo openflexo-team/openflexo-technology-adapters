@@ -20,10 +20,10 @@
 
 package org.openflexo.technologyadapter.gina;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -43,7 +43,6 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
  */
 
 @DeclareModelSlots({ FIBComponentModelSlot.class })
-@DeclareRepositoryType({ GINAResourceRepository.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
 @DeclareResourceTypes({ GINAFIBComponentResourceFactory.class })
 public class GINATechnologyAdapter extends TechnologyAdapter {
@@ -182,7 +181,12 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	public <I> GINAResourceRepository<I> getGINAResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		GINAResourceRepository<I> returned = resourceCenter.retrieveRepository(GINAResourceRepository.class, this);
 		if (returned == null) {
-			returned = new GINAResourceRepository<>(this, resourceCenter);
+			try {
+				returned = GINAResourceRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resourceCenter.registerRepository(returned, GINAResourceRepository.class, this);
 		}
 		return returned;

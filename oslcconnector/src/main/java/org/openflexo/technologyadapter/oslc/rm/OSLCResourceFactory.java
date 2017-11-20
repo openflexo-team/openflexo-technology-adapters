@@ -23,8 +23,7 @@ package org.openflexo.technologyadapter.oslc.rm;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
@@ -36,7 +35,8 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalo
  * @author sylvain
  *
  */
-public class OSLCResourceFactory extends FlexoResourceFactory<OSLCResourceResource, OSLCServiceProviderCatalog, OSLCTechnologyAdapter> {
+public class OSLCResourceFactory
+		extends TechnologySpecificFlexoResourceFactory<OSLCResourceResource, OSLCServiceProviderCatalog, OSLCTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(OSLCResourceFactory.class.getPackage().getName());
 
@@ -64,61 +64,14 @@ public class OSLCResourceFactory extends FlexoResourceFactory<OSLCResourceResour
 	}
 
 	@Override
-	protected <I> OSLCResourceResource registerResource(OSLCResourceResource resource, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<OSLCTechnologyAdapter> technologyContextManager) {
-		super.registerResource(resource, resourceCenter, technologyContextManager);
+	protected <I> OSLCResourceResource registerResource(OSLCResourceResource resource, FlexoResourceCenter<I> resourceCenter) {
+		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the OSLCRepository of supplied resource center
-		registerResourceInResourceRepository(resource, technologyContextManager.getTechnologyAdapter().getOSLCRepository(resourceCenter));
+		registerResourceInResourceRepository(resource,
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getOSLCRepository(resourceCenter));
 
 		return resource;
 	}
-
-	/*public static OSLCResourceResource makeOSLCResource(String modelURI, File modelFile,
-			OSLCTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OSLCResourceResource.class));
-			OSLCResourceResourceImpl returned = (OSLCResourceResourceImpl) factory.newInstance(OSLCResourceResource.class);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-			returned.initName(modelFile.getName());
-			returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-	
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static OSLCResourceResource retrieveOSLCResource(File oslcFile, OSLCTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OSLCResourceResource.class));
-			OSLCResourceResourceImpl returned = (OSLCResourceResourceImpl) factory.newInstance(OSLCResourceResource.class);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(oslcFile);
-			returned.initName(oslcFile.getName());
-			returned.setURI(oslcFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}*/
 
 }

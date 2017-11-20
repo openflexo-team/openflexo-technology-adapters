@@ -61,7 +61,8 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
 
 	public static FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
-			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
+			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -134,8 +135,8 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 
 		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
 
-		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-				diagramTA.getTechnologyContextManager(), artefactName, getDiagramURI(), createEmptyContents);
+		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc, artefactName,
+				getDiagramURI(), createEmptyContents);
 
 		return newDiagramResource;
 	}
