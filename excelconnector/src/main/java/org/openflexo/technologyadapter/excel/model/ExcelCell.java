@@ -317,7 +317,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 	 * @author sylvain
 	 *
 	 */
-	public static abstract class ExcelCellImpl extends ExcelObjectImpl implements ExcelCell {
+	public static abstract class ExcelCellImpl extends ExcelObject.ExcelObjectImpl implements ExcelCell {
 		static final Logger logger = Logger.getLogger(ExcelCell.class.getPackage().getName());
 
 		// private Cell cell;
