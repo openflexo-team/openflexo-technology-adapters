@@ -57,7 +57,6 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.ExcelCellImpl.CellType;
 import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
 
 /**
@@ -70,6 +69,10 @@ import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFe
 @ImplementationClass(value = ExcelCell.ExcelCellImpl.class)
 @XMLElement
 public interface ExcelCell extends ExcelObject, ExcelStyleObject {
+
+	public enum CellType {
+		Blank, Numeric, String, NumericFormula, StringFormula, Boolean, Error, Empty, Unknown
+	}
 
 	@PropertyIdentifier(type = ExcelRow.class)
 	public static final String EXCEL_ROW_KEY = "excelRow";
@@ -321,10 +324,6 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		// private ExcelRow excelRow;
 
 		private CellRangeAddress cellRange = null;
-
-		public enum CellType {
-			Blank, Numeric, String, NumericFormula, StringFormula, Boolean, Error, Empty, Unknown
-		}
 
 		/*@Override
 		public Cell getCell() {

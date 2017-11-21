@@ -165,6 +165,10 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 			if (isConverting) {
 				return;
 			}
+			if (getRow() == null) {
+				System.out.println("N'importe quoi, j'ai une row null");
+				return;
+			}
 			try {
 				isConverting = true;
 				getResourceData().getConverter().getRowReference(getRow()).ensureConversion();

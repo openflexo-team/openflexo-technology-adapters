@@ -275,10 +275,12 @@ public interface ExcelSheet extends ExcelObject {
 			if (row < 0) {
 				return null;
 			}
+
 			// Append missing rows
 			while (getExcelRows().size() <= row) {
-				addToExcelRows(getFactory().makeExcelRow());
+				createRowAt(getExcelRows().size());
 			}
+
 			return getExcelRows().get(row);
 		}
 

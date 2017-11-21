@@ -148,6 +148,8 @@ public class BasicExcelModelConverter {
 			}
 
 			private void convert() {
+				//System.out
+				//		.println("Je convertis les donnees de la row " + excelRow.getRow().getRowNum() + " sheet " + excelSheet.getName());
 				int lastCell = -1;
 				for (Cell cell : excelRow.getRow()) {
 					// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
@@ -238,12 +240,13 @@ public class BasicExcelModelConverter {
 		}
 
 		private void convert() {
+			//System.out.println("Je convertis les donnees de la sheet " + excelSheet.getName());
 			int lastRow = -1;
 			Map<Integer, ExcelRow> newInsertedRows = new LinkedHashMap<>();
 			for (Row row : excelSheet.getSheet()) {
 				while (row.getRowNum() > lastRow + 1) {
 					// Missing row
-					// System.out.println("on marque comme missing car " + row.getRowNum() + " > " + lastRow + " + 1");
+					//System.out.println("on marque comme missing car " + row.getRowNum() + " > " + lastRow + " + 1");
 					ExcelRow excelRow = getFactory().makeExcelRow();
 					excelSheet.addToExcelRows(excelRow);
 					RowReference rowReference = new RowReference(excelRow);
@@ -251,7 +254,7 @@ public class BasicExcelModelConverter {
 					// lastRow = excelRow.getRowIndex();
 					lastRow++;
 					newInsertedRows.put(lastRow, excelRow);
-					// System.out.println("will insert at =" + excelRow.getRowIndex());
+					//System.out.println("will insert at =" + lastRow);
 					// System.out.println("lastRow =" + lastRow);
 				}
 				lastRow = row.getRowNum();
@@ -270,6 +273,7 @@ public class BasicExcelModelConverter {
 			for (Integer insertedIndex : newInsertedRows.keySet()) {
 				// System.out.println("-----> Insert row at index " + insertedIndex);
 				ExcelRow insertedRow = newInsertedRows.get(insertedIndex);
+				//System.out.println("AH y est on cree la row pour " + insertedIndex);
 				insertedRow.createRowWhenNonExistant(insertedIndex);
 			}
 
@@ -414,6 +418,7 @@ public class BasicExcelModelConverter {
 		excelWorkbook.setWorkbook(workbook);
 		for (int index = 0; index < workbook.getNumberOfSheets(); index++) {
 			Sheet sheet = workbook.getSheetAt(index);
+			System.out.println("Je traite la sheet " + sheet.getSheetName());
 			getExcelSheet(sheet);
 		}
 		return excelWorkbook;

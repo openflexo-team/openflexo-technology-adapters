@@ -203,4 +203,44 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 		assertEquals("F", cell48.getCellValue());
 
 	}
+
+	@Test
+	@TestOrder(6)
+	public void testParametresLoading() {
+
+		ExcelWorkbook parametres = getWorkbook("Parametres.xlsx");
+		System.out.println("Parametres.xlsx:\n" + parametres);
+
+		assertEquals(5, parametres.getExcelSheets().size());
+		/*ExcelSheet sheet1 = parametres.getExcelSheets().get(0);
+		
+		assertEquals(4, sheet1.getExcelRows().size());
+		ExcelRow row1 = sheet1.getExcelRows().get(0);
+		ExcelRow row2 = sheet1.getExcelRows().get(1);
+		ExcelRow row3 = sheet1.getExcelRows().get(2);
+		ExcelRow row4 = sheet1.getExcelRows().get(3);
+		
+		assertEquals(0, row1.getExcelCells().size());
+		assertEquals(0, row2.getExcelCells().size());*/
+	}
+
+	@Test
+	@TestOrder(7)
+	public void testReferentielDIV1Loading() {
+
+		ExcelWorkbook referentielDIV1 = getWorkbook("ReferentielDIV1.xlsx");
+		System.out.println("ReferentielDIV1.xlsx:\n" + referentielDIV1);
+
+		assertEquals(13, referentielDIV1.getExcelSheets().size());
+		/*ExcelSheet sheet1 = referentielDIV1.getExcelSheets().get(0);
+		
+		assertEquals(4, sheet1.getExcelRows().size());
+		ExcelRow row1 = sheet1.getExcelRows().get(0);
+		ExcelRow row2 = sheet1.getExcelRows().get(1);
+		ExcelRow row3 = sheet1.getExcelRows().get(2);
+		ExcelRow row4 = sheet1.getExcelRows().get(3);
+		
+		assertEquals(0, row1.getExcelCells().size());
+		assertEquals(0, row2.getExcelCells().size());*/
+	}
 }
