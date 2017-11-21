@@ -92,6 +92,9 @@ public class BasicExcelModelConverter {
 
 		class ColumnReference {
 			private ExcelColumn excelColumn;
+
+			public void delete() {
+			}
 		}
 
 		class RowReference {
@@ -102,6 +105,10 @@ public class BasicExcelModelConverter {
 					this.excelCell = excelCell;
 				}
 
+				public void delete() {
+					excelCell = null;
+				}
+
 			}
 
 			private final ExcelRow excelRow;
@@ -109,6 +116,13 @@ public class BasicExcelModelConverter {
 
 			public RowReference(ExcelRow excelRow) {
 				this.excelRow = excelRow;
+			}
+
+			public void delete() {
+				for (CellReference cr : cells) {
+					cr.delete();
+				}
+				cells.clear();
 			}
 
 			private boolean isConverted = false;
@@ -216,6 +230,17 @@ public class BasicExcelModelConverter {
 
 		public SheetReference(ExcelSheet excelSheet) {
 			this.excelSheet = excelSheet;
+		}
+
+		public void delete() {
+			for (RowReference rr : rows) {
+				rr.delete();
+			}
+			for (ColumnReference cr : columns) {
+				cr.delete();
+			}
+			rows.clear();
+			columns.clear();
 		}
 
 		private boolean isConverted = false;
@@ -486,6 +511,15 @@ public class BasicExcelModelConverter {
 			logger.info("Create a new excel sheet with the name " + name);
 		}
 		return sheet;
+	}
+
+	public void delete() {
+		for (SheetReference sr : references.values()) {
+			sr.delete();
+		}
+		references.clear();
+		references = null;
+		excelWorkbook = null;
 	}
 
 }
