@@ -81,10 +81,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 
 	private boolean isLoaded = false;
 
-	private final BasicExcelModelConverter converter;
+	private BasicExcelModelConverter converter;
 
 	public ExcelWorkbookResourceImpl() {
-		converter = new BasicExcelModelConverter(this);
 	}
 
 	@Override
@@ -105,6 +104,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	 */
 	@Override
 	public ExcelWorkbook loadResourceData(IProgress progress) throws IOFlexoException {
+
+		converter = new BasicExcelModelConverter(this);
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new IOFlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
@@ -129,6 +130,13 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		setResourceData(resourceData);
 
 		return resourceData;
+	}
+
+	@Override
+	public void unloadResourceData(boolean deleteResourceData) {
+		super.unloadResourceData(deleteResourceData);
+		converter.delete();
+		converter = null;
 	}
 
 	/**
@@ -171,10 +179,10 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	 * 
 	 * @throws SaveResourceException
 	 */
-	private void write(Workbook workbook, OutputStream out) throws SaveResourceException {
+	private void write(OutputStream out) throws SaveResourceException {
 		logger.info("Writing " + getIODelegate().getSerializationArtefact());
 		try {
-			workbook.write(out);
+			getExcelWorkbook().getWorkbook().write(out);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
@@ -267,7 +275,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		}
 	}*/
 
-	protected void _saveResourceData(ExcelWorkbook excelWorkbook, boolean clearIsModified) throws SaveResourceException {
+	@Override
+	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());
@@ -290,7 +299,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
-				write(excelWorkbook.getWorkbook(), new FileOutputStream(temporaryFile));
+				write(new FileOutputStream(temporaryFile));
 				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
 				FileUtils.rename(temporaryFile, fileToSave);
 			} catch (IOException e) {
@@ -306,7 +315,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			}
 		}
 		else {
-			write(excelWorkbook.getWorkbook(), getOutputStream());
+			write(getOutputStream());
 		}
 
 		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
@@ -347,6 +356,22 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			e.printStackTrace();
 		}
 		return newWorkbook;
+	}
+
+	@Override
+	public ExcelWorkbook getExcelWorkbook() {
+		try {
+			return getResourceData(null);
+		} catch (ResourceLoadingCancelledException e) {
+			e.printStackTrace();
+			return null;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (FlexoException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
