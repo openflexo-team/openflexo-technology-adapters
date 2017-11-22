@@ -70,10 +70,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFe
 @XMLElement
 public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
-	public enum CellType {
-		Blank, Numeric, String, NumericFormula, StringFormula, Boolean, Error, Empty, Unknown
-	}
-
 	@PropertyIdentifier(type = ExcelRow.class)
 	public static final String EXCEL_ROW_KEY = "excelRow";
 	@PropertyIdentifier(type = Cell.class)
