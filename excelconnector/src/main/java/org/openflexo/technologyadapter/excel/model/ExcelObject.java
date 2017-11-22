@@ -85,5 +85,10 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 			return ((ExcelWorkbookResource) getResourceData().getResource()).getConverter().toSerializationIdentifier(this);
 		}
 
+		@Override
+		public String toString() {
+			return getImplementedInterface().getSimpleName() + "-" + getSerializationIdentifier();
+		}
+
 	}
 }

@@ -182,6 +182,12 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 	public void setCellValueAsString(String cellValueAsString);
 
+	// public Number getCellValueAsNumber();
+
+	public Integer getCellValueAsInteger();
+
+	public void setCellValueAsInteger(Integer value);
+
 	public void setCellValue(Object value);
 
 	public void setCellStringValue(String value);
@@ -749,6 +755,19 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 				getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
 				getExcelSheet().getExcelWorkbook().setIsModified();
 			}
+		}
+
+		@Override
+		public Integer getCellValueAsInteger() {
+			if (getCellValue() instanceof Number) {
+				return ((Number) getCellValue()).intValue();
+			}
+			return 0;
+		}
+
+		@Override
+		public void setCellValueAsInteger(Integer value) {
+			setCellValue(value);
 		}
 
 		private void setCellFormula(String formula) {

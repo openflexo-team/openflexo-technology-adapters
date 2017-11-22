@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -138,6 +139,7 @@ public interface ExcelSheet extends ExcelObject {
 
 	public FormulaEvaluator getEvaluator();
 
+	@NotificationUnsafe
 	public ExcelRow getRowAt(int row);
 
 	public ExcelCell getCellAt(int row, int column);

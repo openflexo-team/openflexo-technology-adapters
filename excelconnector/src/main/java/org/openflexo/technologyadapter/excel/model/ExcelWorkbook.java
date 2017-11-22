@@ -149,6 +149,9 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 
 	public BasicExcelModelConverter getConverter();
 
+	@Override
+	public ExcelWorkbookResource getResource();
+
 	/**
 	 * Default base implementation for {@link ExcelWorkbook}
 	 * 
@@ -203,12 +206,12 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 			return this;
 		}
 
-		/*@Override
-		public ExcelWorkbookResource getResource() {
-			return resource;
-		}
-		
 		@Override
+		public ExcelWorkbookResource getResource() {
+			return (ExcelWorkbookResource) performSuperGetter(FLEXO_RESOURCE);
+		}
+
+		/*@Override
 		public void setResource(FlexoResource<ExcelWorkbook> resource) {
 			this.resource = (ExcelWorkbookResource) resource;
 		}*/
@@ -284,7 +287,7 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 
 		@Override
 		public BasicExcelModelConverter getConverter() {
-			return ((ExcelWorkbookResource) getResource()).getConverter();
+			return getResource().getConverter();
 		}
 
 	}
