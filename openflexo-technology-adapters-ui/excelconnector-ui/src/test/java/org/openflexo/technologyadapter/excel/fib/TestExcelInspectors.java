@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.excel;
+package org.openflexo.technologyadapter.excel.fib;
 
 import org.junit.Test;
 import org.openflexo.gina.test.GenericFIBInspectorTestCase;

@@ -2,7 +2,7 @@
  * 
  * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Fml-rt-technologyadapter-ui, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,21 +36,23 @@
  * 
  */
 
-package org.openflexo.technologyadapter.excel;
+package org.openflexo.technologyadapter.excel.fib;
 
 import org.junit.Test;
 import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
-public class ExcelFIBTest extends GenericFIBTestCase {
+public class TestExcelWidgets extends GenericFIBTestCase {
 
-	public static void main(final String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
+	public static void main(String[] args) {
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(), "Fib/Widget/"));
 	}
 
 	@Test
-	public void removeThisTest() {
+	public void testFIBCellRangeSelector() {
+		validateFIB("Fib/Widget/FIBCellRangeSelector.fib");
 	}
 
 }

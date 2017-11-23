@@ -68,8 +68,6 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @ModelEntity
 @ImplementationClass(value = ExcelWorkbook.ExcelWorkbookImpl.class)
 @XMLElement
-// @Imports({ @Import(JDBCSchema.class), @Import(JDBCTable.class), @Import(JDBCColumn.class), @Import(JDBCResultSet.class),
-// @Import(JDBCLine.class), @Import(JDBCValue.class), @Import(JDBCResultSetDescription.class) })
 public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> {
 
 	@PropertyIdentifier(type = Workbook.class)

@@ -73,7 +73,7 @@
 			<DropDown id="20" data="data.cellType" index="17" localize="true"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				format="object.name" showText="true"
-				iteratorClassName="org.openflexo.technologyadapter.excel.model.ExcelCell$CellType"
+				iteratorClassName="org.openflexo.technologyadapter.excel.model.CellType"
 				showIcon="false" name="DropDown" list="data.availableCellTypes" />
 			<Label id="21" name="ValueLabel" index="18" align="right"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"

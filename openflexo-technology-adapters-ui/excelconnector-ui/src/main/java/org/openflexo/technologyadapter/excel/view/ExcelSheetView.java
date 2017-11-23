@@ -86,7 +86,6 @@ import org.openflexo.swing.msct.TableCellExtendedRenderer;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.toolbox.StringUtils;
-import org.openflexo.view.controller.FlexoController;
 
 /**
  * Widget allowing to edit/view a ExcelSheet.<br>
@@ -100,7 +99,6 @@ public class ExcelSheetView extends JPanel {
 	static final Logger logger = Logger.getLogger(ExcelSheetView.class.getPackage().getName());
 
 	private final ExcelSheet sheet;
-	private final FlexoController controller;
 
 	private final ExcelSheetTableModel tableModel;
 	private final MultiSpanCellTable table;
@@ -108,10 +106,9 @@ public class ExcelSheetView extends JPanel {
 	private final JTextField cellIdentifier;
 	private final JTextField cellValue;
 
-	public ExcelSheetView(ExcelSheet sheet, FlexoController controller) {
+	public ExcelSheetView(ExcelSheet sheet) {
 		super(new BorderLayout());
 		this.sheet = sheet;
-		this.controller = controller;
 		tableModel = new ExcelSheetTableModel();
 		table = new MultiSpanCellTable(tableModel);
 		table.setBackground(Color.WHITE);

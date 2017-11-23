@@ -38,7 +38,8 @@
 
 package org.openflexo.technologyadapter.excel.controller;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -46,6 +47,7 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.controller.action.CreateSemanticsExcelVirtualModelInitializer;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
@@ -105,6 +107,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	protected void initializeActions(ControllerActionInitializer actionInitializer) {
+		new CreateSemanticsExcelVirtualModelInitializer(actionInitializer);
 	}
 
 	@Override
@@ -119,7 +122,6 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	public ImageIcon getModelIcon() {
-		// TODO Auto-generated method stub
 		return ExcelIconLibrary.EXCEL_TECHNOLOGY_ICON;
 	}
 
