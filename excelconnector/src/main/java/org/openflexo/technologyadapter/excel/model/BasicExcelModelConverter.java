@@ -381,6 +381,11 @@ public class BasicExcelModelConverter {
 			ExcelCell excelCell = (ExcelCell) object;
 			return excelCell.getExcelSheet().getName() + "/cell[" + excelCell.getIdentifier() + "]";
 		}
+		else if (object instanceof ExcelCellRange) {
+			ExcelCellRange excelCellRange = (ExcelCellRange) object;
+			return excelCellRange.getExcelSheet().getName() + "/range[" + excelCellRange.getTopLeftCell().getIdentifier() + ":"
+					+ excelCellRange.getBottomRightCell().getIdentifier() + "]";
+		}
 		return null;
 	}
 

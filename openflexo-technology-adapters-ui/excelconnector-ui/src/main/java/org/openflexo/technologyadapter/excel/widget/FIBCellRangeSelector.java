@@ -40,6 +40,8 @@
 
 package org.openflexo.technologyadapter.excel.widget;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -54,6 +56,7 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.view.ExcelSheetView;
 
 /**
  * Widget allowing to select an {@link FlexoDocFragment} inside a {@link FlexoDocument}<br>
@@ -72,6 +75,7 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 
 	public FIBCellRangeSelector(ExcelCellRange editedObject) {
 		super(editedObject);
+		setSelectedValue(editedObject);
 	}
 
 	@Override
@@ -104,6 +108,42 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 		}
 		return "";
 	}
+
+	/*@Override
+	public ExcelCellRange getSelectedValue() {
+		// System.out.println("la selected value = " + super.getSelectedValue());
+		// System.out.println("Mais je chercherai pas plutot " + getEditedObject());
+		return getEditedObject();
+	}
+	
+	@Override
+	public Object getSelectedObject() {
+		return getEditedObject();
+	}*/
+
+	@Override
+	public void setEditedObject(ExcelCellRange object) {
+		super.setEditedObject(object);
+		setSelectedValue(object);
+	}
+
+	/*@Override
+	public void setSelectedObject(Object selectedObject) {
+		System.out.println("On fait un setSelectedObject avec " + selectedObject);
+		super.setSelectedObject(selectedObject);
+	}*/
+
+	/*@Override
+	public void setSelectedValue(ExcelCellRange selectedValue) {
+		System.out.println("On fait un setSelectedValue avec " + selectedValue);
+		super.setSelectedValue(selectedValue);
+	}
+	
+	@Override
+	protected boolean isAcceptableValue(Object o) {
+		System.out.println("acceptable ???? " + o + " " + super.isAcceptableValue(o));
+		return super.isAcceptableValue(o);
+	}*/
 
 	/*private void updateWith(List<FlexoDocElement<D, TA>> elements) {
 	
@@ -140,12 +180,14 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 		setEditedObject(newFragment);
 	}*/
 
-	private boolean isSelecting = false;
+	// private boolean isSelecting = false;
 
 	@Override
 	protected RangeSelectorDetailsPanel makeCustomPanel(ExcelCellRange editedObject) {
 
 		RangeSelectorDetailsPanel returned = null;
+
+		System.out.println("On constuit le RangeSelectorDetailsPanel pour " + editedObject);
 
 		if (getServiceManager() != null && getServiceManager().getTaskManager() != null) {
 			LoadEditor task = new LoadEditor(editedObject);
@@ -159,6 +201,17 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 
 		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getWorkbookEditorWidget();
 		ExcelWorkbookEditorWidget wbEditor = (ExcelWorkbookEditorWidget) documentEditorWidget.getCustomComponent();
+		wbEditor.getPropertyChangeSupport().addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals(ExcelSheetView.SELECTED_CELL_RANGE)) {
+					ExcelCellRange newRange = (ExcelCellRange) evt.getNewValue();
+					System.out.println("*********On selectionne " + newRange);
+					setEditedObject(newRange);
+				}
+			}
+		});
+		// wbEditor.
 		/*wbEditor.getJEditorPane().addCaretListener(new ExcelWorkbookEditorWidget.FlexoDocumentSelectionListener(wbEditor) {
 			@Override
 			public void caretUpdate(CaretEvent evt) {
@@ -258,6 +311,9 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 			addSelectionListener(new FIBSelectionListener() {
 				@Override
 				public void selectionChanged(List<Object> selection) {
+
+					System.out.println("--------> selectionChanged with " + selection);
+
 					/*List<FlexoDocElement<?, ?>> elements = new ArrayList<>();
 					FlexoDocument<?, ?> doc = null;
 					if (selection != null) {
@@ -314,6 +370,26 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 		@Override
 		public CellRangeSelectorFIBController getController() {
 			return (CellRangeSelectorFIBController) super.getController();
+		}
+
+		@Override
+		public void update() {
+			getController().setDataObject(FIBCellRangeSelector.this);
+			selectValue(getEditedObject());
+		}
+
+		@Override
+		protected void selectValue(ExcelCellRange range) {
+			if (getWorkbookEditorWidget() != null) {
+				final ExcelWorkbookEditorWidget wbEditor = (ExcelWorkbookEditorWidget) getWorkbookEditorWidget().getCustomComponent();
+
+				try {
+					wbEditor.setCellRange(range);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		// Called whenever the FragmentSelectorDetailsPanel should reflect a fragment selection

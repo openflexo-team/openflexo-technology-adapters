@@ -43,6 +43,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.technologyadapter.excel.AbstractTestExcel;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
+import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.widget.FIBCellRangeSelector;
 import org.openflexo.test.OrderedRunner;
@@ -60,36 +63,64 @@ public class TestFIBCellRangeSelector extends AbstractTestExcel {
 	private static FIBCellRangeSelector selector;
 
 	@Test
-	@TestOrder(2)
-	public void test2InstanciateWidget() {
+	@TestOrder(1)
+	public void testSelectorWithNoRange() {
 
 		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");
 		assertNotNull(workbook);
 
-		/*DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
-		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
-		
-		System.out.println("Document: " + structuredDocument);
-		System.out.println("Contents:" + structuredDocument.debugContents());
-		
-		System.out.println("section1Paragraph=" + section1Paragraph.getRawText());
-		
-		assertNotNull(section1Paragraph);
-		assertNotNull(paragraph3);
-		assertNotNull(section1Paragraph.getFlexoDocument());
-		assertNotNull(paragraph3.getFlexoDocument());
-		
-		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
-		*/
-
-		selector = new FIBCellRangeSelector(null/*fragment*/);
+		selector = new FIBCellRangeSelector(null);
 		selector.setServiceManager(serviceManager);
 		selector.setExcelWorkbook(workbook);
 		selector.getCustomPanel();
 
 		assertNotNull(selector.getSelectorPanel().getController());
 
-		gcDelegate.addTab("FIBCellRangeSelector", selector.getSelectorPanel().getController());
+		gcDelegate.addTab("PersonListing.xlsx-1", selector.getSelectorPanel().getController());
+	}
+
+	@Test
+	@TestOrder(2)
+	public void testSelectorWithRangeOnSheet1() {
+
+		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");
+		assertNotNull(workbook);
+
+		ExcelSheet sheet1 = workbook.getExcelSheetAtPosition(0);
+		ExcelCell b2 = sheet1.getCellAt(1, 1);
+		ExcelCell d7 = sheet1.getCellAt(6, 3);
+		ExcelCellRange range = workbook.getFactory().makeExcelCellRange(b2, d7);
+
+		selector = new FIBCellRangeSelector(range);
+		selector.setServiceManager(serviceManager);
+		selector.setExcelWorkbook(workbook);
+		selector.getCustomPanel();
+
+		assertNotNull(selector.getSelectorPanel().getController());
+
+		gcDelegate.addTab("PersonListing.xlsx-2", selector.getSelectorPanel().getController());
+	}
+
+	@Test
+	@TestOrder(3)
+	public void testSelectorWithRangeOnSheet2() {
+
+		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");
+		assertNotNull(workbook);
+
+		ExcelSheet sheet2 = workbook.getExcelSheetAtPosition(1);
+		ExcelCell b2 = sheet2.getCellAt(1, 1);
+		ExcelCell e2 = sheet2.getCellAt(1, 3);
+		ExcelCellRange range = workbook.getFactory().makeExcelCellRange(b2, e2);
+
+		selector = new FIBCellRangeSelector(range);
+		selector.setServiceManager(serviceManager);
+		selector.setExcelWorkbook(workbook);
+		selector.getCustomPanel();
+
+		assertNotNull(selector.getSelectorPanel().getController());
+
+		gcDelegate.addTab("PersonListing.xlsx-3", selector.getSelectorPanel().getController());
 	}
 
 }

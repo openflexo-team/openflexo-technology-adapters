@@ -50,7 +50,6 @@ import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellReference;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -200,13 +199,6 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 	 * @return
 	 */
 	public String getDisplayCellSpecification();
-
-	/**
-	 * Return a String identifying this cell (eg. (0,0) will return "A1")
-	 * 
-	 * @return
-	 */
-	public String getCellIdentifier();
 
 	public boolean hasTopBorder();
 
@@ -899,22 +891,13 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		};
 
 		/**
-		 * Return a String identifying this cell (eg. (0,0) will return "A1")
-		 * 
-		 * @return
-		 */
-		@Override
-		public String getCellIdentifier() {
-			return CellReference.convertNumToColString(getColumnIndex());
-		}
-
-		/**
 		 * Return string representation for this cell (debug)
 		 */
 		@Override
 		public String toString() {
-			return "[" + getCellIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
-					+ getTopLeftMergedCell().getCellIdentifier() + ":" + getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "")
+			return "["
+					+ getIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+							+ getTopLeftMergedCell().getIdentifier() + ":" + getBottomRightMergedCell().getIdentifier() + "]" + "/" : "")
 					+ getDisplayValue();
 		}
 
@@ -1009,7 +992,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 		@Override
 		public String getIdentifier() {
-			return ExcelColumn.getColumnLetters(getColumnIndex()) + getRowIndex();
+			return ExcelColumn.getColumnLetters(getColumnIndex()) + (getRowIndex() + 1);
 		}
 
 	}

@@ -112,6 +112,15 @@ public interface ExcelCellRange extends ExcelObject {
 	public void setBottomRighCell(ExcelCell topLeftCell);
 
 	/**
+	 * Return identifier of the cell under the form <code>B7:T9</code>
+	 * 
+	 * @return
+	 */
+	public String getIdentifier();
+
+	public boolean isSingleCell();
+
+	/**
 	 * Default base implementation for {@link ExcelCellRange}
 	 * 
 	 * @author sylvain
@@ -119,5 +128,34 @@ public interface ExcelCellRange extends ExcelObject {
 	 */
 	public static abstract class ExcelCellRangeImpl extends ExcelObjectImpl implements ExcelCellRange {
 
+		@Override
+		public ExcelSheet getExcelSheet() {
+			ExcelSheet returned = (ExcelSheet) performSuperGetter(EXCEL_SHEET_KEY);
+			if (returned == null && getTopLeftCell() != null) {
+				return getTopLeftCell().getExcelSheet();
+			}
+			return returned;
+		}
+
+		@Override
+		public ExcelWorkbook getResourceData() {
+			return getExcelSheet().getExcelWorkbook();
+		}
+
+		/**
+		 * Return identifier of the cell under the form <code>B7:T9</code>
+		 * 
+		 * @return
+		 */
+		@Override
+		public String getIdentifier() {
+			return getTopLeftCell().getIdentifier() + ":" + getBottomRightCell().getIdentifier();
+		}
+
+		@Override
+		public boolean isSingleCell() {
+			return getTopLeftCell().getRowIndex() == getBottomRightCell().getRowIndex()
+					&& getTopLeftCell().getColumnIndex() == getBottomRightCell().getColumnIndex();
+		}
 	}
 }

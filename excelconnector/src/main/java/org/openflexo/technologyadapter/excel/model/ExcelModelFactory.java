@@ -103,6 +103,14 @@ public class ExcelModelFactory extends ModelFactory implements PamelaResourceMod
 		return newInstance(ExcelColumn.class);
 	}
 
+	public ExcelCellRange makeExcelCellRange(ExcelCell topLeftCell, ExcelCell bottomRightCell) {
+		ExcelCellRange returned = newInstance(ExcelCellRange.class);
+		returned.setExcelSheet(topLeftCell.getExcelSheet());
+		returned.setTopLeftCell(topLeftCell);
+		returned.setBottomRighCell(bottomRightCell);
+		return returned;
+	}
+
 	@Override
 	public synchronized void startDeserializing() {
 		EditingContext editingContext = getResource().getServiceManager().getEditingContext();

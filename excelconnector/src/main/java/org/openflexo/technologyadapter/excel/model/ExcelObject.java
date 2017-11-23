@@ -45,7 +45,6 @@ import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 /**
  * Common API for all objects involved in Excel model
@@ -57,6 +56,8 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkbook>, TechnologyObject<ExcelTechnologyAdapter> {
 
 	public String getSerializationIdentifier();
+
+	public ExcelModelFactory getFactory();
 
 	/**
 	 * Default base implementation for {@link ExcelObject}
@@ -71,18 +72,19 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 		@Override
 		public ExcelTechnologyAdapter getTechnologyAdapter() {
 			if (getResourceData() != null && getResourceData().getResource() != null) {
-				return ((ExcelWorkbookResource) getResourceData().getResource()).getTechnologyAdapter();
+				return getResourceData().getResource().getTechnologyAdapter();
 			}
 			return null;
 		}
 
+		@Override
 		public ExcelModelFactory getFactory() {
-			return ((ExcelWorkbookResource) getResourceData().getResource()).getFactory();
+			return getResourceData().getResource().getFactory();
 		}
 
 		@Override
 		public final String getSerializationIdentifier() {
-			return ((ExcelWorkbookResource) getResourceData().getResource()).getConverter().toSerializationIdentifier(this);
+			return getResourceData().getResource().getConverter().toSerializationIdentifier(this);
 		}
 
 		@Override

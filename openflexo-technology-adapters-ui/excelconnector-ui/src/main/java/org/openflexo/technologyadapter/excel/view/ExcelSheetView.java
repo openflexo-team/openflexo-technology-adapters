@@ -49,6 +49,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeSupport;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
@@ -84,7 +85,9 @@ import org.openflexo.swing.msct.MultiSpanCellTable;
 import org.openflexo.swing.msct.MultiSpanCellTableModel;
 import org.openflexo.swing.msct.TableCellExtendedRenderer;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -95,8 +98,11 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 @SuppressWarnings("serial")
-public class ExcelSheetView extends JPanel {
+public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 	static final Logger logger = Logger.getLogger(ExcelSheetView.class.getPackage().getName());
+
+	public static final String SELECTED_CELL = "selectedCell";
+	public static final String SELECTED_CELL_RANGE = "selectedCellRange";
 
 	private final ExcelSheet sheet;
 
@@ -106,8 +112,11 @@ public class ExcelSheetView extends JPanel {
 	private final JTextField cellIdentifier;
 	private final JTextField cellValue;
 
+	private PropertyChangeSupport pcSupport;
+
 	public ExcelSheetView(ExcelSheet sheet) {
 		super(new BorderLayout());
+		pcSupport = new PropertyChangeSupport(this);
 		this.sheet = sheet;
 		tableModel = new ExcelSheetTableModel();
 		table = new MultiSpanCellTable(tableModel);
@@ -233,8 +242,27 @@ public class ExcelSheetView extends JPanel {
 		}*/
 	}
 
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return "deleted";
+	}
+
+	public void delete() {
+		getPropertyChangeSupport().firePropertyChange("deleted", false, true);
+		pcSupport = null;
+	}
+
 	public ExcelSheet getSheet() {
 		return sheet;
+	}
+
+	public MultiSpanCellTable getTable() {
+		return table;
 	}
 
 	/**
@@ -685,16 +713,134 @@ public class ExcelSheetView extends JPanel {
 		}
 	}
 
+	private boolean isUpdatingSelectedRange = false;
+
+	public void setCellRange(ExcelCellRange range) {
+		try {
+			isUpdatingSelectedRange = true;
+			if (range != null) {
+				selectedCellRange = range;
+				selectedCell = range.getTopLeftCell();
+				table.clearSelection();
+				table.addRowSelectionInterval(range.getTopLeftCell().getRowIndex(), range.getBottomRightCell().getRowIndex());
+				table.addColumnSelectionInterval(range.getTopLeftCell().getColumnIndex() + 1,
+						range.getBottomRightCell().getColumnIndex() + 1);
+			}
+			else {
+				selectedCellRange = null;
+				selectedCell = null;
+				table.clearSelection();
+			}
+		} finally {
+			isUpdatingSelectedRange = false;
+			updateHeaders();
+		}
+	}
+
 	protected void selectionChanged() {
-		ExcelCell selected = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
-		if (selected == null) {
+
+		if (isUpdatingSelectedRange) {
+			// Done programmatically: do not react to that
+			return;
+		}
+
+		if (table.getSelectedRow() < 0 || table.getSelectedColumn() < 0) {
+			return;
+		}
+
+		ExcelCell oldSelectedCell = selectedCell;
+		ExcelCellRange oldSelectedCellRange = selectedCellRange;
+
+		int minRow = table.getSelectedRow();
+		int maxRow = table.getSelectedRow();
+		int minCol = table.getSelectedColumn();
+		int maxCol = table.getSelectedColumn();
+		boolean foundSelection = false;
+
+		for (int selectedRow : table.getSelectedRows()) {
+			foundSelection = true;
+			if (selectedRow < minRow) {
+				minRow = selectedRow;
+			}
+			if (selectedRow > maxRow) {
+				maxRow = selectedRow;
+			}
+		}
+		for (int selectedColumn : table.getSelectedColumns()) {
+			foundSelection = true;
+			if (selectedColumn < minCol) {
+				minCol = selectedColumn;
+			}
+			if (selectedColumn > maxCol) {
+				maxCol = selectedColumn;
+			}
+		}
+
+		if (foundSelection) {
+			selectedCell = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
+			ExcelCell topLeftCell = sheet.getCellAt(minRow, minCol - 1);
+			ExcelCell bottomRightCell = sheet.getCellAt(maxRow, maxCol - 1);
+			selectedCellRange = sheet.getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+			/*if (minCol == maxCol && minRow == maxRow) {
+				// Single cell selection
+				cellIdentifier.setText(selectedCell.getIdentifier());
+				cellValue.setText(selectedCell.getDisplayCellSpecification());
+			}
+			else {
+				// Cell range selection
+				ExcelCell topLeftCell = sheet.getCellAt(minRow, minCol - 1);
+				ExcelCell bottomRightCell = sheet.getCellAt(maxRow, maxCol - 1);
+				selectedCellRange = sheet.getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+				cellIdentifier.setText(selectedCellRange.getIdentifier());
+				cellValue.setText(selectedCell.getDisplayCellSpecification());
+			}*/
+		}
+		else {
+			selectedCell = null;
+			selectedCellRange = null;
+		}
+		/*else {
+			cellIdentifier.setText("");
+			cellValue.setText("");
+		}*/
+
+		updateHeaders();
+
+		getPropertyChangeSupport().firePropertyChange(SELECTED_CELL, oldSelectedCell, selectedCell);
+		getPropertyChangeSupport().firePropertyChange(SELECTED_CELL_RANGE, oldSelectedCellRange, selectedCellRange);
+
+	}
+
+	private void updateHeaders() {
+
+		if (selectedCellRange != null) {
+			if (selectedCellRange.isSingleCell()) {
+				// Single cell selection
+				ExcelCell cell = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
+				cellIdentifier.setText(cell.getIdentifier());
+				cellValue.setText(cell.getDisplayCellSpecification());
+			}
+			else {
+				// Cell range selection
+				cellIdentifier.setText(selectedCellRange.getIdentifier());
+				cellValue.setText(selectedCell.getDisplayCellSpecification());
+			}
+		}
+		else {
 			cellIdentifier.setText("");
 			cellValue.setText("");
 		}
-		else {
-			cellIdentifier.setText(selected.getCellIdentifier());
-			cellValue.setText(selected.getDisplayCellSpecification());
-		}
+	}
+
+	private ExcelCell selectedCell = null;
+	private ExcelCellRange selectedCellRange = null;
+
+	public ExcelCell getSelectedCell() {
+		return selectedCell;
+	}
+
+	public ExcelCellRange getSelectedCellRange() {
+		return selectedCellRange;
 	}
 
 	protected void valueEditedForSelectedCell(String value) {

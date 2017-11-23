@@ -39,6 +39,9 @@
 package org.openflexo.technologyadapter.excel.widget;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,14 +49,18 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.view.ExcelSheetView;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * A widget presenting an Excel Workbook
@@ -62,7 +69,8 @@ import org.openflexo.technologyadapter.excel.view.ExcelSheetView;
  *
  */
 @SuppressWarnings("serial")
-public class ExcelWorkbookEditorWidget extends JPanel implements FIBCustomComponent<ExcelWorkbook> {
+public class ExcelWorkbookEditorWidget extends JPanel
+		implements FIBCustomComponent<ExcelWorkbook>, ChangeListener, HasPropertyChangeSupport, PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookEditorWidget.class.getPackage().getName());
 
@@ -71,15 +79,38 @@ public class ExcelWorkbookEditorWidget extends JPanel implements FIBCustomCompon
 	protected FIBCustom component;
 	protected FIBController controller;
 
+	private ExcelSheetView listenedSheetView = null;
+
+	private PropertyChangeSupport pcSupport;
+
 	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<ApplyCancelListener>();
 
 	public ExcelWorkbookEditorWidget(ExcelWorkbook workbook) {
 		super(new BorderLayout());
+		pcSupport = new PropertyChangeSupport(this);
 
 		tabbedPane = new JTabbedPane();
+		tabbedPane.addChangeListener(this);
+
 		setEditedObject(workbook);
 
 		add(tabbedPane, BorderLayout.CENTER);
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return "deleted";
+	}
+
+	@Override
+	public void delete() {
+		getPropertyChangeSupport().firePropertyChange("deleted", false, true);
+		pcSupport = null;
 	}
 
 	@Override
@@ -149,9 +180,38 @@ public class ExcelWorkbookEditorWidget extends JPanel implements FIBCustomCompon
 	}
 
 	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
+	public void stateChanged(ChangeEvent e) {
+		System.out.println("OK, focus sur " + tabbedPane.getSelectedIndex());
+		ExcelSheetView newSheetView = (ExcelSheetView) tabbedPane.getSelectedComponent();
+		if (newSheetView != listenedSheetView) {
+			if (listenedSheetView != null) {
+				listenedSheetView.getPropertyChangeSupport().removePropertyChangeListener(this);
+			}
+			newSheetView.getPropertyChangeSupport().addPropertyChangeListener(this);
+			listenedSheetView = newSheetView;
+		}
+	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(ExcelSheetView.SELECTED_CELL)) {
+			getPropertyChangeSupport().firePropertyChange(evt);
+		}
+		if (evt.getPropertyName().equals(ExcelSheetView.SELECTED_CELL_RANGE)) {
+			getPropertyChangeSupport().firePropertyChange(evt);
+		}
+	}
+
+	public void setCellRange(ExcelCellRange range) {
+		if (range != null) {
+			ExcelSheet sheet = range.getExcelSheet();
+			int sheetIndex = sheet.getExcelWorkbook().getExcelSheets().indexOf(sheet);
+			tabbedPane.setSelectedIndex(sheetIndex);
+			listenedSheetView.setCellRange(range);
+		}
+		else {
+			listenedSheetView.setCellRange(null);
+		}
 	}
 
 	/*public TextSelection<D, TA> getTextSelection() {

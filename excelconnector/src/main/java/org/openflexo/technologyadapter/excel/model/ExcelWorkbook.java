@@ -51,6 +51,8 @@ import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
@@ -68,6 +70,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @ModelEntity
 @ImplementationClass(value = ExcelWorkbook.ExcelWorkbookImpl.class)
 @XMLElement
+@Imports({ @Import(ExcelCellRange.class) })
 public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> {
 
 	@PropertyIdentifier(type = Workbook.class)
