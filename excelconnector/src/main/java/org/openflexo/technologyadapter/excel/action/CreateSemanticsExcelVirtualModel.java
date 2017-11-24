@@ -78,6 +78,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModel;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -162,6 +163,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
 		try {
+			setSpecializedVirtualModelClass(SEVirtualModel.class);
 			VirtualModelResource vmResource = makeVirtualModelResource();
 			newVirtualModel = vmResource.getLoadedResourceData();
 			newVirtualModel.setDescription(getNewVirtualModelDescription());
