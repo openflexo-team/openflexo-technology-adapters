@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
@@ -50,6 +51,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.AbstractCreateNatureSpecificVirtualModel;
 import org.openflexo.foundation.fml.action.AddUseDeclaration;
@@ -62,9 +64,12 @@ import org.openflexo.foundation.task.Progress;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
+import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
+import org.openflexo.toolbox.JavaUtils;
 
 /**
  * This action allows to create a {@link VirtualModel} defined as a contract for interpretating data in a excel workbook as
@@ -296,27 +301,34 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		}
 	}
 
-	private List<SEFlexoConceptIdentification> seConcepts = new ArrayList<>();
+	private List<SEFlexoConceptSpecification> seConcepts = new ArrayList<>();
 
-	public List<SEFlexoConceptIdentification> getSEConcepts() {
+	public List<SEFlexoConceptSpecification> getSEConcepts() {
 		return seConcepts;
 	}
 
-	public void addToSEConcepts(SEFlexoConceptIdentification conceptIdentification) {
+	public void addToSEConcepts(SEFlexoConceptSpecification conceptIdentification) {
 		seConcepts.add(conceptIdentification);
 	}
 
-	public void removeFromSEConcepts(SEFlexoConceptIdentification conceptIdentification) {
+	public void removeFromSEConcepts(SEFlexoConceptSpecification conceptIdentification) {
 		seConcepts.remove(conceptIdentification);
 	}
 
-	public class SEFlexoConceptIdentification {
+	public SEFlexoConceptSpecification makeNewFlexoConceptSpecification() {
+		SEFlexoConceptSpecification returned = new SEFlexoConceptSpecification();
+		addToSEConcepts(returned);
+		return returned;
+	}
+
+	public class SEFlexoConceptSpecification {
 
 		private FlexoConcept concept;
 		private String conceptName;
 		private ExcelCellRange cellRange;
+		private final List<SEFlexoPropertySpecification> properties = new ArrayList<>();
 
-		public SEFlexoConceptIdentification() {
+		private SEFlexoConceptSpecification() {
 
 		}
 
@@ -340,169 +352,307 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 			if ((cellRange == null && this.cellRange != null) || (cellRange != null && !cellRange.equals(this.cellRange))) {
 				ExcelCellRange oldValue = this.cellRange;
 				this.cellRange = cellRange;
+				updateProperties();
 				getPropertyChangeSupport().firePropertyChange("cellRange", oldValue, cellRange);
+			}
+		}
+
+		public List<SEFlexoPropertySpecification> getProperties() {
+			return properties;
+		}
+
+		private void updateProperties() {
+			properties.clear();
+			if (cellRange != null) {
+				int firstRow = cellRange.getTopLeftCell().getRowIndex();
+				for (int colIndex = cellRange.getTopLeftCell().getColumnIndex(); colIndex <= cellRange.getBottomRightCell()
+						.getColumnIndex(); colIndex++) {
+					ExcelCell cell = cellRange.getExcelSheet().getCellAt(firstRow, colIndex);
+					SEFlexoPropertySpecification spec = new SEFlexoPropertySpecification(cell);
+					properties.add(spec);
+				}
+				getPropertyChangeSupport().firePropertyChange("properties", null, properties);
+			}
+			else {
+				getPropertyChangeSupport().firePropertyChange("properties", new Object(), null);
+			}
+		}
+
+		public class SEFlexoPropertySpecification {
+
+			private ExcelCell headerCell;
+			private ExcelCell cell;
+			private String propertyName;
+			private FlexoProperty<?> property;
+			private SEPropertyMappingType mappingType;
+			private boolean selectIt;
+			private boolean isKey = false;
+			private SEFlexoConceptSpecification oppositeConcept;
+			private PrimitiveType primitiveType;
+
+			public SEFlexoPropertySpecification(ExcelCell cell) {
+				this.cell = cell;
+				this.headerCell = cell.getUpperCell();
+				if (headerCell != null) {
+					propertyName = JavaUtils.getVariableName(headerCell.getCellValueAsString());
+				}
+				else {
+					propertyName = "value" + ExcelColumn.getColumnLetters(cell.getColumnIndex());
+				}
+				mappingType = SEPropertyMappingType.Primitive;
+				primitiveType = cell.getInferedPrimitiveType();
+				selectIt = true;
+			}
+
+			/**
+			 * Return first cell used as value range for this property specification
+			 * 
+			 * @return
+			 */
+			public ExcelCell getCell() {
+				return cell;
+			}
+
+			public ExcelCell getHeaderCell() {
+				return headerCell;
+			}
+
+			public String getPropertyName() {
+				return propertyName;
+			}
+
+			public void setPropertyName(String propertyName) {
+				if ((propertyName == null && this.propertyName != null)
+						|| (propertyName != null && !propertyName.equals(this.propertyName))) {
+					String oldValue = this.propertyName;
+					this.propertyName = propertyName;
+					getPropertyChangeSupport().firePropertyChange("propertyName", oldValue, propertyName);
+				}
+			}
+
+			public boolean isKey() {
+				return isKey;
+			}
+
+			public boolean selectIt() {
+				return selectIt;
+			}
+
+			public void setSelectIt(boolean selectIt) {
+				if (selectIt != this.selectIt) {
+					this.selectIt = selectIt;
+					getPropertyChangeSupport().firePropertyChange("selectIt", !selectIt, selectIt);
+				}
+			}
+
+			public FlexoProperty<?> getProperty() {
+				return property;
+			}
+
+			public SEPropertyMappingType getMappingType() {
+				return mappingType;
+			}
+
+			public void setMappingType(SEPropertyMappingType mappingType) {
+				if (mappingType != this.mappingType) {
+					SEPropertyMappingType oldValue = this.mappingType;
+					this.mappingType = mappingType;
+					getPropertyChangeSupport().firePropertyChange("mappingType", oldValue, mappingType);
+				}
+			}
+
+			public PrimitiveType getPrimitiveType() {
+				return primitiveType;
+			}
+
+			public void setPrimitiveType(PrimitiveType primitiveType) {
+				if (primitiveType != this.primitiveType) {
+					PrimitiveType oldValue = this.primitiveType;
+					this.primitiveType = primitiveType;
+					getPropertyChangeSupport().firePropertyChange("primitiveType", oldValue, primitiveType);
+				}
+			}
+
+			public SEFlexoConceptSpecification getOppositeConcept() {
+				if (getMappingType() == SEPropertyMappingType.Primitive) {
+					return null;
+				}
+				return oppositeConcept;
+			}
+
+			public void setOppositeConcept(SEFlexoConceptSpecification oppositeConcept) {
+				if ((oppositeConcept == null && this.oppositeConcept != null)
+						|| (oppositeConcept != null && !oppositeConcept.equals(this.oppositeConcept))) {
+					SEFlexoConceptSpecification oldValue = this.oppositeConcept;
+					this.oppositeConcept = oppositeConcept;
+					getPropertyChangeSupport().firePropertyChange("oppositeConcept", oldValue, oppositeConcept);
+				}
 			}
 		}
 
 	}
 
-	/*	
-		public List<JDBCTable> getTablesToBeReflected() {
-			// Obtain the JDBCConnection
-			if (jdbcConnection == null) {
-				getJDBCConnection();
-			}
-			return tablesToBeReflected;
+	public static enum SEPropertyMappingType {
+		Primitive, Reference
+	}
+
+	/*
+	public List<JDBCTable> getTablesToBeReflected() {
+		// Obtain the JDBCConnection
+		if (jdbcConnection == null) {
+			getJDBCConnection();
 		}
-		
-		public List<JDBCTable> getAllTables() {
-			if (getJDBCConnection().getConnection() != null && getJDBCConnection().getSchema() != null) {
-				return getJDBCConnection().getSchema().getTables();
-			}
-			return Collections.emptyList();
+		return tablesToBeReflected;
+	}
+	
+	public List<JDBCTable> getAllTables() {
+		if (getJDBCConnection().getConnection() != null && getJDBCConnection().getSchema() != null) {
+			return getJDBCConnection().getSchema().getTables();
 		}
-		
-		private List<TableMapping> tableMappings;
-		
-		public List<TableMapping> getTableMappings() {
-			if (tableMappings == null) {
-				tableMappings = new ArrayList<>();
-				for (JDBCTable t : getTablesToBeReflected()) {
-					TableMapping tm = new TableMapping(t);
-					tableMappings.add(tm);
-				}
+		return Collections.emptyList();
+	}
+	
+	private List<TableMapping> tableMappings;
+	
+	public List<TableMapping> getTableMappings() {
+		if (tableMappings == null) {
+			tableMappings = new ArrayList<>();
+			for (JDBCTable t : getTablesToBeReflected()) {
+				TableMapping tm = new TableMapping(t);
+				tableMappings.add(tm);
 			}
-			return tableMappings;
 		}
-		
-		public void clearTableMappings() {
-			tableMappings.clear();
-			tableMappings = null;
+		return tableMappings;
+	}
+	
+	public void clearTableMappings() {
+		tableMappings.clear();
+		tableMappings = null;
+	}
+	
+	public enum ColumnPropertyMappingType {
+		Primitive, ForeignKey, ManyToMany
+	}
+	
+	public class TableMapping {
+	
+		private JDBCTable table;
+		private FlexoConcept concept;
+		private String conceptName;
+	
+		private List<ColumnMapping> columnMappings;
+	
+		public TableMapping(JDBCTable table) {
+			this.table = table;
+			conceptName = table.getName().substring(0, 1).toUpperCase() + table.getName().substring(1).toLowerCase();
+			columnMappings = new ArrayList<>();
+			for (JDBCColumn col : table.getColumns()) {
+				ColumnMapping colMapping = new ColumnMapping(col);
+				columnMappings.add(colMapping);
+			}
 		}
-		
-		public enum ColumnPropertyMappingType {
-			Primitive, ForeignKey, ManyToMany
+	
+		public JDBCTable getTable() {
+			return table;
 		}
-		
-		public class TableMapping {
-		
-			private JDBCTable table;
-			private FlexoConcept concept;
-			private String conceptName;
-		
-			private List<ColumnMapping> columnMappings;
-		
-			public TableMapping(JDBCTable table) {
-				this.table = table;
-				conceptName = table.getName().substring(0, 1).toUpperCase() + table.getName().substring(1).toLowerCase();
-				columnMappings = new ArrayList<>();
-				for (JDBCColumn col : table.getColumns()) {
-					ColumnMapping colMapping = new ColumnMapping(col);
-					columnMappings.add(colMapping);
-				}
-			}
-		
-			public JDBCTable getTable() {
-				return table;
-			}
-		
-			public List<ColumnMapping> getColumnMappings() {
-				return columnMappings;
-			}
-		
-			public String getConceptName() {
-				return conceptName;
-			}
-		
-			public FlexoConcept getConcept() {
-				return concept;
-			}
-		
-			public class ColumnMapping {
-				private JDBCColumn column;
-				private String propertyName;
-				private String columnName;
-				private FlexoProperty<?> property;
-				private ColumnPropertyMappingType mappingType;
-				private boolean selectIt;
-				private boolean isPrimaryKey;
-				private JDBCTable oppositeTable;
-		
-				public ColumnMapping(JDBCColumn column) {
-					this.column = column;
-					columnName = column.getName();
-					propertyName = column.getName().toLowerCase();
-					mappingType = ColumnPropertyMappingType.Primitive;
-					selectIt = true;
-					isPrimaryKey = column.isPrimaryKey();
-					for (JDBCTable t : getAllTables()) {
-						if (t.getName().toUpperCase().equals(column.getName().toUpperCase())) {
-							mappingType = ColumnPropertyMappingType.ForeignKey;
-							oppositeTable = t;
-						}
-					}
-				}
-		
-				public JDBCColumn getColumn() {
-					return column;
-				}
-		
-				public String getPropertyName() {
-					return propertyName;
-				}
-		
-				public String getColumnName() {
-					return columnName;
-				}
-		
-				public boolean isPrimaryKey() {
-					return isPrimaryKey;
-				}
-		
-				public boolean selectIt() {
-					return selectIt;
-				}
-		
-				public void setSelectIt(boolean selectIt) {
-					if (selectIt != this.selectIt) {
-						this.selectIt = selectIt;
-						getPropertyChangeSupport().firePropertyChange("selectIt", !selectIt, selectIt);
-					}
-				}
-		
-				public FlexoProperty<?> getProperty() {
-					return property;
-				}
-		
-				public ColumnPropertyMappingType getMappingType() {
-					return mappingType;
-				}
-		
-				public void setMappingType(ColumnPropertyMappingType mappingType) {
-					if ((mappingType == null && this.mappingType != null) || (mappingType != null && !mappingType.equals(this.mappingType))) {
-						ColumnPropertyMappingType oldValue = this.mappingType;
-						this.mappingType = mappingType;
-						getPropertyChangeSupport().firePropertyChange("mappingType", oldValue, mappingType);
-					}
-				}
-		
-				public JDBCTable getOppositeTable() {
-					if (getMappingType() == ColumnPropertyMappingType.Primitive) {
-						return null;
-					}
-					return oppositeTable;
-				}
-		
-				public void setOppositeTable(JDBCTable oppositeTable) {
-					if ((oppositeTable == null && this.oppositeTable != null)
-							|| (oppositeTable != null && !oppositeTable.equals(this.oppositeTable))) {
-						JDBCTable oldValue = this.oppositeTable;
-						this.oppositeTable = oppositeTable;
-						getPropertyChangeSupport().firePropertyChange("oppositeTable", oldValue, oppositeTable);
+	
+		public List<ColumnMapping> getColumnMappings() {
+			return columnMappings;
+		}
+	
+		public String getConceptName() {
+			return conceptName;
+		}
+	
+		public FlexoConcept getConcept() {
+			return concept;
+		}
+	
+		public class ColumnMapping {
+			private JDBCColumn column;
+			private String propertyName;
+			private String columnName;
+			private FlexoProperty<?> property;
+			private ColumnPropertyMappingType mappingType;
+			private boolean selectIt;
+			private boolean isPrimaryKey;
+			private JDBCTable oppositeTable;
+	
+			public ColumnMapping(JDBCColumn column) {
+				this.column = column;
+				columnName = column.getName();
+				propertyName = column.getName().toLowerCase();
+				mappingType = ColumnPropertyMappingType.Primitive;
+				selectIt = true;
+				isPrimaryKey = column.isPrimaryKey();
+				for (JDBCTable t : getAllTables()) {
+					if (t.getName().toUpperCase().equals(column.getName().toUpperCase())) {
+						mappingType = ColumnPropertyMappingType.ForeignKey;
+						oppositeTable = t;
 					}
 				}
 			}
-		
-		}*/
+	
+			public JDBCColumn getColumn() {
+				return column;
+			}
+	
+			public String getPropertyName() {
+				return propertyName;
+			}
+	
+			public String getColumnName() {
+				return columnName;
+			}
+	
+			public boolean isPrimaryKey() {
+				return isPrimaryKey;
+			}
+	
+			public boolean selectIt() {
+				return selectIt;
+			}
+	
+			public void setSelectIt(boolean selectIt) {
+				if (selectIt != this.selectIt) {
+					this.selectIt = selectIt;
+					getPropertyChangeSupport().firePropertyChange("selectIt", !selectIt, selectIt);
+				}
+			}
+	
+			public FlexoProperty<?> getProperty() {
+				return property;
+			}
+	
+			public ColumnPropertyMappingType getMappingType() {
+				return mappingType;
+			}
+	
+			public void setMappingType(ColumnPropertyMappingType mappingType) {
+				if ((mappingType == null && this.mappingType != null) || (mappingType != null && !mappingType.equals(this.mappingType))) {
+					ColumnPropertyMappingType oldValue = this.mappingType;
+					this.mappingType = mappingType;
+					getPropertyChangeSupport().firePropertyChange("mappingType", oldValue, mappingType);
+				}
+			}
+	
+			public JDBCTable getOppositeTable() {
+				if (getMappingType() == ColumnPropertyMappingType.Primitive) {
+					return null;
+				}
+				return oppositeTable;
+			}
+	
+			public void setOppositeTable(JDBCTable oppositeTable) {
+				if ((oppositeTable == null && this.oppositeTable != null)
+						|| (oppositeTable != null && !oppositeTable.equals(this.oppositeTable))) {
+					JDBCTable oldValue = this.oppositeTable;
+					this.oppositeTable = oppositeTable;
+					getPropertyChangeSupport().firePropertyChange("oppositeTable", oldValue, oppositeTable);
+				}
+			}
+		}
+	
+	}*/
 
 }

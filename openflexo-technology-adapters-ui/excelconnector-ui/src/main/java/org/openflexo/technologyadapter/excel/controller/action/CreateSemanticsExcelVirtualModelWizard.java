@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.FlexoWizard;
 import org.openflexo.components.wizard.WizardStep;
@@ -55,7 +57,8 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel;
-import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel.SEFlexoConceptIdentification;
+import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel.SEFlexoConceptSpecification;
+import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel.SEFlexoConceptSpecification.SEFlexoPropertySpecification;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
@@ -128,14 +131,14 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		@Override
 		public boolean isValid() {
 
-			if (StringUtils.isEmpty(getNewVirtualModelName())) {
-				setIssueMessage(action.getLocales().localizedForKey("please_enter_name_for_new_virtual_model"), IssueMessageType.ERROR);
-				return false;
-			}
-
 			if (getExcelWorkbookResource() == null) {
 				setIssueMessage(action.getLocales().localizedForKey("please_select_an_excel_workbook_to_be_used_as_a_template"),
 						IssueMessageType.ERROR);
+				return false;
+			}
+
+			if (StringUtils.isEmpty(getNewVirtualModelName())) {
+				setIssueMessage(action.getLocales().localizedForKey("please_enter_name_for_new_virtual_model"), IssueMessageType.ERROR);
 				return false;
 			}
 
@@ -178,15 +181,15 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 	@FIBPanel("Fib/Wizard/ConfigureNewSEFlexoConcept.fib")
 	public class ConfigureNewSEFlexoConcept extends WizardStep {
 
-		private SEFlexoConceptIdentification flexoConceptIdentification;
+		private SEFlexoConceptSpecification flexoConceptSpecification;
 		private boolean defineOtherConcept = false;
 
 		public ConfigureNewSEFlexoConcept() {
-			flexoConceptIdentification = getAction().new SEFlexoConceptIdentification();
+			flexoConceptSpecification = getAction().makeNewFlexoConceptSpecification();
 		}
 
-		public SEFlexoConceptIdentification getSEFlexoConceptIdentification() {
-			return flexoConceptIdentification;
+		public SEFlexoConceptSpecification getSEFlexoConceptSpecification() {
+			return flexoConceptSpecification;
 		}
 
 		public ApplicationContext getServiceManager() {
@@ -205,6 +208,10 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		@Override
 		public boolean isValid() {
 
+			if (getCellRange() == null) {
+				setIssueMessage(action.getLocales().localizedForKey("please_define_data_range"), IssueMessageType.ERROR);
+				return false;
+			}
 			if (StringUtils.isEmpty(getNewConceptName())) {
 				setIssueMessage(action.getLocales().localizedForKey("please_enter_name_for_new_flexo_concept"), IssueMessageType.ERROR);
 				return false;
@@ -214,27 +221,28 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		}
 
 		public String getNewConceptName() {
-			return flexoConceptIdentification.getConceptName();
+			return flexoConceptSpecification.getConceptName();
 		}
 
 		public void setNewConceptName(String newConceptName) {
 			if (!newConceptName.equals(getNewConceptName())) {
 				String oldValue = getNewConceptName();
-				flexoConceptIdentification.setConceptName(newConceptName);
+				flexoConceptSpecification.setConceptName(newConceptName);
 				getPropertyChangeSupport().firePropertyChange("newConceptName", oldValue, newConceptName);
 				checkValidity();
 			}
 		}
 
 		public ExcelCellRange getCellRange() {
-			return flexoConceptIdentification.getCellRange();
+			return flexoConceptSpecification.getCellRange();
 		}
 
 		public void setCellRange(ExcelCellRange cellRange) {
 			if ((cellRange == null && getCellRange() != null) || (cellRange != null && !cellRange.equals(getCellRange()))) {
 				ExcelCellRange oldValue = getCellRange();
-				flexoConceptIdentification.setCellRange(cellRange);
+				flexoConceptSpecification.setCellRange(cellRange);
 				getPropertyChangeSupport().firePropertyChange("cellRange", oldValue, cellRange);
+				getPropertyChangeSupport().firePropertyChange("properties", null, getProperties());
 				checkValidity();
 			}
 		}
@@ -253,6 +261,14 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 				e.printStackTrace();
 			}
 			return null;
+		}
+
+		public List<SEFlexoPropertySpecification> getProperties() {
+			return flexoConceptSpecification.getProperties();
+		}
+
+		public ImageIcon getColumnIcon(SEFlexoPropertySpecification property) {
+			return FMLIconLibrary.ABSTRACT_PROPERTY_ICON;
 		}
 
 		public boolean getDefineOtherConcept() {
