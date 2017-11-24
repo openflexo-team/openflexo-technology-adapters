@@ -43,19 +43,25 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.AbstractCreateNatureSpecificVirtualModel;
 import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
+import org.openflexo.foundation.fml.action.CreateFlexoConcept;
+import org.openflexo.foundation.fml.action.PropertyEntry;
+import org.openflexo.foundation.fml.action.PropertyEntry.PropertyType;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -64,12 +70,16 @@ import org.openflexo.foundation.task.Progress;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
+import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel.SEFlexoConceptSpecification.SEFlexoPropertySpecification;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
 import org.openflexo.toolbox.JavaUtils;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * This action allows to create a {@link VirtualModel} defined as a contract for interpretating data in a excel workbook as
@@ -173,109 +183,89 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		performCreateInspectors();
 		performPostProcessings();
 
-		/*for (TableMapping tableMapping : getTableMappings()) {
+		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
 			CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewEmbeddedAction(newVirtualModel, null, this);
-			createConceptAction.setNewFlexoConceptName(tableMapping.getConceptName());
-			createConceptAction.setNewFlexoConceptDescription("Mapping for table " + tableMapping.getTable().getName());
-			for (ColumnMapping columnMapping : tableMapping.getColumnMappings()) {
+			createConceptAction.setNewFlexoConceptName(conceptSpecification.getConceptName());
+			if (StringUtils.isNotEmpty(conceptSpecification.getConceptDescription())) {
+				createConceptAction.setNewFlexoConceptDescription(conceptSpecification.getConceptDescription());
+			}
+			for (SEFlexoPropertySpecification propertySpec : conceptSpecification.getProperties()) {
 				PropertyEntry propertyEntry = createConceptAction.newPropertyEntry();
-				propertyEntry.setName(columnMapping.getPropertyName());
-				switch (columnMapping.getMappingType()) {
+				propertyEntry.setName(propertySpec.getPropertyName());
+				switch (propertySpec.getMappingType()) {
 					case Primitive:
 						propertyEntry.setPropertyType(PropertyType.TECHNOLOGY_ROLE);
-						propertyEntry.setFlexoRoleClass((Class) HbnColumnRole.class);
-						propertyEntry.setType(columnMapping.getColumn().getDataType().getJavaType());
+						propertyEntry.setFlexoRoleClass((Class) SEColumnRole.class);
+						propertyEntry.setType(propertySpec.getPrimitiveType().getType());
 						System.out.println("Property " + propertyEntry + " type=" + propertyEntry.getType());
 						break;
-					case ForeignKey:
+					case Reference:
 						propertyEntry.setPropertyType(PropertyType.TECHNOLOGY_ROLE);
-						propertyEntry.setFlexoRoleClass(HbnToOneReferenceRole.class);
+						propertyEntry.setFlexoRoleClass(SEReferenceRole.class);
 						propertyEntry.setType(FlexoConceptInstanceType.UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE);
-						for (TableMapping oppositeTableMapping : getTableMappings()) {
-							if (oppositeTableMapping.getTable().getName().equals(columnMapping.getOppositeTable().getName())) {
-								if (oppositeTableMapping.getConcept() != null) {
-									propertyEntry.setType(oppositeTableMapping.getConcept().getInstanceType());
-								}
-								break;
-							}
+						if (propertySpec.getOppositeConcept() != null && propertySpec.getOppositeConcept().getConcept() != null) {
+							propertyEntry.setType(propertySpec.getOppositeConcept().getConcept().getInstanceType());
 						}
 						break;
 					default:
 						// TODO
 				}
 			}
-		
+
 			// createConceptAction.setDefineSomeBehaviours(true);
 			// createConceptAction.setDefineDefaultCreationScheme(true);
-		
+
 			createConceptAction.setDefineInspector(false);
 			createConceptAction.doAction();
-		
-			tableMapping.concept = createConceptAction.getNewFlexoConcept();
-			tableMapping.concept.setAbstract(true);
-		
-			for (ColumnMapping columnMapping : tableMapping.getColumnMappings()) {
-				columnMapping.property = tableMapping.concept.getDeclaredProperty(columnMapping.getPropertyName());
-				switch (columnMapping.getMappingType()) {
+
+			conceptSpecification.concept = createConceptAction.getNewFlexoConcept();
+			conceptSpecification.concept.setAbstract(true);
+
+			for (SEFlexoPropertySpecification propertySpec : conceptSpecification.getProperties()) {
+				propertySpec.property = conceptSpecification.concept.getDeclaredProperty(propertySpec.getPropertyName());
+				switch (propertySpec.getMappingType()) {
 					case Primitive:
-						HbnColumnRole columnRole = (HbnColumnRole) columnMapping.property;
-						columnRole.setColumnName(columnMapping.getColumnName());
-						columnRole.setDataType(columnMapping.getColumn().getDataType());
+						SEColumnRole<?> columnRole = (SEColumnRole) propertySpec.property;
+						columnRole.setColumnIndex(propertySpec.getCell().getColumnIndex());
+						columnRole.setPrimitiveType(propertySpec.getPrimitiveType());
 						break;
-					case ForeignKey:
-						HbnToOneReferenceRole toOneReferenceRole = (HbnToOneReferenceRole) columnMapping.property;
-						toOneReferenceRole.setColumnName(columnMapping.getColumnName());
+					case Reference:
+						SEReferenceRole referenceRole = (SEReferenceRole) propertySpec.property;
+						referenceRole.setColumnIndex(propertySpec.getCell().getColumnIndex());
 						break;
 					default:
 						// TODO
 				}
-				if (columnMapping.getColumn().isPrimaryKey()) {
-					tableMapping.concept.addToKeyProperties(columnMapping.property);
+				if (propertySpec.isKey()) {
+					conceptSpecification.concept.addToKeyProperties(propertySpec.property);
 				}
 			}
-		
+
 			createConceptAction.setDefineInspector(true);
 			createConceptAction.performCreateInspectors();
-		
+
 			// Create a default creation scheme
-			CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewEmbeddedAction(tableMapping.concept, null,
-					this);
+			CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewEmbeddedAction(conceptSpecification.concept,
+					null, this);
 			createCreationScheme.setFlexoBehaviourName("create");
 			createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
 			createCreationScheme.doAction();
 			CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
-		
-			// Add SaveHbnObject to creation scheme
-			CreateEditionAction createSaveAction = CreateEditionAction.actionType.makeNewEmbeddedAction(creationScheme.getControlGraph(),
-					null, this);
-			createSaveAction.setEditionActionClass(SaveHbnObject.class);
-			createSaveAction.doAction();
-			SaveHbnObject saveHbnObject = (SaveHbnObject) createSaveAction.getBaseEditionAction();
-			saveHbnObject.setReceiver(new DataBinding<HbnVirtualModelInstance>("this.container"));
-			saveHbnObject.setObject(new DataBinding<FlexoConceptInstance>("this"));
 		}
-		*/
 
-		/*for (TableMapping tableMapping : getTableMappings()) {
-			for (ColumnMapping columnMapping : tableMapping.getColumnMappings()) {
-				FlexoProperty<?> property = tableMapping.concept.getDeclaredProperty(columnMapping.getPropertyName());
-				if (property instanceof HbnToOneReferenceRole) {
-					((HbnToOneReferenceRole) property).setForeignKeyAttributeName(columnMapping.getPropertyName());
-					((HbnToOneReferenceRole) property).setVirtualModelInstance(new DataBinding<>("container"));
-					System.out.println("Maintenant on cherche " + columnMapping.getOppositeTable().getName());
-					for (TableMapping oppositeTableMapping : getTableMappings()) {
-						if (oppositeTableMapping.getTable().getName().equals(columnMapping.getOppositeTable().getName())) {
-							System.out.println("opposite concept name: " + columnMapping.getOppositeTable().getName());
-							System.out.println("opposite concept: " + oppositeTableMapping.getConcept());
-							((HbnToOneReferenceRole) property).setFlexoConceptType(oppositeTableMapping.getConcept());
-							break;
-						}
+		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
+			for (SEFlexoPropertySpecification propertySpec : conceptSpecification.getProperties()) {
+				FlexoProperty<?> property = conceptSpecification.concept.getDeclaredProperty(propertySpec.getPropertyName());
+				if (property instanceof SEReferenceRole) {
+					// ((SEReferenceRole) property).setForeignKeyAttributeName(propertySpec.getPropertyName());
+					((SEReferenceRole) property).setVirtualModelInstance(new DataBinding<>("container"));
+					if (propertySpec.getOppositeConcept() != null) {
+						((SEReferenceRole) property).setFlexoConceptType(propertySpec.getOppositeConcept().getConcept());
 					}
-		
 				}
-		
+
 			}
-		}*/
+		}
 
 		newVirtualModel.getPropertyChangeSupport().firePropertyChange("name", null, newVirtualModel.getName());
 		newVirtualModel.getResource().getPropertyChangeSupport().firePropertyChange("name", null, newVirtualModel.getName());
@@ -299,6 +289,19 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 			this.excelWorkbookResource = excelWorkbookResource;
 			getPropertyChangeSupport().firePropertyChange("excelWorkbookResource", oldValue, excelWorkbookResource);
 		}
+	}
+
+	@Override
+	public String getNewVirtualModelName() {
+		if (StringUtils.isEmpty(super.getNewVirtualModelName()) && getExcelWorkbookResource() != null) {
+			if (getExcelWorkbookResource().getName().contains(".")) {
+				return getExcelWorkbookResource().getName().substring(0, getExcelWorkbookResource().getName().lastIndexOf("."));
+			}
+			else {
+				return getExcelWorkbookResource().getName();
+			}
+		}
+		return super.getNewVirtualModelName();
 	}
 
 	private List<SEFlexoConceptSpecification> seConcepts = new ArrayList<>();
@@ -327,9 +330,14 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		private String conceptName;
 		private ExcelCellRange cellRange;
 		private final List<SEFlexoPropertySpecification> properties = new ArrayList<>();
+		private String conceptDescription;
 
 		private SEFlexoConceptSpecification() {
 
+		}
+
+		public FlexoConcept getConcept() {
+			return concept;
 		}
 
 		public String getConceptName() {
@@ -341,6 +349,19 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 				String oldValue = this.conceptName;
 				this.conceptName = conceptName;
 				getPropertyChangeSupport().firePropertyChange("conceptName", oldValue, conceptName);
+			}
+		}
+
+		public String getConceptDescription() {
+			return conceptDescription;
+		}
+
+		public void setConceptDescription(String conceptDescription) {
+			if ((conceptDescription == null && this.conceptDescription != null)
+					|| (conceptDescription != null && !conceptDescription.equals(this.conceptDescription))) {
+				String oldValue = this.conceptDescription;
+				this.conceptDescription = conceptDescription;
+				getPropertyChangeSupport().firePropertyChange("conceptDescription", oldValue, conceptDescription);
 			}
 		}
 

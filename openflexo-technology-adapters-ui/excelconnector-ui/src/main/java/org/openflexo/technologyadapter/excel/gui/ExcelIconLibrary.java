@@ -44,9 +44,11 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.IconMarker;
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -71,7 +73,13 @@ public class ExcelIconLibrary {
 
 	public static final ImageIconResource EXCEL_CELL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelCell.png"));
 	public static final ImageIconResource EXCEL_ROW_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelRow.png"));
+	public static final ImageIconResource EXCEL_COLUMN_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ExcelColumn.png"));
 	public static final ImageIconResource EXCEL_SHEET_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
+
+	public static final ImageIconResource EXCEL_MARKER_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ExcelMarker.png"));
+	public static final IconMarker EXCEL_MARKER = new IconMarker(EXCEL_MARKER_ICON, 8, 0);
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (ExcelWorkbook.class.isAssignableFrom(objectClass)) {
@@ -85,6 +93,9 @@ public class ExcelIconLibrary {
 		}
 		else if (ExcelRow.class.isAssignableFrom(objectClass)) {
 			return EXCEL_ROW_ICON;
+		}
+		else if (ExcelColumn.class.isAssignableFrom(objectClass)) {
+			return EXCEL_COLUMN_ICON;
 		}
 		logger.warning("No icon for " + objectClass);
 		return null;

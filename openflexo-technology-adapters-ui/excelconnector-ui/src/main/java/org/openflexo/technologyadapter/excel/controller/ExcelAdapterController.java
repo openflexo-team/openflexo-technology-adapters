@@ -44,6 +44,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
+import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -62,9 +63,12 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
 import org.openflexo.technologyadapter.excel.gui.ExcelIconLibrary;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
 import org.openflexo.technologyadapter.excel.view.ExcelWorkbookView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -136,15 +140,21 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> flexoRoleClass) {
+		if (ExcelSheetRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelSheet.class);
 		}
-		if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelCellRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelCell.class);
 		}
-		if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelRowRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelRow.class);
+		}
+		if (SEColumnRole.class.isAssignableFrom(flexoRoleClass)) {
+			return getIconForTechnologyObject(ExcelColumn.class);
+		}
+		if (SEReferenceRole.class.isAssignableFrom(flexoRoleClass)) {
+			return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_ICON, ExcelIconLibrary.EXCEL_MARKER);
 		}
 		return null;
 	}

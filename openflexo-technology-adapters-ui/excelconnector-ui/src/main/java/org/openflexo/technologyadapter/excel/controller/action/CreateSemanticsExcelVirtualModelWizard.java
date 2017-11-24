@@ -168,6 +168,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 				ExcelWorkbookResource oldValue = getExcelWorkbookResource();
 				action.setExcelWorkbookResource(excelWorkbookResource);
 				getPropertyChangeSupport().firePropertyChange("excelWorkbookResource", oldValue, excelWorkbookResource);
+				getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, getNewVirtualModelName());
 				checkValidity();
 			}
 		}

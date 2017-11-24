@@ -42,8 +42,12 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 
@@ -57,6 +61,16 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 @ImplementationClass(SEReferenceRole.HbnToOneReferenceRoleImpl.class)
 @XMLElement
 public interface SEReferenceRole extends FlexoConceptInstanceRole {
+
+	@PropertyIdentifier(type = Integer.class)
+	String COLUMN_INDEX_KEY = "columnIndex";
+
+	@Getter(COLUMN_INDEX_KEY)
+	@XMLAttribute
+	public Integer getColumnIndex();
+
+	@Setter(COLUMN_INDEX_KEY)
+	public void setColumnIndex(Integer columnIndex);
 
 	/*@PropertyIdentifier(type = String.class)
 	String COLUMN_NAME_KEY = "columnName";

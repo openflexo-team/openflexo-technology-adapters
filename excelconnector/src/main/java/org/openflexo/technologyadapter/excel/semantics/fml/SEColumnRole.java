@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.excel.semantics.fml;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.PropertyCardinality;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -54,7 +55,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.CellType;
 
 @ModelEntity
 @ImplementationClass(SEColumnRole.SEColumnRoleImpl.class)
@@ -65,7 +65,7 @@ public interface SEColumnRole<T> extends FlexoRole<T> {
 	@PropertyIdentifier(type = Integer.class)
 	String COLUMN_INDEX_KEY = "columnIndex";
 	@PropertyIdentifier(type = String.class)
-	String CELL_TYPE_KEY = "cellType";
+	String PRIMITIVE_TYPE_KEY = "primitiveType";
 
 	@Getter(COLUMN_INDEX_KEY)
 	@XMLAttribute
@@ -74,12 +74,12 @@ public interface SEColumnRole<T> extends FlexoRole<T> {
 	@Setter(COLUMN_INDEX_KEY)
 	public void setColumnIndex(Integer columnIndex);
 
-	@Getter(CELL_TYPE_KEY)
+	@Getter(PRIMITIVE_TYPE_KEY)
 	@XMLAttribute
-	public CellType getCellType();
+	public PrimitiveType getPrimitiveType();
 
-	@Setter(CELL_TYPE_KEY)
-	public void setCellType(CellType cellType);
+	@Setter(PRIMITIVE_TYPE_KEY)
+	public void setPrimitiveType(PrimitiveType primitiveType);
 
 	public abstract static class SEColumnRoleImpl<T> extends FlexoRoleImpl<T> implements SEColumnRole<T> {
 
@@ -90,15 +90,15 @@ public interface SEColumnRole<T> extends FlexoRole<T> {
 
 		@Override
 		public Type getType() {
-			if (getCellType() != null) {
-				return getCellType().getJavaType();
+			if (getPrimitiveType() != null) {
+				return getPrimitiveType().getType();
 			}
 			return Object.class;
 		}
 
 		@Override
-		public void setCellType(CellType cellType) {
-			performSuperSetter(CELL_TYPE_KEY, cellType);
+		public void setPrimitiveType(PrimitiveType primitiveType) {
+			performSuperSetter(PRIMITIVE_TYPE_KEY, primitiveType);
 			notifyResultingTypeChanged();
 		}
 

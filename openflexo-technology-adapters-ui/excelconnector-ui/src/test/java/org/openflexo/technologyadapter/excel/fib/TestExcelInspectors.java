@@ -115,4 +115,14 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 		validateFIB("Inspectors/Excel/ExcelWorkbook.inspector");
 	}
 
+	@Test
+	public void testSEColumnRoleInspector() {
+		validateFIB("Inspectors/Excel/FlexoRole/SEColumnRole.inspector");
+	}
+
+	@Test
+	public void testSEReferenceRoleInspector() {
+		validateFIB("Inspectors/Excel/FlexoRole/SEReferenceRole.inspector");
+	}
+
 }
