@@ -133,7 +133,6 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 				col.setPreferredWidth(25);
 				col.setMinWidth(25);
 				col.setMaxWidth(100);
-				// col.setResizable(false);
 				col.setHeaderValue(null);
 			}
 			else {
@@ -157,22 +156,6 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 				valueEditedForSelectedCell(cellValue.getText());
 			}
 		});
-		/*cellValue.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-		
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-		
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-		});*/
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.add(cellIdentifier, BorderLayout.WEST);
 		topPanel.add(cellValue, BorderLayout.CENTER);
@@ -781,29 +764,11 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 			ExcelCell topLeftCell = sheet.getCellAt(minRow, minCol - 1);
 			ExcelCell bottomRightCell = sheet.getCellAt(maxRow, maxCol - 1);
 			selectedCellRange = sheet.getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
-			/*if (minCol == maxCol && minRow == maxRow) {
-				// Single cell selection
-				cellIdentifier.setText(selectedCell.getIdentifier());
-				cellValue.setText(selectedCell.getDisplayCellSpecification());
-			}
-			else {
-				// Cell range selection
-				ExcelCell topLeftCell = sheet.getCellAt(minRow, minCol - 1);
-				ExcelCell bottomRightCell = sheet.getCellAt(maxRow, maxCol - 1);
-				selectedCellRange = sheet.getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
-				cellIdentifier.setText(selectedCellRange.getIdentifier());
-				cellValue.setText(selectedCell.getDisplayCellSpecification());
-			}*/
 		}
 		else {
 			selectedCell = null;
 			selectedCellRange = null;
 		}
-		/*else {
-			cellIdentifier.setText("");
-			cellValue.setText("");
-		}*/
-
 		updateHeaders();
 
 		getPropertyChangeSupport().firePropertyChange(SELECTED_CELL, oldSelectedCell, selectedCell);

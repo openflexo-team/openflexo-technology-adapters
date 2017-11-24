@@ -48,7 +48,6 @@ import java.util.logging.Logger;
 import org.openflexo.components.widget.FIBFlexoObjectSelector;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.listener.FIBSelectionListener;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.localization.FlexoLocalization;
@@ -104,22 +103,10 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 	@Override
 	public String renderedString(ExcelCellRange editedObject) {
 		if (editedObject != null) {
-			return editedObject.getSerializationIdentifier();
+			return editedObject.getExcelSheet().getName() + "[" + editedObject.getIdentifier() + "]";
 		}
 		return "";
 	}
-
-	/*@Override
-	public ExcelCellRange getSelectedValue() {
-		// System.out.println("la selected value = " + super.getSelectedValue());
-		// System.out.println("Mais je chercherai pas plutot " + getEditedObject());
-		return getEditedObject();
-	}
-	
-	@Override
-	public Object getSelectedObject() {
-		return getEditedObject();
-	}*/
 
 	@Override
 	public void setEditedObject(ExcelCellRange object) {
@@ -127,67 +114,10 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 		setSelectedValue(object);
 	}
 
-	/*@Override
-	public void setSelectedObject(Object selectedObject) {
-		System.out.println("On fait un setSelectedObject avec " + selectedObject);
-		super.setSelectedObject(selectedObject);
-	}*/
-
-	/*@Override
-	public void setSelectedValue(ExcelCellRange selectedValue) {
-		System.out.println("On fait un setSelectedValue avec " + selectedValue);
-		super.setSelectedValue(selectedValue);
-	}
-	
-	@Override
-	protected boolean isAcceptableValue(Object o) {
-		System.out.println("acceptable ???? " + o + " " + super.isAcceptableValue(o));
-		return super.isAcceptableValue(o);
-	}*/
-
-	/*private void updateWith(List<FlexoDocElement<D, TA>> elements) {
-	
-		if (document == null) {
-			logger.warning("No document defined in FIBDocFragmentSelector");
-			return;
-		}
-	
-		F newFragment = null;
-		if (elements.size() == 0) {
-			newFragment = null;
-		}
-		else if (elements.size() == 1) {
-			FlexoDocElement<D, TA> startElement = elements.get(0);
-			try {
-				newFragment = (F) document.getFragment(startElement, startElement);
-			} catch (FragmentConsistencyException e) {
-				e.printStackTrace();
-			}
-		}
-		else {
-	
-			FlexoDocElement<D, TA> startElement = elements.get(0);
-			FlexoDocElement<D, TA> endElement = elements.get(elements.size() - 1);
-			try {
-				newFragment = (F) document.getFragment(startElement, endElement);
-			} catch (FragmentConsistencyException e) {
-				System.out.println("This fragment is not valid: start=" + startElement + " end=" + endElement);
-				newFragment = null;
-			}
-	
-		}
-		// System.out.println("fragment=" + newFragment);
-		setEditedObject(newFragment);
-	}*/
-
-	// private boolean isSelecting = false;
-
 	@Override
 	protected RangeSelectorDetailsPanel makeCustomPanel(ExcelCellRange editedObject) {
 
 		RangeSelectorDetailsPanel returned = null;
-
-		System.out.println("On constuit le RangeSelectorDetailsPanel pour " + editedObject);
 
 		if (getServiceManager() != null && getServiceManager().getTaskManager() != null) {
 			LoadEditor task = new LoadEditor(editedObject);
@@ -206,87 +136,10 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(ExcelSheetView.SELECTED_CELL_RANGE)) {
 					ExcelCellRange newRange = (ExcelCellRange) evt.getNewValue();
-					System.out.println("*********On selectionne " + newRange);
 					setEditedObject(newRange);
 				}
 			}
 		});
-		// wbEditor.
-		/*wbEditor.getJEditorPane().addCaretListener(new ExcelWorkbookEditorWidget.FlexoDocumentSelectionListener(wbEditor) {
-			@Override
-			public void caretUpdate(CaretEvent evt) {
-		
-				if (isSelecting) {
-					return;
-				}
-		
-				super.caretUpdate(evt);
-		
-				System.out.println("Caret changed with " + evt);
-				int start = Math.min(evt.getDot(), evt.getMark());
-				int end = Math.max(evt.getDot(), evt.getMark());
-				System.out.println("Selection: " + start + ":" + end);
-		
-				// Better ???
-				// int startLocation = getEditor().getJEditorPane().getSelectionStart();
-				// int endLocation = getEditor().getJEditorPane().getSelectionEnd();
-		
-				// If selection is not empty, reduce the selection to be sure to be in a not implied run
-				if (start > end) {
-					end = end - 1;
-				}
-		
-				FlexoStyledDocument<?, ?> styledDocument = docXEditor.getEditor().getStyledDocument();
-		
-				Element startCharElement = styledDocument.getCharacterElement(start);
-				Element startParElement = styledDocument.getParagraphElement(start);
-				System.out.println("startCharElement: " + startCharElement);
-				System.out.println("startParElement: " + startParElement);
-		
-				Element endCharElement = styledDocument.getCharacterElement(end);
-				Element endParElement = styledDocument.getParagraphElement(end);
-				System.out.println("endCharElement: " + endCharElement);
-				System.out.println("endParElement: " + endParElement);
-		
-				FlexoDocElement startElement = null;
-				FlexoDocElement endElement = null;
-		
-				if (startParElement instanceof AbstractDocumentElement
-						&& ((AbstractDocumentElement<?, ?, ?>) startParElement).getDocObject() instanceof FlexoDocElement) {
-					startElement = (FlexoDocElement<?, ?>) ((AbstractDocumentElement<?, ?, ?>) startParElement).getDocObject();
-				}
-		
-				if (endParElement instanceof AbstractDocumentElement
-						&& ((AbstractDocumentElement<?, ?, ?>) endParElement).getDocObject() instanceof FlexoDocElement) {
-					endElement = (FlexoDocElement<?, ?>) ((AbstractDocumentElement<?, ?, ?>) endParElement).getDocObject();
-				}
-		
-				F newFragment = null;
-		
-				if (startElement != null && endElement != null) {
-		
-					try {
-						newFragment = (F) getDocument().getFragment(startElement, endElement);
-					} catch (FragmentConsistencyException exception) {
-						System.out.println("This fragment is not valid: start=" + startElement + " end=" + endElement);
-						newFragment = null;
-					}
-		
-				}
-		
-				System.out.println("fragment=" + newFragment);
-		
-				isSelecting = true;
-				setEditedObject(newFragment);
-				isSelecting = false;
-		
-			}
-		});*/
-
-		/*if (editedObject != null) {
-			selectFragmentInDocumentEditor(editedObject, documentEditorWidget);
-		}*/
-
 		return returned;
 	}
 
@@ -308,36 +161,6 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 	public static class CellRangeSelectorFIBController extends SelectorFIBController {
 		public CellRangeSelectorFIBController(final FIBComponent component, final FIBCellRangeSelector selector) {
 			super(component, selector);
-			addSelectionListener(new FIBSelectionListener() {
-				@Override
-				public void selectionChanged(List<Object> selection) {
-
-					System.out.println("--------> selectionChanged with " + selection);
-
-					/*List<FlexoDocElement<?, ?>> elements = new ArrayList<>();
-					FlexoDocument<?, ?> doc = null;
-					if (selection != null) {
-						for (Object o : selection) {
-							if (o instanceof FlexoDocElement && ((FlexoDocElement) o).getFlexoDocument() != null) {
-								if (doc == null) {
-									doc = ((FlexoDocElement) o).getFlexoDocument();
-								}
-								if (doc == ((FlexoDocElement) o).getFlexoDocument()) {
-									elements.add((FlexoDocElement<?, ?>) o);
-								}
-							}
-						}
-					}
-					final FlexoDocument<?, ?> docReference = doc;
-					Collections.sort(elements, new Comparator<FlexoDocElement>() {
-						@Override
-						public int compare(FlexoDocElement o1, FlexoDocElement o2) {
-							return docReference.getElements().indexOf(o1) - docReference.getElements().indexOf(o2);
-						}
-					});
-					selector.updateWith(elements);*/
-				}
-			});
 		}
 	}
 
@@ -357,6 +180,7 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 			return wbEditorWidget;
 		}
 
+		@SuppressWarnings("rawtypes")
 		private FIBCustomWidget<?, ?, ?> retrieveWorkbookEditorWidget() {
 			List<FIBComponent> listComponent = getFIBComponent().getAllSubComponents();
 			for (FIBComponent c : listComponent) {
@@ -391,75 +215,7 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 				}
 			}
 		}
-
-		// Called whenever the FragmentSelectorDetailsPanel should reflect a fragment selection
-		// The browser must reflect the selection and FlexoDocumentEditorWidget should highlight selected fragment
-		/*@Override
-		protected void selectValue(F value) {
-		
-			// First notify selectedDocumentElements so that the browser will be notified
-			// for its selection to reflect selected fragment
-			if (value == null) {
-				FIBCellRangeSelector.this.getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", false, null);
-			}
-			else {
-				FIBCellRangeSelector.this.getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null,
-						value.getElements());
-			}
-		
-			selectFragmentInDocumentEditor(value, getDocEditorWidget());
-		}*/
-
 	}
-
-	/*public List<? extends FlexoDocElement<D, TA>> getSelectedDocumentElements() {
-		if (getEditedObject() != null) {
-			return getEditedObject().getElements();
-		}
-		return Collections.emptyList();
-	}
-	
-	public void setSelectedDocumentElements(List<? extends FlexoDocElement<D, TA>> selection) {
-		getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null, selection);
-	}
-	
-	protected void selectFragmentInDocumentEditor(F fragment, FIBCustomWidget<?, ?, ?> documentEditorWidget) {
-	
-		// System.out.println("customPanel" + getCustomPanel());
-		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
-	
-		final ExcelWorkbookEditorWidget docXEditor = (ExcelWorkbookEditorWidget) documentEditorWidget.getCustomComponent();
-	
-		try {
-	
-			if (fragment != null) {
-				isSelecting = true;
-				docXEditor.getEditor().highlightObjects(fragment.getElements());
-				scrollTo(fragment.getStartElement(), docXEditor);
-			}
-	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	
-		docXEditor.getJEditorPane().revalidate();
-		docXEditor.getJEditorPane().repaint();
-	
-	}*/
-
-	/*private void scrollTo(FlexoDocObject object, ExcelWorkbookEditorWidget docXEditor) {
-		if (!docXEditor.getEditor().scrollTo(object, false)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					scrollTo(object, docXEditor);
-				}
-			});
-			isSelecting = true;
-			return;
-		}
-		isSelecting = false;
-	}*/
 
 	public class LoadEditor extends FlexoTask {
 
@@ -474,7 +230,6 @@ public class FIBCellRangeSelector extends FIBFlexoObjectSelector<ExcelCellRange>
 		@Override
 		public void performTask() throws InterruptedException {
 			setExpectedProgressSteps(10);
-			// panel = makeCustomPanel(fragment);
 			panel = new RangeSelectorDetailsPanel(fragment);
 		}
 

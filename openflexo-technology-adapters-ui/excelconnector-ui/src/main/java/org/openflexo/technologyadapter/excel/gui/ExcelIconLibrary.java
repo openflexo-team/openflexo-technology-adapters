@@ -73,7 +73,7 @@ public class ExcelIconLibrary {
 	public static final ImageIconResource EXCEL_ROW_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelRow.png"));
 	public static final ImageIconResource EXCEL_SHEET_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (ExcelWorkbook.class.isAssignableFrom(objectClass)) {
 			return EXCEL_TECHNOLOGY_ICON;
 		}

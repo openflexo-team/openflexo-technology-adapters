@@ -123,7 +123,6 @@ public class ExcelWorkbookEditorWidget extends JPanel
 		this.workbook = workbook;
 		if (workbook != null) {
 			for (ExcelSheet sheet : workbook.getExcelSheets()) {
-				// addTab(sheet.getName(), new FIBExcelSheetView(sheet, controller));
 				tabbedPane.addTab(sheet.getName(), new ExcelSheetView(sheet));
 			}
 		}
@@ -181,7 +180,6 @@ public class ExcelWorkbookEditorWidget extends JPanel
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		System.out.println("OK, focus sur " + tabbedPane.getSelectedIndex());
 		ExcelSheetView newSheetView = (ExcelSheetView) tabbedPane.getSelectedComponent();
 		if (newSheetView != listenedSheetView) {
 			if (listenedSheetView != null) {
@@ -213,27 +211,4 @@ public class ExcelWorkbookEditorWidget extends JPanel
 			listenedSheetView.setCellRange(null);
 		}
 	}
-
-	/*public TextSelection<D, TA> getTextSelection() {
-		return editor.getTextSelection();
-	}*/
-
-	/*public static class FlexoDocumentSelectionListener implements CaretListener {
-	
-		private final ExcelWorkbookEditorWidget<?, ?> editor;
-	
-		public FlexoDocumentSelectionListener(ExcelWorkbookEditorWidget<?, ?> editor) {
-			this.editor = editor;
-		}
-	
-		public ExcelWorkbookEditorWidget<?, ?> getEditor() {
-			return editor;
-		}
-	
-		@Override
-		public void caretUpdate(CaretEvent e) {
-			// System.out.println("caretUpdate dot=" + e.getDot() + " mark=" + e.getMark());
-		}
-	}*/
-
 }

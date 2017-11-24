@@ -231,7 +231,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		}
 
 		public void setCellRange(ExcelCellRange cellRange) {
-			if (!cellRange.equals(getCellRange())) {
+			if ((cellRange == null && getCellRange() != null) || (cellRange != null && !cellRange.equals(getCellRange()))) {
 				ExcelCellRange oldValue = getCellRange();
 				flexoConceptIdentification.setCellRange(cellRange);
 				getPropertyChangeSupport().firePropertyChange("cellRange", oldValue, cellRange);

@@ -188,7 +188,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
 			return true;
 		}
@@ -196,7 +196,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
 			return ((ExcelWorkbook) object).getName();
 		}
