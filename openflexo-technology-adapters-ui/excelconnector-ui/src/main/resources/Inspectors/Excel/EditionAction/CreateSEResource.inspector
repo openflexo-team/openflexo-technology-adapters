@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
+	p:modelEntity="org.openflexo.gina.utils.FIBInspector" align="left"
+	borderTop="0" borderLeft="0" trackViewPortHeight="true"
+	trackViewPortWidth="true" borderBottom="0" border="empty"
+	sizeAdjustment="OriginalSize" titleFont="SansSerif,0,12" layout="border"
+	borderRight="0" controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel id="1" constraints="border(location=center)" name="Tab">
+		<Tab id="2" index="0" title="Basic" align="left" borderTop="0"
+			borderTitle="Request" borderLeft="0" trackViewPortHeight="true"
+			trackViewPortWidth="true" borderBottom="0" border="empty"
+			sizeAdjustment="OriginalSize" titleFont="SansSerif,0,11" layout="twocols"
+			borderRight="0" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" font="SansSerif,0,11"
+			name="BasicTab">
+			
+			<Label label="virtual_model" align="left" localize="true"
+				index="14"
+				constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+				name="VirtualModelLabel" />
+			<Custom index="15"
+				componentClassName="org.openflexo.fml.controller.widget.FIBVirtualModelSelector"
+				dataClassForComponent="org.openflexo.foundation.fml.rm.VirtualModelResource"
+				localize="true" manageDynamicModel="true"
+				data="data.virtualModelResource"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
+				name="VirtualModelSelector">
+				<Assignment id="11" variable="component.virtualModelLibrary"
+					value="data.virtualModelLibrary" mandatory="true" />
+			</Custom>
+			
+			<Label index="16" label="excel_workbook" align="left"
+				localize="true"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				name="WorkbookLabel" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" index="17" data="data.excelWorkbook" name="WorkbookBS"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+			</Custom>
+
+			
+			<Label label="creation_scheme" index="18"
+				constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
+			<DropDown index="19" data="data.creationScheme"
+				constraints="twocols(anchor=west;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+				name="CreationSchemeDropDown" format="object.signature"
+				icon="controller.iconForObject(object)" localize="false"
+				list="data.availableCreationSchemes" showIcon="true"
+				iteratorClassName="org.openflexo.foundation.fml.CreationScheme"
+				autoSelectFirstRow="false">
+			</DropDown>
+			<Label label="parameters" index="20"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" />
+			<Table index="21"
+				iteratorClassName="org.openflexo.foundation.fml.rt.editionaction.BehaviourParameter"
+				visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false"
+				createNewRowOnClick="false" boundToSelectionManager="false"
+				showFooter="false" selectionMode="MultipleIntervalSelection"
+				textSelectionColor="255,255,255" textNonSelectionColor="0,0,0"
+				backgroundSelectionColor="41,90,209"
+				backgroundSecondarySelectionColor="173,215,255"
+				backgroundNonSelectionColor="255,255,255" localize="true"
+				manageDynamicModel="true" opaque="false" data="data.parameters"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;index=13;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=0;location=right)">
+				<IconColumn data="controller.iconForObject(iterator.param)"
+					title="icon" columnWidth="25" resizable="false" displayTitle="false"
+					name="icon" />
+				<LabelColumn data="iterator.param.name" title="parameter"
+					columnWidth="80" resizable="true" displayTitle="true" name="label" />
+				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+					customRendering="false" disableTerminateEditOnFocusLost="false"
+					data="iterator.value" title="value" columnWidth="200" resizable="true"
+					displayTitle="true" name="value">
+					<ColumnAssignment variable="component.bindable"
+						value="iterator" />
+				</CustomColumn>
+				<LocalizedDictionary />
+			</Table>
+			
+			
+		</Tab>
+		<Tab id="9" title="Advanced" align="left" borderTop="0"
+			borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true"
+			borderBottom="0" border="empty" sizeAdjustment="OriginalSize"
+			titleFont="SansSerif,0,11" layout="twocols" borderRight="0"
+			useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+			index="2" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			font="SansSerif,0,11" name="AdvancedTab" />
+	</TabPanel>
+	<FIBVariable id="10"
+		type="org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource"
+		name="data" />
+	<LocalizedDictionary id="11" />
+</Inspector>

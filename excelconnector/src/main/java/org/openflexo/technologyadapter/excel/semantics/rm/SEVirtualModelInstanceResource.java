@@ -61,6 +61,7 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializerAction;
+import org.openflexo.technologyadapter.excel.semantics.model.ExcelMappingException;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 import org.openflexo.toolbox.IProgress;
 
@@ -161,13 +162,13 @@ public interface SEVirtualModelInstanceResource
 		public SEVirtualModelInstance loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException,
 				InvalidXMLException, InconsistentDataException, InvalidModelDefinitionException {
 			SEVirtualModelInstance returned = super.loadResourceData(progress);
-			// returned.setSupportFactory(new JsonSupportFactory("url"));
-			/*try {
-				returned.connectToDB();
-			} catch (FlexoException e) {
+
+			try {
+				returned.updateData();
+			} catch (ExcelMappingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 
 			if (returned.getVirtualModel().getFlexoBehaviours(SEInitializer.class).size() > 0) {
 				SEInitializer initializer = returned.getVirtualModel().getFlexoBehaviours(SEInitializer.class).get(0);

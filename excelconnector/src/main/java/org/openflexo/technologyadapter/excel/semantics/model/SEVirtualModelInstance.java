@@ -35,6 +35,7 @@
 
 package org.openflexo.technologyadapter.excel.semantics.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,13 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
+import org.openflexo.technologyadapter.excel.model.ExcelRow;
+import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -167,13 +173,18 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	@Override
 	public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept, FlexoConceptInstance container);
 
+	/**
+	 * Update all data area by connecting to the excel workbook
+	 */
+	public void updateData() throws ExcelMappingException;
+
 	abstract class SEVirtualModelInstanceImpl extends VirtualModelInstanceImpl<SEVirtualModelInstance, ExcelTechnologyAdapter>
 			implements SEVirtualModelInstance {
 
 		private static final Logger logger = FlexoLogger.getLogger(SEVirtualModelInstance.class.getPackage().toString());
 
-		// Stores all FCIs related to their identifier
-		private Map<FlexoConcept, Map<String, SEFlexoConceptInstance>> instances = new HashMap<>();
+		// Stores all FCIs related to their SEDataAreaRole
+		private Map<SEDataAreaRole, List<SEFlexoConceptInstance>> instances = new HashMap<>();
 
 		private ExcelWorkbookResource wbResource;
 		private String wbURI;
@@ -286,16 +297,18 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				logger.warning("Could not obtain HbnFlexoConceptInstance with null FlexoConcept");
 			}
 
-			String identifier = getIdentifier(row, concept);
+			/*String identifier = getIdentifier(row, concept);
 			// System.out.println("Building object with: " + hbnMap + " id=" + identifier);
-
+			
 			Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
 				return new HashMap<>();
 			});
-
+			
 			return mapForConcept.computeIfAbsent(identifier, (newId) -> {
 				return getFactory().newFlexoConceptInstance(this, container, row, concept);
-			});
+			});*/
+
+			return null;
 		}
 
 		/**
@@ -316,22 +329,16 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		@Override
 		public SEFlexoConceptInstance getFlexoConceptInstance(String identifier, FlexoConceptInstance container, FlexoConcept concept) {
 
-			Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
+			/*Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
 				return new HashMap<>();
 			});
-
+			
 			return mapForConcept.computeIfAbsent(identifier, (newId) -> {
-				/*Map<String, Object> hbnMap;
-				try {
-					hbnMap = (Map<String, Object>) getDefaultSession().get(concept.getName(), identifier);
-					return getFactory().newFlexoConceptInstance(this, container, hbnMap, concept);
-				} catch (HbnException e) {
-					e.printStackTrace();
-					return null;
-				}*/
 				System.out.println("Un truc a faire la");
 				return null;
-			});
+			});*/
+
+			return null;
 		}
 
 		/**
@@ -363,6 +370,70 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 			addToFlexoConceptInstances(returned);
 			return returned;
+		}
+
+		@Override
+		public void updateData() throws ExcelMappingException {
+			for (SEDataAreaRole dataAreaRole : getVirtualModel().getAccessibleProperties(SEDataAreaRole.class)) {
+				updateDataAreaRole(dataAreaRole);
+			}
+		}
+
+		private List<SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
+			List<SEFlexoConceptInstance> allFCI = instances.get(dataAreaRole);
+			if (allFCI == null) {
+				allFCI = new ArrayList<>();
+				instances.put(dataAreaRole, allFCI);
+			}
+			ExcelCellRange matchingRange = getRange(dataAreaRole);
+			System.out.println("matchingRange=" + matchingRange);
+			return allFCI;
+		}
+
+		private ExcelCellRange getRange(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
+			System.out.println("On doit trouver le nouveau range de " + dataAreaRole.getCellRange());
+			System.out.println("Template: " + dataAreaRole.getCellRange().getExcelWorkbook().getResource());
+			System.out.println("Working on: " + getExcelWorkbookResource());
+
+			if (getExcelWorkbookResource() == null) {
+				throw new ExcelMappingException("Could not find workbook resource");
+			}
+
+			ExcelCellRange templateRange = dataAreaRole.getCellRange();
+
+			ExcelSheet sheet = getExcelWorkbookResource().getExcelWorkbook().getExcelSheetByName(templateRange.getExcelSheet().getName());
+			if (sheet == null) {
+				throw new ExcelMappingException("Could not find sheet: " + templateRange.getExcelSheet().getName());
+			}
+
+			int startIndex = templateRange.getTopLeftCell().getRowIndex();
+			int currentRowIndex = startIndex;
+			while (isSignificative(currentRowIndex, sheet, dataAreaRole)) {
+				currentRowIndex++;
+			}
+
+			System.out.println("On trouve " + (currentRowIndex - startIndex) + " rows a matcher");
+
+			ExcelCell topLeftCell = sheet.getCellAt(startIndex, templateRange.getTopLeftCell().getColumnIndex());
+			ExcelCell bottomRightCell = sheet.getCellAt(currentRowIndex - 1, templateRange.getBottomRightCell().getColumnIndex());
+			return sheet.getExcelWorkbook().getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+		}
+
+		private boolean isSignificative(int rowIndex, ExcelSheet sheet, SEDataAreaRole dataAreaRole) {
+			if (sheet.getExcelRows().size() <= rowIndex) {
+				// This row does not exists, do not create it
+				return false;
+			}
+			ExcelRow row = sheet.getRowAt(rowIndex);
+			ExcelCellRange templateRange = dataAreaRole.getCellRange();
+			for (int i = templateRange.getTopLeftCell().getColumnIndex(); i <= templateRange.getBottomRightCell().getColumnIndex(); i++) {
+				ExcelCell cell = row.getExcelCellAt(i);
+				System.out.println("Pour la valeur " + i + " j'ai " + cell.getCellValueAsString());
+				if (StringUtils.isNotEmpty(cell.getCellValueAsString())) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

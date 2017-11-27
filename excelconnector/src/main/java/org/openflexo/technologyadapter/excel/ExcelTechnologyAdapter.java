@@ -61,6 +61,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType.SEVirtualModelInstanceTypeFactory;
 import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceRepository;
+import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceResourceFactory;
 
 /**
  * This class defines and implements the Excel technology adapter
@@ -69,7 +70,7 @@ import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstance
  * 
  */
 @DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
-@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class })
+@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class, SEVirtualModelInstanceResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(ExcelTechnologyAdapter.class.getPackage().getName());

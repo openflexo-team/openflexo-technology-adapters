@@ -40,11 +40,13 @@ package org.openflexo.technologyadapter.excel.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.FMLIconLibrary;
+import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -67,9 +69,11 @@ import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
+import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 import org.openflexo.technologyadapter.excel.view.ExcelWorkbookView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -198,11 +202,17 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
 		}
+		else if (CreateSEResource.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(FMLRTIconLibrary.VIRTUAL_MODEL_INSTANCE_ICON, ExcelIconLibrary.EXCEL_MARKER);
+		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof SEVirtualModelInstance) {
+			return true;
+		}
 		if (object instanceof ExcelWorkbook) {
 			return true;
 		}
@@ -220,6 +230,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	@Override
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
+		if (object instanceof SEVirtualModelInstance) {
+			return new VirtualModelInstanceView((SEVirtualModelInstance) object, controller, perspective);
+		}
 		if (object instanceof ExcelWorkbook) {
 			return new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
 		}

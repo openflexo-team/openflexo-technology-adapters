@@ -415,6 +415,8 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 
 					creationSchemeAction.doAction();
 
+					data.updateData();
+
 					if (data.getVirtualModel().getFlexoBehaviours(SEInitializer.class).size() > 0) {
 						SEInitializer initializer = data.getVirtualModel().getFlexoBehaviours(SEInitializer.class).get(0);
 						SEInitializerAction action = new SEInitializerAction(initializer, data, null,
