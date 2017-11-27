@@ -68,6 +68,13 @@ public interface ExcelCellRange extends ExcelObject {
 	 * 
 	 * @return
 	 */
+	public ExcelWorkbook getExcelWorkbook();
+
+	/**
+	 * Return {@link ExcelWorkbook} where this {@link ExcelCellRange} is defined
+	 * 
+	 * @return
+	 */
 	@Getter(value = EXCEL_SHEET_KEY)
 	public ExcelSheet getExcelSheet();
 
@@ -129,6 +136,11 @@ public interface ExcelCellRange extends ExcelObject {
 	public static abstract class ExcelCellRangeImpl extends ExcelObjectImpl implements ExcelCellRange {
 
 		@Override
+		public ExcelWorkbook getExcelWorkbook() {
+			return getExcelSheet().getExcelWorkbook();
+		}
+
+		@Override
 		public ExcelSheet getExcelSheet() {
 			ExcelSheet returned = (ExcelSheet) performSuperGetter(EXCEL_SHEET_KEY);
 			if (returned == null && getTopLeftCell() != null) {
@@ -156,6 +168,39 @@ public interface ExcelCellRange extends ExcelObject {
 		public boolean isSingleCell() {
 			return getTopLeftCell().getRowIndex() == getBottomRightCell().getRowIndex()
 					&& getTopLeftCell().getColumnIndex() == getBottomRightCell().getColumnIndex();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			ExcelCellRange other = (ExcelCellRange) obj;
+
+			if (getExcelSheet() == null) {
+				if (other.getExcelSheet() != null)
+					return false;
+			}
+			else if (!getExcelSheet().equals(other.getExcelSheet()))
+				return false;
+
+			if (getBottomRightCell() == null) {
+				if (other.getBottomRightCell() != null)
+					return false;
+			}
+			else if (!getBottomRightCell().equals(other.getBottomRightCell()))
+				return false;
+
+			if (getTopLeftCell() == null) {
+				if (other.getTopLeftCell() != null)
+					return false;
+			}
+			else if (!getTopLeftCell().equals(other.getTopLeftCell()))
+				return false;
+			return true;
 		}
 	}
 }

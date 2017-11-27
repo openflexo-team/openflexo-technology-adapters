@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
@@ -61,6 +63,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(SEVirtualModel.SEVirtualModelImpl.class)
 @XMLElement
+@Imports({ @Import(SEFlexoConcept.class) })
 public interface SEVirtualModel extends VirtualModel {
 
 	@PropertyIdentifier(type = ExcelWorkbookResource.class)
@@ -88,11 +91,14 @@ public interface SEVirtualModel extends VirtualModel {
 		private ExcelWorkbookResource templateWBResource;
 		private String templateWBURI;
 
+		private SEVirtualModelInstanceType vmInstanceType = new SEVirtualModelInstanceType(this);
+
 		@Override
 		public ExcelWorkbookResource getTemplateExcelWorkbookResource() {
 			if (templateWBResource == null && StringUtils.isNotEmpty(templateWBURI) && getServiceManager() != null
 					&& getServiceManager().getResourceManager() != null) {
-				templateWBResource = (ExcelWorkbookResource) getServiceManager().getResourceManager().getResource(templateWBURI, ExcelWorkbook.class);
+				templateWBResource = (ExcelWorkbookResource) getServiceManager().getResourceManager().getResource(templateWBURI,
+						ExcelWorkbook.class);
 				logger.info("Looked-up " + templateWBResource + " for " + templateWBURI);
 			}
 			return templateWBResource;
@@ -114,6 +120,11 @@ public interface SEVirtualModel extends VirtualModel {
 		@Override
 		public void setTemplateExcelWorkbookURI(String excelWorkbookURI) {
 			this.templateWBURI = excelWorkbookURI;
+		}
+
+		@Override
+		public SEVirtualModelInstanceType getInstanceType() {
+			return vmInstanceType;
 		}
 
 	}

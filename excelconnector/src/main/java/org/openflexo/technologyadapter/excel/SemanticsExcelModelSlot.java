@@ -73,6 +73,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEObject;
 import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType;
@@ -94,7 +95,7 @@ import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInsta
 @ModelEntity
 @XMLElement
 @ImplementationClass(SemanticsExcelModelSlot.SemanticsExcelModelSlotImpl.class)
-@DeclareFlexoRoles({ SEColumnRole.class, SEReferenceRole.class })
+@DeclareFlexoRoles({ SEColumnRole.class, SEDataAreaRole.class, SEReferenceRole.class })
 @DeclareEditionActions({ CreateSEResource.class, CreateSEObject.class })
 @DeclareFlexoBehaviours({ SEInitializer.class })
 @DeclareActorReferences({ SEObjectActorReference.class })

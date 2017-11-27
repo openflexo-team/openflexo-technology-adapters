@@ -230,6 +230,20 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 				String oldValue = getNewConceptName();
 				flexoConceptSpecification.setConceptName(newConceptName);
 				getPropertyChangeSupport().firePropertyChange("newConceptName", oldValue, newConceptName);
+				getPropertyChangeSupport().firePropertyChange("dataAreaRoleName", null, getDataAreaRoleName());
+				checkValidity();
+			}
+		}
+
+		public String getDataAreaRoleName() {
+			return flexoConceptSpecification.getDataAreaRoleName();
+		}
+
+		public void setDataAreaRoleName(String dataAreaRoleName) {
+			if (!dataAreaRoleName.equals(getDataAreaRoleName())) {
+				String oldValue = getDataAreaRoleName();
+				flexoConceptSpecification.setDataAreaRoleName(dataAreaRoleName);
+				getPropertyChangeSupport().firePropertyChange("dataAreaRoleName", oldValue, dataAreaRoleName);
 				checkValidity();
 			}
 		}

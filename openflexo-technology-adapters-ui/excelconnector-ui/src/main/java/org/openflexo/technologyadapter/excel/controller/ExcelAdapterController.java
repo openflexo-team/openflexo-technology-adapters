@@ -68,6 +68,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
 import org.openflexo.technologyadapter.excel.view.ExcelWorkbookView;
 import org.openflexo.view.EmptyPanel;
@@ -154,6 +155,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 			return getIconForTechnologyObject(ExcelColumn.class);
 		}
 		if (SEReferenceRole.class.isAssignableFrom(flexoRoleClass)) {
+			return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_ICON, ExcelIconLibrary.EXCEL_MARKER);
+		}
+		if (SEDataAreaRole.class.isAssignableFrom(flexoRoleClass)) {
 			return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_ICON, ExcelIconLibrary.EXCEL_MARKER);
 		}
 		return null;

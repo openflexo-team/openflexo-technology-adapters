@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.excel.tests.model;
+package org.openflexo.technologyadapter.excel;
 
 import static org.junit.Assert.assertNotNull;
 

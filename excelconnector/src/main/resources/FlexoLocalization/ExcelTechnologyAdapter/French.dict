@@ -1,3 +1,4 @@
+cells_range=cells_range
 choose_virtual_model_name_and_template_excel=Choisir un classeur excel d'exemple et un nom pour le VirtualModel
 configure_jdbc_connection=configure_jdbc_connection
 create_virtual_model_reflecting_an_excel_workbook=Cr\u00E9er un VirtualModel refl\u00E9tant un classeur excel

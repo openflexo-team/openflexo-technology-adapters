@@ -58,7 +58,7 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 
 	public static SEVirtualModelInstanceType UNDEFINED_VIRTUAL_MODEL_INSTANCE_TYPE = new SEVirtualModelInstanceType((VirtualModel) null);
 
-	private SEVirtualModelInstanceType(VirtualModel aVirtualModel) {
+	protected SEVirtualModelInstanceType(VirtualModel aVirtualModel) {
 		super(aVirtualModel);
 	}
 

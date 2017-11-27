@@ -36,14 +36,16 @@
  * 
  */
 
-package org.openflexo.technologyadapter.excel.tests.model;
+package org.openflexo.technologyadapter.excel.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotSame;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -55,31 +57,26 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelRow;
+import org.openflexo.technologyadapter.excel.model.ExcelSheet;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-public class TestLoadExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadExcelWorkbook.class.getPackage().getName());
+public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
+	protected static final Logger logger = Logger.getLogger(TestCompareExcelSheet.class.getPackage().getName());
 
 	private static FlexoEditor editor;
-	private static FlexoProject<File> project;
+	private static FlexoProject project;
 
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
-	}
-
-	@Test
-	@TestOrder(2)
-	public void testCreateProject() {
-		editor = createStandaloneProject("TestProject");
-		project = (FlexoProject<File>) editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
 	}
 
 	@Test
@@ -93,16 +90,61 @@ public class TestLoadExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(excelWorkbookRepository);
 			Collection<ExcelWorkbookResource> workbooks = excelWorkbookRepository.getAllResources();
 			for (ExcelWorkbookResource excelWorkbook : workbooks) {
-				try {
-					excelWorkbook.loadResourceData(null);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					e.printStackTrace();
+				if (excelWorkbook.getName().contains("exemple")) {
+					System.out.println("Testing on " + excelWorkbook);
+					try {
+						ExcelWorkbook excelModel = excelWorkbook.loadResourceData(null);
+						assertNotNull(excelWorkbook.getLoadedResourceData());
+						assertNotNull(excelModel);
+						assertEquals(excelModel, excelWorkbook.getLoadedResourceData());
+
+						List<ExcelSheet> sheets = excelModel.getExcelSheets();
+
+						for (ExcelSheet refSheet : sheets) {
+							// System.out.println("refSheet=" + refSheet);
+							for (ExcelRow refRow : refSheet.getExcelRows()) {
+								// System.out.println("refRow=" + refRow);
+								for (ExcelSheet sheet : sheets) {
+									for (ExcelRow row : sheet.getExcelRows()) {
+										if (sheet != refSheet) {
+											assertNotNull(row.getRow());
+											assertNotNull(row.getExcelCellAt(0));
+											// System.out.println("row.getRow()=" + row.getRow() + " index=" + row.getRowIndex());
+											// System.out.println("refRow.getRow()=" + refRow.getRow() + " index=" + row.getRowIndex());
+											assertFalse(row.getRow() == refRow.getRow());
+											assertNotSame(row.getRow(), refRow.getRow());
+											// Row do have the same hashcode
+											// assertNotSame(row.getRow().hashCode(), refRow.getRow().hashCode());
+											assertNotSame(row, refRow);
+											assertNotSame(row.hash(), refRow.hash());
+											assertFalse(row == refRow);
+										}
+										if (row != refRow) {
+											for (ExcelCell c : row.getExcelCells()) {
+												for (ExcelCell rc : refRow.getExcelCells()) {
+													assertNotNull(c.getCell());
+													assertFalse(c.getCell() == rc.getCell());
+													assertNotSame(c.getCell().hashCode(), rc.getCell().hashCode());
+													assertNotSame(c.hash(), rc.hash());
+													assertNotSame(c, rc);
+													assertNotSame(c.hash(), rc.hash());
+													assertFalse(c == rc);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (ResourceLoadingCancelledException e) {
+						e.printStackTrace();
+					} catch (FlexoException e) {
+						e.printStackTrace();
+					}
 				}
-				assertNotNull(excelWorkbook.getLoadedResourceData());
 			}
 		}
 	}

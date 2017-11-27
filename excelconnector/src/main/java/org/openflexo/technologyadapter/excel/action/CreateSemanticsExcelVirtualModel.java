@@ -60,6 +60,7 @@ import org.openflexo.foundation.fml.action.AbstractCreateNatureSpecificVirtualMo
 import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
+import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.action.PropertyEntry;
 import org.openflexo.foundation.fml.action.PropertyEntry.PropertyType;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -76,6 +77,8 @@ import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEFlexoConcept;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModel;
@@ -124,7 +127,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		FlexoObjectImpl.addActionForClass(CreateSemanticsExcelVirtualModel.actionType, RepositoryFolder.class);
 	}
 
-	private VirtualModel newVirtualModel;
+	private SEVirtualModel newVirtualModel;
 
 	/*private JDBCDbType dbType;
 	private String address;
@@ -164,11 +167,13 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 
 		try {
 			setSpecializedVirtualModelClass(SEVirtualModel.class);
+			System.out.println("On cree une resource pour " + getSpecializedVirtualModelClass());
 			VirtualModelResource vmResource = makeVirtualModelResource();
-			newVirtualModel = vmResource.getLoadedResourceData();
+			newVirtualModel = (SEVirtualModel) vmResource.getLoadedResourceData();
 			newVirtualModel.setDescription(getNewVirtualModelDescription());
 			newVirtualModel.setAbstract(true);
 			newVirtualModel.setModelSlotNatureClass(SemanticsExcelModelSlot.class);
+			newVirtualModel.setTemplateExcelWorkbookResource(getExcelWorkbookResource());
 		} catch (SaveResourceException e) {
 			throw new SaveResourceException(null);
 		} catch (ModelDefinitionException e) {
@@ -181,6 +186,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 
 		performSetParentConcepts();
 		performCreateProperties();
+
 		performCreateBehaviours();
 		performCreateInspectors();
 		performPostProcessings();
@@ -188,6 +194,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
 			CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewEmbeddedAction(newVirtualModel, null, this);
 			createConceptAction.setNewFlexoConceptName(conceptSpecification.getConceptName());
+			createConceptAction.setSpecializedFlexoConceptClass(SEFlexoConcept.class);
 			if (StringUtils.isNotEmpty(conceptSpecification.getConceptDescription())) {
 				createConceptAction.setNewFlexoConceptDescription(conceptSpecification.getConceptDescription());
 			}
@@ -253,6 +260,19 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 			createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
 			createCreationScheme.doAction();
 			CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+		}
+
+		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
+			CreateTechnologyRole createTechnologyRole = CreateTechnologyRole.actionType.makeNewEmbeddedAction(newVirtualModel, null, this);
+			String dataAreaRoleName = JavaUtils.getVariableName(conceptSpecification.getConceptName() + "s");
+			createTechnologyRole.setRoleName(dataAreaRoleName);
+			createTechnologyRole.setFlexoRoleClass(SEDataAreaRole.class);
+			createTechnologyRole.setIsRequired(true);
+			createTechnologyRole.setContainer(new DataBinding<>("this"));
+			createTechnologyRole.doAction();
+			SEDataAreaRole dataAreaRole = (SEDataAreaRole) createTechnologyRole.getNewFlexoProperty();
+			dataAreaRole.setCellRange(conceptSpecification.getCellRange());
+			dataAreaRole.setFlexoConceptType(conceptSpecification.getConcept());
 		}
 
 		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
@@ -329,7 +349,8 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 	public class SEFlexoConceptSpecification {
 
 		private FlexoConcept concept;
-		private String conceptName;
+		private String conceptName = null;
+		private String dataAreaRoleName = null;
 		private ExcelCellRange cellRange;
 		private final List<SEFlexoPropertySpecification> properties = new ArrayList<>();
 		private String conceptDescription;
@@ -351,6 +372,22 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 				String oldValue = this.conceptName;
 				this.conceptName = conceptName;
 				getPropertyChangeSupport().firePropertyChange("conceptName", oldValue, conceptName);
+			}
+		}
+
+		public String getDataAreaRoleName() {
+			if (dataAreaRoleName == null && getConceptName() != null) {
+				return JavaUtils.getVariableName(getConceptName() + "s");
+			}
+			return dataAreaRoleName;
+		}
+
+		public void setDataAreaRoleName(String dataAreaRoleName) {
+			if ((dataAreaRoleName == null && this.dataAreaRoleName != null)
+					|| (dataAreaRoleName != null && !dataAreaRoleName.equals(this.dataAreaRoleName))) {
+				String oldValue = this.dataAreaRoleName;
+				this.dataAreaRoleName = dataAreaRoleName;
+				getPropertyChangeSupport().firePropertyChange("dataAreaRoleName", oldValue, dataAreaRoleName);
 			}
 		}
 

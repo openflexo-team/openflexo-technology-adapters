@@ -1,0 +1,13 @@
+dependencies {
+
+    compile project(':excelconnector')
+    compile flexoFoundation()
+    
+     compile testUtils()
+    compile flexoFoundationTest()
+
+	  // Test resource center
+	  testRuntime project(':excelconnector-test-rc')
+  
+}
+

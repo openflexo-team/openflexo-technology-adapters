@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -54,6 +55,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRangeConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
@@ -341,6 +343,13 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			hbnVmiFactory = new SEVirtualModelInstanceTypeFactory(this);
 		}
 		return hbnVmiFactory;
+	}
+
+	@Override
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
+		super.initFMLModelFactory(fMLModelFactory);
+
+		fMLModelFactory.addConverter(new ExcelCellRangeConverter(getServiceManager()));
 	}
 
 }

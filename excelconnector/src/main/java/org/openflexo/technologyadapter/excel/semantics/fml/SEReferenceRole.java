@@ -50,9 +50,11 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.semantics.model.SEFlexoConceptInstance;
 
 /**
- * A role specific to Hibernate technology (HbnModelSlot) allowing to access a referenced object in an external table through a foreign key
+ * A role specific to Semantics/Excel technology (SEModelSlot) allowing to access a referenced object somewhere in an excel workbook, and
+ * reflected as a {@link SEFlexoConceptInstance}
  * 
  * @author sylvain
  *

@@ -416,9 +416,21 @@ public class BasicExcelModelConverter {
 					return sheetRef.columns.get(colIndex).excelColumn;
 				}
 				else if (objectId.startsWith("cell[")) {
-					// This is a column
-					String cellId = objectId.substring(4, objectId.length() - 1);
-					System.out.println("tiens faudrait retourner la cell " + cellId);
+					// This is a cell
+					String cellId = objectId.substring(5, objectId.length() - 1);
+					return getCell(cellId, sheet);
+				}
+				else if (objectId.startsWith("range[")) {
+					// This is a range
+					String rangeId = objectId.substring(6, objectId.length() - 1);
+					if (rangeId.contains(":")) {
+						String topLeftCellId = rangeId.substring(0, rangeId.indexOf(":"));
+						ExcelCell topLeftCell = getCell(topLeftCellId, sheet);
+						String bottomRightCellId = rangeId.substring(rangeId.indexOf(":") + 1);
+						ExcelCell bottomRightCell = getCell(bottomRightCellId, sheet);
+						return sheet.getExcelWorkbook().getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+					}
+					logger.warning("Cannot lookup range " + rangeId);
 					return null;
 				}
 				logger.warning("Could not find object with id " + objectId);
@@ -438,6 +450,31 @@ public class BasicExcelModelConverter {
 			logger.warning("Could not find sheet " + id);
 			return null;
 		}
+	}
+
+	/**
+	 * Return cell under the form 'A2'
+	 * 
+	 * @param id
+	 * @param sheet
+	 * @return
+	 */
+	private ExcelCell getCell(String id, ExcelSheet sheet) {
+		String colAsString = "";
+		String rowAsString = "";
+		id = id.toUpperCase();
+		for (int i = 0; i < id.length(); i++) {
+			char c = id.charAt(i);
+			if (c >= 'A' && c <= 'Z') {
+				colAsString = colAsString + c;
+			}
+			else if (c >= '0' && c <= '9') {
+				rowAsString = rowAsString + c;
+			}
+		}
+		int col = ExcelColumn.getColumnIndex(colAsString);
+		int row = Integer.parseInt(rowAsString) - 1;
+		return sheet.getCellAt(row, col);
 	}
 
 	/**

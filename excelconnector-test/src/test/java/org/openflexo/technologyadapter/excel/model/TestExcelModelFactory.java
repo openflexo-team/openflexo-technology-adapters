@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.excel.tests.model;
+package org.openflexo.technologyadapter.excel.model;
 
 import static org.junit.Assert.fail;
 
