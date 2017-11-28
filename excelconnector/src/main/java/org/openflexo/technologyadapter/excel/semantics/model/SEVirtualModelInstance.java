@@ -37,6 +37,7 @@ package org.openflexo.technologyadapter.excel.semantics.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -119,7 +120,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 *            type of related {@link SEFlexoConceptInstance}
 	 * @return
 	 */
-	public String getIdentifier(Row row, FlexoConcept concept);
+	// public String getIdentifier(Row row, FlexoConcept concept);
 
 	/**
 	 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied support object (a row in an excel workbook), asserting
@@ -153,7 +154,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 *            type of returned {@link SEFlexoConceptInstance}
 	 * @return
 	 */
-	public SEFlexoConceptInstance getFlexoConceptInstance(String rowId, FlexoConceptInstance container, FlexoConcept concept);
+	// public SEFlexoConceptInstance getFlexoConceptInstance(String rowId, FlexoConceptInstance container, FlexoConcept concept);
 
 	/**
 	 * Instantiate and register a new {@link SEFlexoConceptInstance}
@@ -184,7 +185,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		private static final Logger logger = FlexoLogger.getLogger(SEVirtualModelInstance.class.getPackage().toString());
 
 		// Stores all FCIs related to their SEDataAreaRole
-		private Map<SEDataAreaRole, List<SEFlexoConceptInstance>> instances = new HashMap<>();
+		private Map<FlexoConcept, Map<Integer, SEFlexoConceptInstance>> instances = new HashMap<>();
 
 		private ExcelWorkbookResource wbResource;
 		private String wbURI;
@@ -251,9 +252,9 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 *            type of related {@link SEFlexoConceptInstance}
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public String getIdentifier(Row row, FlexoConcept concept) {
-			/*if (concept.getKeyProperties().size() == 0) {
+			if (concept.getKeyProperties().size() == 0) {
 				return null;
 			}
 			if (concept.getKeyProperties().size() == 1) {
@@ -266,9 +267,9 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				sb.append((isFirst ? "" : ",") + keyP.getName() + "=" + hbnMap.get(keyP.getName()));
 				isFirst = false;
 			}
-			return sb.toString();*/
-			return row.getSheet().getSheetName() + "/row[" + row.getRowNum() + "]";
-		}
+			return sb.toString();
+			//return row.getSheet().getSheetName() + "/row[" + row.getRowNum() + "]";
+		}*/
 
 		@Override
 		public SEVirtualModelInstanceModelFactory getFactory() {
@@ -297,18 +298,19 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				logger.warning("Could not obtain HbnFlexoConceptInstance with null FlexoConcept");
 			}
 
-			/*String identifier = getIdentifier(row, concept);
+			System.out.println("Nouvelle instance pour " + row.getRowNum());
+
+			// String identifier = getIdentifier(row, concept);
 			// System.out.println("Building object with: " + hbnMap + " id=" + identifier);
-			
-			Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
+
+			Map<Integer, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
 				return new HashMap<>();
 			});
-			
-			return mapForConcept.computeIfAbsent(identifier, (newId) -> {
-				return getFactory().newFlexoConceptInstance(this, container, row, concept);
-			});*/
 
-			return null;
+			return mapForConcept.computeIfAbsent(row.getRowNum(), (newId) -> {
+				return getFactory().newFlexoConceptInstance(this, container, row, concept);
+			});
+
 		}
 
 		/**
@@ -326,20 +328,20 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 *            type of returned {@link SEFlexoConceptInstance}
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public SEFlexoConceptInstance getFlexoConceptInstance(String identifier, FlexoConceptInstance container, FlexoConcept concept) {
-
-			/*Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
+		
+			Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
 				return new HashMap<>();
 			});
-			
+		
 			return mapForConcept.computeIfAbsent(identifier, (newId) -> {
 				System.out.println("Un truc a faire la");
 				return null;
-			});*/
-
+			});
+		
 			return null;
-		}
+		}*/
 
 		/**
 		 * Instanciate and register a new {@link FlexoConceptInstance}
@@ -379,14 +381,41 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 		}
 
-		private List<SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
-			List<SEFlexoConceptInstance> allFCI = instances.get(dataAreaRole);
+		private Map<Integer, SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
+
+			Map<Integer, SEFlexoConceptInstance> allFCI = instances.get(dataAreaRole);
+
 			if (allFCI == null) {
-				allFCI = new ArrayList<>();
-				instances.put(dataAreaRole, allFCI);
+				allFCI = new LinkedHashMap<>();
+				instances.put(dataAreaRole.getFlexoConceptType(), allFCI);
 			}
 			ExcelCellRange matchingRange = getRange(dataAreaRole);
 			System.out.println("matchingRange=" + matchingRange);
+
+			int startRowIndex = matchingRange.getTopLeftCell().getRowIndex();
+			int endRowIndex = matchingRange.getBottomRightCell().getRowIndex();
+			for (int currentIndex = startRowIndex; currentIndex <= endRowIndex; currentIndex++) {
+				ExcelRow excelRow = matchingRange.getExcelSheet().getRowAt(currentIndex);
+				int fciIndex = currentIndex - startRowIndex;
+				if (currentIndex < allFCI.size()) {
+					// Update existing instance using row
+					SEFlexoConceptInstance seFCI = allFCI.get(fciIndex);
+					seFCI.setRowSupportObject(excelRow.getRow());
+				}
+				else {
+					// New instance
+					SEFlexoConceptInstance seFCI = getFlexoConceptInstance(excelRow.getRow(), null, dataAreaRole.getFlexoConceptType());
+					allFCI.put(excelRow.getRowIndex(), seFCI);
+				}
+			}
+			// What about instances to be deleted
+			for (Integer rowIndex : new ArrayList<>(allFCI.keySet())) {
+				if (rowIndex < startRowIndex || rowIndex > endRowIndex) {
+					SEFlexoConceptInstance fciToRemove = allFCI.get(rowIndex);
+					allFCI.remove(rowIndex);
+					fciToRemove.delete();
+				}
+			}
 			return allFCI;
 		}
 

@@ -63,6 +63,7 @@ public class SEVirtualModelInstanceModelFactory extends AbstractVirtualModelInst
 
 	public SEFlexoConceptInstance newFlexoConceptInstance(SEVirtualModelInstance owner, FlexoConceptInstance container, Row row,
 			FlexoConcept concept) {
+		System.out.println("On construit un nouveau SEFlexoConceptInstance pour " + row.getRowNum());
 		SEFlexoConceptInstance returned = newInstance(SEFlexoConceptInstance.class, row, concept);
 		owner.addToFlexoConceptInstances(returned);
 		if (container != null && container != owner) {

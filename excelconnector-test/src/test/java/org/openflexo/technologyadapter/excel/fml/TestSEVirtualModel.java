@@ -263,17 +263,20 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		seVMI = vmi.execute("personListing");
 		assertNotNull(seVMI);
 
-		assertEquals(6, seVMI.getFlexoConceptInstances().size());
+		assertEquals(4, seVMI.getFlexoConceptInstances().size());
 		SEFlexoConceptInstance jeanDupont = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(0);
 		SEFlexoConceptInstance bernadetteDupont = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(1);
 		SEFlexoConceptInstance julesDupont = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(2);
 		SEFlexoConceptInstance ninaDupont = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(3);
-		SEFlexoConceptInstance gerardMenvusat = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(4);
-		SEFlexoConceptInstance alainTerrieur = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(5);
+		// SEFlexoConceptInstance gerardMenvusat = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(4);
+		// SEFlexoConceptInstance alainTerrieur = (SEFlexoConceptInstance) seVMI.getFlexoConceptInstances().get(5);
 
-		/*assertEquals(1, (long) salesman1.execute("id"));
-		assertEquals("Smith", salesman1.execute("lastname"));
-		assertEquals("Alan", salesman1.execute("firstname"));*/
+		assertEquals("MR", jeanDupont.execute("sexe"));
+		assertEquals("Jean Dupont", jeanDupont.execute("name"));
+		assertEquals("Architect", jeanDupont.execute("activity"));
+		System.out.println("age=" + jeanDupont.execute("age") + " of " + jeanDupont.execute("age").getClass());
+		assertEquals(45, (long) jeanDupont.execute("age"));
+		assertEquals("BREST", jeanDupont.execute("city"));
 
 		/*System.out.println("Requesting clients...");
 		

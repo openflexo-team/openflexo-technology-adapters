@@ -38,7 +38,9 @@ package org.openflexo.technologyadapter.excel.semantics.model;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoProperty;
@@ -50,6 +52,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 
 /**
  * A Excel-specific {@link FlexoConceptInstance} reflecting a distant object (represented by a row in a workbook) accessible in an
@@ -72,7 +75,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 	 * 
 	 * @return
 	 */
-	public String getIdentifier();
+	// public String getIdentifier();
 
 	/**
 	 * Initialize this {@link SEFlexoConceptInstance} with supplied Hibernate support object, and explicit concept (type)
@@ -91,6 +94,13 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 	public Row getRowSupportObject();
 
 	/**
+	 * Sets {@link Row} support object
+	 * 
+	 * @return
+	 */
+	public void setRowSupportObject(Row row);
+
+	/**
 	 * Default implementation for {@link SEFlexoConceptInstance}
 	 * 
 	 * @author sylvain
@@ -103,7 +113,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 		// Row support object
 		private Row row;
 
-		private String identifier = null;
+		// private String identifier = null;
 
 		// This map stores references for this object
 		// TODO: support modification
@@ -130,6 +140,15 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 		@Override
 		public Row getRowSupportObject() {
 			return row;
+		}
+
+		@Override
+		public void setRowSupportObject(Row row) {
+			if ((row == null && this.row != null) || (row != null && !row.equals(this.row))) {
+				Row oldValue = this.row;
+				this.row = row;
+				getPropertyChangeSupport().firePropertyChange("rowSupportObject", oldValue, row);
+			}
 		}
 
 		/*private SEFlexoConceptInstance getReferencedObject(HbnToOneReferenceRole referenceRole) {
@@ -256,6 +275,28 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 
 		@Override
 		public <T> T getFlexoActor(FlexoRole<T> flexoRole) {
+			if (flexoRole instanceof SEColumnRole) {
+				SEColumnRole<T> columnRole = (SEColumnRole<T>) flexoRole;
+				System.out.println("Tiens c'est quoi la valeur du role pour " + flexoRole);
+				Cell cell = row.getCell(columnRole.getColumnIndex());
+				System.out.println("cell: " + cell);
+				switch (columnRole.getPrimitiveType()) {
+					case String:
+						return (T) cell.getStringCellValue();
+					case Long:
+					case Integer:
+					case Double:
+					case Float:
+						return (T) TypeUtils.castTo(cell.getNumericCellValue(), columnRole.getPrimitiveType().getType());
+					case Date:
+						return (T) cell.getDateCellValue();
+					case Boolean:
+						return (T) (Boolean) cell.getBooleanCellValue();
+					default:
+						logger.warning("Unexpected primitive type: " + columnRole.getPrimitiveType());
+						return null;
+				}
+			}
 			/*if (flexoRole instanceof HbnColumnRole) {
 				T returned = (T) hbnMap.get(flexoRole.getName());
 				return returned;
@@ -297,6 +338,10 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 
 		@Override
 		public <T> T getFlexoPropertyValue(FlexoProperty<T> flexoProperty) {
+			if (flexoProperty instanceof SEColumnRole) {
+				System.out.println("Tiens c'est quoi la valeur pour " + flexoProperty);
+			}
+
 			/*if (flexoProperty instanceof HbnColumnRole) {
 				T returned = (T) hbnMap.get(flexoProperty.getName());
 				return returned;
@@ -333,7 +378,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 			// }
 		}
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			if (getFlexoConcept() == null) {
 				return null;
@@ -342,7 +387,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 				identifier = getVirtualModelInstance().getIdentifier(getRowSupportObject(), getFlexoConcept());
 			}
 			return identifier;
-		}
+		}*/
 
 		@Override
 		public SEObjectActorReference makeActorReference(FlexoConceptInstanceRole role, FlexoConceptInstance fci) {

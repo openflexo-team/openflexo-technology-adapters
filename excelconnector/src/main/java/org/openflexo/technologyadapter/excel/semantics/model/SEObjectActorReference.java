@@ -107,7 +107,7 @@ public interface SEObjectActorReference extends ActorReference<SEFlexoConceptIns
 			if (object != null) {
 				setResourceURI(object.getVirtualModelInstance().getURI());
 				setFlexoConceptURI(object.getFlexoConcept().getURI());
-				setKey(object.getIdentifier());
+				setKey("" + object.getRowSupportObject().getRowNum());
 			}
 			else {
 				setResourceURI(null);
@@ -153,7 +153,8 @@ public interface SEObjectActorReference extends ActorReference<SEFlexoConceptIns
 				return null;
 			}
 
-			return hbnVMI.getFlexoConceptInstance(identifier, hbnVMI, concept);
+			// return hbnVMI.getFlexoConceptInstance(identifier, hbnVMI, concept);
+			return null;
 		}
 
 		@Override
