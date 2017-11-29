@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GINAFIBComponent id="0" userID="SYL" flexoID="1">
+  <Panel id="1" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="border" borderRight="0" controllerClassName="org.openflexo.technologyadapter.gina.controller.FMLControlledFIBController">
+    <Panel id="2" align="left" borderTop="10" borderLeft="10" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="10" border="rounded3d" sizeAdjustment="OriginalSize" layout="border" borderRight="10" constraints="border(location=north)" name="FIBPanel">
+      <Label id="3" label="Hello world !" align="center" constraints="border(location=center)" height="100" width="100" name="Label" />
+    </Panel>
+    <Panel id="4" align="left" borderTop="0" borderTitle="Panel" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="SansSerif,0,10" layout="border" borderRight="0" constraints="border(location=center)" name="FIBPanel2">
+      <Table id="5" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml#Person&gt;" backgroundSecondarySelectionColor="178,215,255" lookAndFeel="Classic" selectionMode="MultipleIntervalSelection" rowHeight="18" manageDynamicModel="true" data="data.personListing.persons" constraints="border(location=west)" name="Table">
+        <TextFieldColumn id="6" data="iterator.sexe" resizable="true" title="sexe" displayTitle="true" columnWidth="40" showIcon="false" name="sexe" />
+        <TextFieldColumn id="7" data="iterator.name" resizable="true" title="nom" displayTitle="true" columnWidth="200" showIcon="false" name="nom" />
+      </Table>
+      <Panel id="8" align="left" borderTop="0" borderLeft="10" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="10" border="rounded3d" sizeAdjustment="OriginalSize" layout="twocols" borderRight="10" constraints="border(location=center)" name="FIBPanel3">
+        <Label id="9" label="sexe" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label2" />
+        <TextField id="10" columns="7" data="Table.selected.sexe" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField" />
+        <Label id="11" label="name" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label3" />
+        <TextField id="12" columns="7" data="Table.selected.name" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField2" />
+        <Label id="13" label="activity" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label4" />
+        <TextField id="14" columns="7" data="Table.selected.activity" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField3" />
+        <Label id="15" label="age" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label5" />
+        <Number id="16" minValue="0" numberType="IntegerType" maxValue="65535" columns="3" increment="1" data="Table.selected.age.intValue" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Integer" />
+        <Label id="17" label="city" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label6" />
+        <TextField id="18" columns="7" data="Table.selected.city" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField4" />
+      </Panel>
+    </Panel>
+    <LocalizedDictionary id="19" />
+    <FIBVariable id="20" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://www.openflexo.org/test/excel/RootVM.fml&gt;" name="data" />
+  </Panel>
+</GINAFIBComponent>

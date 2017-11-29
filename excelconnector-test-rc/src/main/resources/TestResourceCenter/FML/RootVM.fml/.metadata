@@ -1,0 +1,8 @@
+#Metadata for directory /Users/sylvain/GIT-1.9.0/openflexo-technology-adapters/excelconnector-test-rc/src/main/resources/TestResourceCenter/FML/RootVM.fml
+#Wed Nov 29 10:38:55 CET 2017
+RootVM.fml.xml.uri=http\://www.openflexo.org/test/excel/RootVM.fml
+RootVM.fml.xml.requiredModelSlotList=org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot,org.openflexo.technologyadapter.gina.FIBComponentModelSlot
+RootVM.fml.xml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
+RootVM.fml.xml.version=0.1
+RootVM.fml.xml.modelVersion=2.0
+RootVM.fml.xml.name=RootVM
