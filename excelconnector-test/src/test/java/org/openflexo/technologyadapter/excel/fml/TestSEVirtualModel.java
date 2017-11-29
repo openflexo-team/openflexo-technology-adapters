@@ -39,6 +39,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
@@ -274,9 +276,18 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		assertEquals("MR", jeanDupont.execute("sexe"));
 		assertEquals("Jean Dupont", jeanDupont.execute("name"));
 		assertEquals("Architect", jeanDupont.execute("activity"));
-		System.out.println("age=" + jeanDupont.execute("age") + " of " + jeanDupont.execute("age").getClass());
 		assertEquals(45, (long) jeanDupont.execute("age"));
 		assertEquals("BREST", jeanDupont.execute("city"));
+
+		assertEquals("MS", bernadetteDupont.execute("sexe"));
+		assertEquals("Bernardette Dupont", bernadetteDupont.execute("name"));
+		assertEquals("Professor", bernadetteDupont.execute("activity"));
+		assertEquals(45, (long) bernadetteDupont.execute("age"));
+		assertEquals("BREST", bernadetteDupont.execute("city"));
+
+		List<SEFlexoConceptInstance> allPersons = seVMI.execute("persons");
+		assertEquals(4, allPersons.size());
+		assertSameList(allPersons, jeanDupont, bernadetteDupont, julesDupont, ninaDupont);
 
 		/*System.out.println("Requesting clients...");
 		
