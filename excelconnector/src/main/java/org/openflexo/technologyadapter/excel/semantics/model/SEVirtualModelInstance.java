@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -105,24 +106,6 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	public void setExcelWorkbookURI(String excelWorkbook);
 
 	/**
-	 * Build and return a {@link String} object which acts as key identifier for supplied row, asserting this is the support object for a
-	 * {@link SEFlexoConceptInstance} of supplied {@link FlexoConcept}
-	 * 
-	 * <ul>
-	 * <li>If key of declaring {@link FlexoConcept} is simple, just return the value of key property</li>
-	 * <li>If Key is composite, return an Object array with all the values of properties composing composite key, in the order where those
-	 * properties are declared in keyProperties of related {@link FlexoConcept}</li>
-	 * </ul>
-	 * 
-	 * @param row
-	 *            row in excel workbook
-	 * @param concept
-	 *            type of related {@link SEFlexoConceptInstance}
-	 * @return
-	 */
-	// public String getIdentifier(Row row, FlexoConcept concept);
-
-	/**
 	 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied support object (a row in an excel workbook), asserting
 	 * returned {@link SEFlexoConceptInstance} object has supplied concept type and container<br>
 	 * 
@@ -138,23 +121,6 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 * @return
 	 */
 	public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, FlexoConcept concept);
-
-	/**
-	 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied identifier asserting returned
-	 * {@link SEFlexoConceptInstance} object has supplied concept type and container<br>
-	 * 
-	 * This {@link SEVirtualModelInstance} has an internal caching scheme allowing to store {@link SEFlexoConceptInstance} relatively to
-	 * their related {@link FlexoConcept} (their type) and their identifier
-	 * 
-	 * @param rowId
-	 *            identifier for row
-	 * @param container
-	 *            container (eventually null) of returned {@link SEFlexoConceptInstance}
-	 * @param concept
-	 *            type of returned {@link SEFlexoConceptInstance}
-	 * @return
-	 */
-	// public SEFlexoConceptInstance getFlexoConceptInstance(String rowId, FlexoConceptInstance container, FlexoConcept concept);
 
 	/**
 	 * Instantiate and register a new {@link SEFlexoConceptInstance}
@@ -186,6 +152,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 
 		// Stores all FCIs related to their SEDataAreaRole
 		private Map<FlexoConcept, Map<Integer, SEFlexoConceptInstance>> instances = new HashMap<>();
+		private Map<FlexoConcept, List<SEFlexoConceptInstance>> instancesList = new HashMap<>();
 
 		private ExcelWorkbookResource wbResource;
 		private String wbURI;
@@ -236,44 +203,17 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			return (List<FlexoConceptInstance>) performSuperGetter(FLEXO_CONCEPT_INSTANCES_KEY);
 		}
 
-		/**
-		 * Build and return a {@link String} object which acts as key identifier for supplied row, asserting this is the support object for
-		 * a {@link SEFlexoConceptInstance} of supplied {@link FlexoConcept}
-		 * 
-		 * <ul>
-		 * <li>If key of declaring {@link FlexoConcept} is simple, just return the value of key property</li>
-		 * <li>If Key is composite, return an Object array with all the values of properties composing composite key, in the order where
-		 * those properties are declared in keyProperties of related {@link FlexoConcept}</li>
-		 * </ul>
-		 * 
-		 * @param row
-		 *            row in excel workbook
-		 * @param concept
-		 *            type of related {@link SEFlexoConceptInstance}
-		 * @return
-		 */
-		/*@Override
-		public String getIdentifier(Row row, FlexoConcept concept) {
-			if (concept.getKeyProperties().size() == 0) {
-				return null;
-			}
-			if (concept.getKeyProperties().size() == 1) {
-				return hbnMap.get(concept.getKeyProperties().get(0).getName()).toString();
-			}
-			// composite key
-			StringBuffer sb = new StringBuffer();
-			boolean isFirst = true;
-			for (FlexoProperty<?> keyP : concept.getKeyProperties()) {
-				sb.append((isFirst ? "" : ",") + keyP.getName() + "=" + hbnMap.get(keyP.getName()));
-				isFirst = false;
-			}
-			return sb.toString();
-			//return row.getSheet().getSheetName() + "/row[" + row.getRowNum() + "]";
-		}*/
-
 		@Override
 		public SEVirtualModelInstanceModelFactory getFactory() {
 			return (SEVirtualModelInstanceModelFactory) super.getFactory();
+		}
+
+		@Override
+		public <T> List<T> getFlexoActorList(FlexoRole<T> flexoRole) {
+			if (flexoRole instanceof SEDataAreaRole) {
+				return (List<T>) instancesList.get(((SEDataAreaRole) flexoRole).getFlexoConceptType());
+			}
+			return super.getFlexoActorList(flexoRole);
 		}
 
 		/**
@@ -304,6 +244,9 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			// System.out.println("Building object with: " + hbnMap + " id=" + identifier);
 
 			Map<Integer, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
+				/*if (instancesList.get(newConcept) != null) {
+					instancesList.get(newConcept).clear();
+				}*/
 				return new HashMap<>();
 			});
 
@@ -312,36 +255,6 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			});
 
 		}
-
-		/**
-		 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied identifier asserting returned
-		 * {@link SEFlexoConceptInstance} object has supplied concept type and container<br>
-		 * 
-		 * This {@link SEVirtualModelInstance} has an internal caching scheme allowing to store {@link SEFlexoConceptInstance} relatively to
-		 * their related {@link FlexoConcept} (their type) and their identifier
-		 * 
-		 * @param identifier
-		 *            identifier for searched object
-		 * @param container
-		 *            container (eventually null) of returned {@link SEFlexoConceptInstance}
-		 * @param concept
-		 *            type of returned {@link SEFlexoConceptInstance}
-		 * @return
-		 */
-		/*@Override
-		public SEFlexoConceptInstance getFlexoConceptInstance(String identifier, FlexoConceptInstance container, FlexoConcept concept) {
-		
-			Map<String, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
-				return new HashMap<>();
-			});
-		
-			return mapForConcept.computeIfAbsent(identifier, (newId) -> {
-				System.out.println("Un truc a faire la");
-				return null;
-			});
-		
-			return null;
-		}*/
 
 		/**
 		 * Instanciate and register a new {@link FlexoConceptInstance}
@@ -376,8 +289,12 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 
 		@Override
 		public void updateData() throws ExcelMappingException {
-			for (SEDataAreaRole dataAreaRole : getVirtualModel().getAccessibleProperties(SEDataAreaRole.class)) {
-				updateDataAreaRole(dataAreaRole);
+			System.out.println("------------> Looking-up excel file: " + getExcelWorkbookResource() + " for " + getVirtualModel());
+			List<SEDataAreaRole> dataAreaRoles = getVirtualModel().getAccessibleProperties(SEDataAreaRole.class);
+			if (dataAreaRoles != null) {
+				for (SEDataAreaRole dataAreaRole : dataAreaRoles) {
+					updateDataAreaRole(dataAreaRole);
+				}
 			}
 		}
 
@@ -390,7 +307,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				instances.put(dataAreaRole.getFlexoConceptType(), allFCI);
 			}
 			ExcelCellRange matchingRange = getRange(dataAreaRole);
-			System.out.println("matchingRange=" + matchingRange);
+			// System.out.println("matchingRange=" + matchingRange);
 
 			int startRowIndex = matchingRange.getTopLeftCell().getRowIndex();
 			int endRowIndex = matchingRange.getBottomRightCell().getRowIndex();
@@ -416,13 +333,18 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 					fciToRemove.delete();
 				}
 			}
+
+			// Rebuilt the list of concept instances for this type
+			List<SEFlexoConceptInstance> newList = new ArrayList<>(allFCI.values());
+			instancesList.put(dataAreaRole.getFlexoConceptType(), newList);
+
 			return allFCI;
 		}
 
 		private ExcelCellRange getRange(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
-			System.out.println("On doit trouver le nouveau range de " + dataAreaRole.getCellRange());
-			System.out.println("Template: " + dataAreaRole.getCellRange().getExcelWorkbook().getResource());
-			System.out.println("Working on: " + getExcelWorkbookResource());
+			// System.out.println("Computing cell range for " + dataAreaRole.getCellRange());
+			// System.out.println("Template: " + dataAreaRole.getCellRange().getExcelWorkbook().getResource());
+			// System.out.println("Working on: " + getExcelWorkbookResource());
 
 			if (getExcelWorkbookResource() == null) {
 				throw new ExcelMappingException("Could not find workbook resource");
@@ -441,8 +363,6 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				currentRowIndex++;
 			}
 
-			System.out.println("On trouve " + (currentRowIndex - startIndex) + " rows a matcher");
-
 			ExcelCell topLeftCell = sheet.getCellAt(startIndex, templateRange.getTopLeftCell().getColumnIndex());
 			ExcelCell bottomRightCell = sheet.getCellAt(currentRowIndex - 1, templateRange.getBottomRightCell().getColumnIndex());
 			return sheet.getExcelWorkbook().getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
@@ -457,7 +377,6 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			ExcelCellRange templateRange = dataAreaRole.getCellRange();
 			for (int i = templateRange.getTopLeftCell().getColumnIndex(); i <= templateRange.getBottomRightCell().getColumnIndex(); i++) {
 				ExcelCell cell = row.getExcelCellAt(i);
-				System.out.println("Pour la valeur " + i + " j'ai " + cell.getCellValueAsString());
 				if (StringUtils.isNotEmpty(cell.getCellValueAsString())) {
 					return true;
 				}

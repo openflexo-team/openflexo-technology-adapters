@@ -35,7 +35,6 @@
 
 package org.openflexo.technologyadapter.excel.semantics.model;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -43,7 +42,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
-import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -63,19 +61,6 @@ import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 @ImplementationClass(SEFlexoConceptInstance.HbnFlexoConceptInstanceImpl.class)
 @XMLElement
 public interface SEFlexoConceptInstance extends FlexoConceptInstance {
-
-	/**
-	 * Return a {@link String} object which acts as string representation for this {@link SEFlexoConceptInstance}
-	 * 
-	 * <ul>
-	 * <li>If key of declaring {@link FlexoConcept} is simple, just return the String value of key property</li>
-	 * <li>If Key is composite, return an comma-separated dictionary as a String with all the values of properties composing composite key,
-	 * in the order where those properties are declared in keyProperties of related {@link FlexoConcept}</li>
-	 * </ul>
-	 * 
-	 * @return
-	 */
-	// public String getIdentifier();
 
 	/**
 	 * Initialize this {@link SEFlexoConceptInstance} with supplied Hibernate support object, and explicit concept (type)
@@ -113,13 +98,6 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 		// Row support object
 		private Row row;
 
-		// private String identifier = null;
-
-		// This map stores references for this object
-		// TODO: support modification
-		// private Map<HbnToOneReferenceRole, SEFlexoConceptInstance> referencedMap = new HashMap<>();
-		// private Map<HbnOneToManyReferenceRole, HbnReferenceCollection> referencedCollectionsMap = new HashMap<>();
-
 		/**
 		 * Initialize this {@link SEFlexoConceptInstance} with supplied Hibernate support object, and explicit concept (type)
 		 * 
@@ -151,135 +129,12 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 			}
 		}
 
-		/*private SEFlexoConceptInstance getReferencedObject(HbnToOneReferenceRole referenceRole) {
-			// TODO: support modification !!!
-			// With this implementation, we will always return cached value
-			SEFlexoConceptInstance returned = referencedMap.get(referenceRole);
-			if (returned == null) {
-				Map<String, Object> refHbnMap = (Map<String, Object>) hbnMap.get(referenceRole.getName());
-				if (refHbnMap != null) {
-					returned = getVirtualModelInstance().getFlexoConceptInstance(refHbnMap, null, referenceRole.getFlexoConceptType());
-					if (returned != null) {
-						referencedMap.put(referenceRole, returned);
-					}
-				}
-			}
-			return returned;
-		}
-		
-		private void setReferencedObject(SEFlexoConceptInstance newValue, HbnToOneReferenceRole referenceRole) {
-			SEFlexoConceptInstance oldValue = getReferencedObject(referenceRole);
-			if (oldValue != newValue) {
-				hbnMap.put(referenceRole.getName(), newValue.getHbnSupportObject());
-				identifier = null;
-				identifierAsString = null;
-				referencedMap.remove(referenceRole);
-				setIsModified();
-				getPropertyChangeSupport().firePropertyChange(referenceRole.getPropertyName(), oldValue, newValue);
-			}
-		
-		}*/
-
-		/**
-		 * Wrapper for a collection of objects accessed though a HbnOneToManyReferenceRole<br>
-		 * 
-		 * Internally wrap a {@link PersistentBag} object
-		 * 
-		 * @author sylvain
-		 *
-		 */
-		// TODO improve instances list updating when objects change
-		/*public class HbnReferenceCollection {
-		
-			private PersistentBag pBag;
-			private final HbnOneToManyReferenceRole referenceRole;
-			private List<SEFlexoConceptInstance> instances = null;
-		
-			private boolean isRefreshing = false;
-		
-			public HbnReferenceCollection(HbnOneToManyReferenceRole referenceRole) {
-				this.pBag = (PersistentBag) hbnMap.get(referenceRole.getName());
-				this.referenceRole = referenceRole;
-			}
-		
-			public List<SEFlexoConceptInstance> getInstances() {
-		
-				if (needsRefresh()) {
-					refresh();
-				}
-		
-				if (instances == null) {
-					instances = new ArrayList<SEFlexoConceptInstance>() {
-						@Override
-						public boolean add(SEFlexoConceptInstance e) {
-							if (!isRefreshing) {
-								// TODO: handle this
-								// today, we can only set opposite property
-								logger.warning("ADDING not implemented yet");
-								return false;
-							}
-							else {
-								return super.add(e);
-							}
-						}
-					};
-		
-					if (pBag != null) {
-						isRefreshing = true;
-						for (Object o : pBag) {
-							if (o instanceof Map) {
-								SEFlexoConceptInstance fci = getVirtualModelInstance().getFlexoConceptInstance((Map) o, null,
-										referenceRole.getFlexoConceptType());
-								instances.add(fci);
-							}
-						}
-						isRefreshing = false;
-					}
-				}
-		
-				return instances;
-			}
-		
-			public boolean needsRefresh() {
-				return (instances != null && pBag != null && instances.size() != pBag.size());
-			}
-		
-			public void refresh() {
-				this.pBag = (PersistentBag) hbnMap.get(referenceRole.getName());
-				instances = null;
-			}
-		}*/
-
-		/*@Override
-		public void refresh() throws HbnException {
-		
-			// Hibernate refresh
-			getVirtualModelInstance().getDefaultSession().refresh(getFlexoConcept().getName(), (Object) getHbnSupportObject());
-		
-			// We need now to refresh all HbnReferenceCollection
-			for (HbnReferenceCollection refCol : referencedCollectionsMap.values()) {
-				refCol.refresh();
-			}
-		
-		}*/
-
-		/*private List<SEFlexoConceptInstance> getReferencedObjectList(HbnOneToManyReferenceRole referenceRole) {
-			HbnReferenceCollection referenceCollection = referencedCollectionsMap.get(referenceRole);
-			if (referenceCollection == null) {
-				// PersistentBag pBag = (PersistentBag) hbnMap.get(referenceRole.getName());
-				referenceCollection = new HbnReferenceCollection(referenceRole);
-				referencedCollectionsMap.put(referenceRole, referenceCollection);
-			}
-			return referenceCollection.getInstances();
-		}*/
-
 		@Override
 		public <T> T getFlexoActor(FlexoRole<T> flexoRole) {
 			if (flexoRole instanceof SEColumnRole) {
 				SEColumnRole<T> columnRole = (SEColumnRole<T>) flexoRole;
-				System.out.println("Tiens c'est quoi la valeur du role pour " + flexoRole);
 				Cell cell = row.getCell(columnRole.getColumnIndex());
-				System.out.println("cell: " + cell);
+				// System.out.println("cell: " + cell);
 				switch (columnRole.getPrimitiveType()) {
 					case String:
 						return (T) cell.getStringCellValue();
@@ -297,13 +152,6 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 						return null;
 				}
 			}
-			/*if (flexoRole instanceof HbnColumnRole) {
-				T returned = (T) hbnMap.get(flexoRole.getName());
-				return returned;
-			}
-			else if (flexoRole instanceof HbnToOneReferenceRole) {
-				return (T) getReferencedObject((HbnToOneReferenceRole) flexoRole);
-			}*/
 			return super.getFlexoActor(flexoRole);
 		}
 
@@ -327,67 +175,6 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 			super.setFlexoActor(object, flexoRole);
 			// }
 		}
-
-		@Override
-		public <T> List<T> getFlexoActorList(FlexoRole<T> flexoRole) {
-			/*if (flexoRole instanceof HbnOneToManyReferenceRole) {
-				return (List<T>) getReferencedObjectList((HbnOneToManyReferenceRole) flexoRole);
-			}*/
-			return super.getFlexoActorList(flexoRole);
-		}
-
-		@Override
-		public <T> T getFlexoPropertyValue(FlexoProperty<T> flexoProperty) {
-			if (flexoProperty instanceof SEColumnRole) {
-				System.out.println("Tiens c'est quoi la valeur pour " + flexoProperty);
-			}
-
-			/*if (flexoProperty instanceof HbnColumnRole) {
-				T returned = (T) hbnMap.get(flexoProperty.getName());
-				return returned;
-			}
-			if (flexoProperty instanceof HbnToOneReferenceRole) {
-				return (T) getReferencedObject((HbnToOneReferenceRole) flexoProperty);
-			}
-			if (flexoProperty instanceof HbnOneToManyReferenceRole) {
-				return (T) getReferencedObjectList((HbnOneToManyReferenceRole) flexoProperty);
-			}*/
-
-			return super.getFlexoPropertyValue(flexoProperty);
-		}
-
-		@Override
-		public <T> void setFlexoPropertyValue(FlexoProperty<T> flexoProperty, T value) {
-			/*if (flexoProperty instanceof HbnColumnRole) {
-				T oldValue = getFlexoPropertyValue(flexoProperty);
-				if ((value == null && oldValue != null) || (value != null && !value.equals(oldValue))) {
-					Object objectToBeStored = ((HbnColumnRole<?>) flexoProperty).getDataType().encodeObjectForStoring(value);
-					hbnMap.put(flexoProperty.getName(), objectToBeStored);
-					identifier = null;
-					identifierAsString = null;
-					setIsModified();
-					getPropertyChangeSupport().firePropertyChange(flexoProperty.getPropertyName(), oldValue, value);
-				}
-			
-			}
-			else if (flexoProperty instanceof HbnToOneReferenceRole) {
-				setReferencedObject((SEFlexoConceptInstance) value, (HbnToOneReferenceRole) flexoProperty);
-			}
-			else {*/
-			super.setFlexoPropertyValue(flexoProperty, value);
-			// }
-		}
-
-		/*@Override
-		public String getIdentifier() {
-			if (getFlexoConcept() == null) {
-				return null;
-			}
-			if (identifier == null) {
-				identifier = getVirtualModelInstance().getIdentifier(getRowSupportObject(), getFlexoConcept());
-			}
-			return identifier;
-		}*/
 
 		@Override
 		public SEObjectActorReference makeActorReference(FlexoConceptInstanceRole role, FlexoConceptInstance fci) {
