@@ -8,7 +8,7 @@ use org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 public class PersonListing {
 
   @SEDataAreaRole(cardinality=ZeroMany,readOnly=false)  
-  public List<FlexoConceptInstanceType<Person>> persons;
+  public SEDataArea<FlexoConceptInstanceType<Person>> persons;
 
   @CreationScheme  
   PersonListing:create() {  
@@ -25,6 +25,11 @@ public class PersonListing {
   
   }  
 
+  @ActionScheme  
+  public Void addPerson(Integer index) {  
+    Person.create("<enter name>")  
+  }  
+
 
   @FlexoConcept  
   public class Person {  
@@ -36,13 +41,13 @@ public class PersonListing {
     @SEColumnRole(cardinality=One,readOnly=false)    
     public String activity;  
     @SEColumnRole(cardinality=One,readOnly=false)    
-    public Double age;  
+    public Integer age;  
     @SEColumnRole(cardinality=One,readOnly=false)    
     public String city;  
   
     @CreationScheme    
-    Person:create() {    
-      
+    Person:create(String name) {    
+      name = parameters.name;    
     }    
   
   }  
