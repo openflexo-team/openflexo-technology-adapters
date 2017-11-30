@@ -60,6 +60,8 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.AbstractTestExcel;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -92,6 +94,13 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("***** Found RC " + rc.getDefaultBaseURI());
+			for (FlexoResource<?> r : rc.getAllResources()) {
+				System.out.println("   > " + r.getURI());
+			}
+		}
 	}
 
 	@Test
@@ -99,6 +108,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	public void loadWorkbook() throws Exception {
 		log("loadWorkbook");
 		personListingResource = getExcelResource("PersonListing.xlsx");
+		System.out.println("Found resource " + personListingResource.getURI());
 		personListingWB = personListingResource.getExcelWorkbook();
 	}
 
