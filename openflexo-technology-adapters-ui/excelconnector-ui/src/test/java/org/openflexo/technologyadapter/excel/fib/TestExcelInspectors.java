@@ -86,6 +86,16 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testCreateSEResourceInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/CreateSEResource.inspector");
+	}
+
+	@Test
+	public void testInsertSEObjectInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/InsertSEObject.inspector");
+	}
+
+	@Test
 	public void testSelectExcelCellInspector() {
 		validateFIB("Inspectors/Excel/EditionAction/SelectExcelCell.inspector");
 	}
@@ -118,6 +128,11 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	@Test
 	public void testSEColumnRoleInspector() {
 		validateFIB("Inspectors/Excel/FlexoRole/SEColumnRole.inspector");
+	}
+
+	@Test
+	public void testSEDataAreaRoleInspector() {
+		validateFIB("Inspectors/Excel/FlexoRole/SEDataAreaRole.inspector");
 	}
 
 	@Test
