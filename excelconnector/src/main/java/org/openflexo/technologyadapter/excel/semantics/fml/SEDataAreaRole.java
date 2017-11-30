@@ -38,8 +38,10 @@
 
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.PropertyCardinality;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -53,6 +55,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.semantics.model.SEDataArea;
 import org.openflexo.technologyadapter.excel.semantics.model.SEFlexoConceptInstance;
 
 /**
@@ -104,6 +107,11 @@ public interface SEDataAreaRole extends FlexoConceptInstanceRole {
 				return ((SEFlexoConcept) getFlexoConcept()).getTemplateExcelWorkbookResource().getExcelWorkbook();
 			}
 			return null;
+		}
+
+		@Override
+		protected Type makeResultingType() {
+			return new ParameterizedTypeImpl(SEDataArea.class, getType());
 		}
 
 	}

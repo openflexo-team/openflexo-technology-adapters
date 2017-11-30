@@ -120,7 +120,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 *            type of returned {@link SEFlexoConceptInstance}
 	 * @return
 	 */
-	public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, FlexoConcept concept);
+	public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, SEDataAreaRole dataAreaRole)
+			throws ExcelMappingException;
 
 	/**
 	 * Instantiate and register a new {@link SEFlexoConceptInstance}
@@ -152,7 +153,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 
 		// Stores all FCIs related to their SEDataAreaRole
 		private Map<FlexoConcept, Map<Integer, SEFlexoConceptInstance>> instances = new HashMap<>();
-		private Map<FlexoConcept, List<SEFlexoConceptInstance>> instancesList = new HashMap<>();
+		private Map<FlexoConcept, SEDataArea<SEFlexoConceptInstance>> instancesList = new HashMap<>();
 
 		private ExcelWorkbookResource wbResource;
 		private String wbURI;
@@ -217,8 +218,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		}
 
 		/**
-		 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied support object (a map managed by Hibernate
-		 * Framework), asserting returned {@link SEFlexoConceptInstance} object has supplied concept type and container<br>
+		 * Retrieve (build if not existant) {@link SEFlexoConceptInstance} with supplied support object (an excel row), asserting returned
+		 * {@link SEFlexoConceptInstance} object has supplied concept type and container<br>
 		 * 
 		 * This {@link SEVirtualModelInstance} has an internal caching scheme allowing to store {@link SEFlexoConceptInstance} relatively to
 		 * their related {@link FlexoConcept} (their type) and their identifier
@@ -230,12 +231,17 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 * @param concept
 		 *            type of returned {@link SEFlexoConceptInstance}
 		 * @return
+		 * @throws ExcelMappingException
 		 */
 		@Override
-		public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, FlexoConcept concept) {
+		public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, SEDataAreaRole dataAreaRole)
+				throws ExcelMappingException {
 
-			if (concept == null) {
-				logger.warning("Could not obtain HbnFlexoConceptInstance with null FlexoConcept");
+			if (dataAreaRole == null) {
+				logger.warning("Could not obtain SEFlexoConceptInstance from null dataArea");
+			}
+			if (dataAreaRole.getFlexoConceptType() == null) {
+				logger.warning("Could not obtain SEFlexoConceptInstance from null FlexoConcept");
 			}
 
 			System.out.println("Nouvelle instance pour " + row.getRowNum());
@@ -243,17 +249,21 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			// String identifier = getIdentifier(row, concept);
 			// System.out.println("Building object with: " + hbnMap + " id=" + identifier);
 
-			Map<Integer, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(concept, (newConcept) -> {
-				/*if (instancesList.get(newConcept) != null) {
-					instancesList.get(newConcept).clear();
-				}*/
-				return new HashMap<>();
+			Map<Integer, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(dataAreaRole.getFlexoConceptType(),
+					(newConcept) -> {
+						return new HashMap<>();
+					});
+
+			SEFlexoConceptInstance returned = mapForConcept.computeIfAbsent(row.getRowNum(), (newId) -> {
+				return getFactory().newFlexoConceptInstance(this, container, row, dataAreaRole.getFlexoConceptType());
 			});
 
-			return mapForConcept.computeIfAbsent(row.getRowNum(), (newId) -> {
-				return getFactory().newFlexoConceptInstance(this, container, row, concept);
-			});
+			SEDataArea<SEFlexoConceptInstance> dataArea = instancesList.get(dataAreaRole.getFlexoConceptType());
+			if (dataArea != null) {
+				dataArea.add(returned);
+			}
 
+			return returned;
 		}
 
 		/**
@@ -277,8 +287,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		@Override
 		public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept, FlexoConceptInstance container) {
 
-			SEFlexoConceptInstance returned = getResource().getFactory().newInstance(SEFlexoConceptInstance.class, new HashMap<>(),
-					concept);
+			SEFlexoConceptInstance returned = getResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
 
 			if (container != null) {
 				container.addToEmbeddedFlexoConceptInstances(returned);
@@ -321,7 +330,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 				}
 				else {
 					// New instance
-					SEFlexoConceptInstance seFCI = getFlexoConceptInstance(excelRow.getRow(), null, dataAreaRole.getFlexoConceptType());
+					SEFlexoConceptInstance seFCI = getFlexoConceptInstance(excelRow.getRow(), null, dataAreaRole);
 					allFCI.put(excelRow.getRowIndex(), seFCI);
 				}
 			}
@@ -335,8 +344,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 
 			// Rebuilt the list of concept instances for this type
-			List<SEFlexoConceptInstance> newList = new ArrayList<>(allFCI.values());
-			instancesList.put(dataAreaRole.getFlexoConceptType(), newList);
+			SEDataArea<SEFlexoConceptInstance> newDataArea = new SEDataArea<>(dataAreaRole, matchingRange, allFCI.values());
+			instancesList.put(dataAreaRole.getFlexoConceptType(), newDataArea);
 
 			return allFCI;
 		}
@@ -351,6 +360,10 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 
 			ExcelCellRange templateRange = dataAreaRole.getCellRange();
+
+			System.out.println("res=" + getExcelWorkbookResource());
+			System.out.println("dataAreaRole=" + dataAreaRole);
+			System.out.println("templateRange=" + templateRange);
 
 			ExcelSheet sheet = getExcelWorkbookResource().getExcelWorkbook().getExcelSheetByName(templateRange.getExcelSheet().getName());
 			if (sheet == null) {

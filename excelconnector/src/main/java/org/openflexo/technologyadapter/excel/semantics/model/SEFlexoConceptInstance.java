@@ -69,7 +69,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 	 * @param concept
 	 */
 	@Initializer
-	void initialize(Row row, FlexoConcept concept);
+	void initialize(FlexoConcept concept);
 
 	/**
 	 * Return {@link Row} support object
@@ -105,8 +105,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 		 * @param concept
 		 */
 		@Override
-		public void initialize(Row row, FlexoConcept concept) {
-			this.row = row;
+		public void initialize(FlexoConcept concept) {
 			setFlexoConcept(concept);
 		}
 
