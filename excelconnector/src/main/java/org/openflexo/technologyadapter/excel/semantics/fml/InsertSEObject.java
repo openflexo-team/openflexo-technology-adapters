@@ -237,7 +237,7 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 
 			ExcelSheet sheet = dataArea.getCellRange().getExcelSheet();
 			System.out.println("sheet=" + sheet);
-			ExcelRow excelRow = sheet.createRowAt(insertedRowIndex);
+			ExcelRow excelRow = sheet.insertRowAt(insertedRowIndex);
 			System.out.println("excelRow=" + excelRow);
 
 			int startColIndex = dataArea.getCellRange().getTopLeftCell().getColumnIndex();

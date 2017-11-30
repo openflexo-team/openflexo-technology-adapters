@@ -121,11 +121,10 @@ public class TestExcelCellRange extends AbstractTestExcel {
 
 		ExcelCellRangeConverter converter = new ExcelCellRangeConverter(getFlexoServiceManager());
 		System.out.println("cellRange=" + converter.convertToString(cellRange));
-		assertEquals("http://openflexo.org/excel-test/TestResourceCenter/Excel/Workbook1.xlsx$Feuil1/range[A2:E7]",
-				converter.convertToString(cellRange));
+		assertEquals("http://www.openflexo.org/test/excel/Excel/Workbook1.xlsx$Feuil1/range[A2:E7]", converter.convertToString(cellRange));
 
 		ExcelCellRange cellRange2 = converter
-				.convertFromString("http://openflexo.org/excel-test/TestResourceCenter/Excel/Workbook1.xlsx$Feuil1/range[A2:E7]", null);
+				.convertFromString("http://www.openflexo.org/test/excel/Excel/Workbook1.xlsx$Feuil1/range[A2:E7]", null);
 
 		System.out.println("cellRange2=" + cellRange2);
 

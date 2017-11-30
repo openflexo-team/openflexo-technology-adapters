@@ -146,12 +146,29 @@ public class BasicExcelModelConverter {
 				return getExcelCell(cell.getColumnIndex());
 			}
 
-			public ExcelCell newCell(int columnIndex) {
-				Cell cell = excelRow.getRow().createCell(columnIndex);
+			public ExcelCell ensureCellCreated(int columnIndex) {
+
+				ensureConversion();
+
+				Cell cell = excelRow.getRow().getCell(columnIndex);
+				if (cell != null) {
+					return getExcelCell(cell);
+				}
+
+				cell = excelRow.getRow().createCell(columnIndex);
+
 				ExcelCell excelCell = makeExcelCell(cell);
 				excelRow.addToExcelCells(excelCell);
+				if (columnIndex < excelRow.getExcelCells().size()) {
+					excelRow.moveExcelCellToIndex(excelCell, columnIndex);
+				}
 				CellReference cellReference = new CellReference(excelCell);
-				cells.add(cellReference);
+				if (columnIndex < cells.size()) {
+					cells.add(columnIndex, cellReference);
+				}
+				else {
+					cells.add(cellReference);
+				}
 				return excelCell;
 			}
 
@@ -162,8 +179,6 @@ public class BasicExcelModelConverter {
 			}
 
 			private void convert() {
-				// System.out
-				// .println("Je convertis les donnees de la row " + excelRow.getRow().getRowNum() + " sheet " + excelSheet.getName());
 				int lastCell = -1;
 				for (Cell cell : excelRow.getRow()) {
 					// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
@@ -183,44 +198,8 @@ public class BasicExcelModelConverter {
 					cells.add(cellReference);
 					lastCell = excelCell.getColumnIndex();
 				}
-				// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
-				/*int i = 0;
-				for (ExcelCell cell : excelRow.getExcelCells()) {
-					// System.out.println("Index " + i + ": Cell with " + cell.getCell()
-					// + (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-					i++;
-				
-				}*/
 				isConverted = true;
 			}
-
-			/*private ExcelRow makeExcelRow(Row row) {
-				ExcelRow excelRow = getFactory().makeExcelRow();
-				excelRow.setRow(row);
-				int lastCell = -1;
-				for (Cell cell : row) {
-					// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
-					while (cell.getColumnIndex() > lastCell + 1) {
-						// Missing cell
-						// System.out.println("Adding a missing cell");
-						// This cell is not bound to any excel cell !
-						ExcelCell excelCell = getFactory().makeExcelCell();
-						excelRow.addToExcelCells(excelCell);
-						lastCell++;
-					}
-					ExcelCell excelCell = convertExcelCellToCell(cell, excelRow, technologyAdapter);
-					excelRow.addToExcelCells(excelCell);
-					lastCell = excelCell.getColumnIndex();
-				}
-				// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
-				int i = 0;
-				for (ExcelCell cell : excelRow.getExcelCells()) {
-					// System.out.println("Index " + i + ": Cell with " + cell.getCell()
-					// + (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-					i++;
-			
-				}
-			}*/
 
 		}
 
@@ -290,35 +269,13 @@ public class BasicExcelModelConverter {
 				RowReference rowReference = new RowReference(excelRow);
 				rows.add(rowReference);
 
-				// System.out.println("je passe de " + lastRow + " a " + excelRow.getRowIndex());
 				lastRow = excelRow.getRowIndex();
 
 			}
-			// int insertedIndex = 0;
 			for (Integer insertedIndex : newInsertedRows.keySet()) {
-				// System.out.println("-----> Insert row at index " + insertedIndex);
 				ExcelRow insertedRow = newInsertedRows.get(insertedIndex);
-				// System.out.println("AH y est on cree la row pour " + insertedIndex);
 				insertedRow.createRowWhenNonExistant(insertedIndex);
 			}
-
-			/*for (ExcelRow insertedRow : newInsertedRows) {
-				// insertedRow.createRowWhenNonExistant(lastRow + 1);
-				insertedIndex++;
-				System.out.println("du coup on est a insertedIndex=" + insertedIndex);
-				// lastRow = insertedRow.getRowIndex();
-			}
-			
-			System.out.println("lastRow=" + lastRow);
-			System.out.println("insertedIndex=" + insertedIndex);*/
-
-			/*for (Row row : excelSheet.getSheet()) {
-				ExcelRow excelRow = makeExcelRow(row);
-				excelSheet.addToExcelRows(excelRow);
-				RowReference rowReference = new RowReference(excelRow);
-				rows.add(rowReference);
-				lastRow = excelRow.getRowIndex();
-			}*/
 
 			isConverted = true;
 
@@ -338,12 +295,22 @@ public class BasicExcelModelConverter {
 			return excelRow;
 		}
 
-		public ExcelRow newRow(int rowIndex) {
+		public ExcelRow createOrInsertNewRow(int rowIndex) {
+
+			// System.out.println("*********** NEW ROW at index " + rowIndex);
+
+			Row existingRow = excelSheet.getSheet().getRow(rowIndex);
+			if (existingRow != null) {
+				// Row already exists, we have to shift all existing rows below this insertion point
+				excelSheet.getSheet().shiftRows(rowIndex, excelSheet.getSheet().getLastRowNum(), 1);
+			}
 			Row row = excelSheet.getSheet().createRow(rowIndex);
 			ExcelRow excelRow = makeExcelRow(row);
 			excelSheet.addToExcelRows(excelRow);
+			excelSheet.moveExcelRowToIndex(excelRow, rowIndex);
 			RowReference rowReference = new RowReference(excelRow);
-			rows.add(rowReference);
+			rows.add(rowIndex, rowReference);
+
 			return excelRow;
 		}
 

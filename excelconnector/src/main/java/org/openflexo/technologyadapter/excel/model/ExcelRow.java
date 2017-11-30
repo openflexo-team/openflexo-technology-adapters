@@ -53,6 +53,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Reindexer;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
@@ -128,6 +129,9 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 
 	@Remover(EXCEL_CELLS_KEY)
 	public void removeFromExcelRows(ExcelCell anExcelCell);
+
+	@Reindexer(EXCEL_CELLS_KEY)
+	public void moveExcelCellToIndex(ExcelCell anExcelCell, int index);
 
 	public int getRowIndex();
 
@@ -311,7 +315,7 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 		@Override
 		public ExcelCell createCellAt(int columnIndex) {
 			BasicExcelModelConverter converter = getResourceData().getConverter();
-			return converter.getRowReference(getRow()).newCell(columnIndex);
+			return converter.getRowReference(getRow()).ensureCellCreated(columnIndex);
 		}
 
 	}

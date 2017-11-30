@@ -55,6 +55,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Reindexer;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
@@ -137,6 +138,9 @@ public interface ExcelSheet extends ExcelObject {
 	@Remover(EXCEL_ROWS_KEY)
 	public void removeFromExcelRows(ExcelRow anExcelRow);
 
+	@Reindexer(EXCEL_ROWS_KEY)
+	public void moveExcelRowToIndex(ExcelRow anExcelRow, int index);
+
 	public FormulaEvaluator getEvaluator();
 
 	@NotificationUnsafe
@@ -160,7 +164,21 @@ public interface ExcelSheet extends ExcelObject {
 
 	public void setCellValue(ExcelCell cell, String value);
 
-	public ExcelRow createRowAt(int rowIndex);
+	/**
+	 * Insert new row in this sheet<br>
+	 * First shift all existing rows after supplied insertion point to the bottom
+	 * 
+	 * @param rowIndex
+	 * @return
+	 */
+	public ExcelRow insertRowAt(int rowIndex);
+
+	/**
+	 * Append new row in this sheet at the last position<br>
+	 * 
+	 * @return
+	 */
+	public ExcelRow createNewRow();
 
 	public int getMaxColNumber();
 
@@ -280,7 +298,7 @@ public interface ExcelSheet extends ExcelObject {
 
 			// Append missing rows
 			while (getExcelRows().size() <= row) {
-				createRowAt(getExcelRows().size());
+				insertRowAt(getExcelRows().size());
 			}
 
 			return getExcelRows().get(row);
@@ -346,10 +364,28 @@ public interface ExcelSheet extends ExcelObject {
 			cell.setCellValue(value);
 		}
 
+		/**
+		 * Insert new row in this sheet<br>
+		 * First shift all existing rows after supplied insertion point to the bottom
+		 * 
+		 * @param rowIndex
+		 * @return
+		 */
 		@Override
-		public ExcelRow createRowAt(int rowIndex) {
+		public ExcelRow insertRowAt(int rowIndex) {
 			BasicExcelModelConverter converter = getResourceData().getConverter();
-			return converter.getSheetReference(getSheet()).newRow(rowIndex);
+			ExcelRow returned = converter.getSheetReference(getSheet()).createOrInsertNewRow(rowIndex);
+			return returned;
+		}
+
+		/**
+		 * Append new row in this sheet at the last position<br>
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelRow createNewRow() {
+			return insertRowAt(getExcelRows().size());
 		}
 
 	}

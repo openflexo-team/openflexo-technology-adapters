@@ -55,9 +55,6 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
@@ -88,7 +85,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 		assertTrue(project.getProjectDirectory().exists());
 
 		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/excel-test");
+				.getFlexoResourceCenter("http://www.openflexo.org/test/excel");
 		assertNotNull(resourceCenter);
 
 		baseUrl = resourceCenter.getDefaultBaseURI();
@@ -97,7 +94,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 
 		ExcelWorkbookRepository<?> excelWorkbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
 		assertNotNull(excelWorkbookRepository);
-		workbook = excelWorkbookRepository.getResource(baseUrl + "/TestResourceCenter/Excel/Workbook3.xlsx");
+		workbook = excelWorkbookRepository.getResource(baseUrl + "/Excel/Workbook3.xlsx");
 		assertNotNull(workbook);
 	}
 

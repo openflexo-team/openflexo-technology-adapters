@@ -55,10 +55,12 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -193,6 +195,17 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 		List<SEFlexoConceptInstance> allPersons = seVMI.execute("persons");
 		assertEquals(6, allPersons.size());
 		assertSameList(allPersons, jeanDupont, bernadetteDupont, julesDupont, ninaDupont, gerardMenvusat, alainTerrieur);
+
+	}
+
+	@Test
+	@TestOrder(7)
+	public void testInsertNewPerson()
+			throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+		ActionScheme actionScheme = seVMI.getVirtualModel().getActionSchemes().get(0);
+		ActionSchemeAction addPerson = new ActionSchemeAction(actionScheme, seVMI, null, editor);
+		addPerson.setParameterValue(actionScheme.getParameter("index"), 1);
+		addPerson.doAction();
 
 	}
 }

@@ -130,7 +130,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 								excelRow = excelSheet.getRowAt(rowIndex);
 							}
 							else {
-								excelRow = excelSheet.createRowAt(rowIndex);
+								excelRow = excelSheet.insertRowAt(rowIndex);
 								/*Row row = excelSheet.getSheet().createRow(rowIndex);
 								BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelSheet.getResourceData().getResource())
 										.getConverter();
