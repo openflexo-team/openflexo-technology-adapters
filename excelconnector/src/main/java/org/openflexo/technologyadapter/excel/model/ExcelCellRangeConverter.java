@@ -68,6 +68,9 @@ public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
 
 	@Override
 	public ExcelCellRange convertFromString(String value, ModelFactory factory) {
+
+		System.out.println("Lookup ExcelCellRange for " + value);
+
 		int separatorIndex = value.lastIndexOf("$");
 
 		if (separatorIndex > -1) {
@@ -86,12 +89,20 @@ public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
 			if (serviceManager != null) {
 				activateExcelTechnologyAdapter();
 				documentResource = serviceManager.getResourceManager().getResource(documentURI, null, ExcelWorkbook.class);
+				/*System.out.println("Searching " + documentURI + " found: " + documentResource);
+				if (documentResource == null) {
+					logger.warning("Cannot find document resource " + documentURI);
+					for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+						System.out.println("> " + r.getURI());
+					}
+				}*/
 			}
 			if (factory instanceof FMLModelFactory) {
 				serviceManager = ((FMLModelFactory) factory).getServiceManager();
 				activateExcelTechnologyAdapter();
 				documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager().getResource(documentURI, null,
 						ExcelWorkbook.class);
+				System.out.println("on cherche encore " + documentURI + " et on trouve: " + documentResource);
 			}
 
 			System.out.println("documentResource=" + documentResource);
