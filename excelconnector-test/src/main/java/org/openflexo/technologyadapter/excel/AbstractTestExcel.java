@@ -57,7 +57,7 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 	protected ExcelWorkbookResource getExcelResource(String documentName) {
 
 		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/excel-test");
+				.getFlexoResourceCenter("http://www.openflexo.org/test/excel");
 
 		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
 			System.out.println("> " + rc.getDefaultBaseURI());
@@ -65,7 +65,7 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 
 		System.out.println("resourceCenter=" + resourceCenter);
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "Excel" + "/" + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "Excel" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
 		ExcelWorkbookResource documentResource = (ExcelWorkbookResource) serviceManager.getResourceManager().getResource(documentURI, null,
