@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SEVirtualModel id="SYL-4" templateExcelWorkbookURI="http://openflexo.org/excel-test/TestResourceCenter/Excel/PersonListing.xlsx" virtualModelClass="org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModel" modelVersion="2.0" modelSlotNatureClass="org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot" uri="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml" version="0.1" isAbstract="true" name="PersonListing" userID="SYL" flexoID="4">
+<SEVirtualModel id="SYL-4" templateExcelWorkbookURI="http://www.openflexo.org/test/excel/Excel/PersonListing.xlsx" virtualModelClass="org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModel" modelVersion="2.0" modelSlotNatureClass="org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot" uri="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml" version="0.1" isAbstract="true" name="PersonListing" userID="SYL" flexoID="4">
   <FMLLocalizedDictionary id="SYL-5" userID="SYL" flexoID="5">
     <Localized id="SYL-34" lang="English" value="Sexe" key="sexe" userID="SYL" flexoID="34" />
     <Localized id="SYL-35" lang="French" value="sexe" key="sexe" userID="SYL" flexoID="35" />
@@ -39,7 +39,7 @@
   </SEFlexoConcept>
   <UseModelSlotDeclaration id="0" modelSlotClass="org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot" userID="SYL" flexoID="-1" />
   <Inspector id="SYL-6" inspectorTitle="PersonListing" userID="SYL" flexoID="6" />
-  <SEDataAreaRole id="SYL-21" cellRange="http://openflexo.org/excel-test/TestResourceCenter/Excel/PersonListing.xlsx$Sheet1/range[A2:E7]" flexoConceptTypeURI="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml#Person" container="this" isRequired="true" cloningStrategy="Reference" cardinality="ZeroMany" name="persons" userID="SYL" flexoID="21" />
+  <SEDataAreaRole id="SYL-21" cellRange="http://www.openflexo.org/test/excel/Excel/PersonListing.xlsx$Sheet1/range[A2:E7]" flexoConceptTypeURI="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml#Person" container="this" isRequired="true" cloningStrategy="Reference" cardinality="ZeroMany" name="persons" userID="SYL" flexoID="21" />
   <CreationScheme id="SYL-22" name="create" width="800" label="create" height="600" userID="SYL" flexoID="22">
     <BehaviourControlGraph_EmptyControlGraph id="SYL-23" userID="SYL" flexoID="23" />
   </CreationScheme>
