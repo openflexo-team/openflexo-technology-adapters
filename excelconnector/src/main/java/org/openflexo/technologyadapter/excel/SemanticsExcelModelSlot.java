@@ -70,8 +70,9 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.semantics.fml.InsertSEObject;
 import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
+import org.openflexo.technologyadapter.excel.semantics.fml.InsertSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.RemoveSEObject;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
@@ -96,7 +97,7 @@ import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInsta
 @XMLElement
 @ImplementationClass(SemanticsExcelModelSlot.SemanticsExcelModelSlotImpl.class)
 @DeclareFlexoRoles({ SEColumnRole.class, SEDataAreaRole.class, SEReferenceRole.class })
-@DeclareEditionActions({ CreateSEResource.class, InsertSEObject.class })
+@DeclareEditionActions({ CreateSEResource.class, InsertSEObject.class, RemoveSEObject.class })
 @DeclareFlexoBehaviours({ SEInitializer.class })
 @DeclareActorReferences({ SEObjectActorReference.class })
 public interface SemanticsExcelModelSlot extends InferedFMLRTModelSlot<SEVirtualModelInstance, ExcelTechnologyAdapter> {

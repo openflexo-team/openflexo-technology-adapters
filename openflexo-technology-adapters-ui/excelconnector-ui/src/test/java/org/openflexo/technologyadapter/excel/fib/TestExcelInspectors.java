@@ -96,6 +96,11 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testRemoveSEObjectInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/RemoveSEObject.inspector");
+	}
+
+	@Test
 	public void testSelectExcelCellInspector() {
 		validateFIB("Inspectors/Excel/EditionAction/SelectExcelCell.inspector");
 	}

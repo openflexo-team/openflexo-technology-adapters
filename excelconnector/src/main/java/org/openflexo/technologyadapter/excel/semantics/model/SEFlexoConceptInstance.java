@@ -35,6 +35,7 @@
 
 package org.openflexo.technologyadapter.excel.semantics.model;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -58,7 +59,7 @@ import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
  * 
  */
 @ModelEntity
-@ImplementationClass(SEFlexoConceptInstance.HbnFlexoConceptInstanceImpl.class)
+@ImplementationClass(SEFlexoConceptInstance.SEFlexoConceptInstanceImpl.class)
 @XMLElement
 public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 
@@ -91,7 +92,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 	 * @author sylvain
 	 *
 	 */
-	abstract class HbnFlexoConceptInstanceImpl extends FlexoConceptInstanceImpl implements SEFlexoConceptInstance {
+	abstract class SEFlexoConceptInstanceImpl extends FlexoConceptInstanceImpl implements SEFlexoConceptInstance {
 
 		private static final Logger logger = FlexoLogger.getLogger(SEFlexoConceptInstance.class.getPackage().toString());
 
@@ -121,6 +122,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 
 		@Override
 		public void setRowSupportObject(Row row) {
+
 			if ((row == null && this.row != null) || (row != null && !row.equals(this.row))) {
 				Row oldValue = this.row;
 				this.row = row;
@@ -156,23 +158,40 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 
 		@Override
 		public <T> void setFlexoActor(T object, FlexoRole<T> flexoRole) {
-			/*if (flexoRole instanceof HbnColumnRole) {
-				T oldValue = getFlexoActor(flexoRole);
-				if ((object == null && oldValue != null) || (object != null && !object.equals(oldValue))) {
-					Object objectToBeStored = ((HbnColumnRole<?>) flexoRole).getDataType().encodeObjectForStoring(object);
-					hbnMap.put(flexoRole.getName(), objectToBeStored);
-					identifier = null;
-					identifierAsString = null;
-					setIsModified();
-					getPropertyChangeSupport().firePropertyChange(flexoRole.getPropertyName(), oldValue, object);
+			if (flexoRole instanceof SEColumnRole) {
+				SEColumnRole<T> columnRole = (SEColumnRole<T>) flexoRole;
+				Cell cell = row.getCell(columnRole.getColumnIndex());
+				// System.out.println("cell: " + cell);
+				switch (columnRole.getPrimitiveType()) {
+					case String:
+						cell.setCellValue((String) object);
+						break;
+					case Long:
+						cell.setCellValue((Long) object);
+						break;
+					case Integer:
+						cell.setCellValue((Integer) object);
+						break;
+					case Double:
+						cell.setCellValue((Double) object);
+						break;
+					case Float:
+						cell.setCellValue((Float) object);
+						break;
+					case Date:
+						cell.setCellValue((Date) object);
+						break;
+					case Boolean:
+						cell.setCellValue((Boolean) object);
+						break;
+					default:
+						logger.warning("Unexpected primitive type: " + columnRole.getPrimitiveType());
+						break;
 				}
 			}
-			else if (flexoRole instanceof HbnToOneReferenceRole) {
-				setReferencedObject((SEFlexoConceptInstance) object, (HbnToOneReferenceRole) flexoRole);
+			else {
+				super.setFlexoActor(object, flexoRole);
 			}
-			else {*/
-			super.setFlexoActor(object, flexoRole);
-			// }
 		}
 
 		@Override

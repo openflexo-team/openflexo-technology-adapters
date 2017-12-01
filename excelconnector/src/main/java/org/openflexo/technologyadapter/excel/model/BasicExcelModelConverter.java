@@ -314,6 +314,22 @@ public class BasicExcelModelConverter {
 			return excelRow;
 		}
 
+		public ExcelRow removeRowAt(int rowIndex) {
+			if (rowIndex >= 0 && rowIndex < rows.size()) {
+				RowReference rowReference = getExcelRowReference(rowIndex);
+				excelSheet.getSheet().removeRow(rowReference.excelRow.getRow());
+				excelSheet.getSheet().shiftRows(rowIndex + 1, excelSheet.getSheet().getLastRowNum(), -1);
+				excelSheet.removeFromExcelRows(rowReference.excelRow);
+				rows.remove(rowReference);
+				return rowReference.excelRow;
+			}
+			else {
+				logger.warning("Cannot remove row: inconsistent rowIndex=" + rowIndex);
+				return null;
+			}
+
+		}
+
 	}
 
 	/**

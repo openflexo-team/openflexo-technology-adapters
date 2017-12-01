@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.excel.model;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -174,6 +175,15 @@ public interface ExcelSheet extends ExcelObject {
 	public ExcelRow insertRowAt(int rowIndex);
 
 	/**
+	 * Remove row identified by its index in this sheet<br>
+	 * First shift all existing rows after supplied deletion point to the top
+	 * 
+	 * @param rowIndex
+	 * @return row beeing deleted
+	 */
+	public ExcelRow removeRowAt(int rowIndex);
+
+	/**
 	 * Append new row in this sheet at the last position<br>
 	 * 
 	 * @return
@@ -189,9 +199,8 @@ public interface ExcelSheet extends ExcelObject {
 	 *
 	 */
 	public static abstract class ExcelSheetImpl extends ExcelObjectImpl implements ExcelSheet {
-		// private Sheet sheet;
-		// private ExcelWorkbook workbook;
-		// private List<ExcelRow> excelRows;
+
+		private static final Logger logger = Logger.getLogger(ExcelSheetImpl.class.getPackage().getName());
 
 		private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
 		private FormulaEvaluator evaluator;
@@ -386,6 +395,20 @@ public interface ExcelSheet extends ExcelObject {
 		@Override
 		public ExcelRow createNewRow() {
 			return insertRowAt(getExcelRows().size());
+		}
+
+		/**
+		 * Remove row identified by its index in this sheet<br>
+		 * First shift all existing rows after supplied deletion point to the top
+		 * 
+		 * @param rowIndex
+		 * @return row beeing deleted
+		 */
+		@Override
+		public ExcelRow removeRowAt(int rowIndex) {
+			BasicExcelModelConverter converter = getResourceData().getConverter();
+			ExcelRow returned = converter.getSheetReference(getSheet()).removeRowAt(rowIndex);
+			return returned;
 		}
 
 	}

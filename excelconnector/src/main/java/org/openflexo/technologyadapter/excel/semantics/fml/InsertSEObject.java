@@ -51,10 +51,10 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.editionaction.AbstractAddFlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -63,9 +63,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.semantics.model.SEDataArea;
 import org.openflexo.technologyadapter.excel.semantics.model.SEFlexoConceptInstance;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
@@ -203,10 +200,12 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 		public SEFlexoConceptInstance execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 			SEVirtualModelInstance vmi = getVirtualModelInstance(evaluationContext);
 
-			System.out.println("InsertSEObject for receiver " + getReceiver() + " = " + vmi + " concept=" + getFlexoConceptType());
+			// System.out.println("InsertSEObject for receiver " + getReceiver() + " = " + vmi + " concept=" + getFlexoConceptType());
 
 			SEFlexoConceptInstance returned = super.execute(evaluationContext);
-			System.out.println("Hop on a execute le InserSEObject");
+
+			SEDataArea<?> dataArea = getDataArea(evaluationContext);
+			vmi.getPropertyChangeSupport().firePropertyChange(dataArea.getDataAreaRole().getName(), null, dataArea);
 
 			return returned;
 
@@ -214,17 +213,13 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 
 		@Override
 		protected SEFlexoConceptInstance makeNewFlexoConceptInstance(RunTimeEvaluationContext evaluationContext) throws FlexoException {
-			System.out.println("Nouveau SE/FCI");
 
 			SEDataArea<?> dataArea = getDataArea(evaluationContext);
 			Integer index = getRowIndex(evaluationContext);
 
-			System.out.println("dataArea = " + dataArea);
-			System.out.println("index = " + index);
+			return dataArea.insertFlexoConceptInstanceAtIndex(index);
 
-			System.out.println("Hop on va executer le InserSEObject");
-
-			int insertedRowIndex;
+			/*int insertedRowIndex;
 			if (index != null && index >= 0) {
 				insertedRowIndex = dataArea.getCellRange().getTopLeftCell().getRowIndex() + index;
 			}
@@ -232,24 +227,22 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 				// Last row
 				insertedRowIndex = dataArea.getCellRange().getBottomRightCell().getRowIndex() + 1;
 			}
-
-			System.out.println("insertedRowIndex=" + insertedRowIndex);
-
+			
 			ExcelSheet sheet = dataArea.getCellRange().getExcelSheet();
-			System.out.println("sheet=" + sheet);
 			ExcelRow excelRow = sheet.insertRowAt(insertedRowIndex);
-			System.out.println("excelRow=" + excelRow);
-
+			
 			int startColIndex = dataArea.getCellRange().getTopLeftCell().getColumnIndex();
 			int endColIndex = dataArea.getCellRange().getBottomRightCell().getColumnIndex();
-			for (int i = startColIndex; i < endColIndex; i++) {
-				System.out.println("On cree la cell " + i);
+			for (int i = startColIndex; i <= endColIndex; i++) {
 				ExcelCell cell = excelRow.createCellAt(i);
 			}
-
+			
+			System.out.println("La row qu'on vient de creer c'est: " + excelRow);
+			System.out.println("avec " + excelRow.getRow());
+			
 			FlexoConceptInstance container = null;
 			SEVirtualModelInstance vmi = getVirtualModelInstance(evaluationContext);
-
+			
 			if (getFlexoConceptType().getContainerFlexoConcept() != null) {
 				container = getContainer(evaluationContext);
 				if (container == null) {
@@ -257,10 +250,11 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 					return null;
 				}
 			}
-
-			SEFlexoConceptInstance returned = vmi.getFlexoConceptInstance(excelRow.getRow(), container, dataArea.getRole());
-
-			return returned;
+			
+			System.out.println("Hop, on vient construire le SEFlexoConceptInstance");
+			SEFlexoConceptInstance returned = vmi.getFlexoConceptInstance(excelRow.getRow(), container, dataArea.getDataAreaRole());
+			
+			return returned;*/
 		}
 
 		@Override
@@ -275,6 +269,19 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 		public Class<SEVirtualModelInstance> getVirtualModelInstanceClass() {
 			return SEVirtualModelInstance.class;
 		}
+	}
+
+	@DefineValidationRule
+	public static class DataAreaBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<InsertSEObject> {
+		public DataAreaBindingIsRequiredAndMustBeValid() {
+			super("'data_area'_binding_is_not_valid", InsertSEObject.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(InsertSEObject object) {
+			return object.getDataArea();
+		}
+
 	}
 
 }

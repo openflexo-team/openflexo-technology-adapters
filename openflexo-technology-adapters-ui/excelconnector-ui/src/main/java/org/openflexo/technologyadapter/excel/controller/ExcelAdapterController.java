@@ -71,6 +71,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.InsertSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.RemoveSEObject;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
@@ -208,6 +209,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		}
 		else if (InsertSEObject.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON, IconLibrary.NEW_MARKER);
+		}
+		else if (RemoveSEObject.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON, IconLibrary.DELETE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}

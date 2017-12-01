@@ -64,9 +64,14 @@ public interface SEFlexoConcept extends FlexoConcept {
 
 	public ExcelWorkbookResource getTemplateExcelWorkbookResource();
 
+	@Override
+	public SEFlexoConceptInstanceType getInstanceType();
+
 	public static abstract class SEFlexoConceptImpl extends FlexoConceptImpl implements SEFlexoConcept {
 
 		private static final Logger logger = Logger.getLogger(SEFlexoConceptImpl.class.getPackage().getName());
+
+		private final SEFlexoConceptInstanceType instanceType = new SEFlexoConceptInstanceType(this);
 
 		@Override
 		public SEVirtualModel getOwningVirtualModel() {
@@ -79,6 +84,11 @@ public interface SEFlexoConcept extends FlexoConcept {
 				return getOwningVirtualModel().getTemplateExcelWorkbookResource();
 			}
 			return null;
+		}
+
+		@Override
+		public SEFlexoConceptInstanceType getInstanceType() {
+			return instanceType;
 		}
 	}
 }

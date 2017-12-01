@@ -35,14 +35,11 @@
 
 package org.openflexo.technologyadapter.excel.semantics.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -59,10 +56,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
@@ -120,8 +113,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 *            type of returned {@link SEFlexoConceptInstance}
 	 * @return
 	 */
-	public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, SEDataAreaRole dataAreaRole)
-			throws ExcelMappingException;
+	// public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, SEDataAreaRole dataAreaRole)
+	// throws ExcelMappingException;
 
 	/**
 	 * Instantiate and register a new {@link SEFlexoConceptInstance}
@@ -129,8 +122,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 * @param pattern
 	 * @return
 	 */
-	@Override
-	public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept);
+	// @Override
+	// public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept);
 
 	/**
 	 * Instantiate and register a new {@link SEFlexoConceptInstance} in a container FlexoConceptInstance
@@ -138,8 +131,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 	 * @param pattern
 	 * @return
 	 */
-	@Override
-	public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept, FlexoConceptInstance container);
+	// @Override
+	// public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept, FlexoConceptInstance container);
 
 	/**
 	 * Update all data area by connecting to the excel workbook
@@ -152,8 +145,10 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		private static final Logger logger = FlexoLogger.getLogger(SEVirtualModelInstance.class.getPackage().toString());
 
 		// Stores all FCIs related to their SEDataAreaRole
-		private Map<FlexoConcept, Map<Integer, SEFlexoConceptInstance>> instances = new HashMap<>();
-		private Map<FlexoConcept, SEDataArea<SEFlexoConceptInstance>> instancesList = new HashMap<>();
+		// private Map<FlexoConcept, List<SEFlexoConceptInstance>> instances = new HashMap<>();
+		// private Map<FlexoConcept, SEDataArea<SEFlexoConceptInstance>> instancesList = new HashMap<>();
+
+		private Map<SEDataAreaRole, SEDataArea<SEFlexoConceptInstance>> instances = new HashMap<>();
 
 		private ExcelWorkbookResource wbResource;
 		private String wbURI;
@@ -212,7 +207,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		@Override
 		public <T> List<T> getFlexoActorList(FlexoRole<T> flexoRole) {
 			if (flexoRole instanceof SEDataAreaRole) {
-				return (List<T>) instancesList.get(((SEDataAreaRole) flexoRole).getFlexoConceptType());
+				return (List<T>) instances.get(flexoRole);
 			}
 			return super.getFlexoActorList(flexoRole);
 		}
@@ -233,38 +228,42 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 * @return
 		 * @throws ExcelMappingException
 		 */
-		@Override
+		/*@Override
 		public SEFlexoConceptInstance getFlexoConceptInstance(Row row, FlexoConceptInstance container, SEDataAreaRole dataAreaRole)
 				throws ExcelMappingException {
-
+		
 			if (dataAreaRole == null) {
 				logger.warning("Could not obtain SEFlexoConceptInstance from null dataArea");
 			}
 			if (dataAreaRole.getFlexoConceptType() == null) {
 				logger.warning("Could not obtain SEFlexoConceptInstance from null FlexoConcept");
 			}
-
+		
 			System.out.println("Nouvelle instance pour " + row.getRowNum());
-
+		
 			// String identifier = getIdentifier(row, concept);
 			// System.out.println("Building object with: " + hbnMap + " id=" + identifier);
-
-			Map<Integer, SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(dataAreaRole.getFlexoConceptType(),
-					(newConcept) -> {
-						return new HashMap<>();
-					});
-
+		
+			//getFactory()
+			
+			List<SEFlexoConceptInstance> mapForConcept = instances.computeIfAbsent(dataAreaRole.getFlexoConceptType(), (newConcept) -> {
+				return new ArrayList<>();
+			});
+		
 			SEFlexoConceptInstance returned = mapForConcept.computeIfAbsent(row.getRowNum(), (newId) -> {
 				return getFactory().newFlexoConceptInstance(this, container, row, dataAreaRole.getFlexoConceptType());
 			});
-
+		
 			SEDataArea<SEFlexoConceptInstance> dataArea = instancesList.get(dataAreaRole.getFlexoConceptType());
+			
+			
+			
 			if (dataArea != null) {
 				dataArea.add(returned);
 			}
-
+		
 			return returned;
-		}
+		}*/
 
 		/**
 		 * Instanciate and register a new {@link FlexoConceptInstance}
@@ -272,11 +271,11 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 * @param pattern
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept) {
-
+		
 			return makeNewFlexoConceptInstance(concept, null);
-		}
+		}*/
 
 		/**
 		 * Instantiate and register a new {@link FlexoConceptInstance} in a container FlexoConceptInstance
@@ -284,16 +283,21 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		 * @param pattern
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public SEFlexoConceptInstance makeNewFlexoConceptInstance(FlexoConcept concept, FlexoConceptInstance container) {
-
+		
 			SEFlexoConceptInstance returned = getResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
-
+		
 			if (container != null) {
 				container.addToEmbeddedFlexoConceptInstances(returned);
 			}
 			addToFlexoConceptInstances(returned);
 			return returned;
+		}*/
+
+		@Override
+		protected SEFlexoConceptInstance buildNewFlexoConceptInstance(FlexoConcept concept) {
+			return getResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
 		}
 
 		@Override
@@ -307,17 +311,28 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 		}
 
-		private Map<Integer, SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
+		private SEDataArea<SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
 
-			Map<Integer, SEFlexoConceptInstance> allFCI = instances.get(dataAreaRole);
+			SEDataArea<SEFlexoConceptInstance> returned = instances.get(dataAreaRole);
 
+			if (returned == null) {
+				returned = new SEDataArea<>(dataAreaRole, this, null);
+				instances.put(dataAreaRole, returned);
+			}
+
+			returned.update();
+
+			return returned;
+
+			/*Map<Integer, SEFlexoConceptInstance> allFCI = instances.get(dataAreaRole);
+			
 			if (allFCI == null) {
 				allFCI = new LinkedHashMap<>();
 				instances.put(dataAreaRole.getFlexoConceptType(), allFCI);
 			}
 			ExcelCellRange matchingRange = getRange(dataAreaRole);
 			// System.out.println("matchingRange=" + matchingRange);
-
+			
 			int startRowIndex = matchingRange.getTopLeftCell().getRowIndex();
 			int endRowIndex = matchingRange.getBottomRightCell().getRowIndex();
 			for (int currentIndex = startRowIndex; currentIndex <= endRowIndex; currentIndex++) {
@@ -342,59 +357,13 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 					fciToRemove.delete();
 				}
 			}
-
+			
 			// Rebuilt the list of concept instances for this type
 			SEDataArea<SEFlexoConceptInstance> newDataArea = new SEDataArea<>(dataAreaRole, matchingRange, allFCI.values());
 			instancesList.put(dataAreaRole.getFlexoConceptType(), newDataArea);
-
-			return allFCI;
+			
+			return allFCI;*/
 		}
 
-		private ExcelCellRange getRange(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
-			// System.out.println("Computing cell range for " + dataAreaRole.getCellRange());
-			// System.out.println("Template: " + dataAreaRole.getCellRange().getExcelWorkbook().getResource());
-			// System.out.println("Working on: " + getExcelWorkbookResource());
-
-			if (getExcelWorkbookResource() == null) {
-				throw new ExcelMappingException("Could not find workbook resource");
-			}
-
-			ExcelCellRange templateRange = dataAreaRole.getCellRange();
-
-			System.out.println("res=" + getExcelWorkbookResource());
-			System.out.println("dataAreaRole=" + dataAreaRole);
-			System.out.println("templateRange=" + templateRange);
-
-			ExcelSheet sheet = getExcelWorkbookResource().getExcelWorkbook().getExcelSheetByName(templateRange.getExcelSheet().getName());
-			if (sheet == null) {
-				throw new ExcelMappingException("Could not find sheet: " + templateRange.getExcelSheet().getName());
-			}
-
-			int startIndex = templateRange.getTopLeftCell().getRowIndex();
-			int currentRowIndex = startIndex;
-			while (isSignificative(currentRowIndex, sheet, dataAreaRole)) {
-				currentRowIndex++;
-			}
-
-			ExcelCell topLeftCell = sheet.getCellAt(startIndex, templateRange.getTopLeftCell().getColumnIndex());
-			ExcelCell bottomRightCell = sheet.getCellAt(currentRowIndex - 1, templateRange.getBottomRightCell().getColumnIndex());
-			return sheet.getExcelWorkbook().getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
-		}
-
-		private boolean isSignificative(int rowIndex, ExcelSheet sheet, SEDataAreaRole dataAreaRole) {
-			if (sheet.getExcelRows().size() <= rowIndex) {
-				// This row does not exists, do not create it
-				return false;
-			}
-			ExcelRow row = sheet.getRowAt(rowIndex);
-			ExcelCellRange templateRange = dataAreaRole.getCellRange();
-			for (int i = templateRange.getTopLeftCell().getColumnIndex(); i <= templateRange.getBottomRightCell().getColumnIndex(); i++) {
-				ExcelCell cell = row.getExcelCellAt(i);
-				if (StringUtils.isNotEmpty(cell.getCellValueAsString())) {
-					return true;
-				}
-			}
-			return false;
-		}
 	}
 }
