@@ -41,21 +41,20 @@ package org.openflexo.technologyadapter.excel.model;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.AbstractTestExcel;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.toolbox.FileUtils;
 
 @RunWith(OrderedRunner.class)
 public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
@@ -63,19 +62,40 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 
 	private static ExcelWorkbookResource workbook1Resource;
 
+	private static DirectoryResourceCenter directoryRC;
+
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
+
+		directoryRC = makeNewDirectoryResourceCenter();
+
+		ExcelWorkbookResource initialResource = workbook1Resource = getExcelResource("Workbook1.xlsx");
+
+		System.out.println("Was: " + initialResource);
+
+		try {
+			FileUtils.copyResourceToDir(initialResource.getIODelegate().getSerializationArtefactAsResource().getContainer(),
+					directoryRC.getRootDirectory());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		directoryRC.setDefaultBaseURI("CopiedResourceCenter");
+		directoryRC.performDirectoryWatchingNow();
+
+		System.out.println("Created DirectoryRC: " + directoryRC.getRootDirectory());
 	}
 
 	@Test
 	@TestOrder(4)
 	public void testWorkbook1Loading() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		workbook1Resource = getExcelResource("Workbook1.xlsx");
+		workbook1Resource = getExcelResource("Workbook1.xlsx", directoryRC);
 		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData(null);
 		System.out.println("Workbook1.xlsx:\n" + workbook1);
+
+		System.out.println("Now: " + workbook1Resource);
 
 		assertEquals(1, workbook1.getExcelSheets().size());
 		ExcelSheet sheet1 = workbook1.getExcelSheets().get(0);

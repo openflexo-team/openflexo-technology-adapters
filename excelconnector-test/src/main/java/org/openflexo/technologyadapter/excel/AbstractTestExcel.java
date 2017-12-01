@@ -54,16 +54,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(AbstractTestExcel.class.getPackage().getName());
 
-	protected ExcelWorkbookResource getExcelResource(String documentName) {
-
-		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://www.openflexo.org/test/excel");
-
-		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
-			System.out.println("> " + rc.getDefaultBaseURI());
-		}
-
-		System.out.println("resourceCenter=" + resourceCenter);
+	protected ExcelWorkbookResource getExcelResource(String documentName, FlexoResourceCenter<?> resourceCenter) {
 
 		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "Excel" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
@@ -81,7 +72,14 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 		assertNotNull(documentResource);
 
 		return documentResource;
+	}
 
+	protected ExcelWorkbookResource getExcelResource(String documentName) {
+
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://www.openflexo.org/test/excel");
+
+		return getExcelResource(documentName, resourceCenter);
 	}
 
 	protected ExcelWorkbook getWorkbook(String documentName) {
