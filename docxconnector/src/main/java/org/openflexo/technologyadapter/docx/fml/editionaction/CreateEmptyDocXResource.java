@@ -57,6 +57,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
@@ -99,7 +100,7 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 					.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 			DocXDocumentResource newResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
-					resourceName, true, getInferedModelSlot().getIdStrategy());
+					resourceName, true, /*getInferedModelSlot().getIdStrategy()*/IdentifierManagementStrategy.Bookmark);
 
 			System.out.println("New resource: " + newResource);
 
