@@ -8,7 +8,7 @@ use org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 public class PersonListing {
 
   @SEDataAreaRole(cardinality=ZeroMany,readOnly=false)  
-  public SEDataArea<FlexoConceptInstanceType<Person>> persons;
+  public SEDataArea<SEFlexoConceptInstanceType<Person>> persons;
 
   @CreationScheme  
   PersonListing:create() {  
@@ -48,6 +48,11 @@ public class PersonListing {
     @CreationScheme    
     Person:create(String name) {    
       name = parameters.name;    
+    }    
+  
+    @DeletionScheme    
+    Void delete() {    
+      RemoveSEObject this    
     }    
   
   }  
