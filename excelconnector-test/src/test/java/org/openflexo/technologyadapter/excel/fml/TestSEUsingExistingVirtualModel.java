@@ -243,7 +243,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 
 		ExcelSheet sheet = personListingWB.getExcelSheetAtPosition(0);
 
-		assertEquals(7, sheet.getExcelRows().size());
+		assertEquals(8, sheet.getExcelRows().size());
 
 		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
 			ExcelRow row = sheet.getRowAt(i);
@@ -269,7 +269,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 
 		assertTrue(addPerson.hasActionExecutionSucceeded());
 
-		assertEquals(8, sheet.getExcelRows().size());
+		assertEquals(9, sheet.getExcelRows().size());
 		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
 			ExcelRow row = sheet.getRowAt(i);
 			assertSame(row, sheet.getExcelRows().get(i));
@@ -363,7 +363,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 
 		ExcelSheet sheet = personListingWB.getExcelSheetAtPosition(0);
 
-		assertEquals(8, sheet.getExcelRows().size());
+		assertEquals(9, sheet.getExcelRows().size());
 
 		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
 			ExcelRow row = sheet.getRowAt(i);
@@ -388,7 +388,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 
 		assertTrue(deletePerson.hasActionExecutionSucceeded());
 
-		assertEquals(7, sheet.getExcelRows().size());
+		assertEquals(8, sheet.getExcelRows().size());
 
 		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
 			ExcelRow row = sheet.getRowAt(i);
