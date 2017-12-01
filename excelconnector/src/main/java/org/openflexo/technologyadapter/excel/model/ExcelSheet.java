@@ -200,6 +200,7 @@ public interface ExcelSheet extends ExcelObject {
 	 */
 	public static abstract class ExcelSheetImpl extends ExcelObjectImpl implements ExcelSheet {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ExcelSheetImpl.class.getPackage().getName());
 
 		private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
@@ -216,21 +217,10 @@ public interface ExcelSheet extends ExcelObject {
 		@Override
 		public void setExcelWorkbook(ExcelWorkbook workbook) {
 			performSuperSetter(EXCEL_WORKBOOK_KEY, workbook);
-			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+			if (workbook != null) {
+				evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+			}
 		}
-
-		/*@Override
-		public Sheet getSheet() {
-			return sheet;
-		}*/
-
-		/*public ExcelSheet(Sheet sheet, ExcelWorkbook workbook, ExcelTechnologyAdapter adapter) {
-			super(adapter);
-			this.sheet = sheet;
-			this.workbook = workbook;
-			excelRows = new ArrayList<ExcelRow>();
-			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
-		}*/
 
 		@Override
 		public FormulaEvaluator getEvaluator() {
@@ -241,32 +231,6 @@ public interface ExcelSheet extends ExcelObject {
 		public String getName() {
 			return getSheet().getSheetName();
 		}
-
-		/*public ExcelWorkbook getWorkbook() {
-			return workbook;
-		}*/
-
-		/*@Override
-		public List<ExcelRow> getExcelRows() {
-			return excelRows;
-		}
-		
-		@Override
-		public void addToExcelRows(ExcelRow newExcelRow) {
-			this.excelRows.add(newExcelRow);
-			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-		}
-		
-		public void insertToExcelRows(ExcelRow newExcelRow, int index) {
-			this.excelRows.add(index, newExcelRow);
-			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-		}
-		
-		@Override
-		public void removeFromExcelRows(ExcelRow deletedExcelRow) {
-			this.excelRows.remove(deletedExcelRow);
-			getWorkbook().removeFromAccessibleExcelObjects(deletedExcelRow);
-		}*/
 
 		@Override
 		public int getMaxColNumber() {
@@ -282,17 +246,20 @@ public interface ExcelSheet extends ExcelObject {
 		private boolean isConverting = false;
 
 		private void ensureConversion() {
-			if (isConverting) {
+			if (isConverting || isDeleted()) {
 				return;
 			}
-			try {
-				isConverting = true;
-				getExcelWorkbook().getConverter().getSheetReference(getSheet()).ensureConversion();
-			} finally {
-				isConverting = false;
+			if (getExcelWorkbook() != null) {
+				try {
+					isConverting = true;
+					getExcelWorkbook().getConverter().getSheetReference(getSheet()).ensureConversion();
+				} finally {
+					isConverting = false;
+				}
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public List<ExcelRow> getExcelRows() {
 			ensureConversion();

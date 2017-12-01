@@ -151,16 +151,15 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 
 		private static final Logger logger = Logger.getLogger(ExcelRow.class.getPackage().getName());
 
-		// private Row row;
-		// private final ExcelSheet excelSheet;
-		// private final List<ExcelCell> excelCells;
-
 		public ExcelRowImpl() {
 		}
 
 		@Override
 		public ExcelWorkbook getResourceData() {
-			return getExcelSheet().getExcelWorkbook();
+			if (getExcelSheet() != null) {
+				return getExcelSheet().getExcelWorkbook();
+			}
+			return null;
 		}
 
 		private boolean isConverting = false;
@@ -170,34 +169,24 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 				return;
 			}
 			if (getRow() == null) {
-				System.out.println("N'importe quoi, j'ai une row null");
 				return;
 			}
-			try {
-				isConverting = true;
-				getResourceData().getConverter().getRowReference(getRow()).ensureConversion();
-			} finally {
-				isConverting = false;
+			if (getResourceData() != null) {
+				try {
+					isConverting = true;
+					getResourceData().getConverter().getRowReference(getRow()).ensureConversion();
+				} finally {
+					isConverting = false;
+				}
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public List<ExcelCell> getExcelCells() {
 			ensureConversion();
 			return (List<ExcelCell>) performSuperGetter(EXCEL_CELLS_KEY);
 		}
-
-		/*@Override
-		public Row getRow() {
-			return row;
-		}*/
-
-		/*public ExcelRow(Row row, ExcelSheet excelSheet, ExcelTechnologyAdapter adapter) {
-			super(adapter);
-			this.row = row;
-			this.excelSheet = excelSheet;
-			excelCells = new ArrayList<ExcelCell>();
-		}*/
 
 		@Override
 		public void createRowWhenNonExistant(int rowIndex) {
@@ -205,32 +194,6 @@ public interface ExcelRow extends ExcelObject, ExcelStyleObject {
 				setRow(getExcelSheet().getSheet().createRow(rowIndex));
 			}
 		}
-
-		/*@Override
-		public ExcelSheet getExcelSheet() {
-			return excelSheet;
-		}
-		
-		@Override
-		public List<ExcelCell> getExcelCells() {
-			return excelCells;
-		}
-		
-		@Override
-		public void addToExcelCells(ExcelCell newExcelCell) {
-			this.excelCells.add(newExcelCell);
-			getExcelSheet().getWorkbook().addToAccessibleExcelObjects(newExcelCell);
-		}
-		
-		public void removeFromExcelCells(ExcelCell deletedExcelCell) {
-			this.excelCells.remove(deletedExcelCell);
-			getExcelSheet().getWorkbook().removeFromAccessibleExcelObjects(deletedExcelCell);
-		}*/
-
-		/*@Override
-		public String getName() {
-			return "row." + getRowNum();
-		}*/
 
 		@Override
 		public int getRowIndex() {

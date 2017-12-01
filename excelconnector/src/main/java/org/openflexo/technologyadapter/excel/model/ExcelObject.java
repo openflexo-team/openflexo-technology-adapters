@@ -67,6 +67,7 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 	 */
 	public static abstract class ExcelObjectImpl extends FlexoObjectImpl implements ExcelObject {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ExcelObjectImpl.class.getPackage().getName());
 
 		@Override
@@ -84,7 +85,10 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 
 		@Override
 		public final String getSerializationIdentifier() {
-			return getResourceData().getResource().getConverter().toSerializationIdentifier(this);
+			if (getResourceData() != null) {
+				return getResourceData().getResource().getConverter().toSerializationIdentifier(this);
+			}
+			return "???";
 		}
 
 		@Override

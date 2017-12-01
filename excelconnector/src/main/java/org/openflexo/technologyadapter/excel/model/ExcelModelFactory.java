@@ -59,6 +59,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  */
 public class ExcelModelFactory extends ModelFactory implements PamelaResourceModelFactory<ExcelWorkbookResource> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ExcelModelFactory.class.getPackage().getName());
 
 	private final ExcelWorkbookResource resource;
