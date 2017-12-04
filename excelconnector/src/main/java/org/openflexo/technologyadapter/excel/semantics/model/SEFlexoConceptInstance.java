@@ -138,16 +138,29 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 				// System.out.println("cell: " + cell);
 				switch (columnRole.getPrimitiveType()) {
 					case String:
-						return (T) cell.getStringCellValue();
+						if (cell != null) {
+							return (T) cell.getStringCellValue();
+						}
+						return null;
 					case Long:
 					case Integer:
 					case Double:
 					case Float:
-						return (T) TypeUtils.castTo(cell.getNumericCellValue(), columnRole.getPrimitiveType().getType());
+						if (cell != null) {
+							return (T) TypeUtils.castTo(cell.getNumericCellValue(), columnRole.getPrimitiveType().getType());
+						}
+						else {
+							return (T) TypeUtils.castTo(0, columnRole.getPrimitiveType().getType());
+						}
 					case Date:
-						return (T) cell.getDateCellValue();
+						if (cell != null) {
+							return (T) cell.getDateCellValue();
+						}
 					case Boolean:
-						return (T) (Boolean) cell.getBooleanCellValue();
+						if (cell != null) {
+							return (T) (Boolean) cell.getBooleanCellValue();
+						}
+						return (T) new Boolean(false);
 					default:
 						logger.warning("Unexpected primitive type: " + columnRole.getPrimitiveType());
 						return null;
