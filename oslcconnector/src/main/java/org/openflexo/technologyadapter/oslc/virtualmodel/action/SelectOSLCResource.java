@@ -42,6 +42,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -70,17 +71,6 @@ public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLC
 
 		@Override
 		public List<OSLCResource> execute(RunTimeEvaluationContext evaluationContext) {
-
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			List<OSLCResource> selectedOSLCResources = new ArrayList<OSLCResource>();
 

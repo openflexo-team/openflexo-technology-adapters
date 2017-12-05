@@ -45,7 +45,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.fml.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -112,12 +111,6 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLOntology, OWLClas
 			}
 			return newClass;
 
-		}
-
-		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

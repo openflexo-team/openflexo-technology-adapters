@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
@@ -54,6 +54,7 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalo
  */
 
 @ModelEntity(isAbstract = true)
-public interface OSLCCoreAction<T extends OSLCObject> extends TechnologySpecificAction<OSLCCoreModelSlot, OSLCServiceProviderCatalog, T> {
+public interface OSLCCoreAction<T extends OSLCObject>
+		extends TechnologySpecificActionDefiningReceiver<OSLCCoreModelSlot, OSLCServiceProviderCatalog, T> {
 
 }

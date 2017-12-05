@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.powerpoint.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
@@ -55,6 +55,6 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity(isAbstract = true)
 public interface PowerpointAction<T extends PowerpointObject>
-		extends TechnologySpecificAction<BasicPowerpointModelSlot, PowerpointSlideshow, T> {
+		extends TechnologySpecificActionDefiningReceiver<BasicPowerpointModelSlot, PowerpointSlideshow, T> {
 
 }

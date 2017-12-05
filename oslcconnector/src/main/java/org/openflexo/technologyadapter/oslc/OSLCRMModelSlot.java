@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -80,6 +79,7 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 
 	public static abstract class OSLCRMModelSlotImpl extends FreeModelSlotImpl<OSLCServiceProviderCatalog> implements OSLCRMModelSlot {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(OSLCRMModelSlot.class.getPackage().getName());
 
 		@Override
@@ -99,20 +99,15 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		}
 
 		@Override
-		public String getURIForObject(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
-				Object o) {
-			/*if (o instanceof IFlexoOntologyObject) {
-				return ((IFlexoOntologyObject) o).getURI();
-			}*/
+		public String getURIForObject(OSLCServiceProviderCatalog resourceData, Object o) {
+			// TODO
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
-				String objectURI) {
-			return msInstance.getResourceData().getObject(objectURI);
+		public Object retrieveObjectWithURI(OSLCServiceProviderCatalog resourceData, String objectURI) {
+			// TODO
+			return null;
 		}
 
 		@Override

@@ -71,23 +71,6 @@ public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModel
 		@Override
 		public List<PowerpointSlide> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			/*ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getResourceData();
-			
-			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
-			
-			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
-			
-			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, action);*/
-
 			return null;
 		}
 	}

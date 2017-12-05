@@ -51,7 +51,6 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -153,14 +152,12 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		// TODO Manage the fact that URI May Change
 
 		@Override
-		public String getURIForObject(
-				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
-				Object o) {
+		public String getURIForObject(XMLModel model, Object o) {
 
 			if (o instanceof XMLIndividual) {
 				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
 				if (p != null) {
-					return p.getURIForObject(msInstance, (XMLObject) o);
+					return p.getURIForObject(model, (XMLObject) o);
 				}
 				else {
 					logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
@@ -174,13 +171,10 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
-				String objectURI) {
+		public Object retrieveObjectWithURI(XMLModel model, String objectURI) {
 
-			String typeUri = XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
-			XMLModel model = msInstance.getModel();
-			XMLURIProcessor mapParams = uriProcessorsMap.get(XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
+			String typeUri = XMLURIProcessorImpl.retrieveTypeURI(model, objectURI);
+			XMLURIProcessor mapParams = uriProcessorsMap.get(XMLURIProcessorImpl.retrieveTypeURI(model, objectURI));
 			if (mapParams == null) {
 				// Look for a processor in superClasses
 				XMLType aType = model.getMetaModel().getTypeFromURI(typeUri);
@@ -189,7 +183,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			if (mapParams != null) {
 				try {
-					return mapParams.retrieveObjectWithURI(msInstance, objectURI);
+					return mapParams.retrieveObjectWithURI(model, objectURI);
 				} catch (DuplicateURIException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

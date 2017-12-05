@@ -98,16 +98,7 @@ public interface SelectExcelCell extends FetchRequest<BasicExcelModelSlot, Excel
 		@Override
 		public List<ExcelCell> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
 			List<ExcelCell> selectedExcelCells = new ArrayList<>(0);
 

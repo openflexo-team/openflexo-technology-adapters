@@ -232,7 +232,6 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
 
 		CreateSEResource createSEResourceAction = (CreateSEResource) action1.getAssignableAction();
-		createSEResourceAction.setReceiver(new DataBinding<SEVirtualModelInstance>("null"));
 		createSEResourceAction.setExcelWorkbook(new DataBinding<>("parameters.excelResource.getResourceData(null)"));
 		createSEResourceAction.setResourceName(new DataBinding<String>("(this.name + \"_xls\")"));
 		createSEResourceAction.setResourceCenter(new DataBinding<FlexoResourceCenter<?>>("this.resourceCenter"));

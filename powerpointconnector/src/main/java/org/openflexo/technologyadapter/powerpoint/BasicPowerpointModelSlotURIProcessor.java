@@ -51,22 +51,22 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlotURIProcessor.BasicPowerpointModelSlotURIProcessorImpl.class)
 @XMLElement
 public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject {
 
-	public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject);
+	public String getURIForObject(PowerpointSlideshow resourceData, PowerpointObject powerpointObject);
 
 	// get the Object given the URI
-	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
+	public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) throws Exception;
 
 	public BasicPowerpointModelSlot getModelSlot();
 
@@ -138,7 +138,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		// URI Calculation
 
 		@Override
-		public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject) {
+		public String getURIForObject(PowerpointSlideshow resourceData, PowerpointObject powerpointObject) {
 			String builtURI = null;
 
 			try {
@@ -159,7 +159,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		// get the Object given the URI
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception {
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) throws Exception {
 			PowerpointObject o = uriCache.get(objectURI);
 			return o;
 		}

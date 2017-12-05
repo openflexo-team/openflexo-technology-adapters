@@ -173,8 +173,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		public Type getObjectType() {
 			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty
 					&& ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange() instanceof IFlexoOntologyClass) {
-				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty())
-						.getRange());
+				return IndividualOfClass
+						.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange());
 			}
 			return IFlexoOntologyConcept.class;
 		}
@@ -294,8 +294,9 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			if (subject instanceof OWLClass && object instanceof OWLClass && property instanceof OWLProperty) {
 				RestrictionType restrictionType = getRestrictionType(evaluationContext);
 				int cardinality = getCardinality(evaluationContext);
-				OWLRestriction restriction = ((OWLOntology) getModelSlotInstance(evaluationContext).getAccessedResourceData())
-						.createRestriction((OWLClass) subject, property, restrictionType, cardinality, (OWLClass) object);
+				OWLOntology ontology = getReceiver(evaluationContext);
+				OWLRestriction restriction = ontology.createRestriction((OWLClass) subject, property, restrictionType, cardinality,
+						(OWLClass) object);
 
 				if (subject instanceof OWLClass) {
 					if (subject instanceof OWLClass) {

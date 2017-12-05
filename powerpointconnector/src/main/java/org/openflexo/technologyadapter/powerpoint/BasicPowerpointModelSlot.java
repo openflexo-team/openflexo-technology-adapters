@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -111,18 +110,16 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public String getURIForObject(FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance,
-				Object o) {
+		public String getURIForObject(PowerpointSlideshow resourceData, Object o) {
 			PowerpointObject powerpointObject = (PowerpointObject) o;
-			return getUriProcessor().getURIForObject(msInstance, powerpointObject);
+			return getUriProcessor().getURIForObject(resourceData, powerpointObject);
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(
-				FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance, String objectURI) {
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) {
 
 			try {
-				return getUriProcessor().retrieveObjectWithURI(msInstance, objectURI);
+				return getUriProcessor().retrieveObjectWithURI(resourceData, objectURI);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

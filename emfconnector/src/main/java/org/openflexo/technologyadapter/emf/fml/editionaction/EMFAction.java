@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.AEMFModelObjectImpl;
@@ -54,6 +54,6 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
  */
 
 @ModelEntity(isAbstract = true)
-public interface EMFAction<T extends AEMFModelObjectImpl<?>> extends TechnologySpecificAction<EMFModelSlot, EMFModel, T> {
+public interface EMFAction<T extends AEMFModelObjectImpl<?>> extends TechnologySpecificActionDefiningReceiver<EMFModelSlot, EMFModel, T> {
 
 }

@@ -187,16 +187,8 @@ public interface SelectGeneratedDocXImage extends DocXImageAction {
 		@Override
 		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			DocXDrawingRun docXDrawingRun = getReceiver(evaluationContext);
+			DocXDocument document = docXDrawingRun.getFlexoDocument();
 
 			List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
 			if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {

@@ -157,16 +157,8 @@ public interface SelectGeneratedDocXParagraph extends DocXParagraphAction {
 		@Override
 		public DocXParagraph execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			DocXParagraph docXParagraph = getReceiver(evaluationContext);
+			DocXDocument document = docXParagraph.getFlexoDocument();
 
 			List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
 			if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {

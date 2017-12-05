@@ -49,7 +49,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -69,8 +68,9 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 	public void setPowerpointSlide(DataBinding<PowerpointSlide> powerpointSlide);
 
-	public static abstract class AddPowerpointShapeImpl extends
-			TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> implements AddPowerpointShape {
+	public static abstract class AddPowerpointShapeImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape>
+			implements AddPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointShape.class.getPackage().getName());
 
@@ -88,40 +88,31 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 			PowerpointShape powerpointShape = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(
-					evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
+			PowerpointSlideshow receiver = getReceiver(evaluationContext);
 
-				try {
-					PowerpointSlide powerpointSlide = getPowerpointSlide().getBindingValue(evaluationContext);
-					if (powerpointSlide != null) {
+			try {
+				PowerpointSlide powerpointSlide = getPowerpointSlide().getBindingValue(evaluationContext);
+				if (powerpointSlide != null) {
 
-						AutoShape shape = new AutoShape(ShapeTypes.Chevron);
+					AutoShape shape = new AutoShape(ShapeTypes.Chevron);
 
-						powerpointShape = modelSlotInstance.getAccessedResourceData().getConverter().convertPowerpointShapeToShape(shape,
-								powerpointSlide, null);
-						powerpointSlide.getSlide().addShape(shape);
-						modelSlotInstance.getResourceData().setIsModified();
-					}
-					else {
-						logger.warning("Create a row requires a sheet");
-					}
-
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					powerpointShape = receiver.getConverter().convertPowerpointShapeToShape(shape, powerpointSlide, null);
+					powerpointSlide.getSlide().addShape(shape);
+					receiver.setIsModified();
+				}
+				else {
+					logger.warning("Create a row requires a sheet");
 				}
 
-			}
-			else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			return powerpointShape;
@@ -146,12 +137,6 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 				powerpointSlide.setBindingName("powerpointSlide");
 			}
 			this.powerpointSlide = powerpointSlide;
-		}
-
-		@Override
-		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

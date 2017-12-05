@@ -51,7 +51,6 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -194,7 +193,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public String getURIForObject(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance, Object o) {
+		public String getURIForObject(ExcelWorkbook model, Object o) {
 			ExcelObject excelObject = (ExcelObject) o;
 
 			String builtURI = null;
@@ -216,8 +215,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance,
-				String objectURI) {
+		public Object retrieveObjectWithURI(ExcelWorkbook model, String objectURI) {
 
 			try {
 				String builtURI = URLEncoder.encode(objectURI, "UTF-8");
@@ -226,7 +224,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 					return o;
 				}
 				else {
-					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
+					TechnologyAdapterResource<ExcelWorkbook, ?> resource = model.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}

@@ -47,7 +47,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -97,8 +96,8 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
-	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow>
-			implements AddExcelRow {
+	public static abstract class AddExcelRowImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow> implements AddExcelRow {
 
 		private static final Logger logger = Logger.getLogger(AddExcelRow.class.getPackage().getName());
 
@@ -118,57 +117,48 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 
 			ExcelRow excelRow = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance != null && modelSlotInstance.getResourceData() != null) {
-
-				try {
-					ExcelSheet excelSheet = getExcelSheet().getBindingValue(evaluationContext);
-					if (excelSheet != null) {
-						Integer rowIndex = getRowIndex().getBindingValue(evaluationContext);
-						if (rowIndex != null) {
-							if (excelSheet.getRowAt(rowIndex) != null) {
-								excelRow = excelSheet.getRowAt(rowIndex);
-							}
-							else {
-								excelRow = excelSheet.insertRowAt(rowIndex);
-								/*Row row = excelSheet.getSheet().createRow(rowIndex);
-								BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelSheet.getResourceData().getResource())
-										.getConverter();
-								excelRow = converter.convertExcelRowToRow(row, excelSheet, null);
-								excelSheet.addToExcelRows(excelRow);*/
-							}
-							if (getExcelCells().getBindingValue(evaluationContext) != null) {
-								excelRow.getExcelCells().addAll(getExcelCells().getBindingValue(evaluationContext));
-							}
-							modelSlotInstance.getResourceData().setIsModified();
-							excelSheet.getExcelWorkbook().getResource().setModified(true);
-
+			try {
+				ExcelSheet excelSheet = getExcelSheet().getBindingValue(evaluationContext);
+				if (excelSheet != null) {
+					Integer rowIndex = getRowIndex().getBindingValue(evaluationContext);
+					if (rowIndex != null) {
+						if (excelSheet.getRowAt(rowIndex) != null) {
+							excelRow = excelSheet.getRowAt(rowIndex);
 						}
 						else {
-							logger.warning("Create a row requires a rowindex");
+							excelRow = excelSheet.insertRowAt(rowIndex);
+							/*Row row = excelSheet.getSheet().createRow(rowIndex);
+							BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelSheet.getResourceData().getResource())
+									.getConverter();
+							excelRow = converter.convertExcelRowToRow(row, excelSheet, null);
+							excelSheet.addToExcelRows(excelRow);*/
 						}
+						if (getExcelCells().getBindingValue(evaluationContext) != null) {
+							excelRow.getExcelCells().addAll(getExcelCells().getBindingValue(evaluationContext));
+						}
+						excelSheet.getExcelWorkbook().setIsModified();
+						excelSheet.getExcelWorkbook().getResource().setModified(true);
+
 					}
 					else {
-						logger.warning("Create a row requires a sheet");
-						System.out.println("Alors ca marche pas, donc.");
-						System.out.println("j'essaie d'evaluer: " + getExcelSheet());
-						System.out.println("valid=" + getExcelSheet().isValid());
-						System.out.println("reason:" + getExcelSheet().invalidBindingReason());
-						System.out.println("evaluationContext=" + evaluationContext);
+						logger.warning("Create a row requires a rowindex");
 					}
-
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+				}
+				else {
+					logger.warning("Create a row requires a sheet");
+					System.out.println("Alors ca marche pas, donc.");
+					System.out.println("j'essaie d'evaluer: " + getExcelSheet());
+					System.out.println("valid=" + getExcelSheet().isValid());
+					System.out.println("reason:" + getExcelSheet().invalidBindingReason());
+					System.out.println("evaluationContext=" + evaluationContext);
 				}
 
-			}
-			else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
 
 			return excelRow;
@@ -233,11 +223,6 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 				rowIndex.setBindingName("rowIndex");
 			}
 			this.rowIndex = rowIndex;
-		}
-
-		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

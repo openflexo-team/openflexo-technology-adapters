@@ -47,7 +47,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -110,7 +109,7 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AddXMLTypeImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLModel, XMLType>
+	public static abstract class AddXMLTypeImpl extends TechnologySpecificActionDefiningReceiverImpl<XMLModelSlot, XMLModel, XMLType>
 			implements AddXMLType {
 
 		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
@@ -127,6 +126,9 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 		public XMLType execute(RunTimeEvaluationContext evaluationContext) {
 
 			XMLType newClass = null;
+
+			XMLModel model = getReceiver(evaluationContext);
+
 			try {
 				XMLType father = getSuperType().getBindingValue(evaluationContext);
 				String newTypeName = null;
@@ -138,15 +140,14 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 				if (mm != null) {
 
 					if (father != null) {
-						newClass = getModelSlotInstance(evaluationContext).getAccessedResourceData().getMetaModel()
-								.createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName, isSimpleType());
+						newClass = model.getMetaModel().createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName,
+								isSimpleType());
 
 						newClass.setSuperType(father);
 					}
 					else {
 
-						newClass = getModelSlotInstance(evaluationContext).getAccessedResourceData().getMetaModel()
-								.createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
+						newClass = model.getMetaModel().createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
 					}
 					logger.info("Added class " + newClass.getName() + " as " + father);
 
@@ -166,12 +167,6 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 			}
 			return newClass;
 
-		}
-
-		@Override
-		public TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override
