@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.TechnologySpecificFlexoAction;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -71,8 +72,8 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
-public class CreateFMLControlledDiagramVirtualModel
-		extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledDiagramVirtualModel> {
+public class CreateFMLControlledDiagramVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledDiagramVirtualModel>
+		implements TechnologySpecificFlexoAction<DiagramTechnologyAdapter> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModel.class.getPackage().getName());
@@ -128,6 +129,11 @@ public class CreateFMLControlledDiagramVirtualModel
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+	}
+
+	@Override
+	public Class<DiagramTechnologyAdapter> getTechnologyAdapterClass() {
+		return DiagramTechnologyAdapter.class;
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation() throws ModelDefinitionException {

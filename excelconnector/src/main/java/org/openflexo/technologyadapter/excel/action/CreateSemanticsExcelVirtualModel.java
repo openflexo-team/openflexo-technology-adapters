@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.TechnologySpecificFlexoAction;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -92,7 +93,8 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  *
  */
-public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateSemanticsExcelVirtualModel> {
+public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateSemanticsExcelVirtualModel>
+		implements TechnologySpecificFlexoAction<ExcelTechnologyAdapter> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateSemanticsExcelVirtualModel.class.getPackage().getName());
@@ -144,6 +146,11 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 	@Override
 	public ExcelTechnologyAdapter getTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class);
+	}
+
+	@Override
+	public Class<ExcelTechnologyAdapter> getTechnologyAdapterClass() {
+		return ExcelTechnologyAdapter.class;
 	}
 
 	@Override
