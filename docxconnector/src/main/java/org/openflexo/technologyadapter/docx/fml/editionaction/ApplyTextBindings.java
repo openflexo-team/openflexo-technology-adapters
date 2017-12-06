@@ -63,6 +63,8 @@ public interface ApplyTextBindings extends DocXFragmentAction {
 		@Override
 		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
+			getReceiver(evaluationContext);
+
 			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext
 					.getFlexoConceptInstance().getActorReference(getInferedFlexoRole());
 

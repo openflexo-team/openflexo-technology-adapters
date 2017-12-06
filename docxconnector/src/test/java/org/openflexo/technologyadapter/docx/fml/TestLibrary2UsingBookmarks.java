@@ -1091,6 +1091,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		createSelectTable.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
 		assertTrue(action4.getAssignation().isValid());
+		((SelectGeneratedDocXTable) action4.getAssignableAction()).getReceiver().setUnparsedBinding("bookListingTable");
 
 		return generateDocumentActionScheme;
 

@@ -1091,6 +1091,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		createSelectTable.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
 		assertTrue(action4.getAssignation().isValid());
+		// ((SelectGeneratedDocXTable) action4.getAssignableAction()).getReceiver().setUnparsedBinding("bookListingTable");
 
 		return generateDocumentActionScheme;
 
@@ -1429,6 +1430,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
+
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));

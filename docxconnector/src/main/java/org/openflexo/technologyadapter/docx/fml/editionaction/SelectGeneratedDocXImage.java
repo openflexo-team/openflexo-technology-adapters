@@ -51,6 +51,7 @@ import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -59,6 +60,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -187,35 +189,46 @@ public interface SelectGeneratedDocXImage extends DocXImageAction {
 		@Override
 		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			DocXDrawingRun docXDrawingRun = getReceiver(evaluationContext);
-			DocXDocument document = docXDrawingRun.getFlexoDocument();
-
-			List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
-			if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
-				DocXFragment searchAreaFragment = null;
-				try {
-					searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
-				} catch (TypeMismatchException e1) {
-					e1.printStackTrace();
-				} catch (NullReferenceException e1) {
-					e1.printStackTrace();
-				} catch (InvocationTargetException e1) {
-					e1.printStackTrace();
+			// The idea is to access the underying role, asserting this role was assigned to this EditionAction
+			if (getAssignedFlexoRole() != null && getAssignedFlexoRole().getModelSlot() != null) {
+				DocXModelSlot modelSlot = (DocXModelSlot) getAssignedFlexoRole().getModelSlot();
+				// Try with the FlexoConceptInstance
+				DocXDocument document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot)
+						.getAccessedResourceData();
+				if (document == null) {
+					// Try with the parent VirtualModelInstance
+					ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
+					document = (DocXDocument) msi.getAccessedResourceData();
 				}
-				if (searchAreaFragment != null) {
-					// System.out.println("Restrict search to " + searchAreaFragment);
-					searchArea = searchAreaFragment.getElements();
-				}
-			}
 
-			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
-				if (e instanceof DocXParagraph && e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(getParagraphIdentifier())) {
-					// Found paragraph !!!!!!!
-					DocXParagraph paragraph = (DocXParagraph) e;
-					if (getRunIndex() > -1 && getRunIndex() < paragraph.getRuns().size()) {
-						FlexoDocRun<?, ?> run = paragraph.getRuns().get(getRunIndex());
-						if (run instanceof DocXDrawingRun) {
-							return (DocXDrawingRun) run;
+				List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
+				if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
+					DocXFragment searchAreaFragment = null;
+					try {
+						searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
+					} catch (TypeMismatchException e1) {
+						e1.printStackTrace();
+					} catch (NullReferenceException e1) {
+						e1.printStackTrace();
+					} catch (InvocationTargetException e1) {
+						e1.printStackTrace();
+					}
+					if (searchAreaFragment != null) {
+						// System.out.println("Restrict search to " + searchAreaFragment);
+						searchArea = searchAreaFragment.getElements();
+					}
+				}
+
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
+					if (e instanceof DocXParagraph && e.getBaseIdentifier() != null
+							&& e.getBaseIdentifier().equals(getParagraphIdentifier())) {
+						// Found paragraph !!!!!!!
+						DocXParagraph paragraph = (DocXParagraph) e;
+						if (getRunIndex() > -1 && getRunIndex() < paragraph.getRuns().size()) {
+							FlexoDocRun<?, ?> run = paragraph.getRuns().get(getRunIndex());
+							if (run instanceof DocXDrawingRun) {
+								return (DocXDrawingRun) run;
+							}
 						}
 					}
 				}
@@ -225,5 +238,6 @@ public interface SelectGeneratedDocXImage extends DocXImageAction {
 
 			return null;
 		}
+
 	}
 }
