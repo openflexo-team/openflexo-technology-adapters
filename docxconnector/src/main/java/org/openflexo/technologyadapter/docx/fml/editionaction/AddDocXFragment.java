@@ -32,7 +32,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocTable;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -57,7 +57,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 @ModelEntity
 @ImplementationClass(AddDocXFragment.AddDocXFragmentImpl.class)
 @XMLElement
-public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot, DocXDocument, DocXFragment> {
+public interface AddDocXFragment extends TechnologySpecificActionDefiningReceiver<DocXModelSlot, DocXDocument, DocXFragment> {
 
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
@@ -102,8 +102,8 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 		InsertAfter, InsertBefore, InsertAfterLastChild, InsertBeforeLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends TechnologySpecificActionImpl<DocXModelSlot, DocXDocument, DocXFragment>
-			implements AddDocXFragment {
+	public static abstract class AddDocXFragmentImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<DocXModelSlot, DocXDocument, DocXFragment> implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
@@ -160,7 +160,7 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 				}
 			}
 
-			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			DocXDocument document = getReceiver(evaluationContext);
 
 			int insertIndex = -1;
 

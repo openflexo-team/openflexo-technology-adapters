@@ -166,7 +166,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					}
 					else {
 						// In case the toplevel is not specified set o the diagram top level.
-						return (DiagramContainerElement<?>) getModelSlotInstance((evaluationContext)).getAccessedResourceData();
+						Diagram diagram = getReceiver(evaluationContext);
+						return diagram;
 					}
 
 				} catch (TypeMismatchException e) {

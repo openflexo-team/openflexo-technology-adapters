@@ -45,14 +45,13 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.controlgraph.FMLControlGraph;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -138,32 +137,20 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 			try {
 
-				DocXDocumentResource templateResource = getInferedModelSlot().getTemplateResource();
+				DocXDocumentResource templateResource = getAssignedModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
-
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
-						evaluationContext);
 
 				FlexoResource<DocXDocument> generatedResource = null;
 
-				// get resource from msInstance if not null
-				if (msInstance != null) {
-					generatedResource = msInstance.getResource();
-				}
-				// else create a new resource
-				else {
+				String resourceName = getResourceName(evaluationContext);
+				String resourceURI = getResourceURI(evaluationContext);
+				FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
 
-					String resourceName = getResourceName(evaluationContext);
-					String resourceURI = getResourceURI(evaluationContext);
-					FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
+				DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
+						.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-					DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
-							.getTechnologyAdapter(DocXTechnologyAdapter.class);
-
-					generatedResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
-							resourceName, true, getInferedModelSlot().getIdStrategy());
-
-				}
+				generatedResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
+						resourceName, true, getAssignedModelSlot().getIdStrategy());
 
 				// System.out.println("-------------> generating document " + generatedResource);
 
@@ -231,9 +218,9 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 				// Very important: we must now set ModelSlotInstance !
 				// TODO: need to check why this is so important...
-				if (msInstance != null) {
+				/*if (msInstance != null) {
 					msInstance.setAccessedResourceData(generatedDocument);
-				}
+				}*/
 
 			}
 

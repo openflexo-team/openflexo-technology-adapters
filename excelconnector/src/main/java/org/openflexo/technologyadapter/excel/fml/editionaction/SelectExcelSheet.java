@@ -72,16 +72,7 @@ public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, Exce
 		@Override
 		public List<ExcelSheet> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
 			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
 

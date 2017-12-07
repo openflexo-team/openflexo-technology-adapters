@@ -72,8 +72,7 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 		declaredPerspective = perspective;
 		this.workbook = workbook;
 		for (ExcelSheet sheet : workbook.getExcelSheets()) {
-			// addTab(sheet.getName(), new FIBExcelSheetView(sheet, controller));
-			addTab(sheet.getName(), new ExcelSheetView(sheet, controller));
+			addTab(sheet.getName(), new ExcelSheetView(sheet));
 		}
 	}
 

@@ -62,6 +62,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /* Correct processing of XML Objects URIs needs to add an internal class to store
  * for each XMLComplexType wich are the XML Elements (attributes or CDATA, or...) that will be 
@@ -136,9 +137,9 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 	@Setter(BASE_PROPERTY)
 	public void setBasePropertyForURI(XMLDataProperty basePropertyForURI);
 
-	public Object retrieveObjectWithURI(ModelSlotInstance<?, ?> msInstance, String objectURI) throws DuplicateURIException;
+	public Object retrieveObjectWithURI(XMLModel model, String objectURI) throws DuplicateURIException;
 
-	public String getURIForObject(ModelSlotInstance<?, ?> msInstance, XMLObject xsO);
+	public String getURIForObject(XMLModel model, XMLObject xsO);
 
 	public void reset();
 
@@ -195,7 +196,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		public VirtualModel getVirtualModel() {
 			AbstractXMLModelSlot<?> ms = getModelSlot();
 			if (ms != null) {
-				return (VirtualModel) ms.getOwningVirtualModel();
+				return ms.getOwningVirtualModel();
 			}
 			else
 				return null;

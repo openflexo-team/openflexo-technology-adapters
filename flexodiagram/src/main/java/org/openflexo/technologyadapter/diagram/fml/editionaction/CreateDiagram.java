@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -77,7 +78,7 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(CreateDiagram.CreateDiagramImpl.class)
 @XMLElement
 @FML("AddDiagram")
-public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
+public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot, Diagram> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DIAGRAM_NAME_KEY = "diagramName";
@@ -133,7 +134,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram, Diagram>
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>
 			implements CreateDiagram {
 
 		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
@@ -152,17 +153,8 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			/*if (getAssignation().isSet()) {
-				out.append(getAssignation().toString() + " = (", context);
-			}*/
-			out.append(getClass().getSimpleName()
-					/*+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")*/
-					+ (getReceiver().isValid() ? getReceiver().toString() : "") + " from " + getReceiver().toString() + " {"
-					+ StringUtils.LINE_SEPARATOR, context);
+			out.append(getClass().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append("}", context);
-			/*if (getAssignation().isSet()) {
-				out.append(")", context);
-			}*/
 			return out.toString();
 		}
 
@@ -194,6 +186,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			return null;
 		}
 
+		@SuppressWarnings("unchecked")
 		public <I> FlexoResourceCenter<I> getResourceCenter(RunTimeEvaluationContext evaluationContext) {
 			try {
 				return (FlexoResourceCenter<I>) getResourceCenter().getBindingValue(evaluationContext);

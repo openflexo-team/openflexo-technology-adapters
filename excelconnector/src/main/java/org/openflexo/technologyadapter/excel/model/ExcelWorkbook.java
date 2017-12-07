@@ -51,6 +51,8 @@ import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
@@ -68,8 +70,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @ModelEntity
 @ImplementationClass(value = ExcelWorkbook.ExcelWorkbookImpl.class)
 @XMLElement
-// @Imports({ @Import(JDBCSchema.class), @Import(JDBCTable.class), @Import(JDBCColumn.class), @Import(JDBCResultSet.class),
-// @Import(JDBCLine.class), @Import(JDBCValue.class), @Import(JDBCResultSetDescription.class) })
+@Imports({ @Import(ExcelCellRange.class) })
 public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> {
 
 	@PropertyIdentifier(type = Workbook.class)
@@ -149,6 +150,9 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 
 	public BasicExcelModelConverter getConverter();
 
+	@Override
+	public ExcelWorkbookResource getResource();
+
 	/**
 	 * Default base implementation for {@link ExcelWorkbook}
 	 * 
@@ -203,12 +207,12 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 			return this;
 		}
 
-		/*@Override
-		public ExcelWorkbookResource getResource() {
-			return resource;
-		}
-		
 		@Override
+		public ExcelWorkbookResource getResource() {
+			return (ExcelWorkbookResource) performSuperGetter(FLEXO_RESOURCE);
+		}
+
+		/*@Override
 		public void setResource(FlexoResource<ExcelWorkbook> resource) {
 			this.resource = (ExcelWorkbookResource) resource;
 		}*/
@@ -284,7 +288,7 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 
 		@Override
 		public BasicExcelModelConverter getConverter() {
-			return ((ExcelWorkbookResource) getResource()).getConverter();
+			return getResource().getConverter();
 		}
 
 	}

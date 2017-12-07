@@ -38,14 +38,19 @@
 
 package org.openflexo.technologyadapter.excel.controller;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+
+import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
+import org.openflexo.icon.FMLIconLibrary;
+import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.controller.action.CreateSemanticsExcelVirtualModelInitializer;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
@@ -60,9 +65,17 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
 import org.openflexo.technologyadapter.excel.gui.ExcelIconLibrary;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
+import org.openflexo.technologyadapter.excel.semantics.fml.InsertSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.RemoveSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
+import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 import org.openflexo.technologyadapter.excel.view.ExcelWorkbookView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -105,6 +118,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	protected void initializeActions(ControllerActionInitializer actionInitializer) {
+		new CreateSemanticsExcelVirtualModelInitializer(actionInitializer);
 	}
 
 	@Override
@@ -119,7 +133,6 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	public ImageIcon getModelIcon() {
-		// TODO Auto-generated method stub
 		return ExcelIconLibrary.EXCEL_TECHNOLOGY_ICON;
 	}
 
@@ -134,15 +147,24 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> flexoRoleClass) {
+		if (ExcelSheetRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelSheet.class);
 		}
-		if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelCellRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelCell.class);
 		}
-		if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelRowRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(ExcelRow.class);
+		}
+		if (SEColumnRole.class.isAssignableFrom(flexoRoleClass)) {
+			return getIconForTechnologyObject(ExcelColumn.class);
+		}
+		if (SEReferenceRole.class.isAssignableFrom(flexoRoleClass)) {
+			return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_ICON, ExcelIconLibrary.EXCEL_MARKER);
+		}
+		if (SEDataAreaRole.class.isAssignableFrom(flexoRoleClass)) {
+			return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_ICON, ExcelIconLibrary.EXCEL_MARKER);
 		}
 		return null;
 	}
@@ -182,11 +204,23 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
 		}
+		else if (CreateSEResource.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(FMLRTIconLibrary.VIRTUAL_MODEL_INSTANCE_ICON, ExcelIconLibrary.EXCEL_MARKER);
+		}
+		else if (InsertSEObject.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON, IconLibrary.NEW_MARKER);
+		}
+		else if (RemoveSEObject.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON, IconLibrary.DELETE);
+		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof SEVirtualModelInstance) {
+			return true;
+		}
 		if (object instanceof ExcelWorkbook) {
 			return true;
 		}
@@ -194,7 +228,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
 			return ((ExcelWorkbook) object).getName();
 		}
@@ -204,6 +238,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	@Override
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
+		if (object instanceof SEVirtualModelInstance) {
+			return new VirtualModelInstanceView((SEVirtualModelInstance) object, controller, perspective);
+		}
 		if (object instanceof ExcelWorkbook) {
 			return new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
 		}

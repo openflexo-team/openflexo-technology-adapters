@@ -55,7 +55,7 @@ import org.openflexo.toolbox.StringUtils;
 public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> extends DiagramAction<DiagramModelSlot, T> {
 
 	public static abstract class AddDiagramElementActionImpl<T extends DiagramElement<?>>
-			extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram, T> implements AddDiagramElementAction<T> {
+			extends TechnologySpecificActionDefiningReceiverImpl<DiagramModelSlot, Diagram, T> implements AddDiagramElementAction<T> {
 
 		@Override
 		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {

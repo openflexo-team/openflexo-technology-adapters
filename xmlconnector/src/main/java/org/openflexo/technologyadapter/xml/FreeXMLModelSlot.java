@@ -210,6 +210,18 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> flexoRoleClass) {
 			return flexoRoleClass.getSimpleName();
 		}
+
+		@Override
+		public String getURIForObject(XMLModel resourceData, Object o) {
+			// TODO
+			return null;
+		}
+
+		@Override
+		public Object retrieveObjectWithURI(XMLModel resourceData, String objectURI) {
+			// TODO
+			return null;
+		}
 	}
 
 }

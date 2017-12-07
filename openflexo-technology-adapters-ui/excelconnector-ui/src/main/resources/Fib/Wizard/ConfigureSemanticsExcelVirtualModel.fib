@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" titleFont="Lucida Grande,0,13" layout="twocols" borderRight="0" opaque="false" controllerClassName="org.openflexo.view.controller.FlexoFIBController">
+  <Label id="3" label="excel_workbook" align="left" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;location=left)" name="ResourceLabel" />
+  <Custom id="4" componentClassName="org.openflexo.components.widget.FIBResourceSelector" dataClassForComponent="org.openflexo.foundation.technologyadapter.TechnologyAdapterResource" manageDynamicModel="true" data="data.excelWorkbookResource" constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right)" index="13" name="TemplateSelector">
+    <Assignment id="5" variable="component.resourceDataClass" mandatory="true" />
+    <Assignment id="6" variable="component.expectedType" mandatory="true" />
+    <Assignment id="7" variable="component.flexoController" mandatory="true" />
+    <Assignment id="8" variable="component.serviceManager" mandatory="true" />
+    <Assignment id="9" variable="component.selectableCondition" mandatory="true" />
+    <Assignment id="10" variable="component.resourceManager" value="data.serviceManager.resourceManager" mandatory="true" />
+    <Assignment id="11" variable="component.technologyAdapter" value="data.excelTechnologyAdapter" mandatory="true" />
+  </Custom>
+  <Label id="1" label="virtual_model_name" align="right" localize="true" constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.2;weightY=0.0)" index="1" name="nameLabel" />
+  <TextField id="2" columns="7" text="TextField" localize="true" manageDynamicModel="true" data="data.newVirtualModelName" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=10;insetsTop=0;location=right;padX=0;padY=0;weightX=0.8;weightY=0.0)" index="3" name="nameTextField" />
+  <LocalizedDictionary id="12">
+    <Localized id="13" lang="English" value="Virtual model name" key="virtual_model_name" />
+    <Localized id="14" lang="Dutch" value="virtual_model_name" key="virtual_model_name" />
+    <Localized id="15" lang="French" value="Nom du VirtualModel" key="virtual_model_name" />
+    <Localized id="16" lang="English" value="Excel workbook" key="excel_workbook" />
+    <Localized id="17" lang="Dutch" value="excel_workbook" key="excel_workbook" />
+    <Localized id="18" lang="French" value="Classeur excel" key="excel_workbook" />
+  </LocalizedDictionary>
+  <FIBVariable id="19" type="org.openflexo.technologyadapter.excel.controller.action.CreateSemanticsExcelVirtualModelWizard$ConfigureSemanticsExcelVirtualModel" name="data" />
+</Panel>

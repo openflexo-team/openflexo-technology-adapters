@@ -40,9 +40,7 @@ package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
@@ -69,14 +67,7 @@ public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreepl
 
 		@Override
 		public List<IFreeplaneNode> execute(final RunTimeEvaluationContext evaluationContext) {
-			if (getModelSlotInstance(evaluationContext) == null) {
-				return Collections.emptyList();
-			}
-			if (getModelSlotInstance(evaluationContext).getAccessedResourceData() == null) {
-				LOGGER.log(Level.SEVERE, "Action perform on null accessed resource data");
-				return Collections.emptyList();
-			}
-			final IFreeplaneMap map = (IFreeplaneMap) getModelSlotInstance(evaluationContext).getAccessedResourceData();
+			final IFreeplaneMap map = getReceiver(evaluationContext);
 			final IFreeplaneNode root = map.getRoot();
 			final List<IFreeplaneNode> returned = new ArrayList<IFreeplaneNode>();
 			returned.add(root);

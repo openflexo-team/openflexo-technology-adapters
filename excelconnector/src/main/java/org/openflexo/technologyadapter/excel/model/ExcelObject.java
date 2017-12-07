@@ -45,7 +45,6 @@ import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 /**
  * Common API for all objects involved in Excel model
@@ -58,6 +57,8 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 
 	public String getSerializationIdentifier();
 
+	public ExcelModelFactory getFactory();
+
 	/**
 	 * Default base implementation for {@link ExcelObject}
 	 * 
@@ -66,23 +67,33 @@ public interface ExcelObject extends FlexoObject, InnerResourceData<ExcelWorkboo
 	 */
 	public static abstract class ExcelObjectImpl extends FlexoObjectImpl implements ExcelObject {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ExcelObjectImpl.class.getPackage().getName());
 
 		@Override
 		public ExcelTechnologyAdapter getTechnologyAdapter() {
 			if (getResourceData() != null && getResourceData().getResource() != null) {
-				return ((ExcelWorkbookResource) getResourceData().getResource()).getTechnologyAdapter();
+				return getResourceData().getResource().getTechnologyAdapter();
 			}
 			return null;
 		}
 
+		@Override
 		public ExcelModelFactory getFactory() {
-			return ((ExcelWorkbookResource) getResourceData().getResource()).getFactory();
+			return getResourceData().getResource().getFactory();
 		}
 
 		@Override
 		public final String getSerializationIdentifier() {
-			return ((ExcelWorkbookResource) getResourceData().getResource()).getConverter().toSerializationIdentifier(this);
+			if (getResourceData() != null) {
+				return getResourceData().getResource().getConverter().toSerializationIdentifier(this);
+			}
+			return "???";
+		}
+
+		@Override
+		public String toString() {
+			return getImplementedInterface().getSimpleName() + "-" + getSerializationIdentifier();
 		}
 
 	}

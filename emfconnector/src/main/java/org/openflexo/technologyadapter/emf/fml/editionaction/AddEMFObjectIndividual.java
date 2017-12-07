@@ -49,7 +49,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
@@ -66,7 +65,6 @@ import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
@@ -125,9 +123,10 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
 			EMFObjectIndividual result = null;
 			List<EMFObjectIndividual> container = null;
-			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(
-					evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
+
+			EMFModel model = getReceiver(evaluationContext);
+
+			if (model != null) {
 				IFlexoOntologyClass aClass = getOntologyClass();
 				if (aClass instanceof EMFClassClass) {
 					EMFClassClass emfClassClass = (EMFClassClass) aClass;
@@ -145,12 +144,11 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 					}
 
 					// Instanciate Wrapper.
-					result = modelSlotInstance.getAccessedResourceData().getConverter()
-							.convertObjectIndividual(modelSlotInstance.getAccessedResourceData(), eObject);
+					result = model.getConverter().convertObjectIndividual(model, eObject);
 
 					// Put it in its container
 					if (container == null) {
-						modelSlotInstance.getAccessedResourceData().getEMFResource().getContents().add(eObject);
+						model.getEMFResource().getContents().add(eObject);
 					}
 					else {
 						// TODO This needs strong testing
@@ -226,7 +224,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 							}
 						}
 					}
-					modelSlotInstance.getResourceData().setIsModified();
+					model.setIsModified();
 					logger.info("********* Added individual " + result.getName() + " as " + aClass.getName());
 				}
 				else {
@@ -235,7 +233,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 				}
 			}
 			else {
-				logger.warning("Model slot not correctly initialised : model is null");
+				logger.warning("Model slot not correctly initialised : receiver is null");
 				return null;
 			}
 

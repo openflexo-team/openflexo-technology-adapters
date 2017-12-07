@@ -107,5 +107,17 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
+		@Override
+		public String getURIForObject(XMLMetaModel resourceData, Object o) {
+			// TODO
+			return null;
+		}
+
+		@Override
+		public Object retrieveObjectWithURI(XMLMetaModel resourceData, String objectURI) {
+			// TODO
+			return null;
+		}
+
 	}
 }

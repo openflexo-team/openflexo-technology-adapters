@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -54,9 +55,13 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRangeConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType.SEVirtualModelInstanceTypeFactory;
+import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceRepository;
+import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceResourceFactory;
 
 /**
  * This class defines and implements the Excel technology adapter
@@ -64,8 +69,8 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
  * @author sylvain, vincent, Christophe
  * 
  */
-@DeclareModelSlots({ BasicExcelModelSlot.class })
-@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class })
+@DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
+@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class, SEVirtualModelInstanceResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(ExcelTechnologyAdapter.class.getPackage().getName());
@@ -318,12 +323,34 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(ExcelWorkbookResourceFactory.class);
 	}
 
-	/*@Override
-	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
-		super.foundFolder(resourceCenter, folder);
-		if (resourceCenter.isDirectory(folder)) {
-			getExcelWorkbookRepository(resourceCenter).getRepositoryFolder(folder, true);
+	public <I> SEVirtualModelInstanceRepository<I> getSEVirtualModelInstanceRepository(FlexoResourceCenter<I> resourceCenter) {
+		SEVirtualModelInstanceRepository<I> returned = resourceCenter.retrieveRepository(SEVirtualModelInstanceRepository.class, this);
+		if (returned == null) {
+			try {
+				returned = SEVirtualModelInstanceRepository.instanciateNewRepository(this, resourceCenter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			resourceCenter.registerRepository(returned, SEVirtualModelInstanceRepository.class, this);
 		}
-	}*/
+		return returned;
+	}
+
+	private SEVirtualModelInstanceTypeFactory hbnVmiFactory;
+
+	public SEVirtualModelInstanceTypeFactory getVirtualModelInstanceTypeFactory() {
+		if (hbnVmiFactory == null) {
+			hbnVmiFactory = new SEVirtualModelInstanceTypeFactory(this);
+		}
+		return hbnVmiFactory;
+	}
+
+	@Override
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
+		super.initFMLModelFactory(fMLModelFactory);
+
+		fMLModelFactory.addConverter(new ExcelCellRangeConverter(getServiceManager()));
+	}
 
 }

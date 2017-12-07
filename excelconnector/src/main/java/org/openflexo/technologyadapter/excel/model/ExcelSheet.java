@@ -39,11 +39,13 @@
 package org.openflexo.technologyadapter.excel.model;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -54,6 +56,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Reindexer;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
@@ -136,8 +139,12 @@ public interface ExcelSheet extends ExcelObject {
 	@Remover(EXCEL_ROWS_KEY)
 	public void removeFromExcelRows(ExcelRow anExcelRow);
 
+	@Reindexer(EXCEL_ROWS_KEY)
+	public void moveExcelRowToIndex(ExcelRow anExcelRow, int index);
+
 	public FormulaEvaluator getEvaluator();
 
+	@NotificationUnsafe
 	public ExcelRow getRowAt(int row);
 
 	public ExcelCell getCellAt(int row, int column);
@@ -158,7 +165,30 @@ public interface ExcelSheet extends ExcelObject {
 
 	public void setCellValue(ExcelCell cell, String value);
 
-	public ExcelRow createRowAt(int rowIndex);
+	/**
+	 * Insert new row in this sheet<br>
+	 * First shift all existing rows after supplied insertion point to the bottom
+	 * 
+	 * @param rowIndex
+	 * @return
+	 */
+	public ExcelRow insertRowAt(int rowIndex);
+
+	/**
+	 * Remove row identified by its index in this sheet<br>
+	 * First shift all existing rows after supplied deletion point to the top
+	 * 
+	 * @param rowIndex
+	 * @return row beeing deleted
+	 */
+	public ExcelRow removeRowAt(int rowIndex);
+
+	/**
+	 * Append new row in this sheet at the last position<br>
+	 * 
+	 * @return
+	 */
+	public ExcelRow createNewRow();
 
 	public int getMaxColNumber();
 
@@ -169,9 +199,9 @@ public interface ExcelSheet extends ExcelObject {
 	 *
 	 */
 	public static abstract class ExcelSheetImpl extends ExcelObjectImpl implements ExcelSheet {
-		// private Sheet sheet;
-		// private ExcelWorkbook workbook;
-		// private List<ExcelRow> excelRows;
+
+		@SuppressWarnings("unused")
+		private static final Logger logger = Logger.getLogger(ExcelSheetImpl.class.getPackage().getName());
 
 		private String CELL_NAME_REGEX = "([A-Z]+)(\\d+)";
 		private FormulaEvaluator evaluator;
@@ -187,21 +217,10 @@ public interface ExcelSheet extends ExcelObject {
 		@Override
 		public void setExcelWorkbook(ExcelWorkbook workbook) {
 			performSuperSetter(EXCEL_WORKBOOK_KEY, workbook);
-			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+			if (workbook != null) {
+				evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
+			}
 		}
-
-		/*@Override
-		public Sheet getSheet() {
-			return sheet;
-		}*/
-
-		/*public ExcelSheet(Sheet sheet, ExcelWorkbook workbook, ExcelTechnologyAdapter adapter) {
-			super(adapter);
-			this.sheet = sheet;
-			this.workbook = workbook;
-			excelRows = new ArrayList<ExcelRow>();
-			evaluator = workbook.getWorkbook().getCreationHelper().createFormulaEvaluator();
-		}*/
 
 		@Override
 		public FormulaEvaluator getEvaluator() {
@@ -212,32 +231,6 @@ public interface ExcelSheet extends ExcelObject {
 		public String getName() {
 			return getSheet().getSheetName();
 		}
-
-		/*public ExcelWorkbook getWorkbook() {
-			return workbook;
-		}*/
-
-		/*@Override
-		public List<ExcelRow> getExcelRows() {
-			return excelRows;
-		}
-		
-		@Override
-		public void addToExcelRows(ExcelRow newExcelRow) {
-			this.excelRows.add(newExcelRow);
-			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-		}
-		
-		public void insertToExcelRows(ExcelRow newExcelRow, int index) {
-			this.excelRows.add(index, newExcelRow);
-			getWorkbook().addToAccessibleExcelObjects(newExcelRow);
-		}
-		
-		@Override
-		public void removeFromExcelRows(ExcelRow deletedExcelRow) {
-			this.excelRows.remove(deletedExcelRow);
-			getWorkbook().removeFromAccessibleExcelObjects(deletedExcelRow);
-		}*/
 
 		@Override
 		public int getMaxColNumber() {
@@ -253,17 +246,20 @@ public interface ExcelSheet extends ExcelObject {
 		private boolean isConverting = false;
 
 		private void ensureConversion() {
-			if (isConverting) {
+			if (isConverting || isDeleted()) {
 				return;
 			}
-			try {
-				isConverting = true;
-				getExcelWorkbook().getConverter().getSheetReference(getSheet()).ensureConversion();
-			} finally {
-				isConverting = false;
+			if (getExcelWorkbook() != null) {
+				try {
+					isConverting = true;
+					getExcelWorkbook().getConverter().getSheetReference(getSheet()).ensureConversion();
+				} finally {
+					isConverting = false;
+				}
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public List<ExcelRow> getExcelRows() {
 			ensureConversion();
@@ -275,10 +271,12 @@ public interface ExcelSheet extends ExcelObject {
 			if (row < 0) {
 				return null;
 			}
+
 			// Append missing rows
 			while (getExcelRows().size() <= row) {
-				addToExcelRows(getFactory().makeExcelRow());
+				insertRowAt(getExcelRows().size());
 			}
+
 			return getExcelRows().get(row);
 		}
 
@@ -342,10 +340,42 @@ public interface ExcelSheet extends ExcelObject {
 			cell.setCellValue(value);
 		}
 
+		/**
+		 * Insert new row in this sheet<br>
+		 * First shift all existing rows after supplied insertion point to the bottom
+		 * 
+		 * @param rowIndex
+		 * @return
+		 */
 		@Override
-		public ExcelRow createRowAt(int rowIndex) {
+		public ExcelRow insertRowAt(int rowIndex) {
 			BasicExcelModelConverter converter = getResourceData().getConverter();
-			return converter.getSheetReference(getSheet()).newRow(rowIndex);
+			ExcelRow returned = converter.getSheetReference(getSheet()).createOrInsertNewRow(rowIndex);
+			return returned;
+		}
+
+		/**
+		 * Append new row in this sheet at the last position<br>
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelRow createNewRow() {
+			return insertRowAt(getExcelRows().size());
+		}
+
+		/**
+		 * Remove row identified by its index in this sheet<br>
+		 * First shift all existing rows after supplied deletion point to the top
+		 * 
+		 * @param rowIndex
+		 * @return row beeing deleted
+		 */
+		@Override
+		public ExcelRow removeRowAt(int rowIndex) {
+			BasicExcelModelConverter converter = getResourceData().getConverter();
+			ExcelRow returned = converter.getSheetReference(getSheet()).removeRowAt(rowIndex);
+			return returned;
 		}
 
 	}

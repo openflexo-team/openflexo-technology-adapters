@@ -52,7 +52,6 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -114,8 +113,7 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		@Override
-		public String getURIForObject(final FreeModelSlotInstance<IFreeplaneMap, ? extends FreeModelSlot<IFreeplaneMap>> msInstance,
-				final Object o) {
+		public String getURIForObject(final IFreeplaneMap resourceData, final Object o) {
 			final IFreeplaneMap fpObject = (IFreeplaneMap) o;
 
 			String builtURI = "";
@@ -133,37 +131,9 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		@Override
-		public IFreeplaneMap retrieveObjectWithURI(
-				final FreeModelSlotInstance<IFreeplaneMap, ? extends FreeModelSlot<IFreeplaneMap>> msInstance, final String objectURI) {
+		public IFreeplaneMap retrieveObjectWithURI(final IFreeplaneMap resourceData, final String objectURI) {
 			return uriCache.get(objectURI);
 		}
 
-		/*@Override
-		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(
-				final VirtualModelInstance<?, ?> view, final String modelName, final String modelUri) {
-		
-			FreeplaneTechnologyAdapter freeplaneTA = getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-		
-			FlexoResourceCenter<?> rc = view.getResourceCenter();
-			FreeplaneResourceFactory factory = getModelSlotTechnologyAdapter().getFreeplaneResourceFactory();
-		
-			String artefactName = modelName.endsWith(FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION) ? modelName
-					: modelName + FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION;
-		
-			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
-		
-			IFreeplaneResource newFreeplaneResource;
-			try {
-				newFreeplaneResource = freeplaneTA.getFreeplaneResourceFactory().makeResource(serializationArtefact,
-						(FlexoResourceCenter) rc, freeplaneTA.getTechnologyContextManager(), modelName, modelUri, true);
-				return newFreeplaneResource;
-			} catch (SaveResourceException e) {
-				e.printStackTrace();
-			} catch (ModelDefinitionException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}*/
 	}
 }

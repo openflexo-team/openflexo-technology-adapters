@@ -92,6 +92,9 @@ public class BasicExcelModelConverter {
 
 		class ColumnReference {
 			private ExcelColumn excelColumn;
+
+			public void delete() {
+			}
 		}
 
 		class RowReference {
@@ -102,6 +105,10 @@ public class BasicExcelModelConverter {
 					this.excelCell = excelCell;
 				}
 
+				public void delete() {
+					excelCell = null;
+				}
+
 			}
 
 			private final ExcelRow excelRow;
@@ -109,6 +116,13 @@ public class BasicExcelModelConverter {
 
 			public RowReference(ExcelRow excelRow) {
 				this.excelRow = excelRow;
+			}
+
+			public void delete() {
+				for (CellReference cr : cells) {
+					cr.delete();
+				}
+				cells.clear();
 			}
 
 			private boolean isConverted = false;
@@ -132,12 +146,29 @@ public class BasicExcelModelConverter {
 				return getExcelCell(cell.getColumnIndex());
 			}
 
-			public ExcelCell newCell(int columnIndex) {
-				Cell cell = excelRow.getRow().createCell(columnIndex);
+			public ExcelCell ensureCellCreated(int columnIndex) {
+
+				ensureConversion();
+
+				Cell cell = excelRow.getRow().getCell(columnIndex);
+				if (cell != null) {
+					return getExcelCell(cell);
+				}
+
+				cell = excelRow.getRow().createCell(columnIndex);
+
 				ExcelCell excelCell = makeExcelCell(cell);
 				excelRow.addToExcelCells(excelCell);
+				if (columnIndex < excelRow.getExcelCells().size()) {
+					excelRow.moveExcelCellToIndex(excelCell, columnIndex);
+				}
 				CellReference cellReference = new CellReference(excelCell);
-				cells.add(cellReference);
+				if (columnIndex < cells.size()) {
+					cells.add(columnIndex, cellReference);
+				}
+				else {
+					cells.add(cellReference);
+				}
 				return excelCell;
 			}
 
@@ -167,44 +198,8 @@ public class BasicExcelModelConverter {
 					cells.add(cellReference);
 					lastCell = excelCell.getColumnIndex();
 				}
-				// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
-				/*int i = 0;
-				for (ExcelCell cell : excelRow.getExcelCells()) {
-					// System.out.println("Index " + i + ": Cell with " + cell.getCell()
-					// + (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-					i++;
-				
-				}*/
 				isConverted = true;
 			}
-
-			/*private ExcelRow makeExcelRow(Row row) {
-				ExcelRow excelRow = getFactory().makeExcelRow();
-				excelRow.setRow(row);
-				int lastCell = -1;
-				for (Cell cell : row) {
-					// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
-					while (cell.getColumnIndex() > lastCell + 1) {
-						// Missing cell
-						// System.out.println("Adding a missing cell");
-						// This cell is not bound to any excel cell !
-						ExcelCell excelCell = getFactory().makeExcelCell();
-						excelRow.addToExcelCells(excelCell);
-						lastCell++;
-					}
-					ExcelCell excelCell = convertExcelCellToCell(cell, excelRow, technologyAdapter);
-					excelRow.addToExcelCells(excelCell);
-					lastCell = excelCell.getColumnIndex();
-				}
-				// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
-				int i = 0;
-				for (ExcelCell cell : excelRow.getExcelCells()) {
-					// System.out.println("Index " + i + ": Cell with " + cell.getCell()
-					// + (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-					i++;
-			
-				}
-			}*/
 
 		}
 
@@ -214,6 +209,17 @@ public class BasicExcelModelConverter {
 
 		public SheetReference(ExcelSheet excelSheet) {
 			this.excelSheet = excelSheet;
+		}
+
+		public void delete() {
+			for (RowReference rr : rows) {
+				rr.delete();
+			}
+			for (ColumnReference cr : columns) {
+				cr.delete();
+			}
+			rows.clear();
+			columns.clear();
 		}
 
 		private boolean isConverted = false;
@@ -238,6 +244,7 @@ public class BasicExcelModelConverter {
 		}
 
 		private void convert() {
+			// System.out.println("Je convertis les donnees de la sheet " + excelSheet.getName());
 			int lastRow = -1;
 			Map<Integer, ExcelRow> newInsertedRows = new LinkedHashMap<>();
 			for (Row row : excelSheet.getSheet()) {
@@ -251,7 +258,7 @@ public class BasicExcelModelConverter {
 					// lastRow = excelRow.getRowIndex();
 					lastRow++;
 					newInsertedRows.put(lastRow, excelRow);
-					// System.out.println("will insert at =" + excelRow.getRowIndex());
+					// System.out.println("will insert at =" + lastRow);
 					// System.out.println("lastRow =" + lastRow);
 				}
 				lastRow = row.getRowNum();
@@ -262,34 +269,13 @@ public class BasicExcelModelConverter {
 				RowReference rowReference = new RowReference(excelRow);
 				rows.add(rowReference);
 
-				// System.out.println("je passe de " + lastRow + " a " + excelRow.getRowIndex());
 				lastRow = excelRow.getRowIndex();
 
 			}
-			// int insertedIndex = 0;
 			for (Integer insertedIndex : newInsertedRows.keySet()) {
-				// System.out.println("-----> Insert row at index " + insertedIndex);
 				ExcelRow insertedRow = newInsertedRows.get(insertedIndex);
 				insertedRow.createRowWhenNonExistant(insertedIndex);
 			}
-
-			/*for (ExcelRow insertedRow : newInsertedRows) {
-				// insertedRow.createRowWhenNonExistant(lastRow + 1);
-				insertedIndex++;
-				System.out.println("du coup on est a insertedIndex=" + insertedIndex);
-				// lastRow = insertedRow.getRowIndex();
-			}
-			
-			System.out.println("lastRow=" + lastRow);
-			System.out.println("insertedIndex=" + insertedIndex);*/
-
-			/*for (Row row : excelSheet.getSheet()) {
-				ExcelRow excelRow = makeExcelRow(row);
-				excelSheet.addToExcelRows(excelRow);
-				RowReference rowReference = new RowReference(excelRow);
-				rows.add(rowReference);
-				lastRow = excelRow.getRowIndex();
-			}*/
 
 			isConverted = true;
 
@@ -309,13 +295,39 @@ public class BasicExcelModelConverter {
 			return excelRow;
 		}
 
-		public ExcelRow newRow(int rowIndex) {
+		public ExcelRow createOrInsertNewRow(int rowIndex) {
+
+			// System.out.println("*********** NEW ROW at index " + rowIndex);
+
+			Row existingRow = excelSheet.getSheet().getRow(rowIndex);
+			if (existingRow != null) {
+				// Row already exists, we have to shift all existing rows below this insertion point
+				excelSheet.getSheet().shiftRows(rowIndex, excelSheet.getSheet().getLastRowNum(), 1);
+			}
 			Row row = excelSheet.getSheet().createRow(rowIndex);
 			ExcelRow excelRow = makeExcelRow(row);
 			excelSheet.addToExcelRows(excelRow);
+			excelSheet.moveExcelRowToIndex(excelRow, rowIndex);
 			RowReference rowReference = new RowReference(excelRow);
-			rows.add(rowReference);
+			rows.add(rowIndex, rowReference);
+
 			return excelRow;
+		}
+
+		public ExcelRow removeRowAt(int rowIndex) {
+			if (rowIndex >= 0 && rowIndex < rows.size()) {
+				RowReference rowReference = getExcelRowReference(rowIndex);
+				excelSheet.getSheet().removeRow(rowReference.excelRow.getRow());
+				excelSheet.getSheet().shiftRows(rowIndex + 1, excelSheet.getSheet().getLastRowNum(), -1);
+				excelSheet.removeFromExcelRows(rowReference.excelRow);
+				rows.remove(rowReference);
+				return rowReference.excelRow;
+			}
+			else {
+				logger.warning("Cannot remove row: inconsistent rowIndex=" + rowIndex);
+				return null;
+			}
+
 		}
 
 	}
@@ -352,6 +364,11 @@ public class BasicExcelModelConverter {
 			ExcelCell excelCell = (ExcelCell) object;
 			return excelCell.getExcelSheet().getName() + "/cell[" + excelCell.getIdentifier() + "]";
 		}
+		else if (object instanceof ExcelCellRange) {
+			ExcelCellRange excelCellRange = (ExcelCellRange) object;
+			return excelCellRange.getExcelSheet().getName() + "/range[" + excelCellRange.getTopLeftCell().getIdentifier() + ":"
+					+ excelCellRange.getBottomRightCell().getIdentifier() + "]";
+		}
 		return null;
 	}
 
@@ -382,9 +399,21 @@ public class BasicExcelModelConverter {
 					return sheetRef.columns.get(colIndex).excelColumn;
 				}
 				else if (objectId.startsWith("cell[")) {
-					// This is a column
-					String cellId = objectId.substring(4, objectId.length() - 1);
-					System.out.println("tiens faudrait retourner la cell " + cellId);
+					// This is a cell
+					String cellId = objectId.substring(5, objectId.length() - 1);
+					return getCell(cellId, sheet);
+				}
+				else if (objectId.startsWith("range[")) {
+					// This is a range
+					String rangeId = objectId.substring(6, objectId.length() - 1);
+					if (rangeId.contains(":")) {
+						String topLeftCellId = rangeId.substring(0, rangeId.indexOf(":"));
+						ExcelCell topLeftCell = getCell(topLeftCellId, sheet);
+						String bottomRightCellId = rangeId.substring(rangeId.indexOf(":") + 1);
+						ExcelCell bottomRightCell = getCell(bottomRightCellId, sheet);
+						return sheet.getExcelWorkbook().getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+					}
+					logger.warning("Cannot lookup range " + rangeId);
 					return null;
 				}
 				logger.warning("Could not find object with id " + objectId);
@@ -404,6 +433,31 @@ public class BasicExcelModelConverter {
 			logger.warning("Could not find sheet " + id);
 			return null;
 		}
+	}
+
+	/**
+	 * Return cell under the form 'A2'
+	 * 
+	 * @param id
+	 * @param sheet
+	 * @return
+	 */
+	private ExcelCell getCell(String id, ExcelSheet sheet) {
+		String colAsString = "";
+		String rowAsString = "";
+		id = id.toUpperCase();
+		for (int i = 0; i < id.length(); i++) {
+			char c = id.charAt(i);
+			if (c >= 'A' && c <= 'Z') {
+				colAsString = colAsString + c;
+			}
+			else if (c >= '0' && c <= '9') {
+				rowAsString = rowAsString + c;
+			}
+		}
+		int col = ExcelColumn.getColumnIndex(colAsString);
+		int row = Integer.parseInt(rowAsString) - 1;
+		return sheet.getCellAt(row, col);
 	}
 
 	/**
@@ -482,6 +536,15 @@ public class BasicExcelModelConverter {
 			logger.info("Create a new excel sheet with the name " + name);
 		}
 		return sheet;
+	}
+
+	public void delete() {
+		for (SheetReference sr : references.values()) {
+			sr.delete();
+		}
+		references.clear();
+		references = null;
+		excelWorkbook = null;
 	}
 
 }

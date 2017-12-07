@@ -64,9 +64,9 @@ public interface GenerateDocXImage extends DocXImageAction {
 		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			ImageActorReference<DocXDrawingRun> actorReference = (ImageActorReference<DocXDrawingRun>) evaluationContext
-					.getFlexoConceptInstance().getActorReference(getFlexoRole());
+					.getFlexoConceptInstance().getActorReference(getInferedFlexoRole());
 
-			System.out.println("role=" + getFlexoRole());
+			System.out.println("role=" + getInferedFlexoRole());
 			System.out.println("actorReference=" + actorReference);
 
 			actorReference.generateImage();

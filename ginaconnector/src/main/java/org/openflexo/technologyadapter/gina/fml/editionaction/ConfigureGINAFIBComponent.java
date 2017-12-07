@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
@@ -68,10 +68,12 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 @ImplementationClass(ConfigureGINAFIBComponent.ConfigureGINAFIBComponentImpl.class)
 @XMLElement
 @FML("ConfigureGINAFIBComponent")
-public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> {
+public interface ConfigureGINAFIBComponent
+		extends TechnologySpecificActionDefiningReceiver<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> {
 
-	public static abstract class ConfigureGINAFIBComponentImpl extends
-			TechnologySpecificActionImpl<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent> implements ConfigureGINAFIBComponent {
+	public static abstract class ConfigureGINAFIBComponentImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<FIBComponentModelSlot, GINAFIBComponent, GINAFIBComponent>
+			implements ConfigureGINAFIBComponent {
 
 		private static final Logger logger = Logger.getLogger(ConfigureGINAFIBComponentImpl.class.getPackage().getName());
 

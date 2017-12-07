@@ -50,14 +50,13 @@ import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellReference;
+import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.ExcelCellImpl.CellType;
 import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
 
 /**
@@ -179,6 +178,12 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 	public void setCellValueAsString(String cellValueAsString);
 
+	// public Number getCellValueAsNumber();
+
+	public Integer getCellValueAsInteger();
+
+	public void setCellValueAsInteger(Integer value);
+
 	public void setCellValue(Object value);
 
 	public void setCellStringValue(String value);
@@ -195,13 +200,6 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 	 * @return
 	 */
 	public String getDisplayCellSpecification();
-
-	/**
-	 * Return a String identifying this cell (eg. (0,0) will return "A1")
-	 * 
-	 * @return
-	 */
-	public String getCellIdentifier();
 
 	public boolean hasTopBorder();
 
@@ -308,6 +306,8 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 	 */
 	public ExcelCell getLowerCell();
 
+	public PrimitiveType getInferedPrimitiveType();
+
 	/**
 	 * Default base implementation for {@link ExcelCell}
 	 * 
@@ -321,10 +321,6 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		// private ExcelRow excelRow;
 
 		private CellRangeAddress cellRange = null;
-
-		public enum CellType {
-			Blank, Numeric, String, NumericFormula, StringFormula, Boolean, Error, Empty, Unknown
-		}
 
 		/*@Override
 		public Cell getCell() {
@@ -527,7 +523,8 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 		/**
 		 * Return the cell located at the top of this cell.<br>
-		 * If cell is merged, return first non-merged cell located at the top of this cell
+		 * If cell is merged, return first non-merged cell located at the top of this cell<br>
+		 * If cells belongs to first row, return null;
 		 * 
 		 * @return
 		 */
@@ -536,7 +533,12 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			if (isMerged()) {
 				return getExcelSheet().getCellAt(cellRange.getFirstRow() - 1, getColumnIndex());
 			}
-			return getExcelSheet().getCellAt(getRowIndex() - 1, getColumnIndex());
+			if (getRowIndex() > 0) {
+				return getExcelSheet().getCellAt(getRowIndex() - 1, getColumnIndex());
+			}
+			else {
+				return null;
+			}
 		}
 
 		/**
@@ -752,6 +754,19 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			}
 		}
 
+		@Override
+		public Integer getCellValueAsInteger() {
+			if (getCellValue() instanceof Number) {
+				return ((Number) getCellValue()).intValue();
+			}
+			return 0;
+		}
+
+		@Override
+		public void setCellValueAsInteger(Integer value) {
+			setCellValue(value);
+		}
+
 		private void setCellFormula(String formula) {
 			if (formula.startsWith("=")) {
 				formula = formula.substring(formula.indexOf("=") + 1);
@@ -885,22 +900,13 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		};
 
 		/**
-		 * Return a String identifying this cell (eg. (0,0) will return "A1")
-		 * 
-		 * @return
-		 */
-		@Override
-		public String getCellIdentifier() {
-			return CellReference.convertNumToColString(getColumnIndex());
-		}
-
-		/**
 		 * Return string representation for this cell (debug)
 		 */
 		@Override
 		public String toString() {
-			return "[" + getCellIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
-					+ getTopLeftMergedCell().getCellIdentifier() + ":" + getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "")
+			return "["
+					+ getIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+							+ getTopLeftMergedCell().getIdentifier() + ":" + getBottomRightMergedCell().getIdentifier() + "]" + "/" : "")
 					+ getDisplayValue();
 		}
 
@@ -995,7 +1001,42 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 		@Override
 		public String getIdentifier() {
-			return ExcelColumn.getColumnLetters(getColumnIndex()) + getRowIndex();
+			return ExcelColumn.getColumnLetters(getColumnIndex()) + (getRowIndex() + 1);
+		}
+
+		@Override
+		public PrimitiveType getInferedPrimitiveType() {
+			switch (getCellType()) {
+				case String:
+				case StringFormula:
+					return PrimitiveType.String;
+				case Numeric:
+				case NumericFormula:
+					if (getCellValue() instanceof Double) {
+						return PrimitiveType.Double;
+					}
+					if (getCellValue() instanceof Float) {
+						return PrimitiveType.Float;
+					}
+					if (getCellValue() instanceof Long) {
+						return PrimitiveType.Long;
+					}
+					if (getCellValue() instanceof Integer) {
+						return PrimitiveType.Integer;
+					}
+					if (getCellValue() instanceof Short) {
+						return PrimitiveType.Integer;
+					}
+					if (getCellValue() instanceof Byte) {
+						return PrimitiveType.Integer;
+					}
+				default:
+					if (getCellValue() instanceof Date) {
+						return PrimitiveType.Date;
+					}
+					return PrimitiveType.String;
+			}
+
 		}
 
 	}

@@ -78,8 +78,8 @@ public interface GenerateExcelResource extends CreateExcelResource {
 		@Override
 		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			if (getInferedModelSlot() != null) {
-				ExcelWorkbookResource templateResource = getInferedModelSlot().getTemplateResource();
+			if (getAssignedModelSlot() != null) {
+				ExcelWorkbookResource templateResource = getAssignedModelSlot().getTemplateResource();
 				if (templateResource == null) {
 					return super.execute(evaluationContext);
 				}
@@ -115,11 +115,11 @@ public interface GenerateExcelResource extends CreateExcelResource {
 					ExcelWorkbook generatedDocument = newResource.getResourceData(null);
 
 					// Very important: we must now set ModelSlotInstance !
-					if (getModelSlotInstance(evaluationContext) != null) {
+					/*if (getModelSlotInstance(evaluationContext) != null) {
 						getModelSlotInstance(evaluationContext).setAccessedResourceData(generatedDocument);
-					}
+					}*/
 
-					System.out.println("Return " + generatedDocument);
+					// System.out.println("Return " + generatedDocument);
 					return generatedDocument;
 				} catch (ModelDefinitionException e) {
 					new FlexoException(e);

@@ -41,11 +41,11 @@ package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -86,8 +86,8 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 	@Setter(value = NODE_TEXT_KEY)
 	public void setNodeText(DataBinding<String> nodeText);
 
-	public abstract static class AddChildNodeActionImpl
-			extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> implements AddChildNodeAction {
+	public abstract static class AddChildNodeActionImpl extends
+			TechnologySpecificActionDefiningReceiverImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> implements AddChildNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
 
@@ -107,19 +107,14 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 		@Override
 		public IFreeplaneNode execute(final RunTimeEvaluationContext evaluationContext) {
-			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
-				final IFreeplaneNode bindedParent = getParent(evaluationContext);
-				final String bindedNodeText = getBindedNodeText(evaluationContext);
-				NodeModel nodeModel = new NodeModel(bindedParent.getNodeModel().getMap());
-				nodeModel.setUserObject(bindedNodeText);
-				bindedParent.getNodeModel().insert(nodeModel);
-				bindedParent.addFreeplaneChild(nodeModel);
-				modelSlotInstance.getResourceData().setIsModified();
-				bindedParent.setModified(true);
-				return bindedParent;
-			}
-			return null;
+			final IFreeplaneNode bindedParent = getParent(evaluationContext);
+			final String bindedNodeText = getBindedNodeText(evaluationContext);
+			NodeModel nodeModel = new NodeModel(bindedParent.getNodeModel().getMap());
+			nodeModel.setUserObject(bindedNodeText);
+			bindedParent.getNodeModel().insert(nodeModel);
+			bindedParent.addFreeplaneChild(nodeModel);
+			bindedParent.setModified(true);
+			return bindedParent;
 		}
 
 		@Override
@@ -182,11 +177,5 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 			return "";
 		}
 
-		@SuppressWarnings("unchecked")
-		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(
-				final RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(evaluationContext);
-		}
 	}
 }

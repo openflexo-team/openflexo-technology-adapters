@@ -54,6 +54,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.TechnologySpecificFlexoAction;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
@@ -91,7 +92,8 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  *
  */
-public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledFIBVirtualModel> {
+public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpecificVirtualModel<CreateFMLControlledFIBVirtualModel>
+		implements TechnologySpecificFlexoAction<GINATechnologyAdapter> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledFIBVirtualModel.class.getPackage().getName());
@@ -149,6 +151,11 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 	@Override
 	public GINATechnologyAdapter getTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
+	}
+
+	@Override
+	public Class<GINATechnologyAdapter> getTechnologyAdapterClass() {
+		return GINATechnologyAdapter.class;
 	}
 
 	private PrimitiveRole<?> createPrimitiveRole(VirtualModel vm, String roleName, PrimitiveType primitiveType) {

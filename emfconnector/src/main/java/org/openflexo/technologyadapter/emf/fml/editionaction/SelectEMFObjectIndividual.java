@@ -48,7 +48,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.editionaction.SelectIndividual;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -57,7 +56,6 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
@@ -84,19 +82,11 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 
 		@Override
 		public List<EMFObjectIndividual> execute(RunTimeEvaluationContext evaluationContext) {
-			if (getModelSlotInstance(evaluationContext) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
+			EMFModel emfModel = getReceiver(evaluationContext);
 
 			// System.out.println(
 			// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
 			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<EMFObjectIndividual>(0);
-			EMFModel emfModel = getModelSlotInstance(evaluationContext).getAccessedResourceData();
 			Resource resource = emfModel.getEMFResource();
 			/*try {
 				resource.load(null);
@@ -151,12 +141,6 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 
 			return returned;
 
-		}
-
-		@Override
-		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

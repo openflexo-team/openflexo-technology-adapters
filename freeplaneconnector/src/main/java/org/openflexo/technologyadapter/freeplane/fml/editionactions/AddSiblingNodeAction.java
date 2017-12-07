@@ -42,13 +42,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -95,7 +95,8 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 	public void setIsAbove(DataBinding<Boolean> isAbove);
 
 	public abstract static class AddSiblingNodeActionImpl
-			extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode> implements AddSiblingNodeAction {
+			extends TechnologySpecificActionDefiningReceiverImpl<FreeplaneModelSlot, IFreeplaneMap, IFreeplaneNode>
+			implements AddSiblingNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddSiblingNodeAction.class.getPackage().getName());
 
@@ -145,22 +146,17 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 		@Override
 		public IFreeplaneNode execute(RunTimeEvaluationContext evaluationContext) {
-			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
-				final IFreeplaneNode bindedTarget = getTargetNode(evaluationContext);
-				final NodeModel freeplaneParent = bindedTarget.getNodeModel().getParentNode();
-				int nodeIndex = freeplaneParent.getIndex(bindedTarget.getNodeModel());
-				if (!isAbove(evaluationContext)) {
-					nodeIndex++;
-				}
-				final NodeModel newNode = new NodeModel(bindedTarget.getNodeModel().getMap());
-				freeplaneParent.insert(newNode, nodeIndex);
-				bindedTarget.getParent().addFreeplaneChild(newNode);
-				modelSlotInstance.getResourceData().setIsModified();
-				bindedTarget.setModified(true);
-				return bindedTarget;
+			final IFreeplaneNode bindedTarget = getTargetNode(evaluationContext);
+			final NodeModel freeplaneParent = bindedTarget.getNodeModel().getParentNode();
+			int nodeIndex = freeplaneParent.getIndex(bindedTarget.getNodeModel());
+			if (!isAbove(evaluationContext)) {
+				nodeIndex++;
 			}
-			return null;
+			final NodeModel newNode = new NodeModel(bindedTarget.getNodeModel().getMap());
+			freeplaneParent.insert(newNode, nodeIndex);
+			bindedTarget.getParent().addFreeplaneChild(newNode);
+			bindedTarget.setModified(true);
+			return bindedTarget;
 		}
 
 		private IFreeplaneNode getTargetNode(RunTimeEvaluationContext evaluationContext) {
@@ -189,12 +185,6 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			}
 			return false;
-		}
-
-		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(
-				final RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

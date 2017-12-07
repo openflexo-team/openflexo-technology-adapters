@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SEVirtualModel id="SYL-4" templateExcelWorkbookURI="http://www.openflexo.org/test/excel/Excel/PersonListing.xlsx" virtualModelClass="org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModel" modelVersion="2.0" uri="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml" modelSlotNatureClass="org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot" version="0.1" isAbstract="true" name="PersonListing" userID="SYL" flexoID="4">
+  <FMLLocalizedDictionary id="SYL-5" userID="SYL" flexoID="5">
+    <Localized id="SYL-34" lang="English" value="Sexe" key="sexe" userID="SYL" flexoID="34" />
+    <Localized id="SYL-35" lang="French" value="sexe" key="sexe" userID="SYL" flexoID="35" />
+    <Localized id="SYL-36" lang="Dutch" value="sexe" key="sexe" userID="SYL" flexoID="36" />
+    <Localized id="SYL-37" lang="English" value="Age" key="age" userID="SYL" flexoID="37" />
+    <Localized id="SYL-38" lang="French" value="age" key="age" userID="SYL" flexoID="38" />
+    <Localized id="SYL-39" lang="Dutch" value="age" key="age" userID="SYL" flexoID="39" />
+    <Localized id="SYL-40" lang="English" value="City" key="city" userID="SYL" flexoID="40" />
+    <Localized id="SYL-41" lang="French" value="city" key="city" userID="SYL" flexoID="41" />
+    <Localized id="SYL-42" lang="Dutch" value="city" key="city" userID="SYL" flexoID="42" />
+    <Localized id="SYL-69" lang="English" value="AddPerson" key="addPerson" userID="SYL" flexoID="69" />
+    <Localized id="SYL-70" lang="French" value="addPerson" key="addPerson" userID="SYL" flexoID="70" />
+    <Localized id="SYL-71" lang="Dutch" value="addPerson" key="addPerson" userID="SYL" flexoID="71" />
+    <Localized id="SYL-72" lang="English" value="AddPerson description" key="addPerson_description" userID="SYL" flexoID="72" />
+    <Localized id="SYL-73" lang="French" value="addPerson_description" key="addPerson_description" userID="SYL" flexoID="73" />
+    <Localized id="SYL-74" lang="Dutch" value="addPerson_description" key="addPerson_description" userID="SYL" flexoID="74" />
+  </FMLLocalizedDictionary>
+  <SEFlexoConcept id="SYL-8" isAbstract="true" name="Person" userID="SYL" flexoID="8">
+    <Inspector id="SYL-7" renderer="name" inspectorTitle="Person" userID="SYL" flexoID="7">
+      <InspectorEntry id="SYL-9" widget="TEXT_FIELD" data="sexe" name="sexe" label="sexe" type="java.lang.String" userID="SYL" flexoID="9" />
+      <InspectorEntry id="SYL-10" widget="TEXT_FIELD" data="name" name="name" label="name" type="java.lang.String" userID="SYL" flexoID="10" />
+      <InspectorEntry id="SYL-11" widget="TEXT_FIELD" data="activity" name="activity" label="activity" type="java.lang.String" userID="SYL" flexoID="11" />
+      <InspectorEntry id="SYL-12" widget="INTEGER" data="age" name="age" label="age" type="java.lang.Integer" userID="SYL" flexoID="12" />
+      <InspectorEntry id="SYL-13" widget="TEXT_FIELD" data="city" name="city" label="city" type="java.lang.String" userID="SYL" flexoID="13" />
+    </Inspector>
+    <SEColumnRole id="SYL-14" columnIndex="0" primitiveType="String" isRequired="true" cloningStrategy="Reference" cardinality="One" name="sexe" userID="SYL" flexoID="14" />
+    <SEColumnRole id="SYL-15" columnIndex="1" primitiveType="String" isRequired="true" cloningStrategy="Reference" cardinality="One" name="name" userID="SYL" flexoID="15" />
+    <SEColumnRole id="SYL-16" columnIndex="2" primitiveType="String" isRequired="true" cloningStrategy="Reference" cardinality="One" name="activity" userID="SYL" flexoID="16" />
+    <SEColumnRole id="SYL-17" columnIndex="3" primitiveType="Integer" isRequired="true" cloningStrategy="Reference" cardinality="One" name="age" userID="SYL" flexoID="17" />
+    <SEColumnRole id="SYL-18" columnIndex="4" primitiveType="String" isRequired="true" cloningStrategy="Reference" cardinality="One" name="city" userID="SYL" flexoID="18" />
+    <CreationScheme id="SYL-19" name="create" width="800" label="create" height="600" userID="SYL" flexoID="19">
+      <BehaviourControlGraph_AssignationAction id="SYL-61" assign="name" userID="SYL" flexoID="61">
+        <AssignableAction_ExpressionAction id="SYL-60" expression="parameters.name" userID="SYL" flexoID="60" />
+      </BehaviourControlGraph_AssignationAction>
+      <GenericBehaviourParameter id="SYL-59" widget="TEXT_FIELD" name="name" type="java.lang.String" userID="SYL" flexoID="59" />
+    </CreationScheme>
+    <DeletionScheme id="SYL-81" name="delete" width="800" label="delete" height="600" userID="SYL" flexoID="81">
+      <BehaviourControlGraph_RemoveSEObject id="SYL-83" dataArea="persons" object="this" userID="SYL" flexoID="83" />
+    </DeletionScheme>
+  </SEFlexoConcept>
+  <UseModelSlotDeclaration id="0" modelSlotClass="org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot" userID="SYL" flexoID="-1" />
+  <Inspector id="SYL-6" inspectorTitle="PersonListing" userID="SYL" flexoID="6" />
+  <SEDataAreaRole id="SYL-21" cellRange="http://www.openflexo.org/test/excel/Excel/PersonListing.xlsx$Sheet1/range[A2:E7]" flexoConceptTypeURI="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml#Person" container="this" isRequired="true" cloningStrategy="Reference" cardinality="ZeroMany" name="persons" userID="SYL" flexoID="21" />
+  <CreationScheme id="SYL-22" name="create" width="800" label="create" height="600" userID="SYL" flexoID="22">
+    <BehaviourControlGraph_EmptyControlGraph id="SYL-23" userID="SYL" flexoID="23" />
+  </CreationScheme>
+  <DeletionScheme id="SYL-24" name="delete" width="800" label="delete" height="600" userID="SYL" flexoID="24">
+    <BehaviourControlGraph_EmptyControlGraph id="SYL-25" userID="SYL" flexoID="25" />
+  </DeletionScheme>
+  <SEInitializer id="SYL-26" name="initialize" width="800" label="initialize" height="600" userID="SYL" flexoID="26">
+    <BehaviourControlGraph_EmptyControlGraph id="SYL-27" userID="SYL" flexoID="27" />
+  </SEInitializer>
+  <ActionScheme id="SYL-49" visibility="Public" name="addPerson" width="800" label="addPerson" height="600" userID="SYL" flexoID="49">
+    <BehaviourControlGraph_InsertSEObject id="SYL-51" rowIndex="parameters.index" dataArea="persons" creationSchemeURI="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml#Person.create" receiver="this" userID="SYL" flexoID="51">
+      <AddFlexoConceptInstanceParameter id="SYL-62" paramName="name" value="&quot;&lt;enter name&gt;&quot;" userID="SYL" flexoID="62" />
+    </BehaviourControlGraph_InsertSEObject>
+    <GenericBehaviourParameter id="SYL-52" isRequired="true" widget="INTEGER" name="index" type="java.lang.Integer" description="Index of inserted person&#xA;-1 means at last position&#xA;" userID="SYL" flexoID="52" />
+  </ActionScheme>
+</SEVirtualModel>

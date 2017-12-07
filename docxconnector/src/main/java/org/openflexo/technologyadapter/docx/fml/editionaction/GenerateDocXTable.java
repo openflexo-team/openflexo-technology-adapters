@@ -64,15 +64,16 @@ public interface GenerateDocXTable extends DocXTableAction {
 		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			TableActorReference<DocXTable> actorReference = (TableActorReference<DocXTable>) evaluationContext.getFlexoConceptInstance()
-					.getActorReference(getFlexoRole());
+					.getActorReference(getInferedFlexoRole());
 
-			if (actorReference != null){
-			actorReference.applyDataToDocument();
+			if (actorReference != null) {
+				actorReference.applyDataToDocument();
 
-			return actorReference.getModellingElement();
+				return actorReference.getModellingElement();
 			}
 			else {
-				logger.warning("INVESTIGATE: could not found actorReference for Role " +this.getFlexoRole() + " On " + evaluationContext.getFlexoConceptInstance());
+				logger.warning("INVESTIGATE: could not found actorReference for Role " + this.getInferedFlexoRole() + " On "
+						+ evaluationContext.getFlexoConceptInstance());
 				return null;
 			}
 		}

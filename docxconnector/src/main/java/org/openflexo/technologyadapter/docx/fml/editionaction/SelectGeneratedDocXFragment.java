@@ -161,67 +161,58 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 
 			System.out.println(getRootOwner().getFMLRepresentation());
 
-			DocXDocument document = null;
-			DocXFragment fragment = getReceiver(evaluationContext);
-
-			if (fragment != null) {
-				document = fragment.getFlexoDocument();
-			}
-			else {
-				// TODO: refactor this to make it nicer
-				// In this case, the role is null, and we are about to initialize it
-				// The idea is to access the underying role, and then the document via the model slot
-				if (getInferedFlexoRole() != null && getInferedFlexoRole().getModelSlot() != null) {
-					DocXModelSlot modelSlot = (DocXModelSlot) getInferedFlexoRole().getModelSlot();
-					// Try with the FlexoConceptInstance
-					document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot).getAccessedResourceData();
-					if (document == null) {
-						// Try with the parent FMLRTVirtualModelInstance
-						ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
-						document = (DocXDocument) msi.getAccessedResourceData();
-					}
+			// The idea is to access the underying role, asserting this role was assigned to this EditionAction
+			if (getAssignedFlexoRole() != null && getAssignedFlexoRole().getModelSlot() != null) {
+				DocXModelSlot modelSlot = (DocXModelSlot) getAssignedFlexoRole().getModelSlot();
+				// Try with the FlexoConceptInstance
+				DocXDocument document = evaluationContext.getFlexoConceptInstance().getModelSlotInstance(modelSlot)
+						.getAccessedResourceData();
+				if (document == null) {
+					// Try with the parent VirtualModelInstance
+					ModelSlotInstance<?, ?> msi = evaluationContext.getVirtualModelInstance().getModelSlotInstance(modelSlot);
+					document = (DocXDocument) msi.getAccessedResourceData();
 				}
-			}
 
-			int startIndex = -1;
-			int endIndex = -1;
+				int startIndex = -1;
+				int endIndex = -1;
 
-			if (getTemplateFragment() != null) {
-				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
-					// TODO: handle tables here !!!
-					List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
-					if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
-						DocXFragment searchAreaFragment = null;
-						try {
-							searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
-						} catch (TypeMismatchException e1) {
-							e1.printStackTrace();
-						} catch (NullReferenceException e1) {
-							e1.printStackTrace();
-						} catch (InvocationTargetException e1) {
-							e1.printStackTrace();
-						}
-						if (searchAreaFragment != null) {
-							System.out.println("Restrict search to " + searchAreaFragment);
-							searchArea = searchAreaFragment.getElements();
-						}
-					}
-					for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
-						if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
-							int index = document.getElements().indexOf(e);
-							if (startIndex == -1 || (index < startIndex)) {
-								startIndex = index;
+				if (getTemplateFragment() != null) {
+					for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
+						// TODO: handle tables here !!!
+						List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
+						if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
+							DocXFragment searchAreaFragment = null;
+							try {
+								searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
+							} catch (TypeMismatchException e1) {
+								e1.printStackTrace();
+							} catch (NullReferenceException e1) {
+								e1.printStackTrace();
+							} catch (InvocationTargetException e1) {
+								e1.printStackTrace();
 							}
-							if (endIndex == -1 || (index > endIndex)) {
-								endIndex = index;
+							if (searchAreaFragment != null) {
+								System.out.println("Restrict search to " + searchAreaFragment);
+								searchArea = searchAreaFragment.getElements();
+							}
+						}
+						for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
+							if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
+								int index = document.getElements().indexOf(e);
+								if (startIndex == -1 || (index < startIndex)) {
+									startIndex = index;
+								}
+								if (endIndex == -1 || (index > endIndex)) {
+									endIndex = index;
+								}
 							}
 						}
 					}
 				}
-			}
 
-			if (startIndex > -1 && endIndex > -1) {
-				return document.getFragment(document.getElements().get(startIndex), document.getElements().get(endIndex));
+				if (startIndex > -1 && endIndex > -1) {
+					return document.getFragment(document.getElements().get(startIndex), document.getElements().get(endIndex));
+				}
 			}
 
 			logger.warning("Could not find fragment matching template fragment. Abort.");
@@ -233,5 +224,6 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 			// TODO Auto-generated method stub
 			return super.getFMLRepresentation(context);
 		}
+
 	}
 }

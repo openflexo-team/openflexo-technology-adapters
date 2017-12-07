@@ -157,8 +157,8 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 
 	public boolean isPatternStyle();
 
-	public static abstract class CellStyleActionImpl
-			extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelStyleObject> implements CellStyleAction {
+	public static abstract class CellStyleActionImpl extends
+			TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelStyleObject> implements CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 

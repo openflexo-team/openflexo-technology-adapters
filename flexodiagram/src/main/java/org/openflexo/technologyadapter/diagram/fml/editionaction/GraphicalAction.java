@@ -119,8 +119,8 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 	public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures();
 
-	public static abstract class GraphicalActionImpl extends TechnologySpecificActionImpl<TypedDiagramModelSlot, Diagram, DiagramElement<?>>
-			implements GraphicalAction {
+	public static abstract class GraphicalActionImpl extends
+			TechnologySpecificActionDefiningReceiverImpl<TypedDiagramModelSlot, Diagram, DiagramElement<?>> implements GraphicalAction {
 
 		private static final Logger logger = Logger.getLogger(GraphicalAction.class.getPackage().getName());
 

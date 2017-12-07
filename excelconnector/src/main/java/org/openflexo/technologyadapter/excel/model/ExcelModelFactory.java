@@ -59,6 +59,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  */
 public class ExcelModelFactory extends ModelFactory implements PamelaResourceModelFactory<ExcelWorkbookResource> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ExcelModelFactory.class.getPackage().getName());
 
 	private final ExcelWorkbookResource resource;
@@ -101,6 +102,14 @@ public class ExcelModelFactory extends ModelFactory implements PamelaResourceMod
 
 	public ExcelColumn makeExcelColumn() {
 		return newInstance(ExcelColumn.class);
+	}
+
+	public ExcelCellRange makeExcelCellRange(ExcelCell topLeftCell, ExcelCell bottomRightCell) {
+		ExcelCellRange returned = newInstance(ExcelCellRange.class);
+		returned.setExcelSheet(topLeftCell.getExcelSheet());
+		returned.setTopLeftCell(topLeftCell);
+		returned.setBottomRighCell(bottomRightCell);
+		return returned;
 	}
 
 	@Override

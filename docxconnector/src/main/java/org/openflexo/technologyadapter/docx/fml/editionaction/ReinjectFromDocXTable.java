@@ -64,7 +64,7 @@ public interface ReinjectFromDocXTable extends DocXTableAction {
 		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			TableActorReference<DocXTable> actorReference = (TableActorReference<DocXTable>) evaluationContext.getFlexoConceptInstance()
-					.getActorReference(getFlexoRole());
+					.getActorReference(getInferedFlexoRole());
 
 			actorReference.reinjectDataFromDocument();
 

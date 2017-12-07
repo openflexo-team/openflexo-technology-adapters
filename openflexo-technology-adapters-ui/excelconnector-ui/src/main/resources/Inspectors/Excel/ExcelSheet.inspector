@@ -15,7 +15,7 @@
 				showFooter="true" selectionMode="MultipleIntervalSelection"
 				localize="true" manageDynamicModel="true" name="table" data="data.excelRows"
 				constraints="border(location=center)">
-				<NumberColumn numberType="IntegerType" data="iterator.rowNum"
+				<NumberColumn numberType="IntegerType" data="iterator.rowIndex"
 					title="number" columnWidth="30" resizable="false" displayTitle="false"
 					name="number" />
 				<LabelColumn data="iterator.row.getCell(0).toString"

@@ -60,4 +60,6 @@ public interface ExcelWorkbookResource
 
 	public <I> ExcelWorkbook createOrLoadExcelWorkbook(StreamIODelegate<I> ioDelegate);
 
+	public ExcelWorkbook getExcelWorkbook();
+
 }

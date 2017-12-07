@@ -84,7 +84,7 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				if (msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
-					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
+					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance.getAccessedResourceData(), objectURI);
 				}
 				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
@@ -103,7 +103,7 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 			if (object != null && getModelSlotInstance() != null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				/** Model Slot is responsible for URI mapping */
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance.getAccessedResourceData(), object);
 			}
 		}
 
@@ -111,7 +111,7 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 		public String getObjectURI() {
 			if (object != null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance.getAccessedResourceData(), object);
 			}
 			return objectURI;
 		}

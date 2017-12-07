@@ -44,9 +44,7 @@ import java.util.logging.Logger;
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
@@ -82,16 +80,14 @@ public interface PowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> 
 		}
 
 		@Override
-		public String getURIForObject(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance,
-				Object o) {
-			// TODO Auto-generated method stub
+		public String getURIForObject(PowerpointSlideshow resourceData, Object o) {
+			// TODO
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance,
-				String objectURI) {
-			// TODO Auto-generated method stub
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) {
+			// TODO
 			return null;
 		}
 

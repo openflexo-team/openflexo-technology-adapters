@@ -46,9 +46,8 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.fml.editionaction.SetPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -65,7 +64,7 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddStatement.AddStatementImpl.class)
 public abstract interface AddStatement<S extends OWLStatement>
-		extends TechnologySpecificAction<OWLModelSlot, OWLOntology, S>, SetPropertyValueAction<S>, OWLAction<S> {
+		extends TechnologySpecificActionDefiningReceiver<OWLModelSlot, OWLOntology, S>, SetPropertyValueAction<S>, OWLAction<S> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -81,8 +80,8 @@ public abstract interface AddStatement<S extends OWLStatement>
 
 	public OWLOntology getMetaModel();
 
-	public static abstract class AddStatementImpl<S extends OWLStatement> extends TechnologySpecificActionImpl<OWLModelSlot, OWLOntology, S>
-			implements AddStatement<S> {
+	public static abstract class AddStatementImpl<S extends OWLStatement>
+			extends TechnologySpecificActionDefiningReceiverImpl<OWLModelSlot, OWLOntology, S> implements AddStatement<S> {
 
 		private static final Logger logger = Logger.getLogger(AddStatement.class.getPackage().getName());
 
@@ -175,12 +174,6 @@ public abstract interface AddStatement<S extends OWLStatement>
 				return object.getSubject();
 			}
 
-		}
-
-		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

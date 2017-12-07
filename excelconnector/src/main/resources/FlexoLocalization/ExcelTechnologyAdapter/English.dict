@@ -1,3 +1,16 @@
+cells_range=Cells range
+choose_virtual_model_name_and_template_excel=Choose virtual model name and template excel
+configure_jdbc_connection=Configure jdbc connection
+create_semantics_excel_virtual_model=Create semantics excel virtual model
+create_virtual_model_reflecting_an_excel_workbook=Create virtual model reflecting an excel workbook
+create_virtual_model_reflecting_an_excel_workbook_interpretation=Create virtual model reflecting an excel workbook interpretation
+data_area=Data area
+identify_new_concept=Identify new concept
+please_define_data_range=Please define data range
+please_enter_name_for_new_flexo_concept=Please enter name for new flexo concept
+please_enter_name_for_new_virtual_model=Please enter name for new virtual model
+please_select_an_excel_workbook_to_be_used_as_a_template=Please select an excel workbook to be used as a template
 required=Required
+row_index=Row index
 technology=Technology
 template=Template

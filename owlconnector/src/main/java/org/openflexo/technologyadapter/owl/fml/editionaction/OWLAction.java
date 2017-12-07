@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.owl.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -54,6 +54,6 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
  */
 
 @ModelEntity(isAbstract = true)
-public interface OWLAction<T extends OWLObject> extends TechnologySpecificAction<OWLModelSlot, OWLOntology, T> {
+public interface OWLAction<T extends OWLObject> extends TechnologySpecificActionDefiningReceiver<OWLModelSlot, OWLOntology, T> {
 
 }

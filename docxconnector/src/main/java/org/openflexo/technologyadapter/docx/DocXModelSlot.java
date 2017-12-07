@@ -200,5 +200,17 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			}
 			return val;
 		}
+
+		@Override
+		public String getURIForObject(DocXDocument resourceData, Object o) {
+			// TODO
+			return null;
+		}
+
+		@Override
+		public Object retrieveObjectWithURI(DocXDocument resourceData, String objectURI) {
+			// TODO
+			return null;
+		}
 	}
 }

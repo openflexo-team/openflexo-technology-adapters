@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
+
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -73,7 +73,8 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 	public void setCreationFactory(DataBinding<CreationFactory> creationFactory);
 
 	public static abstract class AddOSLCResourceImpl
-			extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements AddOSLCResource {
+			extends TechnologySpecificActionDefiningReceiverImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource>
+			implements AddOSLCResource {
 
 		private DataBinding<CreationFactory> creationFactory;
 
@@ -94,12 +95,6 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 			OSLCResource resource = null;
 
 			return resource;
-		}
-
-		@Override
-		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(
-				RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

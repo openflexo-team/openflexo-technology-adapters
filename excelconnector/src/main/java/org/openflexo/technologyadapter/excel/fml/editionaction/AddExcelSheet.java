@@ -43,12 +43,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Workbook;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -96,8 +94,8 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 	@Setter(OVERRIDE_KEY)
 	public void setOverride(boolean override);
 
-	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet>
-			implements AddExcelSheet {
+	public static abstract class AddExcelSheetImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> implements AddExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(AddExcelSheet.class.getPackage().getName());
 
@@ -121,52 +119,39 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 
 			ExcelSheet result = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
-				Workbook wb = modelSlotInstance.getAccessedResourceData().getWorkbook();
-				// Sheet sheet = null;
-				try {
-					if (wb != null) {
-						String name = getSheetName().getBindingValue(evaluationContext);
-						if (name != null) {
-							// Create or retrieve this sheet
-							result = modelSlotInstance.getAccessedResourceData().getConverter().newSheet(name, getOverride());
+			ExcelWorkbook excelWB = getReceiver(evaluationContext);
+			// Sheet sheet = null;
+			try {
+				if (excelWB != null) {
+					String name = getSheetName().getBindingValue(evaluationContext);
+					if (name != null) {
+						// Create or retrieve this sheet
+						result = excelWB.getConverter().newSheet(name, getOverride());
 
-							// sheet = retrieveOrCreateSheet(wb, name);
-							// Instanciate Wrapper.
-							// result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
-							// modelSlotInstance.getAccessedResourceData(), null);
-							// modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
-							modelSlotInstance.getAccessedResourceData().setIsModified();
-						}
-						else {
-							logger.warning("Create a sheet requires a name");
-						}
+						// sheet = retrieveOrCreateSheet(wb, name);
+						// Instanciate Wrapper.
+						// result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
+						// modelSlotInstance.getAccessedResourceData(), null);
+						// modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
+						excelWB.setIsModified();
 					}
 					else {
-						logger.warning("Create a sheet requires a workbook");
+						logger.warning("Create a sheet requires a name");
 					}
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
 				}
-
-			}
-			else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
+				else {
+					logger.warning("Create a sheet requires a workbook");
+				}
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
 
 			return result;
 
-		}
-
-		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override
