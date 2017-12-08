@@ -152,8 +152,10 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		return diagramTA.getDiagramResourceFactory().makeDiagramResource(getDiagramName(), getDiagramURI(),
+		DiagramResource returned = diagramTA.getDiagramResourceFactory().makeDiagramResource(getDiagramName(), getDiagramURI(),
 				getDiagramSpecification().getResource(), getFocusedObject(), true);
+		returned.getLoadedResourceData().setIsModified();
+		return returned;
 	}
 
 	private String errorMessage;
