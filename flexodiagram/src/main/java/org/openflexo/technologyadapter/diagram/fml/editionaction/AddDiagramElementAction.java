@@ -38,17 +38,14 @@
 
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
-import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddDiagramElementAction.AddDiagramElementActionImpl.class)
@@ -71,23 +68,6 @@ public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> e
 			else if (superPatternRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
-			}
-			return null;
-		}
-
-		protected String getGraphicalElementSpecificationFMLRepresentation(FMLRepresentationContext context) {
-
-			if (getAssignedFlexoProperty() != null) {
-				if (getAssignedFlexoProperty().getGrSpecifications() != null
-						&& getAssignedFlexoProperty().getGrSpecifications().size() > 0) {
-					StringBuffer sb = new StringBuffer();
-					for (GraphicalElementSpecification ges : getAssignedFlexoProperty().getGrSpecifications()) {
-						if (ges.getValue().isSet()) {
-							sb.append("  " + ges.getFeatureName() + " = " + ges.getValue().toString() + ";" + StringUtils.LINE_SEPARATOR);
-						}
-					}
-					return sb.toString();
-				}
 			}
 			return null;
 		}

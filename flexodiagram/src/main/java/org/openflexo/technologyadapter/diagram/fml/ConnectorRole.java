@@ -45,9 +45,6 @@ import java.util.logging.Logger;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -200,7 +197,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			return returned;
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			VirtualModel vm = getOwningVirtualModel();
@@ -212,7 +209,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 				out.append("FlexoRole " + getName() + " -- NO OWNING MODEL;", context);
 			}
 			return out.toString();
-		}
+		}*/
 
 		@Override
 		public String getTypeDescription() {

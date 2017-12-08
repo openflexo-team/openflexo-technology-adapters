@@ -53,8 +53,6 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -83,7 +81,6 @@ import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * This edition primitive addresses the creation of a new shape in a diagram
@@ -131,21 +128,15 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			super();
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			/*if (getAssignation().isSet()) {
-				out.append(getAssignation().toString() + " = (", context);
-			}*/
 			out.append((getReceiver().isValid() ? getReceiver().toString() + "." : "") + getTechnologyAdapterIdentifier() + "::"
 					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
-			/*if (getAssignation().isSet()) {
-				out.append(")", context);
-			}*/
 			return out.toString();
-		}
+		}*/
 
 		public DiagramContainerElement<?> getContainer(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null

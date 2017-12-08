@@ -45,9 +45,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -322,7 +319,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			return returned;
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			VirtualModel vm = getOwningVirtualModel();
@@ -333,7 +330,17 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				out.append("FlexoRole " + getName() + " -- NO OWNING MODEL;", context);
 			}
 			return out.toString();
-		}
+		}*/
+
+		/*@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
+			out.append((getReceiver().isValid() ? getReceiver().toString() + "." : "") + getTechnologyAdapterIdentifier() + "::"
+					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
+			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
+			out.append("}", context);
+			return out.toString();
+		}*/
 
 		@Override
 		public String getTypeDescription() {
