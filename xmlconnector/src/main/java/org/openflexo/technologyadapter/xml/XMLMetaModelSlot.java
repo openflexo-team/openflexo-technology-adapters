@@ -68,18 +68,14 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @DeclareEditionActions({ AddXMLType.class })
 @DeclareFetchRequests({})
 @ModelEntity
-@ImplementationClass(XMLMetaModelSlot.XMLModelSlotImpl.class)
+@ImplementationClass(XMLMetaModelSlot.XMLMetaModelSlotImpl.class)
 @XMLElement
 @FML("XMLMetaModelSlot")
 public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
-	public static abstract class XMLModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
+	public static abstract class XMLMetaModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
 
 		static final Logger logger = Logger.getLogger(XMLMetaModelSlot.class.getPackage().getName());
-
-		public XMLModelSlotImpl() {
-			super();
-		}
 
 		@Override
 		public Class<XMLTechnologyAdapter> getTechnologyAdapterClass() {
@@ -105,18 +101,6 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 		@Override
 		public XMLTechnologyAdapter getModelSlotTechnologyAdapter() {
 			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
-		}
-
-		@Override
-		public String getURIForObject(XMLMetaModel resourceData, Object o) {
-			// TODO
-			return null;
-		}
-
-		@Override
-		public Object retrieveObjectWithURI(XMLMetaModel resourceData, String objectURI) {
-			// TODO
-			return null;
 		}
 
 	}
