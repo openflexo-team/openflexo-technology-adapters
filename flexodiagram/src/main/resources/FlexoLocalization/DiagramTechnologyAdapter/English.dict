@@ -32,6 +32,7 @@ create_a_new_connector_role=Create a new connector role
 create_a_new_shape_role=Create a new shape role
 create_diagram_virtual_model=Create diagram virtual model
 create_model_slot=Create Model slot
+create_new_diagram=Create new diagram
 create_new_diagram_palette=Create new diagram palette
 create_new_example_diagram=Create new example diagram
 create_new_flexo_concept_where_connector_is_mapped_to_a_flexo_concept_instance=Create new flexo concept where connector is mapped to a flexo concept instance

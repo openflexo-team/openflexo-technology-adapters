@@ -55,7 +55,7 @@ public class DiagramCst {
 			.locateResource("Fib/FMLControlledDiagramVirtualModelView.fib");
 
 	// Dialog components
-	public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
+	// public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
 	public static Resource CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateExampleDiagramDialog.fib");
 	public static Resource CREATE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/CreateDiagramFromPPTDialog.fib");

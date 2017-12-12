@@ -39,9 +39,10 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import java.awt.image.BufferedImage;
+
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -56,8 +57,8 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature,
-		ScreenshotableNature<FMLRTVirtualModelInstance> {
+public class FMLControlledDiagramVirtualModelInstanceNature
+		implements VirtualModelInstanceNature, ScreenshotableNature<FMLRTVirtualModelInstance> {
 
 	public static FMLControlledDiagramVirtualModelInstanceNature INSTANCE = new FMLControlledDiagramVirtualModelInstanceNature();
 
@@ -113,7 +114,12 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 	}
 
 	private Diagram _getDiagram(FMLRTVirtualModelInstance virtualModelInstance) {
-		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
+		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> diagramModelSlotInstance = _getModelSlotInstance(
+				virtualModelInstance);
+		if (diagramModelSlotInstance != null) {
+			return diagramModelSlotInstance.getAccessedResourceData();
+		}
+		return null;
 	}
 
 	@Override

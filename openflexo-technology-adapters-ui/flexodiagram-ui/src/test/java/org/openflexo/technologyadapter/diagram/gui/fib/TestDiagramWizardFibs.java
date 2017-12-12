@@ -76,6 +76,16 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
+	public void testDescribeDiagram() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeDiagram.fib");
+	}
+
+	@Test
+	public void testDescribeDiagramPalette() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeDiagramPalette.fib");
+	}
+
+	@Test
 	public void testDescribeDiagramSpecification() {
 		validateFIB("Fib/Wizard/CreateElement/DescribeDiagramSpecification.fib");
 	}
@@ -83,6 +93,11 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	@Test
 	public void testDescribeExampleDiagram() {
 		validateFIB("Fib/Wizard/CreateElement/DescribeExampleDiagram.fib");
+	}
+
+	@Test
+	public void testConfigurePaletteElementForNewFlexoConcept() {
+		validateFIB("Fib/Wizard/CreateFMLElement/ConfigurePaletteElementForNewFlexoConcept.fib");
 	}
 
 	@Test

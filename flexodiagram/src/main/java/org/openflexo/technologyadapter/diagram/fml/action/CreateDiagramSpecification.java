@@ -56,6 +56,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceFactory;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, FMLObject> {
@@ -137,7 +138,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		return diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(newDiagramSpecificationName,
-				newDiagramSpecificationURI, getFocusedObject(), true);
+				getNewDiagramSpecificationURI(), getFocusedObject(), true);
 
 	}
 
@@ -149,18 +150,18 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	}
 
 	public boolean isNewDiagramSpecificationUriValid() {
-		if (StringUtils.isEmpty(newDiagramSpecificationURI)) {
+		if (StringUtils.isEmpty(getNewDiagramSpecificationURI())) {
 			return false;
 		}
 		try {
-			new URL(newDiagramSpecificationURI);
+			new URL(getNewDiagramSpecificationURI());
 		} catch (MalformedURLException e) {
 			return false;
 		}
 		if (getFocusedObject().getResourceRepository() == null) {
 			return false;
 		}
-		if (getFocusedObject().getResourceRepository().getResource(newDiagramSpecificationURI) != null) {
+		if (getFocusedObject().getResourceRepository().getResource(getNewDiagramSpecificationURI()) != null) {
 			return false;
 		}
 		return true;
@@ -191,10 +192,18 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 			String oldValue = this.newDiagramSpecificationName;
 			this.newDiagramSpecificationName = newDiagramSpecificationName;
 			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationName", oldValue, newDiagramSpecificationName);
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationURI", null, getNewDiagramSpecificationURI());
 		}
 	}
 
 	public String getNewDiagramSpecificationURI() {
+		if (newDiagramSpecificationURI == null) {
+			String baseURI = getFocusedObject().getDefaultBaseURI();
+			if (!baseURI.endsWith("/")) {
+				baseURI = baseURI + "/";
+			}
+			return baseURI + getNewDiagramSpecificationName() + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
+		}
 		return newDiagramSpecificationURI;
 	}
 

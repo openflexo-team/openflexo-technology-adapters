@@ -57,7 +57,6 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -126,21 +125,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	@Override
 	protected void doAction(Object context) throws FlexoException {
 
-		/*DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		
-		FlexoResourceCenter<?> rc = getFocusedObject().getResourceRepository().getResourceCenter();
-		
-		diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, resourceCenter, technologyContextManager, createEmptyContents)
-		
-		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(),
-				getDiagramSpecification() != null ? getDiagramSpecification().getResource() : null,
-				getFocusedObject().getResourceRepository().getResourceCenter());
-		
-		getFocusedObject().addToResources(diagramResource);
-		
-		diagramResource.save(null);*/
-
 		try {
 			diagramResource = _makeDiagram();
 		} catch (ModelDefinitionException e) {
@@ -158,62 +142,18 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 		return returned;
 	}
 
-	private String errorMessage;
-
-	public String getErrorMessage() {
-		isValid();
-		// System.out.println("valid=" + isValid());
-		// System.out.println("errorMessage=" + errorMessage);
-		return errorMessage;
-	}
-
 	@Override
 	public boolean isValid() {
 		if (StringUtils.isEmpty(diagramName)) {
-			errorMessage = noNameMessage();
 			return false;
 		}
 
-		if (!diagramName.equals(JavaUtils.getClassName(diagramName)) && !diagramName.equals(JavaUtils.getVariableName(diagramName))) {
-			errorMessage = invalidNameMessage();
+		if (getFocusedObject().getResourceWithName(getDiagramName()) != null
+				|| getFocusedObject().getResourceWithName(getDiagramName() + ".diagram") != null) {
 			return false;
 		}
 
-		if (StringUtils.isEmpty(diagramTitle)) {
-			errorMessage = noTitleMessage();
-			return false;
-		}
-
-		// TODO: handle duplicated name and uri
 		return true;
-	}
-
-	public String noDiagramSpecificationSelectedMessage() {
-		return getLocales().localizedForKey("no_diagram_type_selected");
-	}
-
-	public String noTitleMessage() {
-		return getLocales().localizedForKey("no_diagram_title_defined");
-	}
-
-	public String noFileMessage() {
-		return getLocales().localizedForKey("no_diagram_file_defined");
-	}
-
-	public String existingFileMessage() {
-		return getLocales().localizedForKey("file_already_existing");
-	}
-
-	public String noNameMessage() {
-		return getLocales().localizedForKey("no_diagram_name_defined");
-	}
-
-	public String invalidNameMessage() {
-		return getLocales().localizedForKey("invalid_name_for_new_diagram");
-	}
-
-	public String duplicatedNameMessage() {
-		return getLocales().localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public DiagramSpecification getDiagramSpecification() {
@@ -240,11 +180,11 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	}
 
 	public void setDiagramName(String diagramName) {
-		boolean wasValid = isValid();
-		this.diagramName = diagramName;
-		getPropertyChangeSupport().firePropertyChange("diagramName", null, diagramName);
-		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
-		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+		if ((diagramName == null && this.diagramName != null) || (diagramName != null && !diagramName.equals(this.diagramName))) {
+			String oldValue = this.diagramName;
+			this.diagramName = diagramName;
+			getPropertyChangeSupport().firePropertyChange("diagramName", oldValue, diagramName);
+		}
 	}
 
 	public String getDiagramTitle() {
@@ -252,11 +192,11 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	}
 
 	public void setDiagramTitle(String diagramTitle) {
-		boolean wasValid = isValid();
-		this.diagramTitle = diagramTitle;
-		getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagramTitle);
-		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
-		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+		if ((diagramTitle == null && this.diagramTitle != null) || (diagramTitle != null && !diagramTitle.equals(this.diagramTitle))) {
+			String oldValue = this.diagramTitle;
+			this.diagramTitle = diagramTitle;
+			getPropertyChangeSupport().firePropertyChange("diagramTitle", oldValue, diagramTitle);
+		}
 	}
 
 	public String getDiagramURI() {
@@ -273,21 +213,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	public String getDefaultDiagramURI() {
 		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
 	}
-
-	/*public File getDiagramFile() {
-		if (diagramFile == null) {
-			return getDefaultDiagramFile();
-		}
-		return diagramFile;
-	}
-	
-	public void setDiagramFile(File diagramFile) {
-		this.diagramFile = diagramFile;
-	}
-	
-	public File getDefaultDiagramFile() {
-		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}*/
 
 	public String getDescription() {
 		return description;
