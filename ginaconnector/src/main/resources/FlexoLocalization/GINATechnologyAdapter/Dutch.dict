@@ -5,6 +5,7 @@ create_screen_virtual_model=Create screen virtual model
 creates_new_gina_fib_component=Creates new gina fib component
 describe_screen_virtual_model=Describe screen virtual model
 gives_fml_controlled_component_nature=Gives fml controlled component nature
+gives_screen=gives_screen
 gives_screen_nature=Gives screen nature
 initial_component=Initial component
 initialize_fib_editor=Initialize fib editor
