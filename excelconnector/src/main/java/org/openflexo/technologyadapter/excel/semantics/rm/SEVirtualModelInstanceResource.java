@@ -174,7 +174,11 @@ public interface SEVirtualModelInstanceResource
 				SEInitializer initializer = returned.getVirtualModel().getFlexoBehaviours(SEInitializer.class).get(0);
 				FlexoEditor editor = null;
 				if (getResourceCenter() instanceof FlexoProject) {
-					editor = getServiceManager().getProjectLoaderService().getEditorForProject((FlexoProject) getResourceCenter());
+					editor = getServiceManager().getProjectLoaderService().getEditorForProject((FlexoProject<?>) getResourceCenter());
+				}
+				else if (getResourceCenter().getDelegatingProjectResource() != null) {
+					editor = getServiceManager().getProjectLoaderService()
+							.getEditorForProject(getResourceCenter().getDelegatingProjectResource().getFlexoProject());
 				}
 				SEInitializerAction action = new SEInitializerAction(initializer, returned, null, editor);
 				action.doAction();
