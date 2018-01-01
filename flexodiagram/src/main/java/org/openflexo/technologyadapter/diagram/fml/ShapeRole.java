@@ -307,7 +307,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		@Deprecated
 		public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
-			System.out.println("Tiens, je trouve une ShapeGraphicalRepresentation depreciee: " + graphicalRepresentation);
+			// System.out.println("Tiens, je trouve une ShapeGraphicalRepresentation depreciee: " + graphicalRepresentation);
 			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
 		}
 

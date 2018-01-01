@@ -185,7 +185,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		@Deprecated
 		public void setDeprecatedGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation) {
-			System.out.println("Tiens, je trouve une ConnectorGraphicalRepresentation depreciee: " + graphicalRepresentation);
+			// System.out.println("Tiens, je trouve une ConnectorGraphicalRepresentation depreciee: " + graphicalRepresentation);
 			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
 		}
 
