@@ -55,11 +55,6 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testCreateDiagramDialog() {
-		validateFIB("Fib/Dialog/CreateDiagramDialog.fib");
-	}
-
-	@Test
 	public void testCreateDiagramFromPPTDialog() {
 		validateFIB("Fib/Dialog/CreateDiagramFromPPTDialog.fib");
 	}
