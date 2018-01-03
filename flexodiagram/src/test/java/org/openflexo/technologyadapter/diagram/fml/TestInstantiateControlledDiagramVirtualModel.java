@@ -337,7 +337,6 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		FMLRTVirtualModelInstanceResource newViewResource = project.getVirtualModelInstanceRepository().getVirtualModelInstance(oldViewURI);
 		assertNotNull(newViewResource);
-		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
 		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
