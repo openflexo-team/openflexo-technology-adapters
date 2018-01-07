@@ -51,6 +51,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -273,6 +274,19 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		// TODO: to it generically for all GRSpecs
 		@Override
 		public void setLabel(String aLabel) {
+
+			// We handle here a special use case encountered in FME
+			// When a FlexoConceptInstance changes its type (its FlexoConcept)
+			// The role that was registered is not good anymore
+			// What we do here is checking that it's the "good" role
+			if (getRole().getFlexoConcept() != getFlexoConceptInstance().getFlexoConcept()) {
+				ObjectLookupResult r = getDrawing().getObjectLookupResult(getDiagramElement());
+				if (r != null) {
+					GraphicalElementRole<E, GR> newRole = (GraphicalElementRole<E, GR>) r.property;
+					setRole(newRole);
+				}
+			}
+
 			if (getRole().getLabel() != null) {
 				try {
 					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());
