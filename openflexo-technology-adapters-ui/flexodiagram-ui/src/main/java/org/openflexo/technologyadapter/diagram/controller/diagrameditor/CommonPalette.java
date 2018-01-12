@@ -44,7 +44,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.BackgroundStyle.BackgroundStyleType;
-import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.FGEConstants;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -56,8 +55,6 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 public class CommonPalette extends AbstractDiagramPalette {
 
@@ -162,97 +159,13 @@ public class CommonPalette extends AbstractDiagramPalette {
 		PaletteElement returned = new PaletteElement() {
 			@Override
 			public boolean acceptDragging(DrawingTreeNode<?, ?> target) {
-				return getEditor() != null && target instanceof ContainerNode
-						&& (target.getDrawable() instanceof Diagram || target.getDrawable() instanceof DiagramShape);
+				return shouldAcceptDrop(target);
 			}
 
 			@Override
 			public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
-
-				// if (true)
 				return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, applyCurrentForeground,
 						applyCurrentBackground, applyCurrentTextStyle, applyCurrentShadowStyle, isImage, true);
-
-				/*if (getEditor() == null) {
-					return false;
-				}
-				
-				DiagramContainerElement<?> container = (DiagramContainerElement<?>) target.getDrawable();
-				
-				logger.info("dragging " + this + " in " + container);
-				
-				// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
-				// getController().getDrawing()),container);
-				
-				CompoundEdit edit = getEditor().getUndoManager().startRecording("Dragging new Element");
-				
-				ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeShapeGraphicalRepresentation(
-						getGraphicalRepresentation());
-				
-				shapeGR.setIsReadOnly(false);
-				shapeGR.setIsFocusable(true);
-				shapeGR.setIsSelectable(true);
-				shapeGR.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
-				
-				if (shapeGR.getShapeSpecification().getShapeType() == ShapeType.SQUARE
-						|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
-					shapeGR.setWidth(40);
-					shapeGR.setHeight(40);
-				} else {
-					shapeGR.setWidth(50);
-					shapeGR.setHeight(40);
-				}
-				if (applyCurrentForeground) {
-					shapeGR.setForeground(getEditor().getInspectedForegroundStyle().cloneStyle());
-				}
-				if (applyCurrentBackground) {
-					shapeGR.setBackground(getEditor().getInspectedBackgroundStyle().cloneStyle());
-				}
-				if (applyCurrentTextStyle) {
-					shapeGR.setTextStyle(getEditor().getInspectedTextStyle().cloneStyle());
-				}
-				if (applyCurrentShadowStyle) {
-					shapeGR.setShadowStyle(getEditor().getInspectedShadowStyle().cloneStyle());
-				}
-				
-				shapeGR.setX(dropLocation.x);
-				shapeGR.setY(dropLocation.y);
-				// shapeGR.setAllowToLeaveBounds(true);
-				
-				System.out.println("OK, create AddShape");
-				System.out.println("location=" + shapeGR.getLocation());
-				System.out.println("size=" + shapeGR.getSize());
-				
-				if (isImage) {
-					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
-					FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
-							new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
-				}
-				
-				AddShape action = AddShape.actionType.makeNewAction(container, null, getEditor().getFlexoController().getEditor());
-				action.setGraphicalRepresentation(shapeGR);
-				action.setNewShapeName(shapeGR.getText());
-				if (action.getNewShapeName() == null) {
-					action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
-				}
-				
-				// action.nameSetToNull = true;
-				// action.setNewShapeName(FlexoLocalization.localizedForKey("unnamed"));
-				
-				action.doAction();
-				
-				DiagramShape newShape = action.getNewShape();
-				
-				System.out.println("Apres la creation:");
-				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
-				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
-				
-				getEditor().getUndoManager().stopRecording(edit);
-				
-				getEditor().setCurrentTool(EditorTool.SelectionTool);
-				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newShape));
-				
-				return action.hasActionExecutionSucceeded();*/
 			}
 
 			@Override
@@ -270,11 +183,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 				gr.delete(context);
 			}
 
-			/*public DrawingPalette getPalette() {
-				return CommonPalette.this;
-			}*/
 		};
-		// gr.setDrawable(returned);
 		return returned;
 	}
 

@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.util.logging.Logger;
 
+import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
@@ -53,6 +54,7 @@ import org.openflexo.gina.swing.utils.JFIBDialog;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
@@ -81,6 +83,34 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		super.delete();
 	}
 
+	/**
+	 * Return boolean if this palette accept drop for an element in supplied target<br>
+	 * Default behaviour is to return true if target represent the diagram (top level drop) or a container shape<br>
+	 * This method should be overriden when required<br>
+	 * 
+	 * @param target
+	 * @return
+	 */
+	public boolean shouldAcceptDrop(DrawingTreeNode<?, ?> target) {
+		return getEditor() != null && target instanceof ContainerNode
+				&& (target.getDrawable() instanceof Diagram || target.getDrawable() instanceof DiagramShape);
+	}
+
+	/**
+	 * Handle drop of an element in a supplied target, given some parameters<br>
+	 * This method should be overriden when required
+	 * 
+	 * @param target
+	 * @param gr
+	 * @param dropLocation
+	 * @param applyCurrentForeground
+	 * @param applyCurrentBackground
+	 * @param applyCurrentTextStyle
+	 * @param applyCurrentShadowStyle
+	 * @param isImage
+	 * @param resize
+	 * @return
+	 */
 	public boolean handleBasicGraphicalRepresentationDrop(DrawingTreeNode<?, ?> target, ShapeGraphicalRepresentation gr,
 			FGEPoint dropLocation, boolean applyCurrentForeground, boolean applyCurrentBackground, boolean applyCurrentTextStyle,
 			boolean applyCurrentShadowStyle, boolean isImage, boolean resize) {
@@ -91,7 +121,7 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 
 		DiagramContainerElement<?> container = (DiagramContainerElement<?>) target.getDrawable();
 
-		logger.info("dragging " + this + " in " + container);
+		logger.info("drop " + this + " in " + container);
 
 		// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
 		// getController().getDrawing()),container);

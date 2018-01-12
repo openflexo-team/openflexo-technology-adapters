@@ -43,6 +43,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -93,6 +94,7 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 	private DiagramContainerElement<?> parent;
 	private ShapeGraphicalRepresentation graphicalRepresentation;
 	private boolean nameSetToNull = false;
+	private FGEPoint dropLocation;
 
 	AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -128,6 +130,10 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		if (getGraphicalRepresentation() != null) {
 			newShape.setGraphicalRepresentation(getGraphicalRepresentation());
+			if (getDropLocation() != null) {
+				getGraphicalRepresentation().setX(getDropLocation().x);
+				getGraphicalRepresentation().setY(getDropLocation().y);
+			}
 		}
 
 		getParent().addToShapes(newShape);
@@ -136,6 +142,14 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		// System.out.println("newShape=" + newShape);
 		// System.out.println("diagram=" + newShape.getDiagram());
+	}
+
+	public FGEPoint getDropLocation() {
+		return dropLocation;
+	}
+
+	public void setDropLocation(FGEPoint dropLocation) {
+		this.dropLocation = dropLocation;
 	}
 
 	public DiagramShape getNewShape() {
