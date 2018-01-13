@@ -89,7 +89,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 		serviceManager = instanciateTestServiceManager();
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		docXTA.setDefaultIDStrategy(idStrategy);
-		serviceManager.activateTechnologyAdapter(docXTA);
+		serviceManager.activateTechnologyAdapter(docXTA, true);
 		return serviceManager;
 	}
 

@@ -45,7 +45,6 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -174,10 +173,7 @@ public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
 	 * Activate the Excel technology adapter in order to retrieve excel resources. Wait until the Excel technology adapter is activated.
 	 */
 	private void activateExcelTechnologyAdapter() {
-		FlexoTask activateExcel = serviceManager
-				.activateTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class));
-		if (activateExcel != null) {
-			serviceManager.getTaskManager().waitTask(activateExcel);
-		}
+		serviceManager.activateTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class), true);
 	}
 }

@@ -34,7 +34,6 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -141,10 +140,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
 					&& getServiceManager().getResourceManager() != null) {
 
-				FlexoTask activateTA = getServiceManager().activateTechnologyAdapter(getModelSlotTechnologyAdapter());
-				if (activateTA != null) {
-					getServiceManager().getTaskManager().waitTask(activateTA);
-				}
+				getServiceManager().activateTechnologyAdapter(getModelSlotTechnologyAdapter(), true);
 
 				// System.out.println("Looking up " + templateDocumentURI);
 				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI);

@@ -56,17 +56,15 @@ public abstract class AbstractTestPDF extends OpenflexoProjectAtRunTimeTestCase 
 	protected static final Logger logger = Logger.getLogger(AbstractTestPDF.class.getPackage().getName());
 
 	/**
-	 * Instantiate a default {@link FlexoServiceManager} well suited for PDF
-	 * test purpose<br>
+	 * Instantiate a default {@link FlexoServiceManager} well suited for PDF test purpose<br>
 	 * 
 	 * @param taClasses
 	 * @return a newly created {@link FlexoServiceManager}
 	 */
 	protected static FlexoServiceManager instanciateTestServiceManagerForPDF() {
 		serviceManager = instanciateTestServiceManager();
-		PDFTechnologyAdapter pdfTA = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(PDFTechnologyAdapter.class);
-		serviceManager.activateTechnologyAdapter(pdfTA);
+		PDFTechnologyAdapter pdfTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(PDFTechnologyAdapter.class);
+		serviceManager.activateTechnologyAdapter(pdfTA, true);
 		return serviceManager;
 	}
 
@@ -85,12 +83,11 @@ public abstract class AbstractTestPDF extends OpenflexoProjectAtRunTimeTestCase 
 
 		System.out.println("resourceCenter=" + resourceCenter);
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/"
-				+ documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + "PDF" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
-		PDFDocumentResource documentResource = (PDFDocumentResource) serviceManager.getResourceManager()
-				.getResource(documentURI, null, PDFDocument.class);
+		PDFDocumentResource documentResource = (PDFDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
+				PDFDocument.class);
 
 		if (documentResource == null) {
 			logger.warning("Cannot find document resource " + documentURI);

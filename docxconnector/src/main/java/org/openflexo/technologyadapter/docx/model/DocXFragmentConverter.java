@@ -47,7 +47,6 @@ import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyExceptio
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -158,10 +157,7 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 	 * Activate the Docx technology adapter in order to retrieve docx resources. Wait until the docx technology adapter is activated.
 	 */
 	private void activateDocXTechnologyAdapter() {
-		FlexoTask activateDocX = serviceManager
-				.activateTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class));
-		if (activateDocX != null) {
-			serviceManager.getTaskManager().waitTask(activateDocX);
-		}
+		serviceManager.activateTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class), true);
 	}
 }
