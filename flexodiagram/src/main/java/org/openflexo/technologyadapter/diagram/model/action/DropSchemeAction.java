@@ -76,6 +76,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	private DiagramPaletteElement paletteElement;
 	private DiagramShape primaryShape;
 
+	// The concept in which we drop
 	private FlexoConceptInstance parentConceptInstance;
 	private ShapeRole parentShapeRole;
 

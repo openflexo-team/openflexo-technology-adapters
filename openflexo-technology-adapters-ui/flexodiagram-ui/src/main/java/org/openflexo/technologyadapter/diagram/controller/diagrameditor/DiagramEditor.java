@@ -42,6 +42,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -111,7 +112,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	private JDianaStyles stylesWidget;
 	private JDianaPalette commonPalette;
 	private AbstractDiagramPalette commonPaletteModel;
-	private Hashtable<DiagramPalette, AbstractDiagramPalette> contextualPaletteModels;
+	private Hashtable<DiagramPalette, ContextualPalette> contextualPaletteModels;
 	private Hashtable<DiagramPalette, JDianaPalette> contextualPalettes;
 
 	private final SwingToolFactory swingToolFactory;
@@ -146,7 +147,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			toolsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			toolsPanel.add(toolSelector.getComponent());
 			// This panel is in its current state a duplication of the right side panel
-			// toolsPanel.add(stylesWidget.getComponent());
+			toolsPanel.add(stylesWidget.getComponent());
 			toolsPanel.add(layoutWidget.getComponent());
 
 			commonPaletteModel = makeCommonPalette();
@@ -154,8 +155,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			commonPalette = swingToolFactory.makeDianaPalette(commonPaletteModel);
 			commonPalette.attachToEditor(this);
 
-			contextualPaletteModels = new Hashtable<DiagramPalette, AbstractDiagramPalette>();
-			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
+			contextualPaletteModels = new Hashtable<>();
+			contextualPalettes = new Hashtable<>();
 
 			if (diagramDrawing.getModel().getDiagramSpecification() != null) {
 				for (DiagramPalette palette : diagramDrawing.getModel().getDiagramSpecification().getPalettes()) {
@@ -320,6 +321,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	public String getCommonPaletteTitle() {
 		return "Common";
+	}
+
+	public Collection<ContextualPalette> getContextualPalettes() {
+		return contextualPaletteModels.values();
 	}
 
 	public JTabbedPane getPaletteView() {
