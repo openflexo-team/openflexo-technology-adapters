@@ -65,7 +65,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 	private static final int GRID_HEIGHT = 40;
 	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
 	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
-	private static final Resource DEFAULT_IMAGE = ResourceLocator.locateResource("Icons/Diagram.png");
+	private static final Resource DEFAULT_IMAGE = ResourceLocator.locateResource("Icons/Image.png");
 
 	// private final DiagramEditor editor;
 	public CommonPalette(DiagramEditor editor) {
@@ -97,7 +97,9 @@ public class CommonPalette extends AbstractDiagramPalette {
 			if (sspi == ssp[14]) {
 				addElement(makeImagePaletteElement(sspi, px, py, DEFAULT_IMAGE));
 			}
-			addElement(makePaletteElement(sspi, px, py));
+			else {
+				addElement(makePaletteElement(sspi, px, py));
+			}
 			px = px + 1;
 			if (px == 4) {
 				px = 0;
@@ -149,6 +151,8 @@ public class CommonPalette extends AbstractDiagramPalette {
 		((BackgroundImageBackgroundStyle) gr.getBackground()).setImageResource(image);
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
+		// gr.setTextStyle(FACTORY.makeTextStyle(Color.DARK_GRAY, DEFAULT_TEXT_FONT));
+		gr.setIsFloatingLabel(false);
 		return makePaletteElement(gr, false, false, false, false, true);
 	}
 

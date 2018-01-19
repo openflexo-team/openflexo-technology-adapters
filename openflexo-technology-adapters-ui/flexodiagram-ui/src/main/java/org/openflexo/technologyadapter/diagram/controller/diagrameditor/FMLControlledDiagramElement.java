@@ -209,7 +209,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 			BindingValueChangeListener<T> l = new BindingValueChangeListener<T>(grSpec.getValue(), getFlexoConceptInstance()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					System.out.println("value changed for " + grSpec + " newValue=" + newValue);
+					// System.out.println("value changed for " + grSpec + " newValue=" + newValue);
 					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, newValue);
 				}
 			};
