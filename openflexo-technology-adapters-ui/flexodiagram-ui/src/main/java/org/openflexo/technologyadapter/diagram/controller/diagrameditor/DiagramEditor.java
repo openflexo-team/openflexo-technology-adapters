@@ -147,7 +147,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			toolsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			toolsPanel.add(toolSelector.getComponent());
 			// This panel is in its current state a duplication of the right side panel
-			toolsPanel.add(stylesWidget.getComponent());
+			// toolsPanel.add(stylesWidget.getComponent());
 			toolsPanel.add(layoutWidget.getComponent());
 
 			commonPaletteModel = makeCommonPalette();
