@@ -14,6 +14,7 @@ RADIO_BUTTON=RADIO BUTTON
 RO=RO
 TEXT_AREA=TEXT AREA
 TEXT_FIELD=TEXT FIELD
+a_diagram_with_that_name_already_exists=A diagram with that name already exists
 a_flexo_concept_with_that_name_already_exists=A flexo concept with that name already exists
 a_palette_element_with_that_name_already_exists=A palette element with that name already exists
 a_palette_with_that_name_already_exists=A palette with that name already exists
