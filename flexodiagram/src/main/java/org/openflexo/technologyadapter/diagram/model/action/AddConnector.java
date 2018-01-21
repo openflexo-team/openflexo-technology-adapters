@@ -124,6 +124,11 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 			}
 			newConnector = getFocusedObject().getDiagram().getDiagramFactory().makeNewConnector(getNewConnectorName(), getFromShape(),
 					getToShape(), parent);
+
+			if (getGraphicalRepresentation() != null) {
+				newConnector.setGraphicalRepresentation(getGraphicalRepresentation());
+			}
+
 			// newConnector.setDescription(annotation);
 			parent.addToConnectors(newConnector);
 		}
