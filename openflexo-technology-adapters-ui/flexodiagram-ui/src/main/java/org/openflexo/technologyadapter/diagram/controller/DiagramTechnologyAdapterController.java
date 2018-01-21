@@ -198,6 +198,24 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		viewMenu.add(shadowInspectorItem);
 		viewMenu.add(locationSizeInspectorItem);
 
+		// Set the screenshot builders
+		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
+		getTechnologyAdapter().setDiagramPaletteScreenshotBuilder(new DiagramPaletteScreenshotBuilder());
+		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
+		getTechnologyAdapter().setFMLControlledDiagramScreenshotBuilder(new FMLControlledDiagramScreenshotBuilder());
+
+		// Add paste handlers
+		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
+		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
+
+		// Overrides CreateFlexoConceptInitializer by providing palette element creation
+		new CreateFMLControlledDiagramFlexoConceptInitializer(actionInitializer);
+
+	}
+
+	@Override
+	public void initializeAdvancedActions(ControllerActionInitializer actionInitializer) {
+
 		// Diagram edition
 		new CreateDiagramSpecificationInitializer(actionInitializer);
 		new DeleteDiagramSpecificationInitializer(actionInitializer);
@@ -238,19 +256,6 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new CreateFMLControlledDiagramPaletteElementInitializer(actionInitializer);
 		new ExportFMLControlledDiagramToImageInitializer(actionInitializer);
 		new DeleteDiagramElementsAndFlexoConceptInstancesInitializer(actionInitializer);
-
-		// Set the screenshot builders
-		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
-		getTechnologyAdapter().setDiagramPaletteScreenshotBuilder(new DiagramPaletteScreenshotBuilder());
-		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
-		getTechnologyAdapter().setFMLControlledDiagramScreenshotBuilder(new FMLControlledDiagramScreenshotBuilder());
-
-		// Add paste handlers
-		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
-		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
-
-		// Overrides CreateFlexoConceptInitializer by providing palette element creation
-		new CreateFMLControlledDiagramFlexoConceptInitializer(actionInitializer);
 
 	}
 
