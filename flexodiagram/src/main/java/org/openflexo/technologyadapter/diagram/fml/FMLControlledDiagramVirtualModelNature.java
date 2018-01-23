@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
