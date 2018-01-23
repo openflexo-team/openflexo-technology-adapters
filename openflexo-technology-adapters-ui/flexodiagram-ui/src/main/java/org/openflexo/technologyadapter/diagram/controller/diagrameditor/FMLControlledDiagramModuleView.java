@@ -120,6 +120,11 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		System.out.println("FMLControlledDiagramModuleView WILL HIDE !!!!!!");
 
+		getEditor().getFlexoController().getControllerModel().setRightViewVisible(false);
+
+		perspective.setTopRightView(null);
+		perspective.setBottomRightView(null);
+
 		getEditor().getFlexoController().getEditingContext().unregisterPasteHandler(getEditor().getPasteHandler());
 
 		bottomPanel.remove(getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getScaleSelector().getComponent());
