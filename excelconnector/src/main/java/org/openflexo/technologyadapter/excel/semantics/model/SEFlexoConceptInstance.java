@@ -160,7 +160,7 @@ public interface SEFlexoConceptInstance extends FlexoConceptInstance {
 						if (cell != null) {
 							return (T) (Boolean) cell.getBooleanCellValue();
 						}
-						return (T) new Boolean(false);
+						return (T) Boolean.FALSE;
 					default:
 						logger.warning("Unexpected primitive type: " + columnRole.getPrimitiveType());
 						return null;
