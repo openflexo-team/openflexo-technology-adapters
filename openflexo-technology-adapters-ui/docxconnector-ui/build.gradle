@@ -4,17 +4,19 @@ dependencies {
   // openflexo dep
   compile flexoUi()
   compile flexoDocumentationUi()
-  // compile docx4all()
   // external dep
   // testing dep
   testCompile flexoUiTest()
-    
+
   // Test resource center
   testRuntime project(':docxconnector-test-rc')
-    
 }
 if (JavaVersion.current().isJava9Compatible()) {
-	tasks.withType(Test) {
-		jvmArgs += ['--add-modules', 'java.xml.bind']
+    tasks.withType(JavaCompile) {
+	options.compilerArgs.addAll(['--add-modules', 'java.xml.bind'])
     }
-}  
+
+    tasks.withType(Test) {
+	jvmArgs += ['--add-modules', 'java.xml.bind']
+    }
+}
