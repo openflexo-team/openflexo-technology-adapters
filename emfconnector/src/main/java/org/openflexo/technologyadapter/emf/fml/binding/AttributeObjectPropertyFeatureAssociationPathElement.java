@@ -109,7 +109,7 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 		if (target instanceof EMFObjectIndividual) {
 			EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
 			EObject object = ((EMFObjectIndividual) target).getObject();
-			Object emfAnswer = object.eGet(objectProperty.getObject());
+			// Unused Object emfAnswer = object.eGet(objectProperty.getObject());
 			Object returned = model.getConverter().convertObjectIndividual(model, object);
 			// Object returned =
 			// model.getConverter().convertObjectIndividualAttributeObjectPropertyValue(model,object,(EAttribute)emfAnswer);

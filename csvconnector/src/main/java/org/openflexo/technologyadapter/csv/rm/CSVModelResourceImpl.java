@@ -38,6 +38,17 @@
 
 package org.openflexo.technologyadapter.csv.rm;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -48,18 +59,7 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.toolbox.IProgress;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>implements CSVModelResource {
+public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> implements CSVModelResource {
 	private static final Logger logger = Logger.getLogger(CSVModelResourceImpl.class.getPackage().getName());
 
 	@Override
@@ -74,7 +74,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>im
 		try {
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
-			CSVModel resourceData;
+			// Unused CSVModel resourceData;
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
@@ -122,11 +122,13 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>im
 	private void writeToFile() throws SaveResourceException {
 
 		try (FileOutputStream out = new FileOutputStream(getFile())) {
-			StreamResult result = new StreamResult(out);
+			// Unused StreamResult result =
+			new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
-			Transformer transformer = factory.newTransformer();
+			// Unused Transformer transformer =
+			factory.newTransformer();
 
 		} catch (IOException e) {
 			throw new SaveResourceException(getIODelegate());

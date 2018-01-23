@@ -72,7 +72,7 @@ public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, O
 		@Override
 		public List<OSLCRequirement> execute(RunTimeEvaluationContext evaluationContext) {
 
-			OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
+			// Unused OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
 
 			/*if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

@@ -433,13 +433,13 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				String newId = getFactory().generateId();
 				switch (getFactory().getIDStrategy()) {
 					case ParaId:
-						String oldId = getP().getParaId();
+						// Unused String oldId = getP().getParaId();
 						copiedP.setParaId(newId);
 						break;
 					case Bookmark:
 						for (Object o : copiedP.getContent()) {
 							if (o instanceof JAXBElement) {
-								o = ((JAXBElement) o).getValue();
+								o = ((JAXBElement<?>) o).getValue();
 							}
 							if (o instanceof CTBookmark) {
 								CTBookmark bookmark = (CTBookmark) o;

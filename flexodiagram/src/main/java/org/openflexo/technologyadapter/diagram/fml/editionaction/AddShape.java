@@ -45,14 +45,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -141,16 +139,14 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		public DiagramContainerElement<?> getContainer(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
-						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 			}
 			else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
-				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
-					BindingVariable bv = bm.getBindingVariableAt(i);
-				}
+				// Unused for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
+				// Unused bv = bm.getBindingVariableAt(i);
+				// Unused }
 				try {
 					if (getContainer().getBindingValue(evaluationContext) != null) {
 						return getContainer().getBindingValue(evaluationContext);

@@ -173,7 +173,8 @@ public class TestControlledDiagramVirtualModel extends DiagramTestCase {
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
 
 		// Add palette element
-		DiagramPalette palette = paletteResource.getDiagramPalette();
+		// Unused DiagramPalette palette =
+		paletteResource.getDiagramPalette();
 
 		diagramPaletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
 		diagramPaletteElement.setName(PALETTE_ELEMENT_NAME);

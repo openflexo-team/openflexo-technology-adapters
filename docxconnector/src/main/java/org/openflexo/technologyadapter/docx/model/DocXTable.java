@@ -196,9 +196,9 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 			}
 
 			int cellCount = 0;
-			int rowCount = 0;
+			// Unused int rowCount = 0;
 			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
-				rowCount++;
+				// Unused rowCount++;
 				cellCount = Math.max(cellCount, row.getTableCells().size());
 			}
 

@@ -56,7 +56,6 @@ import org.openflexo.fge.BackgroundStyle;
 import org.openflexo.fge.ColorGradientBackgroundStyle.ColorGradientDirection;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.Drawing.ShapeNode;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGECoreUtils;
 import org.openflexo.fge.FGEUtils;
 import org.openflexo.fge.ForegroundStyle;
@@ -129,7 +128,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 	public void paint(Graphics g, AbstractDianaEditor<?, ?, ?> controller) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null) {
 			FGEShape<?> fgeShape = shapeNode.getFGEShapeOutline();
-			DrawingGraphicalRepresentation drawingGR = controller.getDrawing().getRoot().getGraphicalRepresentation();
+			// Unused DrawingGraphicalRepresentation drawingGR = controller.getDrawing().getRoot().getGraphicalRepresentation();
 			double scale = controller.getScale();
 			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(controller.getDrawing().getRoot()
 					.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, shapeNode, scale));
@@ -247,10 +246,10 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 				if (focusedNode == null) {
 					focusedNode = controller.getDrawing().getRoot();
 				}
-				SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
-						new FGEPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
-								controller.getDrawing().getRoot(), controller.getScale())),
-						new FGEPoint(currentDraggingLocationInDrawingView));
+				// Unused SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
+				// Unused new FGEPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
+				// Unused controller.getDrawing().getRoot(), controller.getScale())),
+				// Unused new FGEPoint(currentDraggingLocationInDrawingView));
 				Point dropPoint = currentDraggingLocationInDrawingView;
 				if (dropPoint.x < 0) {
 					dropPoint.x = 0;
@@ -259,10 +258,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 					dropPoint.y = 0;
 				}
 
-				Point p = FGEUtils.convertPoint(controller.getDrawing().getRoot(), dropPoint, focusedNode, controller.getScale());
-				FGEPoint dropLocation = new FGEPoint(p.x / controller.getScale(), p.y / controller.getScale());
-				DiagramShape to = null;
-
+				// Unused Point p = FGEUtils.convertPoint(controller.getDrawing().getRoot(), dropPoint, focusedNode, controller.getScale());
+				// Unused FGEPoint dropLocation = new FGEPoint(p.x / controller.getScale(), p.y / controller.getScale());
 			} finally {
 				// ((DiagramView) controller.getDrawingView()).resetFloatingPalette();
 				JDrawingView<?> drawingView = this.controller.getDrawingView();
@@ -328,7 +325,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 
 		Graphics2D oldGraphics = ((JFGEGraphics) drawingGraphics).cloneGraphics();
 
-		FGERoundRectangle paletteRect = (FGERoundRectangle) getArea().transform(at);
+		// Unused FGERoundRectangle paletteRect = (FGERoundRectangle)
+		getArea().transform(at);
 		FGEArea nodeRect = makeBaseRoundedArc(shapeNode, 1, 5);
 
 		// paletteRect.paint(drawingGraphics);
@@ -358,7 +356,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 
 	private void updateElements(ShapeNode<DiagramElement<?>> shapeNode) {
 		setArea(makeRoundRect(shapeNode));
-		FGEArea roleRect = makeBaseRoundedArc(shapeNode, 1, 5);
+		// Unused FGEArea roleRect =
+		makeBaseRoundedArc(shapeNode, 1, 5);
 	}
 
 	private static FGEArea makeBaseRoundedArc(ShapeNode<DiagramElement<?>> shapeNode, double id, double arcNumber) {

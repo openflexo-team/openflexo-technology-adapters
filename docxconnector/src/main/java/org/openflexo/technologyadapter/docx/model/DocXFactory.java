@@ -582,7 +582,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		}
 
 		if (pPr.getTabs() != null) {
-			TabStop[] tabs = new TabStop[pPr.getTabs().getTab().size()];
+			// Unused TabStop[] tabs = new TabStop[pPr.getTabs().getTab().size()];
 			for (CTTabStop stop : pPr.getTabs().getTab()) {
 				float pos = stop.getPos().intValue() / INDENTS_MULTIPLIER;
 				int align = TabStop.ALIGN_LEFT;

@@ -47,13 +47,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
-import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate.FileIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -86,7 +84,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	@Override
 	public OSLCServiceProviderCatalog loadResourceData(IProgress progress)
 			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		AbstractResource unit = null;
+		// Unused AbstractResource unit = null;
 
 		if (getIODelegate().exists()) {
 			try {
@@ -116,7 +114,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		try {
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
-			OSLCResourceResource resourceData;
+			// Unused OSLCResourceResource resourceData;
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
@@ -151,11 +149,13 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(((File) getIODelegate().getSerializationArtefact()));
-			StreamResult result = new StreamResult(out);
+			// Unused StreamResult result =
+			new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
-			Transformer transformer = factory.newTransformer();
+			// Unused Transformer transformer =
+			factory.newTransformer();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

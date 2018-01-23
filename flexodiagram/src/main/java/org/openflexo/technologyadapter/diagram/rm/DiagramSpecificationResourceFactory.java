@@ -149,7 +149,8 @@ public class DiagramSpecificationResourceFactory extends
 
 		String artefactName = resourceCenter.retrieveName(serializationArtefact);
 		String baseName = artefactName.endsWith(DIAGRAM_SPECIFICATION_SUFFIX)
-				? artefactName.substring(0, artefactName.length() - DIAGRAM_SPECIFICATION_SUFFIX.length()) : artefactName;
+				? artefactName.substring(0, artefactName.length() - DIAGRAM_SPECIFICATION_SUFFIX.length())
+				: artefactName;
 
 		returned.initName(baseName);
 
@@ -212,7 +213,8 @@ public class DiagramSpecificationResourceFactory extends
 			}
 			else if (getPaletteResourceFactory().isValidArtefact(child, resourceCenter)) {
 				try {
-					DiagramPaletteResource paletteRes = getPaletteResourceFactory().retrievePaletteResource(child, dsResource);
+					// Unused DiagramPaletteResource paletteRes =
+					getPaletteResourceFactory().retrievePaletteResource(child, dsResource);
 				} catch (ModelDefinitionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

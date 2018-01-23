@@ -80,7 +80,7 @@ public class TextBox extends AbstractBox {
 
 		List<List<List<TextBox>>> items = new ArrayList<>();
 
-		int i = 0;
+		// Unused int i = 0;
 		double startX = -1;
 		List<List<TextBox>> currentItem = null;
 		for (Row row : rows) {
@@ -101,7 +101,7 @@ public class TextBox extends AbstractBox {
 					items.add(currentItem);
 				}
 			}
-			i++;
+			// Unused i++;
 		}
 
 		return items;

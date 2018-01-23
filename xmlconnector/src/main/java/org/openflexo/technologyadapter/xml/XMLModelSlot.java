@@ -317,7 +317,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		public XMLFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
 
-			XMLFileResource returned = null;
+			// Unused XMLFileResource returned = null;
 
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
 				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(),

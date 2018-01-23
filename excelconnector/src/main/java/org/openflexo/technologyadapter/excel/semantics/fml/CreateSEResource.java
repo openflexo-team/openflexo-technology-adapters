@@ -383,7 +383,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 
 				FlexoProperty<SEVirtualModelInstance> flexoProperty = getAssignedFlexoProperty();
 				if (flexoProperty instanceof SemanticsExcelModelSlot) {
-					SemanticsExcelModelSlot seModelSlot = (SemanticsExcelModelSlot) flexoProperty;
+					// Unused SemanticsExcelModelSlot seModelSlot = (SemanticsExcelModelSlot) flexoProperty;
 					try {
 						if (getExcelWorkbook().isValid()) {
 							ExcelWorkbook excelWorkbook = getExcelWorkbook().getBindingValue(evaluationContext);
@@ -404,7 +404,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 							(FlexoBehaviourAction<?, ?, ?>) evaluationContext);
 					creationSchemeAction.initWithFlexoConceptInstance(data);
 					for (CreateSEResourceParameter p : getParameters()) {
-						FlexoBehaviourParameter param = p.getParam();
+						// Unused FlexoBehaviourParameter param = p.getParam();
 						Object value = p.evaluateParameterValue((FlexoBehaviourAction<?, ?, ?>) evaluationContext);
 						// System.out.println("For parameter " + param + " value is " + value);
 						if (value != null) {

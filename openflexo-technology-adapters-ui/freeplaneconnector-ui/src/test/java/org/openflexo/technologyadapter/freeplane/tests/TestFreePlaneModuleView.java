@@ -51,7 +51,6 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 import org.fest.swing.fixture.FrameFixture;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -153,7 +152,8 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 
 		IFreeplaneMap map = fpResource.getResourceData(null);
 
-		final MapModel loadedMap = map.getMapModel();
+		// Unused final MapModel loadedMap =
+		map.getMapModel();
 
 		/*
 		 * final MapModel loadedMap =

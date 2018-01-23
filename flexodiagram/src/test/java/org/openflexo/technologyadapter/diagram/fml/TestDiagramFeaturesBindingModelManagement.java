@@ -188,7 +188,8 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
 
 		// Add palette element
-		DiagramPalette palette = paletteResource.getDiagramPalette();
+		// Unused DiagramPalette palette =
+		paletteResource.getDiagramPalette();
 
 		paletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
 		paletteElement.setName(PALETTE_ELEMENT_NAME);

@@ -86,7 +86,6 @@ import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
-import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.dm.OntologyClassInserted;
 import org.openflexo.foundation.ontology.dm.OntologyClassRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyDataPropertyInserted;
@@ -578,7 +577,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		for (Iterator<Individual> i = getOntModel().listIndividuals(); i.hasNext();) {
 			Individual individual = i.next();
 			if (_individuals.get(individual) == null && isNamedResourceOfThisOntology(individual)) {
-				IFlexoOntologyIndividual newIndividual = makeNewIndividual(individual);
+				// Unused IFlexoOntologyIndividual newIndividual =
+				makeNewIndividual(individual);
 				if (logger.isLoggable(Level.FINE)) {
 					logger.fine("Made individual " + individual.getURI());
 				}
@@ -625,7 +625,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 						makeNewObjectProperty(ontProperty);
 					}
 					else {
-						OWLObjectProperty p = makeNewObjectProperty(ontProperty);
+						// Unused OWLObjectProperty p =
+						makeNewObjectProperty(ontProperty);
 					}
 				}
 				else {

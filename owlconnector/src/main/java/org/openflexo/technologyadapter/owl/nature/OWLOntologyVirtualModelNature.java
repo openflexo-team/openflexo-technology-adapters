@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.owl.nature;
 import java.util.List;
 
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.nature.FlexoOntologyVirtualModelNature;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;

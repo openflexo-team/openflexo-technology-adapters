@@ -76,7 +76,7 @@ public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvid
 
 			OSLCServiceProvider cdlActivity = null;
 
-			OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
+			// Unused OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
 
 			return cdlActivity;
 		}

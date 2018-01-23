@@ -130,7 +130,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		assertEquals(11, simpleDocument.getElements().size());
 
-		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
+		// Unused DocXParagraph titleParagraph = (DocXParagraph)
+		simpleDocument.getElements().get(0);
 
 	}
 

@@ -50,7 +50,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -157,8 +156,6 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public DiagramShape getFromShape(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
-						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
 			}

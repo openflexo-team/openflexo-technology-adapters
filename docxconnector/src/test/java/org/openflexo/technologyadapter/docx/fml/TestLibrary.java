@@ -64,6 +64,7 @@ import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -1362,7 +1363,7 @@ public class TestLibrary extends AbstractTestDocX {
 		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(8);
 		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(9);
 		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(10);
-		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
+		// Unused DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
 
 		// [Les misérables]
 		// [Author][: ][Victor Hugo]
@@ -1718,7 +1719,8 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println("titleParagraph4=" + titleParagraph4.getRawText());
 		System.out.println("descriptionParagraph4bis=" + descriptionParagraph4bis.getRawText());
 
-		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
+		// Unused DocXFragment lrnFragment =
+		generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
 
 		/*
 		 * StringBuffer sb = new StringBuffer(); for (DocXElement element :
@@ -1973,12 +1975,12 @@ public class TestLibrary extends AbstractTestDocX {
 		// La chartreuse de Parme
 
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
-		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
+		// Unused DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		// Unused DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		// Unused DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		// Unused DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		// Unused DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
+		// Unused DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
 		// [Author][: ][Stendhal]
@@ -2058,13 +2060,13 @@ public class TestLibrary extends AbstractTestDocX {
 
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		// Unused DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		// Unused DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		// Unused DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		// Unused DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		// Unused DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
 		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
-		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
+		// Unused DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
 		// [Author][: ][Stendhal]

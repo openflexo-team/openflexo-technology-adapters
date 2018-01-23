@@ -42,7 +42,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,10 +51,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyBrowser;
@@ -79,7 +76,8 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		// Unused Resource rsc =
+		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
 		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		initGUI();
 	}
@@ -92,7 +90,8 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
+		// Unused List<ResourceRepository<?, ?>> owlRepositories =
+		serviceManager.getResourceManager().getAllRepositories(owlTA);
 
 		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.w3.org/2004/02/skos/core",
 				OWLOntology.class);
