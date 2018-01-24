@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -353,9 +354,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			if (getCell() != null) {
 				return getCell().getColumnIndex();
 			}
-			else {
-				return getExcelRow().getExcelCells().indexOf(this);
-			}
+			return getExcelRow().getExcelCells().indexOf(this);
 		}
 
 		@Override
@@ -363,9 +362,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			if (getCell() != null) {
 				return getCell().getRowIndex();
 			}
-			else {
-				return getExcelRow().getRowIndex();
-			}
+			return getExcelRow().getRowIndex();
 		}
 
 		/*@Override
@@ -412,9 +409,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 				}
 				return returned;
 			}
-			else {
-				return null;
-			}
+			return null;
 		}
 
 		/**
@@ -536,9 +531,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			if (getRowIndex() > 0) {
 				return getExcelSheet().getCellAt(getRowIndex() - 1, getColumnIndex());
 			}
-			else {
-				return null;
-			}
+			return null;
 		}
 
 		/**
@@ -593,14 +586,14 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			if (getCell() == null) {
 				return CellType.Empty;
 			}
-			switch (getCell().getCellType()) {
-				case Cell.CELL_TYPE_BLANK:
+			switch (getCell().getCellTypeEnum()) {
+				case BLANK:
 					return CellType.Blank;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					return CellType.Numeric;
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					return CellType.String;
-				case Cell.CELL_TYPE_FORMULA:
+				case FORMULA:
 					try {
 						getCell().getNumericCellValue();
 						return CellType.NumericFormula;
@@ -612,9 +605,9 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 							return CellType.Unknown;
 						}
 					}
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					return CellType.Boolean;
-				case Cell.CELL_TYPE_ERROR:
+				case ERROR:
 					return CellType.Error;
 				default:
 					return CellType.Unknown;
@@ -626,23 +619,23 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 			createCellWhenNonExistant();
 			switch (cellType) {
 				case Blank:
-					getCell().setCellType(Cell.CELL_TYPE_BLANK);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.BLANK);
 					break;
 				case Boolean:
-					getCell().setCellType(Cell.CELL_TYPE_BOOLEAN);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.BOOLEAN);
 					break;
 				case Error:
-					getCell().setCellType(Cell.CELL_TYPE_ERROR);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.ERROR);
 					break;
 				case Numeric:
-					getCell().setCellType(Cell.CELL_TYPE_NUMERIC);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.NUMERIC);
 					break;
 				case NumericFormula:
 				case StringFormula:
-					getCell().setCellType(Cell.CELL_TYPE_FORMULA);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.FORMULA);
 					break;
 				case String:
-					getCell().setCellType(Cell.CELL_TYPE_STRING);
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
 					break;
 				default:
 					break;
@@ -904,56 +897,58 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		 */
 		@Override
 		public String toString() {
-			return "["
-					+ getIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
-							+ getTopLeftMergedCell().getIdentifier() + ":" + getBottomRightMergedCell().getIdentifier() + "]" + "/" : "")
+			return "[" + getIdentifier() + "]/" + getCellType().name() + "/"
+					+ (isMerged()
+							? "MergedWith:" + "[" + getTopLeftMergedCell().getIdentifier() + ":"
+									+ getBottomRightMergedCell().getIdentifier() + "]" + "/"
+							: "")
 					+ getDisplayValue();
 		}
 
 		@Override
 		public boolean hasTopBorder() {
-			if ((getCell() != null && getCell().getCellStyle().getBorderTop() != CellStyle.BORDER_NONE)) {
+			if ((getCell() != null && getCell().getCellStyle().getBorderTopEnum() != BorderStyle.NONE)) {
 				return true;
 			}
 			if (isMerged()) {
 				return getTopMergedCell().getCell() != null
-						&& getTopMergedCell().getCell().getCellStyle().getBorderTop() != CellStyle.BORDER_NONE;
+						&& getTopMergedCell().getCell().getCellStyle().getBorderTopEnum() != BorderStyle.NONE;
 			}
 			return false;
 		}
 
 		@Override
 		public boolean hasLeftBorder() {
-			if (getCell() != null && getCell().getCellStyle().getBorderLeft() != CellStyle.BORDER_NONE) {
+			if (getCell() != null && getCell().getCellStyle().getBorderLeftEnum() != BorderStyle.NONE) {
 				return true;
 			}
 			if (isMerged()) {
 				return getLeftMergedCell().getCell() != null
-						&& getLeftMergedCell().getCell().getCellStyle().getBorderLeft() != CellStyle.BORDER_NONE;
+						&& getLeftMergedCell().getCell().getCellStyle().getBorderLeftEnum() != BorderStyle.NONE;
 			}
 			return false;
 		}
 
 		@Override
 		public boolean hasRightBorder() {
-			if (getCell() != null && getCell().getCellStyle().getBorderRight() != CellStyle.BORDER_NONE) {
+			if (getCell() != null && getCell().getCellStyle().getBorderRightEnum() != BorderStyle.NONE) {
 				return true;
 			}
 			if (isMerged()) {
 				return getRightMergedCell().getCell() != null
-						&& getRightMergedCell().getCell().getCellStyle().getBorderRight() != CellStyle.BORDER_NONE;
+						&& getRightMergedCell().getCell().getCellStyle().getBorderRightEnum() != BorderStyle.NONE;
 			}
 			return false;
 		}
 
 		@Override
 		public boolean hasBottomBorder() {
-			if (getCell() != null && getCell().getCellStyle().getBorderBottom() != CellStyle.BORDER_NONE) {
+			if (getCell() != null && getCell().getCellStyle().getBorderBottomEnum() != BorderStyle.NONE) {
 				return true;
 			}
 			if (isMerged()) {
 				return getBottomMergedCell().getCell() != null
-						&& getBottomMergedCell().getCell().getCellStyle().getBorderBottom() != CellStyle.BORDER_NONE;
+						&& getBottomMergedCell().getCell().getCellStyle().getBorderBottomEnum() != BorderStyle.NONE;
 			}
 			return false;
 		}

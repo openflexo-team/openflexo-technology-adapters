@@ -365,30 +365,30 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 				foreground = getForegroundColor(style);
 				font = getFont(style);
 
-				switch (style.getAlignment()) {
-					case CellStyle.ALIGN_CENTER:
+				switch (style.getAlignmentEnum()) {
+					case CENTER:
 						returned.setHorizontalAlignment(SwingConstants.CENTER);
 						break;
-					case CellStyle.ALIGN_LEFT:
+					case LEFT:
 						returned.setHorizontalAlignment(SwingConstants.LEFT);
 						break;
-					case CellStyle.ALIGN_RIGHT:
+					case RIGHT:
 						returned.setHorizontalAlignment(SwingConstants.RIGHT);
 						break;
 					default:
 						returned.setHorizontalAlignment(SwingConstants.LEFT);
 				}
-				switch (style.getVerticalAlignment()) {
-					case CellStyle.VERTICAL_TOP:
+				switch (style.getVerticalAlignmentEnum()) {
+					case TOP:
 						returned.setVerticalAlignment(SwingConstants.TOP);
 						break;
-					case CellStyle.VERTICAL_BOTTOM:
+					case BOTTOM:
 						returned.setVerticalAlignment(SwingConstants.BOTTOM);
 						break;
-					case CellStyle.VERTICAL_CENTER:
+					case CENTER:
 						returned.setVerticalAlignment(SwingConstants.CENTER);
 						break;
-					case CellStyle.VERTICAL_JUSTIFY:
+					case JUSTIFY:
 						returned.setVerticalAlignment(SwingConstants.CENTER);
 						break;
 					default:
@@ -438,30 +438,30 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 				Rectangle2D stringBounds = fm.getStringBounds(cell.getDisplayValue(), g);
 				int x;
 				int y;
-				switch (cell.getCellStyle().getAlignment()) {
-					case CellStyle.ALIGN_CENTER:
+				switch (cell.getCellStyle().getAlignmentEnum()) {
+					case CENTER:
 						x = (int) (cellBounds.x - stringBounds.getCenterX() + cellBounds.getWidth() / 2);
 						break;
-					case CellStyle.ALIGN_LEFT:
+					case LEFT:
 						x = (int) (cellBounds.x - stringBounds.getX());
 						break;
-					case CellStyle.ALIGN_RIGHT:
+					case RIGHT:
 						x = (int) (cellBounds.x - stringBounds.getX());
 						break;
 					default:
 						x = (int) (cellBounds.x - stringBounds.getX());
 				}
-				switch (cell.getCellStyle().getVerticalAlignment()) {
-					case CellStyle.VERTICAL_TOP:
+				switch (cell.getCellStyle().getVerticalAlignmentEnum()) {
+					case TOP:
 						y = (int) (cellBounds.y - stringBounds.getY());
 						break;
-					case CellStyle.VERTICAL_BOTTOM:
+					case BOTTOM:
 						y = (cellBounds.y + cellBounds.height - 3);
 						break;
-					case CellStyle.VERTICAL_CENTER:
+					case CENTER:
 						y = (int) (cellBounds.y - stringBounds.getCenterY() + cellBounds.getHeight() / 2);
 						break;
-					case CellStyle.VERTICAL_JUSTIFY:
+					case JUSTIFY:
 						y = (int) (cellBounds.y - stringBounds.getCenterY() + cellBounds.getHeight() / 2);
 						break;
 					default:
@@ -608,7 +608,7 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 			if (poiFont.getItalic()) {
 				fontStyle = Font.PLAIN;
 			}
-			else if (poiFont.getBoldweight() == org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD) {
+			else if (poiFont.getBold()) {
 				fontStyle = Font.BOLD;
 			}
 			return new Font(poiFont.getFontName(), fontStyle, poiFont.getFontHeightInPoints());
@@ -643,7 +643,7 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 					short[] triplets = HSSFColor.getIndexHash().get(index).getTriplet();
 					return new Color(triplets[0], triplets[1], triplets[2]);
 				}
-				rgb = color.getRgb();
+				rgb = color.getRGB();
 				red = (rgb[0] < 0) ? (rgb[0] + 256) : rgb[0];
 				green = (rgb[1] < 0) ? (rgb[1] + 256) : rgb[1];
 				blue = (rgb[2] < 0) ? (rgb[2] + 256) : rgb[2];
@@ -685,7 +685,7 @@ public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 			if (color == null) {
 				return null;
 			}
-			byte[] rgb = color.getRgb();
+			byte[] rgb = color.getRGB();
 			if (rgb == null) {
 				return new Color(0, 0, 0);
 			}
