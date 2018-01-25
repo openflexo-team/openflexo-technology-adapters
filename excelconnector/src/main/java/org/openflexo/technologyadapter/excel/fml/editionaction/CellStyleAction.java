@@ -285,7 +285,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 				else {
 					isBorderStyle = false;
 				}
-				if (cellStyle.equals(CellStyleFeature.Alignment)) {
+				if (cellStyle.equals(CellStyleFeature.AlignmentV) || cellStyle.equals(CellStyleFeature.AlignmentH)) {
 					isAlignmentStyle = true;
 				}
 				else {

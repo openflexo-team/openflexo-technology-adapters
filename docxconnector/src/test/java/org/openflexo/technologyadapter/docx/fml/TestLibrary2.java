@@ -70,6 +70,7 @@ import org.openflexo.foundation.doc.fml.FlexoTableRole.FlexoTableRoleImpl;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -1581,7 +1582,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		DocXParagraph editionParagraph3 = (DocXParagraph) table3.getCell(1, 1).getElements().get(0);
 		DocXParagraph typeParagraph3 = (DocXParagraph) table3.getCell(2, 1).getElements().get(0);
 		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(30);
-		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
+		// Unused DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
 
 		// > [39F6DE6E/26] { (Les misérables) }
 		// > [2E0630CF/27] { }
@@ -1932,7 +1933,8 @@ public class TestLibrary2 extends AbstractTestDocX {
 		System.out.println("titleParagraph4=" + titleParagraph4.getRawText());
 		System.out.println("descriptionParagraph4bis=" + descriptionParagraph4bis.getRawText());
 
-		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
+		// Unused DocXFragment lrnFragment =
+		generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
 
 		/*
 		 * StringBuffer sb = new StringBuffer(); for (DocXElement element :

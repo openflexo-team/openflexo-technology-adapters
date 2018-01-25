@@ -22,8 +22,8 @@ public class TestFlexoOslcRmClient extends OpenflexoTestCase {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
-		OSLCTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(OSLCTechnologyAdapter.class);
+		// Unused OSLCTechnologyAdapter technologicalAdapter =
+		serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OSLCTechnologyAdapter.class);
 		/*for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			OSLCRepository repository = resourceCenter.getRepository(OSLCRepository.class, technologicalAdapter);
 			assertNotNull(repository);

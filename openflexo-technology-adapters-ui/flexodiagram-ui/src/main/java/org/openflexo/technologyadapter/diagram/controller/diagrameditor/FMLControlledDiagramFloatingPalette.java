@@ -324,7 +324,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	public void stopDragging(DianaEditor<?> controller, DrawingTreeNode<?, ?> focused) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null && isDnd) {
 			try {
-				DrawingTreeNode<?, ?> targetNode = getNode().getParentNode();
+				// Unused DrawingTreeNode<?, ?> targetNode = getNode().getParentNode();
 				if (focused == null) {
 					focused = getNode().getDrawing().getRoot();
 				}

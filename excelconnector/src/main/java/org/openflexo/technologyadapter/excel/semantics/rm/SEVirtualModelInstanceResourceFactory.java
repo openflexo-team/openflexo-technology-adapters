@@ -318,8 +318,8 @@ public class SEVirtualModelInstanceResourceFactory extends
 		for (I child : resourceCenter.getContents(resourceCenter.getContainer(serializationArtefact))) {
 			if (isValidArtefact(child, resourceCenter)) {
 				try {
-					SEVirtualModelInstanceResource virtualModelInstanceResource = retrieveFMLRTVirtualModelInstanceResource(child,
-							resourceCenter, containerResource);
+					// Unused SEVirtualModelInstanceResource virtualModelInstanceResource =
+					retrieveFMLRTVirtualModelInstanceResource(child, resourceCenter, containerResource);
 				} catch (ModelDefinitionException e) {
 					e.printStackTrace();
 				} catch (IOException e) {

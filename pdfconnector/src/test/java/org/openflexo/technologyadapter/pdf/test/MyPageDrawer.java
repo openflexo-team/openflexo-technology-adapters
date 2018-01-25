@@ -8,7 +8,6 @@ import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType3CharProc;
 import org.apache.pdfbox.pdmodel.graphics.form.PDTransparencyGroup;
@@ -69,7 +68,8 @@ public class MyPageDrawer extends PageDrawer {
 		// TODO Auto-generated method stub
 		super.processTransparencyGroup(group);
 		// System.out.println("processTransparencyGroup " + group);
-		PDStream stream = group.getContentStream();
+		// Unused PDStream stream =
+		group.getContentStream();
 		// PDStream
 	}
 

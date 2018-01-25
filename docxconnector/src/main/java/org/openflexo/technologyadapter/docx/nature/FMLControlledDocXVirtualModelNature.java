@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.docx.nature;
 
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;

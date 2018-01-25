@@ -56,7 +56,6 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLPropertySelector;
@@ -89,11 +88,10 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 
 	private static OWLOntology skosOntology, owlOntology;
 	private static OWLClass thing, collection, concept, conceptScheme, list;
-	private static OWLObjectProperty altLabel, hiddenLabel, prefLabel, hasTopConcept, inScheme, topConceptOf, member,
-			memberList;
+	private static OWLObjectProperty altLabel, hiddenLabel, prefLabel, hasTopConcept, inScheme, topConceptOf, member, memberList;
 	private static OWLObjectProperty note, changeNote, definition, editorialNote, example, historyNote, scopeNote;
-	private static OWLObjectProperty semanticRelation, broaderTransitive, broader, broadMatch, mappingRelation,
-			closeMatch, exactMatch, narrowMatch, relatedMatch, narrowerTransitive, narrower, related;
+	private static OWLObjectProperty semanticRelation, broaderTransitive, broader, broadMatch, mappingRelation, closeMatch, exactMatch,
+			narrowMatch, relatedMatch, narrowerTransitive, narrower, related;
 	private static OWLDataProperty label, notation, comment;
 	private static OWLIndividual coreIndividual;
 	private static OWLClass resource, namedIndividual, nothing;
@@ -108,11 +106,11 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		// Unused Resource rsc =
+		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
 		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
-				.getTechnologyContextManager(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		initGUI();
 	}
 
@@ -120,13 +118,12 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 	@TestOrder(1)
 	public void testRetrieveOntology() {
 
-		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(OWLTechnologyAdapter.class);
+		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 
 		assertNotNull(owlTA);
 
-		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager()
-				.getResource("http://www.w3.org/2004/02/skos/core", OWLOntology.class);
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.w3.org/2004/02/skos/core",
+				OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
@@ -181,20 +178,16 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 		assertNotNull(historyNote = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "historyNote"));
 		assertNotNull(scopeNote = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "scopeNote"));
 
-		assertNotNull(
-				semanticRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "semanticRelation"));
-		assertNotNull(
-				broaderTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broaderTransitive"));
+		assertNotNull(semanticRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "semanticRelation"));
+		assertNotNull(broaderTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broaderTransitive"));
 		assertNotNull(broader = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broader"));
 		assertNotNull(broadMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "broadMatch"));
-		assertNotNull(
-				mappingRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "mappingRelation"));
+		assertNotNull(mappingRelation = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "mappingRelation"));
 		assertNotNull(closeMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "closeMatch"));
 		assertNotNull(exactMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "exactMatch"));
 		assertNotNull(narrowMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrowMatch"));
 		assertNotNull(relatedMatch = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "relatedMatch"));
-		assertNotNull(narrowerTransitive = skosOntology
-				.getObjectProperty(skosOntology.getURI() + "#" + "narrowerTransitive"));
+		assertNotNull(narrowerTransitive = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrowerTransitive"));
 		assertNotNull(narrower = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "narrower"));
 		assertNotNull(related = skosOntology.getObjectProperty(skosOntology.getURI() + "#" + "related"));
 
@@ -205,21 +198,16 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 		assertNotNull(coreIndividual = skosOntology.getIndividual(skosOntology.getURI()));
 
 		assertNotNull(resource = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Resource"));
-		assertNotNull(
-				namedIndividual = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "NamedIndividual"));
+		assertNotNull(namedIndividual = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "NamedIndividual"));
 		assertNotNull(nothing = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "Nothing"));
 
-		assertNotNull(topObjectProperty = owlOntology
-				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
-		assertNotNull(bottomObjectProperty = owlOntology
-				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
-		assertNotNull(bottomDataProperty = owlOntology
-				.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
-		assertNotNull(topDataProperty = owlOntology
-				.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
+		assertNotNull(topObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
+		assertNotNull(
+				bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
+		assertNotNull(bottomDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
+		assertNotNull(topDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
 
-		assertNotNull(differentFrom = owlOntology
-				.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "differentFrom"));
+		assertNotNull(differentFrom = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "differentFrom"));
 		assertNotNull(sameAs = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "sameAs"));
 	}
 
@@ -322,8 +310,8 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 		assertSameList(obm.getRoots(), thing, inScheme, note, notation);
 
 		assertEquals(7, obm.getChildren(thing).size());
-		assertSameList(obm.getChildren(thing), resource, topDataProperty, topObjectProperty, bottomDataProperty,
-				bottomObjectProperty, differentFrom, sameAs);
+		assertSameList(obm.getChildren(thing), resource, topDataProperty, topObjectProperty, bottomDataProperty, bottomObjectProperty,
+				differentFrom, sameAs);
 
 		assertEquals(12, obm.getChildren(resource).size());
 		assertTrue(obm.getChildren(resource).contains(label));

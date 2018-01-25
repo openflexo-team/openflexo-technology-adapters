@@ -77,7 +77,7 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 				if (document != null && document instanceof DocXDocumentImpl) {
 					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
-					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
+					// Unused Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
 					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
 
 					BinaryPartAbstractImage binaryImage = (BinaryPartAbstractImage) relsPart.getPart(embedId);

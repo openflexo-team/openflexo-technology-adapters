@@ -44,18 +44,21 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
-
 public class ExcelStyleManager {
-	
+
 	private final ExcelWorkbook workbook;
-	
+
 	public enum CellStyleFeature {
-		Foreground, Background, Pattern, Alignment, Font, BorderBottom, BorderTop, BorderLeft, BorderRight
+		Foreground, Background, Pattern, AlignmentV, AlignmentH, Font, BorderBottom, BorderTop, BorderLeft, BorderRight
 	}
 
 	public enum CellBorderStyleFeature {
@@ -106,7 +109,7 @@ public class ExcelStyleManager {
 		U_SINGLE,
 		U_SINGLE_ACCOUNTING
 	}
-	
+
 	public enum CellPatternStyleFeature {
 		ALT_BARS,
 		BIG_SPOTS,
@@ -127,23 +130,26 @@ public class ExcelStyleManager {
 		THIN_HORZ_BANDS,
 		THIN_VERT_BANDS;
 	}
-	
+
 	public ExcelStyleManager(ExcelWorkbook workbook) {
 		super();
 		this.workbook = workbook;
 	}
 
-	public CellStyle udapteCellStyle(CellStyleFeature cellStyle, Object value, CellStyle oldStyle){
+	public CellStyle udapteCellStyle(CellStyleFeature cellStyle, Object value, CellStyle oldStyle) {
 		// Then create a new style
 		CellStyle newStyle = getWorkbook().getWorkbook().createCellStyle();
 		// Apply the old parameters to the new style
-		if(oldStyle!=null){
+		if (oldStyle != null) {
 			newStyle.cloneStyleFrom(oldStyle);
 		}
 		// Then apply the new parameter to the new style
 		switch (cellStyle) {
-			case Alignment:
-				newStyle.setAlignment(getPOIAlignmentStyle((CellAlignmentStyleFeature) value));
+			case AlignmentV:
+				newStyle.setVerticalAlignment(getPOIAlignmentVStyle((CellAlignmentStyleFeature) value));
+				break;
+			case AlignmentH:
+				newStyle.setAlignment(getPOIAlignmentHStyle((CellAlignmentStyleFeature) value));
 				break;
 			case Font:
 				newStyle.setFont((Font) value);
@@ -161,17 +167,19 @@ public class ExcelStyleManager {
 				newStyle.setBorderTop(getPOIBorderStyle((CellBorderStyleFeature) value));
 				break;
 			case Foreground:
-				if(newStyle instanceof HSSFCellStyle){
-					setForeground(value, (HSSFCellStyle)newStyle);
-				}else{
-					setForeground(value, (XSSFCellStyle)newStyle);
+				if (newStyle instanceof HSSFCellStyle) {
+					setForeground(value, (HSSFCellStyle) newStyle);
+				}
+				else {
+					setForeground(value, (XSSFCellStyle) newStyle);
 				}
 				break;
 			case Background:
-				if(newStyle instanceof HSSFCellStyle){
-					setBackground(value, (HSSFCellStyle)newStyle);
-				}else{
-					setBackground(value, (XSSFCellStyle)newStyle);
+				if (newStyle instanceof HSSFCellStyle) {
+					setBackground(value, (HSSFCellStyle) newStyle);
+				}
+				else {
+					setBackground(value, (XSSFCellStyle) newStyle);
 				}
 				break;
 			case Pattern:
@@ -182,18 +190,17 @@ public class ExcelStyleManager {
 		return newStyle;
 	}
 
-	private HSSFColor convertColorToHSSFColor(Color color){
-		HSSFPalette palette = ((HSSFWorkbook)(getWorkbook().getWorkbook())).getCustomPalette();
-		HSSFColor hssfColor = palette.findColor((byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue());
-		if (hssfColor == null ){
-		      palette.setColorAtIndex(HSSFColor.LAVENDER.index, (byte)color.getRed(), (byte)color.getGreen(),
-		(byte)color.getBlue());
-		      hssfColor = palette.getColor(HSSFColor.LAVENDER.index);
+	private HSSFColor convertColorToHSSFColor(Color color) {
+		HSSFPalette palette = ((HSSFWorkbook) (getWorkbook().getWorkbook())).getCustomPalette();
+		HSSFColor hssfColor = palette.findColor((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue());
+		if (hssfColor == null) {
+			palette.setColorAtIndex(HSSFColor.LAVENDER.index, (byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue());
+			hssfColor = palette.getColor(HSSFColor.LAVENDER.index);
 		}
 		return hssfColor;
 	}
-	
-	private void setForeground(Object value, HSSFCellStyle style){
+
+	private void setForeground(Object value, HSSFCellStyle style) {
 		if (value instanceof Color) {
 			style.setFillForegroundColor(convertColorToHSSFColor((Color) value).getIndex());
 		}
@@ -202,10 +209,10 @@ public class ExcelStyleManager {
 		}
 		if (value instanceof Long) {
 			style.setFillForegroundColor(((Long) value).shortValue());
-		} 
+		}
 	}
-	
-	private void setForeground(Object value, XSSFCellStyle style){
+
+	private static void setForeground(Object value, XSSFCellStyle style) {
 		if (value instanceof Color) {
 			style.setFillForegroundColor(new XSSFColor((Color) value));
 		}
@@ -214,10 +221,10 @@ public class ExcelStyleManager {
 		}
 		if (value instanceof Long) {
 			style.setFillForegroundColor(((Long) value).shortValue());
-		} 
+		}
 	}
-	
-	private void setBackground(Object value, XSSFCellStyle style){
+
+	private static void setBackground(Object value, XSSFCellStyle style) {
 		if (value instanceof Color) {
 			style.setFillBackgroundColor(new XSSFColor((Color) value));
 		}
@@ -228,8 +235,8 @@ public class ExcelStyleManager {
 			style.setFillBackgroundColor(((Long) value).shortValue());
 		}
 	}
-	
-	private void setBackground(Object value, HSSFCellStyle style){
+
+	private void setBackground(Object value, HSSFCellStyle style) {
 		if (value instanceof Color) {
 			style.setFillBackgroundColor(convertColorToHSSFColor((Color) value).getIndex());
 		}
@@ -238,107 +245,150 @@ public class ExcelStyleManager {
 		}
 		if (value instanceof Long) {
 			style.setFillBackgroundColor(((Long) value).shortValue());
-		} 
+		}
 	}
-	
-	
-	private Short getPOIBorderStyle(CellBorderStyleFeature borderStyle) {
+
+	private static BorderStyle getPOIBorderStyle(CellBorderStyleFeature borderStyle) {
 		if (borderStyle.name().equals("BORDER_DASH_DOT")) {
-			return CellStyle.BORDER_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_DASH_DOT_DOT")) {
-			return CellStyle.BORDER_DASH_DOT_DOT;
-		} else if (borderStyle.name().equals("BORDER_DASHED")) {
-			return CellStyle.BORDER_DASHED;
-		} else if (borderStyle.name().equals("BORDER_DOTTED")) {
-			return CellStyle.BORDER_DOTTED;
-		} else if (borderStyle.name().equals("BORDER_DOUBLE")) {
-			return CellStyle.BORDER_DOUBLE;
-		} else if (borderStyle.name().equals("BORDER_HAIR")) {
-			return CellStyle.BORDER_HAIR;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM")) {
-			return CellStyle.BORDER_MEDIUM;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT")) {
-			return CellStyle.BORDER_MEDIUM_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT_DOT")) {
-			return CellStyle.BORDER_MEDIUM_DASH_DOT_DOT;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASHED")) {
-			return CellStyle.BORDER_MEDIUM_DASHED;
-		} else if (borderStyle.name().equals("BORDER_NONE")) {
-			return CellStyle.BORDER_NONE;
-		} else if (borderStyle.name().equals("BORDER_SLANTED_DASH_DOT")) {
-			return CellStyle.BORDER_SLANTED_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_THICK")) {
-			return CellStyle.BORDER_THICK;
-		} else if (borderStyle.name().equals("BORDER_THIN")) {
-			return CellStyle.BORDER_THIN;
+			return BorderStyle.DASH_DOT;
+		}
+		else if (borderStyle.name().equals("BORDER_DASH_DOT_DOT")) {
+			return BorderStyle.DASH_DOT_DOT;
+		}
+		else if (borderStyle.name().equals("BORDER_DASHED")) {
+			return BorderStyle.DASHED;
+		}
+		else if (borderStyle.name().equals("BORDER_DOTTED")) {
+			return BorderStyle.DOTTED;
+		}
+		else if (borderStyle.name().equals("BORDER_DOUBLE")) {
+			return BorderStyle.DOUBLE;
+		}
+		else if (borderStyle.name().equals("BORDER_HAIR")) {
+			return BorderStyle.HAIR;
+		}
+		else if (borderStyle.name().equals("BORDER_MEDIUM")) {
+			return BorderStyle.MEDIUM;
+		}
+		else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT")) {
+			return BorderStyle.MEDIUM_DASH_DOT;
+		}
+		else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT_DOT")) {
+			return BorderStyle.MEDIUM_DASH_DOT_DOT;
+		}
+		else if (borderStyle.name().equals("BORDER_MEDIUM_DASHED")) {
+			return BorderStyle.MEDIUM_DASHED;
+		}
+		else if (borderStyle.name().equals("BORDER_NONE")) {
+			return BorderStyle.NONE;
+		}
+		else if (borderStyle.name().equals("BORDER_SLANTED_DASH_DOT")) {
+			return BorderStyle.SLANTED_DASH_DOT;
+		}
+		else if (borderStyle.name().equals("BORDER_THICK")) {
+			return BorderStyle.THICK;
+		}
+		else if (borderStyle.name().equals("BORDER_THIN")) {
+			return BorderStyle.THIN;
 		}
 		return null;
 	}
 
-	private Short getPOIAlignmentStyle(CellAlignmentStyleFeature alignmentStyle) {
-		if (alignmentStyle.name().equals("ALIGN_CENTER")) {
-			return CellStyle.ALIGN_CENTER;
-		} else if (alignmentStyle.name().equals("ALIGN_CENTER_SELECTION")) {
-			return CellStyle.ALIGN_CENTER_SELECTION;
-		} else if (alignmentStyle.name().equals("ALIGN_FILL")) {
-			return CellStyle.ALIGN_FILL;
-		} else if (alignmentStyle.name().equals("ALIGN_GENERAL")) {
-			return CellStyle.ALIGN_GENERAL;
-		} else if (alignmentStyle.name().equals("ALIGN_JUSTIFY")) {
-			return CellStyle.ALIGN_JUSTIFY;
-		} else if (alignmentStyle.name().equals("ALIGN_LEFT")) {
-			return CellStyle.ALIGN_LEFT;
-		} else if (alignmentStyle.name().equals("ALIGN_RIGHT")) {
-			return CellStyle.ALIGN_RIGHT;
-		} else if (alignmentStyle.name().equals("VERTICAL_BOTTOM")) {
-			return CellStyle.VERTICAL_BOTTOM;
-		} else if (alignmentStyle.name().equals("VERTICAL_JUSTIFY")) {
-			return CellStyle.VERTICAL_JUSTIFY;
-		} else if (alignmentStyle.name().equals("VERTICAL_CENTER")) {
-			return CellStyle.VERTICAL_CENTER;
-		} else if (alignmentStyle.name().equals("VERTICAL_TOP")) {
-			return CellStyle.VERTICAL_TOP;
+	private static VerticalAlignment getPOIAlignmentVStyle(CellAlignmentStyleFeature alignmentStyle) {
+		if (alignmentStyle.name().equals("VERTICAL_BOTTOM")) {
+			return VerticalAlignment.BOTTOM;
+		}
+		else if (alignmentStyle.name().equals("VERTICAL_JUSTIFY")) {
+			return VerticalAlignment.JUSTIFY;
+		}
+		else if (alignmentStyle.name().equals("VERTICAL_CENTER")) {
+			return VerticalAlignment.CENTER;
+		}
+		else if (alignmentStyle.name().equals("VERTICAL_TOP")) {
+			return VerticalAlignment.TOP;
 		}
 		return null;
 	}
-	
-	private Short getPOIPatternStyle(CellPatternStyleFeature patternStyle) {
+
+	private static HorizontalAlignment getPOIAlignmentHStyle(CellAlignmentStyleFeature alignmentStyle) {
+		if (alignmentStyle.name().equals("ALIGN_CENTER")) {
+			return HorizontalAlignment.CENTER;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_CENTER_SELECTION")) {
+			return HorizontalAlignment.CENTER_SELECTION;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_FILL")) {
+			return HorizontalAlignment.FILL;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_GENERAL")) {
+			return HorizontalAlignment.GENERAL;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_JUSTIFY")) {
+			return HorizontalAlignment.JUSTIFY;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_LEFT")) {
+			return HorizontalAlignment.LEFT;
+		}
+		else if (alignmentStyle.name().equals("ALIGN_RIGHT")) {
+			return HorizontalAlignment.RIGHT;
+		}
+		return null;
+	}
+
+	private static FillPatternType getPOIPatternStyle(CellPatternStyleFeature patternStyle) {
 		if (patternStyle.name().equals("ALT_BARS")) {
-			return CellStyle.ALT_BARS;
-		} else if (patternStyle.name().equals("BIG_SPOTS")) {
-			return CellStyle.BIG_SPOTS;
-		} else if (patternStyle.name().equals("BRICKS")) {
-			return CellStyle.BRICKS;
-		} else if (patternStyle.name().equals("DIAMONDS")) {
-			return CellStyle.DIAMONDS;
-		} else if (patternStyle.name().equals("FINE_DOTS")) {
-			return CellStyle.FINE_DOTS;
-		} else if (patternStyle.name().equals("LEAST_DOTS")) {
-			return CellStyle.LEAST_DOTS;
-		} else if (patternStyle.name().equals("LESS_DOTS")) {
-			return CellStyle.LESS_DOTS;
-		} else if (patternStyle.name().equals("NO_FILL")) {
-			return CellStyle.NO_FILL;
-		} else if (patternStyle.name().equals("SOLID_FOREGROUND")) {
-			return CellStyle.SOLID_FOREGROUND;
-		} else if (patternStyle.name().equals("SPARSE_DOTS")) {
-			return CellStyle.SPARSE_DOTS;
-		} else if (patternStyle.name().equals("THICK_BACKWARD_DIAG")) {
-			return CellStyle.THICK_BACKWARD_DIAG;
-		} else if (patternStyle.name().equals("THICK_FORWARD_DIAG")) {
-			return CellStyle.THICK_FORWARD_DIAG;
-		} else if (patternStyle.name().equals("THICK_HORZ_BANDS")) {
-			return CellStyle.THICK_HORZ_BANDS;
-		} else if (patternStyle.name().equals("THICK_VERT_BANDS")) {
-			return CellStyle.THICK_VERT_BANDS;
-		} else if (patternStyle.name().equals("THIN_BACKWARD_DIAG")) {
-			return CellStyle.THIN_BACKWARD_DIAG;
-		} else if (patternStyle.name().equals("THIN_FORWARD_DIAG")) {
-			return CellStyle.THIN_FORWARD_DIAG;
-		} else if (patternStyle.name().equals("THIN_HORZ_BANDS")) {
-			return CellStyle.THIN_HORZ_BANDS;
-		} else if (patternStyle.name().equals("THIN_VERT_BANDS")) {
-			return CellStyle.THIN_VERT_BANDS;
+			return FillPatternType.ALT_BARS;
+		}
+		else if (patternStyle.name().equals("BIG_SPOTS")) {
+			return FillPatternType.BIG_SPOTS;
+		}
+		else if (patternStyle.name().equals("BRICKS")) {
+			return FillPatternType.BRICKS;
+		}
+		else if (patternStyle.name().equals("DIAMONDS")) {
+			return FillPatternType.DIAMONDS;
+		}
+		else if (patternStyle.name().equals("FINE_DOTS")) {
+			return FillPatternType.FINE_DOTS;
+		}
+		else if (patternStyle.name().equals("LEAST_DOTS")) {
+			return FillPatternType.LEAST_DOTS;
+		}
+		else if (patternStyle.name().equals("LESS_DOTS")) {
+			return FillPatternType.LESS_DOTS;
+		}
+		else if (patternStyle.name().equals("NO_FILL")) {
+			return FillPatternType.NO_FILL;
+		}
+		else if (patternStyle.name().equals("SOLID_FOREGROUND")) {
+			return FillPatternType.SOLID_FOREGROUND;
+		}
+		else if (patternStyle.name().equals("SPARSE_DOTS")) {
+			return FillPatternType.SPARSE_DOTS;
+		}
+		else if (patternStyle.name().equals("THICK_BACKWARD_DIAG")) {
+			return FillPatternType.THICK_BACKWARD_DIAG;
+		}
+		else if (patternStyle.name().equals("THICK_FORWARD_DIAG")) {
+			return FillPatternType.THICK_FORWARD_DIAG;
+		}
+		else if (patternStyle.name().equals("THICK_HORZ_BANDS")) {
+			return FillPatternType.THICK_HORZ_BANDS;
+		}
+		else if (patternStyle.name().equals("THICK_VERT_BANDS")) {
+			return FillPatternType.THICK_VERT_BANDS;
+		}
+		else if (patternStyle.name().equals("THIN_BACKWARD_DIAG")) {
+			return FillPatternType.THIN_BACKWARD_DIAG;
+		}
+		else if (patternStyle.name().equals("THIN_FORWARD_DIAG")) {
+			return FillPatternType.THIN_FORWARD_DIAG;
+		}
+		else if (patternStyle.name().equals("THIN_HORZ_BANDS")) {
+			return FillPatternType.THIN_HORZ_BANDS;
+		}
+		else if (patternStyle.name().equals("THIN_VERT_BANDS")) {
+			return FillPatternType.THIN_VERT_BANDS;
 		}
 		return null;
 	}

@@ -128,7 +128,7 @@ public interface SEObjectActorReference extends ActorReference<SEFlexoConceptIns
 		protected SEFlexoConceptInstance retrieveModellingElement() {
 			SEVirtualModelInstanceResource httpVMIResource = (SEVirtualModelInstanceResource) getServiceManager().getResourceManager()
 					.getResource(getResourceURI());
-			SEVirtualModelInstance hbnVMI = httpVMIResource.getVirtualModelInstance();
+			// Unused SEVirtualModelInstance hbnVMI = httpVMIResource.getVirtualModelInstance();
 			VirtualModel vm = httpVMIResource.getVirtualModel();
 			FlexoConcept concept = vm.getFlexoConcept(getFlexoConceptURI());
 			// TODO: find the container !!!
@@ -137,14 +137,14 @@ public interface SEObjectActorReference extends ActorReference<SEFlexoConceptIns
 				logger.warning("Could not retrieve JDBC object when no key defined on concept");
 				return null;
 			}
-			String identifier = null;
+			// Unused String identifier = null;
 			if (concept.getKeyProperties().size() == 1) {
 				/*FlexoProperty<?> uniqueKey = concept.getKeyProperties().get(0);
 				if (TypeUtils.isInteger(uniqueKey.getType()) || TypeUtils.isLong(uniqueKey.getType())) {
 					identifier = Integer.parseInt(getKey());
 				}
 				else if (TypeUtils.isString(uniqueKey.getType())) {*/
-				identifier = getKey();
+				// Unused identifier = getKey();
 				// }
 			}
 			else {

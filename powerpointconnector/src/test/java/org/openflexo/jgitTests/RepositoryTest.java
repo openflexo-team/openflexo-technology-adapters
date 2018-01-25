@@ -152,7 +152,8 @@ public class RepositoryTest {
 		treeWalk.setFilter(PathFilter.create("fileToCommit.txt"));
 		if (!treeWalk.next()) {
 			System.out.println("Couldn't find file");
-		} else {
+		}
+		else {
 			System.out.println("Found : " + treeWalk.getPathString());
 		}
 		ObjectId objectId = treeWalk.getObjectId(0);
@@ -240,7 +241,8 @@ public class RepositoryTest {
 		treeWalk.setFilter(PathFilter.create("fileToCompare.txt"));
 		if (!treeWalk.next()) {
 			System.out.println("Couldn't find file");
-		} else {
+		}
+		else {
 			System.out.println("Found : " + treeWalk.getPathString());
 		}
 		ObjectId objectId = treeWalk.getObjectId(0);
@@ -268,7 +270,8 @@ public class RepositoryTest {
 		DirCache addedInCache = git.add().addFilepattern("fileToRetrieve.txt").call();
 		ObjectId idFileToRetrieve = addedInCache.getEntry("fileToRetrieve.txt").getObjectId();
 
-		ObjectId commitId = git.commit().setMessage("Commit FileToRetrieve").call().getId();
+		// Unused ObjectId commitId =
+		git.commit().setMessage("Commit FileToRetrieve").call().getId();
 
 		FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
 		while (!fileTree.getEntryObjectId().equals(idFileToRetrieve)) {

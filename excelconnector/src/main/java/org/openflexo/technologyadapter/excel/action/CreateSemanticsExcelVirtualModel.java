@@ -163,7 +163,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 		createHbnInitializer.setFlexoBehaviourName("initialize");
 		createHbnInitializer.setFlexoBehaviourClass(SEInitializer.class);
 		createHbnInitializer.doAction();
-		SEInitializer initializer = (SEInitializer) createHbnInitializer.getNewFlexoBehaviour();
+		// Unused SEInitializer initializer = (SEInitializer) createHbnInitializer.getNewFlexoBehaviour();
 
 	}
 

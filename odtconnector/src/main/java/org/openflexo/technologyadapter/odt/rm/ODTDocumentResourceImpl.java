@@ -58,7 +58,7 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 		try {
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
-			ODTDocument resourceData;
+			// Unused ODTDocument resourceData;
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {

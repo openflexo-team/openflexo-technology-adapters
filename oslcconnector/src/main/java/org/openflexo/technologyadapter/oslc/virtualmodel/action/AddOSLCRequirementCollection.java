@@ -76,7 +76,7 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 
 			OSLCRequirementCollection cdlActivity = null;
 
-			OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
+			// Unused OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
 
 			return cdlActivity;
 		}

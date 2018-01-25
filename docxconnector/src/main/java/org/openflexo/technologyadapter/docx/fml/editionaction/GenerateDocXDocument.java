@@ -143,7 +143,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 				FlexoResource<DocXDocument> generatedResource = null;
 
 				String resourceName = getResourceName(evaluationContext);
-				String resourceURI = getResourceURI(evaluationContext);
+				// Unused String resourceURI = getResourceURI(evaluationContext);
 				FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
 
 				DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
@@ -180,7 +180,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 									if (!(column == 0 && row == 0)) {
 										// No need to generate new id for first cell, because it has already been done
 										// when changing id for the whole table !!!
-										String oldId2 = generatedCell.getElements().get(i).getIdentifier();
+										// Unused String oldId2 = generatedCell.getElements().get(i).getIdentifier();
 										generatedCell.getElements().get(i).setIdentifier(generatedDocument.getFactory().generateId());
 										// System.out.println("change id for cell row=" + row + " column=" + column + " from " + oldId2
 										// + " to " + generatedCell.getParagraphs().get(i).getIdentifier());

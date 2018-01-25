@@ -48,7 +48,6 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -58,8 +57,8 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualMo
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class CreateFMLControlledDiagramPaletteElement extends
-		FlexoAction<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
+public class CreateFMLControlledDiagramPaletteElement
+		extends FlexoAction<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramPaletteElement.class.getPackage().getName());
 
@@ -70,8 +69,8 @@ public class CreateFMLControlledDiagramPaletteElement extends
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledDiagramPaletteElement makeNewAction(VirtualModel focusedObject,
-				Vector<FMLObject> globalSelection, FlexoEditor editor) {
+		public CreateFMLControlledDiagramPaletteElement makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
+				FlexoEditor editor) {
 			return new CreateFMLControlledDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
@@ -111,8 +110,8 @@ public class CreateFMLControlledDiagramPaletteElement extends
 			newElement.setGraphicalRepresentation(getGraphicalRepresentation());
 
 			TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(getFocusedObject());
-			CreateFMLDiagramPaletteElementBinding createBinding = CreateFMLDiagramPaletteElementBinding.actionType.makeNewEmbeddedAction(
-					ms, null, this);
+			CreateFMLDiagramPaletteElementBinding createBinding = CreateFMLDiagramPaletteElementBinding.actionType.makeNewEmbeddedAction(ms,
+					null, this);
 			createBinding.setDiagramPalette(getPalette());
 			createBinding.setDiagramPaletteElement(getNewElement());
 			createBinding.setFlexoConcept(getConcept());

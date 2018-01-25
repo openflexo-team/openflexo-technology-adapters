@@ -59,8 +59,8 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.xml.XMLRootElementReader;
 
-public abstract class DiagramSpecificationResourceImpl extends
-		PamelaResourceImpl<DiagramSpecification, DiagramSpecificationFactory> implements DiagramSpecificationResource {
+public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImpl<DiagramSpecification, DiagramSpecificationFactory>
+		implements DiagramSpecificationResource {
 
 	static final Logger logger = Logger.getLogger(DiagramSpecificationResourceImpl.class.getPackage().getName());
 
@@ -107,8 +107,7 @@ public abstract class DiagramSpecificationResourceImpl extends
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
 		if (getServiceManager() != null) {
-			return getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 		return null;
 	}
@@ -120,7 +119,7 @@ public abstract class DiagramSpecificationResourceImpl extends
 
 	@Override
 	public List<DiagramPaletteResource> getDiagramPaletteResources() {
-		DiagramSpecification ds = getDiagramSpecification();
+		// Unused DiagramSpecification ds = getDiagramSpecification();
 		return getContents(DiagramPaletteResource.class);
 	}
 
@@ -132,8 +131,7 @@ public abstract class DiagramSpecificationResourceImpl extends
 	@Override
 	public boolean delete(Object... context) {
 		if (super.delete(context)) {
-			getServiceManager().getResourceManager()
-					.addToFilesToDelete(ResourceLocator.retrieveResourceAsFile(getDirectory()));
+			getServiceManager().getResourceManager().addToFilesToDelete(ResourceLocator.retrieveResourceAsFile(getDirectory()));
 			// isDeleted = true;
 			// also remove the parent folder if empty, created by openflexo
 			/*
@@ -151,17 +149,16 @@ public abstract class DiagramSpecificationResourceImpl extends
 	@Override
 	public Resource getDirectory() {
 		if (getIODelegate() instanceof FileIODelegate) {
-			String parentPath = ((FileIODelegate) getIODelegate()).getFile().getParentFile()
-					.getAbsolutePath();
+			String parentPath = ((FileIODelegate) getIODelegate()).getFile().getParentFile().getAbsolutePath();
 			if (ResourceLocator.locateResource(parentPath) == null) {
 				FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(parentPath);
 			}
 			return ResourceLocator.locateResource(parentPath);
-		} else if (getIODelegate() instanceof InJarIODelegate) {
+		}
+		else if (getIODelegate() instanceof InJarIODelegate) {
 			InJarResourceImpl resource = ((InJarIODelegate) getIODelegate()).getInJarResource();
 			String parentPath = FilenameUtils.getFullPath(resource.getRelativePath());
-			BasicResourceImpl parent = ((ClasspathResourceLocatorImpl) (resource.getLocator())).getJarResourcesList()
-					.get(parentPath);
+			BasicResourceImpl parent = ((ClasspathResourceLocatorImpl) (resource.getLocator())).getJarResourcesList().get(parentPath);
 			return parent;
 		}
 		return null;

@@ -317,7 +317,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 
-
 	}
 
 	public String getDiagramTitle() {
@@ -405,7 +404,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	public void setSlide(Slide slide) {
 		this.slide = slide;
-		boolean wasValid = isValid();
+		// Unused boolean wasValid = isValid();
 		getPropertyChangeSupport().firePropertyChange("slide", null, getSlide());
 		getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());

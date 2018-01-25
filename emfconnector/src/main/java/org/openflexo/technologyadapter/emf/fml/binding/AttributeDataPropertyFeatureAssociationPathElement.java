@@ -50,7 +50,6 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeAssociation;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePathElement {
@@ -100,7 +99,7 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
+		// Unused EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
 		Object emfAnswer = ((EMFObjectIndividual) target).getObject().eGet(dataProperty.getObject());
 		// System.out.println("AttributeDataPropertyFeatureAssociationPathElement, returning " + emfAnswer + " of " + (emfAnswer != null ?
 		// emfAnswer.getClass() : null));
