@@ -77,7 +77,7 @@ public class FMLControlledDiagramContainerNature implements VirtualModelNature {
 		return INSTANCE._getControlledDiagramVirtualModels(container);
 	}
 
-	private List<VirtualModel> _getControlledDiagramVirtualModels(VirtualModel container) {
+	private static List<VirtualModel> _getControlledDiagramVirtualModels(VirtualModel container) {
 		List<VirtualModel> returned = new ArrayList<VirtualModel>();
 		for (VirtualModel vm : container.getVirtualModels()) {
 			if (vm.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {

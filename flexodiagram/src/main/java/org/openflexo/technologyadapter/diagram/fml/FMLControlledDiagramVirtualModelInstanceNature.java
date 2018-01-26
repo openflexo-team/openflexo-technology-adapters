@@ -104,7 +104,7 @@ public class FMLControlledDiagramVirtualModelInstanceNature
 		return INSTANCE._getDiagram(virtualModelInstance);
 	}
 
-	private TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> _getModelSlotInstance(
+	private static TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> _getModelSlotInstance(
 			FMLRTVirtualModelInstance virtualModelInstance) {
 		TypedDiagramModelSlot diagramMS = virtualModelInstance.getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
 
@@ -113,7 +113,7 @@ public class FMLControlledDiagramVirtualModelInstanceNature
 
 	}
 
-	private Diagram _getDiagram(FMLRTVirtualModelInstance virtualModelInstance) {
+	private static Diagram _getDiagram(FMLRTVirtualModelInstance virtualModelInstance) {
 		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> diagramModelSlotInstance = _getModelSlotInstance(
 				virtualModelInstance);
 		if (diagramModelSlotInstance != null) {

@@ -277,7 +277,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		return null;
 	}
 
-	private ScreenshotImage<DiagramShape> tryToLoadScreenshotImage() {
+	private static ScreenshotImage<DiagramShape> tryToLoadScreenshotImage() {
 		// TODO
 		/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
 			BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());

@@ -52,7 +52,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -306,7 +305,7 @@ public class EMFMetaModelConverter {
 					}
 					else if (eSF instanceof EReference) {
 						// Annotation content
-						if (aClass instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS) {
+						if (eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS) {
 							emfClass.getAnnotations();
 						}
 						else {

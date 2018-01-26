@@ -162,9 +162,9 @@ public class OWLClass extends OWLConcept<OntClass>
 			}
 		}
 
-		Iterator it = anOntClass.listSuperClasses(true);
+		Iterator<OntClass> it = anOntClass.listSuperClasses(true);
 		while (it.hasNext()) {
-			OntClass father = (OntClass) it.next();
+			OntClass father = it.next();
 			OWLClass fatherClass = getOntology().retrieveOntologyClass(father);// getOntologyLibrary().getClass(father.getURI());
 			if (fatherClass != null) {
 				appendToSuperClasses(fatherClass);
@@ -216,9 +216,9 @@ public class OWLClass extends OWLConcept<OntClass>
 		if (parentClass.equals(subClass)) {
 			return true;
 		}
-		Iterator it = subClass.listSuperClasses();
+		Iterator<OntClass> it = subClass.listSuperClasses();
 		while (it.hasNext()) {
-			OntClass p = (OntClass) it.next();
+			OntClass p = it.next();
 			if (p.equals(parentClass)) {
 				return true;
 			}
@@ -236,10 +236,10 @@ public class OWLClass extends OWLConcept<OntClass>
 		if (individual == null) {
 			return false;
 		}
-		Iterator it = individual.listOntClasses(false);
+		Iterator<OntClass> it = individual.listOntClasses(false);
 		while (it.hasNext()) {
 			try {
-				OntClass p = (OntClass) it.next();
+				OntClass p = it.next();
 				if (p.equals(parentClass)) {
 					return true;
 				}

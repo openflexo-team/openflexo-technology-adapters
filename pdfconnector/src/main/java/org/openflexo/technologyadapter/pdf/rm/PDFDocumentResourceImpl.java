@@ -42,8 +42,7 @@ import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 import org.openflexo.technologyadapter.pdf.model.PDFFactory;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocument, PDFFactory>
-		implements PDFDocumentResource {
+public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocument, PDFFactory> implements PDFDocumentResource {
 	private static final Logger logger = Logger.getLogger(PDFDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
@@ -53,8 +52,7 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 			throw new FlexoException("Cannot load PDF document with this IO/delegate: " + getIODelegate());
 		}
 
-		Progress.progress(
-				getLocales().localizedForKey("loading") + " " + getIODelegate().getSerializationArtefact());
+		Progress.progress(getLocales().localizedForKey("loading") + " " + getIODelegate().getSerializationArtefact());
 		PDDocument document = PDDocument.load(getInputStream());
 		PDFDocument returned = getFactory().makeNewPDFDocument(document);
 		return returned;
@@ -70,8 +68,7 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
 
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact()
-					+ " version=" + getModelVersion());
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact() + " version=" + getModelVersion());
 		}
 
 		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
@@ -99,7 +96,8 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 				throw new SaveResourceException(getIODelegate(), e);
 			}
-		} else {
+		}
+		else {
 			try {
 				write(getOutputStream());
 			} catch (IOException e) {
@@ -131,7 +129,7 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
-	private void makeLocalCopy(File file) throws IOException {
+	private static void makeLocalCopy(File file) throws IOException {
 		if (file != null && file.exists()) {
 			String localCopyName = file.getName() + "~";
 			File localCopy = new File(file.getParentFile(), localCopyName);

@@ -140,7 +140,7 @@ public class TestSimpleDocumentEditor3 extends AbstractTestDocX {
 		return root;
 	}
 
-	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
+	private static void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		DocXDocument doc = docResource.getResourceData(null);

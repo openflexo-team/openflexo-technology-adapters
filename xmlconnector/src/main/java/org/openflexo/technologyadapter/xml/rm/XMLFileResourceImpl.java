@@ -389,10 +389,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	private void write(OutputStream out) throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
-
-		try {
-			System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
-			OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8");
+		System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
+		try (OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8")) {
 			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, outSW);
 			writer.writeDocument();
 		} catch (FileNotFoundException e) {
@@ -404,7 +402,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
-	private void makeLocalCopy(File file) throws IOException {
+	private static void makeLocalCopy(File file) throws IOException {
 		if (file != null && file.exists()) {
 			String localCopyName = file.getName() + "~";
 			File localCopy = new File(file.getParentFile(), localCopyName);

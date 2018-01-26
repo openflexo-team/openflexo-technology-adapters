@@ -339,7 +339,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 		public String modelVersion;
 	}
 
-	private <I> SEVirtualModelInstanceInfo findSEVirtualModelInstanceInfo(SEVirtualModelInstanceResource resource,
+	private static <I> SEVirtualModelInstanceInfo findSEVirtualModelInstanceInfo(SEVirtualModelInstanceResource resource,
 			FlexoResourceCenter<I> resourceCenter) {
 
 		SEVirtualModelInstanceInfo returned = new SEVirtualModelInstanceInfo();

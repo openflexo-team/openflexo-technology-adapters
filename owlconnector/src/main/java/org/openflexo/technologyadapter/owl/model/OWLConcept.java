@@ -861,19 +861,17 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return an object representing the added statement
 	 */
 	public PropertyStatement addPropertyStatement(OWLProperty property, Object value) {
-		if (property instanceof OWLProperty) {
+		if (property != null) {
 			if (value instanceof String) {
 				getOntResource().addProperty(property.getOntProperty(), (String) value);
 				updateOntologyStatements();
 				setChanged();
 				return getPropertyStatement(property, (String) value);
 			}
-			else {
-				getOntResource().addLiteral(property.getOntProperty(), value);
-				updateOntologyStatements();
-				setChanged();
-				return getPropertyStatement(property, value);
-			}
+			getOntResource().addLiteral(property.getOntProperty(), value);
+			updateOntologyStatements();
+			setChanged();
+			return getPropertyStatement(property, value);
 		}
 		logger.warning("Property " + property + " is not a OWLProperty");
 		return null;
@@ -915,7 +913,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	}
 
 	public PropertyStatement addLiteral(OWLProperty property, Object value) {
-		if (property instanceof OWLProperty) {
+		if (property != null) {
 			if (value instanceof String) {
 				getOntResource().addProperty(property.getOntProperty(), (String) value);
 			}
@@ -1196,7 +1194,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	}
 
 	@Override
-	public final void setChanged() {
+	public final synchronized void setChanged() {
 		/*
 		 * The final keyword is added here mainly because this part of the code
 		 * is highly sensitive. A synchronized modifier could cause many

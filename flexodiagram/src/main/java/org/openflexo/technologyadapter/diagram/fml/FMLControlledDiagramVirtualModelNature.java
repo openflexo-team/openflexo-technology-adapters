@@ -91,7 +91,7 @@ public class FMLControlledDiagramVirtualModelNature implements VirtualModelNatur
 		return INSTANCE._getTypedDiagramModelSlot(virtualModel);
 	}
 
-	private TypedDiagramModelSlot _getTypedDiagramModelSlot(VirtualModel virtualModel) {
+	private static TypedDiagramModelSlot _getTypedDiagramModelSlot(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() == 1) {
 			return virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		}

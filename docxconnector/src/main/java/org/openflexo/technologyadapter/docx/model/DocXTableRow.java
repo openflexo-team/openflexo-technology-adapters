@@ -106,8 +106,10 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 		public void setTr(Tr tr) {
 			if ((tr == null && getTr() != null) || (tr != null && !tr.equals(getTr()))) {
 				if (tr != null) {
-					updateFromTr(tr, (getResourceData() != null && getResourceData().getResource() != null
-							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
+					updateFromTr(tr,
+							(getResourceData() != null && getResourceData().getResource() != null
+									? ((DocXDocumentResource) getResourceData().getResource()).getFactory()
+									: null));
 				}
 			}
 		}
@@ -126,7 +128,7 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 
 			for (Object o : tr.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof Tc) {
 					DocXTableCell cell = cells.get(o);

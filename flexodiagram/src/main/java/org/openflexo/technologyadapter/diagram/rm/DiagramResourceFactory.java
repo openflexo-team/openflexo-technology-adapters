@@ -158,7 +158,7 @@ public class DiagramResourceFactory
 		public String diagramSpecificationURI;
 	}
 
-	private <I> DiagramInfo findDiagramInfo(DiagramResource resource, FlexoResourceCenter<I> resourceCenter) {
+	private static <I> DiagramInfo findDiagramInfo(DiagramResource resource, FlexoResourceCenter<I> resourceCenter) {
 
 		DiagramInfo returned = new DiagramInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter

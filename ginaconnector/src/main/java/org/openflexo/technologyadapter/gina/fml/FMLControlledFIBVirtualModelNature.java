@@ -108,7 +108,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 		return null;
 	}
 
-	private FIBComponentModelSlot _getFIBComponentModelSlot(VirtualModel virtualModel) {
+	private static FIBComponentModelSlot _getFIBComponentModelSlot(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(FIBComponentModelSlot.class).size() >= 1) {
 			return virtualModel.getModelSlots(FIBComponentModelSlot.class).get(0);
 		}

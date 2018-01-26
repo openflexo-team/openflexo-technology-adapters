@@ -127,15 +127,11 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 					System.out.println("imageFile=" + imageFile);
 					imageFile.getParentFile().mkdirs();
 
-					FileOutputStream out;
-					try {
-						out = new FileOutputStream(imageFile);
+					try (FileOutputStream out = new FileOutputStream(imageFile)) {
 						image.writeDataToOutputStream(out);
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -156,13 +152,13 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 			for (Object o : r.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof Drawing) {
 					drawing = (Drawing) o;
 					for (Object o2 : drawing.getAnchorOrInline()) {
 						if (o2 instanceof JAXBElement) {
-							o2 = ((JAXBElement) o2).getValue();
+							o2 = ((JAXBElement<?>) o2).getValue();
 						}
 						if (o2 instanceof Inline) {
 							Inline inline = (Inline) o2;

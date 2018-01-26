@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.excel.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -442,7 +443,7 @@ public class BasicExcelModelConverter {
 	 * @param sheet
 	 * @return
 	 */
-	private ExcelCell getCell(String id, ExcelSheet sheet) {
+	private static ExcelCell getCell(String id, ExcelSheet sheet) {
 		String colAsString = "";
 		String rowAsString = "";
 		id = id.toUpperCase();
@@ -534,6 +535,10 @@ public class BasicExcelModelConverter {
 			// Create a new one
 			sheet = wb.createSheet(name);
 			logger.info("Create a new excel sheet with the name " + name);
+		}
+		try {
+			wb.close();
+		} catch (IOException e) {
 		}
 		return sheet;
 	}

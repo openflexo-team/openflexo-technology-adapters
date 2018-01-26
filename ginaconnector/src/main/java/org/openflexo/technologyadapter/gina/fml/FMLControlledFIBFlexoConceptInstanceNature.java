@@ -41,9 +41,9 @@ package org.openflexo.technologyadapter.gina.fml;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstanceNature;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -95,7 +95,7 @@ public class FMLControlledFIBFlexoConceptInstanceNature implements FlexoConceptI
 		return INSTANCE._getGINAFIBComponent(flexoConceptInstance);
 	}
 
-	private GINAFIBComponent _getGINAFIBComponent(FlexoConceptInstance flexoConceptInstance) {
+	private static GINAFIBComponent _getGINAFIBComponent(FlexoConceptInstance flexoConceptInstance) {
 		FIBComponentModelSlot fibMS = flexoConceptInstance.getFlexoConcept().getModelSlots(FIBComponentModelSlot.class).get(0);
 		return flexoConceptInstance.getFlexoPropertyValue(fibMS);
 

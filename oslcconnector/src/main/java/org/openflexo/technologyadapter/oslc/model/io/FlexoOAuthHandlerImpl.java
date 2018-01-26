@@ -39,10 +39,9 @@
 package org.openflexo.technologyadapter.oslc.model.io;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.oauth.client.OAuthClient;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -55,8 +54,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+
+import net.oauth.client.OAuthClient;
 
 /**
  * This Handler manage user authentifaction for some tools, ie IBM JAZZ
@@ -107,7 +107,7 @@ public class FlexoOAuthHandlerImpl extends FlexoOAuthHandler {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				nvps.add(new BasicNameValuePair("j_username", getLogin()));
 				nvps.add(new BasicNameValuePair("j_password", getPassword()));
-				formPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+				formPost.setEntity(new UrlEncodedFormEntity(nvps, StandardCharsets.UTF_8));
 
 				HttpResponse formResponse = httpClient.execute(formPost);
 				System.out.println("Response3: " + formResponse);

@@ -68,6 +68,7 @@ import java.util.Map;
 import org.apache.jena.ontology.BooleanClassDescription;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.Restriction;
+import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -93,7 +94,7 @@ public class DescribeClass {
 	// Instance variables
 	// ////////////////////////////////
 
-	private Map m_anonIDs = new HashMap();
+	private Map<AnonId, String> m_anonIDs = new HashMap<AnonId, String>();
 	private int m_anonCount = 0;
 
 	// Constructors
@@ -124,16 +125,16 @@ public class DescribeClass {
 		out.println();
 
 		// sub-classes
-		for (Iterator i = cls.listSuperClasses(true); i.hasNext();) {
+		for (Iterator<OntClass> i = cls.listSuperClasses(true); i.hasNext();) {
 			out.print("  is a sub-class of ");
-			renderClassDescription(out, (OntClass) i.next());
+			renderClassDescription(out, i.next());
 			out.println();
 		}
 
 		// super-classes
-		for (Iterator i = cls.listSubClasses(true); i.hasNext();) {
+		for (Iterator<OntClass> i = cls.listSubClasses(true); i.hasNext();) {
 			out.print("  is a super-class of ");
-			renderClassDescription(out, (OntClass) i.next());
+			renderClassDescription(out, i.next());
 			out.println();
 		}
 	}
@@ -247,7 +248,7 @@ public class DescribeClass {
 	}
 
 	protected void renderAnonymous(PrintStream out, Resource anon, String name) {
-		String anonID = (String) m_anonIDs.get(anon.getId());
+		String anonID = m_anonIDs.get(anon.getId());
 		if (anonID == null) {
 			anonID = "a-" + m_anonCount++;
 			m_anonIDs.put(anon.getId(), anonID);
@@ -263,9 +264,9 @@ public class DescribeClass {
 		out.print(op);
 		out.println(" of {");
 
-		for (Iterator i = boolClass.listOperands(); i.hasNext();) {
+		for (Iterator<? extends OntClass> i = boolClass.listOperands(); i.hasNext();) {
 			out.print("      ");
-			renderClassDescription(out, (OntClass) i.next());
+			renderClassDescription(out, i.next());
 			out.println();
 		}
 		out.print("  } ");

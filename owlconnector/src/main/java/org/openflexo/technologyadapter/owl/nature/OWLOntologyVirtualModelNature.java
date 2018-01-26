@@ -90,7 +90,7 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 		return INSTANCE._getOWLOntologyModelSlots(virtualModel);
 	}
 
-	private List<OWLModelSlot> _getOWLOntologyModelSlots(VirtualModel virtualModel) {
+	private static List<OWLModelSlot> _getOWLOntologyModelSlots(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(OWLModelSlot.class).size() > 0) {
 			return virtualModel.getModelSlots(OWLModelSlot.class);
 		}

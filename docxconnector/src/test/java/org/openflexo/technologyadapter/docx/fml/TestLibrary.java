@@ -647,7 +647,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(documentVirtualModel));
 	}
 
-	private FlexoConcept createBookDescriptionSection() throws FragmentConsistencyException {
+	private static FlexoConcept createBookDescriptionSection() throws FragmentConsistencyException {
 
 		FlexoConcept bookDescriptionSection;
 
@@ -847,7 +847,7 @@ public class TestLibrary extends AbstractTestDocX {
 		return bookDescriptionSection;
 	}
 
-	private ActionScheme createGenerateDocument() {
+	private static ActionScheme createGenerateDocument() {
 
 		// We create an ActionScheme allowing to generate docXDocument
 		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, _editor);
@@ -901,7 +901,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 	}
 
-	private ActionScheme createUpdateDocument() {
+	private static ActionScheme createUpdateDocument() {
 
 		// We programmatically implement this code:
 		// ActionScheme updateDocument() {
@@ -999,7 +999,7 @@ public class TestLibrary extends AbstractTestDocX {
 		return updateDocumentActionScheme;
 	}
 
-	private ActionScheme createReinjectFromDocument() {
+	private static ActionScheme createReinjectFromDocument() {
 
 		// We create an ActionScheme allowing to update docXDocument
 		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, _editor);
