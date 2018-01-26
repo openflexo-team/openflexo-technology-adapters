@@ -341,15 +341,8 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 				e.printStackTrace();
 			}
 		}
-		// Sets palette view of editor to be the top right view
-		perspective.setTopRightView(getFIBEditor(false).getPalettes());
-		perspective.setBottomRightView(getFIBEditor(false).getInspectors().getPanelGroup());
-		perspective.setBottomLeftView(editorController.getEditorBrowser());
 
-		controller.getControllerModel().setRightViewVisible(true);
-
-		getFIBEditor(false).activate(editorController);
-
+		setToolingForEditMode();
 		// getFIBEditor(false).getInspector().setVisible(true);
 	}
 
@@ -375,9 +368,24 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 				}
 			}
 		}
+		setToolingForNormalMode();
+	}
+
+	protected void setToolingForNormalMode() {
 		perspective.setTopRightView(null);
 		perspective.setBottomLeftView(null);
 		controller.getControllerModel().setRightViewVisible(false);
+	}
+
+	protected void setToolingForEditMode() {
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(getFIBEditor(false).getPalettes());
+		perspective.setBottomRightView(getFIBEditor(false).getInspectors().getPanelGroup());
+		perspective.setBottomLeftView(editorController.getEditorBrowser());
+
+		controller.getControllerModel().setRightViewVisible(true);
+
+		getFIBEditor(false).activate(editorController);
 	}
 
 	@Override
@@ -419,6 +427,10 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 	public GINAFIBComponent getGINAFIBComponent() {
 		return component;
+	}
+
+	public SelectionSynchronizedFIBJPanel<?> getComponentView() {
+		return componentView;
 	}
 
 	@Override
