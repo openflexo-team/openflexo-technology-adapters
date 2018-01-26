@@ -1,8 +1,0 @@
-dependencies {
-  // openflexo dep
-   compile project(":csvconnector")
-
-   compile flexoUi()
-  // external dep
-  // testing dep
-}
