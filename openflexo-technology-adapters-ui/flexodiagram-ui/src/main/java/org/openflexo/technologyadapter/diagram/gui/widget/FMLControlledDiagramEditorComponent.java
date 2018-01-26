@@ -88,6 +88,8 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 
 	private String infoMessage = " CTRL-drag to draw edges";
 
+	private JPanel bottomPanel;
+
 	private PropertyChangeSupport pcSupport;
 
 	public FMLControlledDiagramEditorComponent() {
@@ -174,7 +176,7 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 
 			add(diagramEditor.getToolsPanel(), BorderLayout.NORTH);
 			add(new JScrollPane(diagramEditor.getDrawingView()), BorderLayout.CENTER);
-			JPanel bottomPanel = new JPanel(new BorderLayout());
+			bottomPanel = new JPanel(new BorderLayout());
 			bottomPanel.add(getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
 			add(bottomPanel, BorderLayout.SOUTH);
 			getFlexoController().setInfoMessage(getInfoMessage(), false);
@@ -184,6 +186,10 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 		repaint();
 
 		getPropertyChangeSupport().firePropertyChange(DIAGRAM_EDITOR, oldEditor, diagramEditor);
+	}
+
+	public JPanel getBottomPanel() {
+		return bottomPanel;
 	}
 
 	public String getInfoMessage() {
