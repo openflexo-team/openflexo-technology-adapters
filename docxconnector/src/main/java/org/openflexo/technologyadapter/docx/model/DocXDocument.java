@@ -191,7 +191,7 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 			MainDocumentPart mdp = wpmlPackage.getMainDocumentPart();
 			for (Object o : mdp.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof P) {
 					DocXParagraph paragraph = paragraphs.get(o);

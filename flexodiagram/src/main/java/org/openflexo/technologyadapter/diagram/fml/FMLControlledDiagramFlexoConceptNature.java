@@ -74,7 +74,7 @@ public class FMLControlledDiagramFlexoConceptNature implements FlexoConceptNatur
 		return INSTANCE._getTypedDiagramModelSlot(concept);
 	}
 
-	private TypedDiagramModelSlot _getTypedDiagramModelSlot(FlexoConcept concept) {
+	private static TypedDiagramModelSlot _getTypedDiagramModelSlot(FlexoConcept concept) {
 		return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(concept.getOwningVirtualModel());
 	}
 }

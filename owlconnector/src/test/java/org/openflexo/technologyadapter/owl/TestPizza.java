@@ -78,8 +78,7 @@ public class TestPizza extends OpenflexoTestCase {
 		log("test0LoadTestResourceCenter()");
 		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService()
-				.getTechnologyContextManager(owlAdapter);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 
 		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
 			System.out.println("> rc: " + rc.getDefaultBaseURI() + " " + rc.getBaseArtefact());
@@ -101,8 +100,7 @@ public class TestPizza extends OpenflexoTestCase {
 		// ResourceLocator.locateResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
 		// File myOntologyFile = ((FileResourceImpl) myOntology).getFile();
 
-		OWLOntology hop = ontologyLibrary
-				.getOntology("http://www.denali.be/flexo/ontologies/PizzaOntology/PizzaOntology.owl");
+		OWLOntology hop = ontologyLibrary.getOntology("http://www.denali.be/flexo/ontologies/PizzaOntology/PizzaOntology.owl");
 
 		System.out.println("Found: " + hop);
 
@@ -146,11 +144,10 @@ public class TestPizza extends OpenflexoTestCase {
 		ontModel.loadImports();
 		ontModel.getDocumentManager().loadImports(ontModel);
 
-		OntClass flexoConceptClass = flexoConceptsOntology.getOntModel()
-				.createClass(FLEXO_CONCEPT_ONTOLOGY_URI + "#" + "FlexoConcept");
+		OntClass flexoConceptClass = flexoConceptsOntology.getOntModel().createClass(FLEXO_CONCEPT_ONTOLOGY_URI + "#" + "FlexoConcept");
 
-		for (Iterator i = flexoConceptClass.listSuperClasses(); i.hasNext();) {
-			OntClass unParent = (OntClass) i.next();
+		for (Iterator<OntClass> i = flexoConceptClass.listSuperClasses(); i.hasNext();) {
+			OntClass unParent = i.next();
 			System.out.println("FlexoConcept, comme parent j'ai: " + unParent);
 		}
 		pipiClass.addSuperClass(flexoConceptClass);
@@ -161,12 +158,12 @@ public class TestPizza extends OpenflexoTestCase {
 			System.out.println("J'importe " + (String) o);
 		}
 
-		for (Iterator i = ontModel.listSubModels(true); i.hasNext();) {
-			OntModel unModele = (OntModel) i.next();
+		for (Iterator<OntModel> i = ontModel.listSubModels(true); i.hasNext();) {
+			OntModel unModele = i.next();
 			System.out.println("Comme sub-model j'ai: " + unModele);
 		}
 
-		for (Iterator i = ontModel.getDocumentManager().listDocuments(); i.hasNext();) {
+		for (Iterator<String> i = ontModel.getDocumentManager().listDocuments(); i.hasNext();) {
 			System.out.println("Comme document j'ai: " + i.next());
 		}
 
@@ -262,13 +259,9 @@ public class TestPizza extends OpenflexoTestCase {
 		 * FLEXO_CONCEPT_ONTOLOGY_URI);
 		 */
 
-		FileOutputStream out;
-		try {
-			out = new FileOutputStream(createdFile);
+		try (FileOutputStream out = new FileOutputStream(createdFile)) {
 			ontModel.write(out, null/* ,"http://my-pizza.com" */);
-			out.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -283,12 +276,9 @@ public class TestPizza extends OpenflexoTestCase {
 		System.out.println(SOURCE2);
 		ontModel.read(new StringReader(SOURCE2), ONTOLOGY_C, "N3");
 
-		try {
-			out = new FileOutputStream(createdFile);
+		try (FileOutputStream out = new FileOutputStream(createdFile)) {
 			ontModel.write(out, null/* ,"http://my-pizza.com" */);
-			out.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

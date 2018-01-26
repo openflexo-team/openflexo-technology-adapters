@@ -216,7 +216,7 @@ public interface AddOSLCRequirement
 			this.reqDescription = reqDescription;
 		}
 
-		private CreationFactory getDefaultRequirementCreationFactory(OSLCResourceResource resource) {
+		private static CreationFactory getDefaultRequirementCreationFactory(OSLCResourceResource resource) {
 			CreationFactory factory = resource.getConverter().getOslcClient().getFirstCreationFactory(OSLCConstants.RM_REQUIREMENT_TYPE,
 					OSLCConstants.OSLC_RM_V2, resource.getLoadedResourceData().getOSLCServiceProviderCatalog());
 			return factory;

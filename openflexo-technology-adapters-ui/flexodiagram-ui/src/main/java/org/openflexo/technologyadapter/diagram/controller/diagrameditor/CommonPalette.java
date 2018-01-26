@@ -109,7 +109,8 @@ public class CommonPalette extends AbstractDiagramPalette {
 
 	}
 
-	private void computePaletteElementPosition(ShapeSpecification shapeSpecification, int px, int py, ShapeGraphicalRepresentation gr) {
+	private static void computePaletteElementPosition(ShapeSpecification shapeSpecification, int px, int py,
+			ShapeGraphicalRepresentation gr) {
 		if (shapeSpecification.getShapeType() == ShapeType.SQUARE || shapeSpecification.getShapeType() == ShapeType.CIRCLE) {
 			gr.setX(px * GRID_WIDTH + 15);
 			gr.setY(py * GRID_HEIGHT + 10);

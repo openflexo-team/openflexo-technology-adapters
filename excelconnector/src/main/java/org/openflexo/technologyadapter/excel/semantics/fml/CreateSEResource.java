@@ -220,8 +220,8 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 			if (this.virtualModel != aVirtualModel) {
 				VirtualModel oldValue = this.virtualModel;
 				this.virtualModel = aVirtualModel;
-				this.virtualModelResource = aVirtualModel.getVirtualModelResource();
 				if (aVirtualModel != null) {
+					this.virtualModelResource = aVirtualModel.getVirtualModelResource();
 					getPropertyChangeSupport().firePropertyChange("availableCreationSchemes", null, aVirtualModel.getCreationSchemes());
 				}
 				if (creationScheme == null || creationScheme.getFlexoConcept() != aVirtualModel) {

@@ -130,15 +130,11 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 				// Parce que mappedClass doit rester prioritaire partout.
 				return mappedXMLType.getURI();
 			}
-			else {
-				this.bindtypeURIToMappedType();
-				if (typeURI != null) {
-					return typeURI.toString();
-				}
-				else {
-					return null;
-				}
+			this.bindtypeURIToMappedType();
+			if (typeURI != null) {
+				return typeURI.toString();
 			}
+			return null;
 		}
 
 		@Override
@@ -160,7 +156,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		public void bindtypeURIToMappedType() {
-			AbstractXMLModelSlot modelSlot = getModelSlot();
+			AbstractXMLModelSlot<?> modelSlot = getModelSlot();
 			if (modelSlot != null) {
 				// TODO adapt this to the FreeXML case
 				// FIXME
@@ -205,38 +201,35 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 				logger.warning("Cannot process URI as URIProcessor is not initialized for that class: " + typeURI);
 				return null;
 			}
+
+			String attributeName = getAttributeName();
+			if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null && getMappedXMLType() != null) {
+
+				XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
+				XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
+				try {
+					// NPE protection
+					if (value != null) {
+						builtURI = URLEncoder.encode(value.toString(), "UTF-8");
+					}
+					else {
+						logger.severe("XSURI: unable to compute an URI for given object");
+					}
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
+				}
+			}
+			else if (getMappingStyle() == MappingStyle.SINGLETON) {
+				try {
+					builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
+				}
+			}
 			else {
-
-				String attributeName = getAttributeName();
-				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null && getMappedXMLType() != null) {
-
-					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
-					XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
-					try {
-						// NPE protection
-						if (value != null) {
-							builtURI = URLEncoder.encode(value.toString(), "UTF-8");
-						}
-						else {
-							logger.severe("XSURI: unable to compute an URI for given object");
-							builtURI = null;
-						}
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
-					}
-				}
-				else if (getMappingStyle() == MappingStyle.SINGLETON) {
-					try {
-						builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
-					}
-				}
-				else {
-					logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
-				}
+				logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 			}
 
 			if (builtURI != null) {
@@ -308,8 +301,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		// get the right URIProcessor for URI
-		public static String retrieveTypeURI(ModelSlotInstance msInstance, String objectURI) {
-
+		public static String retrieveTypeURI(ModelSlotInstance<?, ?> msInstance, String objectURI) {
 			URI fullURI;
 			StringBuffer typeURIStr = new StringBuffer();
 
@@ -325,10 +317,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 			if (mappedXMLType != null) {
 				return "FreeXMLURIProcessor for " + this.mappedXMLType.getName();
 			}
-			else {
-				return "";
-			}
+			return "";
 		}
-
 	}
 }

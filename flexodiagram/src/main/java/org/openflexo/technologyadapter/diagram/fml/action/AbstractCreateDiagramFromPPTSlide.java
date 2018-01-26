@@ -769,7 +769,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return newConnector;
 	}
 
-	private String getShapeName(Shape shape) {
+	private static String getShapeName(Shape shape) {
 		if (shape != null && shape instanceof TextShape && ((TextShape) shape).getText() != null) {
 			return ((TextShape) shape).getText();
 		}
@@ -977,7 +977,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 				gr.setTextStyle(textStyle);
 			}
 		}
-		if (gr instanceof ShapeGraphicalRepresentation) {
+		if (gr != null) {
 			gr.setIsFloatingLabel(false);
 			gr.setRelativeTextX(0.5);
 			gr.setRelativeTextY(0.5);
@@ -1054,7 +1054,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		gr.setBackground(getDiagramFactory().makeEmptyBackground());
 	}
 
-	private void applyTableCellGr(ShapeGraphicalRepresentation gr, TableCell shape) {
+	private static void applyTableCellGr(ShapeGraphicalRepresentation gr, TableCell shape) {
 		gr.getForeground().setNoStroke(false);
 		gr.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 	}
@@ -1173,7 +1173,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		gr.setLineWrap(true);
 	}*/
 
-	private DashStyle convertDashLineStyles(int powerpointDashStyle) {
+	private static DashStyle convertDashLineStyles(int powerpointDashStyle) {
 
 		switch (powerpointDashStyle) {
 			case Line.PEN_DASH:
@@ -1202,7 +1202,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return null;
 	}
 
-	private boolean isConnector(int shapeType) {
+	private static boolean isConnector(int shapeType) {
 		switch (shapeType) {
 			case ShapeTypes.CurvedConnector2:
 				return true;

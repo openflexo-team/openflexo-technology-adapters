@@ -201,7 +201,8 @@ public class EMFModelConverter {
 		}
 	}
 
-	private EMFAnnotationAnnotation convertObjectAnnotationl(EMFModel model, EMFObjectIndividual container, EAnnotation anAnnotation) {
+	private static EMFAnnotationAnnotation convertObjectAnnotationl(EMFModel model, EMFObjectIndividual container,
+			EAnnotation anAnnotation) {
 		// TODO, for now basic support for Annotations
 		EMFAnnotationAnnotation annotation = new EMFAnnotationAnnotation(model, anAnnotation);
 		// TODO : add annotations to container.addAnnotation();

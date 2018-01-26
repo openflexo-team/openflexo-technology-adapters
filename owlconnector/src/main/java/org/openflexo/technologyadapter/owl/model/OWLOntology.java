@@ -95,7 +95,6 @@ import org.openflexo.foundation.ontology.dm.OntologyIndividualRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyObjectPropertyInserted;
 import org.openflexo.foundation.ontology.dm.OntologyObjectPropertyRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyObjectRenamed;
-import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
@@ -118,8 +117,8 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnologyAdapter>, ResourceData<OWLOntology>,
-		FlexoMetaModel<OWLOntology>, FlexoModel<OWLOntology, OWLOntology> {
+public class OWLOntology extends OWLObject
+		implements IFlexoOntology<OWLTechnologyAdapter>, FlexoMetaModel<OWLOntology>, FlexoModel<OWLOntology, OWLOntology> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntology.class.getPackage().getName());
 
@@ -233,32 +232,26 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		System.out.println("URI: " + findOntologyURI(ontoResource1));
 	}*/
 
-	private static String findOntologyURIWithRDFBaseMethod(Resource aResource) {
-		Document document;
-		try {
-			logger.fine("Try to find URI for " + aResource);
-			document = readXMLContents(aResource);
-			Element root = getElement(document, "RDF");
-			if (root != null) {
-				Iterator it = root.getAttributes().iterator();
-				while (it.hasNext()) {
-					Attribute at = (Attribute) it.next();
-					if (at.getName().equals("base")) {
-						logger.fine("Returned " + at.getValue());
-						return at.getValue();
-					}
+	private static String getBaseAttribute(Element elt) {
+		if (elt != null) {
+			for (Attribute at : elt.getAttributes()) {
+				if (at.getName().equals("base")) {
+					logger.fine("Returned " + at.getValue());
+					return at.getValue();
 				}
 			}
-			root = getElement(document, "Ontology");
-			if (root != null) {
-				Iterator it = root.getAttributes().iterator();
-				while (it.hasNext()) {
-					Attribute at = (Attribute) it.next();
-					if (at.getName().equals("base")) {
-						logger.fine("Returned " + at.getValue());
-						return at.getValue();
-					}
-				}
+		}
+		return null;
+	}
+
+	private static String findOntologyURIWithRDFBaseMethod(Resource aResource) {
+		String result = null;
+		try {
+			logger.fine("Try to find URI for " + aResource);
+			Document document = readXMLContents(aResource);
+			result = getBaseAttribute(getElement(document, "RDF"));
+			if (result == null) {
+				result = getBaseAttribute(getElement(document, "Ontology"));
 			}
 		} catch (JDOMException e) {
 			e.printStackTrace();
@@ -266,19 +259,16 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			e.printStackTrace();
 		}
 		logger.fine("Returned null");
-		return null;
+		return result;
 	}
 
 	private static String findOntologyURIWithOntologyAboutMethod(Resource aResource) {
-		Document document;
 		try {
 			logger.fine("Try to find URI for " + aResource);
-			document = readXMLContents(aResource);
+			Document document = readXMLContents(aResource);
 			Element root = getElement(document, "Ontology");
 			if (root != null) {
-				Iterator it = root.getAttributes().iterator();
-				while (it.hasNext()) {
-					Attribute at = (Attribute) it.next();
+				for (Attribute at : root.getAttributes()) {
 					if (at.getName().equals("about")) {
 						logger.fine("Returned " + at.getValue());
 						String returned = at.getValue();
@@ -335,30 +325,27 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	}
 
 	private static Document readXMLContents(Resource resource) throws JDOMException, IOException {
-		InputStream fio = resource.openInputStream();
-		SAXBuilder parser = new SAXBuilder();
-		Document reply = parser.build(fio);
-		return reply;
+		try (InputStream fio = resource.openInputStream()) {
+			SAXBuilder parser = new SAXBuilder();
+			Document reply = parser.build(fio);
+			return reply;
+		}
 	}
 
 	private static Element getElement(Document document, String name) {
-		Iterator it = document.getDescendants(new ElementFilter(name));
+		Iterator<Element> it = document.getDescendants(new ElementFilter(name));
 		if (it.hasNext()) {
-			return (Element) it.next();
+			return it.next();
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
 	private static Element getElement(Element from, String name) {
-		Iterator it = from.getDescendants(new ElementFilter(name));
+		Iterator<Element> it = from.getDescendants(new ElementFilter(name));
 		if (it.hasNext()) {
-			return (Element) it.next();
+			return it.next();
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
 	@Override
@@ -486,9 +473,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (_library.getOntology(ontologyURI) == null) {
 			throw new OntologyNotFoundException();
 		}
-		else {
-			return importOntology(_library.getOntology(ontologyURI));
-		}
+		return importOntology(_library.getOntology(ontologyURI));
 	}
 
 	/**
@@ -500,7 +485,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @throws OntologyNotFoundException
 	 */
 	public boolean importOntology(OWLOntology anOntology) throws OntologyNotFoundException {
-		if (anOntology instanceof OWLOntology == false) {
+		if (anOntology == null) {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Tried to import a non-owl ontology to an owl ontology, this is not yet supported.");
 			}
@@ -544,7 +529,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 	};
 
-	private boolean isNamedClass(OntClass ontClass) {
+	private static boolean isNamedClass(OntClass ontClass) {
 		return !ontClass.isComplementClass() && !ontClass.isUnionClass() && !ontClass.isIntersectionClass() && !ontClass.isRestriction()
 				&& !ontClass.isEnumeratedClass() && StringUtils.isNotEmpty(ontClass.getURI());
 	}
@@ -605,9 +590,9 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			}
 		}
 
-		// I dont understand why, but on some ontologies (RDF, RDFS and OWL), this is the only way to obtain those properties
-		for (Iterator i = ontModel.listAllOntProperties(); i.hasNext();) {
-			OntProperty ontProperty = (OntProperty) i.next();
+		// I don't understand why, but on some ontologies (RDF, RDFS and OWL), this is the only way to obtain those properties
+		for (Iterator<OntProperty> i = ontModel.listAllOntProperties(); i.hasNext();) {
+			OntProperty ontProperty = i.next();
 			// Do it if and only if property is not yet existant
 			if (getOntologyObject(ontProperty.getURI()) == null) {
 				if (ontProperty.canAs(ObjectProperty.class)) {
@@ -637,7 +622,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		}
 
-		// I dont understand why, but on some ontologies, this is the only way to obtain those classes
+		// I don't understand why, but on some ontologies, this is the only way to obtain those classes
 		for (NodeIterator i = ontModel.listObjects(); i.hasNext();) {
 			RDFNode node = i.nextNode();
 			if (node instanceof org.apache.jena.rdf.model.Resource && ((org.apache.jena.rdf.model.Resource) node).canAs(OntClass.class)) {
@@ -693,16 +678,16 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		logger.info("Done created all concepts, now initialize them");
 
-		for (OWLClass aClass : new ArrayList<OWLClass>(classes.values())) {
+		for (OWLClass aClass : new ArrayList<>(classes.values())) {
 			aClass.init();
 		}
-		for (OWLIndividual anIndividual : new ArrayList<OWLIndividual>(individuals.values())) {
+		for (OWLIndividual anIndividual : new ArrayList<>(individuals.values())) {
 			anIndividual.init();
 		}
-		for (OWLDataProperty property : new ArrayList<OWLDataProperty>(dataProperties.values())) {
+		for (OWLDataProperty property : new ArrayList<>(dataProperties.values())) {
 			property.init();
 		}
-		for (OWLObjectProperty property : new ArrayList<OWLObjectProperty>(objectProperties.values())) {
+		for (OWLObjectProperty property : new ArrayList<>(objectProperties.values())) {
 			property.init();
 		}
 
@@ -822,10 +807,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			notifyObservers(new OntologyClassInserted(aClass));
 			return aClass;
 		}
-		else {
-			logger.warning("Unexpected null URI for " + ontClass);
-			return null;
-		}
+		logger.warning("Unexpected null URI for " + ontClass);
+		return null;
 	}
 
 	protected OWLClass redefineClass(OntClass ontClass) {
@@ -893,10 +876,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			notifyObservers(new OntologyIndividualInserted(anIndividual));
 			return anIndividual;
 		}
-		else {
-			logger.warning("Unexpected null URI for " + individual);
-			return null;
-		}
+		logger.warning("Unexpected null URI for " + individual);
+		return null;
 	}
 
 	protected OWLIndividual redefineIndividual(Individual individual) {
@@ -950,10 +931,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			notifyObservers(new OntologyDataPropertyInserted(property));
 			return property;
 		}
-		else {
-			logger.warning("Unexpected null URI for " + ontProperty);
-			return null;
-		}
+		logger.warning("Unexpected null URI for " + ontProperty);
+		return null;
 	}
 
 	protected OWLDataProperty redefineDataProperty(OntProperty ontProperty) {
@@ -1007,10 +986,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			notifyObservers(new OntologyObjectPropertyInserted(property));
 			return property;
 		}
-		else {
-			logger.warning("Unexpected null URI for " + ontProperty);
-			return null;
-		}
+		logger.warning("Unexpected null URI for " + ontProperty);
+		return null;
 	}
 
 	protected OWLObjectProperty redefineObjectProperty(OntProperty ontProperty) {
@@ -1247,11 +1224,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			_classes.put(restriction, returned);
 			return returned;
 		}
-		else {
-			logger.warning("Unexpected restriction: " + restriction);
-			return null;
-		}
-
+		logger.warning("Unexpected restriction: " + restriction);
+		return null;
 	}
 
 	/**
@@ -1324,7 +1298,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * 
 	 * @param list
 	 */
-	private void removeOriginalFromRedefinedObjects(List<? extends OWLConcept<?>> list) {
+	private static void removeOriginalFromRedefinedObjects(List<? extends OWLConcept<?>> list) {
 		for (OWLConcept<?> c : new ArrayList<OWLConcept<?>>(list)) {
 			if (c.redefinesOriginalDefinition()) {
 				if (c instanceof OWLClass && ((OWLClass) c).isRootConcept()) {
@@ -1413,10 +1387,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			load();
 			return true;
 		}
-		else {
-			// logger.info("Skip loading"+getURI());
-			return false;
-		}
+		// logger.info("Skip loading"+getURI());
+		return false;
 	}
 
 	public boolean isLoaded() {
@@ -1427,6 +1399,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		return isLoading;
 	}
 
+	/* Unused
 	private static void handleResource(OntResource resource, Hashtable<OntResource, String> renamedResources,
 			Hashtable<String, OntResource> renamedURI) {
 		for (StmtIterator j = resource.listProperties(); j.hasNext();) {
@@ -1446,6 +1419,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			}
 		}
 	}
+	*/
 
 	protected void load() {
 		logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " + ontologyURI);
@@ -1618,80 +1592,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		save(null);
 	}
 
-	/**
-	 * Return a vector of Ontology class, which correspond to all classes necessary to see all classes and individuals belonging to current
-	 * ontology
-	 * 
-	 * @param context
-	 * @return
-	 */
-	@Deprecated
-	public Vector<OWLClass> getRootClasses() {
-		Vector<OWLClass> topLevelClasses = new Vector<OWLClass>();
-		for (OWLClass aClass : getClasses()) {
-			addTopLevelClass(aClass, topLevelClasses);
-		}
-		for (OWLIndividual anIndividual : getIndividuals()) {
-			addTopLevelClass(anIndividual, topLevelClasses);
-		}
-		return topLevelClasses;
-	}
-
-	@Deprecated
-	private static void addTopLevelClass(OWLClass aClass, Vector<OWLClass> topLevelClasses) {
-		// System.out.println("addTopLevelClass " + aClass + " for " + topLevelClasses);
-		if (aClass.getSuperClasses().size() == 0) {
-			if (!topLevelClasses.contains(aClass)) {
-				topLevelClasses.add(aClass);
-			}
-			return;
-		}
-		for (OWLClass superClass : aClass.getSuperClasses()) {
-			if (superClass != aClass) {
-				addTopLevelClass(superClass, topLevelClasses);
-			}
-		}
-	}
-
-	@Deprecated
-	private static void addTopLevelClass(OWLIndividual anIndividual, Vector<OWLClass> topLevelClasses) {
-		for (OWLClass superClass : anIndividual.getSuperClasses()) {
-			addTopLevelClass(superClass, topLevelClasses);
-		}
-	}
-
-	/**
-	 * Return a vector of Ontology properties, which correspond to all properties necessary to see all properties belonging to current
-	 * ontology
-	 * 
-	 * @param context
-	 * @return
-	 */
-	@Deprecated
-	public Vector<OWLProperty> getRootProperties() {
-		Vector<OWLProperty> topLevelProperties = new Vector<OWLProperty>();
-		for (OWLProperty aProperty : getObjectProperties()) {
-			addTopLevelProperty(aProperty, topLevelProperties);
-		}
-		for (OWLProperty aProperty : getDataProperties()) {
-			addTopLevelProperty(aProperty, topLevelProperties);
-		}
-		return topLevelProperties;
-	}
-
-	@Deprecated
-	private void addTopLevelProperty(OWLProperty aProperty, Vector<OWLProperty> topLevelProperties) {
-		if (aProperty.getSuperProperties().size() == 0) {
-			if (!topLevelProperties.contains(aProperty)) {
-				topLevelProperties.add(aProperty);
-			}
-			return;
-		}
-		for (OWLProperty superProperty : aProperty.getSuperProperties()) {
-			addTopLevelProperty(superProperty, topLevelProperties);
-		}
-	}
-
 	public boolean getIsReadOnly() {
 		return readOnly;
 	}
@@ -1741,15 +1641,13 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		}
 		OntModel ontModel = getOntModel();
 		String uri = makeURI(name);
-		if (testValidURI(name)) {
-			Individual individual = ontModel.createIndividual(uri, type != null ? type.getOntResource() : null);
-			OWLIndividual returned = makeNewIndividual(individual);
-			returned.init();
-			return returned;
-		}
-		else {
+		if (!testValidURI(name)) {
 			throw new DuplicateURIException(uri);
 		}
+		Individual individual = ontModel.createIndividual(uri, type != null ? type.getOntResource() : null);
+		OWLIndividual returned = makeNewIndividual(individual);
+		returned.init();
+		return returned;
 	}
 
 	/**
@@ -1773,27 +1671,21 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	 * @throws DuplicateURIException
 	 */
 	public OWLClass createOntologyClass(String name, OWLClass father) throws DuplicateURIException {
-		// if (father instanceof OWLClass) {
 		if (father != null) {
 			assumeOntologyImportForReference(father);
 		}
 		OntModel ontModel = getOntModel();
 		String uri = makeURI(name);
-		if (testValidURI(name)) {
-			OntClass aClass = ontModel.createClass(uri);
-			if (father != null) {
-				aClass.addSuperClass(father.getOntResource());
-			}
-			OWLClass returned = makeNewClass(aClass);
-			returned.init();
-			return returned;
-		}
-		else {
+		if (!testValidURI(name)) {
 			throw new DuplicateURIException(uri);
 		}
-		/*}
-		logger.warning("Type is not an OWLClass");
-		return null;*/
+		OntClass aClass = ontModel.createClass(uri);
+		if (father != null) {
+			aClass.addSuperClass(father.getOntResource());
+		}
+		OWLClass returned = makeNewClass(aClass);
+		returned.init();
+		return returned;
 	}
 
 	/**

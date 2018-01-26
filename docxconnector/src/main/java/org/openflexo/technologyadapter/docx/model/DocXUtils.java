@@ -191,7 +191,7 @@ public class DocXUtils {
 		}
 		for (Object o2 : list) {
 			if (o2 instanceof JAXBElement) {
-				Object value = ((JAXBElement) o2).getValue();
+				Object value = ((JAXBElement<?>) o2).getValue();
 				if (o.equals(value)) {
 					list.remove(o2);
 					return true;
@@ -216,7 +216,7 @@ public class DocXUtils {
 		int i = 0;
 		for (Object o2 : list) {
 			if (o2 instanceof JAXBElement) {
-				Object value = ((JAXBElement) o2).getValue();
+				Object value = ((JAXBElement<?>) o2).getValue();
 				if (o.equals(value)) {
 					return i;
 				}

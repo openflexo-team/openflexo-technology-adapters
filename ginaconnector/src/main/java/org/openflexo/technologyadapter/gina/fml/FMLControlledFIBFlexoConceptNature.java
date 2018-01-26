@@ -108,7 +108,7 @@ public class FMLControlledFIBFlexoConceptNature implements FlexoConceptNature {
 		return null;
 	}
 
-	private FIBComponentModelSlot _getFIBComponentModelSlot(FlexoConcept flexoConcept) {
+	private static FIBComponentModelSlot _getFIBComponentModelSlot(FlexoConcept flexoConcept) {
 		if (flexoConcept != null && flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).size() == 1) {
 			return flexoConcept.getDeclaredProperties(FIBComponentModelSlot.class).get(0);
 		}

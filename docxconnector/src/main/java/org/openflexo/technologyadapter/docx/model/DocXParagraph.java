@@ -171,7 +171,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			// System.out.println(DocXUtils.printContents(p, 0));
 			for (Object o : p.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof R) {
 					DocXRun run = runs.get(o);
@@ -507,7 +507,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				int currentIndex = 0;
 				for (Object o : p.getContent()) {
 					if (o instanceof JAXBElement) {
-						o = ((JAXBElement) o).getValue();
+						o = ((JAXBElement<?>) o).getValue();
 					}
 					if (o instanceof R) {
 						if (currentIndex == index) {

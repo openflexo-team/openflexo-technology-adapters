@@ -67,10 +67,11 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
 
 /**
  * FlexoOslcClient provides HighLevel services to manipulate OSLC resource. It creates and uses an OslcRestClient to access OSLC resource.
- * FlexoOslcClient provides basic services : <li>{@link #create(CreationFactory factory, T resource) create(CreationFactory factory, T
- * resource)}</li> <li>{@link #delete(T resource) delete(T resource)}</li> <li>{@link #retrieve(String resourceUri) retrieve(String
- * resourceUri)}</li> <li>
- * {@link #update(T resource) update(T resource)}</li>
+ * FlexoOslcClient provides basic services :
+ * <li>{@link #create(CreationFactory factory, T resource) create(CreationFactory factory, T resource)}</li>
+ * <li>{@link #delete(T resource) delete(T resource)}</li>
+ * <li>{@link #retrieve(String resourceUri) retrieve(String resourceUri)}</li>
+ * <li>{@link #update(T resource) update(T resource)}</li>
  * 
  * @author Vincent
  * 
@@ -435,7 +436,7 @@ public class FlexoOslcClient {
 		return result;
 	}
 
-	private <T extends AbstractResource> T convertStringToAbstractResource(String source) {
+	private static <T extends AbstractResource> T convertStringToAbstractResource(String source) {
 		// TODO
 		return null;
 	}
@@ -447,7 +448,7 @@ public class FlexoOslcClient {
 	 * @param resourceClass
 	 * @return an OSLC resource
 	 */
-	private <T extends AbstractResource> T getResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
+	private static <T extends AbstractResource> T getResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
 		T result = null;
 		try {
 			result = client.getOslcResource(resourceClass);
@@ -464,7 +465,7 @@ public class FlexoOslcClient {
 	 * @param resourceClass
 	 * @return an OSLC resource
 	 */
-	private <T extends AbstractResource> T[] getResources(FlexoOslcRestClient client, final Class<T[]> resourceClass) {
+	private static <T extends AbstractResource> T[] getResources(FlexoOslcRestClient client, final Class<T[]> resourceClass) {
 		T[] result = null;
 		try {
 			result = client.getOslcResources(resourceClass);
@@ -540,7 +541,7 @@ public class FlexoOslcClient {
 		//that are random enough that they will not make the encryption vulnerable to attack
 		secureRandom = new SecureRandom();
 	    secureRandom.nextInt();
-
+	
 	    setupServerKeystore();
 	    setupClientKeyStore();
 	    

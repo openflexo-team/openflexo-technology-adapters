@@ -273,7 +273,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		super.stopDragging(controller, focusedNode);
 	}
 
-	private DiagramShape createNewShape(FGEPoint dropLocation, DiagramElement<?> container, DropScheme dropScheme) {
+	private static DiagramShape createNewShape(FGEPoint dropLocation, DiagramElement<?> container, DropScheme dropScheme) {
 
 		return null;
 

@@ -108,7 +108,7 @@ public class FMLControlledFIBVirtualModelInstanceNature
 		return INSTANCE._getGINAFIBComponent(virtualModelInstance);
 	}
 
-	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> _getModelSlotInstance(
+	private static FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> _getModelSlotInstance(
 			VirtualModelInstance<?, ?> virtualModelInstance) {
 
 		if (virtualModelInstance == null) {
@@ -149,7 +149,7 @@ public class FMLControlledFIBVirtualModelInstanceNature
 
 	}
 
-	private GINAFIBComponent _getGINAFIBComponent(VirtualModelInstance<?, ?> virtualModelInstance) {
+	private static GINAFIBComponent _getGINAFIBComponent(VirtualModelInstance<?, ?> virtualModelInstance) {
 
 		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance = _getModelSlotInstance(virtualModelInstance);
 

@@ -357,7 +357,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			return null;
 		}
 
-		private ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
+		private static ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
 			// TODO
 			/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
 				BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());

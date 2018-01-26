@@ -233,7 +233,7 @@ public class DiagramSpecificationResourceFactory extends
 		public String modelVersion;
 	}
 
-	private <I> DiagramSpecificationInfo findDiagramSpecificationInfo(DiagramSpecificationResource resource,
+	private static <I> DiagramSpecificationInfo findDiagramSpecificationInfo(DiagramSpecificationResource resource,
 			FlexoResourceCenter<I> resourceCenter) {
 
 		DiagramSpecificationInfo returned = new DiagramSpecificationInfo();

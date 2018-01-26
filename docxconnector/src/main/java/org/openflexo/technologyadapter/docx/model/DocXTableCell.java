@@ -102,8 +102,10 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		public void setTc(Tc tc) {
 			if ((tc == null && getTc() != null) || (tc != null && !tc.equals(getTc()))) {
 				if (tc != null) {
-					updateFromTc(tc, (getResourceData() != null && getResourceData().getResource() != null
-							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
+					updateFromTc(tc,
+							(getResourceData() != null && getResourceData().getResource() != null
+									? ((DocXDocumentResource) getResourceData().getResource()).getFactory()
+									: null));
 				}
 			}
 		}
@@ -129,7 +131,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 
 			for (Object o : tc.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof P) {
 					DocXParagraph paragraph = paragraphs.get(o);

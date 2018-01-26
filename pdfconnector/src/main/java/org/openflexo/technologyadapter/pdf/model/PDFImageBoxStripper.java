@@ -205,7 +205,7 @@ public class PDFImageBoxStripper {
 
 	}
 
-	private Rectangle cropImage(BufferedImage originalImage) {
+	private static Rectangle cropImage(BufferedImage originalImage) {
 
 		boolean flag = false;
 

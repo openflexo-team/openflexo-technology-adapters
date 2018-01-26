@@ -1,8 +1,0 @@
-dependencies {
-  // openflexo dep
-  compile flexoFoundation()
-  compile flexoOntology()
-  // external dep
-
-  // testing dep
-}

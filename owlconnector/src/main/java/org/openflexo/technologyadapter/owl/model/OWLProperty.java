@@ -144,9 +144,9 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	private void updateSuperProperties(OntProperty anOntProperty) {
 		// superClasses.clear();
 		try {
-			Iterator it = anOntProperty.listSuperProperties(true);
+			Iterator<? extends OntProperty> it = anOntProperty.listSuperProperties(true);
 			while (it.hasNext()) {
-				OntProperty father = (OntProperty) it.next();
+				OntProperty father = it.next();
 				OWLProperty fatherProp = getOntology().getProperty(father.getURI());
 				if (fatherProp != null) {
 					if (!superProperties.contains(fatherProp)) {

@@ -255,7 +255,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 
 	}
 
-	private DocXTableCell getCell(int row, int col) {
+	private static DocXTableCell getCell(int row, int col) {
 		return (DocXTableCell) table1.getTableRows().get(row).getTableCells().get(col);
 	}
 

@@ -59,7 +59,7 @@ public interface DocXTextRun extends FlexoTextRun<DocXDocument, DocXTechnologyAd
 
 			for (Object o : r.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof Text) {
 					text = (Text) o;

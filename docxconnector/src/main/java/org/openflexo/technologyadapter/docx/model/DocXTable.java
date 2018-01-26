@@ -166,7 +166,7 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 
 			for (Object o : tbl.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof Tr) {
 					DocXTableRow row = rows.get(o);
@@ -250,19 +250,19 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 
 			for (Object o : copiedTbl.getContent()) {
 				if (o instanceof JAXBElement) {
-					o = ((JAXBElement) o).getValue();
+					o = ((JAXBElement<?>) o).getValue();
 				}
 				if (o instanceof Tr) {
 					Tr row = (Tr) o;
 					for (Object o2 : row.getContent()) {
 						if (o2 instanceof JAXBElement) {
-							o2 = ((JAXBElement) o2).getValue();
+							o2 = ((JAXBElement<?>) o2).getValue();
 						}
 						if (o2 instanceof Tc) {
 							Tc cell = (Tc) o2;
 							for (Object o3 : cell.getContent()) {
 								if (o3 instanceof JAXBElement) {
-									o3 = ((JAXBElement) o3).getValue();
+									o3 = ((JAXBElement<?>) o3).getValue();
 								}
 								// TODO Add a parameter to ModelSlot to set identification strategy in ModelSlotInstance
 								if (o3 instanceof P) {
@@ -280,7 +280,7 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 											case Bookmark:
 												for (Object o4 : paragraph.getContent()) {
 													if (o4 instanceof JAXBElement) {
-														o4 = ((JAXBElement) o4).getValue();
+														o4 = ((JAXBElement<?>) o4).getValue();
 													}
 													if (o4 instanceof CTBookmark) {
 														CTBookmark bookmark = (CTBookmark) o4;

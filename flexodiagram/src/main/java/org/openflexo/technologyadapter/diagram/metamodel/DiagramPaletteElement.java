@@ -132,7 +132,7 @@ public interface DiagramPaletteElement extends DiagramPaletteObject, InnerResour
 		}
 
 		@Override
-		public void setChanged() {
+		public synchronized void setChanged() {
 			super.setChanged();
 			if (getPalette() != null) {
 				getPalette().setIsModified();

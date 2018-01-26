@@ -232,7 +232,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		}
 	}
 
-	private boolean isConnector(int shapeType) {
+	private static boolean isConnector(int shapeType) {
 		switch (shapeType) {
 			case ShapeTypes.CurvedConnector2:
 				return true;
@@ -250,7 +250,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		return false;
 	}
 
-	private int elementToCreate(Shape poiConnector, ArrayList<Shape> expectedShapes) {
+	private static int elementToCreate(Shape poiConnector, ArrayList<Shape> expectedShapes) {
 		int elementToCreate = 0;
 		Shape sourceShape = null, targetShape = null;
 		for (Shape diagramShape : expectedShapes) {

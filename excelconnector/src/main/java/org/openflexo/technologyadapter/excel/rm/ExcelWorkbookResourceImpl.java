@@ -324,7 +324,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		}
 	}
 
-	private void makeLocalCopy(File file) throws IOException {
+	private static void makeLocalCopy(File file) throws IOException {
 		if (file != null && file.exists()) {
 			String localCopyName = file.getName() + "~";
 			File localCopy = new File(file.getParentFile(), localCopyName);
@@ -350,6 +350,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			}
 			BasicExcelModelConverter converter = getConverter();
 			newWorkbook = converter.convertExcelWorkbook(wb);
+			// TODO: FD => I would like to close wb here (wb.close()) but this breaks unit test don't know why
+			// by consequence I don't know whether the workbook gets closed at some point or not
+			// maybe there is a resource leak here
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InvalidFormatException e) {

@@ -164,7 +164,7 @@ public class DiagramPaletteResourceFactory extends
 
 	}
 
-	private <I> PaletteInfo findPaletteInfo(DiagramPaletteResource resource, FlexoResourceCenter<I> resourceCenter) {
+	private static <I> PaletteInfo findPaletteInfo(DiagramPaletteResource resource, FlexoResourceCenter<I> resourceCenter) {
 
 		PaletteInfo returned = new PaletteInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
