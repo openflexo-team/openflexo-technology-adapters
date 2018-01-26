@@ -208,22 +208,12 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
 		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
 
-		// Overrides CreateFlexoConceptInitializer by providing palette element creation
-		new CreateFMLControlledDiagramFlexoConceptInitializer(actionInitializer);
-
-	}
-
-	@Override
-	public void initializeAdvancedActions(ControllerActionInitializer actionInitializer) {
-
 		// Diagram edition
 		new CreateDiagramSpecificationInitializer(actionInitializer);
 		new DeleteDiagramSpecificationInitializer(actionInitializer);
 		new CreateExampleDiagramInitializer(actionInitializer);
 		new DeleteExampleDiagramInitializer(actionInitializer);
 		new CreatePaletteElementFromShapeInitializer(actionInitializer);
-		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
-		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
 		new CreateDiagramFromPPTSlideInitializer(actionInitializer);
 		new CreateExampleDiagramFromPPTSlideInitializer(actionInitializer);
@@ -246,16 +236,24 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DropSchemeActionInitializer(actionInitializer);
 		new LinkSchemeActionInitializer(actionInitializer);
 		new ResetGraphicalRepresentationInitializer(actionInitializer);
-		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
-		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new CreatePaletteElementFromFlexoConceptInitializer(actionInitializer);
 		new CreatePaletteElementFromShapeInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
+		new ExportFMLControlledDiagramToImageInitializer(actionInitializer);
+		new DeleteDiagramElementsAndFlexoConceptInstancesInitializer(actionInitializer);
+
+	}
+
+	@Override
+	public void initializeAdvancedActions(ControllerActionInitializer actionInitializer) {
+		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
+		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
 		new CreateFMLControlledDiagramPaletteElementInitializer(actionInitializer);
-		new ExportFMLControlledDiagramToImageInitializer(actionInitializer);
-		new DeleteDiagramElementsAndFlexoConceptInstancesInitializer(actionInitializer);
+
+		// Overrides CreateFlexoConceptInitializer by providing palette element creation
+		new CreateFMLControlledDiagramFlexoConceptInitializer(actionInitializer);
 
 	}
 
