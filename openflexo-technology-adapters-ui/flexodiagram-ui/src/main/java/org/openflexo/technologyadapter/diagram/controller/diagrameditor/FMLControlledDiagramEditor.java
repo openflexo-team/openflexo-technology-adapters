@@ -47,8 +47,8 @@ import org.openflexo.fge.Drawing.RootNode;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.technologyadapter.diagram.controller.action.FMLControlledDiagramPasteHandler;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -64,6 +64,7 @@ import org.openflexo.view.controller.FlexoController;
  */
 public class FMLControlledDiagramEditor extends DiagramEditor {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramEditor.class.getPackage().getName());
 
 	private final FMLControlledDiagramPasteHandler pasteHandler;
@@ -107,7 +108,8 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 	protected FlexoObject getDrawableForDrawingTreeNode(DrawingTreeNode<?, ?> node) {
 		if (node.getDrawable() instanceof FMLControlledDiagramElement) {
 			return ((FMLControlledDiagramElement<?, ?>) node.getDrawable()).getFlexoConceptInstance();
-		}else if(node.getDrawable() instanceof Diagram && node instanceof RootNode){
+		}
+		else if (node.getDrawable() instanceof Diagram && node instanceof RootNode) {
 			return getVirtualModelInstance();
 		}
 		return super.getDrawableForDrawingTreeNode(node);
@@ -124,8 +126,8 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 	@Override
 	protected FlexoObject getRepresentedFlexoObject(FlexoObject object) {
 		if (object instanceof FlexoConceptInstance) {
-			List<FMLControlledDiagramElement<?, ?>> allFMLControlledDiagramElements = getDrawing().getFMLControlledDiagramElements(
-					(FlexoConceptInstance) object);
+			List<FMLControlledDiagramElement<?, ?>> allFMLControlledDiagramElements = getDrawing()
+					.getFMLControlledDiagramElements((FlexoConceptInstance) object);
 			if (allFMLControlledDiagramElements != null && allFMLControlledDiagramElements.size() > 0) {
 				// Return first one !
 				return allFMLControlledDiagramElements.get(0);
