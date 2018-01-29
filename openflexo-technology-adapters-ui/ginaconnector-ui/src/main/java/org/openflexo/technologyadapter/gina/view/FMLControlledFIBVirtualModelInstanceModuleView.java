@@ -24,7 +24,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -33,9 +36,13 @@ import javax.swing.JPanel;
 import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.task.FlexoTask;
@@ -47,6 +54,8 @@ import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.selection.SelectionListener;
+import org.openflexo.selection.SelectionManager;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -56,6 +65,7 @@ import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInst
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.SelectionSynchronizedFIBJPanel;
+import org.openflexo.view.SelectionSynchronizedModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -68,7 +78,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance<?, ?>> {
+public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
+		implements SelectionSynchronizedModuleView<VirtualModelInstance<?, ?>> {
 
 	protected static final Logger logger = FlexoLogger
 			.getLogger(FMLControlledFIBVirtualModelInstanceModuleView.class.getPackage().getName());
@@ -443,4 +454,122 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	public VirtualModelInstance<?, ?> getRepresentedObject() {
 		return virtualModelInstance;
 	}
+
+	@Override
+	public List<SelectionListener> getSelectionListeners() {
+		return Arrays.asList((SelectionListener) this);
+	}
+
+	/**
+	 * Adds specified object to selection
+	 * 
+	 * @param object
+	 */
+	@Override
+	public void fireObjectSelected(FlexoObject object) {
+		if (ignoreFiredSelectionEvents) {
+			return;
+		}
+		// logger.info("SELECTED: "+object);
+
+		componentView.getController().objectAddedToSelection(getRelevantObject(object));
+	}
+
+	/**
+	 * Removes specified object from selection
+	 * 
+	 * @param object
+	 */
+	@Override
+	public void fireObjectDeselected(FlexoObject object) {
+		if (ignoreFiredSelectionEvents) {
+			return;
+		}
+		// logger.info("DESELECTED: "+object);
+		componentView.getController().objectRemovedFromSelection(getRelevantObject(object));
+	}
+
+	/**
+	 * Clear selection
+	 */
+	@Override
+	public void fireResetSelection() {
+		if (ignoreFiredSelectionEvents) {
+			return;
+		}
+		// logger.info("RESET SELECTION");
+		componentView.getController().selectionCleared();
+	}
+
+	/**
+	 * Notify that the selection manager is performing a multiple selection
+	 */
+	@Override
+	public void fireBeginMultipleSelection() {
+		if (ignoreFiredSelectionEvents) {
+			return;
+		}
+	}
+
+	/**
+	 * Notify that the selection manager has finished to perform a multiple selection
+	 */
+	@Override
+	public void fireEndMultipleSelection() {
+		if (ignoreFiredSelectionEvents) {
+			return;
+		}
+	}
+
+	public SelectionManager getSelectionManager() {
+		if (getFlexoController() != null) {
+			return getFlexoController().getSelectionManager();
+		}
+		return null;
+	}
+
+	/*	@Override
+		public void selectionChanged(List<Object> selection) {
+			if (selection == null) {
+				return;
+			}
+			Vector<FlexoObject> newSelection = new Vector<>();
+			for (Object o : selection) {
+				if (o instanceof FlexoObject) {
+					newSelection.add(getRelevantObject((FlexoObject) o));
+				}
+			}
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("FlexoFIBView now impose new selection : " + newSelection);
+			}
+			if (getSelectionManager() != null) {
+				ignoreFiredSelectionEvents = true;
+				getSelectionManager().setSelectedObjects(newSelection);
+				ignoreFiredSelectionEvents = false;
+			}
+		}*/
+
+	private boolean ignoreFiredSelectionEvents = false;
+
+	/**
+	 * We manage here an indirection with resources: resource data is used instead of resource if resource is loaded
+	 * 
+	 * @param object
+	 * @return
+	 */
+	private static FlexoObject getRelevantObject(FlexoObject object) {
+		if (object instanceof FlexoResource<?> && ((FlexoResource<?>) object).isLoaded()) {
+			try {
+				return (FlexoObject) ((FlexoResource<?>) object).getResourceData(null);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				e.printStackTrace();
+			}
+		}
+		return object;
+	}
+
 }
