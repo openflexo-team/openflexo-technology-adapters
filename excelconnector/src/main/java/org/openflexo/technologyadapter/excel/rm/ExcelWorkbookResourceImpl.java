@@ -299,7 +299,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
-				write(new FileOutputStream(temporaryFile));
+				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+					write(fos);
+				}
 				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
 				FileUtils.rename(temporaryFile, fileToSave);
 			} catch (IOException e) {
