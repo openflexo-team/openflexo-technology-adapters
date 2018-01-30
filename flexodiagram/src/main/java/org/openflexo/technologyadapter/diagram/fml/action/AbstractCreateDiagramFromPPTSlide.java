@@ -361,11 +361,10 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public void loadSlideShow() {
-		try {
-			FileInputStream fis = new FileInputStream(getFile());
+		try (FileInputStream fis = new FileInputStream(getFile())) {
 			selectedSlideShow = new SlideShow(fis);
 			if (currentSlides == null) {
-				currentSlides = new ArrayList<Slide>();
+				currentSlides = new ArrayList<>();
 			}
 			else {
 				currentSlides.clear();
@@ -508,9 +507,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	 */
 	public void convertSlideToDiagram(Slide slide) {
 		MasterSheet master = slide.getMasterSheet();
-		shapesMap = new LinkedHashMap<DiagramShape, Shape>();
-		connectorsMap = new LinkedHashMap<DiagramConnector, Shape>();
-		poiShapes = new ArrayList<Shape>();
+		shapesMap = new LinkedHashMap<>();
+		connectorsMap = new LinkedHashMap<>();
+		poiShapes = new ArrayList<>();
 
 		// Retrieve all transformable elements
 		if (slide.getFollowMasterObjects()) {
@@ -621,7 +620,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return diagramElement;
 	}
 
-	private DiagramElement<?> transformBackground(Background shape) {
+	private static DiagramElement<?> transformBackground(Background shape) {
 		DiagramElement<?> diagramElement = null;
 		return diagramElement;
 	}
@@ -780,7 +779,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private void attachConnector(DiagramConnector connector, Shape poiConnector) {
 		DiagramShape sourceShape = null, targetShape = null;
-		List<DiagramShape> potentialShapes = new ArrayList<DiagramShape>();
+		List<DiagramShape> potentialShapes = new ArrayList<>();
 
 		// We must count the size of the arrow head
 		double arrowStartWidth = poiConnector.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) + 1;
@@ -852,7 +851,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		connector.setEndShape(targetShape);
 	}
 
-	private void setDiagramElementType(GraphicalRepresentation gr, Shape shape) {
+	private static void setDiagramElementType(GraphicalRepresentation gr, Shape shape) {
 		switch (shape.getShapeType()) {
 			case ShapeTypes.Chevron:
 				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.CHEVRON);
