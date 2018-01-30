@@ -19,3 +19,6 @@ if (JavaVersion.current().isJava9Compatible()) {
 		jvmArgs += ['--add-modules', 'java.xml.bind']
     }
 }  
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}
