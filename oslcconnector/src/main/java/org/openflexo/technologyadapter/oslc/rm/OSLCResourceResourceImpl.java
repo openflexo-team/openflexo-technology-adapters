@@ -184,9 +184,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		FlexoOslcAdaptorConfiguration adaptor = null;
 		File providerFile = (File) getIODelegate().getSerializationArtefact();
 		Properties properties = new Properties();
-		FileInputStream input = null;
-		try {
-			input = new FileInputStream(providerFile);
+		try (FileInputStream input = new FileInputStream(providerFile)) {
 			properties.load(input);
 			adaptor = new FlexoOslcAdaptorConfiguration(properties.getProperty("catalogUri"));
 			adaptor.setAccessToken(properties.getProperty("accessToken"));
@@ -199,14 +197,6 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 			adaptor.setLogin(properties.getProperty("login"));
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return adaptor;
 	}

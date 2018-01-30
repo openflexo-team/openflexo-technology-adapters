@@ -44,15 +44,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -82,64 +82,67 @@ public class FlexoOAuthHandlerImpl extends FlexoOAuthHandler {
 			// TODO Ask for user authentification...
 		}
 
-		try {
+		try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
 			// use the oauth-autorize url using the request token
 			String redirect = getConsumer().serviceProvider.userAuthorizationURL + "?oauth_token=" + getAccessor().requestToken;
-			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet request1 = new HttpGet(redirect);
 			System.out.println("Request1: " + redirect);
 			HttpClientParams.setRedirecting(request1.getParams(), false);
-			HttpResponse response = httpClient.execute(request1);
-			System.out.println("Response1: " + response);
-			EntityUtils.consume(response.getEntity());
-			// Get the location of the redirection
-			Header location = response.getFirstHeader("Location");
+			Header location = null;
+			try (CloseableHttpResponse response = httpClient.execute(request1)) {
+				System.out.println("Response1: " + response);
+				EntityUtils.consume(response.getEntity());
+				// Get the location of the redirection
+				location = response.getFirstHeader("Location");
+			}
 			if (location != null) {
 				HttpGet request2 = new HttpGet(location.getValue());
 				System.out.println("Request2: " + location.getValue());
 				HttpClientParams.setRedirecting(request2.getParams(), false);
-				response = httpClient.execute(request2);
-				System.out.println("Response2: " + response);
-				EntityUtils.consume(response.getEntity());
-
+				try (CloseableHttpResponse response = httpClient.execute(request2)) {
+					System.out.println("Response2: " + response);
+					EntityUtils.consume(response.getEntity());
+				}
 				HttpPost formPost = new HttpPost(getAuthURL());
 				System.out.println("Request3: " + getAuthURL());
-				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+				List<NameValuePair> nvps = new ArrayList<>();
 				nvps.add(new BasicNameValuePair("j_username", getLogin()));
 				nvps.add(new BasicNameValuePair("j_password", getPassword()));
 				formPost.setEntity(new UrlEncodedFormEntity(nvps, StandardCharsets.UTF_8));
 
-				HttpResponse formResponse = httpClient.execute(formPost);
-				System.out.println("Response3: " + formResponse);
-				EntityUtils.consume(formResponse.getEntity());
-				System.out.println(formResponse.getStatusLine().getStatusCode());
+				try (CloseableHttpResponse formResponse = httpClient.execute(formPost)) {
+					System.out.println("Response3: " + formResponse);
+					EntityUtils.consume(formResponse.getEntity());
+					System.out.println(formResponse.getStatusLine().getStatusCode());
 
-				location = formResponse.getFirstHeader("Location");
+					location = formResponse.getFirstHeader("Location");
+				}
 				// Third GET
 				HttpGet request4 = new HttpGet(location.getValue());
 				System.out.println("Request4: " + location.getValue());
 				HttpClientParams.setRedirecting(request4.getParams(), false);
-				response = httpClient.execute(request4);
-				System.out.println("Response4: " + response.getAllHeaders());
-				EntityUtils.consume(response.getEntity());
+				try (CloseableHttpResponse response = httpClient.execute(request4)) {
+					System.out.println("Response4: " + response.getAllHeaders());
+					EntityUtils.consume(response.getEntity());
 
-				/*for (Header header : response.getAllHeaders()) {
-					for (HeaderElement element : header.getElements()) {
-						if (element.getName().equals("JSESSIONID")) {
-							sessionID = element.getValue();
+					/*for (Header header : response.getAllHeaders()) {
+						for (HeaderElement element : header.getElements()) {
+							if (element.getName().equals("JSESSIONID")) {
+								sessionID = element.getValue();
+							}
 						}
-					}
-				}*/
+					}*/
 
-				location = response.getFirstHeader("Location");
+					location = response.getFirstHeader("Location");
+				}
 				HttpGet request5 = new HttpGet(location.getValue());
 				System.out.println("Request5: " + location.getValue());
 				HttpClientParams.setRedirecting(request5.getParams(), false);
-				response = httpClient.execute(request5);
-				System.out.println("Response5: " + response);
-				EntityUtils.consume(response.getEntity());
+				try (CloseableHttpResponse response = httpClient.execute(request5)) {
+					System.out.println("Response5: " + response);
+					EntityUtils.consume(response.getEntity());
+				}
 			}
-
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
