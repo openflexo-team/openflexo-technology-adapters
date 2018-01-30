@@ -95,7 +95,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
-		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+		List<SimplePathElement> returned = new ArrayList<>();
 
 		if (parent instanceof XMLIndividual) {
 			for (XMLProperty attr : ((XMLIndividual) parent).getType().getProperties()) {

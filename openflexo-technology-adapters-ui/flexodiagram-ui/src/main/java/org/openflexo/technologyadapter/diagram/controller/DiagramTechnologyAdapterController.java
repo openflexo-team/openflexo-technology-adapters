@@ -443,7 +443,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		}
 
 		// TODO not applicable
-		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 }

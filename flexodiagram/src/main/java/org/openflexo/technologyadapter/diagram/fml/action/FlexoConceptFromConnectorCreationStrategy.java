@@ -112,7 +112,7 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 
 	public List<FlexoConcept> getFlexoConceptsFrom() {
 		if (flexoConceptsFromList == null) {
-			flexoConceptsFromList = new ArrayList<FlexoConcept>();
+			flexoConceptsFromList = new ArrayList<>();
 		}
 		if (getTransformationAction().getVirtualModel() != null) {
 			flexoConceptsFromList.clear();
@@ -135,7 +135,7 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 
 	public List<FlexoConcept> getFlexoConceptsTo() {
 		if (flexoConceptsToList == null) {
-			flexoConceptsToList = new ArrayList<FlexoConcept>();
+			flexoConceptsToList = new ArrayList<>();
 		}
 		if (getTransformationAction().getVirtualModel() != null) {
 			flexoConceptsToList.clear();
@@ -229,7 +229,7 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 			// newAddConnector.setModelSlot(getTransformationAction().getDiagramModelSlot());
 			AssignationAction<DiagramConnector> assignationAction = getTransformationAction().getFactory()
 					.newAssignationAction(newAddConnector);
-			assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
+			assignationAction.setAssignation(new DataBinding<>(newConnectorRole.getRoleName()));
 			ShapeRole fromPatternRole = null;
 			ShapeRole toPatternRole = null;
 			if (fromFlexoConcept.getDeclaredProperties(ShapeRole.class).size() > 0) {

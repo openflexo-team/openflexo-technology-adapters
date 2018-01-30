@@ -105,10 +105,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	public FMLControlledDiagramDrawing(FMLRTVirtualModelInstance vmInstance, boolean readOnly) {
 		super(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(vmInstance), readOnly);
 		this.virtualModelInstance = vmInstance;
-		floatingPalettes = new ArrayList<FMLControlledDiagramFloatingPalette>();
-		diagramElementsForFlexoConceptInstances = new HashMap<FlexoConceptInstance, List<FMLControlledDiagramElement<?, ?>>>();
-		federatedShapes = new HashMap<DiagramShape, FMLControlledDiagramShape>();
-		federatedConnectors = new HashMap<DiagramConnector, FMLControlledDiagramConnector>();
+		floatingPalettes = new ArrayList<>();
+		diagramElementsForFlexoConceptInstances = new HashMap<>();
+		federatedShapes = new HashMap<>();
+		federatedConnectors = new HashMap<>();
 		try {
 			MODEL_FACTORY = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(FMLControlledDiagramShape.class, FMLControlledDiagramConnector.class));
@@ -213,7 +213,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		List<FMLControlledDiagramElement<?, ?>> list = diagramElementsForFlexoConceptInstances
 				.get(fmlControlledDiagramElement.getFlexoConceptInstance());
 		if (list == null) {
-			list = new ArrayList<FMLControlledDiagramElement<?, ?>>();
+			list = new ArrayList<>();
 			diagramElementsForFlexoConceptInstances.put(fmlControlledDiagramElement.getFlexoConceptInstance(), list);
 		}
 		if (!list.contains(fmlControlledDiagramElement)) {
@@ -287,7 +287,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 						if (availableLinkSchemes != null && availableLinkSchemes.size() > 0) {
 
-							List<FMLControlledDiagramFloatingPalette> returned = new ArrayList<FMLControlledDiagramFloatingPalette>();
+							List<FMLControlledDiagramFloatingPalette> returned = new ArrayList<>();
 
 							boolean northDirectionSupported = false;
 							boolean eastDirectionSupported = false;

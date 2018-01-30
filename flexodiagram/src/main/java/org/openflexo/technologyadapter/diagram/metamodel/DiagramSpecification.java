@@ -47,7 +47,6 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
@@ -80,8 +79,7 @@ import org.openflexo.toolbox.ChainedCollection;
 @ModelEntity
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
-public interface DiagramSpecification
-		extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
+public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -231,7 +229,7 @@ public interface DiagramSpecification
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadDiagramPalettesWhenUnloaded() {
-			palettes = new ArrayList<DiagramPalette>();
+			palettes = new ArrayList<>();
 			if (getResource() != null) {
 				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
 					if (r instanceof DiagramPaletteResource) {
@@ -249,7 +247,7 @@ public interface DiagramSpecification
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadExampleDiagramsWhenUnloaded() {
-			exampleDiagrams = new ArrayList<Diagram>();
+			exampleDiagrams = new ArrayList<>();
 			if (getResource() != null) {
 				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
 					if (r instanceof DiagramResource) {
@@ -407,7 +405,7 @@ public interface DiagramSpecification
 		@Override
 		public List<DiagramPaletteElement> getAllPaletteElements() {
 			if (paletteElements == null) {
-				paletteElements = new ArrayList<DiagramPaletteElement>();
+				paletteElements = new ArrayList<>();
 			}
 			paletteElements.clear();
 			for (DiagramPalette palette : getPalettes()) {

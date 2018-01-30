@@ -84,7 +84,7 @@ public final class PowerpointBindingFactory extends TechnologyAdapterBindingFact
 
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+		List<SimplePathElement> returned = new ArrayList<>();
 		if (parent instanceof PowerpointSlideshow) {
 			for (PowerpointSlide sheet : ((PowerpointSlideshow) parent).getPowerpointSlides()) {
 				returned.add(getSimplePathElement(sheet, parent));

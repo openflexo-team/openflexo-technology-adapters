@@ -201,7 +201,7 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 		}
 
 		// Remove Thing references if list is non trivially the Thing singleton
-		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>(
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<>(
 				potentialStorageClasses)) {
 			if (c2 == null || (c2.isRootConcept() && potentialStorageClasses.size() > 1)) {
 				potentialStorageClasses.remove(c2);

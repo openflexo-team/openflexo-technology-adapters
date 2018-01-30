@@ -93,8 +93,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		// Sylvain: commented this because not movable nor rezizable shapes
 		// setEditable(false);
 
-		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
-		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
+		fromArtifacts = new Hashtable<>();
+		toArtifacts = new Hashtable<>();
 	}
 
 	@Override

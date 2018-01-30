@@ -118,7 +118,7 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 		return null;
 	}
 
-	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<DiagramSpecification, DiagramType>();
+	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<>();
 
 	public static DiagramType getDiagramType(DiagramSpecification diagramSpecification) {
 

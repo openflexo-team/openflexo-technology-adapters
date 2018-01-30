@@ -100,7 +100,7 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		@Override
 		public DataBinding<CreationFactory> getCreationFactory() {
 			if (creationFactory == null) {
-				creationFactory = new DataBinding<CreationFactory>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
+				creationFactory = new DataBinding<>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
 				creationFactory.setBindingName("creationFactory");
 			}
 			return creationFactory;

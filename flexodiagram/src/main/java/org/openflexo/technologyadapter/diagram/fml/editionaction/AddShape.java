@@ -186,7 +186,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		@Override
 		public DataBinding<DiagramContainerElement<?>> getContainer() {
 			if (container == null) {
-				container = new DataBinding<DiagramContainerElement<?>>(this, DiagramContainerElement.class, BindingDefinitionType.GET);
+				container = new DataBinding<>(this, DiagramContainerElement.class, BindingDefinitionType.GET);
 				container.setBindingName("container");
 			}
 			return container;
@@ -324,11 +324,11 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		@Override
 		public ValidationIssue<AddShapeActionMustAdressAValidShapeRole, AddShape> applyValidation(AddShape action) {
 			if (action.getAssignedFlexoProperty() == null && action.getOwner() instanceof AssignationAction) {
-				Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>>();
+				Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>> v = new Vector<>();
 				for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<AddShapeActionMustAdressAValidShapeRole, AddShape>(this, action,
+				return new ValidationError<>(this, action,
 						"add_shape_action_does_not_address_a_valid_shape_flexo_role", v);
 			}
 			return null;
@@ -350,7 +350,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}
@@ -366,7 +366,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		public ValidationIssue<AddShapeActionMustHaveAValidContainer, AddShape> applyValidation(AddShape action) {
 			if (action.getAssignedFlexoProperty() != null && action.getAssignedFlexoProperty().getParentShapeAsDefinedInAction()
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
-				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
+				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<>();
 				if (action.getRootOwner() instanceof DropScheme) {
 					FlexoConcept targetFlexoConcept = ((DropScheme) action.getRootOwner()).getTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
@@ -387,7 +387,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					details = "Container not set";
 				}
 
-				return new ValidationError<AddShapeActionMustHaveAValidContainer, AddShape>(this, action,
+				return new ValidationError<>(this, action,
 						"add_shape_action_does_not_have_a_valid_container", v);
 			}
 			return null;

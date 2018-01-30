@@ -34,7 +34,7 @@ public class ODTTechnologyContextManager extends TechnologyContextManager<ODTTec
 	}
 
 	/** Stores all known documents */
-	protected Map<String, ODTDocumentResource> odtDocuments = new HashMap<String, ODTDocumentResource>();
+	protected Map<String, ODTDocumentResource> odtDocuments = new HashMap<>();
 
 	public ODTDocumentResource getODTDocumentResource(String uri) {
 		return odtDocuments.get(uri);

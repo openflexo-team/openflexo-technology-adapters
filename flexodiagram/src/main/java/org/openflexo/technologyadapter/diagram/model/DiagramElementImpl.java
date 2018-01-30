@@ -180,7 +180,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 
 	@Override
 	public List<DiagramContainerElement<?>> getAncestors() {
-		List<DiagramContainerElement<?>> ancestors = new ArrayList<DiagramContainerElement<?>>();
+		List<DiagramContainerElement<?>> ancestors = new ArrayList<>();
 		DiagramContainerElement<?> current = getParent();
 		while (current != null) {
 			ancestors.add(current);

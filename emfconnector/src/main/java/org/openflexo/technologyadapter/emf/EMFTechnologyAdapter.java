@@ -121,11 +121,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public void activate() {
 		super.activate();
-		try {
-			registerClasspathMetaModels();
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
+		registerClasspathMetaModels();
 	}
 
 	/**
@@ -321,7 +317,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	/**
 	 * Registers the Metamodel that are provided by this technology adapter
 	 */
-	private void registerClasspathMetaModels() throws ModelDefinitionException {
+	private void registerClasspathMetaModels() {
 
 		ecoreMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(ECORE_MM_NAME, ECORE_MM_URI, ECORE_MM_EXT,
 				ECORE_MM_PKGCLSNAME, ECORE_MM_FACTORYCLSNAME, getTechnologyContextManager());

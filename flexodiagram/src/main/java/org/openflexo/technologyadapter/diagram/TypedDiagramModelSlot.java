@@ -217,7 +217,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings(DiagramPaletteElement paletteElement) {
-			ArrayList<FMLDiagramPaletteElementBinding> bindings = new ArrayList<FMLDiagramPaletteElementBinding>();
+			ArrayList<FMLDiagramPaletteElementBinding> bindings = new ArrayList<>();
 			for (FMLDiagramPaletteElementBinding binding : getPaletteElementBindings()) {
 				if (binding.getPaletteElement() == paletteElement) {
 					bindings.add(binding);
@@ -333,7 +333,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 				templateDiagramReference.setObject(anElement);
 			}
 			else {
-				templateDiagramReference = new FlexoObjectReference<Diagram>(anElement);
+				templateDiagramReference = new FlexoObjectReference<>(anElement);
 			}
 			getPropertyChangeSupport().firePropertyChange(TEMPLATE_DIAGRAM_KEY, old, anElement);
 		}

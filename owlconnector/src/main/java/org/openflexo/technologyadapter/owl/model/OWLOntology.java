@@ -179,22 +179,22 @@ public class OWLOntology extends OWLObject
 		alternativeLocalResource = owlResource;
 		_library = library;
 
-		importedOntologies = new Vector<OWLOntology>();
+		importedOntologies = new Vector<>();
 
-		classes = new Hashtable<String, OWLClass>();
-		individuals = new Hashtable<String, OWLIndividual>();
-		dataProperties = new Hashtable<String, OWLDataProperty>();
-		objectProperties = new Hashtable<String, OWLObjectProperty>();
+		classes = new Hashtable<>();
+		individuals = new Hashtable<>();
+		dataProperties = new Hashtable<>();
+		objectProperties = new Hashtable<>();
 
-		_classes = new Hashtable<OntClass, OWLClass>();
-		_individuals = new Hashtable<Individual, OWLIndividual>();
-		_dataProperties = new Hashtable<OntProperty, OWLDataProperty>();
-		_objectProperties = new Hashtable<OntProperty, OWLObjectProperty>();
+		_classes = new Hashtable<>();
+		_individuals = new Hashtable<>();
+		_dataProperties = new Hashtable<>();
+		_objectProperties = new Hashtable<>();
 
-		orderedClasses = new Vector<OWLClass>();
-		orderedIndividuals = new Vector<OWLIndividual>();
-		orderedDataProperties = new Vector<OWLDataProperty>();
-		orderedObjectProperties = new Vector<OWLObjectProperty>();
+		orderedClasses = new Vector<>();
+		orderedIndividuals = new Vector<>();
+		orderedDataProperties = new Vector<>();
+		orderedObjectProperties = new Vector<>();
 
 	}
 
@@ -664,7 +664,7 @@ public class OWLOntology extends OWLObject
 		// I don't know what, but i found this way to get some more classes not discovered
 		// by classical exploration. This is not satisfying.
 		// Please investigate and find the RIGHT way to browse all classes !!!
-		for (OWLClass aClass : new ArrayList<OWLClass>(classes.values())) {
+		for (OWLClass aClass : new ArrayList<>(classes.values())) {
 			for (Iterator<OntClass> scI = aClass.getOntResource().listSubClasses(); scI.hasNext();) {
 				OntClass subClass = scI.next();
 				// retrieveOntologyClass(subClass);
@@ -695,10 +695,10 @@ public class OWLOntology extends OWLObject
 
 	private void handleRedefinitionOfConceptsAndProperties() {
 
-		Set<OntClass> redefinedClasses = new HashSet<OntClass>();
-		Set<Individual> redefinedIndividuals = new HashSet<Individual>();
-		Set<ObjectProperty> redefinedObjectProperties = new HashSet<ObjectProperty>();
-		Set<DatatypeProperty> redefinedDatatypeProperties = new HashSet<DatatypeProperty>();
+		Set<OntClass> redefinedClasses = new HashSet<>();
+		Set<Individual> redefinedIndividuals = new HashSet<>();
+		Set<ObjectProperty> redefinedObjectProperties = new HashSet<>();
+		Set<DatatypeProperty> redefinedDatatypeProperties = new HashSet<>();
 
 		for (StmtIterator i = getOntModel().listStatements(); i.hasNext();) {
 			Statement s = i.nextStatement();
@@ -1236,7 +1236,7 @@ public class OWLOntology extends OWLObject
 	 */
 	@Override
 	public List<OWLClass> getAccessibleClasses() {
-		List<OWLClass> returned = new ArrayList<OWLClass>();
+		List<OWLClass> returned = new ArrayList<>();
 		for (OWLOntology o : getAllImportedOntologies()) {
 			returned.addAll(o.getClasses());
 		}
@@ -1252,7 +1252,7 @@ public class OWLOntology extends OWLObject
 	 */
 	@Override
 	public List<OWLIndividual> getAccessibleIndividuals() {
-		List<OWLIndividual> returned = new ArrayList<OWLIndividual>();
+		List<OWLIndividual> returned = new ArrayList<>();
 		for (OWLOntology o : getAllImportedOntologies()) {
 			returned.addAll(o.getIndividuals());
 		}
@@ -1268,7 +1268,7 @@ public class OWLOntology extends OWLObject
 	 */
 	@Override
 	public List<OWLObjectProperty> getAccessibleObjectProperties() {
-		List<OWLObjectProperty> returned = new ArrayList<OWLObjectProperty>();
+		List<OWLObjectProperty> returned = new ArrayList<>();
 		for (OWLOntology o : getAllImportedOntologies()) {
 			returned.addAll(o.getObjectProperties());
 		}
@@ -1284,7 +1284,7 @@ public class OWLOntology extends OWLObject
 	 */
 	@Override
 	public List<OWLDataProperty> getAccessibleDataProperties() {
-		List<OWLDataProperty> returned = new ArrayList<OWLDataProperty>();
+		List<OWLDataProperty> returned = new ArrayList<>();
 		for (OWLOntology o : getAllImportedOntologies()) {
 			returned.addAll(o.getDataProperties());
 		}
@@ -2125,7 +2125,7 @@ public class OWLOntology extends OWLObject
 
 	@Override
 	public List<OWLConcept<?>> getConcepts() {
-		ArrayList<OWLConcept<?>> returned = new ArrayList<OWLConcept<?>>();
+		ArrayList<OWLConcept<?>> returned = new ArrayList<>();
 		returned.addAll(classes.values());
 		returned.addAll(individuals.values());
 		returned.addAll(objectProperties.values());

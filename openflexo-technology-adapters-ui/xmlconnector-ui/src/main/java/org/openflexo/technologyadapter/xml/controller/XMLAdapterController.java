@@ -214,11 +214,11 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 		else if (object instanceof XMLMetaModel) {
 			return new XMLMetaModelView((XMLMetaModel) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 	@Override
 	public OntologyBrowserModel<XMLTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<XMLTechnologyAdapter> context) {
-		return new OntologyBrowserModel<XMLTechnologyAdapter>(context);
+		return new OntologyBrowserModel<>(context);
 	}
 }

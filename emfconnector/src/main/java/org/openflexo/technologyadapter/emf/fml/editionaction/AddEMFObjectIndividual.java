@@ -243,7 +243,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 		@Override
 		public DataBinding<List> getContainer() {
 			if (container == null) {
-				container = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
+				container = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return container;
 		}

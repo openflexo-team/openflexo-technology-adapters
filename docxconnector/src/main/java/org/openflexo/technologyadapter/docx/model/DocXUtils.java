@@ -149,7 +149,7 @@ public class DocXUtils {
 	}
 
 	public static <T> List<T> getAllElementsFromObject(Object obj, Class<T> toSearch) {
-		List<T> result = new ArrayList<T>();
+		List<T> result = new ArrayList<>();
 		if (obj instanceof JAXBElement)
 			obj = ((JAXBElement<?>) obj).getValue();
 

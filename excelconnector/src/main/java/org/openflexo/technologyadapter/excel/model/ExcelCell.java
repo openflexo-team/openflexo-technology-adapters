@@ -401,7 +401,7 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		@Override
 		public List<ExcelCell> getMergedCells() {
 			if (isMerged()) {
-				List<ExcelCell> returned = new ArrayList<ExcelCell>();
+				List<ExcelCell> returned = new ArrayList<>();
 				for (int row = cellRange.getFirstRow(); row <= cellRange.getLastRow(); row++) {
 					for (int col = cellRange.getFirstColumn(); col <= cellRange.getLastColumn(); col++) {
 						returned.add(getExcelSheet().getCellAt(row, col));

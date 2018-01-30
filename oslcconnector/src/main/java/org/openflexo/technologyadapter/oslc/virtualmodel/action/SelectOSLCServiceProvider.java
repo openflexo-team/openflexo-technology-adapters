@@ -72,7 +72,7 @@ public interface SelectOSLCServiceProvider extends FetchRequest<OSLCCoreModelSlo
 		@Override
 		public List<OSLCServiceProvider> execute(RunTimeEvaluationContext evaluationContext) {
 
-			List<OSLCServiceProvider> selectedOSLCServiceProviders = new ArrayList<OSLCServiceProvider>();
+			List<OSLCServiceProvider> selectedOSLCServiceProviders = new ArrayList<>();
 
 			List<OSLCServiceProvider> returned = filterWithConditions(selectedOSLCServiceProviders, evaluationContext);
 

@@ -266,7 +266,8 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 			createCreationScheme.setFlexoBehaviourName("create");
 			createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
 			createCreationScheme.doAction();
-			CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+			// Unused CreationScheme creationScheme = (CreationScheme)
+			createCreationScheme.getNewFlexoBehaviour();
 		}
 
 		for (SEFlexoConceptSpecification conceptSpecification : getSEConcepts()) {
@@ -326,9 +327,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 			if (getExcelWorkbookResource().getName().contains(".")) {
 				return getExcelWorkbookResource().getName().substring(0, getExcelWorkbookResource().getName().lastIndexOf("."));
 			}
-			else {
-				return getExcelWorkbookResource().getName();
-			}
+			return getExcelWorkbookResource().getName();
 		}
 		return super.getNewVirtualModelName();
 	}

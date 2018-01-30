@@ -103,7 +103,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	 * @return
 	 */
 	protected static Vector<DiagramElement<?>> objectsToDelete(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection) {
-		Vector<DiagramElement<?>> allSelection = new Vector<DiagramElement<?>>();
+		Vector<DiagramElement<?>> allSelection = new Vector<>();
 		if (globalSelection == null || !globalSelection.contains(focusedObject)) {
 			allSelection.add(focusedObject);
 		}
@@ -115,7 +115,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 			}
 		}
 
-		Vector<DiagramElement<?>> returned = new Vector<DiagramElement<?>>();
+		Vector<DiagramElement<?>> returned = new Vector<>();
 		for (DiagramElement<?> o : allSelection) {
 			boolean isContainedByAnOtherObject = false;
 			for (DiagramElement<?> potentielContainer : allSelection) {
@@ -183,7 +183,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 
 		if (removePendingConnectors) {
 			// A list of connectors that may be deleted if a shape is connected to it
-			List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+			List<DiagramConnector> impliedConnectors = new ArrayList<>();
 			for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
 				if (o instanceof DiagramShape) {
 					impliedConnectors.addAll(((DiagramShape) o).getStartConnectors());
@@ -240,7 +240,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	public void setSelectedDeletionScheme(DeletionScheme selectedDeletionScheme) {
 		if (getSelectedFlexoConceptInstance() != null) {
 			if (selectedFlexoConceptInstanceDeletionSchemes == null) {
-				selectedFlexoConceptInstanceDeletionSchemes = new HashMap<FlexoConceptInstance, DeletionScheme>();
+				selectedFlexoConceptInstanceDeletionSchemes = new HashMap<>();
 			}
 			selectedFlexoConceptInstanceDeletionSchemes.put(getSelectedFlexoConceptInstance(), selectedDeletionScheme);
 			this.selectedDeletionScheme = selectedDeletionScheme;

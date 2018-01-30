@@ -42,12 +42,11 @@ package org.openflexo.technologyadapter.owl.model;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
 public abstract class OWLObject extends FlexoOntologyObjectImpl<OWLTechnologyAdapter>
-		implements IFlexoOntologyObject<OWLTechnologyAdapter>, OWL2URIDefinitions, RDFURIDefinitions, RDFSURIDefinitions {
+		implements OWL2URIDefinitions, RDFURIDefinitions, RDFSURIDefinitions {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLObject.class.getPackage().getName());

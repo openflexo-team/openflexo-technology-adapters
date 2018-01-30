@@ -38,7 +38,6 @@
  * 
  */
 
-
 /** Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
  * Author : Gilles Besançon
  *
@@ -251,19 +250,19 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getTypes() {
 		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel()
-				.getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null)));
+				.getConverter().convertClass(ontology.getMetaModel(), object.eClass(), null)));
 	}
 
 	/**
 	 * returns the type by wich EObject instance has been created
+	 * 
 	 * @return
 	 */
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getMainType() {
-		
-		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null);
+
+		return ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass(), null);
 	}
-	
-	
+
 	/**
 	 * Follow the link.
 	 * 
@@ -274,7 +273,6 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		return getTypes().contains(aClass);
 	}
 
-	
 	/**
 	 * Follow the link.
 	 * 
@@ -292,10 +290,11 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	 */
 	@Override
 	public List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> getPropertyValues() {
-		List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> propertyValues = new ArrayList<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> propertyValues = new ArrayList<>();
 		// TODO : Some optimization required here!
 		for (EStructuralFeature structuralFeature : object.eClass().getEAllStructuralFeatures()) {
-			IFlexoOntologyPropertyValue<EMFTechnologyAdapter> pvalue = ontology.getConverter().getPropertyValues().get(object).get(structuralFeature);
+			IFlexoOntologyPropertyValue<EMFTechnologyAdapter> pvalue = ontology.getConverter().getPropertyValues().get(object)
+					.get(structuralFeature);
 			if (pvalue != null)
 				propertyValues.add(pvalue);
 		}
@@ -306,9 +305,10 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	public boolean delete(Object... context) {
 		// TODO XTOF => implement an actual deletion mechanism
 		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
-		if (this.containingPropertyValue == null) {
+		if (EMFObjectIndividual.containingPropertyValue == null) {
 			this.getEMFModel().getEMFResource().getContents().remove(this.getObject());
-		} else {
+		}
+		else {
 			containingPropertyValue.remove(this);
 		}
 		return super.delete(context);
@@ -345,7 +345,8 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		if (property instanceof EMFAttributeDataProperty) {
 			EAttribute Eattr = ((EMFAttributeDataProperty) property).getObject();
 			obj.eSet(Eattr, newValue);
-		} else {
+		}
+		else {
 			System.out.println("Property Values can't be modified : " + property);
 		}
 
@@ -372,7 +373,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	}
 
 	public EMFObjectIndividualReferenceObjectPropertyValueAsList getContainingPropertyValue() {
-		return this.containingPropertyValue;
+		return EMFObjectIndividual.containingPropertyValue;
 	}
 
 	public void setContainPropertyValue(EMFObjectIndividualReferenceObjectPropertyValueAsList container) {

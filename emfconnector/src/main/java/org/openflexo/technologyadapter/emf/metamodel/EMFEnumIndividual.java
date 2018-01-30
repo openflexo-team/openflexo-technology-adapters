@@ -130,7 +130,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}

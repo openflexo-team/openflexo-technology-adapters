@@ -83,7 +83,7 @@ public class ExcelWorkbookEditorWidget extends JPanel
 
 	private PropertyChangeSupport pcSupport;
 
-	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<ApplyCancelListener>();
+	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<>();
 
 	public ExcelWorkbookEditorWidget(ExcelWorkbook workbook) {
 		super(new BorderLayout());

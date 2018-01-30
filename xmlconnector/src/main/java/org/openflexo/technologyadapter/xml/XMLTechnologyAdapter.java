@@ -81,7 +81,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public XMLTechnologyAdapter() {
 		super();
 		xmlModelFactory = new XMLModelFactory();
-		privateMetamodels = new HashMap<String, XMLMetaModel>();
+		privateMetamodels = new HashMap<>();
 	}
 
 	@Override

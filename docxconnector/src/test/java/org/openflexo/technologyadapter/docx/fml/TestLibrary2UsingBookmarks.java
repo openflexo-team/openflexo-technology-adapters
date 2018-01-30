@@ -535,7 +535,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		createEditionAction4.setAssignation(new DataBinding<>("type"));
 		createEditionAction4.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createEditionAction4.getNewEditionAction();
-		((ExpressionAction) action4.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aType"));
+		((ExpressionAction) action4.getAssignableAction()).setExpression(new DataBinding<>("parameters.aType"));
 		action4.setName("action4");
 		assertTrue(action4.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action4.getAssignableAction()).getExpression().isValid());
@@ -546,7 +546,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		createEditionAction5.setAssignation(new DataBinding<>("description"));
 		createEditionAction5.doAction();
 		AssignationAction<?> action5 = (AssignationAction<?>) createEditionAction5.getNewEditionAction();
-		((ExpressionAction) action5.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aDescription"));
+		((ExpressionAction) action5.getAssignableAction()).setExpression(new DataBinding<>("parameters.aDescription"));
 		action5.setName("action5");
 		assertTrue(action5.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action5.getAssignableAction()).getExpression().isValid());
@@ -1088,7 +1088,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		CreateEditionAction createSelectTable = CreateEditionAction.actionType.makeNewAction(generateDocumentActionScheme.getControlGraph(),
 				null, _editor);
 		createSelectTable.setEditionActionClass(SelectGeneratedDocXTable.class);
-		createSelectTable.setAssignation(new DataBinding<Object>("bookListingTable"));
+		createSelectTable.setAssignation(new DataBinding<>("bookListingTable"));
 		createSelectTable.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
 		assertTrue(action4.getAssignation().isValid());
@@ -1154,7 +1154,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		assertNotNull(bookCriteria);
 		assertNotNull(sectionCriteria);
 
-		bookCriteria.setValue(new DataBinding<Object>("book"));
+		bookCriteria.setValue(new DataBinding<>("book"));
 		assertTrue(bookCriteria.getValue().isValid());
 
 		// We check here that creation parameters were updated
@@ -1163,7 +1163,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance
 				.getParameter(bookDescriptionSection.getCreationSchemes().get(0).getParameters().get(0));
 		assertNotNull(bookParam);
-		bookParam.setValue(new DataBinding<Object>("book"));
+		bookParam.setValue(new DataBinding<>("book"));
 		assertTrue(bookParam.getValue().isValid());
 
 		CreateEditionAction createSelectFetchRequestIterationAction2 = CreateEditionAction.actionType

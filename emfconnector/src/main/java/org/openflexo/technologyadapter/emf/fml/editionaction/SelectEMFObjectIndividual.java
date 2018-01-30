@@ -86,7 +86,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 
 			// System.out.println(
 			// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
-			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<EMFObjectIndividual>(0);
+			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<>(0);
 			Resource resource = emfModel.getEMFResource();
 			/*try {
 				resource.load(null);
@@ -94,7 +94,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				e.printStackTrace();
 			}*/
 			IFlexoOntologyClass flexoOntologyClass = getType();
-			List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
+			List<EObject> selectedEMFIndividuals = new ArrayList<>();
 			if (flexoOntologyClass instanceof EMFClassClass) {
 				TreeIterator<EObject> iterator = resource.getAllContents();
 				while (iterator.hasNext()) {

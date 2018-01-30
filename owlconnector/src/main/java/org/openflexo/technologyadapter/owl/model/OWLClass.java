@@ -68,11 +68,11 @@ public class OWLClass extends OWLConcept<OntClass>
 
 	private final Vector<OWLClass> superClasses;
 
-	private final List<OWLRestriction> restrictions = new ArrayList<OWLRestriction>();
+	private final List<OWLRestriction> restrictions = new ArrayList<>();
 
 	protected OWLClass(OntClass anOntClass, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anOntClass, ontology, adapter);
-		superClasses = new Vector<OWLClass>();
+		superClasses = new Vector<>();
 		ontClass = anOntClass;
 	}
 
@@ -321,7 +321,7 @@ public class OWLClass extends OWLConcept<OntClass>
 	 * @return
 	 */
 	public List<OWLClass> getAllSuperClasses() {
-		ArrayList<OWLClass> allSuperClasses = new ArrayList<OWLClass>();
+		ArrayList<OWLClass> allSuperClasses = new ArrayList<>();
 		for (IFlexoOntologyClass<OWLTechnologyAdapter> cl : OntologyUtils.getAllSuperClasses(this)) {
 			if (cl instanceof OWLClass) {
 				allSuperClasses.add((OWLClass) cl);
@@ -361,7 +361,7 @@ public class OWLClass extends OWLConcept<OntClass>
 	 */
 	@Override
 	public List<OWLClass> getSubClasses(IFlexoOntology<OWLTechnologyAdapter> context) {
-		ArrayList<OWLClass> returned = new ArrayList<OWLClass>();
+		ArrayList<OWLClass> returned = new ArrayList<>();
 		for (IFlexoOntologyClass<OWLTechnologyAdapter> aClass : context.getAccessibleClasses()) {
 			if (aClass instanceof OWLClass && isSuperClassOf(aClass)) {
 				returned.add((OWLClass) aClass);
@@ -426,7 +426,7 @@ public class OWLClass extends OWLConcept<OntClass>
 	}*/
 
 	private IFlexoOntologyClass<OWLTechnologyAdapter> equivalentClass;
-	private final List<IFlexoOntologyClass<OWLTechnologyAdapter>> equivalentClasses = new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>();
+	private final List<IFlexoOntologyClass<OWLTechnologyAdapter>> equivalentClasses = new ArrayList<>();
 
 	@Override
 	public void updateOntologyStatements(OntClass anOntResource) {
@@ -458,7 +458,7 @@ public class OWLClass extends OWLConcept<OntClass>
 	 * @return
 	 */
 	public List<OWLRestriction> getRestrictions(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
-		List<OWLRestriction> returned = new ArrayList<OWLRestriction>();
+		List<OWLRestriction> returned = new ArrayList<>();
 		for (IFlexoOntologyClass<OWLTechnologyAdapter> c : getSuperClasses()) {
 			if (c instanceof OWLRestriction) {
 				OWLRestriction r = (OWLRestriction) c;

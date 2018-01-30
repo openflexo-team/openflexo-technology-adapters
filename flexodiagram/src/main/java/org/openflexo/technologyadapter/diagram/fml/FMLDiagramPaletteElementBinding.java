@@ -393,7 +393,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			if (boundFlexoConcept == null) {
 				return;
 			}
-			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<FMLDiagramPaletteElementBindingParameter>();
+			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<>();
 			unusedParameterInstances.addAll(getParameters());
 
 			for (FlexoBehaviour es : boundFlexoConcept.getFlexoBehaviours()) {
@@ -492,7 +492,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		@Override
 		public List<FlexoConcept> allAvailableFlexoConcepts() {
 			if (getOwningVirtualModel() != null) {
-				List<FlexoConcept> returned = new ArrayList<FlexoConcept>();
+				List<FlexoConcept> returned = new ArrayList<>();
 				for (FlexoConcept ep : getOwningVirtualModel().getFlexoConcepts()) {
 					if (ep.getFlexoBehaviours(DropScheme.class).size() > 0) {
 						returned.add(ep);

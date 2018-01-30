@@ -92,11 +92,11 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXTableCellImpl.class.getPackage().getName());
 
-		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
-		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
-		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<SdtBlock, DocXSdtBlock>();
-		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<Object, DocXUnmappedElement<?>>();
-		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<String, DocXElement<?>>();
+		private final Map<P, DocXParagraph> paragraphs = new HashMap<>();
+		private final Map<Tbl, DocXTable> tables = new HashMap<>();
+		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<>();
+		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<>();
+		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<>();
 
 		@Override
 		public void setTc(Tc tc) {
@@ -601,7 +601,7 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 		@Override
 		public void setRawText(String someText) {
 
-			List<String> lines = new ArrayList<String>();
+			List<String> lines = new ArrayList<>();
 
 			if (someText == null) {
 				someText = "null";

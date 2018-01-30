@@ -95,7 +95,7 @@ public class FlexoConceptPreviewComponent extends JPanel
 		super();
 		setLayout(new BorderLayout());
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 	}
 
 	@Override
@@ -199,7 +199,7 @@ public class FlexoConceptPreviewComponent extends JPanel
 			}
 		}
 		if (previewController.getSelectedObjects().size() > 0) {
-			List<GraphicalElementRole<?, ?>> returned = new ArrayList<GraphicalElementRole<?, ?>>();
+			List<GraphicalElementRole<?, ?>> returned = new ArrayList<>();
 			for (DrawingTreeNode<?, ?> dtn : previewController.getSelectedObjects()) {
 				returned.add((GraphicalElementRole<?, ?>) dtn.getDrawable());
 			}

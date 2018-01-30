@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -95,8 +94,7 @@ import org.openflexo.view.controller.FlexoFIBController;
  * @author sylvain
  * 
  */
-public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram>
-		implements PropertyChangeListener /* GraphicalFlexoObserver*/ {
+public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> {
 
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
@@ -338,7 +336,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		// logger.info("Building PaletteView with " + contextualPalettes);
 
 		paletteView = new JTabbedPane();
-		orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
+		orderedPalettes = new Vector<>(contextualPalettes.keySet());
 		Collections.sort(orderedPalettes);
 
 		for (DiagramPalette palette : orderedPalettes) {

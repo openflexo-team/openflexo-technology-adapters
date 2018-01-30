@@ -86,7 +86,7 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 		super();
 		setLayout(new BorderLayout());
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 	}
 
 	@Override

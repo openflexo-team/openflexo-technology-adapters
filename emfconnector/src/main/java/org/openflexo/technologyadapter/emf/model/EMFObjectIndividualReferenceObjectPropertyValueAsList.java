@@ -100,7 +100,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 				}
 			}
 			else {
-				result = new ArrayList<EMFObjectIndividual>();
+				result = new ArrayList<>();
 				List<?> valueList = (List<?>) object.eGet(reference);
 				for (Object value : valueList) {
 					if (ontology.getConverter().getIndividuals().get(value) != null) {
@@ -183,14 +183,12 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public EMFObjectIndividual set(int index, EMFObjectIndividual element) {
-
 		referencelist.set(index, element.getObject());
 		return element;
 	}
 
 	@Override
 	public void add(int index, EMFObjectIndividual element) {
-
 		referencelist.add(index, element.getObject());
 	}
 
@@ -204,9 +202,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 		if (o instanceof EMFObjectIndividual) {
 			return referencelist.indexOf(((EMFObjectIndividual) o).getObject());
 		}
-		else
-			return -1;
-
+		return -1;
 	}
 
 	@Override
@@ -214,8 +210,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 		if (o instanceof EMFObjectIndividual) {
 			return referencelist.lastIndexOf(((EMFObjectIndividual) o).getObject());
 		}
-		else
-			return -1;
+		return -1;
 	}
 
 	@Override

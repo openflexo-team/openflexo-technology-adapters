@@ -259,7 +259,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 		return (DocXTableCell) table1.getTableRows().get(row).getTableCells().get(col);
 	}
 
-	private DocXParagraph getParagraph(int row, int col) {
+	private static DocXParagraph getParagraph(int row, int col) {
 		return (DocXParagraph) getCell(row, col).getElements().get(0);
 	}
 

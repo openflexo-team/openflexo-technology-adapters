@@ -84,7 +84,7 @@ public final class ExcelBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+		List<SimplePathElement> returned = new ArrayList<>();
 		if (parent instanceof ExcelWorkbook) {
 			for (ExcelSheet sheet : ((ExcelWorkbook) parent).getExcelSheets()) {
 				returned.add(getSimplePathElement(sheet, parent));

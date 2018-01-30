@@ -142,12 +142,12 @@ public class TestImageDocumentEditor extends AbstractTestDocX {
 		return root;
 	}
 
-	private void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
+	private static void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		DocXDocument doc = docResource.getResourceData(null);
 
-		Split defaultLayout = getDefaultLayout();
+		Split<?> defaultLayout = getDefaultLayout();
 
 		MultiSplitLayout centerLayout = new MultiSplitLayout(true, MSL_FACTORY);
 		centerLayout.setLayoutMode(MultiSplitLayout.NO_MIN_SIZE_LAYOUT);

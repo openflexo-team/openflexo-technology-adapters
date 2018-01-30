@@ -62,12 +62,12 @@ public class PowerpointSlideshow extends PowerpointObject implements ResourceDat
 	public PowerpointSlideshow(SlideShow slideshow, PowerpointTechnologyAdapter adapter) {
 		super(adapter);
 		this.slideshow = slideshow;
-		powerpointSlides = new ArrayList<PowerpointSlide>();
+		powerpointSlides = new ArrayList<>();
 	}
 
 	public PowerpointSlideshow(PowerpointTechnologyAdapter adapter) {
 		super(adapter);
-		powerpointSlides = new ArrayList<PowerpointSlide>();
+		powerpointSlides = new ArrayList<>();
 		this.slideshow = new SlideShow();
 	}
 
@@ -75,7 +75,7 @@ public class PowerpointSlideshow extends PowerpointObject implements ResourceDat
 		super(adapter);
 		this.slideshow = slideshow;
 		this.converter = converter;
-		powerpointSlides = new ArrayList<PowerpointSlide>();
+		powerpointSlides = new ArrayList<>();
 	}
 
 	public BasicPowerpointModelConverter getConverter() {

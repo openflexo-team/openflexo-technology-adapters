@@ -86,7 +86,7 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 
 		// Create graphical elements pattern property
 
-		newGraphicalElementRoles = new LinkedHashMap<DrawingObjectEntry, GraphicalElementRole<?, ?>>();
+		newGraphicalElementRoles = new LinkedHashMap<>();
 
 		for (DrawingObjectEntry entry : getTransformationAction().getDrawingObjectEntries()) {
 			if (entry.getSelectThis()) {
@@ -198,7 +198,7 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 
 	public List<FlexoBehaviourConfiguration> getFlexoBehaviours() {
 		if (flexoBehaviours == null) {
-			flexoBehaviours = new ArrayList<FlexoBehaviourConfiguration>();
+			flexoBehaviours = new ArrayList<>();
 
 			initializeBehaviours();
 

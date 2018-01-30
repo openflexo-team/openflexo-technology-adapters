@@ -143,7 +143,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 					result = Collections.emptyList();
 				}
 			} else {
-				result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+				result = new ArrayList<>();
 				List<?> valueList = (List<?>) object.eGet(reference);
 				for (Object value : valueList) {
 					if (ontology.getConverter().getIndividuals().get(value) != null) {

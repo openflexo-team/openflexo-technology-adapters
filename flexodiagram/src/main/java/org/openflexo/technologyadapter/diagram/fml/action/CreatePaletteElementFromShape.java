@@ -97,7 +97,7 @@ public class CreatePaletteElementFromShape
 
 	protected CreatePaletteElementFromShape(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-		diagramElementEntries = new Vector<GraphicalElementEntry>();
+		diagramElementEntries = new Vector<>();
 		updateDiagramElementsEntries();
 	}
 

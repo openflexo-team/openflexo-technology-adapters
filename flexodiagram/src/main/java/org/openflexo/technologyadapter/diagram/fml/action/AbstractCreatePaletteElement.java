@@ -125,7 +125,7 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 	protected AbstractCreatePaletteElement(FlexoActionFactory<A, T1, T2> actionType, T1 focusedObject, Vector<T2> globalSelection,
 			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-		diagramElementEntries = new Vector<GraphicalElementEntry>();
+		diagramElementEntries = new Vector<>();
 		updateDiagramElementsEntries();
 	}
 

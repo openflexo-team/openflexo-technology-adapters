@@ -115,7 +115,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(PDFDocumentImpl.class.getPackage().getName());
 
-		private Map<PDPage, PDFDocumentPage> pageMap = new HashMap<PDPage, PDFDocumentPage>();
+		private Map<PDPage, PDFDocumentPage> pageMap = new HashMap<>();
 
 		@Override
 		public LocalizedDelegate getLocales() {

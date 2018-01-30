@@ -140,7 +140,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> result = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			result = new ArrayList<IFlexoOntologyAnnotation>();
+			result = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				result.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
@@ -218,7 +218,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> result = new ArrayList<>();
 		if (ontology.getConverter().getReferenceAssociations().get(object) != null) {
 			result.add(ontology.getConverter().getReferenceAssociations().get(object));
 		}

@@ -85,8 +85,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	public XMLIndividualImpl() {
 		super();
 		uuid = UUID.randomUUID().toString();
-		propertiesValues = new HashMap<XMLProperty, XMLPropertyValue>();
-		children = new HashMap<XMLComplexType, Set<XMLIndividualImpl>>();
+		propertiesValues = new HashMap<>();
+		children = new HashMap<>();
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		Set<XMLIndividualImpl> typedSet = children.get(aType);
 
 		if (typedSet == null) {
-			typedSet = new HashSet<XMLIndividualImpl>();
+			typedSet = new HashSet<>();
 			children.put(aType, typedSet);
 		}
 		typedSet.add((XMLIndividualImpl) anIndividual);
@@ -137,7 +137,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	@Override
 	public List<XMLIndividual> getChildren() {
 
-		List<XMLIndividual> returned = new ArrayList<XMLIndividual>();
+		List<XMLIndividual> returned = new ArrayList<>();
 
 		for (Set<XMLIndividualImpl> s : children.values()) {
 			returned.addAll(s);

@@ -68,7 +68,7 @@ public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMet
 
 	public XMLMetaModelImpl() {
 		super();
-		types = new HashMap<String, XMLType>();
+		types = new HashMap<>();
 	}
 
 	static {

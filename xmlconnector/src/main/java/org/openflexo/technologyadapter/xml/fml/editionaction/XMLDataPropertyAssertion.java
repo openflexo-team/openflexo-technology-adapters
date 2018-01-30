@@ -172,7 +172,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		@Override
 		public DataBinding<?> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -201,7 +201,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		public ValidationIssue<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> applyValidation(
 				XMLDataPropertyAssertion assertion) {
 			if (assertion.getDataProperty() == null) {
-				return new ValidationError<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion>(this, assertion,
+				return new ValidationError<>(this, assertion,
 						"data_property_assertion_does_not_define_an_ontology_property");
 			}
 			return null;

@@ -143,7 +143,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<IFlexoOntologyContainer<EMFTechnologyAdapter>> getSubContainers() {
-		List<IFlexoOntologyContainer<EMFTechnologyAdapter>> containers = new ArrayList<IFlexoOntologyContainer<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyContainer<EMFTechnologyAdapter>> containers = new ArrayList<>();
 		for (EPackage eSubPackage : object.getESubpackages()) {
 			containers.add(ontology.getConverter().convertPackage(ontology, eSubPackage));
 		}
@@ -157,7 +157,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
-		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<>();
 		result.addAll(getClasses());
 		result.addAll(getIndividuals());
 		result.addAll(getDataProperties());
@@ -188,7 +188,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.EENUM) {
 				EEnum eEnum = (EEnum) classifier;
@@ -223,7 +223,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
@@ -276,7 +276,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<? extends IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getDataProperties() {
-		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyDataProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
@@ -317,7 +317,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
-		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		EMFMetaModelConverter converter = ontology.getConverter();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
@@ -362,7 +362,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public List<IFlexoOntologyDataType<EMFTechnologyAdapter>> getDataTypes() {
-		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> dataTypes = new ArrayList<IFlexoOntologyDataType<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> dataTypes = new ArrayList<>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
 				EDataType eDataType = (EDataType) classifier;

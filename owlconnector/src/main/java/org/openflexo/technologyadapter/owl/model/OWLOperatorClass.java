@@ -59,7 +59,7 @@ public abstract class OWLOperatorClass extends OWLClass {
 	protected OWLOperatorClass(BooleanClassDescription anOntClass, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anOntClass, ontology, adapter);
 		this.booleanClassDescription = anOntClass;
-		operands = new ArrayList<OWLClass>();
+		operands = new ArrayList<>();
 	}
 
 	@Override

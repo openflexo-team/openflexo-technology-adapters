@@ -34,7 +34,7 @@ public class DocXTechnologyContextManager extends TechnologyContextManager<DocXT
 	}
 
 	/** Stores all known documents */
-	protected Map<String, DocXDocumentResource> docXDocuments = new HashMap<String, DocXDocumentResource>();
+	protected Map<String, DocXDocumentResource> docXDocuments = new HashMap<>();
 
 	public DocXDocumentResource getDocXDocumentResource(String uri) {
 		return docXDocuments.get(uri);

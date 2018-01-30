@@ -142,7 +142,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
@@ -160,7 +160,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getFeatureAssociations()
 	 */
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getDeclaredFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>(
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>(
 				0);
 		for (EAttribute attribute : object.getEAttributes()) {
 			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this, null));
@@ -179,7 +179,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>();
 		appendFeatureAssociation(this, featureAssociations);
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -251,7 +251,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
 
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<>();
 		for (EClass superClass : object.getESuperTypes()) {
 			// prevent returning classes from EcorePackage when not in Ecore MM
 			EPackage myRootPackage = ontology.getResource().getPackage();
@@ -275,7 +275,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 
 		System.out.println("Looking for subclasses of: " + this.getName());
 
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<>();
 		if (context instanceof EMFMetaModel) {
 			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {
 				if (classEntry.getValue().getOntology() == context) {

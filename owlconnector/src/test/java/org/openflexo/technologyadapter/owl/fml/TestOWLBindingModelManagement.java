@@ -462,7 +462,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			Object expectedValue) {
 		BindingVariable bv = owner.getBindingModel().bindingVariableNamed(variableName);
 		assertNotNull(bv);
-		DataBinding<Object> db = new DataBinding<Object>(bv.getVariableName(), owner, bv.getType(), BindingDefinitionType.GET);
+		DataBinding<Object> db = new DataBinding<>(bv.getVariableName(), owner, bv.getType(), BindingDefinitionType.GET);
 		assertTrue(db.isValid());
 		try {
 			assertEquals(expectedValue, db.getBindingValue(beContext));
@@ -479,7 +479,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	}
 
 	private static void checkBinding(String binding, Bindable owner, BindingEvaluationContext beContext, Object expectedValue) {
-		DataBinding<Object> db = new DataBinding<Object>(binding, owner, Object.class, BindingDefinitionType.GET);
+		DataBinding<Object> db = new DataBinding<>(binding, owner, Object.class, BindingDefinitionType.GET);
 		assertTrue(db.isValid());
 		try {
 			assertEquals(expectedValue, db.getBindingValue(beContext));

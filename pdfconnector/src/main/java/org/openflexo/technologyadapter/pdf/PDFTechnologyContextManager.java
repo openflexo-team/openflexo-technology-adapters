@@ -34,7 +34,7 @@ public class PDFTechnologyContextManager extends TechnologyContextManager<PDFTec
 	}
 
 	/** Stores all known documents */
-	protected Map<String, PDFDocumentResource> pdfDocuments = new HashMap<String, PDFDocumentResource>();
+	protected Map<String, PDFDocumentResource> pdfDocuments = new HashMap<>();
 
 	public PDFDocumentResource getPDFDocumentResource(String uri) {
 		return pdfDocuments.get(uri);

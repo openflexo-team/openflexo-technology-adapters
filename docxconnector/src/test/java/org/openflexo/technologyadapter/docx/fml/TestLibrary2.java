@@ -499,10 +499,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(bookCreationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction1.setEditionActionClass(ExpressionAction.class);
-		createEditionAction1.setAssignation(new DataBinding<Object>("title"));
+		createEditionAction1.setAssignation(new DataBinding<>("title"));
 		createEditionAction1.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
-		((ExpressionAction) action1.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aTitle"));
+		((ExpressionAction) action1.getAssignableAction()).setExpression(new DataBinding<>("parameters.aTitle"));
 		action1.setName("action1");
 		assertTrue(action1.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action1.getAssignableAction()).getExpression().isValid());
@@ -510,10 +510,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction2 = CreateEditionAction.actionType.makeNewAction(bookCreationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction2.setEditionActionClass(ExpressionAction.class);
-		createEditionAction2.setAssignation(new DataBinding<Object>("author"));
+		createEditionAction2.setAssignation(new DataBinding<>("author"));
 		createEditionAction2.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createEditionAction2.getNewEditionAction();
-		((ExpressionAction) action2.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.anAuthor"));
+		((ExpressionAction) action2.getAssignableAction()).setExpression(new DataBinding<>("parameters.anAuthor"));
 		action2.setName("action2");
 		assertTrue(action2.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action2.getAssignableAction()).getExpression().isValid());
@@ -521,10 +521,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction3 = CreateEditionAction.actionType.makeNewAction(bookCreationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction3.setEditionActionClass(ExpressionAction.class);
-		createEditionAction3.setAssignation(new DataBinding<Object>("edition"));
+		createEditionAction3.setAssignation(new DataBinding<>("edition"));
 		createEditionAction3.doAction();
 		AssignationAction<?> action3 = (AssignationAction<?>) createEditionAction3.getNewEditionAction();
-		((ExpressionAction) action3.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.anEdition"));
+		((ExpressionAction) action3.getAssignableAction()).setExpression(new DataBinding<>("parameters.anEdition"));
 		action3.setName("action3");
 		assertTrue(action3.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action3.getAssignableAction()).getExpression().isValid());
@@ -532,10 +532,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction4 = CreateEditionAction.actionType.makeNewAction(bookCreationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction4.setEditionActionClass(ExpressionAction.class);
-		createEditionAction4.setAssignation(new DataBinding<Object>("type"));
+		createEditionAction4.setAssignation(new DataBinding<>("type"));
 		createEditionAction4.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createEditionAction4.getNewEditionAction();
-		((ExpressionAction) action4.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aType"));
+		((ExpressionAction) action4.getAssignableAction()).setExpression(new DataBinding<>("parameters.aType"));
 		action4.setName("action4");
 		assertTrue(action4.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action4.getAssignableAction()).getExpression().isValid());
@@ -543,10 +543,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction5 = CreateEditionAction.actionType.makeNewAction(bookCreationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction5.setEditionActionClass(ExpressionAction.class);
-		createEditionAction5.setAssignation(new DataBinding<Object>("description"));
+		createEditionAction5.setAssignation(new DataBinding<>("description"));
 		createEditionAction5.doAction();
 		AssignationAction<?> action5 = (AssignationAction<?>) createEditionAction5.getNewEditionAction();
-		((ExpressionAction) action5.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aDescription"));
+		((ExpressionAction) action5.getAssignableAction()).setExpression(new DataBinding<>("parameters.aDescription"));
 		action5.setName("action5");
 		assertTrue(action5.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action5.getAssignableAction()).getExpression().isValid());
@@ -963,10 +963,10 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createEditionAction = CreateEditionAction.actionType
 				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, _editor);
 		createEditionAction.setEditionActionClass(ExpressionAction.class);
-		createEditionAction.setAssignation(new DataBinding<Object>("book"));
+		createEditionAction.setAssignation(new DataBinding<>("book"));
 		createEditionAction.doAction();
 		AssignationAction<?> action = (AssignationAction<?>) createEditionAction.getNewEditionAction();
-		((ExpressionAction) action.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aBook"));
+		((ExpressionAction) action.getAssignableAction()).setExpression(new DataBinding<>("parameters.aBook"));
 		action.setName("action");
 		assertTrue(action.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action.getAssignableAction()).getExpression().isValid());
@@ -975,7 +975,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, _editor);
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
-		createFragmentAction.setAssignation(new DataBinding<Object>(sectionRole.getRoleName()));
+		createFragmentAction.setAssignation(new DataBinding<>(sectionRole.getRoleName()));
 		createFragmentAction.doAction();
 		assertTrue(createFragmentAction.hasActionExecutionSucceeded());
 		AddDocXFragment createFragment = (AddDocXFragment) ((AssignationAction) createFragmentAction.getNewEditionAction())
@@ -1061,7 +1061,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
 		createSelectIntroductionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
-		createSelectIntroductionSection.setAssignation(new DataBinding<Object>("introductionSection"));
+		createSelectIntroductionSection.setAssignation(new DataBinding<>("introductionSection"));
 		createSelectIntroductionSection.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createSelectIntroductionSection.getNewEditionAction();
 		assertTrue(action1.getAssignation().isValid());
@@ -1070,7 +1070,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
 		createSelectBooksDescriptionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
-		createSelectBooksDescriptionSection.setAssignation(new DataBinding<Object>("booksDescriptionSection"));
+		createSelectBooksDescriptionSection.setAssignation(new DataBinding<>("booksDescriptionSection"));
 		createSelectBooksDescriptionSection.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createSelectBooksDescriptionSection.getNewEditionAction();
 		assertTrue(action2.getAssignation().isValid());
@@ -1079,7 +1079,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
 		createSelectConclusionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
-		createSelectConclusionSection.setAssignation(new DataBinding<Object>("conclusionSection"));
+		createSelectConclusionSection.setAssignation(new DataBinding<>("conclusionSection"));
 		createSelectConclusionSection.doAction();
 		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
 		assertTrue(action3.getAssignation().isValid());
@@ -1088,7 +1088,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateEditionAction createSelectTable = CreateEditionAction.actionType.makeNewAction(generateDocumentActionScheme.getControlGraph(),
 				null, _editor);
 		createSelectTable.setEditionActionClass(SelectGeneratedDocXTable.class);
-		createSelectTable.setAssignation(new DataBinding<Object>("bookListingTable"));
+		createSelectTable.setAssignation(new DataBinding<>("bookListingTable"));
 		createSelectTable.doAction();
 		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
 		assertTrue(action4.getAssignation().isValid());
@@ -1154,7 +1154,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		assertNotNull(bookCriteria);
 		assertNotNull(sectionCriteria);
 
-		bookCriteria.setValue(new DataBinding<Object>("book"));
+		bookCriteria.setValue(new DataBinding<>("book"));
 		assertTrue(bookCriteria.getValue().isValid());
 
 		// We check here that creation parameters were updated
@@ -1163,7 +1163,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance
 				.getParameter(bookDescriptionSection.getCreationSchemes().get(0).getParameters().get(0));
 		assertNotNull(bookParam);
-		bookParam.setValue(new DataBinding<Object>("book"));
+		bookParam.setValue(new DataBinding<>("book"));
 		assertTrue(bookParam.getValue().isValid());
 
 		CreateEditionAction createSelectFetchRequestIterationAction2 = CreateEditionAction.actionType

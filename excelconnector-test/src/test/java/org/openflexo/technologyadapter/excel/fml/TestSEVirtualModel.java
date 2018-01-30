@@ -227,7 +227,7 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				_editor);
 		createEditionAction1.setEditionActionClass(CreateSEResource.class);
-		createEditionAction1.setAssignation(new DataBinding<Object>("personListing"));
+		createEditionAction1.setAssignation(new DataBinding<>("personListing"));
 		createEditionAction1.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
 

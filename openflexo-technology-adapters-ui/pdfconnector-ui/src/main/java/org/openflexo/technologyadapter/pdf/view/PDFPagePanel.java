@@ -34,7 +34,7 @@ public class PDFPagePanel extends JPanel {
 		super(new BorderLayout());
 		this.documentPage = documentPage;
 
-		selectionListeners = new ArrayList<SelectionListener>();
+		selectionListeners = new ArrayList<>();
 
 		drawing = new PDFPageDrawing(documentPage);
 		controller = new PDFPageDrawingController(drawing, this);

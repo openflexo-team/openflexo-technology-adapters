@@ -125,7 +125,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<DropAndLinkScheme>();
+			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
@@ -161,7 +161,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
+			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
@@ -193,7 +193,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
+			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {

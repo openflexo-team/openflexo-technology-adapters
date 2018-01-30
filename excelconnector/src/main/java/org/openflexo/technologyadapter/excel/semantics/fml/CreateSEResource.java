@@ -260,8 +260,8 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 				creationScheme = (CreationScheme) getVirtualModelLibrary().getFlexoBehaviour(_creationSchemeURI, true);
 				updateParameters();
 			}
-			if (creationScheme == null && ((FlexoProperty) getAssignedFlexoProperty()) instanceof FlexoConceptInstanceRole) {
-				creationScheme = ((FlexoConceptInstanceRole) (FlexoProperty) getAssignedFlexoProperty()).getCreationScheme();
+			if (creationScheme == null && ((FlexoProperty<?>) getAssignedFlexoProperty()) instanceof FlexoConceptInstanceRole) {
+				creationScheme = ((FlexoConceptInstanceRole) (FlexoProperty<?>) getAssignedFlexoProperty()).getCreationScheme();
 				updateParameters();
 			}
 			return creationScheme;

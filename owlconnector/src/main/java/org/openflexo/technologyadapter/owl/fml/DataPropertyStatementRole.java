@@ -154,7 +154,7 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 		public ValidationIssue<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole> applyValidation(
 				DataPropertyStatementRole patternRole) {
 			if (patternRole.getDataProperty() == null) {
-				return new ValidationError<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole>(this,
+				return new ValidationError<>(this,
 						patternRole, "pattern_role_does_not_define_any_valid_data_property");
 			}
 			return null;

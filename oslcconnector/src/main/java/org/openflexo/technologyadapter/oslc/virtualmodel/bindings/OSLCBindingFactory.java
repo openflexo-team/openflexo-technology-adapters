@@ -88,7 +88,7 @@ public final class OSLCBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+		List<SimplePathElement> returned = new ArrayList<>();
 		if (parent instanceof OSLCResource) {
 
 		}

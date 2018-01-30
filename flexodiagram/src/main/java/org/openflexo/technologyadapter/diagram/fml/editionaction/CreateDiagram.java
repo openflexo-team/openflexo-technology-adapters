@@ -203,7 +203,7 @@ public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot
 		@Override
 		public DataBinding<String> getDiagramName() {
 			if (diagramName == null) {
-				diagramName = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				diagramName = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				diagramName.setBindingName("diagramName");
 			}
 			return diagramName;
@@ -223,7 +223,7 @@ public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot
 		@Override
 		public DataBinding<String> getDiagramURI() {
 			if (diagramURI == null) {
-				diagramURI = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				diagramURI = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				diagramURI.setBindingName("diagramURI");
 			}
 			return diagramURI;
@@ -243,7 +243,7 @@ public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot
 		@Override
 		public DataBinding<FlexoResourceCenter<?>> getResourceCenter() {
 			if (resourceCenter == null) {
-				resourceCenter = new DataBinding<FlexoResourceCenter<?>>(this, FlexoResourceCenter.class,
+				resourceCenter = new DataBinding<>(this, FlexoResourceCenter.class,
 						DataBinding.BindingDefinitionType.GET);
 				resourceCenter.setBindingName("resourceCenter");
 			}

@@ -191,7 +191,7 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 				// newAddShape.setModelSlot(getTransformationAction().getDiagramModelSlot());
 				AssignationAction<DiagramShape> assignationAction = getTransformationAction().getFactory()
 						.newAssignationAction(newAddShape);
-				assignationAction.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
+				assignationAction.setAssignation(new DataBinding<>(graphicalElementRole.getRoleName()));
 
 				newDropScheme.getControlGraph().sequentiallyAppend(assignationAction);
 

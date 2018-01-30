@@ -122,7 +122,7 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 		@Override
 		public DataBinding<PowerpointSlide> getPowerpointSlide() {
 			if (powerpointSlide == null) {
-				powerpointSlide = new DataBinding<PowerpointSlide>(this, PowerpointSlide.class, DataBinding.BindingDefinitionType.GET);
+				powerpointSlide = new DataBinding<>(this, PowerpointSlide.class, DataBinding.BindingDefinitionType.GET);
 				powerpointSlide.setBindingName("powerpointSlide");
 			}
 			return powerpointSlide;

@@ -113,7 +113,7 @@ public class RefreshDiagramElement extends FlexoAction<RefreshDiagramElement, Di
 
 	}
 
-	private void refresh(DiagramElement<?> objectToBeRefreshed) {
+	private static void refresh(DiagramElement<?> objectToBeRefreshed) {
 		/*if (objectToBeRefreshed instanceof DiagramElement) {
 			((DiagramElement) objectToBeRefreshed).resetGraphicalRepresentation();
 		}

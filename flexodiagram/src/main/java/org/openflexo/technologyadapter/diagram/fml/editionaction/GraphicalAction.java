@@ -155,7 +155,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public DataBinding<Object> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -202,7 +202,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 					Class<?> accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
 					// System.out.println("What about: " + accessedClass + " from " + getSubject().getAnalyzedType());
 					if (DiagramElement.class.isAssignableFrom(accessedClass)) {
-						availableFeatures = new ArrayList<GraphicalFeature<?, ?>>();
+						availableFeatures = new ArrayList<>();
 						for (GraphicalFeature<?, ?> GF : GraphicalElementRole.AVAILABLE_FEATURES) {
 							availableFeatures.add(GF);
 						}
@@ -242,7 +242,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public DataBinding<DiagramElement<?>> getSubject() {
 			if (subject == null) {
-				subject = new DataBinding<DiagramElement<?>>(this, DiagramElement.class, DataBinding.BindingDefinitionType.GET);
+				subject = new DataBinding<>(this, DiagramElement.class, DataBinding.BindingDefinitionType.GET);
 				subject.setBindingName("subject");
 			}
 			return subject;
@@ -354,14 +354,14 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				return null;
 			}
 			else {
-				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
+				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<>();
 				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,
+				return new ValidationError<>(this, graphicalAction,
 						"graphical_action_has_no_valid_subject", v);
 			}
 		}

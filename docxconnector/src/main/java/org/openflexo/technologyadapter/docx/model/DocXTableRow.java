@@ -96,7 +96,7 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXTableRowImpl.class.getPackage().getName());
 
-		private final Map<Tc, DocXTableCell> cells = new HashMap<Tc, DocXTableCell>();
+		private final Map<Tc, DocXTableCell> cells = new HashMap<>();
 
 		public DocXTableRowImpl() {
 			super();

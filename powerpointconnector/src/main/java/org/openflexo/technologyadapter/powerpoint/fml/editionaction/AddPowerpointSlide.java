@@ -127,7 +127,7 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 		@Override
 		public DataBinding<Integer> getSlideIndex() {
 			if (slideIndex == null) {
-				slideIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				slideIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				slideIndex.setBindingName("slideIndex");
 			}
 			return slideIndex;

@@ -93,7 +93,7 @@ public class PDFDocumentModuleView extends JTabbedPane implements ModuleView<PDF
 
 	@Override
 	public void deleteModuleView() {
-		for (PDFPagePanel p : new ArrayList<PDFPagePanel>(pdfPagePanels)) {
+		for (PDFPagePanel p : new ArrayList<>(pdfPagePanels)) {
 			p.delete();
 			pdfPagePanels.remove(p);
 		}

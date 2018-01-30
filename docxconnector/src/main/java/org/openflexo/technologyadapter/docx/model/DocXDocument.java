@@ -130,13 +130,13 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXDocumentImpl.class.getPackage().getName());
 
-		private final Map<Style, NamedDocXStyle> styles = new HashMap<Style, NamedDocXStyle>();
+		private final Map<Style, NamedDocXStyle> styles = new HashMap<>();
 
-		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
-		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
-		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<SdtBlock, DocXSdtBlock>();
-		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<Object, DocXUnmappedElement<?>>();
-		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<String, DocXElement<?>>();
+		private final Map<P, DocXParagraph> paragraphs = new HashMap<>();
+		private final Map<Tbl, DocXTable> tables = new HashMap<>();
+		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<>();
+		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<>();
+		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<>();
 
 		// Factory used during initialization of DocXDocument (either new or loaded document)
 		protected DocXFactory _factory;

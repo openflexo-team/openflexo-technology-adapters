@@ -63,7 +63,7 @@ public class EcoreUtility {
 	 * @return
 	 */
 	public static EList<EObject> getAllContentsAndCrossReferences(EObject object) {
-		EList<EObject> result = new BasicEList<EObject>();
+		EList<EObject> result = new BasicEList<>();
 		getAllContentsAndCrossReferences(object, result);
 		return result;
 	}
@@ -103,7 +103,7 @@ public class EcoreUtility {
 	 * @return
 	 */
 	public static List<Resource> getAllResources(Resource resource) {
-		List<Resource> result = new ArrayList<Resource>();
+		List<Resource> result = new ArrayList<>();
 		result.add(resource);
 		getAllResources(resource, result);
 		return result;
@@ -129,7 +129,7 @@ public class EcoreUtility {
 	 * @return
 	 */
 	public static List<Resource> getAllResources(EObject object) {
-		List<Resource> result = new ArrayList<Resource>();
+		List<Resource> result = new ArrayList<>();
 		result.add(object.eResource());
 		getAllResources(object, result);
 		return result;
@@ -160,7 +160,7 @@ public class EcoreUtility {
 	 * @return
 	 */
 	public static <T extends EObject> List<T> getAllContents(EObject object, Class<T> aClass) {
-		List<T> contents = new ArrayList<T>();
+		List<T> contents = new ArrayList<>();
 		getAllContents(object, aClass, contents);
 		return contents;
 	}
@@ -193,7 +193,7 @@ public class EcoreUtility {
 	 * @return
 	 */
 	public static <T extends EObject> List<T> getAllContainers(EObject object, Class<T> aClass) {
-		List<T> containers = new ArrayList<T>();
+		List<T> containers = new ArrayList<>();
 		getAllContainers(object, aClass, containers);
 		return containers;
 	}
@@ -242,7 +242,7 @@ public class EcoreUtility {
 	 */
 	public static <T extends EObject> T getTopContainer(EObject object, Class<T> aClass) {
 		T topContainer = null;
-		List<T> containers = new ArrayList<T>();
+		List<T> containers = new ArrayList<>();
 		getAllContainers(object, aClass, containers);
 		if (containers.size() != 0) {
 			topContainer = containers.get(containers.size() - 1);

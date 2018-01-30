@@ -95,7 +95,7 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 		setLayout(new BorderLayout());
 		pcSupport = new PropertyChangeSupport(this);
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 	}
 
 	public FMLControlledDiagramEditorComponent(FMLRTVirtualModelInstance diagramVMI) {

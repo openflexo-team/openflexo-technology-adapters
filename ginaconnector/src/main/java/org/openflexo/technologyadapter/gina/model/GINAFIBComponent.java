@@ -76,7 +76,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 @ImplementationClass(GINAFIBComponentImpl.class)
 @XMLElement
 public interface GINAFIBComponent
-		extends FlexoObject, TechnologyObject<GINATechnologyAdapter>, ResourceData<GINAFIBComponent>, BindingEvaluationContext {
+		extends TechnologyObject<GINATechnologyAdapter>, ResourceData<GINAFIBComponent>, BindingEvaluationContext {
 
 	// public static final String RESOURCE_KEY = "resource";
 	public static final String COMPONENT_KEY = "component";

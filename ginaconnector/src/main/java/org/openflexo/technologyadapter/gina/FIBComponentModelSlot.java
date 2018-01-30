@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -208,7 +207,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	@ModelEntity
 	@ImplementationClass(VariableAssignment.VariableAssignmentImpl.class)
 	@XMLElement(xmlTag = "VariableAssignment")
-	public static interface VariableAssignment extends FMLObject, ModelSlotObject<GINAFIBComponent> {
+	public static interface VariableAssignment extends ModelSlotObject<GINAFIBComponent> {
 		@PropertyIdentifier(type = FIBComponentModelSlot.class)
 		public static final String OWNER_KEY = "owner";
 		@PropertyIdentifier(type = String.class)

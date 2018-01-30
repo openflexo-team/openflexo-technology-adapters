@@ -312,7 +312,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	@Override
 	public boolean delete(Object... context) {
 		// A list of connectors that may be deleted if a shape is connected to it
-		List<DiagramConnector> dependingConnectors = new ArrayList<DiagramConnector>();
+		List<DiagramConnector> dependingConnectors = new ArrayList<>();
 		dependingConnectors.addAll(getStartConnectors());
 		dependingConnectors.addAll(getEndConnectors());
 		for (Iterator<DiagramConnector> connectors = dependingConnectors.iterator(); connectors.hasNext();) {

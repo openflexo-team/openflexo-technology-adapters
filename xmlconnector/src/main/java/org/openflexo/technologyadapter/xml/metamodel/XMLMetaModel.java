@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.util.Collection;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -55,16 +54,15 @@ import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 
-
 @ModelEntity
 @ImplementationClass(XMLMetaModelImpl.class)
-public interface XMLMetaModel extends FlexoObject, XMLObject, FlexoMetaModel<XMLMetaModel> {
+public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel> {
 
 	public static String TYPES = "types";
 	public static String READ_ONLY = "readOnly";
-	
+
 	// static simple Types URI
-	
+
 	public static String STR_SIMPLETYPE_URI = "xs:string";
 
 	@Getter(value = TYPES, cardinality = Cardinality.LIST)
@@ -72,31 +70,31 @@ public interface XMLMetaModel extends FlexoObject, XMLObject, FlexoMetaModel<XML
 	@Embedded
 	public Collection<? extends XMLType> getTypes();
 
-
 	@Finder(attribute = XMLType.URI, collection = TYPES, isMultiValued = true)
 	public XMLType getTypeFromURI(String string);
 
 	/**
 	 * Creates a new type in this MetaModel, simple or complex, depending on the parameters
+	 * 
 	 * @param uri
 	 * @param localName
 	 * @param simpleType
 	 * @return
 	 */
 	public XMLType createNewType(String uri, String localName, boolean simpleType);
-	
+
 	@Adder(TYPES)
 	@PastingPoint
 	public void addType(XMLType aType);
 
 	@Remover(TYPES)
 	public void removeType(XMLType aType);
-	
+
 	@Override
 	@Getter(value = READ_ONLY, defaultValue = "true")
 	public boolean isReadOnly();
-	
+
 	@Setter(READ_ONLY)
 	public void setReadOnly(boolean value);
-	
+
 }

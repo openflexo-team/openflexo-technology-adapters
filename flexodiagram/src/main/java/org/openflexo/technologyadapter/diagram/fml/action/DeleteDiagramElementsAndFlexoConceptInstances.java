@@ -216,7 +216,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 	}
 
 	private void initSelectedFlexoConceptInstanceEntries() {
-		selectedFlexoConceptInstanceEntries = new ArrayList<FlexoConceptInstanceElementEntry>();
+		selectedFlexoConceptInstanceEntries = new ArrayList<>();
 		for (FlexoObject object : getGlobalSelectionAndFocusedObject()) {
 			if (object instanceof FlexoConceptInstance) {
 				selectedFlexoConceptInstanceEntries.add(new FlexoConceptInstanceElementEntry((FlexoConceptInstance) object));
@@ -227,7 +227,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 	// TODO
 	public List<DiagramElement<?>> getDiagramElementsToBeDeleted() {
 		// A list of connectors that may be deleted if a shape is connected to it
-		List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+		List<DiagramConnector> impliedConnectors = new ArrayList<>();
 		for (DiagramElement<?> o : getSelectedDiagramElements()) {
 			if (o instanceof DiagramShape) {
 				impliedConnectors.addAll(((DiagramShape) o).getStartConnectors());
@@ -246,7 +246,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 	}
 
 	private void initSelectedDiagramElements() {
-		selectedDiagramElements = new ArrayList<DiagramElement<?>>();
+		selectedDiagramElements = new ArrayList<>();
 		for (FlexoObject object : getGlobalSelectionAndFocusedObject()) {
 			if (object instanceof DiagramElement) {
 				selectedDiagramElements.add((DiagramElement<?>) object);
@@ -256,7 +256,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 
 	public List<FlexoObject> getAllObjectsToBeDeleted() {
 		if (allObjectsToBeDeleted == null) {
-			allObjectsToBeDeleted = new ArrayList<FlexoObject>();
+			allObjectsToBeDeleted = new ArrayList<>();
 			computeAllObjectsToBeDeleted();
 		}
 		return allObjectsToBeDeleted;
@@ -295,7 +295,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances
 
 		public FlexoConceptInstanceElementEntry(FlexoConceptInstance flexoConceptInstance) {
 			this.flexoConceptInstance = flexoConceptInstance;
-			deletedElements = new ArrayList<FlexoObject>();
+			deletedElements = new ArrayList<>();
 			if (!flexoConceptInstance.getFlexoConcept().getDeletionSchemes().isEmpty()) {
 				this.currentDeletionScheme = flexoConceptInstance.getFlexoConcept().getDeletionSchemes().get(0);
 				computeDeletedElements();

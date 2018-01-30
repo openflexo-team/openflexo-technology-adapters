@@ -283,7 +283,7 @@ public class FlexoOslcClient {
 	 * @return a CreationFactory
 	 */
 	public CreationFactory[] getCreationFactories(final String type, Service service) {
-		List<CreationFactory> correctCreationFactories = new ArrayList<CreationFactory>();
+		List<CreationFactory> correctCreationFactories = new ArrayList<>();
 		final CreationFactory[] creationFactories = service.getCreationFactories();
 		for (final CreationFactory creationFactory : creationFactories) {
 			final URI[] resourceTypes = creationFactory.getResourceTypes();
@@ -315,7 +315,7 @@ public class FlexoOslcClient {
 	 * @return a QueryCapability
 	 */
 	public QueryCapability[] getQueryCapabilities(final String type, Service service) {
-		List<QueryCapability> correctQueryCapabilities = new ArrayList<QueryCapability>();
+		List<QueryCapability> correctQueryCapabilities = new ArrayList<>();
 		final QueryCapability[] queryCapabilities = service.getQueryCapabilities();
 		for (final QueryCapability queryCapability : queryCapabilities) {
 			final URI[] resourceTypes = queryCapability.getResourceTypes();
@@ -394,13 +394,11 @@ public class FlexoOslcClient {
 	 * @return an OSLC resource
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends AbstractResource> T getClientResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
+	private static <T extends AbstractResource> T getClientResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
 		if (resourceClass == null) {
 			return (T) getResource(client);
 		}
-		else {
-			return getResource(client, resourceClass);
-		}
+		return getResource(client, resourceClass);
 	}
 
 	/**
@@ -410,7 +408,7 @@ public class FlexoOslcClient {
 	 * @return an OSLC resource
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends AbstractResource> T getResource(FlexoOslcRestClient client) {
+	private static <T extends AbstractResource> T getResource(FlexoOslcRestClient client) {
 		T result = null;
 		try {
 			// Try to get the resource

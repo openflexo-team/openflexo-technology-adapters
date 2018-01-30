@@ -106,12 +106,13 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 		return getModel();
 	}
 
-	private DrawingGraphicalRepresentation retrieveGraphicalRepresentation(DiagramPalette palette, DiagramPaletteFactory factory) {
+	private static DrawingGraphicalRepresentation retrieveGraphicalRepresentation(DiagramPalette palette, DiagramPaletteFactory factory) {
 		DrawingGraphicalRepresentation returned = null;
 		if (palette.getGraphicalRepresentation() != null) {
 			palette.getGraphicalRepresentation().setFactory(factory);
 			returned = palette.getGraphicalRepresentation();
-		} else {
+		}
+		else {
 			returned = factory.makeDrawingGraphicalRepresentation();
 			palette.setGraphicalRepresentation(returned);
 		}
@@ -122,12 +123,14 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 		return returned;
 	}
 
-	private ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramPaletteElement element, DiagramPaletteFactory factory) {
+	private static ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramPaletteElement element,
+			DiagramPaletteFactory factory) {
 		ShapeGraphicalRepresentation returned = null;
 		if (element.getGraphicalRepresentation() != null) {
 			element.getGraphicalRepresentation().setFactory(factory);
 			returned = element.getGraphicalRepresentation();
-		} else {
+		}
+		else {
 			returned = factory.makeShapeGraphicalRepresentation();
 			element.setGraphicalRepresentation(returned);
 		}

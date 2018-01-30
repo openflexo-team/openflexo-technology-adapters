@@ -172,7 +172,7 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 		 * try { city1Model.getEMFResource().load(null); } catch (IOException e)
 		 * { // TODO Auto-generated catch block e.printStackTrace(); }
 		 */
-		List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
+		List<EObject> selectedEMFIndividuals = new ArrayList<>();
 		TreeIterator<EObject> iterator = resource.getAllContents();
 		while (iterator.hasNext()) {
 			EObject eObject = iterator.next();

@@ -471,7 +471,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return new Font(defaultFont, Font.PLAIN, 12);
 	}
 
-	private ThemePart getThemePart(DocXDocument document) {
+	private static ThemePart getThemePart(DocXDocument document) {
 		// System.out.println("document=" + document);
 		if (document == null) {
 			return null;
@@ -479,7 +479,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return document.getWordprocessingMLPackage().getMainDocumentPart().getThemePart();
 	}
 
-	public java.awt.Color makeColor(Color color) {
+	public static java.awt.Color makeColor(Color color) {
 		if (color.getVal().length() == 6) {
 			int r = Integer.parseInt(color.getVal().substring(0, 2), 16);
 			int g = Integer.parseInt(color.getVal().substring(2, 4), 16);

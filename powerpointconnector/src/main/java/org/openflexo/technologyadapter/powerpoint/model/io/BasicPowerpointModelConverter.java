@@ -68,7 +68,7 @@ public class BasicPowerpointModelConverter {
 	private static final Logger logger = Logger.getLogger(BasicPowerpointModelConverter.class.getPackage().getName());
 
 	/** Powerpoint Objects. */
-	protected final Map<Object, PowerpointObject> powerpointObjects = new HashMap<Object, PowerpointObject>();
+	protected final Map<Object, PowerpointObject> powerpointObjects = new HashMap<>();
 
 	/**
 	 * Constructor.

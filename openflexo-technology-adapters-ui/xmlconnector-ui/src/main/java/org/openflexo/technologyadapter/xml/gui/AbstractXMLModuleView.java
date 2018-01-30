@@ -97,7 +97,7 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		this.representedObject = object;
 		this.perspective = perspective;
 		setDataObject(this);
-		matchingValues = new ArrayList<XMLObject>();
+		matchingValues = new ArrayList<>();
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 	 * Override when required
 	 */
 	protected Vector<XMLObject> getAllSelectableValues() {
-		Vector<XMLObject> returned = new Vector<XMLObject>();
+		Vector<XMLObject> returned = new Vector<>();
 		JFIBBrowserWidget browserWidget = retrieveFIBBrowserWidget();
 		if (browserWidget == null) {
 			return null;

@@ -244,7 +244,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		if (object instanceof ExcelWorkbook) {
 			return new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<ExcelTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 }

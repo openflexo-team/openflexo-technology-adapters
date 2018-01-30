@@ -265,6 +265,6 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 			returned.update();
 			return returned;
 		}
-		return new EmptyPanel<TechnologyObject<EMFTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 }

@@ -79,7 +79,7 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
+		private final Map<String, ExcelObject> uriCache = new HashMap<>();
 
 		// Serialized properties
 

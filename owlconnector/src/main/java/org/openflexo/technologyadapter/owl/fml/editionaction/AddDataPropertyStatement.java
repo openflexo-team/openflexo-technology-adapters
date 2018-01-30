@@ -304,11 +304,11 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		public ValidationIssue<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> applyValidation(
 				AddDataPropertyStatement action) {
 			if (action.getDataProperty() == null && action.getOwner() instanceof AssignationAction) {
-				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
+				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<>();
 				for (DataPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(DataPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,
+				return new ValidationError<>(this, action,
 						"add_data_property_statement_action_does_not_define_an_data_property", v);
 			}
 			return null;
@@ -331,7 +331,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			@Override
 			protected void fixAction() {
 				AddDataPropertyStatement action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}

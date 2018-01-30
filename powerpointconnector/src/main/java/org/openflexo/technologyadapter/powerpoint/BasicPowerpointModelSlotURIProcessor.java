@@ -82,7 +82,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, PowerpointObject> uriCache = new HashMap<String, PowerpointObject>();
+		private final Map<String, PowerpointObject> uriCache = new HashMap<>();
 
 		public BasicPowerpointModelSlotURIProcessorImpl(String typeURI) {
 			super();

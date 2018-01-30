@@ -89,7 +89,7 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		public DataBinding<Object> getParameter() {
 
 			if (parameter == null) {
-				parameter = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				parameter = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				parameter.setBindingName("parameter");
 			}
 			return parameter;

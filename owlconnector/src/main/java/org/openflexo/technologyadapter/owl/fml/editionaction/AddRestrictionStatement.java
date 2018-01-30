@@ -182,7 +182,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<?> getObject() {
 			if (object == null) {
-				object = new DataBinding<Object>(this, getObjectType(), BindingDefinitionType.GET);
+				object = new DataBinding<>(this, getObjectType(), BindingDefinitionType.GET);
 				object.setBindingName("object");
 			}
 			return object;
@@ -204,7 +204,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<RestrictionType> getRestrictionType() {
 			if (restrictionType == null) {
-				restrictionType = new DataBinding<RestrictionType>(this, RestrictionType.class, BindingDefinitionType.GET);
+				restrictionType = new DataBinding<>(this, RestrictionType.class, BindingDefinitionType.GET);
 				restrictionType.setBindingName("restrictionType");
 			}
 			return restrictionType;
@@ -243,7 +243,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<Integer> getCardinality() {
 			if (cardinality == null) {
-				cardinality = new DataBinding<Integer>(this, Integer.class, BindingDefinitionType.GET);
+				cardinality = new DataBinding<>(this, Integer.class, BindingDefinitionType.GET);
 				cardinality.setBindingName("cardinality");
 			}
 			return cardinality;

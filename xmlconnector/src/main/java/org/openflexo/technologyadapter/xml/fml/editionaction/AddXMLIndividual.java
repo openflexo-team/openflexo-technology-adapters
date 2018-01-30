@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
@@ -78,7 +77,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ImplementationClass(AddXMLIndividual.AddXMLIndividualImpl.class)
 @Imports({ @Import(XMLDataPropertyAssertion.class), @Import(XMLActorReference.class), })
 @FML("AddXMLIndividual")
-public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAction<XMLModelSlot, XMLIndividual> {
+public interface AddXMLIndividual extends XMLAction<XMLModelSlot, XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TYPE_URI = "typeURI";

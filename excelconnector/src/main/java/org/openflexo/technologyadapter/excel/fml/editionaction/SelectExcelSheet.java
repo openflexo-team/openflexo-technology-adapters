@@ -74,7 +74,7 @@ public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, Exce
 
 			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
-			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
+			List<ExcelSheet> selectedExcelSheets = new ArrayList<>(0);
 
 			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
 

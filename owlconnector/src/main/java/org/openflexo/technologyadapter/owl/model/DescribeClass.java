@@ -94,7 +94,7 @@ public class DescribeClass {
 	// Instance variables
 	// ////////////////////////////////
 
-	private Map<AnonId, String> m_anonIDs = new HashMap<AnonId, String>();
+	private Map<AnonId, String> m_anonIDs = new HashMap<>();
 	private int m_anonCount = 0;
 
 	// Constructors

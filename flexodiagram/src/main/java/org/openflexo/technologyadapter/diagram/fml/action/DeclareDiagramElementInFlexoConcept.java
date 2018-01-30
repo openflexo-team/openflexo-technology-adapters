@@ -104,7 +104,7 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 		super(actionType, focusedObject, globalSelection, editor);
 
 		// Get the set of internal elements inside the current focused object
-		drawingObjectEntries = new Vector<DrawingObjectEntry>();
+		drawingObjectEntries = new Vector<>();
 		int shapeIndex = 1;
 		int connectorIndex = 1;
 

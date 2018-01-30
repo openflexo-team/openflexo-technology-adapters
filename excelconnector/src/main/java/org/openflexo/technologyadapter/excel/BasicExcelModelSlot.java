@@ -122,7 +122,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		// private BasicExcelModelSlotURIProcessor uriProcessor;
 
-		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
+		private final Map<String, ExcelObject> uriCache = new HashMap<>();
 
 		private ExcelWorkbookResource templateResource;
 		protected String templateWorkbookURI;

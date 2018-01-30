@@ -118,15 +118,13 @@ public class TestXMLModel extends OpenflexoTestCase {
 		t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk", false);
 		t.createProperty("TOTO", ts);
 
-		XMLIndividual xmind = (XMLIndividual) model
-				.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
+		XMLIndividual xmind = model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
 
 		model.setRoot(xmind);
 
 		xmind.addPropertyValue("TOTO", "Freumeuleu");
 
-		XMLIndividual xmind2 = (XMLIndividual) model
-				.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
+		XMLIndividual xmind2 = model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
 
 		xmind.addChild(xmind2);
 

@@ -94,7 +94,7 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 
 	@Override
 	public List<SelectionListener> getSelectionListeners() {
-		Vector<SelectionListener> reply = new Vector<SelectionListener>();
+		Vector<SelectionListener> reply = new Vector<>();
 		reply.add(this);
 		return reply;
 	}

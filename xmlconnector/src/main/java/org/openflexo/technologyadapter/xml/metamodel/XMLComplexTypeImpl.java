@@ -57,7 +57,7 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 
 	public XMLComplexTypeImpl() {
 		super();
-		this.properties = new HashMap<String, XMLProperty>();
+		this.properties = new HashMap<>();
 	}
 
 	@SuppressWarnings("unchecked")

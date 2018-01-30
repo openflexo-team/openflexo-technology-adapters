@@ -167,7 +167,7 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 		if (arg0 instanceof OSLCServiceProviderCatalog) {
 			return new FIBOSLCCatalog((OSLCResource) arg0, arg1);
 		}
-		return new EmptyPanel<TechnologyObject<OSLCTechnologyAdapter>>(arg1, arg2, arg0);
+		return new EmptyPanel<>(arg1, arg2, arg0);
 	}
 
 	@Override

@@ -152,7 +152,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 		if (object instanceof PowerpointSlideshow) {
 			return new PowerpointSlideshowView((PowerpointSlideshow) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<PowerpointTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 }

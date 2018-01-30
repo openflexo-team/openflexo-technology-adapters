@@ -52,9 +52,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 public class DiagramTechnologyContextManager extends TechnologyContextManager<DiagramTechnologyAdapter> {
 
 	/** Stores all known DiagramSpecification where key is the URI of DiagramSpecification */
-	protected Map<String, DiagramSpecificationResource> diagramSpecifications = new HashMap<String, DiagramSpecificationResource>();
+	protected Map<String, DiagramSpecificationResource> diagramSpecifications = new HashMap<>();
 	/** Stores all known Diagrams where key is the URI of Diagram */
-	protected Map<String, DiagramResource> diagrams = new HashMap<String, DiagramResource>();
+	protected Map<String, DiagramResource> diagrams = new HashMap<>();
 
 	public DiagramTechnologyContextManager(DiagramTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);

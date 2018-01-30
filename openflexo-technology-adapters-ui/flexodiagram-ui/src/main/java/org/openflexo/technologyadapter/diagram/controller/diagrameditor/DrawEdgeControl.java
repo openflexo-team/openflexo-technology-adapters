@@ -226,7 +226,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				FlexoConceptInstance endFlexoConceptInstance = (FlexoConceptInstance) endObject;
 
 				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
-				List<LinkScheme> availableConnectors = new ArrayList<LinkScheme>();
+				List<LinkScheme> availableConnectors = new ArrayList<>();
 				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
 					if (flexoConcept.getFlexoBehaviours(LinkScheme.class) != null) {
 						for (LinkScheme linkScheme : flexoConcept.getFlexoBehaviours(LinkScheme.class)) {

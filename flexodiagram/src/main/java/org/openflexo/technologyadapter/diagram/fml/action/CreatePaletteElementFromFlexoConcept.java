@@ -88,7 +88,7 @@ public class CreatePaletteElementFromFlexoConcept
 
 	protected CreatePaletteElementFromFlexoConcept(FlexoConcept focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-		diagramElementEntries = new Vector<GraphicalElementEntry>();
+		diagramElementEntries = new Vector<>();
 		updateDiagramElementsEntries();
 	}
 

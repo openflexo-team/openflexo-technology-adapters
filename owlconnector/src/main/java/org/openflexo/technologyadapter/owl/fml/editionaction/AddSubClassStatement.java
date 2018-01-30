@@ -116,7 +116,7 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 		@Override
 		public DataBinding<IFlexoOntologyConcept> getFather() {
 			if (father == null) {
-				father = new DataBinding<IFlexoOntologyConcept>(this, IFlexoOntologyConcept.class, BindingDefinitionType.GET);
+				father = new DataBinding<>(this, IFlexoOntologyConcept.class, BindingDefinitionType.GET);
 				father.setBindingName("father");
 			}
 			return father;

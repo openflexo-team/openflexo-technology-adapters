@@ -50,14 +50,13 @@ import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<DiagramPalette, DiagramPaletteFactory>
-		implements DiagramPaletteResource, AccessibleProxyObject {
+		implements DiagramPaletteResource {
 
 	static final Logger logger = Logger.getLogger(DiagramPaletteResourceImpl.class.getPackage().getName());
 

@@ -84,27 +84,27 @@ public class EMFMetaModelConverter {
 	/** Builder. */
 	protected final EMFMetaModelBuilder builder;
 	/** Packages from EPackage. */
-	protected Map<EPackage, EMFPackageContainer> packages = new HashMap<EPackage, EMFPackageContainer>();
+	protected Map<EPackage, EMFPackageContainer> packages = new HashMap<>();
 	/** Classes from EClass. */
-	protected Map<EClass, EMFClassClass> classes = new HashMap<EClass, EMFClassClass>();
+	protected Map<EClass, EMFClassClass> classes = new HashMap<>();
 	/** DataType from EDataType. */
-	protected Map<EDataType, EMFDataTypeDataType> dataTypes = new HashMap<EDataType, EMFDataTypeDataType>();
+	protected Map<EDataType, EMFDataTypeDataType> dataTypes = new HashMap<>();
 	/** Classes from EEnum. */
-	protected Map<EEnum, EMFEnumClass> enums = new HashMap<EEnum, EMFEnumClass>();
+	protected Map<EEnum, EMFEnumClass> enums = new HashMap<>();
 	/** Individual from EEnumLiteral. */
-	protected Map<Enumerator, EMFEnumIndividual> enumLiterals = new HashMap<Enumerator, EMFEnumIndividual>();
+	protected Map<Enumerator, EMFEnumIndividual> enumLiterals = new HashMap<>();
 	/** Features from EAttribute. */
-	protected Map<EAttribute, EMFAttributeObjectProperty> objectAttributes = new HashMap<EAttribute, EMFAttributeObjectProperty>();
+	protected Map<EAttribute, EMFAttributeObjectProperty> objectAttributes = new HashMap<>();
 	/** Features from EAttribute. */
-	protected Map<EAttribute, EMFAttributeDataProperty> dataAttributes = new HashMap<EAttribute, EMFAttributeDataProperty>();
+	protected Map<EAttribute, EMFAttributeDataProperty> dataAttributes = new HashMap<>();
 	/** Feature Associations from EAttribute. */
-	protected Map<EAttribute, EMFAttributeAssociation> attributeAssociations = new HashMap<EAttribute, EMFAttributeAssociation>();
+	protected Map<EAttribute, EMFAttributeAssociation> attributeAssociations = new HashMap<>();
 	/** Features from EReference. */
-	protected Map<EReference, EMFReferenceObjectProperty> references = new HashMap<EReference, EMFReferenceObjectProperty>();
+	protected Map<EReference, EMFReferenceObjectProperty> references = new HashMap<>();
 	/** Feature Associations from EReference. */
-	protected Map<EReference, EMFReferenceAssociation> referenceAssociations = new HashMap<EReference, EMFReferenceAssociation>();
+	protected Map<EReference, EMFReferenceAssociation> referenceAssociations = new HashMap<>();
 	/** Annotations. */
-	protected Map<EAnnotation, EMFAnnotationAnnotation> annotations = new HashMap<EAnnotation, EMFAnnotationAnnotation>();
+	protected Map<EAnnotation, EMFAnnotationAnnotation> annotations = new HashMap<>();
 
 	/**
 	 * Constructor.

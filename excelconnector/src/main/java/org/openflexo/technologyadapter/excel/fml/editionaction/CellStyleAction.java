@@ -199,7 +199,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public DataBinding<?> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -221,7 +221,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public DataBinding<ExcelStyleObject> getSubject() {
 			if (subject == null) {
-				subject = new DataBinding<ExcelStyleObject>(this, ExcelStyleObject.class, DataBinding.BindingDefinitionType.GET);
+				subject = new DataBinding<>(this, ExcelStyleObject.class, DataBinding.BindingDefinitionType.GET);
 				subject.setBindingName("subject");
 			}
 			return subject;
@@ -315,7 +315,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public List<CellStyleFeature> getAvailableCellStyles() {
 			if (availableCellStyles == null) {
-				availableCellStyles = new Vector<CellStyleFeature>();
+				availableCellStyles = new Vector<>();
 				for (CellStyleFeature cellStyle : ExcelStyleManager.CellStyleFeature.values()) {
 					availableCellStyles.add(cellStyle);
 				}
@@ -369,7 +369,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public List<CellBorderStyleFeature> getAvailableCellBorderStyles() {
 			if (availableCellBorderStyles == null) {
-				availableCellBorderStyles = new Vector<CellBorderStyleFeature>();
+				availableCellBorderStyles = new Vector<>();
 				for (CellBorderStyleFeature cellBorderStyle : ExcelStyleManager.CellBorderStyleFeature.values()) {
 					availableCellBorderStyles.add(cellBorderStyle);
 				}
@@ -423,7 +423,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles() {
 			if (availableCellAlignmentStyles == null) {
-				availableCellAlignmentStyles = new Vector<CellAlignmentStyleFeature>();
+				availableCellAlignmentStyles = new Vector<>();
 				for (CellAlignmentStyleFeature cellAlignmentStyle : ExcelStyleManager.CellAlignmentStyleFeature.values()) {
 					availableCellAlignmentStyles.add(cellAlignmentStyle);
 				}
@@ -474,7 +474,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		@Override
 		public List<CellPatternStyleFeature> getAvailableCellPatternStyles() {
 			if (availableCellPatternStyles == null) {
-				availableCellPatternStyles = new Vector<CellPatternStyleFeature>();
+				availableCellPatternStyles = new Vector<>();
 				for (CellPatternStyleFeature cellPatternStyle : ExcelStyleManager.CellPatternStyleFeature.values()) {
 					availableCellPatternStyles.add(cellPatternStyle);
 				}

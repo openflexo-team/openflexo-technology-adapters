@@ -71,7 +71,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 	protected OWLIndividual(Individual anIndividual, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anIndividual, ontology, adapter);
 		individual = anIndividual;
-		types = new Vector<OWLClass>();
+		types = new Vector<>();
 	}
 
 	/**

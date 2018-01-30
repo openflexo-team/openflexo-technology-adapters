@@ -85,7 +85,7 @@ public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, O
 
 			// OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
-			List<OSLCRequirement> selectedOSLCRequirements = new ArrayList<OSLCRequirement>();
+			List<OSLCRequirement> selectedOSLCRequirements = new ArrayList<>();
 
 			List<OSLCRequirement> returned = filterWithConditions(selectedOSLCRequirements, evaluationContext);
 

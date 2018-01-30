@@ -97,12 +97,12 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 	}
 
 	protected static Vector<OWLConcept> objectsToDelete(OWLConcept focusedObject, Vector<OWLConcept> globalSelection) {
-		Vector<OWLConcept> returned = new Vector<OWLConcept>();
+		Vector<OWLConcept> returned = new Vector<>();
 		if (globalSelection == null || !globalSelection.contains(focusedObject)) {
 			returned.add(focusedObject);
 		}
 		if (globalSelection != null) {
-			for (FlexoOntologyObjectImpl o : globalSelection) {
+			for (FlexoOntologyObjectImpl<?> o : globalSelection) {
 				if (o instanceof OWLClass || o instanceof OWLIndividual || o instanceof OWLObjectProperty
 						|| o instanceof IFlexoOntologyDataProperty) {
 					returned.add((OWLConcept) o);
@@ -136,7 +136,7 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 		if (logger.isLoggable(Level.INFO)) {
 			logger.info("selection to delete is: " + getObjectsToDelete());
 		}
-		for (OWLConcept o : getObjectsToDelete()) {
+		for (OWLConcept<?> o : getObjectsToDelete()) {
 			o.delete();
 		}
 	}

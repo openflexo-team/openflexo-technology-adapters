@@ -96,7 +96,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLOntolog
 		@Override
 		public DataBinding<IFlexoOntologyClass<?>> getDynamicType() {
 			if (dynamicType == null) {
-				dynamicType = new DataBinding<IFlexoOntologyClass<?>>(this, OWLClass.class, DataBinding.BindingDefinitionType.GET);
+				dynamicType = new DataBinding<>(this, OWLClass.class, DataBinding.BindingDefinitionType.GET);
 				dynamicType.setBindingName("dynamicType");
 			}
 			return dynamicType;

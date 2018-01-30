@@ -103,7 +103,7 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXTableImpl.class.getPackage().getName());
 
-		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
+		private final Map<Tr, DocXTableRow> rows = new HashMap<>();
 
 		// Factory used during initialization of DocXParagraph (either new or loaded document)
 		protected DocXFactory _factory;

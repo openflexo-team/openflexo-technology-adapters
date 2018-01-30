@@ -159,7 +159,7 @@ public interface AddOSLCRequirement
 		@Override
 		public DataBinding<CreationFactory> getCreationFactory() {
 			if (creationFactory == null) {
-				creationFactory = new DataBinding<CreationFactory>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
+				creationFactory = new DataBinding<>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
 				creationFactory.setBindingName("creationFactory");
 			}
 			return creationFactory;
@@ -179,7 +179,7 @@ public interface AddOSLCRequirement
 		@Override
 		public DataBinding<String> getTitle() {
 			if (title == null) {
-				title = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				title = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				title.setBindingName("title");
 			}
 			return title;
@@ -199,7 +199,7 @@ public interface AddOSLCRequirement
 		@Override
 		public DataBinding<String> getReqDescription() {
 			if (reqDescription == null) {
-				reqDescription = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				reqDescription = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				reqDescription.setBindingName("reqDescription");
 			}
 			return reqDescription;

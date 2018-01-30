@@ -291,7 +291,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
-		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		concepts.addAll(getIndividuals());
 		return Collections.unmodifiableList(concepts);
 	}
@@ -343,7 +343,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<>();
 		result.addAll(converter.getIndividuals().values());
 		return Collections.unmodifiableList(result);
 	}

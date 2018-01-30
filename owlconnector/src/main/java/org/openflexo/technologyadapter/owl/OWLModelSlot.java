@@ -256,7 +256,7 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 
 		@Override
 		public List<Class<? extends FlexoBehaviour>> getAvailableFlexoBehaviourTypes() {
-			List<Class<? extends FlexoBehaviour>> types = new ArrayList<Class<? extends FlexoBehaviour>>();
+			List<Class<? extends FlexoBehaviour>> types = new ArrayList<>();
 			return types;
 		}
 

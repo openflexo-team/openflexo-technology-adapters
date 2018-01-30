@@ -143,8 +143,7 @@ public class EMFMetaModelResourceFactory
 	}
 
 	public <I> EMFMetaModelResource retrieveResourceFromClassPath(String metaModelName, String metaModelURI, String metaModelExtension,
-			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager)
-			throws ModelDefinitionException {
+			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
 
 		// FlexoResourceCenter<I> resourceCenter = null;
 

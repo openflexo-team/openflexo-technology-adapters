@@ -121,10 +121,10 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		public XMLModelSlotImpl() {
 			super();
 			if (uriProcessorsMap == null) {
-				uriProcessorsMap = new Hashtable<String, XMLURIProcessor>();
+				uriProcessorsMap = new Hashtable<>();
 			}
 			if (uriProcessors == null) {
-				uriProcessors = new ArrayList<XMLURIProcessor>();
+				uriProcessors = new ArrayList<>();
 			}
 		}
 

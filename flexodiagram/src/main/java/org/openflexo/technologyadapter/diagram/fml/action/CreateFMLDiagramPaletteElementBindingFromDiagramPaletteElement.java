@@ -263,7 +263,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement
 
 	private void computeDropSchemes() {
 		if (dropSchemes == null) {
-			dropSchemes = new ArrayList<DropScheme>();
+			dropSchemes = new ArrayList<>();
 		}
 		dropSchemes.clear();
 		if (getFlexoConcept() != null) {
@@ -273,7 +273,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement
 
 	private void computeFlexoConcepts() {
 		if (flexoConcepts == null) {
-			flexoConcepts = new ArrayList<FlexoConcept>();
+			flexoConcepts = new ArrayList<>();
 		}
 		flexoConcepts.clear();
 		if (getVirtualModel() != null) {

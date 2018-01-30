@@ -157,7 +157,7 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 		public ValidationIssue<ObjectPropertyStatementRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
 				ObjectPropertyStatementRole patternRole) {
 			if (patternRole.getObjectProperty() == null) {
-				return new ValidationWarning<ObjectPropertyStatementRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(this,
+				return new ValidationWarning<>(this,
 						patternRole, "statement_role_does_not_define_any_valid_object_property");
 			}
 			return null;

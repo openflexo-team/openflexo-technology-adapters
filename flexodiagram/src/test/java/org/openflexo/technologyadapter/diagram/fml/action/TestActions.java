@@ -175,7 +175,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 	private ArrayList<Shape> expectedShapes;
 
 	private void computeExpectedNumberOfShapesAndConnectors(Slide slide) {
-		expectedShapes = new ArrayList<Shape>();
+		expectedShapes = new ArrayList<>();
 		if (slide.getFollowMasterObjects()) {
 			Shape[] sh = slide.getMasterSheet().getShapes();
 			for (int i = sh.length - 1; i >= 0; i--) {

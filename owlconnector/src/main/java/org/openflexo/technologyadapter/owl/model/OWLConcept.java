@@ -106,14 +106,14 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 			}
 		}
 
-		_statements = new Vector<OWLStatement>();
-		_semanticStatements = new Vector<OWLStatement>();
-		_annotationStatements = new Vector<PropertyStatement>();
-		_annotationObjectsStatements = new Vector<ObjectPropertyStatement>();
-		propertiesTakingMySelfAsRange = new ArrayList<OWLProperty>();
-		propertiesTakingMySelfAsDomain = new ArrayList<OWLProperty>();
-		declaredPropertiesTakingMySelfAsRange = new HashSet<OWLProperty>();
-		declaredPropertiesTakingMySelfAsDomain = new HashSet<OWLProperty>();
+		_statements = new Vector<>();
+		_semanticStatements = new Vector<>();
+		_annotationStatements = new Vector<>();
+		_annotationObjectsStatements = new Vector<>();
+		propertiesTakingMySelfAsRange = new ArrayList<>();
+		propertiesTakingMySelfAsDomain = new ArrayList<>();
+		declaredPropertiesTakingMySelfAsRange = new HashSet<>();
+		declaredPropertiesTakingMySelfAsDomain = new HashSet<>();
 	}
 
 	protected abstract void update();
@@ -347,7 +347,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<PropertyStatement> getPropertyStatements(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
-		Vector<PropertyStatement> returned = new Vector<PropertyStatement>();
+		Vector<PropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof PropertyStatement) {
 				PropertyStatement s = (PropertyStatement) statement;
@@ -366,7 +366,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<DataPropertyStatement> getAnnotationStatements(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property) {
-		Vector<DataPropertyStatement> returned = new Vector<DataPropertyStatement>();
+		Vector<DataPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getAnnotationStatements()) {
 			if (statement instanceof DataPropertyStatement) {
 				DataPropertyStatement s = (DataPropertyStatement) statement;
@@ -385,7 +385,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<ObjectPropertyStatement> getAnnotationObjectStatements(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
-		Vector<ObjectPropertyStatement> returned = new Vector<ObjectPropertyStatement>();
+		Vector<ObjectPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getAnnotationObjectStatements()) {
 			if (statement instanceof PropertyStatement) {
 				ObjectPropertyStatement s = (ObjectPropertyStatement) statement;
@@ -404,7 +404,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<ObjectPropertyStatement> getObjectPropertyStatements(IFlexoOntologyObjectProperty<OWLTechnologyAdapter> property) {
-		Vector<ObjectPropertyStatement> returned = new Vector<ObjectPropertyStatement>();
+		Vector<ObjectPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof ObjectPropertyStatement) {
 				ObjectPropertyStatement s = (ObjectPropertyStatement) statement;
@@ -423,7 +423,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<DataPropertyStatement> getDataPropertyStatements(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property) {
-		Vector<DataPropertyStatement> returned = new Vector<DataPropertyStatement>();
+		Vector<DataPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof DataPropertyStatement) {
 				DataPropertyStatement s = (DataPropertyStatement) statement;
@@ -442,7 +442,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<ObjectPropertyStatement> getAllObjectPropertyStatements() {
-		Vector<ObjectPropertyStatement> returned = new Vector<ObjectPropertyStatement>();
+		Vector<ObjectPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof ObjectPropertyStatement) {
 				ObjectPropertyStatement s = (ObjectPropertyStatement) statement;
@@ -459,7 +459,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<DataPropertyStatement> getAllDataPropertyStatements() {
-		Vector<DataPropertyStatement> returned = new Vector<DataPropertyStatement>();
+		Vector<DataPropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof DataPropertyStatement) {
 				DataPropertyStatement s = (DataPropertyStatement) statement;
@@ -476,7 +476,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	public Vector<PropertyStatement> getAllPropertyStatements() {
-		Vector<PropertyStatement> returned = new Vector<PropertyStatement>();
+		Vector<PropertyStatement> returned = new Vector<>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof PropertyStatement) {
 				PropertyStatement s = (PropertyStatement) statement;
@@ -994,7 +994,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 
 	// TODO implement a nice and documented API here !
 	public Vector<OWLDataProperty> getDataPropertiesTakingMySelfAsDomain(Object range) {
-		Vector<OWLDataProperty> returned = new Vector<OWLDataProperty>();
+		Vector<OWLDataProperty> returned = new Vector<>();
 		Vector<OWLProperty> allProperties = getPropertiesTakingMyselfAsDomain(true, false, false, false, null, null, getOntology());
 		for (OWLProperty p : allProperties) {
 			returned.add((OWLDataProperty) p);
@@ -1003,7 +1003,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	}
 
 	public Vector<OWLObjectProperty> getObjectPropertiesTakingMySelfAsDomain(OWLConcept<?> range) {
-		Vector<OWLObjectProperty> returned = new Vector<OWLObjectProperty>();
+		Vector<OWLObjectProperty> returned = new Vector<>();
 		Vector<OWLProperty> allProperties = getPropertiesTakingMyselfAsDomain(false, true, false, false, null, null, getOntology());
 		for (OWLProperty p : allProperties) {
 			returned.add((OWLObjectProperty) p);
@@ -1014,8 +1014,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	private Vector<OWLProperty> getPropertiesTakingMyselfAsDomain(boolean includeDataProperties, boolean includeObjectProperties,
 			boolean includeAnnotationProperties, boolean includeBaseOntologies, OWLConcept<?> range, OWLDataType dataType,
 			OWLOntology... ontologies) {
-		Vector<OWLProperty> allProperties = new Vector<OWLProperty>(getPropertiesTakingMySelfAsDomain());
-		Vector<OWLProperty> returnedProperties = new Vector<OWLProperty>();
+		Vector<OWLProperty> allProperties = new Vector<>(getPropertiesTakingMySelfAsDomain());
+		Vector<OWLProperty> returnedProperties = new Vector<>();
 		for (OWLProperty p : allProperties) {
 			boolean takeIt = includeDataProperties && p instanceof OWLDataProperty
 					|| includeObjectProperties && p instanceof OWLObjectProperty || includeAnnotationProperties && p.isAnnotationProperty();
@@ -1061,7 +1061,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 			declaredPropertiesTakingMySelfAsDomain.addAll(getOriginalDefinition().declaredPropertiesTakingMySelfAsDomain);
 		}
 
-		Vector<OWLOntology> alreadyDone = new Vector<OWLOntology>();
+		Vector<OWLOntology> alreadyDone = new Vector<>();
 		for (OWLOntology ontology : getOntology().getAllImportedOntologies()) {
 			searchRangeAndDomains(declaredPropertiesTakingMySelfAsRange, declaredPropertiesTakingMySelfAsDomain, ontology, alreadyDone);
 		}

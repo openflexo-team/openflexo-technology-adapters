@@ -365,7 +365,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		}
 
 		private boolean detectLoopInParentShapePatternRoleDefinition() {
-			List<ShapeRole> list = new ArrayList<ShapeRole>();
+			List<ShapeRole> list = new ArrayList<>();
 			ShapeRole current = this;
 			while (!list.contains(current) && current != null) {
 				list.add(current);
@@ -458,7 +458,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		 */
 		@Override
 		public List<ShapeRole> getPossibleParentShapeRoles() {
-			List<ShapeRole> returned = new ArrayList<ShapeRole>();
+			List<ShapeRole> returned = new ArrayList<>();
 			if (getFlexoConcept() != null) {
 				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 				for (ShapeRole shapeRole : shapesPatternRoles) {

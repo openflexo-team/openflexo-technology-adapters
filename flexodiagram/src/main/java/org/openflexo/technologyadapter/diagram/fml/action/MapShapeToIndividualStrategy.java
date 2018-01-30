@@ -129,7 +129,7 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 					ms = ((ModelSlotBindingVariable) bpe).getModelSlot();
 				}
 				else if (bpe instanceof VirtualModelModelSlotPathElement) {
-					ms = ((VirtualModelModelSlotPathElement) bpe).getModelSlot();
+					ms = ((VirtualModelModelSlotPathElement<?>) bpe).getModelSlot();
 				}
 				if (ms instanceof FlexoOntologyModelSlot) {
 					return (FlexoOntologyModelSlot<?, ?, ?>) ms;

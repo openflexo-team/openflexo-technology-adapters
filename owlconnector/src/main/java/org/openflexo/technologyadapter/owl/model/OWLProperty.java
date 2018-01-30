@@ -79,12 +79,12 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	protected OWLProperty(OntProperty anOntProperty, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anOntProperty, ontology, adapter);
 		ontProperty = anOntProperty;
-		superProperties = new Vector<OWLProperty>();
-		domainStatementList = new ArrayList<DomainStatement>();
-		rangeStatementList = new ArrayList<RangeStatement>();
+		superProperties = new Vector<>();
+		domainStatementList = new ArrayList<>();
+		rangeStatementList = new ArrayList<>();
 		domainList = null;
 		rangeList = null;
-		referencingRestrictions = new ArrayList<OWLRestriction>();
+		referencingRestrictions = new ArrayList<>();
 	}
 
 	/**
@@ -183,7 +183,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	@Override
 	public final List<OWLProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
-			List<OWLProperty> returned = new Vector<OWLProperty>();
+			List<OWLProperty> returned = new Vector<>();
 			for (OWLDataProperty p : ((OWLOntology) context).getAccessibleDataProperties()) {
 				if (p.isSubConceptOf(this)) {
 					if (!returned.contains(p)) {
@@ -334,7 +334,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	public List<OWLConcept<?>> getDomainList() {
 		if (domainList == null) {
-			domainList = new ArrayList<OWLConcept<?>>();
+			domainList = new ArrayList<>();
 			for (DomainStatement s : getDomainStatementList()) {
 				if (s.getDomain() != null) {
 					domainList.add(s.getDomain());
@@ -346,7 +346,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	public List<OWLConcept<?>> getRangeList() {
 		if (rangeList == null) {
-			rangeList = new ArrayList<OWLConcept<?>>();
+			rangeList = new ArrayList<>();
 			for (RangeStatement s : getRangeStatementList()) {
 				if (s.getRange() != null) {
 					rangeList.add(s.getRange());

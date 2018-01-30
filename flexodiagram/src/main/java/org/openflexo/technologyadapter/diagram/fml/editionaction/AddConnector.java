@@ -222,7 +222,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public DataBinding<DiagramShape> getFromShape() {
 			if (fromShape == null) {
-				fromShape = new DataBinding<DiagramShape>(this, DiagramShape.class, BindingDefinitionType.GET);
+				fromShape = new DataBinding<>(this, DiagramShape.class, BindingDefinitionType.GET);
 				fromShape.setBindingName("fromShape");
 			}
 			return fromShape;
@@ -243,7 +243,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public DataBinding<DiagramShape> getToShape() {
 			if (toShape == null) {
-				toShape = new DataBinding<DiagramShape>(this, DiagramShape.class, BindingDefinitionType.GET);
+				toShape = new DataBinding<>(this, DiagramShape.class, BindingDefinitionType.GET);
 				toShape.setBindingName("toShape");
 			}
 			return toShape;
@@ -397,11 +397,11 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> applyValidation(AddConnector action) {
 			if (action.getAssignedFlexoProperty() == null && action.getOwner() instanceof AssignationAction) {
-				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>>();
+				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<>();
 				for (ConnectorRole pr : action.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>(this, action,
+				return new ValidationError<>(this, action,
 						"add_connector_action_does_not_address_a_valid_connector_flexo_role", v);
 			}
 			return null;
@@ -423,7 +423,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}
@@ -441,7 +441,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			ConnectorRole pr = action.getAssignedFlexoProperty();
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
-				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
+				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<>();
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
@@ -453,7 +453,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
-				return new ValidationError<AddConnectorActionMustHaveAValidStartingShape, AddConnector>(this, action,
+				return new ValidationError<>(this, action,
 						"add_connector_action_does_not_have_a_valid_starting_shape", v);
 			}
 			return null;
@@ -520,7 +520,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			ConnectorRole pr = action.getAssignedFlexoProperty();
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
-				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
+				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<>();
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
@@ -532,7 +532,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
-				return new ValidationError<AddConnectorActionMustHaveAValidEndingShape, AddConnector>(this, action,
+				return new ValidationError<>(this, action,
 						"add_connector_action_does_not_have_a_valid_ending_shape", v);
 			}
 			return null;

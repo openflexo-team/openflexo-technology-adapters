@@ -112,7 +112,7 @@ public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 
 		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
-		fragmentEditor = new FlexoDocFragmentEditorWidget<DocXDocument, DocXTechnologyAdapter>(fragment);
+		fragmentEditor = new FlexoDocFragmentEditorWidget<>(fragment);
 		fragmentEditor.setEditedObject(fragment);
 		/*fragmentEditor = new FIBDocXFragmentSelector(fragment);
 		fragmentEditor.setServiceManager(serviceManager);

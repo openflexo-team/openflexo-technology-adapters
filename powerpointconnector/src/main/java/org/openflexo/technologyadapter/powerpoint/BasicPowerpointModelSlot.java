@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -72,7 +71,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
 @XMLElement
 @FML("BasicPowerpointModelSlot")
-public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
+public interface BasicPowerpointModelSlot extends PowerpointModelSlot {
 
 	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow>
 			implements BasicPowerpointModelSlot {

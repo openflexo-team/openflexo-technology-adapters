@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.excel.model;
 
 import static org.junit.Assert.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -48,9 +48,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.connie.exception.InvalidBindingException;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.technologyadapter.excel.AbstractTestExcel;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
@@ -86,50 +83,50 @@ public class TestInsertRowPOILevel extends AbstractTestExcel {
 
 	@Test
 	@TestOrder(6)
-	public void testInsertRow() throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
-		Workbook wb = personListingWB.getWorkbook();
-		Sheet sheet = wb.getSheetAt(0);
+	public void testInsertRow() throws IOException {
+		try (Workbook wb = personListingWB.getWorkbook()) {
+			Sheet sheet = wb.getSheetAt(0);
 
-		System.out.println("Found sheet: " + sheet);
-		System.out.println("first/last: " + sheet.getFirstRowNum() + " / " + sheet.getLastRowNum());
+			System.out.println("Found sheet: " + sheet);
+			System.out.println("first/last: " + sheet.getFirstRowNum() + " / " + sheet.getLastRowNum());
 
-		assertEquals(0, sheet.getFirstRowNum());
-		assertEquals(6, sheet.getLastRowNum());
+			assertEquals(0, sheet.getFirstRowNum());
+			assertEquals(6, sheet.getLastRowNum());
 
-		for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-			Row row = sheet.getRow(i);
-			StringBuffer sb = new StringBuffer();
-			sb.append("[ROW-" + row.getRowNum() + "]");
-			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
-				Cell cell = row.getCell(j);
-				sb.append(" " + cell);
+			for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+				Row row = sheet.getRow(i);
+				StringBuffer sb = new StringBuffer();
+				sb.append("[ROW-" + row.getRowNum() + "]");
+				for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+					Cell cell = row.getCell(j);
+					sb.append(" " + cell);
+				}
+				System.out.println(sb.toString());
 			}
-			System.out.println(sb.toString());
-		}
 
-		sheet.shiftRows(2, 6, 1);
-		Row newRow = sheet.createRow(2);
+			sheet.shiftRows(2, 6, 1);
+			Row newRow = sheet.createRow(2);
 
-		Cell newCell1 = newRow.createCell(0);
-		Cell newCell2 = newRow.createCell(1);
-		Cell newCell3 = newRow.createCell(2);
-		Cell newCell4 = newRow.createCell(3);
+			Cell newCell1 = newRow.createCell(0);
+			Cell newCell2 = newRow.createCell(1);
+			Cell newCell3 = newRow.createCell(2);
+			Cell newCell4 = newRow.createCell(3);
 
-		assertEquals(0, sheet.getFirstRowNum());
-		assertEquals(7, sheet.getLastRowNum());
+			assertEquals(0, sheet.getFirstRowNum());
+			assertEquals(7, sheet.getLastRowNum());
 
-		System.out.println("first/last: " + sheet.getFirstRowNum() + " / " + sheet.getLastRowNum());
+			System.out.println("first/last: " + sheet.getFirstRowNum() + " / " + sheet.getLastRowNum());
 
-		for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-			Row row = sheet.getRow(i);
-			StringBuffer sb = new StringBuffer();
-			sb.append("[ROW-" + row.getRowNum() + "]");
-			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
-				Cell cell = row.getCell(j);
-				sb.append(" " + cell);
+			for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+				Row row = sheet.getRow(i);
+				StringBuffer sb = new StringBuffer();
+				sb.append("[ROW-" + row.getRowNum() + "]");
+				for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+					Cell cell = row.getCell(j);
+					sb.append(" " + cell);
+				}
+				System.out.println(sb.toString());
 			}
-			System.out.println(sb.toString());
 		}
 	}
-
 }

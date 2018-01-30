@@ -106,7 +106,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 
 		if (element.getType() instanceof IndividualOfClass) {
 			IndividualOfClass parentType = (IndividualOfClass) element.getType();
-			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+			List<SimplePathElement> returned = new ArrayList<>();
 			returned.add(new URIPathElement(element));
 			returned.add(new URINamePathElement(element));
 			if (parentType.getOntologyClass() instanceof OWLClass) {
@@ -119,7 +119,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 		else if (element.getType() instanceof StatementWithProperty) {
 
 			StatementWithProperty eltType = (StatementWithProperty) element.getType();
-			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+			List<SimplePathElement> returned = new ArrayList<>();
 			returned.add(new URIPathElement(element));
 			returned.add(new StatementPropertyPathElement(element));
 			returned.add(new StatementSubjectPathElement(element));
@@ -160,9 +160,9 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 		return super.makeFunctionPathElement(father, function, args);
 	}
 
-	private List<OWLProperty> searchProperties(OWLClass owlClass) {
+	private static List<OWLProperty> searchProperties(OWLClass owlClass) {
 
-		List<OWLProperty> returned = new ArrayList<OWLProperty>();
+		List<OWLProperty> returned = new ArrayList<>();
 
 		OWLProperty[] array = owlClass.getPropertiesTakingMySelfAsDomain()
 				.toArray(new OWLProperty[owlClass.getPropertiesTakingMySelfAsDomain().size()]);
@@ -171,8 +171,8 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 		// A property may shadow another one relatively from its name
 		// We try to detect such shadowing, and we put the most specialized property first
 
-		List<Integer> i1 = new Vector<Integer>();
-		List<Integer> i2 = new Vector<Integer>();
+		List<Integer> i1 = new Vector<>();
+		List<Integer> i2 = new Vector<>();
 		for (int i = 0; i < array.length; i++) {
 			for (int j = i + 1; j < array.length; j++) {
 				if (array[i].getName().equals(array[j].getName())) {

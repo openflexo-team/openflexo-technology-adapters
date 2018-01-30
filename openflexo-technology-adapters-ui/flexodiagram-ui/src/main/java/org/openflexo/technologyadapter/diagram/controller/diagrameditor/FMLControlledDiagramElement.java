@@ -149,7 +149,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public static abstract class FMLControlledDiagramElementImpl<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
 			implements FMLControlledDiagramElement<E, GR>, PropertyChangeListener {
 
-		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>>();
+		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<>();
 
 		@Override
 		public void setDiagramElement(E diagramElement) {

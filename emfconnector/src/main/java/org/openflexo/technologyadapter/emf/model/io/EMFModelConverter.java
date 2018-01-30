@@ -80,12 +80,12 @@ public class EMFModelConverter {
 	/** Builder. */
 	protected EMFModelBuilder builder = new EMFModelBuilder();
 	/** Concepts. */
-	protected final Map<EObject, EMFObjectIndividual> individuals = new HashMap<EObject, EMFObjectIndividual>();
+	protected final Map<EObject, EMFObjectIndividual> individuals = new HashMap<>();
 	/** Property Values. */
-	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>>();
+	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<>();
 
 	/** Concepts. */
-	protected final Map<EObject, List<EMFAnnotationAnnotation>> annotations = new HashMap<EObject, List<EMFAnnotationAnnotation>>();
+	protected final Map<EObject, List<EMFAnnotationAnnotation>> annotations = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -180,7 +180,7 @@ public class EMFModelConverter {
 
 		List<EMFAnnotationAnnotation> listAnn = annotations.get(eObject);
 		if (listAnn == null) {
-			listAnn = new ArrayList<EMFAnnotationAnnotation>();
+			listAnn = new ArrayList<>();
 			annotations.put(eObject, listAnn);
 		}
 
@@ -326,7 +326,7 @@ public class EMFModelConverter {
 			EObject eObject, EReference eReference) {
 		Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> listVals = propertyValues.get(eObject);
 		if (listVals == null) {
-			listVals = new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+			listVals = new HashMap<>();
 			propertyValues.put(eObject, listVals);
 		}
 		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = (EMFObjectIndividualReferenceObjectPropertyValue) listVals

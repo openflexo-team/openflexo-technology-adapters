@@ -90,7 +90,7 @@ public class DiagramElementPasteHandler extends FlexoPasteHandler<DiagramContain
 			return null;
 		}
 
-		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<DiagramContainerElement>(
+		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<>(
 				(DiagramContainerElement) focusedObject, event);
 
 		Clipboard leaderClipboard = clipboard.getLeaderClipboard();
@@ -194,7 +194,7 @@ public class DiagramElementPasteHandler extends FlexoPasteHandler<DiagramContain
 		// Nothing to do
 	}
 
-	private String translateName(DiagramElement<?> diagramElement) {
+	private static String translateName(DiagramElement<?> diagramElement) {
 		String oldName = diagramElement.getName();
 		if (StringUtils.isEmpty(oldName)) {
 			return null;

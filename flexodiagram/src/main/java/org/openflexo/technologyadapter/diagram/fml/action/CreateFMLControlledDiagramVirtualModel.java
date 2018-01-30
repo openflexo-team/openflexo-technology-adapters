@@ -219,7 +219,7 @@ public class CreateFMLControlledDiagramVirtualModel extends AbstractCreateNature
 				null, this);
 		configureModelSlotAction.setModelSlot(uiModelSlot);
 		configureModelSlotAction.setEditionActionClass(CreateDiagram.class);
-		configureModelSlotAction.setAssignation(new DataBinding<Object>(getDiagramModelSlotName()));
+		configureModelSlotAction.setAssignation(new DataBinding<>(getDiagramModelSlotName()));
 		configureModelSlotAction.doAction();
 
 		CreateDiagram createDiagramAction = (CreateDiagram) ((AssignationAction<?>) configureModelSlotAction.getNewEditionAction())

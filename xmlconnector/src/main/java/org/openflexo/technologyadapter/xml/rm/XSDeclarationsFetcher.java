@@ -75,20 +75,20 @@ public class XSDeclarationsFetcher implements XSVisitor {
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDeclarationsFetcher.class
 			.getPackage().getName());
 
-	private final Set<XSSimpleType> simpleTypes = new HashSet<XSSimpleType>();
-	private final Set<XSComplexType> complexTypes = new HashSet<XSComplexType>();
-	private final Set<XSElementDecl> elementDecls = new HashSet<XSElementDecl>();
-	private final Set<XSAttGroupDecl> attGroupDecls = new HashSet<XSAttGroupDecl>();
-	private final Set<XSAttributeDecl> attributeDecls = new HashSet<XSAttributeDecl>();
-	private final Set<XSModelGroupDecl> modelGroupDecls = new HashSet<XSModelGroupDecl>();
+	private final Set<XSSimpleType> simpleTypes = new HashSet<>();
+	private final Set<XSComplexType> complexTypes = new HashSet<>();
+	private final Set<XSElementDecl> elementDecls = new HashSet<>();
+	private final Set<XSAttGroupDecl> attGroupDecls = new HashSet<>();
+	private final Set<XSAttributeDecl> attributeDecls = new HashSet<>();
+	private final Set<XSModelGroupDecl> modelGroupDecls = new HashSet<>();
 
-	private final Map<XSDeclaration, Set<XSAttributeUse>> attributeUses = new HashMap<XSDeclaration, Set<XSAttributeUse>>();
+	private final Map<XSDeclaration, Set<XSAttributeUse>> attributeUses = new HashMap<>();
 
-	private final Stack<XSDeclaration> path = new Stack<XSDeclaration>();
+	private final Stack<XSDeclaration> path = new Stack<>();
 
-	private final Map<XSDeclaration, XSDeclaration> localOwners = new HashMap<XSDeclaration, XSDeclaration>();
+	private final Map<XSDeclaration, XSDeclaration> localOwners = new HashMap<>();
 
-	private final Map<String, XSDeclaration> declarations = new HashMap<String, XSDeclaration>();
+	private final Map<String, XSDeclaration> declarations = new HashMap<>();
 
 	public void fetch(XSSchemaSet schemaSet) {
 		for (XSSchema schema : schemaSet.getSchemas()) {

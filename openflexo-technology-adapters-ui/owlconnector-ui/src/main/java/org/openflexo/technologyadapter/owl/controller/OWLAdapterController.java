@@ -297,7 +297,7 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 			returned.setShowAnnotationProperties(true);
 			return returned;
 		}
-		return new EmptyPanel<TechnologyObject<OWLTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 	@Override

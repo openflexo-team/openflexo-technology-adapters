@@ -261,7 +261,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (ePackage.getEAnnotations() != null && ePackage.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : ePackage.getEAnnotations()) {
 				annotations.add(this.getConverter().convertAnnotation(this, annotation));
 			}
@@ -280,7 +280,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<IFlexoOntologyDataType<EMFTechnologyAdapter>> getDataTypes() {
-		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataType<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyDataType<EMFTechnologyAdapter> dataType : converter.getDataTypes().values()) {
 			result.add(dataType);
 		}
@@ -295,7 +295,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
-		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<>();
 		result.addAll(getClasses());
 		result.addAll(getIndividuals());
 		result.addAll(getDataProperties());
@@ -310,7 +310,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (EMFClassClass aClass : converter.getClasses().values()) {
 			result.add(aClass);
 		}
@@ -365,7 +365,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : converter.getEnumLiterals().values()) {
 			result.add(individual);
 		}
@@ -442,7 +442,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getDataProperties() {
-		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : converter.getDataAttributes().values()) {
 			result.add(dataProperty);
 		}
@@ -494,7 +494,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
-		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : converter.getObjectAttributes().values()) {
 			result.add(objectProperty);
 		}

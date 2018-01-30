@@ -84,7 +84,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
+		private final Map<String, XMLObject> uriCache = new HashMap<>();
 
 		/**
 		 * initialises an URIProcessor with the given URI

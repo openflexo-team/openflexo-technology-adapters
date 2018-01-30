@@ -60,7 +60,7 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 	public Object getInstanceOf(Type aType, String name) {
 
 		if (aType instanceof XMLComplexType) {
-			XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
+			XMLIndividual _inst = model.addNewIndividual(aType);
 			return _inst;
 		}
 
@@ -110,9 +110,7 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 			}
 			return this.model;
 		}
-		else {
-			LOGGER.warning("Context is not set for parsing, aborting");
-		}
+		LOGGER.warning("Context is not set for parsing, aborting");
 		return null;
 	}
 
@@ -129,9 +127,7 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 			return this.model;
 
 		}
-		else {
-			LOGGER.warning("Context is not set for parsing, aborting");
-		}
+		LOGGER.warning("Context is not set for parsing, aborting");
 		return null;
 	}
 
@@ -220,7 +216,6 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 		if (prop != null) {
 			return prop.getType();
 		}
-		else
-			return null;
+		return null;
 	}
 }

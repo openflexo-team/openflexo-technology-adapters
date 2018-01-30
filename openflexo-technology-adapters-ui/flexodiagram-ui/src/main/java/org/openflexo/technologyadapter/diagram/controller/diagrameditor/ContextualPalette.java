@@ -139,7 +139,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 	}
 
 	private static Vector<DropScheme> getAvailableDropSchemes(FlexoConcept pattern, DrawingTreeNode<?, ?> target) {
-		Vector<DropScheme> returned = new Vector<DropScheme>();
+		Vector<DropScheme> returned = new Vector<>();
 		for (DropScheme dropScheme : pattern.getFlexoBehaviours(DropScheme.class)) {
 			if (dropScheme.isTopTarget() && target instanceof DrawingGraphicalRepresentation) {
 				returned.add(dropScheme);
@@ -222,7 +222,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			FMLRTVirtualModelInstance vmi = ((FMLControlledDiagramEditor) getEditor()).getVirtualModelInstance();
 			TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(vmi.getVirtualModel());
 
-			ArrayList<DropScheme> availableDropSchemes = new ArrayList<DropScheme>();
+			ArrayList<DropScheme> availableDropSchemes = new ArrayList<>();
 
 			for (FMLDiagramPaletteElementBinding fmlDiagramPaletteElementBinding : ms.getPaletteElementBindings(paletteElement)) {
 

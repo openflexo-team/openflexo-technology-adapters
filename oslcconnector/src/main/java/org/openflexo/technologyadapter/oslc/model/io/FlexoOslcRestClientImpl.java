@@ -75,7 +75,7 @@ import org.eclipse.lyo.oslc4j.provider.json4j.Json4JProvidersRegistry;
 public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	// Providers converts server data into a specific format requested by the client
-	private static Set<Class<?>> providers = new HashSet<Class<?>>();
+	private static Set<Class<?>> providers = new HashSet<>();
 
 	/**
 	 * Common providers for OSLC

@@ -141,7 +141,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
@@ -219,7 +219,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<>();
 		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object, null, null));
 		return Collections.unmodifiableList(referencingFeatureAssociation);
 	}

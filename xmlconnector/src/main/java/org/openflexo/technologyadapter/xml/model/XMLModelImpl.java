@@ -80,7 +80,7 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	private final Map<String, XMLIndividual> individuals;
 
-	private final List<String> namespace = new ArrayList<String>();
+	private final List<String> namespace = new ArrayList<>();
 
 	private static ModelFactory MF;
 
@@ -100,7 +100,7 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	public XMLModelImpl() {
 		super();
-		individuals = new HashMap<String, XMLIndividual>();
+		individuals = new HashMap<>();
 	}
 
 	@Override
@@ -153,13 +153,13 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	@Override
 	public List<? extends XMLIndividual> getIndividuals() {
-		return new ArrayList<XMLIndividual>(individuals.values());
+		return new ArrayList<>(individuals.values());
 	}
 
 	// TODO, TO BE OPTIMIZED
 	@Override
 	public List<XMLIndividual> getIndividualsOfType(XMLType aType) {
-		ArrayList<XMLIndividual> returned = new ArrayList<XMLIndividual>();
+		ArrayList<XMLIndividual> returned = new ArrayList<>();
 		for (XMLIndividual o : individuals.values()) {
 			if (o.getType() == aType) {
 				returned.add(o);

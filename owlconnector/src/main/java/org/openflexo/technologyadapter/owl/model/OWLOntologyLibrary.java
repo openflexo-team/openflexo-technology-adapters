@@ -132,10 +132,10 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 		ontologyObjectConverter = new OntologyObjectConverter(null/* this */);
 		graphMaker = new SimpleGraphMaker();
 
-		ontologies = new HashMap<String, OWLOntologyResource>();
-		dataTypes = new HashMap<String, OWLDataType>();
+		ontologies = new HashMap<>();
+		dataTypes = new HashMap<>();
 
-		statementsWithProperty = new Hashtable<OWLProperty, StatementWithProperty>();
+		statementsWithProperty = new Hashtable<>();
 
 	}
 
@@ -200,7 +200,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	}
 
 	public List<OWLDataType> getDataTypes() {
-		ArrayList<OWLDataType> returned = new ArrayList<OWLDataType>();
+		ArrayList<OWLDataType> returned = new ArrayList<>();
 		for (OWLDataType dt : dataTypes.values()) {
 			returned.add(dt);
 		}
