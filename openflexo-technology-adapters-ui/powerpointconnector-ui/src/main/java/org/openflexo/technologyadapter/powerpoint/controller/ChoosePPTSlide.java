@@ -130,11 +130,10 @@ public class ChoosePPTSlide extends WizardStep {
 	}
 
 	public void loadSlideShow() {
-		try {
-			FileInputStream fis = new FileInputStream(getFile());
+		try (FileInputStream fis = new FileInputStream(getFile())) {
 			selectedSlideShow = new SlideShow(fis);
 			if (currentSlides == null) {
-				currentSlides = new ArrayList<Slide>();
+				currentSlides = new ArrayList<>();
 			}
 			else {
 				currentSlides.clear();
