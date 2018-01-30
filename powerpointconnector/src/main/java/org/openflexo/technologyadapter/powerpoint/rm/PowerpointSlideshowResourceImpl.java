@@ -249,7 +249,9 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
-				write(slideShow.getSlideShow(), new FileOutputStream(temporaryFile));
+				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+					write(slideShow.getSlideShow(), fos);
+				}
 				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
 				FileUtils.rename(temporaryFile, fileToSave);
 			} catch (IOException e) {

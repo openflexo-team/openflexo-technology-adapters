@@ -73,11 +73,11 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 
-		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
+		for (FlexoResourceCenter<?> rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
 			System.out.println("rc = " + rc + " of " + rc.getClass());
 		}
 
-		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
+		for (FlexoResourceCenter<?> rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
 			if (powerpointAdapter.getPowerpointSlideShowRepository(rc) != null) {
 				modelRepository = powerpointAdapter.getPowerpointSlideShowRepository(rc);
 			}
@@ -152,7 +152,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
 				useDeclarationAction.setModelSlotClass(msType);
 				useDeclarationAction.doAction();
-				ModelSlot modelSlot = powerpointAdapter.makeModelSlot(msType, newVirtualModel);
+				ModelSlot<?> modelSlot = powerpointAdapter.makeModelSlot(msType, newVirtualModel);
 				modelSlot.setName("powerpointBasicModelSlot");
 				assertNotNull(modelSlot);
 				newVirtualModel.addToModelSlots(modelSlot);
@@ -183,34 +183,35 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@Test
 	@TestOrder(4)
 	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException {
-		Repository gitRepository = gitResourceCenter.getGitRepository();
-		ModelFactory factory = new ModelFactory(
-				ModelContextLibrary.getCompoundModelContext(GitIODelegate.class, PowerpointSlideshowResource.class));
-		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
-		for (FlexoResource<?> flexoResource : ressources) {
-			// flexoResource.setFlexoIODelegate(FlexoIOGitDelegateImpl.makeFlexoIOGitDelegate(flexoResource.getName(),
-			// factory,
-			// gitRepository.getWorkTree(), gitRepository));
-			flexoResource.setIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
-			GitIODelegate gitDelegate = (GitIODelegate) flexoResource.getIODelegate();
-			try {
-				gitDelegate.save(flexoResource);
-			} catch (NotImplementedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			ObjectId commitId = gitDelegate.getGitObjectId();
-			if (commitId != null) {
-				FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
-				System.out.println("Commit Id : " + commitId.getName());
-				while (!fileTree.getEntryObjectId().equals(commitId)) {
-					System.out.println("Current Entry : " + fileTree.getEntryObjectId().getName());
-					fileTree.next(1);
+		try (Repository gitRepository = gitResourceCenter.getGitRepository()) {
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(GitIODelegate.class, PowerpointSlideshowResource.class));
+			Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
+			for (FlexoResource<?> flexoResource : ressources) {
+				// flexoResource.setFlexoIODelegate(FlexoIOGitDelegateImpl.makeFlexoIOGitDelegate(flexoResource.getName(),
+				// factory,
+				// gitRepository.getWorkTree(), gitRepository));
+				flexoResource.setIODelegate(gitResourceCenter.getGitIODelegateFactory().makeNewInstance(flexoResource));
+				GitIODelegate gitDelegate = (GitIODelegate) flexoResource.getIODelegate();
+				try {
+					gitDelegate.save(flexoResource);
+				} catch (NotImplementedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				System.out.println("File retrieved :" + fileTree.getEntryFile().getName());
-			}
-			else {
-				logger.warning("Null commitId !!! Please investigate");
+				ObjectId commitId = gitDelegate.getGitObjectId();
+				if (commitId != null) {
+					FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
+					System.out.println("Commit Id : " + commitId.getName());
+					while (!fileTree.getEntryObjectId().equals(commitId)) {
+						System.out.println("Current Entry : " + fileTree.getEntryObjectId().getName());
+						fileTree.next(1);
+					}
+					System.out.println("File retrieved :" + fileTree.getEntryFile().getName());
+				}
+				else {
+					logger.warning("Null commitId !!! Please investigate");
+				}
 			}
 		}
 		// ViewPoint viewPointToRetrieve =

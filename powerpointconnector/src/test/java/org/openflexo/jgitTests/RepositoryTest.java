@@ -127,9 +127,10 @@ public class RepositoryTest {
 	public void listObjectsOfACommit() throws IOException, NoFilepatternException, GitAPIException {
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToCommit.txt");
 		fileToAdd.createNewFile();
-		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileToAdd)));
-		writer.println("TestCommit");
-		writer.flush();
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileToAdd)))) {
+			writer.println("TestCommit");
+			writer.flush();
+		}
 		// run the add-call
 		git.add().addFilepattern("fileToCommit.txt").call();
 
@@ -141,28 +142,29 @@ public class RepositoryTest {
 
 		// Allows us to walk through a commit
 
-		RevWalk walkInLastCommit = new RevWalk(gitRepository);
+		try (RevWalk walkInLastCommit = new RevWalk(gitRepository)) {
 
-		// Get the commit object from the commit Id
-		RevCommit lastCommit = walkInLastCommit.parseCommit(lastCommitId);
+			// Get the commit object from the commit Id
+			RevCommit lastCommit = walkInLastCommit.parseCommit(lastCommitId);
 
-		TreeWalk treeWalk = new TreeWalk(gitRepository);
-		treeWalk.addTree(lastCommit.getTree());
-		treeWalk.setRecursive(true);
-		treeWalk.setFilter(PathFilter.create("fileToCommit.txt"));
-		if (!treeWalk.next()) {
-			System.out.println("Couldn't find file");
+			try (TreeWalk treeWalk = new TreeWalk(gitRepository)) {
+				treeWalk.addTree(lastCommit.getTree());
+				treeWalk.setRecursive(true);
+				treeWalk.setFilter(PathFilter.create("fileToCommit.txt"));
+				if (!treeWalk.next()) {
+					System.out.println("Couldn't find file");
+				}
+				else {
+					System.out.println("Found : " + treeWalk.getPathString());
+				}
+				ObjectId objectId = treeWalk.getObjectId(0);
+
+				System.out.println("Object Id : " + objectId.getName());
+				ObjectLoader loader = gitRepository.open(objectId);
+
+				loader.copyTo(System.out);
+			}
 		}
-		else {
-			System.out.println("Found : " + treeWalk.getPathString());
-		}
-		ObjectId objectId = treeWalk.getObjectId(0);
-
-		System.out.println("Object Id : " + objectId.getName());
-		ObjectLoader loader = gitRepository.open(objectId);
-
-		loader.copyTo(System.out);
-
 	}
 
 	@Test
@@ -230,42 +232,42 @@ public class RepositoryTest {
 
 		RevCommit commit = git.commit().setMessage("Added fileToCompare").call();
 
-		RevWalk walkInLastCommit = new RevWalk(gitRepository);
+		try (RevWalk walkInLastCommit = new RevWalk(gitRepository)) {
 
-		// Get the commit object from the commit Id
-		RevCommit lastCommit = walkInLastCommit.parseCommit(commit.getId());
+			// Get the commit object from the commit Id
+			RevCommit lastCommit = walkInLastCommit.parseCommit(commit.getId());
 
-		TreeWalk treeWalk = new TreeWalk(gitRepository);
-		treeWalk.addTree(lastCommit.getTree());
-		treeWalk.setRecursive(true);
-		treeWalk.setFilter(PathFilter.create("fileToCompare.txt"));
-		if (!treeWalk.next()) {
-			System.out.println("Couldn't find file");
+			try (TreeWalk treeWalk = new TreeWalk(gitRepository)) {
+				treeWalk.addTree(lastCommit.getTree());
+				treeWalk.setRecursive(true);
+				treeWalk.setFilter(PathFilter.create("fileToCompare.txt"));
+				if (!treeWalk.next()) {
+					System.out.println("Couldn't find file");
+				}
+				else {
+					System.out.println("Found : " + treeWalk.getPathString());
+				}
+				ObjectId objectId = treeWalk.getObjectId(0);
+				System.out.println("Object Id : " + objectId.getName());
+
+				// Verify
+				// Check that the id after add and after commit is the same for git
+				assertEquals(objectId, idFileToRetrieve);
+			}
 		}
-		else {
-			System.out.println("Found : " + treeWalk.getPathString());
-		}
-		ObjectId objectId = treeWalk.getObjectId(0);
-
-		System.out.println("Object Id : " + objectId.getName());
-
-		// Verify
-		// Check that the id after add and after commit is the same for git
-		assertEquals(objectId, idFileToRetrieve);
-
 	}
 
 	@Test
 	@TestOrder(8)
 	public void loadExistingFile() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException,
-			NoFilepatternException, GitAPIException, ClassNotFoundException {
+			NoFilepatternException, GitAPIException {
 		File fileToRetrieve = new File(gitRepository.getDirectory().getParent(), "fileToRetrieve.txt");
 		fileToRetrieve.createNewFile();
 
-		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileToRetrieve)));
-		writer.println("aaaa");
-		writer.flush();
-
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileToRetrieve)))) {
+			writer.println("aaaa");
+			writer.flush();
+		}
 		// run the add-call
 		DirCache addedInCache = git.add().addFilepattern("fileToRetrieve.txt").call();
 		ObjectId idFileToRetrieve = addedInCache.getEntry("fileToRetrieve.txt").getObjectId();
