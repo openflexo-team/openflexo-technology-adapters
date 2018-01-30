@@ -11,3 +11,6 @@ dependencies {
   testRuntime project(':ginaconnector-test-rc')
   
 }
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

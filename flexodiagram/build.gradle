@@ -19,3 +19,30 @@ dependencies {
   testRuntime project(':flexodiagram-test-rc')
   
 }
+task nonuiTest(type: Test) {
+  exclude '**/TestControlledDiagramVirtualModel.class'
+  exclude '**/TestDiagramConnectorRoles.class'
+  exclude '**/TestDiagramFeaturesBindingModelManagement.class'
+  exclude '**/TestInstantiateControlledDiagramVirtualModel.class'
+  exclude '**/TestDiagramSpecification.class'
+  exclude '**/TestDiagramSpecificationModel.class'
+  exclude '**/TestDiagramSpecificationResource.class'
+  exclude '**/TestDiagram.class'
+  exclude '**/TestDiagramResource.class'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  include '**/TestControlledDiagramVirtualModel.class'
+  include '**/TestDiagramConnectorRoles.class'
+  include '**/TestDiagramFeaturesBindingModelManagement.class'
+  include '**/TestInstantiateControlledDiagramVirtualModel.class'
+  include '**/TestDiagramSpecification.class'
+  include '**/TestDiagramSpecificationModel.class'
+  include '**/TestDiagramSpecificationResource.class'
+  include '**/TestDiagram.class'
+  include '**/TestDiagramResource.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
+}

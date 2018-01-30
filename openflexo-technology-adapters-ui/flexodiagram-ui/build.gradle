@@ -12,3 +12,6 @@ dependencies {
    testCompile flexoUiTest()
    testRuntime flexoOntologyUi()
 }
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

@@ -9,3 +9,6 @@ dependencies {
   // testing dep
     testCompile flexoUiTest()
 }
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

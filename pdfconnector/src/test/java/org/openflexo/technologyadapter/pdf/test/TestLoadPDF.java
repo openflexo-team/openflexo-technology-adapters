@@ -4,23 +4,14 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
-import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.PDXObject;
-import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
@@ -209,77 +200,5 @@ public class TestLoadPDF extends AbstractTestPDF {
 				j++;
 			}
 		}
-	}
-
-	@Test
-	@TestOrder(4)
-	public void loadImages() throws IOException {
-
-		PDFDocumentResource docResource = getDocumentResource("EH200052_MAXITAB Regular_5kg.pdf");
-
-		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
-
-		try (PDDocument document = PDDocument.load(((StreamIODelegate<?>) docResource.getIODelegate()).getInputStream())) {
-
-			System.out.println("document=" + document);
-
-			// Unused int i = 1;
-			// Unused String name = null;
-
-			for (PDPage page : document.getPages()) {
-				PDResources resources = page.getResources();
-
-				System.out.println("xobjects =" + resources.getXObjectNames());
-
-				for (COSName n : resources.getXObjectNames()) {
-					System.out.println("for " + n);
-					PDXObject obj = resources.getXObject(n);
-					System.out.println("obj=" + obj);
-					if (obj instanceof PDImageXObject) {
-						PDImageXObject image = (PDImageXObject) obj;
-						JFrame frame = new JFrame();
-						frame.getContentPane().add(new JLabel(new ImageIcon(image.getImage())));
-						frame.validate();
-						frame.pack();
-						frame.setVisible(true);
-					}
-					else if (obj instanceof PDFormXObject) {
-						PDFormXObject form = (PDFormXObject) obj;
-						System.out.println("form=" + form);
-						PDResources formResources = form.getResources();
-						System.out.println("xobjects =" + formResources.getXObjectNames());
-						System.out.println("box=" + form.getBBox());
-						for (COSName n2 : formResources.getXObjectNames()) {
-							PDXObject obj2 = formResources.getXObject(n2);
-							System.out.println("n2=" + n2 + " obj2=" + obj2);
-						}
-					}
-				}
-				// waits 10 seconds and stops
-				int t = 0;
-				while (t < 10) {
-					System.out.println("hop");
-					t++;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-				/*
-				 * Map pageImages = resources.getImages(); if (pageImages != null) {
-				 * Iterator imageIter = pageImages.keySet().iterator(); while
-				 * (imageIter.hasNext()) { String key = (String) imageIter.next();
-				 * PDXObjectImage image = (PDXObjectImage) pageImages.get(key);
-				 * image.write2file("C:\\Users\\Pradyut\\Documents\\image" + i);
-				 * i++; } }
-				 */
-			}
-		}
-	}
-
-	public class PDFFrame extends JFrame {
 	}
 }

@@ -10,6 +10,18 @@ dependencies {
   testCompile flexoFoundationTest()
   
   // Test resource center
-   testRuntime project(':pdfconnector-test-rc')
-  
+   testRuntime project(':pdfconnector-test-rc') 
+}
+task nonuiTest(type: Test) {
+  exclude '**/TestShowPDF.class'
+  exclude '**/TestLoadPDF3.class'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  include '**/TestShowPDF.class'
+  include '**/TestLoadPDF3.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
 }

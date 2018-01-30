@@ -16,3 +16,6 @@ dependencies {
     testRuntime project(':owlconnector-test-rc')
 
 }
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

@@ -7,3 +7,6 @@ dependencies {
   testCompile flexoFoundationTest()
   testRuntime group: "org.openflexo", name: "flexo-test-resources", version: "1.9.0-SNAPSHOT"
 }
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

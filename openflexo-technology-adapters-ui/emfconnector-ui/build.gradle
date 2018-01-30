@@ -14,3 +14,20 @@ dependencies {
   testRuntime project(':emfconnector-test-rc')
   
 }
+task nonuiTest(type: Test) {
+  exclude '**/TestArchimateOntologyBrowerModel.class'
+  exclude '**/TestCity1BrowerModel.class'
+  exclude '**/TestEcoreOntologyBrowerModel.class'
+  exclude '**/TestUMLOntologyBrowerModel.class'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  include '**/TestArchimateOntologyBrowerModel.class'
+  include '**/TestCity1BrowerModel.class'
+  include '**/TestEcoreOntologyBrowerModel.class'
+  include '**/TestUMLOntologyBrowerModel.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
+}
