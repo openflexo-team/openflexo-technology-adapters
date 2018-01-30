@@ -28,75 +28,73 @@ public class TestLoadPDF2 extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
 
-		PDDocument document = PDDocument.load(((StreamIODelegate) docResource.getIODelegate()).getInputStream());
-		System.out.println("document=" + document);
+		try (PDDocument document = PDDocument.load(((StreamIODelegate<?>) docResource.getIODelegate()).getInputStream())) {
+			System.out.println("document=" + document);
 
-		PDDocumentInformation docInfo = document.getDocumentInformation();
+			PDDocumentInformation docInfo = document.getDocumentInformation();
 
-		System.out.println("docInfo = " + docInfo);
-		for (String key : docInfo.getMetadataKeys()) {
-			System.out.println("key=" + key + " = " + docInfo.getPropertyStringValue(key));
-		}
-
-		PDDocumentCatalog catalog = document.getDocumentCatalog();
-
-		System.out.println("catalog = " + catalog);
-		System.out.println("actions= " + catalog.getActions());
-		System.out.println("dests= " + catalog.getDests());
-		System.out.println("names= " + catalog.getNames());
-		System.out.println("metadata= " + catalog.getMetadata());
-		System.out.println("outline= " + catalog.getDocumentOutline());
-
-		COSDocument cosDocument = document.getDocument();
-		System.out.println("cosDocument=" + cosDocument);
-
-		for (COSObject obj : cosDocument.getObjects()) {
-			System.out.println("> " + obj + " obj= " + obj.getObject());
-		}
-
-		PDFTextStripper textStripper = new PDFTextStripper();
-		StringWriter textWriter = new StringWriter();
-		textStripper.writeText(document, textWriter);
-		System.out.println("text=" + textWriter.toString());
-
-		PDPage page = document.getPage(0);
-
-		/*
-		 * PDFMarkedContentExtractor e = new PDFMarkedContentExtractor() {
-		 * 
-		 * @Override public void beginMarkedContentSequence(COSName tag,
-		 * COSDictionary properties) { System.out.println("BEGIN with " + tag +
-		 * " properties=" + properties); super.beginMarkedContentSequence(tag,
-		 * properties); }
-		 * 
-		 * @Override public void endMarkedContentSequence() {
-		 * System.out.println("END"); super.endMarkedContentSequence(); }
-		 * 
-		 * @Override protected void
-		 * processTextPosition(org.apache.pdfbox.text.TextPosition text) {
-		 * super.processTextPosition(text); //
-		 * System.out.println("processTextPosition with " + text); } };
-		 * e.processPage(page);
-		 */
-
-		PDFTextStripperByArea textStripper2 = new PDFTextStripperByArea() {
-			@Override
-			protected void processTextPosition(org.apache.pdfbox.text.TextPosition text) {
-				super.processTextPosition(text);
-				System.out.println("hop: " + text);
+			System.out.println("docInfo = " + docInfo);
+			for (String key : docInfo.getMetadataKeys()) {
+				System.out.println("key=" + key + " = " + docInfo.getPropertyStringValue(key));
 			}
-		};
-		// StringWriter textWriter2 = new StringWriter();
-		// textStripper2.writeText(document, textWriter2);
-		// System.out.println("text=" + textWriter2.toString());
 
-		// textStripper2.processPage(page);
+			PDDocumentCatalog catalog = document.getDocumentCatalog();
 
-		textStripper2.extractRegions(page);
+			System.out.println("catalog = " + catalog);
+			System.out.println("actions= " + catalog.getActions());
+			System.out.println("dests= " + catalog.getDests());
+			System.out.println("names= " + catalog.getNames());
+			System.out.println("metadata= " + catalog.getMetadata());
+			System.out.println("outline= " + catalog.getDocumentOutline());
 
-		System.out.println("regions=" + textStripper2.getRegions());
+			try (COSDocument cosDocument = document.getDocument()) {
+				System.out.println("cosDocument=" + cosDocument);
 
-		document.close();
+				for (COSObject obj : cosDocument.getObjects()) {
+					System.out.println("> " + obj + " obj= " + obj.getObject());
+				}
+				PDFTextStripper textStripper = new PDFTextStripper();
+				StringWriter textWriter = new StringWriter();
+				textStripper.writeText(document, textWriter);
+				System.out.println("text=" + textWriter.toString());
+			}
 
+			PDPage page = document.getPage(0);
+
+			/*
+			 * PDFMarkedContentExtractor e = new PDFMarkedContentExtractor() {
+			 * 
+			 * @Override public void beginMarkedContentSequence(COSName tag,
+			 * COSDictionary properties) { System.out.println("BEGIN with " + tag +
+			 * " properties=" + properties); super.beginMarkedContentSequence(tag,
+			 * properties); }
+			 * 
+			 * @Override public void endMarkedContentSequence() {
+			 * System.out.println("END"); super.endMarkedContentSequence(); }
+			 * 
+			 * @Override protected void
+			 * processTextPosition(org.apache.pdfbox.text.TextPosition text) {
+			 * super.processTextPosition(text); //
+			 * System.out.println("processTextPosition with " + text); } };
+			 * e.processPage(page);
+			 */
+
+			PDFTextStripperByArea textStripper2 = new PDFTextStripperByArea() {
+				@Override
+				protected void processTextPosition(org.apache.pdfbox.text.TextPosition text) {
+					super.processTextPosition(text);
+					System.out.println("hop: " + text);
+				}
+			};
+			// StringWriter textWriter2 = new StringWriter();
+			// textStripper2.writeText(document, textWriter2);
+			// System.out.println("text=" + textWriter2.toString());
+
+			// textStripper2.processPage(page);
+
+			textStripper2.extractRegions(page);
+
+			System.out.println("regions=" + textStripper2.getRegions());
+		}
 	}
 }
