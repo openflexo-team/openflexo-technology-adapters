@@ -36,11 +36,6 @@ import org.apache.pdfbox.cos.COSStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
-import org.apache.pdfbox.pdmodel.common.PDMetadata;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.PDXObject;
-import org.apache.pdfbox.pdmodel.graphics.form.PDTransparencyGroup;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -68,7 +63,7 @@ public class PDFImageBoxStripper {
 
 	// List of static field for Metadata field processing
 
-	private HashMap<String, XPathExpression> metadataExpr;
+	private HashMap<String, XPathExpression<Element>> metadataExpr;
 	static final String altTitlefilter = "//dc:title";
 
 	public PDFImageBoxStripper(PDDocument document, PDPage page) {
@@ -78,40 +73,42 @@ public class PDFImageBoxStripper {
 		sb = new SAXBuilder();
 		xpathFactory = XPathFactory.instance();
 		// fill the exp HashMap
-		metadataExpr = new HashMap<String, XPathExpression>();
+		metadataExpr = new HashMap<>();
 		metadataExpr.put(altTitlefilter, xpathFactory.compile(altTitlefilter, Filters.element(), null,
 				Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/")));
 	}
 
+	/* Unused
 	private void listEmbeddedXObjects(PDResources resources) throws IOException {
 		PDMetadata md = null;
 		PDRectangle rect = null;
-
+	
 		Iterable<COSName> xobjectNames = resources.getXObjectNames();
-
+	
 		// TODO Find a way to identify resources, boxes and limits of elements in metadata
-
+	
 		for (COSName name : xobjectNames) {
 			PDXObject localXObject = resources.getXObject(name);
 			System.out.println("XTOF: found some XObjects : " + name.getName() + " .. " + localXObject.getClass().getCanonicalName());
-
+	
 			if (localXObject instanceof PDImageXObject) {
 				md = ((PDImageXObject) localXObject).getMetadata();
-
+	
 				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString());
 			}
 			else if (localXObject instanceof PDTransparencyGroup) {
-
+	
 				listEmbeddedXObjects(((PDTransparencyGroup) localXObject).getResources());
-
+	
 				rect = ((PDTransparencyGroup) localXObject).getBBox();
 				md = ((PDTransparencyGroup) localXObject).getStream().getMetadata();
-
+	
 				System.out.println("\t XTOF: its some TransparencyGroup:" + name.getName() + " BBox :" + rect.toString());
 			}
-
+	
 		}
 	}
+	*/
 
 	private void decodeMetadata(String content, ImageBox imgBox) {
 		try {
@@ -135,7 +132,7 @@ public class PDFImageBoxStripper {
 
 	public List<ImageBox> extractImageBoxes() throws IOException {
 
-		imageBoxes = new ArrayList<ImageBox>();
+		imageBoxes = new ArrayList<>();
 
 		PDResources resources = page.getResources();
 
@@ -193,9 +190,9 @@ public class PDFImageBoxStripper {
 				// set AltTitle Metadata
 
 				COSDictionary cd = resources.getProperties(name).getCOSObject();
-				COSStream md = (COSStream) cd.getDictionaryObject("Metadata");
-				decodeMetadata(md.toTextString(), imageBox);
-
+				try (COSStream md = (COSStream) cd.getDictionaryObject("Metadata")) {
+					decodeMetadata(md.toTextString(), imageBox);
+				}
 				imageBoxes.add(imageBox);
 			}
 
