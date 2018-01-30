@@ -51,7 +51,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate.FileIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -146,9 +145,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	}
 
 	private void writeToFile() throws SaveResourceException {
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(((File) getIODelegate().getSerializationArtefact()));
+		try (FileOutputStream out = new FileOutputStream(((File) getIODelegate().getSerializationArtefact()))) {
 			// Unused StreamResult result =
 			new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
@@ -163,10 +160,9 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
-		} finally {
-			IOUtils.closeQuietly(out);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
 		logger.info("Wrote " + (getIODelegate().getSerializationArtefact()));
 	}
 

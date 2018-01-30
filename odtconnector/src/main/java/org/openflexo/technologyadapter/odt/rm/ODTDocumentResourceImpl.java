@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.odt.rm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -104,9 +104,7 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 	}
 
 	private void writeToFile() throws SaveResourceException {
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(getFile());
+		try (FileOutputStream out = new FileOutputStream(getFile())) {
 			// Unused StreamResult result =
 			new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
@@ -121,10 +119,9 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
-		} finally {
-			IOUtils.closeQuietly(out);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
 		logger.info("Wrote " + getFile());
 	}
 

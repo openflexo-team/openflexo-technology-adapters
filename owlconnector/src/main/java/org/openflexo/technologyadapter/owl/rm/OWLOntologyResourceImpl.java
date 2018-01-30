@@ -129,19 +129,21 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 
 	private void _writeToFile() throws SaveResourceException {
 		System.out.println("Saving OWL ontology to " + getIODelegate().getSerializationArtefact());
-		OutputStream out = null;
 		try {
 			OWLOntology ontology = getResourceData(null);
 			OntModel ontModel = ontology.getOntModel();
 			ontModel.setNsPrefix("base", ontology.getURI());
-			out = getIODelegate().getSerializationArtefactAsResource().openOutputStream();
-			// out = new FileOutputStream(getFile());
-			RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
-			writer.setProperty("xmlbase", ontology.getURI());
-			writer.write(ontModel.getBaseModel(), out, ontology.getURI());
-			// getOntModel().setNsPrefix("base", getOntologyURI());
-			// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
-			clearIsModified(true);
+			try (OutputStream out = getIODelegate().getSerializationArtefactAsResource().openOutputStream()) {
+				// out = new FileOutputStream(getFile());
+				RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
+				writer.setProperty("xmlbase", ontology.getURI());
+				writer.write(ontModel.getBaseModel(), out, ontology.getURI());
+				// getOntModel().setNsPrefix("base", getOntologyURI());
+				// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
+				clearIsModified(true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
@@ -153,18 +155,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			e.printStackTrace();
 			logger.warning("FileNotFoundException: " + e.getMessage());
 			throw new SaveResourceException(getIODelegate());
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.warning("IOException: " + e.getMessage());
-				throw new SaveResourceException(getIODelegate());
-			}
 		}
-
 	}
 
 	@Override
