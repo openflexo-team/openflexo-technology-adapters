@@ -354,7 +354,9 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				if (logger.isLoggable(Level.FINE)) {
 					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
 				}
-				write(new FileOutputStream(temporaryFile));
+				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+					write(fos);
+				}
 				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
 				FileUtils.rename(temporaryFile, fileToSave);
 			} catch (Exception e) {
@@ -391,7 +393,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	private void write(OutputStream out) throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
 		System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
 		try (OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8")) {
-			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, outSW);
+			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<>(this, outSW);
 			writer.writeDocument();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
