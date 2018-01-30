@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFactory;
@@ -52,7 +53,7 @@ import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
-import org.openflexo.technologyadapter.diagram.controller.DropSchemeParametersRetriever;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -78,11 +79,23 @@ public class DropSchemeActionInitializer
 			@Override
 			public boolean run(EventObject e, DropSchemeAction action) {
 				getController().willExecute(action);
+
+				DropSchemeActionWizard wizard = new DropSchemeActionWizard(action, getController());
+				if (!wizard.isSkipable()) {
+					WizardDialog dialog = new WizardDialog(wizard, getController());
+					dialog.showDialog();
+					if (dialog.getStatus() != Status.VALIDATED) {
+						// Operation cancelled
+						return false;
+					}
+				}
+				return true;
+				/*getController().willExecute(action);
 				DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action, getController());
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
 				}
-				return parameterRetriever.retrieveParameters();
+				return parameterRetriever.retrieveParameters();*/
 			}
 		};
 	}

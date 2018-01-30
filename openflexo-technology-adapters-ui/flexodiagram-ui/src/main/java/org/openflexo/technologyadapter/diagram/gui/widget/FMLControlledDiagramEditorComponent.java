@@ -50,6 +50,7 @@ import javax.swing.JScrollPane;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.model.widget.FIBCustom;
@@ -59,7 +60,6 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.view.controller.FlexoController;
 
@@ -73,7 +73,7 @@ import org.openflexo.view.controller.FlexoController;
  */
 @SuppressWarnings("serial")
 public class FMLControlledDiagramEditorComponent extends JPanel
-		implements FIBCustomComponent<FMLRTVirtualModelInstance>, FIBSelectable<DiagramElement<?>>, HasPropertyChangeSupport {
+		implements FIBCustomComponent<FMLRTVirtualModelInstance>, FIBSelectable<FlexoConceptInstance>, HasPropertyChangeSupport {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramEditorComponent.class.getPackage().getName());
@@ -87,6 +87,8 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	private final Vector<ApplyCancelListener> applyCancelListener;
 
 	private String infoMessage = " CTRL-drag to draw edges";
+
+	private JPanel bottomPanel;
 
 	private PropertyChangeSupport pcSupport;
 
@@ -174,7 +176,7 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 
 			add(diagramEditor.getToolsPanel(), BorderLayout.NORTH);
 			add(new JScrollPane(diagramEditor.getDrawingView()), BorderLayout.CENTER);
-			JPanel bottomPanel = new JPanel(new BorderLayout());
+			bottomPanel = new JPanel(new BorderLayout());
 			bottomPanel.add(getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
 			add(bottomPanel, BorderLayout.SOUTH);
 			getFlexoController().setInfoMessage(getInfoMessage(), false);
@@ -184,6 +186,10 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 		repaint();
 
 		getPropertyChangeSupport().firePropertyChange(DIAGRAM_EDITOR, oldEditor, diagramEditor);
+	}
+
+	public JPanel getBottomPanel() {
+		return bottomPanel;
 	}
 
 	public String getInfoMessage() {
@@ -198,6 +204,9 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	}
 
 	public SelectionManager getSelectionManager() {
+		if (selectionManager == null && flexoController != null) {
+			return flexoController.getSelectionManager();
+		}
 		return selectionManager;
 	}
 
@@ -218,7 +227,9 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	@CustomComponentParameter(name = "flexoController", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setFlexoController(FlexoController flexoController) {
 		this.flexoController = flexoController;
-		System.out.println("---------- YES ! setFlexoController with " + flexoController);
+		if (diagramEditor != null && diagramEditor.getSelectionManager() == null) {
+			diagramEditor.setSelectionManager(flexoController.getSelectionManager());
+		}
 	}
 
 	@Override
@@ -246,13 +257,13 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	}
 
 	@Override
-	public DiagramElement<?> getSelected() {
+	public FlexoConceptInstance getSelected() {
 		if (diagramEditor != null) {
 			if (diagramEditor.getSelectedObjects() == null) {
 				return null;
 			}
 			if (diagramEditor.getSelectedObjects().size() > 0) {
-				return (DiagramElement<?>) diagramEditor.getSelectedObjects().get(0).getDrawable();
+				return (FlexoConceptInstance) diagramEditor.getSelectedObjects().get(0).getDrawable();
 			}
 			return null;
 		}
@@ -260,16 +271,16 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	}
 
 	@Override
-	public List<DiagramElement<?>> getSelection() {
+	public List<FlexoConceptInstance> getSelection() {
 		if (diagramEditor != null) {
 			if (diagramEditor.getSelectedObjects() == null) {
 				return null;
 			}
 		}
 		if (diagramEditor.getSelectedObjects().size() > 0) {
-			List<DiagramElement<?>> returned = new ArrayList<>();
+			List<FlexoConceptInstance> returned = new ArrayList<>();
 			for (DrawingTreeNode<?, ?> dtn : diagramEditor.getSelectedObjects()) {
-				returned.add((DiagramElement<?>) dtn.getDrawable());
+				returned.add((FlexoConceptInstance) dtn.getDrawable());
 			}
 			return returned;
 		}
@@ -277,20 +288,21 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	}
 
 	@Override
-	public boolean mayRepresent(DiagramElement<?> o) {
+	public boolean mayRepresent(FlexoConceptInstance o) {
 		// return o instanceof FlexoRole && ((FlexoRole) o).getFlexoConcept() == diagram;
-		return false;
+		// return diagramEditor.get;
+		return diagramEditor.getDrawing().getDrawingTreeNode(o) != null;
 	}
 
 	@Override
-	public void objectAddedToSelection(DiagramElement<?> o) {
+	public void objectAddedToSelection(FlexoConceptInstance o) {
 		if (diagramEditor != null) {
 			diagramEditor.fireObjectSelected(o);
 		}
 	}
 
 	@Override
-	public void objectRemovedFromSelection(DiagramElement<?> o) {
+	public void objectRemovedFromSelection(FlexoConceptInstance o) {
 		if (diagramEditor != null) {
 			diagramEditor.fireObjectDeselected(o);
 		}
@@ -304,14 +316,14 @@ public class FMLControlledDiagramEditorComponent extends JPanel
 	}
 
 	@Override
-	public void addToSelection(DiagramElement<?> o) {
+	public void addToSelection(FlexoConceptInstance o) {
 		if (diagramEditor != null) {
 			diagramEditor.addToSelectedObjects(diagramEditor.getDrawing().getDrawingTreeNode(o));
 		}
 	}
 
 	@Override
-	public void removeFromSelection(DiagramElement<?> o) {
+	public void removeFromSelection(FlexoConceptInstance o) {
 		if (diagramEditor != null) {
 			diagramEditor.removeFromSelectedObjects(diagramEditor.getDrawing().getDrawingTreeNode(o));
 		}

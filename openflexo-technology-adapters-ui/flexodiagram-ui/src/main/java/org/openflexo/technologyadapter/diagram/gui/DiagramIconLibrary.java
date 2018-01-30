@@ -102,6 +102,8 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
 
+	public static final IconMarker DROP_SCHEME_MARKER = new IconMarker(DROP_SCHEME_ICON, 45, 0);
+
 	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UnknownIcon.gif"));
 
 	public static ImageIcon iconForObject(FlexoObject object) {

@@ -21,6 +21,7 @@ please_choose_an_existing_gina_fib_component=Veuillez choisir un composant FIB e
 please_provide_a_folder_for_the_new_component=Veuillez d\u00E9finir un r\u00E9pertoire pour le nouveau composant
 please_provide_a_name_for_the_new_component=Veuillez d\u00E9finir un nom pour le nouveau composant
 please_provide_a_valid_model_slot_name=Veuillez founir un model slot valide
+please_supply_a_valid_model_slot_name=please_supply_a_valid_model_slot_name
 please_supply_valid_virtual_model_name=Veuillez fournir un nom de VirtualModel valide
 switching_to_edit_mode=Basculer en mode \u00E9dition
 viewpoint=viewpoint
