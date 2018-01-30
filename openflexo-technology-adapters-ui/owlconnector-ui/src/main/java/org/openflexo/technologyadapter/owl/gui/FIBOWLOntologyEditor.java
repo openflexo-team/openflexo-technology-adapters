@@ -48,6 +48,7 @@ import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomCompon
 import org.openflexo.ontology.components.widget.FIBOntologyEditor;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.view.controller.FlexoController;
 
@@ -57,7 +58,7 @@ import org.openflexo.view.controller.FlexoController;
  * @author sguerin
  * 
  */
-public class FIBOWLOntologyEditor extends FIBOntologyEditor {
+public class FIBOWLOntologyEditor extends FIBOntologyEditor<OWLTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(FIBOWLOntologyEditor.class.getPackage().getName());
 
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologyEditor.fib");
@@ -78,7 +79,7 @@ public class FIBOWLOntologyEditor extends FIBOntologyEditor {
 	}
 
 	@Override
-	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology<OWLTechnologyAdapter> ontology) {
 		return new OWLOntologyBrowserModel((OWLOntology) ontology);
 	}
 
