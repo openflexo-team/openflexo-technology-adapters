@@ -15,6 +15,7 @@ dependencies {
   
 }
 task nonuiTest(type: Test) {
+  ignoreFailures = true
   exclude '**/TestArchimateOntologyBrowerModel.class'
   exclude '**/TestCity1BrowerModel.class'
   exclude '**/TestEcoreOntologyBrowerModel.class'
@@ -23,6 +24,7 @@ task nonuiTest(type: Test) {
 }
 
 task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
   include '**/TestArchimateOntologyBrowerModel.class'
   include '**/TestCity1BrowerModel.class'
   include '**/TestEcoreOntologyBrowerModel.class'

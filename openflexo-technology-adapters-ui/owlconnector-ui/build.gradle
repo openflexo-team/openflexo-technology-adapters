@@ -10,12 +10,12 @@ dependencies {
   // external dep
   // testing dep
   testCompile flexoUiTest()
-  
+
   // Test resource center
   testRuntime project(':owlconnector-test-rc')
-  
 }
 task nonuiTest(type: Test) {
+  ignoreFailures = true
   exclude '**/TestFIBOWLClassSelector.class'
   exclude '**/TestFIBOWLIndividualSelector.class'
   exclude '**/TestFIBOWLOntologyBrowser.class'
@@ -28,6 +28,7 @@ task nonuiTest(type: Test) {
 }
 
 task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
   include '**/TestFIBOWLClassSelector.class'
   include '**/TestFIBOWLIndividualSelector.class'
   include '**/TestFIBOWLOntologyBrowser.class'
