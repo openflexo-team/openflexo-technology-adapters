@@ -20,6 +20,7 @@ dependencies {
   
 }
 task nonuiTest(type: Test) {
+  ignoreFailures = true
   exclude '**/TestControlledDiagramVirtualModel.class'
   exclude '**/TestDiagramConnectorRoles.class'
   exclude '**/TestDiagramFeaturesBindingModelManagement.class'
@@ -33,6 +34,7 @@ task nonuiTest(type: Test) {
 }
 
 task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
   include '**/TestControlledDiagramVirtualModel.class'
   include '**/TestDiagramConnectorRoles.class'
   include '**/TestDiagramFeaturesBindingModelManagement.class'
