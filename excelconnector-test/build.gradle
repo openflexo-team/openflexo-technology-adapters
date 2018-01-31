@@ -10,4 +10,6 @@ dependencies {
 	  testRuntime project(':excelconnector-test-rc')
   
 }
-
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}
