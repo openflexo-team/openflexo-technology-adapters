@@ -4,6 +4,7 @@ dependencies {
   compile flexoDocumentation()
   // external dep
   compile 'org.apache.pdfbox:pdfbox:2.0.2'
+  compile group: 'commons-io', name: 'commons-io', version: '2.6'
   runtime 'jaxen:jaxen:1.2.0-atlassian-2'
   // testing dep
   testCompile testUtils()

@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.pdf.rm;
 
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -29,7 +30,6 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 import org.openflexo.technologyadapter.pdf.model.PDFFactory;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  *
@@ -41,7 +41,7 @@ public class PDFDocumentResourceFactory
 
 	private static final Logger logger = Logger.getLogger(PDFDocumentResourceFactory.class.getPackage().getName());
 
-	public static String PDF_FILE_EXTENSION = ".pdf";
+	public static String PDF_FILE_EXTENSION = "pdf";
 
 	public PDFDocumentResourceFactory() throws ModelDefinitionException {
 		super(PDFDocumentResource.class);
@@ -61,7 +61,7 @@ public class PDFDocumentResourceFactory
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 		String name = resourceCenter.retrieveName(serializationArtefact);
-		return StringUtils.hasExtension(name, PDF_FILE_EXTENSION);
+		return FilenameUtils.isExtension(name, PDF_FILE_EXTENSION);
 	}
 
 	@Override
