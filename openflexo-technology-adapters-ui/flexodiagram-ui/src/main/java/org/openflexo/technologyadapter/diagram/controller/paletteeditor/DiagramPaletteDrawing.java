@@ -117,7 +117,7 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 			palette.setGraphicalRepresentation(returned);
 		}
 		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext()));
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
@@ -135,7 +135,7 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 			element.setGraphicalRepresentation(returned);
 		}
 		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext()));
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
