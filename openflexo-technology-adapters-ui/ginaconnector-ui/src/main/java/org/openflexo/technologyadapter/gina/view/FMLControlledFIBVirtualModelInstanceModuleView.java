@@ -49,11 +49,13 @@ import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.validation.ValidationPanel;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -92,8 +94,12 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 	private GINAFIBComponent component;
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance;
 	private SelectionSynchronizedFIBJPanel<?> componentView;
+	private ValidationPanel validationPanel;
 
 	private LocalizedDelegate locales;
+
+	private JPanel buttonsPanel;
+	private JPanel bottomPanel;
 
 	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance<?, ?> representedObject, FlexoController controller,
 			FlexoPerspective perspective, LocalizedDelegate locales) {
@@ -140,7 +146,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 
 			add(componentView, BorderLayout.CENTER);
 
-			JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
 			localizeButton = new JButton(locales.localizedForKey("localize"), UtilsIconLibrary.UK_FLAG);
 			localizeButton.addActionListener(new ActionListener() {
@@ -151,7 +157,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 					}
 				}
 			});
-			bottomPanel.add(localizeButton);
+			buttonsPanel.add(localizeButton);
 
 			/*localizedItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor"));
 			localizedItem.addActionListener(new ActionListener() {
@@ -174,7 +180,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 					}
 				}
 			});
-			bottomPanel.add(editButton);
+			buttonsPanel.add(editButton);
 
 			doneButton = new JButton(locales.localizedForKey("done"), IconLibrary.VALID_ICON);
 			doneButton.addActionListener(new ActionListener() {
@@ -185,7 +191,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 					}
 				}
 			});
-			bottomPanel.add(doneButton);
+			buttonsPanel.add(doneButton);
 
 			saveButton = new JButton(locales.localizedForKey("save"), IconLibrary.SAVE_ICON);
 			saveButton.addActionListener(new ActionListener() {
@@ -201,15 +207,19 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 					}
 				}
 			});
-			bottomPanel.add(saveButton);
+			buttonsPanel.add(saveButton);
 
 			localizeButton.setVisible(false);
 			doneButton.setVisible(false);
 			saveButton.setVisible(false);
 
+			bottomPanel = new JPanel(new BorderLayout());
+
 			if (Flexo.isDev) {
-				add(bottomPanel, BorderLayout.SOUTH);
+				bottomPanel.add(buttonsPanel, BorderLayout.SOUTH);
 			}
+
+			add(bottomPanel, BorderLayout.SOUTH);
 		}
 		else {
 			logger.warning("Unable to create module view as component is null for: " + representedObject);
@@ -261,6 +271,21 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 		remove(componentView);
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
 
+		validationPanel = new ValidationPanel(editorController, getFIBEditor(false).getFIBLibrary(), FIBEditor.EDITOR_LOCALIZATION) {
+			@Override
+			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
+				System.out.println("Tiens, faudrait selectionner " + validationIssue);
+			}
+		};
+		bottomPanel.add(validationPanel, BorderLayout.CENTER);
+		// validationPanel.setEditedObject(object);
+		// validationPanel.getController().setDataObject(editorController.getFIBComponent(), true);
+
+		// We force the update of the view
+		validationPanel.getController().getRootView().update();
+
+		System.out.println("Hop, on cree le validationPanel avec " + editorController.getFIBComponent());
+
 		editButton.setVisible(false);
 		localizeButton.setVisible(true);
 		doneButton.setVisible(true);
@@ -284,11 +309,20 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 
 		editMode = false;
 
+		if (validationPanel != null) {
+			validationPanel.delete();
+		}
+
 		if (editorController != null) {
 			remove(editorController.getEditorPanel());
 		}
 
 		add(componentView, BorderLayout.CENTER);
+
+		bottomPanel.removeAll();
+		if (Flexo.isDev) {
+			bottomPanel.add(buttonsPanel, BorderLayout.SOUTH);
+		}
 
 		editButton.setVisible(true);
 		localizeButton.setVisible(false);
