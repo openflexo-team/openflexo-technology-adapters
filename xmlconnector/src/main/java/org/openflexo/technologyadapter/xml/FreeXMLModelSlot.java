@@ -119,11 +119,9 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 
 			if (mapParams == null) {
 				XMLType s = aXmlType.getSuperType();
-				if (mapParams == null) {
-					// on ne cherche que le premier...
-					logger.info("SEARCHING for an uriProcessor for " + s.getURI());
-					mapParams = retrieveURIProcessorForType(s);
-				}
+				// on ne cherche que le premier...
+				logger.info("SEARCHING for an uriProcessor for " + s.getURI());
+				mapParams = retrieveURIProcessorForType(s);
 
 				if (mapParams != null) {
 					logger.info("UPDATING the MapUriProcessors for an uriProcessor for " + aXmlType.getURI());

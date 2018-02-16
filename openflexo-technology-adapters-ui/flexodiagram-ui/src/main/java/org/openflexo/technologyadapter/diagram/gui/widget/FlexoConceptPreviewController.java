@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.diagram.gui.widget;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.selection.SelectionManager;
@@ -52,7 +53,7 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 
 	// We share here instances of FlexoConceptPreviewRepresentation because they can be accessed from multiple
 	// FlexoConceptPreviewComponent
-	private static final Map<FlexoConcept, FlexoConceptPreviewRepresentation> flexoConceptPreviewRepresentations = new Hashtable<FlexoConcept, FlexoConceptPreviewRepresentation>();
+	private static final Map<FlexoConcept, FlexoConceptPreviewRepresentation> flexoConceptPreviewRepresentations = new Hashtable<>();
 
 	/**
 	 * Obtain or build stored FlexoConceptPreviewRepresentation (they are all shared because they can be accessed from multiple
@@ -61,7 +62,8 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 	 * @param flexoConcept
 	 * @return
 	 */
-	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept, FGEModelFactory factory) {
+	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept,
+			FGEModelFactory factory) {
 		FlexoConceptPreviewRepresentation returned = flexoConceptPreviewRepresentations.get(flexoConcept);
 		if (returned == null) {
 			returned = new FlexoConceptPreviewRepresentation(flexoConcept, factory);

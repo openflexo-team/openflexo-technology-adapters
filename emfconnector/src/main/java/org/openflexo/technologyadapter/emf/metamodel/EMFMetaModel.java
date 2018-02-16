@@ -415,10 +415,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
-		if (result == null) {
-			result = getDataProperty(objectURI);
-		}
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = getDataProperty(objectURI);
 		if (result == null) {
 			result = getObjectProperty(objectURI);
 		}
@@ -460,8 +457,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
-				if (result != null)
-					break;
+				break;
 			}
 		}
 		return result;
