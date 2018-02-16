@@ -200,7 +200,7 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 			try {
 				InJarIODelegate inJarIODelegate = (InJarIODelegate) flexoIODelegate;
 				JarEntry entry = inJarIODelegate.getInJarResource().getEntry();
-				// Cannot use try-with-resource for jarFile below (breaks EMF connector)
+				// TODO: Cannot use try-with-resource for jarFile below (breaks EMF connector)
 				JarFile jarFile = inJarIODelegate.getInJarResource().getJarResource().getJarfile();
 				File copiedFile = jarEntryAsFile(jarFile, entry);
 				return getEMFResourceFactory().createResource(org.eclipse.emf.common.util.URI.createFileURI(copiedFile.getAbsolutePath()));
