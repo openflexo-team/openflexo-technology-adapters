@@ -123,16 +123,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			}
 		}
 		else {
-			try {
-				write(getOutputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Failed to save resource " + this + " with model version " + getModelVersion());
-				}
-				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
-				throw new SaveResourceException(getIODelegate(), e);
-			}
+			write(getOutputStream());
 		}
 
 		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
@@ -142,7 +133,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	}
 
-	private void write(OutputStream out) throws SaveResourceException, IOException {
+	private void write(OutputStream out) throws SaveResourceException {
 		System.out.println("Writing docx file in : " + getIODelegate().getSerializationArtefact());
 		try {
 			getDocument().getWordprocessingMLPackage().save(out);

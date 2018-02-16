@@ -311,7 +311,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 			}
 		}
 
-		private SEDataArea<SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) throws ExcelMappingException {
+		private SEDataArea<SEFlexoConceptInstance> updateDataAreaRole(SEDataAreaRole dataAreaRole) {
 
 			SEDataArea<SEFlexoConceptInstance> returned = instances.get(dataAreaRole);
 

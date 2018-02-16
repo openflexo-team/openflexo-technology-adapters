@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.FGEModelFactoryImpl;
@@ -195,12 +194,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public <I> DiagramRepository<I> getDiagramRepository(FlexoResourceCenter<I> resourceCenter) {
 		DiagramRepository<I> returned = resourceCenter.retrieveRepository(DiagramRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = DiagramRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = DiagramRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DiagramRepository.class, this);
 		}
 		return returned;
@@ -227,12 +221,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public <I> DiagramSpecificationRepository<I> getDiagramSpecificationRepository(FlexoResourceCenter<I> resourceCenter) {
 		DiagramSpecificationRepository<I> returned = resourceCenter.retrieveRepository(DiagramSpecificationRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = DiagramSpecificationRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = DiagramSpecificationRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DiagramSpecificationRepository.class, this);
 		}
 		return returned;

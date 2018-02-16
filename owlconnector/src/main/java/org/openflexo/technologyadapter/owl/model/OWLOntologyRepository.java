@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.owl.model;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -53,7 +51,7 @@ public interface OWLOntologyRepository<I>
 		extends MetaModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter, I> {
 
 	public static <I> OWLOntologyRepository<I> instanciateNewRepository(OWLTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(OWLOntologyRepository.class);

@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.docx;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLModelFactory;
@@ -238,12 +237,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public <I> DocXDocumentRepository<I> getDocXDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		DocXDocumentRepository<I> returned = resourceCenter.retrieveRepository(DocXDocumentRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = DocXDocumentRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = DocXDocumentRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);
 		}
 		return returned;

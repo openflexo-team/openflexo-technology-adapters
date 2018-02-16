@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -98,7 +97,7 @@ public class TestLoadAllEMFModel extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(3)
-	public void TestLoadAllEMFModels() throws IOException {
+	public void TestLoadAllEMFModels() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 

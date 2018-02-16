@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.owl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -121,12 +120,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	public <I> OWLOntologyRepository<I> getOWLOntologyRepository(FlexoResourceCenter<I> resourceCenter) {
 		OWLOntologyRepository<I> returned = resourceCenter.retrieveRepository(OWLOntologyRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = OWLOntologyRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = OWLOntologyRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);
 		}
 		return returned;

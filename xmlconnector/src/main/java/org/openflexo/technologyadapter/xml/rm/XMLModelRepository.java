@@ -39,8 +39,6 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.ModelRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -55,7 +53,7 @@ public interface XMLModelRepository<I>
 		extends ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter, I> {
 
 	public static <I> XMLModelRepository<I> instanciateNewRepository(XMLTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(XMLModelRepository.class);

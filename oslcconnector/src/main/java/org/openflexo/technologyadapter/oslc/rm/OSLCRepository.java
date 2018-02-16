@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.oslc.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -53,7 +51,7 @@ public interface OSLCRepository<I>
 		extends TechnologyAdapterResourceRepository<OSLCResourceResource, OSLCTechnologyAdapter, OSLCServiceProviderCatalog, I> {
 
 	public static <I> OSLCRepository<I> instanciateNewRepository(OSLCTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(OSLCRepository.class);

@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -229,12 +228,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	public <I> PowerpointSlideShowRepository<I> getPowerpointSlideShowRepository(FlexoResourceCenter<I> resourceCenter) {
 		PowerpointSlideShowRepository<I> returned = resourceCenter.retrieveRepository(PowerpointSlideShowRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = PowerpointSlideShowRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = PowerpointSlideShowRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, PowerpointSlideShowRepository.class, this);
 		}
 		return returned;

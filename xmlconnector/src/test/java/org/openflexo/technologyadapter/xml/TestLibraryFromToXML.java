@@ -45,9 +45,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -106,8 +103,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void test0LibraryFromXML() throws ParserConfigurationException, TransformerException, FileNotFoundException,
-			ResourceLoadingCancelledException, FlexoException {
+	public void test0LibraryFromXML() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test0LibraryFromXML()");
 

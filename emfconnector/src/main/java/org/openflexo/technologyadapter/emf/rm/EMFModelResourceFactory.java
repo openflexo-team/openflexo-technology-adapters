@@ -84,14 +84,8 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	protected <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
-		// Register the resource in the EMFModelRepository of supplied resource center
-		try {
-			registerResourceInResourceRepository(resource,
-					getTechnologyAdapter(resourceCenter.getServiceManager()).getEMFModelRepository(resourceCenter));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		registerResourceInResourceRepository(resource,
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getEMFModelRepository(resourceCenter));
 
 		return resource;
 	}

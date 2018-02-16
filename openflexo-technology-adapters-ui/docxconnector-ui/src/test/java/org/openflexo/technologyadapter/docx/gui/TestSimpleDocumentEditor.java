@@ -155,7 +155,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void appendCharInARun() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void appendCharInARun() {
 
 		log("appendCharInARun()");
 
@@ -196,7 +196,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
-	public void appendStringInARun() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void appendStringInARun() {
 
 		log("appendStringInARun()");
 
@@ -237,8 +237,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(5)
-	public void replaceStringInARun() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-
+	public void replaceStringInARun() {
 		log("replaceStringInARun()");
 
 		editor.getJEditorPane().select(47, 58);
@@ -278,7 +277,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(6)
-	public void appendNewLineInARun() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void appendNewLineInARun() {
 
 		log("appendNewLineInARun()");
 
@@ -324,7 +323,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(7)
-	public void mergeTwoParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void mergeTwoParagraphs() {
 
 		log("appendNewLineInARun()");
 

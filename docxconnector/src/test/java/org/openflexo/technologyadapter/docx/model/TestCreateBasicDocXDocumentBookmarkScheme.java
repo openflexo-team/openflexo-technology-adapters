@@ -236,7 +236,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 	 */
 	@Test
 	@TestOrder(10)
-	public void testReloadDocument() throws ResourceLoadingCancelledException, FlexoException, IOException {
+	public void testReloadDocument() throws IOException {
 
 		log("testReloadDocument()");
 

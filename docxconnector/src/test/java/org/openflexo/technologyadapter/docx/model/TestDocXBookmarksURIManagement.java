@@ -51,11 +51,9 @@ import java.util.logging.Logger;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -118,7 +116,8 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
 						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
-								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]"
+								: "[no style]"));
 			}
 			else {
 				System.out.println("* Element " + element);
@@ -150,7 +149,7 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 	 */
 	@Test
 	@TestOrder(4)
-	public void testReloadDocument() throws ResourceLoadingCancelledException, FlexoException, IOException {
+	public void testReloadDocument() throws IOException {
 
 		log("testReloadDocument()");
 

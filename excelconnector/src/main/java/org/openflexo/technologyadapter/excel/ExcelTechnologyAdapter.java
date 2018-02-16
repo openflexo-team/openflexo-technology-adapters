@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.excel;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -262,12 +261,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public <I> ExcelWorkbookRepository<I> getExcelWorkbookRepository(FlexoResourceCenter<I> resourceCenter) {
 		ExcelWorkbookRepository<I> returned = resourceCenter.retrieveRepository(ExcelWorkbookRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = ExcelWorkbookRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = ExcelWorkbookRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);
 		}
 		return returned;
@@ -326,12 +320,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public <I> SEVirtualModelInstanceRepository<I> getSEVirtualModelInstanceRepository(FlexoResourceCenter<I> resourceCenter) {
 		SEVirtualModelInstanceRepository<I> returned = resourceCenter.retrieveRepository(SEVirtualModelInstanceRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = SEVirtualModelInstanceRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = SEVirtualModelInstanceRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, SEVirtualModelInstanceRepository.class, this);
 		}
 		return returned;

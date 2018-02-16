@@ -113,7 +113,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
-	public void testFragmentDeserialisation() throws FragmentConsistencyException, ModelDefinitionException {
+	public void testFragmentDeserialisation() throws ModelDefinitionException {
 
 		FMLModelFactory factory = new FMLModelFactory(null, serviceManager);
 

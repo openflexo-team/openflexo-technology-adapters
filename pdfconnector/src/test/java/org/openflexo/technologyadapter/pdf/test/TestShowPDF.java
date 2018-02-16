@@ -107,7 +107,7 @@ public class TestShowPDF extends AbstractTestPDF {
 	 */
 
 	@Test
-	public void waitUser() throws IOException {
+	public void waitUser() {
 		// wmall workaround so that tests won't go forever
 		int i = 0;
 		while (true && i < 10) {

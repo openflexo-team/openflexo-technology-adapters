@@ -64,6 +64,7 @@ import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -388,7 +389,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	 */
 	@Test
 	@TestOrder(5)
-	public void testCreateLibraryVirtualModel() throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException {
+	public void testCreateLibraryVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
 		log("testCreateLibraryVirtualModel()");
 

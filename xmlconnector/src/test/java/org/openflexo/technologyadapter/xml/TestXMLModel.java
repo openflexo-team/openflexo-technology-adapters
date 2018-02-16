@@ -40,13 +40,10 @@ package org.openflexo.technologyadapter.xml;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
@@ -87,7 +84,7 @@ public class TestXMLModel extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(1)
-	public void test0createXMLModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test0createXMLModel() {
 
 		ModelFactory MF = null;
 		ModelFactory MMF = null;

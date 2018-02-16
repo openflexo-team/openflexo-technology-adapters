@@ -137,7 +137,7 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 
 	@Test
 	@TestOrder(5)
-	public void testWorkbook1Saving() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testWorkbook1Saving() throws FlexoException {
 
 		ExcelWorkbook workbook1 = workbook1Resource.getExcelWorkbook();
 

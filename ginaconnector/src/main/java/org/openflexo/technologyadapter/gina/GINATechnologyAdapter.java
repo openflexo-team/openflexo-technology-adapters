@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.gina;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
@@ -181,12 +180,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	public <I> GINAResourceRepository<I> getGINAResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		GINAResourceRepository<I> returned = resourceCenter.retrieveRepository(GINAResourceRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = GINAResourceRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = GINAResourceRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, GINAResourceRepository.class, this);
 		}
 		return returned;

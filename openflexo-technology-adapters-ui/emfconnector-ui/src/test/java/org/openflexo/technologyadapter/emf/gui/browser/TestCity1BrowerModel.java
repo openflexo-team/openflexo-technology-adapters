@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -127,7 +126,7 @@ public class TestCity1BrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(2)
-	public void TestLoadCity1EMFModel() throws IOException {
+	public void TestLoadCity1EMFModel() {
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 

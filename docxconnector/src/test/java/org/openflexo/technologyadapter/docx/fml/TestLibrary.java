@@ -356,7 +356,7 @@ public class TestLibrary extends AbstractTestDocX {
 	 */
 	@Test
 	@TestOrder(5)
-	public void testCreateLibraryVirtualModel() throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException {
+	public void testCreateLibraryVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
 		log("testCreateLibraryVirtualModel()");
 
