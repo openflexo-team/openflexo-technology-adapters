@@ -60,9 +60,9 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -85,7 +85,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implements DiagramRepresentationConstants {
+public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramDrawing.class.getPackage().getName());
 
