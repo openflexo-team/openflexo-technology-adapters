@@ -43,7 +43,6 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -113,7 +112,7 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 				component.getComponent().setControllerClass(FMLControlledFIBController.class);
 			}
 
-			componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
+			componentView = new FIBJPanel<Object>(component.getComponent(), null, controller.getModuleLocales()) {
 				@Override
 				public void delete() {
 				}

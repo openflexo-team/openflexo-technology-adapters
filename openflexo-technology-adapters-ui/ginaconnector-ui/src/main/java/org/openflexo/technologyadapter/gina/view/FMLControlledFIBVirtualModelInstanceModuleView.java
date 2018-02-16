@@ -52,7 +52,6 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.validation.ValidationPanel;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.validation.ValidationIssue;
@@ -132,8 +131,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 				component.getComponent().setControllerClass(FMLControlledFIBController.class);
 			}
 
-			componentView = new SelectionSynchronizedFIBJPanel<Object>(component.getComponent(), null,
-					FlexoLocalization.getMainLocalizer()) {
+			componentView = new SelectionSynchronizedFIBJPanel<Object>(component.getComponent(), null, locales) {
 				@Override
 				public void delete() {
 				}
