@@ -94,7 +94,7 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testSimpleDocumentWithBookmarksLoading() throws SaveResourceException {
+	public void testSimpleDocumentWithBookmarksLoading() {
 
 		simpleDocumentWithBookmarks = getDocument("SimpleDocumentWithBookmarks.docx");
 
@@ -107,7 +107,8 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
 						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
-								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]"
+								: "[no style]"));
 			}
 			else {
 				System.out.println("* Element " + element);

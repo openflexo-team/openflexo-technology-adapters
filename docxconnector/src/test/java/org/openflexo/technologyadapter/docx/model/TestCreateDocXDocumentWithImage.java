@@ -129,7 +129,7 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testAddSomeParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddSomeParagraphs() throws FlexoException {
 
 		log("testAddSomeParagraphs");
 

@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.semantics.rm;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +63,7 @@ import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInsta
 public interface SEVirtualModelInstanceRepository<I> extends ResourceRepository<SEVirtualModelInstanceResource, I> {
 
 	public static <I> SEVirtualModelInstanceRepository<I> instanciateNewRepository(ExcelTechnologyAdapter adapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(SEVirtualModelInstanceRepository.class);

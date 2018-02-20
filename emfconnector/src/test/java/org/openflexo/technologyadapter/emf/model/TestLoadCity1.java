@@ -112,8 +112,8 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 	@TestOrder(3)
 	public void lookupCity1Model() {
 
-		city1Res = (EMFModelResource) serviceManager.getResourceManager().getResource(
-				"http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/city1/my.city1", EMFModel.class);
+		city1Res = (EMFModelResource) serviceManager.getResourceManager()
+				.getResource("http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/city1/my.city1", EMFModel.class);
 
 		assertNotNull(city1Res);
 		assertSame(city1MMRes, city1Res.getMetaModelResource());
@@ -139,7 +139,7 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(5)
-	public void performSomeTests() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void performSomeTests() {
 
 		Resource resource = city1Model.getEMFResource();
 
@@ -160,8 +160,7 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 			System.out.println("> class " + c.getURI());
 		}
 
-		EMFClassClass cityClass = (EMFClassClass) metaModel
-				.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
+		EMFClassClass cityClass = (EMFClassClass) metaModel.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
 		assertNotNull(cityClass);
 
 		// assertSame(cityClass,

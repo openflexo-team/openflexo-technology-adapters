@@ -79,17 +79,17 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		super(serviceManager.getTechnologyAdapterService(), GINAFIBComponent.class);
 
 		addConverter(typeConverter = new TypeConverter(serviceManager.getTechnologyAdapterService().getCustomTypeFactories()));
-
-		if (resource.getIODelegate() instanceof FileIODelegate) {
-			addConverter(new RelativePathFileConverter(((FileIODelegate) resource.getIODelegate()).getFile().getParentFile()));
-		}
-
 		this.resource = resource;
-		setEditingContext(serviceManager.getEditingContext());
-		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getIODelegate() != null && resource.getIODelegate().getSerializationArtefactAsResource() != null) {
-			relativePathResourceConverter
-					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
+		if (resource != null) {
+			if (resource.getIODelegate() instanceof FileIODelegate) {
+				addConverter(new RelativePathFileConverter(((FileIODelegate) resource.getIODelegate()).getFile().getParentFile()));
+			}
+			setEditingContext(serviceManager.getEditingContext());
+			addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+			if (resource.getIODelegate() != null && resource.getIODelegate().getSerializationArtefactAsResource() != null) {
+				relativePathResourceConverter
+						.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
+			}
 		}
 	}
 

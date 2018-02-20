@@ -39,8 +39,6 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -60,7 +58,7 @@ public interface EMFMetaModelRepository<I>
 		extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter, I> {
 
 	public static <I> EMFMetaModelRepository<I> instanciateNewRepository(EMFTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(EMFMetaModelRepository.class);

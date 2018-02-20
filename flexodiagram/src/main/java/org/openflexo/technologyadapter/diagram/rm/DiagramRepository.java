@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.ModelRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -60,7 +58,7 @@ public interface DiagramRepository<I>
 		extends ModelRepository<DiagramResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter, DiagramTechnologyAdapter, I> {
 
 	public static <I> DiagramRepository<I> instanciateNewRepository(DiagramTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(DiagramRepository.class);

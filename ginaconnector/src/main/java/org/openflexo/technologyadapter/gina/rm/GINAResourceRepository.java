@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.gina.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -35,7 +33,7 @@ public interface GINAResourceRepository<I>
 		extends TechnologyAdapterResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent, I> {
 
 	public static <I> GINAResourceRepository<I> instanciateNewRepository(GINATechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(GINAResourceRepository.class);

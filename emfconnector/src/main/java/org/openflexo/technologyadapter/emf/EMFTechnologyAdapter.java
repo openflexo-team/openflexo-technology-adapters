@@ -39,7 +39,6 @@
 
 package org.openflexo.technologyadapter.emf;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -303,12 +302,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	public <I> EMFMetaModelRepository<I> getEMFMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		EMFMetaModelRepository<I> returned = resourceCenter.retrieveRepository(EMFMetaModelRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = EMFMetaModelRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = EMFMetaModelRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, EMFMetaModelRepository.class, this);
 		}
 		return returned;
@@ -364,7 +358,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 	}
 
-	public <I> EMFModelRepository<I> getEMFModelRepository(FlexoResourceCenter<I> resourceCenter) throws IOException {
+	public <I> EMFModelRepository<I> getEMFModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		EMFModelRepository<I> returned = resourceCenter.retrieveRepository(EMFModelRepository.class, this);
 		if (returned == null) {
 			returned = EMFModelRepository.instanciateNewRepository(this, resourceCenter);

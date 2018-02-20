@@ -43,7 +43,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.widget.FIBDocImageSelector;
-import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -65,7 +64,7 @@ public class TestFIBDocXImageSelector extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
-	public void test2InstanciateWidget() throws FragmentConsistencyException {
+	public void test2InstanciateWidget() {
 
 		DocXDocument documentWithImages = getDocument("DocumentWithSomeImages.docx");
 		assertNotNull(documentWithImages);

@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.docx.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -35,7 +33,7 @@ public interface DocXDocumentRepository<I>
 		extends TechnologyAdapterResourceRepository<DocXDocumentResource, DocXTechnologyAdapter, DocXDocument, I> {
 
 	public static <I> DocXDocumentRepository<I> instanciateNewRepository(DocXTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(DocXDocumentRepository.class);

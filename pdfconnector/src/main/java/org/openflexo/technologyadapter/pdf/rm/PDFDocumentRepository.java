@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.pdf.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -35,7 +33,7 @@ public interface PDFDocumentRepository<I>
 		extends TechnologyAdapterResourceRepository<PDFDocumentResource, PDFTechnologyAdapter, PDFDocument, I> {
 
 	public static <I> PDFDocumentRepository<I> instanciateNewRepository(PDFTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(PDFDocumentRepository.class);

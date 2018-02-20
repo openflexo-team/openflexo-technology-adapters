@@ -41,6 +41,12 @@ package org.openflexo.technologyadapter.oslc.model.io;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import org.apache.http.auth.InvalidCredentialsException;
+import org.apache.wink.client.ClientRequest;
+import org.apache.wink.client.ClientResponse;
+import org.apache.wink.client.handlers.ClientHandler;
+import org.apache.wink.client.handlers.HandlerContext;
+
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
@@ -48,12 +54,6 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
-
-import org.apache.http.auth.InvalidCredentialsException;
-import org.apache.wink.client.ClientRequest;
-import org.apache.wink.client.ClientResponse;
-import org.apache.wink.client.handlers.ClientHandler;
-import org.apache.wink.client.handlers.HandlerContext;
 
 /**
  * The oAuth handler consists to get a consumer key for Openflexo application from the OSLC provider First a temporary request token is
@@ -156,8 +156,11 @@ public abstract class FlexoOAuthHandler implements ClientHandler {
 	}
 
 	/**
-	 * Perform the oAuth authentification given a set of parameters. <li>get a request token</li> <li>redirect exception to authorization
-	 * URL</li> <li>exchange request token for access token</li> <li>access protected URL and return OAuthMessage</li>
+	 * Perform the oAuth authentification given a set of parameters.
+	 * <li>get a request token</li>
+	 * <li>redirect exception to authorization URL</li>
+	 * <li>exchange request token for access token</li>
+	 * <li>access protected URL and return OAuthMessage</li>
 	 * 
 	 * @param oAuth
 	 * @throws IOException
@@ -165,8 +168,8 @@ public abstract class FlexoOAuthHandler implements ClientHandler {
 	 * @throws URISyntaxException
 	 * @throws InvalidCredentialsException
 	 */
-	public void performoAuthAuthentification(String uri) throws IOException, OAuthException, URISyntaxException,
-			InvalidCredentialsException {
+	public void performoAuthAuthentification(String uri)
+			throws IOException, OAuthException, URISyntaxException, InvalidCredentialsException {
 		// Create an oAuth client
 		OAuthClient client = new OAuthClient(new HttpClient4());
 		// Get the temporary Request Token from the provider given the consumer key and shared secret
@@ -188,8 +191,7 @@ public abstract class FlexoOAuthHandler implements ClientHandler {
 	 */
 	public abstract void userAuthentification(OAuthClient client);
 
-	private void exchangeRequestForAccessToken(OAuthClient client) throws IOException, URISyntaxException, InvalidCredentialsException,
-			OAuthException {
+	private void exchangeRequestForAccessToken(OAuthClient client) throws IOException, URISyntaxException {
 		// Exchange request token for access token.
 		if (accessor.accessToken == null) {
 			try {

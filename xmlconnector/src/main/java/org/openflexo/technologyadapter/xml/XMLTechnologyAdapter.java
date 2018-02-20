@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -117,12 +116,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public <I> XSDMetaModelRepository<I> getXSDMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		XSDMetaModelRepository<I> returned = resourceCenter.retrieveRepository(XSDMetaModelRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = XSDMetaModelRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = XSDMetaModelRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, XSDMetaModelRepository.class, this);
 		}
 		return returned;
@@ -131,12 +125,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public <I> XMLModelRepository<I> getXMLModelRepository(FlexoResourceCenter<I> resourceCenter) {
 		XMLModelRepository<I> returned = resourceCenter.retrieveRepository(XMLModelRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = XMLModelRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = XMLModelRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, XMLModelRepository.class, this);
 		}
 		return returned;

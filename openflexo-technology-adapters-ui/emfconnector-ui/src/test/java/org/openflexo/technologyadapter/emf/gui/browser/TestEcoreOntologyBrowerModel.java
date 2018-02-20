@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -101,7 +100,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(1)
-	public void TestLoadECOREModel() throws IOException {
+	public void TestLoadECOREModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
 			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);

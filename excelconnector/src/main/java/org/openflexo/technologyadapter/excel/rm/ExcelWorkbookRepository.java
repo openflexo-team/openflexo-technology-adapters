@@ -39,8 +39,6 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -60,7 +58,7 @@ public interface ExcelWorkbookRepository<I>
 		extends TechnologyAdapterResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook, I> {
 
 	public static <I> ExcelWorkbookRepository<I> instanciateNewRepository(ExcelTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(ExcelWorkbookRepository.class);

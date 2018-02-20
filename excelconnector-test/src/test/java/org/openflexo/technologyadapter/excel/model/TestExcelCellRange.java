@@ -79,7 +79,7 @@ public class TestExcelCellRange extends AbstractTestExcel {
 
 	@Test
 	@TestOrder(3)
-	public void testExcelCellConverter() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testExcelCellConverter() {
 
 		BasicExcelModelConverter converter = workbook1Resource.getConverter();
 		ExcelSheet sheet1 = workbook1Resource.getExcelWorkbook().getExcelSheets().get(0);
@@ -111,7 +111,7 @@ public class TestExcelCellRange extends AbstractTestExcel {
 
 	@Test
 	@TestOrder(4)
-	public void testExcelCellRangeConverter() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testExcelCellRangeConverter() {
 
 		ExcelSheet sheet1 = workbook1Resource.getExcelWorkbook().getExcelSheets().get(0);
 

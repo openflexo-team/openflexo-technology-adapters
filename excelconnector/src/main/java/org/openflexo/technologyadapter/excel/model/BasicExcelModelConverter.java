@@ -515,30 +515,29 @@ public class BasicExcelModelConverter {
 
 	// Create an Excel Sheet or get the existing one.
 	private Sheet retrieveOrCreateSheet(String name, boolean override) {
-		Workbook wb = excelWorkbook.getWorkbook();
 		Sheet sheet = null;
-		// A sheet with this name already exists
-		if (wb.getSheet(name) != null) {
-			if (override) {
-				// Override it
-				wb.removeSheetAt(wb.getSheetIndex(name));
-				sheet = wb.createSheet(name);
-				logger.info("Override excel sheet with the name " + name);
+		try (Workbook wb = excelWorkbook.getWorkbook()) {
+			// A sheet with this name already exists
+			if (wb.getSheet(name) != null) {
+				if (override) {
+					// Override it
+					wb.removeSheetAt(wb.getSheetIndex(name));
+					sheet = wb.createSheet(name);
+					logger.info("Override excel sheet with the name " + name);
+				}
+				else {
+					// Retrieve the existing one
+					sheet = wb.getSheet(name);
+					logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
+				}
 			}
 			else {
-				// Retrieve the existing one
-				sheet = wb.getSheet(name);
-				logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
+				// Create a new one
+				sheet = wb.createSheet(name);
+				logger.info("Create a new excel sheet with the name " + name);
 			}
-		}
-		else {
-			// Create a new one
-			sheet = wb.createSheet(name);
-			logger.info("Create a new excel sheet with the name " + name);
-		}
-		try {
-			wb.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return sheet;
 	}

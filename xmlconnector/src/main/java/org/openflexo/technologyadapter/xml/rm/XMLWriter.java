@@ -79,7 +79,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 	private static XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
 
-	public XMLWriter(R resource, OutputStreamWriter out) throws XMLStreamException, IOException {
+	public XMLWriter(R resource, OutputStreamWriter out) {
 		super();
 		this.taRes = resource;
 		outputStr = out;
@@ -127,8 +127,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		}
 	}
 
-	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix)
-			throws XMLStreamException, IOException, ResourceLoadingCancelledException, FlexoException {
+	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
 		if (nSURI != null && !nSURI.isEmpty()) {
@@ -188,7 +187,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 			// Data Properties
 			if (prop instanceof XMLDataProperty) {
-				if(prop.isFromXMLElement()) {
+				if (prop.isFromXMLElement()) {
 					List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
 					if (valueList != null && valueList.size() > 0) {
 						myWriter.writeStartElement(prop.getName());

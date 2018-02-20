@@ -223,7 +223,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	 */
 	@Test
 	@TestOrder(4)
-	public void testCreateOWLModelSlot() throws SaveResourceException {
+	public void testCreateOWLModelSlot() {
 
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel1, null, editor);
 		useDeclarationAction.setModelSlotClass(OWLModelSlot.class);
@@ -305,7 +305,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 	@Test
 	@TestOrder(6)
-	public void testOWLIndividualRoleBindingModelManagement() throws SaveResourceException {
+	public void testOWLIndividualRoleBindingModelManagement() {
 
 		CreatePrimitiveRole createPR1 = CreatePrimitiveRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR1.setRoleName("aStringInA");

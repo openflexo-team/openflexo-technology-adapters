@@ -39,8 +39,6 @@
 
 package org.openflexo.technologyadapter.powerpoint.rm;
 
-import java.io.IOException;
-
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.model.annotations.ModelEntity;
@@ -60,7 +58,7 @@ public interface PowerpointSlideShowRepository<I>
 		extends TechnologyAdapterResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow, I> {
 
 	public static <I> PowerpointSlideShowRepository<I> instanciateNewRepository(PowerpointTechnologyAdapter technologyAdapter,
-			FlexoResourceCenter<I> resourceCenter) throws IOException {
+			FlexoResourceCenter<I> resourceCenter) {
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(PowerpointSlideShowRepository.class);

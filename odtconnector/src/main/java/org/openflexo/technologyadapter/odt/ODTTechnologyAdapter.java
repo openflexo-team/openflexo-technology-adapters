@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.odt;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
@@ -217,12 +216,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	public <I> ODTDocumentRepository<I> getODTDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		ODTDocumentRepository<I> returned = resourceCenter.retrieveRepository(ODTDocumentRepository.class, this);
 		if (returned == null) {
-			try {
-				returned = ODTDocumentRepository.instanciateNewRepository(this, resourceCenter);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			returned = ODTDocumentRepository.instanciateNewRepository(this, resourceCenter);
 			resourceCenter.registerRepository(returned, ODTDocumentRepository.class, this);
 		}
 		return returned;

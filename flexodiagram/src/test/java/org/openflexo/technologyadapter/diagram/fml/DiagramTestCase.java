@@ -48,7 +48,6 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.test.OpenflexoTestCase;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -75,7 +74,7 @@ public abstract class DiagramTestCase extends OpenflexoTestCase {
 	}
 
 	@BeforeClass
-	public static void setupClass() throws ModelDefinitionException, IOException {
+	public static void setupClass() throws IOException {
 		serviceManager = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);

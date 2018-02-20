@@ -128,7 +128,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
-	public void testAddSomeParagraphs() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddSomeParagraphs() throws FlexoException {
 
 		log("testAddSomeParagraphs");
 
@@ -174,7 +174,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
-	public void testAddTable() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testAddTable() throws FlexoException {
 		log("testAddTable");
 
 		table1 = (DocXTable) newDocument.addTable(4, 3);
