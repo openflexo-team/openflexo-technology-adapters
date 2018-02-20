@@ -110,6 +110,7 @@ public interface GenerateExcelResource extends CreateExcelResource {
 					newResource.setResourceData(templateDocument);
 					newResource.save(null);
 					newResource.unloadResourceData(false);
+					templateResource.unloadResourceData(false);
 					newResource.loadResourceData(null);
 
 					ExcelWorkbook generatedDocument = newResource.getResourceData(null);
