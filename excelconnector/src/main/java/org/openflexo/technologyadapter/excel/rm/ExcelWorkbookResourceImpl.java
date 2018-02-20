@@ -135,7 +135,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	@Override
 	public void unloadResourceData(boolean deleteResourceData) {
 		super.unloadResourceData(deleteResourceData);
-		converter.delete();
+		if (converter != null) {
+			converter.delete();
+		}
 		converter = null;
 	}
 
