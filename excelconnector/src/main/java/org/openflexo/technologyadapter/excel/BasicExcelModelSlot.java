@@ -84,7 +84,7 @@ import org.openflexo.toolbox.StringUtils;
  * Implementation of a basic ModelSlot class for the Excel technology adapter<br>
  * This model slot reflects a basic interpretation of a workbook, with basic excel notions, such as workbook, sheet, row, col, and cell
  * 
- * @author Vincent LeildÃ©, Sylvain GuÃ©rin
+ * @author Vincent Leildé, Sylvain Guérin
  * 
  */
 @DeclareActorReferences({ ExcelActorReference.class })
