@@ -401,8 +401,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				for (ConnectorRole pr : action.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<>(this, action,
-						"add_connector_action_does_not_address_a_valid_connector_flexo_role", v);
+				return new ValidationError<>(this, action, "add_connector_action_does_not_address_a_valid_connector_flexo_role", v);
 			}
 			return null;
 		}
@@ -423,7 +422,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
+				((AssignationAction<?>) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}
@@ -453,8 +452,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
-				return new ValidationError<>(this, action,
-						"add_connector_action_does_not_have_a_valid_starting_shape", v);
+				return new ValidationError<>(this, action, "add_connector_action_does_not_have_a_valid_starting_shape", v);
 			}
 			return null;
 		}
@@ -532,8 +530,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
-				return new ValidationError<>(this, action,
-						"add_connector_action_does_not_have_a_valid_ending_shape", v);
+				return new ValidationError<>(this, action, "add_connector_action_does_not_have_a_valid_ending_shape", v);
 			}
 			return null;
 		}

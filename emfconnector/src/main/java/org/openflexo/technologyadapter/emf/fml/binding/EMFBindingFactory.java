@@ -94,13 +94,13 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if ((technologySpecificType instanceof IndividualOfClass)
-				&& ((IndividualOfClass) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
+				&& ((IndividualOfClass<?>) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubClassOfClass)
-				&& ((SubClassOfClass) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
+				&& ((SubClassOfClass<?>) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubPropertyOfProperty)
@@ -113,10 +113,10 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 		if (parent.getType() instanceof IndividualOfClass) {
-			IndividualOfClass parentType = (IndividualOfClass) parent.getType();
+			IndividualOfClass<?> parentType = (IndividualOfClass<?>) parent.getType();
 			List<SimplePathElement> returned = new ArrayList<>();
 			if (parentType.getOntologyClass() instanceof EMFClassClass) {
-				for (IFlexoOntologyFeatureAssociation fa : ((EMFClassClass) parentType.getOntologyClass())
+				for (IFlexoOntologyFeatureAssociation<?> fa : ((EMFClassClass) parentType.getOntologyClass())
 						.getStructuralFeatureAssociations()) {
 					returned.add(getSimplePathElement(fa, parent));
 				}

@@ -47,7 +47,6 @@ import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.ontology.IndividualOfClass;
-import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
@@ -163,7 +162,7 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 		@Override
 		public Type getType() {
-			if (getProperty().getRange() instanceof OWLClass) {
+			if (getProperty().getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass(getProperty().getRange());
 			}
 			return OWLIndividual.class;

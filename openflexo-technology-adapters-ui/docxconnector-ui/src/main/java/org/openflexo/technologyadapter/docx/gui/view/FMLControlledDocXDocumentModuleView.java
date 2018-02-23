@@ -54,10 +54,13 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
 import org.openflexo.foundation.doc.FlexoDocObject;
+import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
@@ -85,7 +88,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	private final FMLRTVirtualModelInstance virtualModelInstance;
 	private final FlexoPerspective perspective;
 
-	private final FlexoDocumentEditor<?, ?> editor;
+	private final FlexoDocumentEditor<DocXDocument, DocXTechnologyAdapter> editor;
 
 	private final FIBFlexoDocumentBrowser browser;
 	private final JPanel topPanel;
@@ -211,7 +214,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		return perspective.getController().getEditor();
 	}
 
-	protected void selectElementInDocumentEditor(DocXObject element) {
+	protected void selectElementInDocumentEditor(DocXObject<?> element) {
 
 		System.out.println("****************** selectElementInDocumentEditor with " + element);
 
@@ -252,7 +255,8 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 	}
 
-	private void scrollTo(FlexoDocObject object, FlexoDocumentEditor docXEditor) {
+	private <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> void scrollTo(FlexoDocObject<D, TA> object,
+			FlexoDocumentEditor<D, TA> docXEditor) {
 		if (!docXEditor.scrollTo(object, true)) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override

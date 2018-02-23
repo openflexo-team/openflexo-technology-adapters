@@ -50,7 +50,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
@@ -89,7 +88,7 @@ public class StatementObjectPathElement extends SimplePathElement {
 	@Override
 	public Type getType() {
 		if (property != null) {
-			if (property.getRange() instanceof OWLClass) {
+			if (property.getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass(property.getRange());
 			}
 		}

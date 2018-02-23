@@ -64,7 +64,7 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLOntology, OWLClas
 
 		private static final Logger logger = Logger.getLogger(AddOWLClass.class.getPackage().getName());
 
-		private final String dataPropertyURI = null;
+		// Unused private final String dataPropertyURI = null;
 
 		public AddOWLClassImpl() {
 			super();

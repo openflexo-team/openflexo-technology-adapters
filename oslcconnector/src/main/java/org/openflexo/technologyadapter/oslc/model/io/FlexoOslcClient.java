@@ -376,16 +376,17 @@ public class FlexoOslcClient {
 		return null;
 	}
 
-	private <T extends AbstractResource> T[] retrievesSingleKindOfElements(String uri, Class<T> resourceClasses) {
-		try {
-			return retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
-		} catch (URISyntaxException e) {
-			logger.warning("URI " + uri + " is not correct");
-			e.printStackTrace();
-			return null;
+	/* Unused
+		private <T extends AbstractResource> T[] retrievesSingleKindOfElements(String uri, Class<T> resourceClasses) {
+			try {
+				return retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
+			} catch (URISyntaxException e) {
+				logger.warning("URI " + uri + " is not correct");
+				e.printStackTrace();
+				return null;
+			}
 		}
-	}
-
+	*/
 	/**
 	 * Get the resource using an OslcRestClient. If the resource class is not given, then it will be determinated using the providers.
 	 * 

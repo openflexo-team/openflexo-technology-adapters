@@ -38,15 +38,12 @@
 
 package org.openflexo.technologyadapter.oslc.model.io;
 
-import java.lang.reflect.Array;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
@@ -94,6 +91,7 @@ public class OSLCModelConverter {
 		return OSLCObjects;
 	}
 
+	/* Unused
 	private <T extends AbstractResource> T[] retrieveResources(String uri, Class<T> resourceClasses) {
 		try {
 			return oslcClient.retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
@@ -103,7 +101,7 @@ public class OSLCModelConverter {
 			return null;
 		}
 	}
-
+	*/
 	/* Unused
 	private <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
 		try {

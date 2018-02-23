@@ -93,7 +93,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 			} catch (IOException e) {
 				e.printStackTrace();
 			}*/
-			IFlexoOntologyClass flexoOntologyClass = getType();
+			IFlexoOntologyClass<?> flexoOntologyClass = getType();
 			List<EObject> selectedEMFIndividuals = new ArrayList<>();
 			if (flexoOntologyClass instanceof EMFClassClass) {
 				TreeIterator<EObject> iterator = resource.getAllContents();
