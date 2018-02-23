@@ -38,25 +38,19 @@
 
 package org.openflexo.technologyadapter.excel;
 
-import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRangeConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
-import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType.SEVirtualModelInstanceTypeFactory;
 import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceRepository;
@@ -265,47 +259,6 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);
 		}
 		return returned;
-	}
-
-	@Deprecated
-	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<File> rc, String excelFilename/*, String modelUri*/)
-			throws SaveResourceException, ModelDefinitionException {
-
-		if (rc instanceof FlexoProject) {
-			File excelFile = new File(((FlexoProject<File>) rc).getProjectDirectory(), excelFilename);
-
-			ExcelWorkbookResource workbookResource = getExcelWorkbookResourceFactory().makeResource(excelFile, rc, true);
-
-			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
-			// getTechnologyContextManager(), rc);
-
-			getTechnologyContextManager().registerResource(workbookResource);
-
-			return workbookResource;
-		}
-		else {
-			logger.warning("NOT IMPLEMENTED: not able to create an excelfile in a RC that is not a FlexoProject" + rc.toString());
-			return null;
-		}
-	}
-
-	@Deprecated
-	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<?> resourceCenter, String resourceName, String resourceURI,
-			String relativePath) throws SaveResourceException, ModelDefinitionException {
-
-		if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-			File excelFile = ((FileSystemBasedResourceCenter) resourceCenter).retrieveResourceFile(resourceName, relativePath, ".xlsx");
-			System.out.println("create workbook " + excelFile);
-
-			ExcelWorkbookResource workbookResource = getExcelWorkbookResourceFactory().makeResource(excelFile,
-					(FlexoResourceCenter<File>) resourceCenter, true);
-			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
-			// getTechnologyContextManager(), resourceCenter);
-			// getTechnologyContextManager().registerResource(workbookResource);
-			return workbookResource;
-		}
-		return null;
-
 	}
 
 	@Override
