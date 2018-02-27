@@ -16,11 +16,11 @@ public class PDFTextBoxStripper extends PDFTextStripperByArea {
 
 	private List<TextBox> textBoxes;
 
-	private PDDocument document;
+	// Unused private PDDocument document;
 	private PDPage page;
 	private StringBuffer currentString;
 	private Rectangle box;
-	private float fontSize;
+	// Unused private float fontSize;
 	private float dir;
 
 	public PDFTextBoxStripper(PDDocument document, PDPage page) throws IOException {
@@ -62,7 +62,7 @@ public class PDFTextBoxStripper extends PDFTextStripperByArea {
 		currentString.append(text.toString());
 
 		dir = text.getDir();
-		fontSize = text.getFontSizeInPt();
+		// Unused fontSize = text.getFontSizeInPt();
 
 		int width = (int) text.getWidth();
 		int height = (int) text.getHeight();

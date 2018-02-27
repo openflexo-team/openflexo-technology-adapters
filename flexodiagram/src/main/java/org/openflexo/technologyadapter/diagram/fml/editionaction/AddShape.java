@@ -328,8 +328,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<>(this, action,
-						"add_shape_action_does_not_address_a_valid_shape_flexo_role", v);
+				return new ValidationError<>(this, action, "add_shape_action_does_not_address_a_valid_shape_flexo_role", v);
 			}
 			return null;
 		}
@@ -350,7 +349,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
+				((AssignationAction<?>) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}
@@ -387,8 +386,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					details = "Container not set";
 				}
 
-				return new ValidationError<>(this, action,
-						"add_shape_action_does_not_have_a_valid_container", v);
+				return new ValidationError<>(this, action, "add_shape_action_does_not_have_a_valid_container", v);
 			}
 			return null;
 		}

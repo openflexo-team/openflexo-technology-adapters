@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -56,11 +55,8 @@ public abstract class XMLPropertyImpl extends FlexoObjectImpl implements XMLProp
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		if (arg0 instanceof XMLProperty) {
-			return this.getName().compareTo(((XMLProperty) arg0).getName());
-		} else
-			return -1;
+	public int compareTo(XMLProperty arg0) {
+		return this.getName().compareTo(arg0.getName());
 	}
 
 	@Override
@@ -72,9 +68,11 @@ public abstract class XMLPropertyImpl extends FlexoObjectImpl implements XMLProp
 	public String getDisplayableDescription() {
 		if (this instanceof XMLDataProperty) {
 			return "XML Simple property named : " + this.getName();
-		} else if (this instanceof XMLObjectProperty) {
+		}
+		else if (this instanceof XMLObjectProperty) {
 			return "XML Object Property named : " + this.getName();
-		} else
+		}
+		else
 			return "(Unknown)";
 	}
 

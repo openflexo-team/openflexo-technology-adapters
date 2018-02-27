@@ -82,17 +82,17 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if ((technologySpecificType instanceof IndividualOfClass)
-				&& ((IndividualOfClass) technologySpecificType).getOntologyClass() instanceof OWLClass) {
+				&& ((IndividualOfClass<?>) technologySpecificType).getOntologyClass() instanceof OWLClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubClassOfClass)
-				&& ((SubClassOfClass) technologySpecificType).getOntologyClass() instanceof OWLClass) {
+				&& ((SubClassOfClass<?>) technologySpecificType).getOntologyClass() instanceof OWLClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubPropertyOfProperty)
-				&& ((SubPropertyOfProperty) technologySpecificType).getOntologyProperty() instanceof OWLProperty) {
+				&& ((SubPropertyOfProperty<?>) technologySpecificType).getOntologyProperty() instanceof OWLProperty) {
 			return true;
 		}
 		if (technologySpecificType instanceof StatementWithProperty) {
@@ -105,7 +105,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement element) {
 
 		if (element.getType() instanceof IndividualOfClass) {
-			IndividualOfClass parentType = (IndividualOfClass) element.getType();
+			IndividualOfClass<?> parentType = (IndividualOfClass<?>) element.getType();
 			List<SimplePathElement> returned = new ArrayList<>();
 			returned.add(new URIPathElement(element));
 			returned.add(new URINamePathElement(element));

@@ -128,8 +128,8 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 		FlexoObjectImpl.addActionForClass(CreateFMLControlledFIBVirtualModel.actionType, RepositoryFolder.class);
 	}
 
-	private String newVirtualModelName;
-	private String newVirtualModelDescription;
+	// Unused private String newVirtualModelName;
+	// Unused private String newVirtualModelDescription;
 	private VirtualModel newVirtualModel;
 
 	private String fibModelSlotName = "ui";
@@ -296,7 +296,7 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 					createAssignAction.setAssignation(new DataBinding<>(apiEntry.getName()));
 					createAssignAction.doAction();
 					AssignationAction<?> assignAction = (AssignationAction<?>) createAssignAction.getNewEditionAction();
-					((ExpressionAction) assignAction.getAssignableAction())
+					((ExpressionAction<?>) assignAction.getAssignableAction())
 							.setExpression(new DataBinding<>("parameters." + apiEntry.getName()));
 					assignAction.setName("assign");
 				}

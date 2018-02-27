@@ -110,8 +110,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement> implements
-			AddDataPropertyStatement {
+	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement>
+			implements AddDataPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddDataPropertyStatement.class.getPackage().getName());
 
@@ -125,8 +125,10 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append((getSubject() != null ? getSubject().toString() : "null") + "."
-					+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";", context);
+			out.append(
+					(getSubject() != null ? getSubject().toString() : "null") + "."
+							+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";",
+					context);
 			return out.toString();
 		}
 
@@ -148,7 +150,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof DataPropertyStatementRole) {
 				return (DataPropertyStatementRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -169,7 +172,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		public OWLDataProperty getDataProperty() {
 			if (StringUtils.isNotEmpty(dataPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
 				return OWLOntologyVirtualModelNature.getOWLDataProperty(dataPropertyURI, getOwningVirtualModel());
-			} else {
+			}
+			else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getDataProperty();
 				}
@@ -183,13 +187,16 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				if (getAssignedFlexoProperty() != null) {
 					if (getAssignedFlexoProperty().getDataProperty().isSuperConceptOf(ontologyProperty)) {
 						dataPropertyURI = ontologyProperty.getURI();
-					} else {
+					}
+					else {
 						getAssignedFlexoProperty().setDataProperty((OWLDataProperty) ontologyProperty);
 					}
-				} else {
+				}
+				else {
 					dataPropertyURI = ontologyProperty.getURI();
 				}
-			} else {
+			}
+			else {
 				dataPropertyURI = null;
 			}
 		}
@@ -294,8 +301,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 	}
 
-	public static class AddDataPropertyStatementActionMustDefineADataProperty extends
-			ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+	public static class AddDataPropertyStatementActionMustDefineADataProperty
+			extends ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 		public AddDataPropertyStatementActionMustDefineADataProperty() {
 			super(AddDataPropertyStatement.class, "add_data_property_statement_action_must_define_a_data_property");
 		}
@@ -308,14 +315,13 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				for (DataPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(DataPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<>(this, action,
-						"add_data_property_statement_action_does_not_define_an_data_property", v);
+				return new ValidationError<>(this, action, "add_data_property_statement_action_does_not_define_an_data_property", v);
 			}
 			return null;
 		}
 
-		protected static class SetsFlexoRole extends
-				FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+		protected static class SetsFlexoRole
+				extends FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 
 			private final DataPropertyStatementRole flexoRole;
 
@@ -331,7 +337,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			@Override
 			protected void fixAction() {
 				AddDataPropertyStatement action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
+				((AssignationAction<?>) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}

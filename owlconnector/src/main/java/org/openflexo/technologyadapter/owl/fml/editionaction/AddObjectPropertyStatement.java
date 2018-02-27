@@ -253,8 +253,7 @@ public interface AddObjectPropertyStatement
 		}
 
 		public Type getObjectType() {
-			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty
-					&& getObjectProperty().getRange() instanceof IFlexoOntologyClass) {
+			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty && getObjectProperty().getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange());
 			}
 			return IFlexoOntologyConcept.class;
@@ -338,8 +337,7 @@ public interface AddObjectPropertyStatement
 				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(ObjectPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationWarning<>(this,
-						action, "add_object_property_statement_action_does_not_define_an_object_property", v);
+				return new ValidationWarning<>(this, action, "add_object_property_statement_action_does_not_define_an_object_property", v);
 			}
 			return null;
 		}
@@ -361,7 +359,7 @@ public interface AddObjectPropertyStatement
 			@Override
 			protected void fixAction() {
 				AddObjectPropertyStatement action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
+				((AssignationAction<?>) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}

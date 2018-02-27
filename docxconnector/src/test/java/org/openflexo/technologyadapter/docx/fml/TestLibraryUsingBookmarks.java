@@ -899,9 +899,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
 
 		GenerateDocXDocument generateDocXDocument = (GenerateDocXDocument) createGenerateDocXDocumentAction.getBaseEditionAction();
-		generateDocXDocument.setResourceName(new DataBinding("'GeneratedDocument.docx'"));
+		generateDocXDocument.setResourceName(new DataBinding<>("'GeneratedDocument.docx'"));
 		generateDocXDocument.setRelativePath("DocX");
-		generateDocXDocument.setResourceCenter(new DataBinding("this.resourceCenter"));
+		generateDocXDocument.setResourceCenter(new DataBinding<>("this.resourceCenter"));
 
 		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType
 				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, _editor);
@@ -962,7 +962,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		IterationAction fetchRequestIteration = (IterationAction) createSelectFetchRequestIterationAction.getNewEditionAction();
 		fetchRequestIteration.setIteratorName("book");
 
-		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
+		SelectFlexoConceptInstance<?> selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory()
+				.newSelectFlexoConceptInstance();
 		selectFlexoConceptInstance.setReceiver(new DataBinding<>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
@@ -1011,7 +1012,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		IterationAction fetchRequestIteration2 = (IterationAction) createSelectFetchRequestIterationAction2.getNewEditionAction();
 		fetchRequestIteration2.setIteratorName("bookSection");
 
-		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
+		SelectFlexoConceptInstance<?> selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory()
+				.newSelectFlexoConceptInstance();
 		selectFlexoConceptInstance2.setReceiver(new DataBinding<>("this"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
@@ -1046,7 +1048,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		IterationAction fetchRequestIteration = (IterationAction) createSelectFetchRequestIterationAction.getNewEditionAction();
 		fetchRequestIteration.setIteratorName("bookSection");
 
-		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
+		SelectFlexoConceptInstance<?> selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory()
+				.newSelectFlexoConceptInstance();
 		selectFlexoConceptInstance.setReceiver(new DataBinding<>("this"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);

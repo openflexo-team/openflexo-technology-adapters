@@ -153,6 +153,7 @@ public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extend
 			return getAction().getVirtualModel().getModelSlots(TypedDiagramModelSlot.class);
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public List<DrawingObjectEntry> getDrawingObjectEntries() {
 			return (List) getAction().getDrawingObjectEntries();
 		}
