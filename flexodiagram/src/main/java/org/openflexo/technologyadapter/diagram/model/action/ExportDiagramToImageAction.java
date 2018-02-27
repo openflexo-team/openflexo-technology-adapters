@@ -42,8 +42,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
