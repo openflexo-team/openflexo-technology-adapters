@@ -202,10 +202,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			if (mapParams == null) {
 				XMLType s = aXmlType.getSuperType();
-				if (mapParams == null) {
-					logger.info("SEARCHING for an uriProcessor for " + s.getURI());
-					mapParams = retrieveURIProcessorForType(s);
-				}
+				logger.info("SEARCHING for an uriProcessor for " + s.getURI());
+				mapParams = retrieveURIProcessorForType(s);
 
 				if (mapParams != null) {
 					logger.info("UPDATING the MapUriProcessors for an uriProcessor for " + aXmlType.getURI());

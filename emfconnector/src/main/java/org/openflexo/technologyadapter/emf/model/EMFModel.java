@@ -391,10 +391,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
-		if (result == null) {
-			result = getDataProperty(objectURI);
-		}
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = getDataProperty(objectURI);
 		if (result == null) {
 			result = getObjectProperty(objectURI);
 		}
