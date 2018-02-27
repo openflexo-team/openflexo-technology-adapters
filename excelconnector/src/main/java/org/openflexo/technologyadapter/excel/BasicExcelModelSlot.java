@@ -72,6 +72,7 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CreateExcelResource;
 import org.openflexo.technologyadapter.excel.fml.editionaction.GenerateExcelResource;
+import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
@@ -90,7 +91,7 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareActorReferences({ ExcelActorReference.class })
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
 @DeclareEditionActions({ CreateExcelResource.class, GenerateExcelResource.class, AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class,
-		CellStyleAction.class })
+		CellStyleAction.class, MergeCells.class })
 @DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)

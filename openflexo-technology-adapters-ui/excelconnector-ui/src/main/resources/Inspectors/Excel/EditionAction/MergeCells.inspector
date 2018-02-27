@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
+	p:modelEntity="org.openflexo.gina.utils.FIBInspector" borderLeft="0"
+	sizeAdjustment="OriginalSize" controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	borderRight="0" border="empty" trackViewPortWidth="true" font="SansSerif,0,12"
+	align="left" borderBottom="0" titleFont="SansSerif,0,12" borderTop="0"
+	trackViewPortHeight="true" layout="border" name="Inspector">
+	<Parameter id="1" name="title" value="AddExcelCell action" />
+	<TabPanel id="2" name="Tab" constraints="border(location=center)">
+		<Tab id="3" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+			borderLeft="0" sizeAdjustment="OriginalSize" border="empty"
+			borderRight="0" trackViewPortWidth="true" index="0" font="SansSerif,0,11"
+			align="left" borderBottom="0" titleFont="SansSerif,0,11" borderTop="0"
+			trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			useScrollBar="true" title="Basic" layout="twocols" name="BasicTab">
+			<Label id="17" name="StartCellLabel" index="14" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="start_cell" />
+			<Custom id="18" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="StartCellBindingSelector" data="data.startCell" index="15"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="19" name="EndCellLabel" index="16" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="end_cell" />
+			<Custom id="20" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="EndCellBindingSelector" data="data.endCell" index="17"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+		</Tab>
+	</TabPanel>
+	<FIBVariable id="26" name="data"
+		type="org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells" />
+	<LocalizedDictionary id="27">
+		<Localized id="28" value="Avancé" lang="French" key="Advanced" />
+		<Localized id="29" value="Basique" lang="French" key="Basic" />
+	</LocalizedDictionary>
+</Inspector>

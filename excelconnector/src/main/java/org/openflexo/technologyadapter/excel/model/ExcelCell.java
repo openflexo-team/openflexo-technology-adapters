@@ -310,6 +310,13 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 	public PrimitiveType getInferedPrimitiveType();
 
 	/**
+	 * Copy contents and formatting from supplied cell
+	 * 
+	 * @param cellToCopy
+	 */
+	public void copyCellFrom(ExcelCell cellToCopy);
+
+	/**
 	 * Default base implementation for {@link ExcelCell}
 	 * 
 	 * @author sylvain
@@ -897,11 +904,9 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 		 */
 		@Override
 		public String toString() {
-			return "[" + getIdentifier() + "]/" + getCellType().name() + "/"
-					+ (isMerged()
-							? "MergedWith:" + "[" + getTopLeftMergedCell().getIdentifier() + ":"
-									+ getBottomRightMergedCell().getIdentifier() + "]" + "/"
-							: "")
+			return "["
+					+ getIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+							+ getTopLeftMergedCell().getIdentifier() + ":" + getBottomRightMergedCell().getIdentifier() + "]" + "/" : "")
 					+ getDisplayValue();
 		}
 
@@ -1034,5 +1039,19 @@ public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
 		}
 
+		/**
+		 * Copy contents and formatting from supplied cell
+		 * 
+		 * @param cellToCopy
+		 */
+		@Override
+		public void copyCellFrom(ExcelCell cellToCopy) {
+			if (cellToCopy != null) {
+				setCellValue(cellToCopy.getCellValue());
+				getCell().setCellStyle(cellToCopy.getCell() == null ? null : cellToCopy.getCell().getCellStyle());
+			}
+		}
+
 	}
+
 }

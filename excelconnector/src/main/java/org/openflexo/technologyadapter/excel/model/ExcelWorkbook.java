@@ -212,11 +212,6 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 			return (ExcelWorkbookResource) performSuperGetter(FLEXO_RESOURCE);
 		}
 
-		/*@Override
-		public void setResource(FlexoResource<ExcelWorkbook> resource) {
-			this.resource = (ExcelWorkbookResource) resource;
-		}*/
-
 		@Override
 		public String getName() {
 			return getResource().getName();
@@ -291,6 +286,10 @@ public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> 
 			return getResource().getConverter();
 		}
 
+		@Override
+		public String toString() {
+			return super.toString() + "-" + getResource();
+		}
 	}
 
 }

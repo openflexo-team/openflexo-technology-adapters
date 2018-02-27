@@ -81,6 +81,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 	public static final String ROW_INDEX_KEY = "rowIndex";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SHEET_KEY = "sheet";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CELL_TO_COPY_KEY = "cellToCopy";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String IS_ROW_INDEX_KEY = "isRowIndex";
 
@@ -135,20 +137,24 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
+	@Getter(value = CELL_TO_COPY_KEY)
+	@XMLAttribute
+	public DataBinding<ExcelCell> getCellToCopy();
+
+	@Setter(CELL_TO_COPY_KEY)
+	public void setCellToCopy(DataBinding<ExcelCell> cellToCopy);
+
 	public static abstract class AddExcelCellImpl
 			extends TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelCell> implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
 		private DataBinding<Object> value;
-
 		private DataBinding<Integer> columnIndex;
-
 		private DataBinding<Integer> rowIndex;
-
 		private DataBinding<ExcelRow> row;
-
 		private DataBinding<ExcelSheet> sheet;
+		private DataBinding<ExcelCell> cellToCopy;
 
 		private CellType cellType = null;
 
@@ -188,7 +194,12 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 					excelRow = getRow().getBindingValue(evaluationContext);
 				}
 
+				System.out.println("On vient faire AddExcelCell pour row=" + excelRow);
+
 				Integer columnIndex = getColumnIndex().getBindingValue(evaluationContext);
+
+				System.out.println("columnIndex=" + columnIndex);
+
 				// If this is possible, create the cell
 				if (columnIndex != null) {
 					if (excelRow != null) {
@@ -204,6 +215,17 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 									.getConverter();
 							excelCell = converter.convertExcelCellToCell(cell, excelRow, null);*/
 						}
+
+						ExcelCell cellToCopy = getCellToCopy().getBindingValue(evaluationContext);
+
+						System.out.println("excelCell=" + excelCell);
+						System.out.println("cellToCopy=" + cellToCopy);
+						System.out.println("value=" + value);
+
+						if (cellToCopy != null) {
+							excelCell.copyCellFrom(cellToCopy);
+						}
+
 						if (value != null) {
 							excelCell.setCellValue(value);
 						}
@@ -375,15 +397,25 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 			this.sheet = sheet;
 		}
 
-		/*@Override
-		public boolean isRowIndex() {
-			return isRowIndex;
-		}
-		
 		@Override
-		public void setRowIndex(boolean isRowIndex) {
-			this.isRowIndex = isRowIndex;
-		}*/
+		public DataBinding<ExcelCell> getCellToCopy() {
+			if (cellToCopy == null) {
+				cellToCopy = new DataBinding<>(this, ExcelCell.class, DataBinding.BindingDefinitionType.GET);
+				cellToCopy.setBindingName("cellToCopy");
+			}
+			return cellToCopy;
+		}
+
+		@Override
+		public void setCellToCopy(DataBinding<ExcelCell> cellToCopy) {
+			if (cellToCopy != null) {
+				cellToCopy.setOwner(this);
+				cellToCopy.setDeclaredType(ExcelCell.class);
+				cellToCopy.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				cellToCopy.setBindingName("cellToCopy");
+			}
+			this.cellToCopy = cellToCopy;
+		}
 
 	}
 }

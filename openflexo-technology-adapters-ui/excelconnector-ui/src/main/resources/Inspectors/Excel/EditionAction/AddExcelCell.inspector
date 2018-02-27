@@ -67,31 +67,42 @@
 				<Assignment id="18" mandatory="true" value="data"
 					variable="component.bindable" />
 			</Custom>
-			<Label id="19" name="CellTypeLabel" index="16" align="right"
+			<Label id="19" name="CellToCopyLabel" index="16" align="right"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				label="cell type" />
-			<DropDown id="20" data="data.cellType" index="17" localize="true"
+				label="cell_to_copy" />
+			<Custom id="20" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="CustomSelector3" data="data.cellToCopy" index="17"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment id="18" mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="21" name="CellTypeLabel" index="18" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="cell_type" />
+			<DropDown id="22" data="data.cellType" index="19" localize="true"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				format="object.name" showText="true"
 				iteratorClassName="org.openflexo.technologyadapter.excel.model.CellType"
 				showIcon="false" name="DropDown" list="data.availableCellTypes" />
-			<Label id="21" name="ValueLabel" index="18" align="right"
+			<Label id="23" name="ValueLabel" index="20" align="right"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="value" />
-			<Custom id="22" manageDynamicModel="true"
+			<Custom id="24" manageDynamicModel="true"
 				dataClassForComponent="org.openflexo.connie.DataBinding"
 				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
-				name="CustomSelector3" data="data.value" index="19"
+				name="CustomSelector3" data="data.value" index="21"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-				<Assignment id="23" mandatory="true" value="data"
+				<Assignment id="25" mandatory="true" value="data"
 					variable="component.bindable" />
 			</Custom>
 		</Tab>
 	</TabPanel>
-	<FIBVariable id="24" name="data"
+	<FIBVariable id="26" name="data"
 		type="org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell" />
-	<LocalizedDictionary id="25">
-		<Localized id="26" value="Avancé" lang="French" key="Advanced" />
-		<Localized id="27" value="Basique" lang="French" key="Basic" />
+	<LocalizedDictionary id="27">
+		<Localized id="28" value="Avancé" lang="French" key="Advanced" />
+		<Localized id="29" value="Basique" lang="French" key="Basic" />
 	</LocalizedDictionary>
 </Inspector>

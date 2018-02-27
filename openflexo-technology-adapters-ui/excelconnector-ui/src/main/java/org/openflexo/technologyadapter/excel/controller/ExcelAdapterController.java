@@ -60,6 +60,7 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CreateExcelResource;
 import org.openflexo.technologyadapter.excel.fml.editionaction.GenerateExcelResource;
+import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
@@ -194,6 +195,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		}
 		else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(ExcelIconLibrary.EXCEL_GRAPHICAL_ACTION_ICON, IconLibrary.DUPLICATE);
+		}
+		else if (MergeCells.class.isAssignableFrom(editionActionClass)) {
+			return ExcelIconLibrary.EXCEL_CELL_ICON;
 		}
 		else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.IMPORT);
