@@ -59,7 +59,8 @@ public class CreateColumnTableBinding extends FlexoAction<CreateColumnTableBindi
 	private static final Logger logger = Logger.getLogger(CreateColumnTableBinding.class.getPackage().getName());
 
 	public static FlexoActionFactory<CreateColumnTableBinding, DocXTableRole, FMLObject> actionType = new FlexoActionFactory<CreateColumnTableBinding, DocXTableRole, FMLObject>(
-			"create_column_table_binding", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
+			"create_column_table_binding", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -91,7 +92,7 @@ public class CreateColumnTableBinding extends FlexoAction<CreateColumnTableBindi
 
 	private ColumnTableBinding<?, ?> newColumnTableBinding;
 
-	CreateColumnTableBinding(DocXTableRole focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateColumnTableBinding(DocXTableRole focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 
 	}
