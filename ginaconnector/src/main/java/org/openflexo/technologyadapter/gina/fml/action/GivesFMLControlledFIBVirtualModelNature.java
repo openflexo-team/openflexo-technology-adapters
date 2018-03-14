@@ -122,7 +122,7 @@ public class GivesFMLControlledFIBVirtualModelNature extends FlexoAction<GivesFM
 	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
-	GivesFMLControlledFIBVirtualModelNature(FlexoConcept focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private GivesFMLControlledFIBVirtualModelNature(FlexoConcept focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

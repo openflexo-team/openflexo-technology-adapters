@@ -71,7 +71,8 @@ public class CreateFMLControlledDocXVirtualModelInstance
 		FlexoObjectImpl.addActionForClass(CreateFMLControlledDocXVirtualModelInstance.actionType, VirtualModelInstance.class);
 	}
 
-	CreateFMLControlledDocXVirtualModelInstance(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private CreateFMLControlledDocXVirtualModelInstance(FlexoObject focusedObject, Vector<FlexoObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

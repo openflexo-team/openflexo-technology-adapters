@@ -91,7 +91,7 @@ public class ResetGraphicalRepresentations extends FlexoAction<ResetGraphicalRep
 		FlexoObjectImpl.addActionForClass(ResetGraphicalRepresentations.actionType, Diagram.class);
 	}
 
-	ResetGraphicalRepresentations(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private ResetGraphicalRepresentations(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

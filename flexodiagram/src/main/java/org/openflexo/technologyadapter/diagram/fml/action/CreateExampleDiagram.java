@@ -97,7 +97,7 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	private DiagramResource newDiagramResource;
 
-	CreateExampleDiagram(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateExampleDiagram(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

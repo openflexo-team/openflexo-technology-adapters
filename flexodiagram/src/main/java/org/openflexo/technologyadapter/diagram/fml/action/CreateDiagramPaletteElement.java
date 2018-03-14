@@ -88,7 +88,7 @@ public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPalett
 	private DiagramPaletteElement _newElement;
 	private Object _graphicalRepresentation;
 
-	CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

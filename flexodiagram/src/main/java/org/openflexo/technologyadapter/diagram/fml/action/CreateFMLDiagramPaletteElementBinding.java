@@ -93,7 +93,8 @@ public class CreateFMLDiagramPaletteElementBinding
 
 	private String description;
 
-	CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

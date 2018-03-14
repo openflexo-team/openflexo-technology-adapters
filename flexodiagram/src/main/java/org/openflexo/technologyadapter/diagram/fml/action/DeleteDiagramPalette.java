@@ -80,7 +80,7 @@ public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, Diag
 		FlexoObjectImpl.addActionForClass(DeleteDiagramPalette.actionType, DiagramPalette.class);
 	}
 
-	DeleteDiagramPalette(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private DeleteDiagramPalette(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

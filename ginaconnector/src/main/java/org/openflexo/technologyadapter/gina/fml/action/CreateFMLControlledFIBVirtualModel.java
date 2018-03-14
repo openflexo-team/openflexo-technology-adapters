@@ -143,7 +143,7 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
-	CreateFMLControlledFIBVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateFMLControlledFIBVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		apiEntries = new ArrayList<>();
 	}

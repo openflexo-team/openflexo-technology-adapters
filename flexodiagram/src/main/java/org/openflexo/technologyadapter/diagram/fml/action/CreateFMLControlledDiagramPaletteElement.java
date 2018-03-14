@@ -97,7 +97,7 @@ public class CreateFMLControlledDiagramPaletteElement
 	private DropScheme dropScheme;
 	private DiagramPalette palette;
 
-	CreateFMLControlledDiagramPaletteElement(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateFMLControlledDiagramPaletteElement(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

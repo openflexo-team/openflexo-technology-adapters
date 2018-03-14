@@ -94,7 +94,7 @@ public class RefreshDiagramElement extends FlexoAction<RefreshDiagramElement, Di
 		FlexoObjectImpl.addActionForClass(RefreshDiagramElement.actionType, DiagramConnector.class);
 	}
 
-	RefreshDiagramElement(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private RefreshDiagramElement(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

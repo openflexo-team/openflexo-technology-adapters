@@ -96,7 +96,7 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 
 	private boolean automaticallyCreateConnector = false;
 
-	AddConnector(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private AddConnector(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

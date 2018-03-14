@@ -94,7 +94,7 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	private DiagramPalette _newPalette;
 
-	CreateDiagramPalette(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagramPalette(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

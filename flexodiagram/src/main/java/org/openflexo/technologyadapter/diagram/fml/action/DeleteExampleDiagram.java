@@ -79,7 +79,7 @@ public class DeleteExampleDiagram extends FlexoAction<DeleteExampleDiagram, Diag
 		FlexoObjectImpl.addActionForClass(DeleteExampleDiagram.actionType, Diagram.class);
 	}
 
-	DeleteExampleDiagram(Diagram focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private DeleteExampleDiagram(Diagram focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

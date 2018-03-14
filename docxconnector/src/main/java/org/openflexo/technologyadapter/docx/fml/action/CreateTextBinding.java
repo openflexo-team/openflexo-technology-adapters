@@ -93,7 +93,7 @@ public class CreateTextBinding extends FlexoAction<CreateTextBinding, DocXFragme
 
 	private TextBinding<?, ?> newTextBinding;
 
-	CreateTextBinding(DocXFragmentRole focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateTextBinding(DocXFragmentRole focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 
 	}

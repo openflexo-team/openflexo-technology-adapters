@@ -82,7 +82,7 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 		FlexoObjectImpl.addActionForClass(DeleteDiagramSpecification.actionType, DiagramSpecification.class);
 	}
 
-	DeleteDiagramSpecification(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private DeleteDiagramSpecification(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

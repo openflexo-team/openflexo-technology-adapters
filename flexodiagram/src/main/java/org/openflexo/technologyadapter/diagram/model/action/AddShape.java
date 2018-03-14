@@ -96,7 +96,7 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 	private boolean nameSetToNull = false;
 	private FGEPoint dropLocation;
 
-	AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

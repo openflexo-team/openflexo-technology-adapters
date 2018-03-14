@@ -103,7 +103,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	private DiagramSpecification newDiagramSpecification;
 
-	CreateDiagramSpecification(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagramSpecification(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

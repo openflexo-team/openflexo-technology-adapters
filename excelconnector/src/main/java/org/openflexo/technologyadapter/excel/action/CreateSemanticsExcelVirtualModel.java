@@ -139,7 +139,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 	private JDBCConnection jdbcConnection = null;
 	private List<JDBCTable> tablesToBeReflected;*/
 
-	CreateSemanticsExcelVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateSemanticsExcelVirtualModel(FlexoObject focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -241,7 +241,7 @@ public class CreateSemanticsExcelVirtualModel extends AbstractCreateNatureSpecif
 				propertySpec.property = conceptSpecification.concept.getDeclaredProperty(propertySpec.getPropertyName());
 				switch (propertySpec.getMappingType()) {
 					case Primitive:
-						SEColumnRole<?> columnRole = (SEColumnRole) propertySpec.property;
+						SEColumnRole<?> columnRole = (SEColumnRole<?>) propertySpec.property;
 						columnRole.setColumnIndex(propertySpec.getCell().getColumnIndex());
 						columnRole.setPrimitiveType(propertySpec.getPrimitiveType());
 						break;
