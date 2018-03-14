@@ -183,7 +183,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 			return ExcelCell.class;
 		}
 
-		public Object getValue(FlexoBehaviourAction action) {
+		public Object getValue(FlexoBehaviourAction<?, ?, ?> action) {
 			try {
 				return getValue().getBindingValue(action);
 			} catch (TypeMismatchException e) {
