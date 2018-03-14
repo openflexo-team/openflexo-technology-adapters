@@ -39,13 +39,15 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -65,7 +67,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramPaletteElement> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
 				return true;*/
@@ -97,7 +99,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramPaletteElement> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewElement());
 			return true;
@@ -105,7 +107,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateDiagramPaletteElement, DiagramPalette, FMLObject> actionType) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

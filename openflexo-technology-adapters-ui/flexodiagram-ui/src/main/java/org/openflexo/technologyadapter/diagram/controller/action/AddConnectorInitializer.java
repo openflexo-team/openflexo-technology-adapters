@@ -39,21 +39,25 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.swing.view.JConnectorView;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddConnector;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class AddConnectorInitializer extends ActionInitializer {
+public class AddConnectorInitializer extends ActionInitializer<AddConnector, DiagramShape, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -62,7 +66,7 @@ public class AddConnectorInitializer extends ActionInitializer {
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddConnector> getDefaultInitializer() {
+	protected FlexoActionInitializer<AddConnector, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 			if (action.getAutomaticallyCreateConnector()) {
 				/*String newName = FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_connector"));
@@ -77,7 +81,7 @@ public class AddConnectorInitializer extends ActionInitializer {
 			roles.setShowReset(false);
 			roles.setFormatter("name");
 			TextFieldParameter annotation = new TextFieldParameter("Annotation","annotation","");
-
+			
 			AskParametersDialog dialog = AskParametersDialog.createAskParametersDialog(getProject(), null, FlexoLocalization.localizedForKey("specialize_a_new_role"), FlexoLocalization.localizedForKey("please_select_a_role"), roles, annotation);
 			if (dialog.getStatus() == AskParametersDialog.VALIDATE) {
 				Role parentRole =  roles.getValue();
@@ -95,7 +99,7 @@ public class AddConnectorInitializer extends ActionInitializer {
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddConnector> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<AddConnector, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (action.getConnector() != null) {
 				getController().getSelectionManager().setSelectedObject(action.getConnector());
@@ -106,11 +110,12 @@ public class AddConnectorInitializer extends ActionInitializer {
 							.getConnectorNode(action.getConnector());
 					connectorView = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawingView()
 							.connectorViewForNode(connectorNode);
-				} else if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+				}
+				else if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
 					connectorNode = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
 							.getConnectorNode(action.getConnector());
-					connectorView = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor()
-							.getDrawingView().connectorViewForNode(connectorNode);
+					connectorView = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawingView()
+							.connectorViewForNode(connectorNode);
 				}
 				if (connectorView != null && action.getConnector() != null) {
 					if (connectorView.getLabelView() != null) {
@@ -125,7 +130,7 @@ public class AddConnectorInitializer extends ActionInitializer {
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<AddConnector, DiagramShape, DiagramElement<?>> actionType) {
 		return DiagramIconLibrary.CONNECTOR_ICON;
 	}
 

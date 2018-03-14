@@ -39,20 +39,20 @@
 
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
+import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.action.AddAnnotationStatement;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class AddAnnotationStatementInitializer extends ActionInitializer {
+public class AddAnnotationStatementInitializer extends ActionInitializer<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -62,28 +62,20 @@ public class AddAnnotationStatementInitializer extends ActionInitializer {
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddAnnotationStatement> getDefaultInitializer() {
-		return new FlexoActionInitializer<AddAnnotationStatement>() {
-			@Override
-			public boolean run(EventObject e, final AddAnnotationStatement action) {
-				return false;
-			}
+	protected FlexoActionInitializer<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
+		return (e, action) -> false;
+	}
+
+	@Override
+	protected FlexoActionFinalizer<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
+		return (e, action) -> {
+			// ((OEController)getController()).getSelectionManager().setSelectedObject(action.getNewStatement());
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddAnnotationStatement> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<AddAnnotationStatement>() {
-			@Override
-			public boolean run(EventObject e, AddAnnotationStatement action) {
-				// ((OEController)getController()).getSelectionManager().setSelectedObject(action.getNewStatement());
-				return true;
-			}
-		};
-	}
-
-	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> actionType) {
 		return OWLIconLibrary.ONTOLOGY_STATEMENT_ICON;
 	}
 

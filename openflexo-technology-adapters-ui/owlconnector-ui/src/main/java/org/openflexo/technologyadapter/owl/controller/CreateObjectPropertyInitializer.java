@@ -39,15 +39,13 @@
 
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -64,28 +62,20 @@ public class CreateObjectPropertyInitializer extends ActionInitializer<CreateObj
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateObjectProperty> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateObjectProperty>() {
-			@Override
-			public boolean run(EventObject e, CreateObjectProperty action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_OBJECT_PROPERTY_DIALOG_FIB);
-			}
+	protected FlexoActionInitializer<CreateObjectProperty, OWLObject, OWLConcept<?>> getDefaultInitializer() {
+		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_OBJECT_PROPERTY_DIALOG_FIB);
+	}
+
+	@Override
+	protected FlexoActionFinalizer<CreateObjectProperty, OWLObject, OWLConcept<?>> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewProperty());
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateObjectProperty> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateObjectProperty>() {
-			@Override
-			public boolean run(EventObject e, CreateObjectProperty action) {
-				getController().getSelectionManager().setSelectedObject((FlexoObject) action.getNewProperty());
-				return true;
-			}
-		};
-	}
-
-	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateObjectProperty, OWLObject, OWLConcept<?>> actionType) {
 		return OWLIconLibrary.ONTOLOGY_OBJECT_PROPERTY_ICON;
 	}
 

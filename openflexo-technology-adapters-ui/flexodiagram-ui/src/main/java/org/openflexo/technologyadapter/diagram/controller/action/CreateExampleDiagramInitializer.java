@@ -66,7 +66,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateExampleDiagram> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateExampleDiagramWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -81,7 +81,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateExampleDiagram> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
@@ -90,7 +90,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateExampleDiagram, DiagramSpecification, FMLObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

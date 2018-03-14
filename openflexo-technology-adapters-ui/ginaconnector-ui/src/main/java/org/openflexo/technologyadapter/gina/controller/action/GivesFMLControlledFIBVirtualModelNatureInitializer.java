@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.gina.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -70,37 +69,30 @@ public class GivesFMLControlledFIBVirtualModelNatureInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<GivesFMLControlledFIBVirtualModelNature> getDefaultInitializer() {
-		return new FlexoActionInitializer<GivesFMLControlledFIBVirtualModelNature>() {
-			@Override
-			public boolean run(EventObject e, GivesFMLControlledFIBVirtualModelNature action) {
-				Wizard wizard = new GivesFMLControlledFIBVirtualModelNatureWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
+	protected FlexoActionInitializer<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> getDefaultInitializer() {
+		return (e, action) -> {
+			Wizard wizard = new GivesFMLControlledFIBVirtualModelNatureWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
 			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<GivesFMLControlledFIBVirtualModelNature> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<GivesFMLControlledFIBVirtualModelNature>() {
-			@Override
-			public boolean run(EventObject e, GivesFMLControlledFIBVirtualModelNature action) {
-
-				getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
-				getController().selectAndFocusObject(action.getFocusedObject());
-				return true;
-			}
+	protected FlexoActionFinalizer<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
+			getController().selectAndFocusObject(action.getFocusedObject());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<GivesFMLControlledFIBVirtualModelNature, FlexoConcept, FMLObject> actionType) {
 		return IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 

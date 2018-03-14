@@ -39,12 +39,14 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -66,7 +68,7 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddShape> getDefaultInitializer() {
+	protected FlexoActionInitializer<AddShape, DiagramContainerElement<?>, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 			if ((action.getNewShapeName() != null || action.isNameSetToNull()) && action.getParent() != null) {
 				return true;
@@ -86,7 +88,7 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddShape> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<AddShape, DiagramContainerElement<?>, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 
 			getController().getSelectionManager().setSelectedObject(action.getNewShape());
@@ -116,7 +118,7 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<AddShape, DiagramContainerElement<?>, DiagramElement<?>> actionType) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

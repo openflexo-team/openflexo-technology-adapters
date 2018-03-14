@@ -65,8 +65,8 @@ public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance> getDefaultInitializer() {
-		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance>() {
+	protected FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultInitializer() {
+		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
 				DiagramTechnologyAdapter diagramTA = action.getServiceManager().getTechnologyAdapterService()
@@ -84,19 +84,17 @@ public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance>() {
-			@Override
-			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
-				getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
-				getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject());
-				return true;
-			}
+	protected FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
+			getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

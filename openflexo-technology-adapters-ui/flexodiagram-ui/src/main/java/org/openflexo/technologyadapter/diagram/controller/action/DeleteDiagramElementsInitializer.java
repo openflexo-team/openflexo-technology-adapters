@@ -39,11 +39,14 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
+
 import org.openflexo.FlexoCst;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -60,7 +63,7 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteDiagramElements> getDefaultInitializer() {
+	protected FlexoActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 			getController().getSelectionManager().resetSelection();
 			return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
@@ -68,7 +71,7 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeleteDiagramElements> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
 					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
@@ -79,7 +82,7 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

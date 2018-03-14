@@ -43,9 +43,9 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ResetGraphicalRepresentations;
@@ -63,8 +63,8 @@ public class ResetGraphicalRepresentationInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<ResetGraphicalRepresentations> getDefaultInitializer() {
-		return new FlexoActionInitializer<ResetGraphicalRepresentations>() {
+	protected FlexoActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
+		return new FlexoActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>>() {
 			@Override
 			public boolean run(EventObject e, ResetGraphicalRepresentations action) {
 				return FlexoController
@@ -74,17 +74,12 @@ public class ResetGraphicalRepresentationInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<ResetGraphicalRepresentations> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<ResetGraphicalRepresentations>() {
-			@Override
-			public boolean run(EventObject e, ResetGraphicalRepresentations action) {
-				return true;
-			}
-		};
+	protected FlexoActionFinalizer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> getDefaultFinalizer() {
+		return (e, action) -> true;
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> actionType) {
 		return IconLibrary.REFRESH_ICON;
 	}
 

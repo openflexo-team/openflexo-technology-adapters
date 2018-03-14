@@ -39,14 +39,13 @@
 
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -63,28 +62,20 @@ public class CreateOntologyClassInitializer extends ActionInitializer<CreateOnto
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateOntologyClass> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateOntologyClass>() {
-			@Override
-			public boolean run(EventObject e, CreateOntologyClass action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);
-			}
+	protected FlexoActionInitializer<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultInitializer() {
+		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);
+	}
+
+	@Override
+	protected FlexoActionFinalizer<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewClass());
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateOntologyClass> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateOntologyClass>() {
-			@Override
-			public boolean run(EventObject e, CreateOntologyClass action) {
-				getController().getSelectionManager().setSelectedObject(action.getNewClass());
-				return true;
-			}
-		};
-	}
-
-	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateOntologyClass, OWLObject, OWLConcept<?>> actionType) {
 		return OWLIconLibrary.ONTOLOGY_CLASS_ICON;
 	}
 

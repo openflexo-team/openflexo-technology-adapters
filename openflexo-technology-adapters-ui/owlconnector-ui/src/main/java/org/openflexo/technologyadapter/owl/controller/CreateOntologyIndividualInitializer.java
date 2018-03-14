@@ -39,14 +39,13 @@
 
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -63,28 +62,20 @@ public class CreateOntologyIndividualInitializer extends ActionInitializer<Creat
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateOntologyIndividual> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateOntologyIndividual>() {
-			@Override
-			public boolean run(EventObject e, CreateOntologyIndividual action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_INDIVIDUAL_FIB);
-			}
+	protected FlexoActionInitializer<CreateOntologyIndividual, OWLObject, OWLConcept<?>> getDefaultInitializer() {
+		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_INDIVIDUAL_FIB);
+	}
+
+	@Override
+	protected FlexoActionFinalizer<CreateOntologyIndividual, OWLObject, OWLConcept<?>> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewIndividual());
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateOntologyIndividual> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateOntologyIndividual>() {
-			@Override
-			public boolean run(EventObject e, CreateOntologyIndividual action) {
-				getController().getSelectionManager().setSelectedObject(action.getNewIndividual());
-				return true;
-			}
-		};
-	}
-
-	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateOntologyIndividual, OWLObject, OWLConcept<?>> actionType) {
 		return OWLIconLibrary.ONTOLOGY_INDIVIDUAL_ICON;
 	}
 

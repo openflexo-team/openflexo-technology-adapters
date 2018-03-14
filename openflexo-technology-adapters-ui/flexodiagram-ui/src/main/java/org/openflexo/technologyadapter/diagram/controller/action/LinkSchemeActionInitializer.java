@@ -70,8 +70,8 @@ public class LinkSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<LinkSchemeAction> getDefaultInitializer() {
-		return new FlexoActionInitializer<LinkSchemeAction>() {
+	protected FlexoActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
+		return new FlexoActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>() {
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
 				getController().willExecute(action);
@@ -86,13 +86,10 @@ public class LinkSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<LinkSchemeAction> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<LinkSchemeAction>() {
-			@Override
-			public boolean run(EventObject e, LinkSchemeAction action) {
-				getController().getSelectionManager().setSelectedObject(action.getNewConnector());
-				return true;
-			}
+	protected FlexoActionFinalizer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewConnector());
+			return true;
 		};
 	}
 
@@ -111,7 +108,8 @@ public class LinkSchemeActionInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

@@ -72,7 +72,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramPalette> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			try {
@@ -104,7 +104,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
@@ -113,7 +113,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionFactory) {
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_PALETTE_ICON, IconLibrary.NEW_MARKER);
 	}
 

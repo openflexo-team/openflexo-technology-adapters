@@ -70,7 +70,7 @@ public class CreatePaletteElementFromFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreatePaletteElementFromFlexoConcept> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -99,7 +99,7 @@ public class CreatePaletteElementFromFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreatePaletteElementFromFlexoConcept> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getPalette());
@@ -109,7 +109,7 @@ public class CreatePaletteElementFromFlexoConceptInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_PALETTE_ICON;
 	}
 

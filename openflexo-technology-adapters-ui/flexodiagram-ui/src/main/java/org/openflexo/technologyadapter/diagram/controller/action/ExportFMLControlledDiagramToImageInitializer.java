@@ -38,19 +38,19 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class ExportFMLControlledDiagramToImageInitializer extends ActionInitializer<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> {
+public class ExportFMLControlledDiagramToImageInitializer
+		extends ActionInitializer<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -59,17 +59,13 @@ public class ExportFMLControlledDiagramToImageInitializer extends ActionInitiali
 	}
 
 	@Override
-	protected FlexoActionInitializer<ExportFMLControlledDiagramToImageAction> getDefaultInitializer() {
-		return new FlexoActionInitializer<ExportFMLControlledDiagramToImageAction>() {
-			@Override
-			public boolean run(EventObject e, ExportFMLControlledDiagramToImageAction action) {
-				return action.saveAsImage();
-			}
-		};
+	protected FlexoActionInitializer<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> getDefaultInitializer() {
+		return (e, action) -> action.saveAsImage();
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> actionType) {
 		return IconLibrary.EXPORT_ICON;
 	}
 

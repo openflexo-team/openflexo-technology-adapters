@@ -44,9 +44,9 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
@@ -67,8 +67,8 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementIniti
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement>() {
+	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement action) {
 				action.setImage((DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_32X32).getImage());
@@ -79,13 +79,8 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementIniti
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement action) {
-				return true;
-			}
-		};
+	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> getDefaultFinalizer() {
+		return (e, action) -> true;
 	}
 
 	@Override
@@ -104,7 +99,8 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementIniti
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> actionType) {
 		return DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 	}
 

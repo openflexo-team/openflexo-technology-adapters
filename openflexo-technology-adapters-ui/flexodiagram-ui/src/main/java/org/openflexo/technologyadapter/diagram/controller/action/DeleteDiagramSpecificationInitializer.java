@@ -39,9 +39,11 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+
+import javax.swing.Icon;
+
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramSpecification;
@@ -60,13 +62,13 @@ public class DeleteDiagramSpecificationInitializer extends ActionInitializer<Del
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteDiagramSpecification> getDefaultInitializer() {
+	protected FlexoActionInitializer<DeleteDiagramSpecification, DiagramSpecification, FMLObject> getDefaultInitializer() {
 		return (e, action) -> FlexoController
 				.confirm(action.getLocales().localizedForKey("would_you_really_like_to_delete_this_diagram_specification"));
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<DeleteDiagramSpecification, DiagramSpecification, FMLObject> actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

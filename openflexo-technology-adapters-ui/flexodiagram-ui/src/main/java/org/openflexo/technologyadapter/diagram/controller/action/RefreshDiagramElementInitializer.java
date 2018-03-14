@@ -58,7 +58,7 @@ public class RefreshDiagramElementInitializer extends ActionInitializer<RefreshD
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<RefreshDiagramElement, DiagramElement<?>, DiagramElement<?>> actionType) {
 		return IconLibrary.REFRESH_ICON;
 	}
 

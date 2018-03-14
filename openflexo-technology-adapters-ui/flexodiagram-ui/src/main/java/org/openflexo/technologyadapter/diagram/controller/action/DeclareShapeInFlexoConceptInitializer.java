@@ -39,12 +39,14 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
@@ -66,7 +68,7 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeclareShapeInFlexoConcept> getDefaultInitializer() {
+	protected FlexoActionInitializer<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -94,7 +96,7 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeclareShapeInFlexoConcept> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			// TODO: try to switch first to ViewPointModeller !!!
 			getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
@@ -104,7 +106,7 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> actionType) {
 		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 }

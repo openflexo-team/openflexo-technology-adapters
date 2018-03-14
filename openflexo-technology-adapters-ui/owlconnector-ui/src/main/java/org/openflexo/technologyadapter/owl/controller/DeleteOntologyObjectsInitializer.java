@@ -39,14 +39,13 @@
 
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.action.DeleteOntologyObjects;
@@ -62,31 +61,23 @@ public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOn
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteOntologyObjects> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteOntologyObjects>() {
-			@Override
-			public boolean run(EventObject e, DeleteOntologyObjects action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB);
+	protected FlexoActionInitializer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
+		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB);
+	}
+
+	@Override
+	protected FlexoActionFinalizer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
+		return (e, action) -> {
+			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
+					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
+				getControllerActionInitializer().getController().getSelectionManager().resetSelection();
 			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeleteOntologyObjects> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteOntologyObjects>() {
-			@Override
-			public boolean run(EventObject e, DeleteOntologyObjects action) {
-				if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
-						&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
-					getControllerActionInitializer().getController().getSelectionManager().resetSelection();
-				}
-				return true;
-			}
-		};
-	}
-
-	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 
@@ -94,7 +85,7 @@ public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOn
 	protected KeyStroke getShortcut() {
 		return KeyStroke.getKeyStroke(FlexoCst.BACKSPACE_DELETE_KEY_CODE, 0);
 	}
-
+	
 	@Override
 	public void init() {
 		super.init();

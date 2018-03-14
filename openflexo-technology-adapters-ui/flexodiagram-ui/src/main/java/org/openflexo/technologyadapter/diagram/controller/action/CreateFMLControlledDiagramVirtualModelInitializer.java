@@ -69,7 +69,7 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateFMLControlledDiagramVirtualModelWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -83,7 +83,7 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel, FlexoObject, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().selectAndFocusObject(action.getNewVirtualModel());
@@ -92,7 +92,7 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLControlledDiagramVirtualModel, FlexoObject, FMLObject> actionType) {
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 

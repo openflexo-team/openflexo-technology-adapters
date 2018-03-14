@@ -66,7 +66,7 @@ public class CreateSemanticsExcelVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateSemanticsExcelVirtualModel> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateSemanticsExcelVirtualModelWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -80,7 +80,7 @@ public class CreateSemanticsExcelVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateSemanticsExcelVirtualModel> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> true;
 	}
 
@@ -102,7 +102,7 @@ public class CreateSemanticsExcelVirtualModelInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> actionType) {
 		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_ICON, FMLIconLibrary.NEW_MARKER);
 	}
 

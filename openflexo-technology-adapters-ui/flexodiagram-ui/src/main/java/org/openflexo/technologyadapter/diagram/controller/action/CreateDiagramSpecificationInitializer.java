@@ -39,12 +39,14 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.gina.controller.FIBController.Status;
@@ -63,7 +65,7 @@ public class CreateDiagramSpecificationInitializer extends ActionInitializer<Cre
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramSpecification> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateDiagramSpecification, RepositoryFolder, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateDiagramSpecificationWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -78,7 +80,7 @@ public class CreateDiagramSpecificationInitializer extends ActionInitializer<Cre
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramSpecification> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateDiagramSpecification, RepositoryFolder, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().selectAndFocusObject(action.getNewDiagramSpecification());
 			return true;
@@ -86,7 +88,7 @@ public class CreateDiagramSpecificationInitializer extends ActionInitializer<Cre
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateDiagramSpecification, RepositoryFolder, FMLObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 	}
 

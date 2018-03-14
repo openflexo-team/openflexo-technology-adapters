@@ -50,8 +50,8 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeleteDiagramPaletteElementInitializer extends
-		ActionInitializer<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> {
+public class DeleteDiagramPaletteElementInitializer
+		extends ActionInitializer<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -61,7 +61,7 @@ public class DeleteDiagramPaletteElementInitializer extends
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

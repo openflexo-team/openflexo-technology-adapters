@@ -74,8 +74,8 @@ public class DropSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<DropSchemeAction> getDefaultInitializer() {
-		return new FlexoActionInitializer<DropSchemeAction>() {
+	protected FlexoActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
+		return new FlexoActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>() {
 			@Override
 			public boolean run(EventObject e, DropSchemeAction action) {
 				getController().willExecute(action);
@@ -101,7 +101,7 @@ public class DropSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DropSchemeAction> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			/*	DiagramShape shape = action.getPrimaryShape();
 				logger.info("border5 = " + ((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation()).getBorder());
@@ -151,7 +151,8 @@ public class DropSchemeActionInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

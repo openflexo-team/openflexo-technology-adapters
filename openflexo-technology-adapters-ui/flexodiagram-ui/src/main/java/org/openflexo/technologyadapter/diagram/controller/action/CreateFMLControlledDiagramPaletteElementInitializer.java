@@ -39,19 +39,21 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateFMLControlledDiagramPaletteElementInitializer extends
-		ActionInitializer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
+public class CreateFMLControlledDiagramPaletteElementInitializer
+		extends ActionInitializer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -61,7 +63,7 @@ public class CreateFMLControlledDiagramPaletteElementInitializer extends
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledDiagramPaletteElement> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			// TODO
 			return true;
@@ -69,7 +71,7 @@ public class CreateFMLControlledDiagramPaletteElementInitializer extends
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledDiagramPaletteElement> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewElement());
 			return true;
@@ -77,7 +79,7 @@ public class CreateFMLControlledDiagramPaletteElementInitializer extends
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> actionType) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

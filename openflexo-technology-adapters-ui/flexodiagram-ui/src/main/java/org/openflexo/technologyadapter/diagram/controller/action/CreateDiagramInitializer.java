@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -69,32 +68,24 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagram> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagram>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagram action) {
-				if (action.skipChoosePopup) {
-					return true;
-				}
-				else {
-
-					Wizard wizard = new CreateDiagramWizard(action, getController());
-					WizardDialog dialog = new WizardDialog(wizard, getController());
-					dialog.showDialog();
-					if (dialog.getStatus() != Status.VALIDATED) {
-						// Operation cancelled
-						return false;
-					}
-					return true;
-
-				}
-
+	protected FlexoActionInitializer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultInitializer() {
+		return (e, action) -> {
+			if (action.skipChoosePopup) {
+				return true;
 			}
+			Wizard wizard = new CreateDiagramWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagram> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
 			getController().selectAndFocusObject(action.getNewDiagram());
@@ -114,7 +105,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

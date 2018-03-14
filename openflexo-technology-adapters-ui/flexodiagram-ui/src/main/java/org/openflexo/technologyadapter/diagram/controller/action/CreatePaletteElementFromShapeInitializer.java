@@ -70,7 +70,7 @@ public class CreatePaletteElementFromShapeInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreatePaletteElementFromShape> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -99,7 +99,7 @@ public class CreatePaletteElementFromShapeInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreatePaletteElementFromShape> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			// Switch to palette if in DiagramPerspective
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
@@ -110,7 +110,7 @@ public class CreatePaletteElementFromShapeInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> actionType) {
 		return DiagramIconLibrary.DIAGRAM_PALETTE_ICON;
 	}
 

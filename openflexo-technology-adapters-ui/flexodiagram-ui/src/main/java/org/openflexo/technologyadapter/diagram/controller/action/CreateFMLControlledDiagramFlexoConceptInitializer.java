@@ -70,7 +70,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFlexoConcept> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			action.setDefineSomeBehaviours(true);
 			Wizard wizard;
@@ -97,7 +97,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFlexoConcept> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (action.switchNewlyCreatedFlexoConcept) {
 				if (action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
@@ -110,7 +110,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFlexoConcept, FlexoConceptObject, FMLObject> actionType) {
 		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 

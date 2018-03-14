@@ -39,11 +39,13 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
@@ -65,12 +67,12 @@ public class CreateFMLDiagramPaletteElementBindingInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBinding> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> true;
 	}
 
@@ -89,7 +91,7 @@ public class CreateFMLDiagramPaletteElementBindingInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

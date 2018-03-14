@@ -70,34 +70,32 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultInitializer() {
+	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (action.skipChoosePopup()) {
 				return true;
 			}
-			else {
-				if (action.getFocusedObject() instanceof FMLRTVirtualModelInstance
-						&& ((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel() != null) {
-					// @Brutal
-					// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
-					((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel()
-							.loadContainedVirtualModelsWhenUnloaded();
-				}
-				Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
+			if (action.getFocusedObject() instanceof FMLRTVirtualModelInstance
+					&& ((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel() != null) {
+				// @Brutal
+				// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
+				((FMLRTVirtualModelInstance) action.getFocusedObject()).getVirtualModel().getContainerVirtualModel()
+						.loadContainedVirtualModelsWhenUnloaded();
 			}
+			Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultFinalizer() {
+	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			return true;
@@ -116,7 +114,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 
