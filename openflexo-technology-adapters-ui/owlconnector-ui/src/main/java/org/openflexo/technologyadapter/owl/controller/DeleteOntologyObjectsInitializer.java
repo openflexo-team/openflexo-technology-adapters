@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.owl.model.action.DeleteOntologyObjects;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOntologyObjects, OWLConcept, OWLConcept> {
+public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 

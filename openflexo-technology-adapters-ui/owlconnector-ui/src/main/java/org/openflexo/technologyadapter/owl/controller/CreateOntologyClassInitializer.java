@@ -54,7 +54,7 @@ import org.openflexo.technologyadapter.owl.model.action.CreateOntologyClass;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateOntologyClassInitializer extends ActionInitializer<CreateOntologyClass, OWLObject, OWLConcept> {
+public class CreateOntologyClassInitializer extends ActionInitializer<CreateOntologyClass, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 

@@ -55,7 +55,7 @@ import org.openflexo.technologyadapter.owl.model.action.CreateObjectProperty;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateObjectPropertyInitializer extends ActionInitializer<CreateObjectProperty, OWLObject, OWLConcept> {
+public class CreateObjectPropertyInitializer extends ActionInitializer<CreateObjectProperty, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 

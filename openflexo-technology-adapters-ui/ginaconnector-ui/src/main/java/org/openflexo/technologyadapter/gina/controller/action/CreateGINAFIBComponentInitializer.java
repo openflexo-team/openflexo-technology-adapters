@@ -55,10 +55,11 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
 import org.openflexo.technologyadapter.gina.model.action.CreateGINAFIBComponent;
+import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateGINAFIBComponentInitializer extends ActionInitializer<CreateGINAFIBComponent, RepositoryFolder, FlexoObject> {
+public class CreateGINAFIBComponentInitializer extends ActionInitializer<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());

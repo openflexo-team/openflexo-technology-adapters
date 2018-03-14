@@ -83,7 +83,7 @@ import org.openflexo.view.listener.FlexoActionButton;
  */
 @SuppressWarnings("serial")
 public class FMLControlledDocXDocumentModuleView extends JPanel implements ModuleView<FMLRTVirtualModelInstance>,
-		FlexoActionSource<FlexoConceptInstance, VirtualModelInstanceObject>, PropertyChangeListener {
+		FlexoActionSource, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDocXDocumentModuleView.class.getPackage().getName());
@@ -124,7 +124,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 		for (ActionScheme actionScheme : virtualModelInstance.getVirtualModel().getActionSchemes()) {
 			FlexoActionFactory<ActionSchemeAction, FlexoConceptInstance, VirtualModelInstanceObject> actionType = new ActionSchemeActionFactory(
 					actionScheme, virtualModelInstance);
-			topPanel.add(new FlexoActionButton<>(actionType, this, perspective.getController()));
+			topPanel.add(new FlexoActionButton(actionType, this, perspective.getController()));
 		}
 		add(topPanel, BorderLayout.NORTH);
 
