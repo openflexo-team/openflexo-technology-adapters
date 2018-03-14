@@ -115,8 +115,9 @@ public class FMLControlledFIBNaturePerspective extends SpecificNaturePerspective
 	protected ModuleView<? extends VirtualModelInstance<?, ?>> createModuleViewForVirtualModelInstance(
 			FMLRTVirtualModelInstance vmInstance) {
 		if (vmInstance.hasNature(getVirtualModelInstanceNature())) {
-			return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
-					getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
+			FlexoController controller = getController();
+			return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, controller, this,
+					controller.getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
 		}
 		return new VirtualModelInstanceView(vmInstance, getController(), this);
 	}

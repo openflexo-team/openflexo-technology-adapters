@@ -47,6 +47,7 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -97,9 +98,10 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		if (getResource() != null && getResource().getServiceManager() != null) {
-			return getResource().getServiceManager().getService(TechnologyAdapterService.class)
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		if (getResource() != null) {
+			FlexoServiceManager sm = getResource().getServiceManager();
+			if (sm != null)
+				return sm.getService(TechnologyAdapterService.class).getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 		return null;
 	}
