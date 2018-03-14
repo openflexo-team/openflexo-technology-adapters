@@ -75,7 +75,7 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 	public static FlexoEditor editor;
 
-	private static GINAFIBComponentResource componentResource;
+	// Unused private static GINAFIBComponentResource componentResource;
 
 	/**
 	 * Initialize
@@ -90,13 +90,11 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 		assertNotNull(applicationContext);
 
-		technologicalAdapter = applicationContext.getTechnologyAdapterService()
-				.getTechnologyAdapter(GINATechnologyAdapter.class);
+		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 
 		assertNotNull(technologicalAdapter);
 
-		resourceCenter = serviceManager.getResourceCenterService()
-				.getFlexoResourceCenter("http://openflexo.org/gina-test");
+		resourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/gina-test");
 
 		assertNotNull(resourceCenter);
 

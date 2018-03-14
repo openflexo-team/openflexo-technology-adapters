@@ -118,10 +118,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			rootInfo = REreader.readRootElement(getIODelegate().getSerializationArtefactAsResource());
 			return rootInfo.getURI();
 		}
-		else {
-			return this.getModel().getMetaModel().getURI();
-		}
-
+		return this.getModel().getMetaModel().getURI();
 	}
 
 	public static final String getTargetNamespace(File f) throws IOException {
@@ -130,9 +127,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			rootInfo = REreader.readRootElement(f);
 			return rootInfo.getURI();
 		}
-		else {
-			throw new IOException("File Not Found ");
-		}
+		throw new IOException("File Not Found ");
 	}
 
 	@Override

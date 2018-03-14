@@ -44,7 +44,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -63,7 +62,6 @@ import javax.swing.ImageIcon;
 
 import org.apache.poi.ddf.EscherProperties;
 import org.apache.poi.hslf.model.AutoShape;
-import org.apache.poi.hslf.model.Freeform;
 import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
@@ -94,8 +92,6 @@ import org.openflexo.fge.TextStyle;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.connectors.ConnectorSymbol.EndSymbolType;
 import org.openflexo.fge.connectors.ConnectorSymbol.StartSymbolType;
-import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.fge.shapes.Polygon;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
@@ -137,8 +133,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private File file;
 	private Slide slide;
 
-	public AbstractCreateDiagramFromPPTSlide(FlexoActionFactory<A, T, FMLObject> actionType, T focusedObject,
-			Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	protected AbstractCreateDiagramFromPPTSlide(FlexoActionFactory actionType, T focusedObject, Vector<FMLObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -249,10 +245,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			return false;
 		}
 
-		else {
-			errorMessage = "";
-		}
-
+		errorMessage = "";
 		System.out.println("VALID");
 
 		return true;
@@ -712,43 +705,45 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return shape;
 	}
 
+	/* Unused 
 	private DiagramShape makeFreeformShape(Freeform freeformShape) {
-		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(freeformShape), getDiagram());
-		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-		gr.setShapeType(ShapeType.CUSTOM_POLYGON);
-		Polygon ss = ((Polygon) gr.getShapeSpecification());
-		PathIterator pi = freeformShape.getPath().getPathIterator(null);
-		double[] coordinates = new double[6];
-		while (pi.isDone() == false) {
-			int type = pi.currentSegment(coordinates);
-			switch (type) {
-				case PathIterator.SEG_MOVETO:
-					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-					break;
-				case PathIterator.SEG_LINETO:
-					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-					break;
-				case PathIterator.SEG_QUADTO:
-					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-					break;
-				case PathIterator.SEG_CUBICTO:
-					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-					break;
-				case PathIterator.SEG_CLOSE:
-					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-					break;
-				default:
-					break;
-			}
-			pi.next();
+	DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(freeformShape), getDiagram());
+	ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+	gr.setShapeType(ShapeType.CUSTOM_POLYGON);
+	Polygon ss = ((Polygon) gr.getShapeSpecification());
+	PathIterator pi = freeformShape.getPath().getPathIterator(null);
+	double[] coordinates = new double[6];
+	while (pi.isDone() == false) {
+		int type = pi.currentSegment(coordinates);
+		switch (type) {
+			case PathIterator.SEG_MOVETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_LINETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_QUADTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CUBICTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CLOSE:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			default:
+				break;
 		}
-		return newShape;
+		pi.next();
 	}
+	return newShape;
+	}
+	*/
 
 	private DiagramShape makeDiagramShape(Shape shape) {
 		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(shape), getDiagram());
@@ -772,9 +767,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		if (shape != null && shape instanceof TextShape && ((TextShape) shape).getText() != null) {
 			return ((TextShape) shape).getText();
 		}
-		else {
-			return "";
-		}
+		return "";
 	}
 
 	private void attachConnector(DiagramConnector connector, Shape poiConnector) {

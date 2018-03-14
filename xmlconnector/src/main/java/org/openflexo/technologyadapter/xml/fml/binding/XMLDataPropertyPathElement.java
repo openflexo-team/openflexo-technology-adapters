@@ -78,12 +78,10 @@ public class XMLDataPropertyPathElement extends SimplePathElement {
 				}
 				return Object.class;
 			}
-			else {
-				if (property != null && property.getType() != null) {
-					return new ParameterizedTypeImpl(List.class, property.getType());
-				}
-				return new ParameterizedTypeImpl(List.class, Object.class);
+			if (property != null && property.getType() != null) {
+				return new ParameterizedTypeImpl(List.class, property.getType());
 			}
+			return new ParameterizedTypeImpl(List.class, Object.class);
 		}
 		return null;
 	}

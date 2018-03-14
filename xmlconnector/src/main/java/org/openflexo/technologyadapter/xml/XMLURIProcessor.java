@@ -194,37 +194,34 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				logger.warning("Cannot process URI as URIProcessor is not initialized for that class: " + typeURI);
 				return null;
 			}
-			else {
-				String attrName = getAttributeName();
-				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
+			String attrName = getAttributeName();
+			if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
 
-					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
-					XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
-					try {
-						// NPE protection
-						if (value != null) {
-							builtURI = URLEncoder.encode(value.toString(), "UTF-8");
-						}
-						else {
-							logger.severe("XSURI: unable to compute an URI for given object");
-							builtURI = null;
-						}
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
+				XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
+				XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
+				try {
+					// NPE protection
+					if (value != null) {
+						builtURI = URLEncoder.encode(value.toString(), "UTF-8");
 					}
-				}
-				else if (getMappingStyle() == MappingStyle.SINGLETON) {
-					try {
-						builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
+					else {
+						logger.severe("XSURI: unable to compute an URI for given object");
 					}
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
 				}
-				else {
-					logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
+			}
+			else if (getMappingStyle() == MappingStyle.SINGLETON) {
+				try {
+					builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
 				}
+			}
+			else {
+				logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 			}
 
 			if (builtURI != null) {
@@ -317,9 +314,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (mappedXMLType != null) {
 				return "XMLURIProcessor for " + this.mappedXMLType.getName();
 			}
-			else {
-				return "";
-			}
+			return "";
 		}
 
 	}

@@ -50,17 +50,11 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
@@ -70,8 +64,8 @@ import org.openflexo.test.TestOrder;
 public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestCompareExcelSheet.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static FlexoProject project;
+	// Unused private static FlexoEditor editor;
+	// Unused private static FlexoProject project;
 
 	@Test
 	@TestOrder(1)

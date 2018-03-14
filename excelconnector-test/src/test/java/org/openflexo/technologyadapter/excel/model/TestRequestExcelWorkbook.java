@@ -68,7 +68,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 	private static FlexoProject<File> project;
 	private static ExcelWorkbookResource workbook;
 	private static String baseUrl;
-	private static ExcelWorkbookRepository<File> excelWorkbookRepository;
+	// Unused private static ExcelWorkbookRepository<File> excelWorkbookRepository;
 
 	@Test
 	@TestOrder(1)

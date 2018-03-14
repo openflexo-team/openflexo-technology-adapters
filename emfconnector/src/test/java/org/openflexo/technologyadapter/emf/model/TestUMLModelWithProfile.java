@@ -51,7 +51,6 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
@@ -84,7 +83,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	private static String UML_MODEL_NAME = "testingProfiles.uml";
 
 	private static DirectoryResourceCenter newResourceCenter;
-	private static FlexoResourceCenter<?> emfResourceCenter;
+	// Unused private static FlexoResourceCenter<?> emfResourceCenter;
 
 	@Test
 	@TestOrder(1)

@@ -112,7 +112,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 	static FlexoConcept flexoConceptA;
 
-	static FlexoProject project;
+	static FlexoProject<?> project;
 	static FMLRTVirtualModelInstance newView;
 	static FMLRTVirtualModelInstance vmi1;
 	static FMLRTVirtualModelInstance vmi2;

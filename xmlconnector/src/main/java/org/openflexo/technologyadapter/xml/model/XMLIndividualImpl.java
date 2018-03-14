@@ -151,9 +151,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		if (pv != null) {
 			return propertiesValues.get(prop).getStringValue();
 		}
-		else {
-			return "";
-		}
+		return "";
 	}
 
 	@Override
@@ -169,8 +167,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		if (attr != null) {
 			return propertiesValues.get(attr);
 		}
-		else
-			return null;
+		return null;
 	}
 
 	@Override
@@ -179,8 +176,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		if (prop != null) {
 			return propertiesValues.get(prop);
 		}
-		else
-			return null;
+		return null;
 
 	}
 
