@@ -38,13 +38,15 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
@@ -122,7 +124,7 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 	private static final int X_OFFSET = 10;
 	private static final int Y_OFFSET = 10;
 
-	protected AbstractCreatePaletteElement(FlexoActionFactory<A, T1, T2> actionType, T1 focusedObject, Vector<T2> globalSelection,
+	protected AbstractCreatePaletteElement(FlexoActionFactory actionType, T1 focusedObject, Vector<T2> globalSelection,
 			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		diagramElementEntries = new Vector<>();
@@ -283,14 +285,10 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 							+ lastElement.getGraphicalRepresentation().getWidth() + X_OFFSET),
 							(int) lastElement.getGraphicalRepresentation().getY());
 				}
-				else {
-					return new Point((X_OFFSET), (int) (lastElement.getGraphicalRepresentation().getY()
-							+ lastElement.getGraphicalRepresentation().getHeight() + Y_OFFSET));
-				}
+				return new Point((X_OFFSET), (int) (lastElement.getGraphicalRepresentation().getY()
+						+ lastElement.getGraphicalRepresentation().getHeight() + Y_OFFSET));
 			}
-			else {
-				return new Point(X_OFFSET, Y_OFFSET);
-			}
+			return new Point(X_OFFSET, Y_OFFSET);
 		}
 		return new Point(0, 0);
 	}

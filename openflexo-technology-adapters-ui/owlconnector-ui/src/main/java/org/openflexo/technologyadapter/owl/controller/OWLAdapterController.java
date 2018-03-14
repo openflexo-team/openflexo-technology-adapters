@@ -274,12 +274,12 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller) {
 		return object instanceof OWLOntology;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof OWLOntology) {
 			return ((OWLOntology) object).getName();
 		}
@@ -301,14 +301,11 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
+	public OntologyBrowserModel<OWLTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
 			return new OWLOntologyBrowserModel((OWLOntology) context);
 		}
-		else {
-			logger.warning("Unexpected " + context);
-			return null;
-		}
+		logger.warning("Unexpected " + context);
+		return null;
 	}
-
 }

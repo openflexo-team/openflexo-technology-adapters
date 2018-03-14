@@ -215,7 +215,7 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
+	public OntologyBrowserModel<EMFTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<EMFTechnologyAdapter> context) {
 		if (context instanceof EMFMetaModel) {
 			return new EMFMetaModelBrowserModel((EMFMetaModel) context);
 		}
@@ -229,12 +229,12 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
 		return object instanceof EMFModel || object instanceof EMFMetaModel;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof EMFModel) {
 			return ((EMFModel) object).getName();
 		}

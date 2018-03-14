@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.model.action;
 
-import java.io.File;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -64,23 +63,24 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @author sylvain
  */
-public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, FlexoObject> {
+public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
-	public static FlexoActionFactory<CreateDiagram, RepositoryFolder, FlexoObject> actionType = new FlexoActionFactory<CreateDiagram, RepositoryFolder, FlexoObject>(
+	public static FlexoActionFactory<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> actionType = new FlexoActionFactory<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject>(
 			"create_diagram", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagram makeNewAction(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+		public CreateDiagram makeNewAction(RepositoryFolder<DiagramResource, ?> focusedObject, Vector<FlexoObject> globalSelection,
+				FlexoEditor editor) {
 			return new CreateDiagram(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder<DiagramResource, ?> object, Vector<FlexoObject> globalSelection) {
 			if (object != null && object.getResourceRepository() instanceof DiagramRepository) {
 				return true;
 			}
@@ -88,7 +88,7 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 		}
 
 		@Override
-		public boolean isEnabledForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder<DiagramResource, ?> object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
@@ -104,13 +104,13 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	private String diagramName;
 	private String diagramTitle;
 	private String diagramURI;
-	private File diagramFile;
+	// Unused private File diagramFile;
 
 	private DiagramResource diagramResource;
 
 	private String description;
 
-	CreateDiagram(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagram(RepositoryFolder<DiagramResource, ?> focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

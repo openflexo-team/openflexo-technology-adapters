@@ -51,13 +51,16 @@ import javax.swing.SwingUtilities;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionSource;
 import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -79,8 +82,8 @@ import org.openflexo.view.listener.FlexoActionButton;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledDocXDocumentModuleView extends JPanel
-		implements ModuleView<FMLRTVirtualModelInstance>, FlexoActionSource, PropertyChangeListener {
+public class FMLControlledDocXDocumentModuleView extends JPanel implements ModuleView<FMLRTVirtualModelInstance>,
+		FlexoActionSource<FlexoConceptInstance, VirtualModelInstanceObject>, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDocXDocumentModuleView.class.getPackage().getName());
@@ -119,8 +122,9 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 
 		topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		for (ActionScheme actionScheme : virtualModelInstance.getVirtualModel().getActionSchemes()) {
-			ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(actionScheme, virtualModelInstance);
-			topPanel.add(new FlexoActionButton(actionType, this, perspective.getController()));
+			FlexoActionFactory<ActionSchemeAction, FlexoConceptInstance, VirtualModelInstanceObject> actionType = new ActionSchemeActionFactory(
+					actionScheme, virtualModelInstance);
+			topPanel.add(new FlexoActionButton<>(actionType, this, perspective.getController()));
 		}
 		add(topPanel, BorderLayout.NORTH);
 
@@ -200,12 +204,12 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	}
 
 	@Override
-	public FlexoObject getFocusedObject() {
+	public FlexoConceptInstance getFocusedObject() {
 		return getVirtualModelInstance();
 	}
 
 	@Override
-	public List<? extends FlexoObject> getGlobalSelection() {
+	public List<VirtualModelInstanceObject> getGlobalSelection() {
 		return null;
 	}
 

@@ -64,24 +64,25 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @author sylvain
  */
-public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, RepositoryFolder, FlexoObject> {
+public class CreateGINAFIBComponent
+		extends FlexoAction<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateGINAFIBComponent.class.getPackage().getName());
 
-	public static FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder, FlexoObject> actionType = new FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder, FlexoObject>(
+	public static FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> actionType = new FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject>(
 			"create_component", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateGINAFIBComponent makeNewAction(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection,
-				FlexoEditor editor) {
+		public CreateGINAFIBComponent makeNewAction(RepositoryFolder<GINAFIBComponentResource, ?> focusedObject,
+				Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 			return new CreateGINAFIBComponent(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder<GINAFIBComponentResource, ?> object, Vector<FlexoObject> globalSelection) {
 			if (object != null && object.getResourceRepository() instanceof GINAResourceRepository) {
 				return true;
 			}
@@ -89,7 +90,7 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 		}
 
 		@Override
-		public boolean isEnabledForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder<GINAFIBComponentResource, ?> object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
@@ -105,7 +106,8 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 
 	private String description;
 
-	CreateGINAFIBComponent(RepositoryFolder<?, ?> focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private CreateGINAFIBComponent(RepositoryFolder<GINAFIBComponentResource, ?> focusedObject, Vector<FlexoObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

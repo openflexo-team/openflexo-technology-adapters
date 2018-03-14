@@ -159,9 +159,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				if (p != null) {
 					return p.getURIForObject(model, (XMLObject) o);
 				}
-				else {
-					logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
-				}
+				logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
 			}
 			else if (o instanceof XMLType) {
 				return ((XMLType) o).getURI();
@@ -284,8 +282,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			if (mmRes != null) {
 				return mmRes.getMetaModelData();
 			}
-			else
-				return null;
+			return null;
 		}
 
 		@Override
@@ -323,7 +320,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository<?> modelRepository = getModelSlotTechnologyAdapter().getXMLModelRepository(resourceCenter);
+				XMLModelRepository<File> modelRepository = (XMLModelRepository<File>) getModelSlotTechnologyAdapter()
+						.getXMLModelRepository(resourceCenter);
 
 				try {
 					return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
@@ -339,7 +337,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		}
 
-		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository,
+		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository<File> modelRepository,
 				XSDMetaModelResource metaModelResource) throws SaveResourceException, ModelDefinitionException {
 
 			XMLTechnologyAdapter ta = getModelSlotTechnologyAdapter();
@@ -351,7 +349,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			// (XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager(),
 			// modelRepository.getResourceCenter());
 
-			RepositoryFolder<XMLFileResource, ?> folder;
+			RepositoryFolder<XMLFileResource, File> folder;
 			try {
 				folder = modelRepository.getParentRepositoryFolder(xmlFile, true);
 				if (folder != null) {

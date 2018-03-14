@@ -99,8 +99,8 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 	 * @param globalSelection
 	 * @param editor
 	 */
-	DeclareDiagramElementInFlexoConcept(FlexoActionFactory<A, T, DiagramElement<?>> actionType, T focusedObject,
-			Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	DeclareDiagramElementInFlexoConcept(FlexoActionFactory actionType, T focusedObject, Vector<DiagramElement<?>> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 
 		// Get the set of internal elements inside the current focused object
@@ -109,7 +109,8 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 		int connectorIndex = 1;
 
 		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement
-				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants() : Collections.singletonList(getFocusedObject()));
+				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants()
+				: Collections.singletonList(getFocusedObject()));
 
 		for (DiagramElement<?> o : elements) {
 			if (o instanceof DiagramShape) {

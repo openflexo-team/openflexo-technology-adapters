@@ -57,28 +57,28 @@ import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObject, OWLConcept> {
+public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(CreateDataProperty.class.getPackage().getName());
 
-	public static FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept> actionType = new FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept>(
+	public static FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept<?>> actionType = new FlexoActionFactory<CreateDataProperty, OWLObject, OWLConcept<?>>(
 			"create_data_property", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDataProperty makeNewAction(OWLObject focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+		public CreateDataProperty makeNewAction(OWLObject focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 			return new CreateDataProperty(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(OWLObject object, Vector<OWLConcept> globalSelection) {
+		public boolean isVisibleForSelection(OWLObject object, Vector<OWLConcept<?>> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(OWLObject object, Vector<OWLConcept> globalSelection) {
+		public boolean isEnabledForSelection(OWLObject object, Vector<OWLConcept<?>> globalSelection) {
 			return object != null && !object.getOntology().getIsReadOnly();
 		}
 
@@ -101,7 +101,7 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 	private static final String VALID_URI_LABEL = "uri_is_well_formed_and_valid_regarding_its_unicity";
 	private static final String INVALID_URI_LABEL = "uri_is_not_valid_please_choose_another_class_name";
 
-	CreateDataProperty(OWLObject focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+	private CreateDataProperty(OWLObject focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		newPropertyName = "newProperty";
 		parentProperty = null;

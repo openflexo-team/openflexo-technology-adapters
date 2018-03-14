@@ -47,6 +47,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.openflexo.fge.ContainerGraphicalRepresentation;
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -111,7 +112,7 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		return super.getLocales();
 	}
 
-	private ScreenshotImage screenshot;
+	private ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> screenshot;
 
 	private File dest;
 
@@ -182,12 +183,10 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		if (saveScreenshot() != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
-	public ScreenshotImage<DiagramElement> getScreenshot() {
+	public ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> getScreenshot() {
 		if (getFocusedObject() instanceof DiagramShape) {
 			if (this.screenshot == null || this.screenshot != ((DiagramShape) getFocusedObject()).getScreenshotImage()) {
 				setScreenshot(((DiagramShape) getFocusedObject()).getScreenshotImage());
@@ -201,7 +200,7 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		return this.screenshot;
 	}
 
-	public void setScreenshot(ScreenshotImage screenshot) {
+	public void setScreenshot(ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> screenshot) {
 		this.screenshot = screenshot;
 	}
 

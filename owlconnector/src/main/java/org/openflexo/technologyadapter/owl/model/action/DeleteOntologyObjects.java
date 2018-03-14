@@ -56,29 +56,29 @@ import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 
-public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OWLConcept, OWLConcept> {
+public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeleteOntologyObjects.class.getPackage().getName());
 
-	public static FlexoActionFactory<DeleteOntologyObjects, OWLConcept, OWLConcept> actionType = new FlexoActionFactory<DeleteOntologyObjects, OWLConcept, OWLConcept>(
+	public static FlexoActionFactory<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> actionType = new FlexoActionFactory<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>>(
 			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteOntologyObjects makeNewAction(OWLConcept focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+		public DeleteOntologyObjects makeNewAction(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 			return new DeleteOntologyObjects(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(OWLConcept object, Vector<OWLConcept> globalSelection) {
+		public boolean isVisibleForSelection(OWLConcept<?> object, Vector<OWLConcept<?>> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(OWLConcept focusedObject, Vector<OWLConcept> globalSelection) {
-			Vector<OWLConcept> objectsToDelete = objectsToDelete(focusedObject, globalSelection);
+		public boolean isEnabledForSelection(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection) {
+			Vector<OWLConcept<?>> objectsToDelete = objectsToDelete(focusedObject, globalSelection);
 			if (objectsToDelete.size() == 0) {
 				return false;
 			}
@@ -96,8 +96,8 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 		FlexoObjectImpl.addActionForClass(DeleteOntologyObjects.actionType, OWLConcept.class);
 	}
 
-	protected static Vector<OWLConcept> objectsToDelete(OWLConcept focusedObject, Vector<OWLConcept> globalSelection) {
-		Vector<OWLConcept> returned = new Vector<>();
+	protected static Vector<OWLConcept<?>> objectsToDelete(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection) {
+		Vector<OWLConcept<?>> returned = new Vector<>();
 		if (globalSelection == null || !globalSelection.contains(focusedObject)) {
 			returned.add(focusedObject);
 		}
@@ -105,14 +105,14 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 			for (FlexoOntologyObjectImpl<?> o : globalSelection) {
 				if (o instanceof OWLClass || o instanceof OWLIndividual || o instanceof OWLObjectProperty
 						|| o instanceof IFlexoOntologyDataProperty) {
-					returned.add((OWLConcept) o);
+					returned.add((OWLConcept<?>) o);
 				}
 			}
 		}
 		return returned;
 	}
 
-	protected DeleteOntologyObjects(OWLConcept focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+	protected DeleteOntologyObjects(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		logger.info("Created DeleteOntologyObjects action focusedObject=" + focusedObject + "globalSelection=" + globalSelection);
 	}
@@ -141,7 +141,7 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 		}
 	}
 
-	private Vector<OWLConcept> _objectsToDelete;
+	private Vector<OWLConcept<?>> _objectsToDelete;
 
 	/**
 	 * This method returns all the objects on which the delete method needs to be called. This should not be done by some other code than
@@ -149,7 +149,7 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 	 * 
 	 * @return All the objects to be deleted.
 	 */
-	public Vector<OWLConcept> getObjectsToDelete() {
+	public Vector<OWLConcept<?>> getObjectsToDelete() {
 		if (_objectsToDelete == null) {
 			_objectsToDelete = objectsToDelete(getFocusedObject(), getGlobalSelection());
 		}

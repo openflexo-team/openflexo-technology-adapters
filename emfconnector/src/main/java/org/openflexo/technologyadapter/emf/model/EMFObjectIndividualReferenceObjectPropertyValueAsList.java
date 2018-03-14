@@ -61,11 +61,11 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 	private static final Logger logger = Logger
 			.getLogger(EMFObjectIndividualReferenceObjectPropertyValueAsList.class.getPackage().getName());
 
-	private EObjectEList referencelist;
+	private EObjectEList<EObject> referencelist;
 
 	public EMFObjectIndividualReferenceObjectPropertyValueAsList(EMFModel model, EObject eObject, EReference aReference, Object refList) {
 		super(model, eObject, aReference);
-		this.referencelist = (EObjectEList) refList;
+		this.referencelist = (EObjectEList<EObject>) refList;
 	}
 
 	/********************************************
@@ -129,7 +129,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return (T[]) referencelist.toArray(a);
+		return referencelist.toArray(a);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public EMFObjectIndividual get(int index) {
-		EObject o = (EObject) referencelist.get(index);
+		EObject o = referencelist.get(index);
 		EMFObjectIndividual returned = ontology.getConverter().convertObjectIndividual(ontology, o);
 
 		return returned;
@@ -194,7 +194,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public EMFObjectIndividual remove(int index) {
-		return ontology.getConverter().convertObjectIndividual(ontology, (EObject) referencelist.remove(index));
+		return ontology.getConverter().convertObjectIndividual(ontology, referencelist.remove(index));
 	}
 
 	@Override
