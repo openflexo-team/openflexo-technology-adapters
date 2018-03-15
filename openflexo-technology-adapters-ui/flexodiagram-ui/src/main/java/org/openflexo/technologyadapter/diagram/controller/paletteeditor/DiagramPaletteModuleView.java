@@ -127,14 +127,8 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 
 		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
-			}
-		});
-
+		SwingUtilities.invokeLater(() -> controller.getControllerModel().setRightViewVisible(true));
+		// Force right view to be visible
 		controller.getControllerModel().setRightViewVisible(true);
 	}
 

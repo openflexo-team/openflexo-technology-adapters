@@ -81,11 +81,8 @@ import org.openflexo.view.listener.FlexoActionButton;
  * @author sylvain
  *
  */
-@SuppressWarnings("serial")
 public class FMLControlledDocXDocumentModuleView extends JPanel implements ModuleView<FMLRTVirtualModelInstance>,
-		FlexoActionSource, PropertyChangeListener {
-
-	@SuppressWarnings("unused")
+		FlexoActionSource<FlexoConceptInstance, VirtualModelInstanceObject>, PropertyChangeListener {
 	private static final Logger logger = Logger.getLogger(FMLControlledDocXDocumentModuleView.class.getPackage().getName());
 
 	private final FMLRTVirtualModelInstance virtualModelInstance;
@@ -124,7 +121,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 		for (ActionScheme actionScheme : virtualModelInstance.getVirtualModel().getActionSchemes()) {
 			FlexoActionFactory<ActionSchemeAction, FlexoConceptInstance, VirtualModelInstanceObject> actionType = new ActionSchemeActionFactory(
 					actionScheme, virtualModelInstance);
-			topPanel.add(new FlexoActionButton(actionType, this, perspective.getController()));
+			topPanel.add(new FlexoActionButton<>(actionType, this, perspective.getController()));
 		}
 		add(topPanel, BorderLayout.NORTH);
 
@@ -185,14 +182,8 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 		perspective.setTopRightView(null);
 		perspective.setBottomRightView(null);
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(false);
-			}
-		});
-
+		SwingUtilities.invokeLater(() -> controller.getControllerModel().setRightViewVisible(false));
+		// Force right view to be visible
 		controller.getControllerModel().setRightViewVisible(false);
 	}
 
@@ -261,14 +252,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 
 	private <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> void scrollTo(FlexoDocObject<D, TA> object,
 			FlexoDocumentEditor<D, TA> docXEditor) {
-		if (!docXEditor.scrollTo(object, true)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					scrollTo(object, docXEditor);
-				}
-			});
-		}
+		if (!docXEditor.scrollTo(object, true))
+			SwingUtilities.invokeLater(() -> scrollTo(object, docXEditor));
 	}
-
 }
