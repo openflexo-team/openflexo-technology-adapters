@@ -42,15 +42,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoGUIAction;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -82,14 +85,12 @@ public class ExportFMLControlledDiagramToImageAction
 			if (object instanceof FMLRTVirtualModelInstance) {
 				return ((FMLRTVirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 			}
-			else {
-				if (object != null && object.getVirtualModelInstance() instanceof FMLRTVirtualModelInstance) {
-					FMLRTVirtualModelInstance vmi = (FMLRTVirtualModelInstance) object.getVirtualModelInstance();
-					if (vmi != null)
-						return vmi.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
-				}
-				return false;
+			if (object != null && object.getVirtualModelInstance() instanceof FMLRTVirtualModelInstance) {
+				FMLRTVirtualModelInstance vmi = (FMLRTVirtualModelInstance) object.getVirtualModelInstance();
+				if (vmi != null)
+					return vmi.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 			}
+			return false;
 		}
 
 		@Override
@@ -115,7 +116,7 @@ public class ExportFMLControlledDiagramToImageAction
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
-	private ScreenshotImage screenshot;
+	private ScreenshotImage<DiagramElement<?>> screenshot;
 
 	private File dest;
 
@@ -175,44 +176,42 @@ public class ExportFMLControlledDiagramToImageAction
 		if (saveScreenshot() != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	private DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 	}
 
-	public ScreenshotImage<DiagramElement> getScreenshot() {
-		ScreenshotImage screenshotImage = null;
+	public ScreenshotImage<DiagramElement<?>> getScreenshot() {
+		ScreenshotImage<DiagramElement<?>> screenshotImage = null;
 		FMLControlledDiagramEditor editor = null;
 		FMLControlledDiagramScreenshotBuilder builder = (FMLControlledDiagramScreenshotBuilder) getDiagramTechnologyAdapter()
 				.getFMLControlledDiagramElementScreenshotBuilder();
-		if (getFocusedObject() instanceof FMLRTVirtualModelInstance) {
-			builder.setDrawing(new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) getFocusedObject(), true, null, null));
+		FlexoConceptInstance focusedObject = getFocusedObject();
+		if (focusedObject instanceof FMLRTVirtualModelInstance) {
+			builder.setDrawing(new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) focusedObject, true, null, null));
 			screenshotImage = builder
-					.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram((FMLRTVirtualModelInstance) getFocusedObject()));
+					.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram((FMLRTVirtualModelInstance) focusedObject));
 		}
-		else if (getFocusedObject() instanceof FlexoConceptInstance) {
-			editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) getFocusedObject().getVirtualModelInstance(), true, null, null);
-			FMLControlledDiagramElement element = editor.getDrawing().getFMLControlledDiagramElements(getFocusedObject()).get(0);
+		else if (focusedObject != null) {
+			editor = new FMLControlledDiagramEditor((FMLRTVirtualModelInstance) focusedObject.getVirtualModelInstance(), true, null, null);
+			FMLControlledDiagramElement<?, ?> element = editor.getDrawing().getFMLControlledDiagramElements(focusedObject).get(0);
 			builder.setDrawing(editor);
 			screenshotImage = builder.getImage(element.getDiagramElement());
 		}
 		else {
-			logger.warning("Could not create a screenshot for " + getFocusedObject().getStringRepresentation());
+			logger.warning("Could not create a screenshot");
 			return null;
 		}
 
 		if (this.screenshot == null || this.screenshot != screenshotImage) {
 			setScreenshot(screenshotImage);
 		}
-
 		return this.screenshot;
 	}
 
-	public void setScreenshot(ScreenshotImage screenshot) {
+	public void setScreenshot(ScreenshotImage<DiagramElement<?>> screenshot) {
 		this.screenshot = screenshot;
 	}
 

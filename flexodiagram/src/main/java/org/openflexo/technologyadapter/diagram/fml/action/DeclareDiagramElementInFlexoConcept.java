@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.action.FlexoActionFactory;
@@ -82,9 +81,6 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  */
 public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagramElementInFlexoConcept<A, T>, T extends DiagramElement<?>>
 		extends AbstractDeclareInFlexoConcept<A, T, DiagramElement<?>> {
-
-	private static final Logger logger = Logger.getLogger(DeclareDiagramElementInFlexoConcept.class.getPackage().getName());
-
 	/**
 	 * Stores the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a
 	 * {@link VirtualModel} (which is a context where a diagram is federated with other sources of informations)
@@ -190,17 +186,14 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 				&& getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 			return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
 		}
-		else {
-			;
-			DiagramTechnologyAdapter diagramTechnologyAdapter = getEditor().getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-			TypedDiagramModelSlot typedDiagramModelSlot = diagramTechnologyAdapter.makeModelSlot(TypedDiagramModelSlot.class,
-					getVirtualModel());
-			typedDiagramModelSlot.setName("typedDiagramModelSlot");
-			// ((TypeAwareModelSlot) newModelSlot).setMetaModelResource(mmRes);
-			getVirtualModel().addToModelSlots(typedDiagramModelSlot);
-			return typedDiagramModelSlot;
-		}
+		DiagramTechnologyAdapter diagramTechnologyAdapter = getEditor().getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		TypedDiagramModelSlot typedDiagramModelSlot = diagramTechnologyAdapter.makeModelSlot(TypedDiagramModelSlot.class,
+				getVirtualModel());
+		typedDiagramModelSlot.setName("typedDiagramModelSlot");
+		// ((TypeAwareModelSlot) newModelSlot).setMetaModelResource(mmRes);
+		getVirtualModel().addToModelSlots(typedDiagramModelSlot);
+		return typedDiagramModelSlot;
 	}
 
 	public class DrawingObjectEntry {
