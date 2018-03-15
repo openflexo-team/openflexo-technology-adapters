@@ -45,8 +45,7 @@ import javax.swing.KeyStroke;
 
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElements;
@@ -65,12 +64,12 @@ public class DeleteExampleDiagramElementsInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> FlexoController.confirm(action.getLocales().localizedForKey("would_you_like_to_delete_those_objects"));
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (getController().getSelectionManager().getLastSelectedObject() != null
 					&& getController().getSelectionManager().getLastSelectedObject().isDeleted()) {

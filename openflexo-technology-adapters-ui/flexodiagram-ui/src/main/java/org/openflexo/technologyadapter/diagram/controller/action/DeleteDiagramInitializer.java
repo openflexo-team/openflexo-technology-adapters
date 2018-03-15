@@ -44,8 +44,7 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagram;
@@ -62,13 +61,8 @@ public class DeleteDiagramInitializer extends ActionInitializer<DeleteDiagram, D
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteDiagram, Diagram, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<DeleteDiagram, Diagram, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> FlexoController.confirm(action.getLocales().localizedForKey("really_delete_this_diagram_?"));
-	}
-
-	@Override
-	protected FlexoActionFinalizer<DeleteDiagram, Diagram, FlexoObject> getDefaultFinalizer() {
-		return (e, action) -> true;
 	}
 
 	@Override

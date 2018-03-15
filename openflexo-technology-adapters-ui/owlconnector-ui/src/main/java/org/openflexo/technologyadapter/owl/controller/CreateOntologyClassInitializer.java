@@ -44,8 +44,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -62,12 +61,12 @@ public class CreateOntologyClassInitializer extends ActionInitializer<CreateOnto
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateOntologyClass, OWLObject, OWLConcept<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewClass());
 			return true;

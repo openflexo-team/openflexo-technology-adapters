@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ExportDiagramToImageAction;
@@ -59,7 +59,7 @@ public class ExportDiagramToImageInitializer extends ActionInitializer<ExportDia
 	}
 
 	@Override
-	protected FlexoActionInitializer<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> action.saveAsImage();
 	}
 

@@ -45,8 +45,7 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -66,7 +65,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateExampleDiagramWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -81,7 +80,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateExampleDiagram, DiagramSpecification, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());

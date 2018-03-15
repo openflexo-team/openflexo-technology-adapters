@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -47,8 +46,7 @@ import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -74,34 +72,31 @@ public class DropSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
-		return new FlexoActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>() {
-			@Override
-			public boolean run(EventObject e, DropSchemeAction action) {
-				getController().willExecute(action);
+	protected FlexoActionRunnable<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
+		return (e, action) -> {
+			getController().willExecute(action);
 
-				DropSchemeActionWizard wizard = new DropSchemeActionWizard(action, getController());
-				if (!wizard.isSkipable()) {
-					WizardDialog dialog = new WizardDialog(wizard, getController());
-					dialog.showDialog();
-					if (dialog.getStatus() != Status.VALIDATED) {
-						// Operation cancelled
-						return false;
-					}
+			DropSchemeActionWizard wizard = new DropSchemeActionWizard(action, getController());
+			if (!wizard.isSkipable()) {
+				WizardDialog dialog = new WizardDialog(wizard, getController());
+				dialog.showDialog();
+				if (dialog.getStatus() != Status.VALIDATED) {
+					// Operation cancelled
+					return false;
 				}
-				return true;
-				/*getController().willExecute(action);
-				DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action, getController());
-				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
-					return true;
-				}
-				return parameterRetriever.retrieveParameters();*/
 			}
+			return true;
+			/*getController().willExecute(action);
+			DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action, getController());
+			if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
+				return true;
+			}
+			return parameterRetriever.retrieveParameters();*/
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			/*	DiagramShape shape = action.getPrimaryShape();
 				logger.info("border5 = " + ((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation()).getBorder());
@@ -140,7 +135,7 @@ public class DropSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoExceptionHandler<DropSchemeAction> getDefaultExceptionHandler() {
+	protected FlexoExceptionHandler<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultExceptionHandler() {
 		return (exception, action) -> {
 			if (exception instanceof NotImplementedException) {
 				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));

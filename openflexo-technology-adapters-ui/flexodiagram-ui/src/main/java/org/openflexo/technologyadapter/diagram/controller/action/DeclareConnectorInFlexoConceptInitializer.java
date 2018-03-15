@@ -45,8 +45,7 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.gina.controller.FIBController.Status;
@@ -70,7 +69,7 @@ public class DeclareConnectorInFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -98,7 +97,7 @@ public class DeclareConnectorInFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
 			if (action.getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATE_ELEMENT_IN_EXISTING_FLEXO_CONCEPT) {

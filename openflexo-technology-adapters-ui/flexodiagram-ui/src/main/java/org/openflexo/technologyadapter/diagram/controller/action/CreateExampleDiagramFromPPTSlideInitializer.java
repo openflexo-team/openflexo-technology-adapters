@@ -43,8 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagramFromPPTSlide;
@@ -64,12 +63,12 @@ public class CreateExampleDiagramFromPPTSlideInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
 			return true;

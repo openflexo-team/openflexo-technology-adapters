@@ -46,8 +46,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fml.controller.action.CreateFlexoConceptWizard;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
@@ -70,7 +69,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			action.setDefineSomeBehaviours(true);
 			Wizard wizard;
@@ -97,7 +96,7 @@ public class CreateFMLControlledDiagramFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateFlexoConcept, FlexoConceptObject, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (action.switchNewlyCreatedFlexoConcept) {
 				if (action.getFocusedObject().getDeclaringVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {

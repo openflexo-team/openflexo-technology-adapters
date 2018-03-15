@@ -38,16 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.logging.Logger;
-
 import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -60,15 +57,12 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
 public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> {
-
-	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
-
 	public CreateDiagramInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateDiagram.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 			if (action.skipChoosePopup) {
 				return true;
@@ -85,7 +79,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
 			getController().selectAndFocusObject(action.getNewDiagram());
@@ -94,7 +88,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	}
 
 	@Override
-	protected FlexoExceptionHandler<CreateDiagram> getDefaultExceptionHandler() {
+	protected FlexoExceptionHandler<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> getDefaultExceptionHandler() {
 		return (exception, action) -> {
 			if (exception instanceof NotImplementedException) {
 				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));

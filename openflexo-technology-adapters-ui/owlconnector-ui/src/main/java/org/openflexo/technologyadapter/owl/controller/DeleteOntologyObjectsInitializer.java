@@ -44,8 +44,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.action.DeleteOntologyObjects;
@@ -61,12 +60,12 @@ public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOn
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
 					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {

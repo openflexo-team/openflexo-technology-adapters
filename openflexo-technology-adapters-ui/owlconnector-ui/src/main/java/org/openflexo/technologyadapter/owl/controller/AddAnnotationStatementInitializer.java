@@ -44,8 +44,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.action.AddAnnotationStatement;
@@ -62,12 +61,12 @@ public class AddAnnotationStatementInitializer extends ActionInitializer<AddAnno
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultInitializer() {
 		return (e, action) -> false;
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<AddAnnotationStatement, OWLConcept<?>, OWLConcept<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			// ((OEController)getController()).getSelectionManager().setSelectedObject(action.getNewStatement());
 			return true;

@@ -43,8 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
@@ -63,12 +62,12 @@ public class CreateDiagramFromPPTSlideInitializer extends ActionInitializer<Crea
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
 			return true;

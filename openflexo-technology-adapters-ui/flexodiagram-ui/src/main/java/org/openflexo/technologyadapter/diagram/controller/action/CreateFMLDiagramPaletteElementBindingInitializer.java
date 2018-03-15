@@ -38,14 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.logging.Logger;
-
 import javax.swing.Icon;
 
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
@@ -59,34 +55,23 @@ import org.openflexo.view.controller.FlexoController;
 
 public class CreateFMLDiagramPaletteElementBindingInitializer
 		extends ActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
-
-	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
-
 	public CreateFMLDiagramPaletteElementBindingInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateFMLDiagramPaletteElementBinding.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultInitializer() {
 		return (e, action) -> instanciateAndShowDialog(action, DiagramCst.CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB);
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultFinalizer() {
-		return (e, action) -> true;
-	}
-
-	@Override
-	protected FlexoExceptionHandler<CreateFMLDiagramPaletteElementBinding> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<CreateFMLDiagramPaletteElementBinding>() {
-			@Override
-			public boolean handleException(FlexoException exception, CreateFMLDiagramPaletteElementBinding action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+	protected FlexoExceptionHandler<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> getDefaultExceptionHandler() {
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 
@@ -94,5 +79,4 @@ public class CreateFMLDiagramPaletteElementBindingInitializer
 	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
-
 }

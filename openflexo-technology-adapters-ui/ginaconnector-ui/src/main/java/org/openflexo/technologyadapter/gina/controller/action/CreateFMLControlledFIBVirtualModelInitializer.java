@@ -46,8 +46,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
@@ -69,7 +68,7 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateFMLControlledFIBVirtualModelWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -84,7 +83,7 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
 			getController().selectAndFocusObject(action.getNewVirtualModel());

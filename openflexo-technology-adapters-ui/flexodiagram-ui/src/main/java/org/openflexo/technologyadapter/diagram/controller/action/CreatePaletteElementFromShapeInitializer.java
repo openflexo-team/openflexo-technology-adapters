@@ -45,8 +45,7 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -70,7 +69,7 @@ public class CreatePaletteElementFromShapeInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -99,7 +98,7 @@ public class CreatePaletteElementFromShapeInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreatePaletteElementFromShape, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			// Switch to palette if in DiagramPerspective
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));

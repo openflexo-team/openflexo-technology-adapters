@@ -46,8 +46,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -70,7 +69,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (action.skipChoosePopup()) {
@@ -95,7 +94,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			return true;
@@ -103,7 +102,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoExceptionHandler<CreateFMLControlledDiagramVirtualModelInstance> getDefaultExceptionHandler() {
+	protected FlexoExceptionHandler<CreateFMLControlledDiagramVirtualModelInstance, FlexoObject, FlexoObject> getDefaultExceptionHandler() {
 		return (exception, action) -> {
 			if (exception instanceof NotImplementedException) {
 				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));

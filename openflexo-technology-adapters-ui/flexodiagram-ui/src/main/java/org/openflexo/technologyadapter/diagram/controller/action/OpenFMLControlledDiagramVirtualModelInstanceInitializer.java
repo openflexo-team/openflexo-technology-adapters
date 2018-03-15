@@ -38,15 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.action.OpenFMLControlledDiagramVirtualModelInstance;
@@ -65,26 +63,22 @@ public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultInitializer() {
-		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject>() {
-			@Override
-			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
-				DiagramTechnologyAdapter diagramTA = action.getServiceManager().getTechnologyAdapterService()
-						.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-				if (diagramTA == null) {
-					return false;
-				}
-				if (!diagramTA.isActivated()) {
-					action.getServiceManager().activateTechnologyAdapter(diagramTA, true);
-				}
-				return true;
+	protected FlexoActionRunnable<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultInitializer() {
+		return (e, action) -> {
+			DiagramTechnologyAdapter diagramTA = action.getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			if (diagramTA == null) {
+				return false;
 			}
-
+			if (!diagramTA.isActivated()) {
+				action.getServiceManager().activateTechnologyAdapter(diagramTA, true);
+			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<OpenFMLControlledDiagramVirtualModelInstance, FMLRTVirtualModelInstance, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject());

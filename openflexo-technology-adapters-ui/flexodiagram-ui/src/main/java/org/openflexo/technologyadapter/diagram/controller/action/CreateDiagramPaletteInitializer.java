@@ -49,8 +49,7 @@ import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -72,7 +71,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			try {
@@ -104,7 +103,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateDiagramPalette, DiagramSpecification, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());

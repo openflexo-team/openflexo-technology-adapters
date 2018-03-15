@@ -46,8 +46,7 @@ import javax.swing.KeyStroke;
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramElementsAndFlexoConceptInstances;
@@ -64,7 +63,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstancesInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 			getController().getSelectionManager().resetSelection();
 			return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB);
@@ -72,7 +71,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstancesInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
 					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {

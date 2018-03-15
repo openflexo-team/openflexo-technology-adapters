@@ -38,15 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
-import java.util.logging.Logger;
-
 import javax.swing.Icon;
 
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -61,32 +56,25 @@ import org.openflexo.view.controller.ParametersRetriever;
 
 public class LinkSchemeActionInitializer
 		extends ActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
-
 	public LinkSchemeActionInitializer(ControllerActionInitializer actionInitializer) {
 		super(LinkSchemeAction.class, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
-		return new FlexoActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject>() {
-			@Override
-			public boolean run(EventObject e, LinkSchemeAction action) {
-				getController().willExecute(action);
-				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action,
-						getController() != null ? getController().getApplicationContext() : null);
-				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
-					return true;
-				}
-				return parameterRetriever.retrieveParameters();
+	protected FlexoActionRunnable<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultInitializer() {
+		return (e, action) -> {
+			getController().willExecute(action);
+			ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<>(action,
+					getController() != null ? getController().getApplicationContext() : null);
+			if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
+				return true;
 			}
+			return parameterRetriever.retrieveParameters();
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewConnector());
 			return true;
@@ -94,16 +82,13 @@ public class LinkSchemeActionInitializer
 	}
 
 	@Override
-	protected FlexoExceptionHandler<LinkSchemeAction> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<LinkSchemeAction>() {
-			@Override
-			public boolean handleException(FlexoException exception, LinkSchemeAction action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+	protected FlexoExceptionHandler<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultExceptionHandler() {
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 

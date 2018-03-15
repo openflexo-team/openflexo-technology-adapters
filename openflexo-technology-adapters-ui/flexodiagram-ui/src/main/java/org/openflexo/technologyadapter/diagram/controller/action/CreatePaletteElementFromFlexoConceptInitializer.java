@@ -45,8 +45,7 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -70,7 +69,7 @@ public class CreatePaletteElementFromFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 
 			if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
@@ -99,7 +98,7 @@ public class CreatePaletteElementFromFlexoConceptInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreatePaletteElementFromFlexoConcept, FlexoConcept, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
 			getController().setCurrentEditedObjectAsModuleView(action.getPalette());

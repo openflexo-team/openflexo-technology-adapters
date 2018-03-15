@@ -45,8 +45,7 @@ import javax.swing.Icon;
 import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.swing.view.JConnectorView;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -66,7 +65,7 @@ public class AddConnectorInitializer extends ActionInitializer<AddConnector, Dia
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddConnector, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
+	protected FlexoActionRunnable<AddConnector, DiagramShape, DiagramElement<?>> getDefaultInitializer() {
 		return (e, action) -> {
 			if (action.getAutomaticallyCreateConnector()) {
 				/*String newName = FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_connector"));
@@ -99,7 +98,7 @@ public class AddConnectorInitializer extends ActionInitializer<AddConnector, Dia
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddConnector, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
+	protected FlexoActionRunnable<AddConnector, DiagramShape, DiagramElement<?>> getDefaultFinalizer() {
 		return (e, action) -> {
 			if (action.getConnector() != null) {
 				getController().getSelectionManager().setSelectedObject(action.getConnector());

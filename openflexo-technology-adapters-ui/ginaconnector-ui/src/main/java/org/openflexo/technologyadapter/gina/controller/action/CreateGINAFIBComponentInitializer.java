@@ -46,8 +46,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.IconFactory;
@@ -68,7 +67,7 @@ public class CreateGINAFIBComponentInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateGINAFIBComponentWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -82,7 +81,7 @@ public class CreateGINAFIBComponentInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().selectAndFocusObject(action.getNewComponent());
 			return true;

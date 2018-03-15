@@ -46,8 +46,7 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -67,7 +66,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
 				return true;*/
@@ -99,7 +98,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateDiagramPaletteElement, DiagramPalette, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewElement());
 			return true;

@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -59,7 +59,7 @@ public class ExportFMLControlledDiagramToImageInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> getDefaultInitializer() {
+	protected FlexoActionRunnable<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> getDefaultInitializer() {
 		return (e, action) -> action.saveAsImage();
 	}
 

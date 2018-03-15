@@ -38,14 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
-import java.util.logging.Logger;
-
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ResetGraphicalRepresentations;
@@ -56,26 +52,14 @@ import org.openflexo.view.controller.FlexoController;
 public class ResetGraphicalRepresentationInitializer
 		extends ActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> {
 
-	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
-
 	public ResetGraphicalRepresentationInitializer(ControllerActionInitializer actionInitializer) {
 		super(ResetGraphicalRepresentations.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
-		return new FlexoActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>>() {
-			@Override
-			public boolean run(EventObject e, ResetGraphicalRepresentations action) {
-				return FlexoController
-						.confirm(action.getLocales().localizedForKey("really_reset_all_graphical_representations_for_this_view_?"));
-			}
-		};
-	}
-
-	@Override
-	protected FlexoActionFinalizer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> getDefaultFinalizer() {
-		return (e, action) -> true;
+	protected FlexoActionRunnable<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> getDefaultInitializer() {
+		return (e, action) -> FlexoController
+				.confirm(action.getLocales().localizedForKey("really_reset_all_graphical_representations_for_this_view_?"));
 	}
 
 	@Override

@@ -43,8 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramPaletteElement;
@@ -63,7 +62,7 @@ public class CreateFMLControlledDiagramPaletteElementInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			// TODO
 			return true;
@@ -71,7 +70,7 @@ public class CreateFMLControlledDiagramPaletteElementInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultFinalizer() {
+	protected FlexoActionRunnable<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> getDefaultFinalizer() {
 		return (e, action) -> {
 			getController().getSelectionManager().setSelectedObject(action.getNewElement());
 			return true;
