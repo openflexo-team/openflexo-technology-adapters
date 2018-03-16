@@ -50,12 +50,12 @@ import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.fge.Drawing.ContainerNode;
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.control.PaletteElement;
-import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.Drawing.ContainerNode;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.control.PaletteElement;
+import org.openflexo.diana.geom.FGEPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;

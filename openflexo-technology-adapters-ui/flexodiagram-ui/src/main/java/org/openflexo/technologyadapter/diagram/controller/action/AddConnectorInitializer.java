@@ -42,8 +42,8 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.fge.Drawing.ConnectorNode;
-import org.openflexo.fge.swing.view.JConnectorView;
+import org.openflexo.diana.Drawing.ConnectorNode;
+import org.openflexo.diana.swing.view.JConnectorView;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;

@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 
 public abstract class DiagramContainerElementImpl<G extends GraphicalRepresentation> extends DiagramElementImpl<G> implements
 		DiagramContainerElement<G> {

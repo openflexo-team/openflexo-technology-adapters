@@ -47,10 +47,10 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.swing.view.JDrawingView;
+import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.swing.view.JDrawingView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.gina.controller.FIBController;

@@ -39,9 +39,9 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoConcept;

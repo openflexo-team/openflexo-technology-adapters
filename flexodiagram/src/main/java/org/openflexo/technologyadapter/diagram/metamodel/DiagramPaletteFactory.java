@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
+import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;

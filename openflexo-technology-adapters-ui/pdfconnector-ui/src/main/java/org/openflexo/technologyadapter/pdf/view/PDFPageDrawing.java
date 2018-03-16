@@ -43,17 +43,17 @@ import java.awt.Image;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.GRBinding.DrawingGRBinding;
-import org.openflexo.fge.GRBinding.ShapeGRBinding;
-import org.openflexo.fge.GRProvider.DrawingGRProvider;
-import org.openflexo.fge.GRProvider.ShapeGRProvider;
-import org.openflexo.fge.GRStructureVisitor;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.impl.DrawingImpl;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.GRStructureVisitor;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.GRBinding.DrawingGRBinding;
+import org.openflexo.diana.GRBinding.ShapeGRBinding;
+import org.openflexo.diana.GRProvider.DrawingGRProvider;
+import org.openflexo.diana.GRProvider.ShapeGRProvider;
+import org.openflexo.diana.impl.DrawingImpl;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.pdf.model.ImageBox;
 import org.openflexo.technologyadapter.pdf.model.PDFDocumentPage;
@@ -147,7 +147,7 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		nodeRepresentation.addToMouseDragControls(new MouseDragControlImpl("dragNode", MouseButton.LEFT, new MoveAction() {
 		
 			@Override
-			public boolean handleMouseReleased(org.openflexo.fge.Drawing.DrawingTreeNode<?, ?> node,
+			public boolean handleMouseReleased(org.openflexo.diana.Drawing.DrawingTreeNode<?, ?> node,
 					DianaInteractiveViewer<?, ?, ?> editor, MouseControlContext context, boolean isSignificativeDrag) {
 				boolean returned = super.handleMouseReleased(node, editor, context, isSignificativeDrag);
 				System.out.println("Detected mouse released");

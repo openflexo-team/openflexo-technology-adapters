@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fge.swing.control.SwingToolFactory;
-import org.openflexo.fge.swing.control.tools.JDianaDialogInspectors;
-import org.openflexo.fge.swing.control.tools.JDianaInspectors;
-import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
+import org.openflexo.diana.swing.control.SwingToolFactory;
+import org.openflexo.diana.swing.control.tools.JDianaDialogInspectors;
+import org.openflexo.diana.swing.control.tools.JDianaInspectors;
+import org.openflexo.diana.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoRole;

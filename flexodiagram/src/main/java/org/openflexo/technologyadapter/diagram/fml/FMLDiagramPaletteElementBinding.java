@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.control.PaletteElement;
+import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLRepresentationContext;

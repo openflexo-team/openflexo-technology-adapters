@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 

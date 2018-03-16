@@ -44,8 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;

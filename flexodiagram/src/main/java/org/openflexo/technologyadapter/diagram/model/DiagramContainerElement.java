@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.model;
 
 import java.util.List;
 
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;

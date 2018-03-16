@@ -49,7 +49,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;

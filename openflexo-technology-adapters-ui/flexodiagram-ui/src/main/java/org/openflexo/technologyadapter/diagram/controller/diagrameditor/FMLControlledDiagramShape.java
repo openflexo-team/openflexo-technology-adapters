@@ -41,8 +41,8 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;

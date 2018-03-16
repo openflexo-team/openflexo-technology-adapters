@@ -47,8 +47,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;

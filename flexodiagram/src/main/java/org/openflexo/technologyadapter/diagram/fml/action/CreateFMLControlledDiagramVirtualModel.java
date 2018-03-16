@@ -42,9 +42,9 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;

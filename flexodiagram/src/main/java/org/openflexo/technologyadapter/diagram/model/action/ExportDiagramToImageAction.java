@@ -47,8 +47,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.openflexo.fge.ContainerGraphicalRepresentation;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.ContainerGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;

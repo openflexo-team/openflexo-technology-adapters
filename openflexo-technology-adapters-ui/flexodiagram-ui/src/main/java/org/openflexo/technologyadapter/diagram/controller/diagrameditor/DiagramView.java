@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.awt.Graphics;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.swing.view.JDrawingView;
+import org.openflexo.diana.swing.view.JDrawingView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DrawEdgeControl.DrawEdgeAction;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 

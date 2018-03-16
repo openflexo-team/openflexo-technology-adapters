@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.action.transformation.FlexoRoleCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;

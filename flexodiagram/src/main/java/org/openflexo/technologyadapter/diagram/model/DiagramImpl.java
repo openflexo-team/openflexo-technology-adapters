@@ -43,9 +43,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.ScreenshotBuilder;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.CannotRenameException;

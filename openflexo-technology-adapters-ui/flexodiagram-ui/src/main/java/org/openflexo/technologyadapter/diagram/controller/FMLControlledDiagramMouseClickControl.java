@@ -38,11 +38,11 @@
 
 package org.openflexo.technologyadapter.diagram.controller;
 
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.control.MouseClickControl;
-import org.openflexo.fge.control.MouseControlContext;
-import org.openflexo.fge.control.actions.MouseClickControlActionImpl;
-import org.openflexo.fge.control.actions.MouseClickControlImpl;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.control.MouseClickControl;
+import org.openflexo.diana.control.MouseControlContext;
+import org.openflexo.diana.control.actions.MouseClickControlActionImpl;
+import org.openflexo.diana.control.actions.MouseClickControlImpl;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.NavigationScheme;

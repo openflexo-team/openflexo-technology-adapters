@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.ModelSlot;

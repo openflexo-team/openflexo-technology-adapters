@@ -40,8 +40,8 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.GRProperty;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GRProperty;
+import org.openflexo.diana.GraphicalRepresentation;
 
 /**
  * This class represent a graphical feature that is to be associated on a DiagramElement

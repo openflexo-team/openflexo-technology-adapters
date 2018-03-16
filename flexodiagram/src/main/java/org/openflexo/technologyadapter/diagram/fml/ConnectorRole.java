@@ -42,9 +42,9 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;

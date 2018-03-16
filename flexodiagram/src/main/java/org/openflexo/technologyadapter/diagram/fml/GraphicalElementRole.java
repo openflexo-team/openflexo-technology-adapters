@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoRole;

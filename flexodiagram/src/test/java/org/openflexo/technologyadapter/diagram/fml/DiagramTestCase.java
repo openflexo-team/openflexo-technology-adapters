@@ -42,8 +42,8 @@ import java.io.IOException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.shapes.Rectangle;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.shapes.Rectangle;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;

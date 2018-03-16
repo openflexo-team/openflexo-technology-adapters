@@ -42,7 +42,7 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;

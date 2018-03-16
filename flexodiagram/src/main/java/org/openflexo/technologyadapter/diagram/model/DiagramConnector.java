@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.model;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;

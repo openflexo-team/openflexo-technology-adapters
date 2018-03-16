@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 

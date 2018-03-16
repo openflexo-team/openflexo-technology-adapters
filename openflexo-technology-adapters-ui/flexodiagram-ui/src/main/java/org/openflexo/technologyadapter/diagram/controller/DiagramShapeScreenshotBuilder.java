@@ -39,9 +39,10 @@
 package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.*;
-import org.openflexo.fge.Drawing.ShapeNode;
-import org.openflexo.fge.ScreenshotBuilder;
-import org.openflexo.fge.swing.view.JShapeView;
+
+import org.openflexo.diana.ScreenshotBuilder;
+import org.openflexo.diana.Drawing.ShapeNode;
+import org.openflexo.diana.swing.view.JShapeView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 

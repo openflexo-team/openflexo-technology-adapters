@@ -41,8 +41,8 @@ package org.openflexo.technologyadapter.diagram;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.ScreenshotBuilder;
+import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.ScreenshotBuilder;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;

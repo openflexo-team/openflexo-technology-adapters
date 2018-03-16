@@ -49,8 +49,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;

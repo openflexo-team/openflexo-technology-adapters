@@ -41,11 +41,11 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.Drawing.ConnectorNode;
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.Drawing.RootNode;
-import org.openflexo.fge.Drawing.ShapeNode;
-import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.diana.Drawing.ConnectorNode;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.Drawing.RootNode;
+import org.openflexo.diana.Drawing.ShapeNode;
+import org.openflexo.diana.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;

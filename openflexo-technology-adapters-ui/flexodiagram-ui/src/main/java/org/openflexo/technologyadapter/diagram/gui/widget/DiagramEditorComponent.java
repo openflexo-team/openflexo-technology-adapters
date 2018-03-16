@@ -48,7 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.model.widget.FIBCustom;

@@ -42,10 +42,10 @@ import java.util.logging.Logger;
 
 import javax.swing.JTabbedPane;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.fge.swing.control.SwingToolFactory;
-import org.openflexo.fge.swing.control.tools.JDianaPalette;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
+import org.openflexo.diana.swing.control.SwingToolFactory;
+import org.openflexo.diana.swing.control.tools.JDianaPalette;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;

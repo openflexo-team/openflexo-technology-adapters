@@ -43,7 +43,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.fml.VirtualModel;

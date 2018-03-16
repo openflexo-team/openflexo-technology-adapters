@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.model;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 

@@ -40,14 +40,14 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.Drawing.ContainerNode;
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.fge.control.DianaInteractiveEditor.EditorTool;
-import org.openflexo.fge.control.DrawingPalette;
-import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.Drawing.ContainerNode;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
+import org.openflexo.diana.control.DrawingPalette;
+import org.openflexo.diana.control.DianaInteractiveEditor.EditorTool;
+import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.JFIBDialog;

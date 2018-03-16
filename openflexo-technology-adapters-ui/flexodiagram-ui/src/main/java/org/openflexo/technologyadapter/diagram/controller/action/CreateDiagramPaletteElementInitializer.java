@@ -42,9 +42,9 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;

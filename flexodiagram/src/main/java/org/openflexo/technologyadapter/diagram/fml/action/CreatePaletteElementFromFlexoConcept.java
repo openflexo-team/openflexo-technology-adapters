@@ -41,8 +41,9 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionFactory;

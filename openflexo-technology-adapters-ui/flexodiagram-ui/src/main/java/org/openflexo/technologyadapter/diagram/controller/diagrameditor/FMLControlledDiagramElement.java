@@ -48,7 +48,7 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;

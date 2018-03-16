@@ -39,8 +39,9 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import java.util.List;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;

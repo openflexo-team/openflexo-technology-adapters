@@ -46,19 +46,19 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.GRBinding.ConnectorGRBinding;
-import org.openflexo.fge.GRBinding.DrawingGRBinding;
-import org.openflexo.fge.GRBinding.ShapeGRBinding;
-import org.openflexo.fge.GRProvider.ConnectorGRProvider;
-import org.openflexo.fge.GRProvider.DrawingGRProvider;
-import org.openflexo.fge.GRProvider.ShapeGRProvider;
-import org.openflexo.fge.GRStructureVisitor;
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.GRStructureVisitor;
+import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.GRBinding.ConnectorGRBinding;
+import org.openflexo.diana.GRBinding.DrawingGRBinding;
+import org.openflexo.diana.GRBinding.ShapeGRBinding;
+import org.openflexo.diana.GRProvider.ConnectorGRProvider;
+import org.openflexo.diana.GRProvider.DrawingGRProvider;
+import org.openflexo.diana.GRProvider.ShapeGRProvider;
+import org.openflexo.diana.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -498,7 +498,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 					new MouseClickControlActionImpl<DiagramEditor>() {
 	
 						@Override
-						public boolean handleClick(org.openflexo.fge.Drawing.DrawingTreeNode<?, ?> node, DiagramEditor controller,
+						public boolean handleClick(org.openflexo.diana.Drawing.DrawingTreeNode<?, ?> node, DiagramEditor controller,
 								MouseControlContext context) {
 							if (node instanceof ConnectorNode) {
 								((ConnectorNode<?>) node).refreshConnector();
@@ -512,16 +512,16 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 	}*/
 
 	/*	@Override
-		public <O> org.openflexo.fge.Drawing.ConnectorNode<O> createNewConnectorNode(org.openflexo.fge.Drawing.ContainerNode<?, ?> parentNode,
-				ConnectorGRBinding<O> binding, O drawable, org.openflexo.fge.Drawing.ShapeNode<?> fromNode,
-				org.openflexo.fge.Drawing.ShapeNode<?> toNode) {
+		public <O> org.openflexo.diana.Drawing.ConnectorNode<O> createNewConnectorNode(org.openflexo.diana.Drawing.ContainerNode<?, ?> parentNode,
+				ConnectorGRBinding<O> binding, O drawable, org.openflexo.diana.Drawing.ShapeNode<?> fromNode,
+				org.openflexo.diana.Drawing.ShapeNode<?> toNode) {
 			System.out.println(">>>>>>>>>>>>>>>>> Tiens on le cree vraiment le ConnectorNode !!!!!!!");
 			System.out.println("parentNode=" + parentNode);
 			System.out.println("binding=" + binding);
 			System.out.println("drawable=" + drawable);
 			System.out.println("fromNode=" + fromNode);
 			System.out.println("toNode=" + toNode);
-			org.openflexo.fge.Drawing.ConnectorNode<O> returned = super.createNewConnectorNode(parentNode, binding, drawable, fromNode, toNode);
+			org.openflexo.diana.Drawing.ConnectorNode<O> returned = super.createNewConnectorNode(parentNode, binding, drawable, fromNode, toNode);
 			System.out.println("GR=" + returned.getGraphicalRepresentation());
 			System.out.println("CS=" + returned.getGraphicalRepresentation().getConnectorSpecification());
 			return returned;

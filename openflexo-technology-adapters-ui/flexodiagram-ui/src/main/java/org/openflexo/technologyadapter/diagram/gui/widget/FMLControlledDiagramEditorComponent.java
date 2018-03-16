@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.gina.controller.FIBController;

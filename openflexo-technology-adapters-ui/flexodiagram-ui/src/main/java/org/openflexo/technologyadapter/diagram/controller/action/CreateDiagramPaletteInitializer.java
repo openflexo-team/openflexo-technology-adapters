@@ -44,9 +44,9 @@ import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionRunnable;

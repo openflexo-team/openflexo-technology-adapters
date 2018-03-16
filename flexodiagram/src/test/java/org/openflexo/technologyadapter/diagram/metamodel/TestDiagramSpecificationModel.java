@@ -46,8 +46,8 @@ import java.awt.Color;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.model.exceptions.ModelDefinitionException;

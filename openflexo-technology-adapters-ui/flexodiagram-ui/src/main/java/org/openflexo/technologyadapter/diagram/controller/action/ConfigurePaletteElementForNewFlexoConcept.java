@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.FlexoWizard;
 import org.openflexo.components.wizard.WizardStep;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoAction.PostProcessing;

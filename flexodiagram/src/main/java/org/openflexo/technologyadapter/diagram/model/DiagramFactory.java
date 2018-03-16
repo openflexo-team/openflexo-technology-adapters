@@ -40,12 +40,12 @@ package org.openflexo.technologyadapter.diagram.model;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.connectors.ConnectorSpecification.ConnectorType;
+import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;

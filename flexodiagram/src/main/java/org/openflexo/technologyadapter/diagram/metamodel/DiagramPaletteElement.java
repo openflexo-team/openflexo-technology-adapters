@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;

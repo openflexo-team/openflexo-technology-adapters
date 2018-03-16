@@ -42,7 +42,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;

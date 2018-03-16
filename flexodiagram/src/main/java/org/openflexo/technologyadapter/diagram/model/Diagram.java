@@ -38,8 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.model;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.model.annotations.Getter;

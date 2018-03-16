@@ -50,7 +50,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.diana.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;

@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;

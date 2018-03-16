@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.diana.swing.control.SwingToolFactory;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.controller.FlexoController;
 

@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
-import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.swing.JDianaInteractiveEditor;
-import org.openflexo.fge.swing.SwingViewFactory;
-import org.openflexo.fge.swing.control.SwingToolFactory;
-import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
+import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.swing.JDianaInteractiveEditor;
+import org.openflexo.diana.swing.SwingViewFactory;
+import org.openflexo.diana.swing.control.SwingToolFactory;
+import org.openflexo.diana.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.technologyadapter.pdf.model.PDFDocumentPage;

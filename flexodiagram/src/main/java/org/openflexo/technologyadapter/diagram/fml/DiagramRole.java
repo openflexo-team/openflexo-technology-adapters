@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;

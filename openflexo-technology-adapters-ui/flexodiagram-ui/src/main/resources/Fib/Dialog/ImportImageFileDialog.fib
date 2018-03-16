@@ -99,7 +99,7 @@
 			constraints="twocols(expandHorizontally=false;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 			opaque="false" index="3" name="FIBPanel3">
 			<DropDown id="23"
-				iteratorClassName="org.openflexo.fge.BackgroundImageBackgroundStyle$ImageBackgroundType"
+				iteratorClassName="org.openflexo.diana.BackgroundImageBackgroundStyle$ImageBackgroundType"
 				showText="true" showIcon="false" localize="true" format="object.name.toLowerCase"
 				data="bgStyle.imageBackgroundType" constraints="flow(index=0)"
 				index="0" name="backgroundStyleDD" />
@@ -162,9 +162,9 @@
 		<Localized id="59" lang="French" value="Valider" key="Validate" />
 	</LocalizedDictionary>
 	<FIBVariable id="60"
-		type="org.openflexo.fge.ShapeGraphicalRepresentation" name="data" />
+		type="org.openflexo.diana.ShapeGraphicalRepresentation" name="data" />
 	<FIBVariable id="25"
-		type="org.openflexo.fge.BackgroundImageBackgroundStyle"
-		value="($org.openflexo.fge.BackgroundImageBackgroundStyle)data.background"
+		type="org.openflexo.diana.BackgroundImageBackgroundStyle"
+		value="($org.openflexo.diana.BackgroundImageBackgroundStyle)data.background"
 		name="bgStyle" />
 </Panel>

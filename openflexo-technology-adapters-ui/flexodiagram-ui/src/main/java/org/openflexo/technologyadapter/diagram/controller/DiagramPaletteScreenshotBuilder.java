@@ -39,7 +39,8 @@
 package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.*;
-import org.openflexo.fge.ScreenshotBuilder;
+
+import org.openflexo.diana.ScreenshotBuilder;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 

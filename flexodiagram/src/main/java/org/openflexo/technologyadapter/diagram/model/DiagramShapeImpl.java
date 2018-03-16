@@ -45,9 +45,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ScreenshotBuilder;
-import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.swing.ImageUtils;
