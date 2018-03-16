@@ -38,9 +38,9 @@
 
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections15.map.HashedMap;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
@@ -71,7 +71,7 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 		return SEVirtualModelInstance.class;
 	}
 
-	private static Map<VirtualModel, SEVirtualModelInstanceType> types = new HashedMap<>();
+	private static Map<VirtualModel, SEVirtualModelInstanceType> types = new HashMap<>();
 
 	public static SEVirtualModelInstanceType getVirtualModelInstanceType(VirtualModel aVirtualModel) {
 		if (aVirtualModel != null) {
