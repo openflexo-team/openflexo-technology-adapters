@@ -337,14 +337,6 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			}
 
 			@Override
-			public VirtualModel getVirtualModel() {
-				if (getOwner() != null) {
-					return getOwner().getVirtualModel();
-				}
-				return null;
-			}
-
-			@Override
 			public FlexoConcept getFlexoConcept() {
 				if (getOwner() != null) {
 					return getOwner().getFlexoConcept();

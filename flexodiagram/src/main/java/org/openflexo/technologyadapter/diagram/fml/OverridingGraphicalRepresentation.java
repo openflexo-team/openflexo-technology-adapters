@@ -42,10 +42,9 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModelObject;
+import org.openflexo.foundation.fml.FlexoConceptObject.FlexoConceptObjectImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -61,7 +60,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ImplementationClass(OverridingGraphicalRepresentation.OverridingGraphicalRepresentationImpl.class)
 @Imports({ @Import(OverridingGraphicalRepresentation.ShapeOverridingGraphicalRepresentation.class),
 		@Import(OverridingGraphicalRepresentation.ConnectorOverridingGraphicalRepresentation.class) })
-public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> extends VirtualModelObject {
+public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -115,11 +114,6 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 		}
 
 		@Override
-		public VirtualModel getVirtualModel() {
-			return getDiagramPaletteElementBinding().getVirtualModel();
-		}
-
-		@Override
 		public BindingModel getBindingModel() {
 			if (getDiagramPaletteElementBinding() != null) {
 				return getDiagramPaletteElementBinding().getBindingModel();
@@ -135,7 +129,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 		public String getPatternRoleName() {
 			return patternRoleName;
 		}
-
+		
 		@Override
 		public void setPatternRoleName(String patternRoleName) {
 			this.patternRoleName = patternRoleName;
@@ -159,13 +153,12 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 
 	@ModelEntity
 	@XMLElement
-	public static interface ShapeOverridingGraphicalRepresentation extends OverridingGraphicalRepresentation<ShapeGraphicalRepresentation> {
-	}
+	public static interface ShapeOverridingGraphicalRepresentation
+			extends OverridingGraphicalRepresentation<ShapeGraphicalRepresentation> {}
 
 	@ModelEntity
 	@XMLElement
-	public static interface ConnectorOverridingGraphicalRepresentation extends
-			OverridingGraphicalRepresentation<ConnectorGraphicalRepresentation> {
-	}
+	public static interface ConnectorOverridingGraphicalRepresentation
+			extends OverridingGraphicalRepresentation<ConnectorGraphicalRepresentation> {}
 
 }

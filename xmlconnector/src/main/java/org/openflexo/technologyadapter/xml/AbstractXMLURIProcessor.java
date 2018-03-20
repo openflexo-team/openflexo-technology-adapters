@@ -46,8 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelObject;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -73,7 +72,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AbstractXMLURIProcessor.AbstractXMLURIProcessorImpl.class)
-public interface AbstractXMLURIProcessor extends VirtualModelObject {
+public interface AbstractXMLURIProcessor extends FlexoConceptObject {
 
 	public enum MappingStyle {
 		ATTRIBUTE_VALUE, SINGLETON;
@@ -190,16 +189,6 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		@Override
 		public FlexoConcept getFlexoConcept() {
 			return getModelSlot().getFlexoConcept();
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			AbstractXMLModelSlot<?> ms = getModelSlot();
-			if (ms != null) {
-				return ms.getOwningVirtualModel();
-			}
-			else
-				return null;
 		}
 
 		@Override

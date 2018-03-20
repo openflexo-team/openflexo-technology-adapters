@@ -44,8 +44,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelObject;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -64,7 +63,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBindingParameter.FMLDiagramPaletteElementBindingParameterImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelObject {
+public interface FMLDiagramPaletteElementBindingParameter extends FlexoConceptObject {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -116,14 +115,6 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		@Override
 		public FlexoConcept getFlexoConcept() {
 			return getDiagramPaletteElementBinding().getFlexoConcept();
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			if (getDiagramPaletteElementBinding() != null) {
-				return getDiagramPaletteElementBinding().getVirtualModel();
-			}
-			return null;
 		}
 
 		@Override
@@ -184,7 +175,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getVirtualModel().getBindingModel();
+			return getDeclaringVirtualModel().getBindingModel();
 		}
 
 		@Override

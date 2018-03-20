@@ -51,8 +51,8 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
@@ -81,7 +81,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBinding.FMLDiagramPaletteElementBindingImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
+public interface FMLDiagramPaletteElementBinding extends FlexoConceptObject {
 
 	@PropertyIdentifier(type = TypedDiagramModelSlot.class)
 	public static final String DIAGRAM_MODEL_SLOT_KEY = "diagramModelSlot";
@@ -220,14 +220,6 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		}
 
 		@Override
-		public VirtualModel getVirtualModel() {
-			if (getDiagramModelSlot() != null) {
-				return getDiagramModelSlot().getVirtualModel();
-			}
-			return null;
-		}
-
-		@Override
 		public TypedDiagramModelSlot getDiagramModelSlot() {
 			if (diagramModelSlot == null && dropScheme != null) {
 				VirtualModel vm = dropScheme.getOwningVirtualModel();
@@ -297,8 +289,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		}
 
 		private void decodePaletteElementId() {
-			if (paletteElementId != null) {
-			}
+			if (paletteElementId != null) {}
 			if (paletteElement == null && getDiagramModelSlot() != null && paletteElementId != null && paletteElementId.indexOf("#") > 0) {
 				String paletteURI = paletteElementId.substring(0, paletteElementId.indexOf("#"));
 				String elementName = paletteElementId.substring(paletteElementId.indexOf("#") + 1);
