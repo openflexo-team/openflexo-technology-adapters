@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.awt.Event;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,10 +45,10 @@ import org.openflexo.fml.rt.controller.VirtualModelInstancePasteHandler;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.copypaste.FlexoClipboard;
 import org.openflexo.foundation.action.copypaste.PastingContext;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.model.factory.Clipboard;
 import org.openflexo.selection.MouseSelectionManager;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -81,8 +80,8 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	}
 
 	public class FMLControlledDiagramPastingContext extends HeterogeneousPastingContext {
-		public FMLControlledDiagramPastingContext(VirtualModelInstance<?, ?> holder, Event event) {
-			super(holder, event);
+		public FMLControlledDiagramPastingContext(VirtualModelInstance<?, ?> holder) {
+			super(holder);
 		}
 
 		public Diagram getDiagram() {
@@ -91,8 +90,8 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	}
 
 	@Override
-	public PastingContext<VirtualModelInstance<?, ?>> retrievePastingContext(FlexoObject focusedObject,
-			List<FlexoObject> globalSelection, FlexoClipboard clipboard, Event event) {
+	public PastingContext<VirtualModelInstance<?, ?>> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
+			FlexoClipboard clipboard) {
 
 		PastingContext<VirtualModelInstance<?, ?>> returned = null;
 
@@ -101,12 +100,12 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 		if (virtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)) {
 			if (focusedObject == FMLControlledDiagramVirtualModelInstanceNature.getDiagram(virtualModelInstance)) {
 				System.out.println("Lookep up " + virtualModelInstance + " from " + focusedObject);
-				returned = new FMLControlledDiagramPastingContext(virtualModelInstance, event);
+				returned = new FMLControlledDiagramPastingContext(virtualModelInstance);
 			}
 		}
 
 		if (returned == null) {
-			returned = super.retrievePastingContext(focusedObject, globalSelection, clipboard, event);
+			returned = super.retrievePastingContext(focusedObject, globalSelection, clipboard);
 		}
 
 		if (returned != null) {

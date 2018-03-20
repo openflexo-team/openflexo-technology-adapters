@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.awt.Event;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -84,14 +83,13 @@ public class DiagramElementPasteHandler extends FlexoPasteHandler<DiagramContain
 
 	@Override
 	public PastingContext<DiagramContainerElement> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
-			FlexoClipboard clipboard, Event event) {
+			FlexoClipboard clipboard) {
 
 		if (!(focusedObject instanceof DiagramContainerElement)) {
 			return null;
 		}
 
-		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<>(
-				(DiagramContainerElement) focusedObject, event);
+		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<>((DiagramContainerElement) focusedObject);
 
 		Clipboard leaderClipboard = clipboard.getLeaderClipboard();
 
