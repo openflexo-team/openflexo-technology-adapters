@@ -69,7 +69,6 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  */
 @ModelEntity
 @ImplementationClass(value = ExcelWorkbook.ExcelWorkbookImpl.class)
-@XMLElement
 @Imports({ @Import(ExcelCellRange.class) })
 public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> {
 
