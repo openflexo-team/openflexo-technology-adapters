@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.openflexo.foundation.FlexoException;
@@ -142,7 +141,9 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} finally {
-			IOUtils.closeQuietly(out);
+			try {
+				out.close();
+			} catch (IOException e) {}
 		}
 
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());

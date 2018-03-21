@@ -50,7 +50,6 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -394,7 +393,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} finally {
-			IOUtils.closeQuietly(out);
+			out.close();
 		}
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}

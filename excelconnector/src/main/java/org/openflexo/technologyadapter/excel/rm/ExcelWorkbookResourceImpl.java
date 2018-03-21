@@ -47,7 +47,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
@@ -79,7 +78,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceImpl.class.getPackage().getName());
 
-	private boolean isLoaded = false;
+	// unused private boolean isLoaded = false;
 
 	private BasicExcelModelConverter converter;
 
@@ -189,7 +188,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} finally {
-			IOUtils.closeQuietly(out);
+			try {
+				out.close();
+			} catch (IOException e) {}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}

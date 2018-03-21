@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
@@ -127,7 +126,7 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} finally {
-			IOUtils.closeQuietly(out);
+			out.close();
 		}
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
