@@ -52,7 +52,7 @@ public class TestShowPDF extends AbstractTestPDF {
 
 		Assume.assumeTrue(docResource.getIODelegate() instanceof StreamIODelegate);
 
-		PDDocument document = PDDocument.load(((StreamIODelegate) docResource.getIODelegate()).getInputStream());
+		PDDocument document = PDDocument.load(((StreamIODelegate<?>) docResource.getIODelegate()).getInputStream());
 		System.out.println("document=" + document);
 
 		return document;
@@ -215,10 +215,10 @@ public class TestShowPDF extends AbstractTestPDF {
 				int width = 612;
 				int height = 792;
 
-				int hX = 320, tX = 340, cX = 100;
-				int hY = 0, tY = 580, cY = 200;
-				int hW = width - hX, tW = width - tX, cW = 100;
-				int hH = 80, tH = height - tY, cH = 60;
+				int tX = 340, cX = 100;// Unused hX = 320,
+				int tY = 580, cY = 200;// Unused hY = 0,
+				int tW = width - tX, cW = 100; // Unused hW = width - hX,
+				int tH = height - tY, cH = 60; // Unused hH = 80,
 
 				Rectangle header = new Rectangle();
 				// header.setBounds(hX, hY, hW, hH);
@@ -232,7 +232,7 @@ public class TestShowPDF extends AbstractTestPDF {
 
 					private StringBuffer currentString;
 					private Rectangle box;
-					private float fontSize;
+					// Unused private float fontSize;
 					private float dir;
 
 					private void reset() {
@@ -262,7 +262,7 @@ public class TestShowPDF extends AbstractTestPDF {
 						else {
 							box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), width, height));
 						}
-						fontSize = text.getFontSize();
+						// Unused fontSize = text.getFontSize();
 						dir = text.getDir();
 					}
 
