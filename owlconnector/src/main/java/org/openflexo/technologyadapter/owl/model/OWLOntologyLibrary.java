@@ -64,7 +64,6 @@ import org.apache.jena.shared.AlreadyExistsException;
 import org.apache.jena.shared.DoesNotExistException;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.converter.OntologyObjectConverter;
 import org.openflexo.foundation.ontology.OntologyUtils;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -111,25 +110,19 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	private final Map<String, OWLOntologyResource> ontologies;
 	private final Map<String, OWLDataType> dataTypes;
 
-	private final OntologyObjectConverter ontologyObjectConverter;
-
 	protected Hashtable<OWLProperty, StatementWithProperty> statementsWithProperty;
 
 	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
 		}
-		else {
-			StatementWithProperty returned = new StatementWithProperty(aProperty);
-			statementsWithProperty.put(aProperty, returned);
-			return returned;
-		}
+		StatementWithProperty returned = new StatementWithProperty(aProperty);
+		statementsWithProperty.put(aProperty, returned);
+		return returned;
 	}
 
 	public OWLOntologyLibrary(OWLTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
-
-		ontologyObjectConverter = new OntologyObjectConverter(null/* this */);
 		graphMaker = new SimpleGraphMaker();
 
 		ontologies = new HashMap<>();
@@ -205,10 +198,6 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			returned.add(dt);
 		}
 		return returned;
-	}
-
-	public OntologyObjectConverter getOntologyObjectConverter() {
-		return ontologyObjectConverter;
 	}
 
 	public void registerOntology(OWLOntologyResource ontologyResource) {
@@ -314,9 +303,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			logger.warning("Not implemented yet !!!");
 			return null;
 		}
-		else {
-			throw new DoesNotExistException(name);
-		}
+		throw new DoesNotExistException(name);
 	}
 
 	@Override
@@ -377,7 +364,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	}
 
 	@Override
-	public ExtendedIterator listModels() {
+	public ExtendedIterator<String> listModels() {
 		return getGraphMaker().listGraphs();
 	}
 
