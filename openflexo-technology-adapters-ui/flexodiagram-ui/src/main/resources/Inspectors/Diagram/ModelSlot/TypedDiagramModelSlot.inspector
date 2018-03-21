@@ -52,7 +52,7 @@
 						displayTitle="true" title="palette_element" name="paletteElement"
 						columnWidth="40" resizable="true" />
 					<DropDownColumn data="iterator.boundFlexoConcept"
-						format="object.name" list="data.virtualModel.flexoConcepts"
+						format="object.name" list="data.declaringVirtualModel.flexoConcepts"
 						displayTitle="true" title="flexo_concept" name="flexoConcept"
 						columnWidth="40" resizable="true" />
 					<DropDownColumn data="iterator.dropScheme" format="object.name"
