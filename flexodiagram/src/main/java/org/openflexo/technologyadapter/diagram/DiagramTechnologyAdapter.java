@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.ScreenshotBuilder;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
@@ -515,7 +515,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
 		try {
-			FGEModelFactoryImpl.installImplementingClasses(fMLModelFactory);
+			DianaModelFactoryImpl.installImplementingClasses(fMLModelFactory);
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}

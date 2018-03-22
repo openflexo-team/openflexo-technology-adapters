@@ -132,7 +132,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					/*CompoundEdit drawEdge = editingContext.getUndoManager().startRecording("Draw edge");
 					DiagramConnector newConnector = factory.makeNewConnector("edge", fromShape.getDrawable(), toShape.getDrawable(),
 							controller.getDrawing().getModel());
-					DrawingTreeNode<?, ?> fatherNode = FGEUtils.getFirstCommonAncestor(fromShape, toShape);
+					DrawingTreeNode<?, ?> fatherNode = DianaUtils.getFirstCommonAncestor(fromShape, toShape);
 					((DiagramContainerElement<?>) fatherNode.getDrawable()).addToConnectors(newConnector);
 					System.out.println("Add new connector !");
 					editingContext.getUndoManager().stopRecording(drawEdge);

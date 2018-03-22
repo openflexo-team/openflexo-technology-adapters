@@ -42,14 +42,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.logging.Logger;
 
-import org.openflexo.diana.FGEConstants;
+import org.openflexo.diana.DianaConstants;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.Drawing.ContainerNode;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.control.DrawingPalette;
 import org.openflexo.diana.control.PaletteElement;
 import org.openflexo.diana.control.DianaInteractiveEditor.EditorTool;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.Rectangle;
 import org.openflexo.diana.shapes.ShapeSpecification;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
@@ -132,7 +132,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 		gr.setTextStyle(FACTORY.makeTextStyle(Color.DARK_GRAY, DEFAULT_TEXT_FONT));
 		gr.setIsFloatingLabel(false);
 		gr.setForeground(FACTORY.makeForegroundStyle(Color.BLACK));
-		gr.setBackground(FACTORY.makeColoredBackground(FGEConstants.DEFAULT_BACKGROUND_COLOR));
+		gr.setBackground(FACTORY.makeColoredBackground(DianaConstants.DEFAULT_BACKGROUND_COLOR));
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
 
@@ -150,7 +150,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 			}
 
 			@Override
-			public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
+			public boolean elementDragged(DrawingTreeNode<?, ?> target, DianaPoint dropLocation) {
 
 				if (getEditor() == null) {
 					return false;
@@ -241,7 +241,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 			}
 
 			@Override
-			public boolean elementDragged(GraphicalRepresentation containerGR, FGEPoint dropLocation) {
+			public boolean elementDragged(GraphicalRepresentation containerGR, DianaPoint dropLocation) {
 				if (containerGR.getDrawable() instanceof DiagramPalette) {
 
 					DiagramPalette container = (DiagramPalette) containerGR.getDrawable();

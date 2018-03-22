@@ -45,8 +45,8 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactory;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionRunnable;
@@ -75,7 +75,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 		return (e, action) -> {
 
 			try {
-				FGEModelFactory factory = new FGEModelFactoryImpl();
+				DianaModelFactory factory = new DianaModelFactoryImpl();
 				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
 			} catch (ModelDefinitionException e1) {
 				e1.printStackTrace();
@@ -90,9 +90,9 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 			}
 			return true;
 
-			/*FGEModelFactory factory;
+			/*DianaModelFactory factory;
 			try {
-				FGEModelFactory factory = new FGEModelFactoryImpl();
+				DianaModelFactory factory = new DianaModelFactoryImpl();
 				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
 				return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
 			} catch (ModelDefinitionException e1) {
@@ -116,7 +116,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_PALETTE_ICON, IconLibrary.NEW_MARKER);
 	}
 
-	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(FGEModelFactory factory) {
+	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(DianaModelFactory factory) {
 		DrawingGraphicalRepresentation gr = factory.makeDrawingGraphicalRepresentation();
 		gr.setDrawWorkingArea(true);
 		gr.setWidth(260);

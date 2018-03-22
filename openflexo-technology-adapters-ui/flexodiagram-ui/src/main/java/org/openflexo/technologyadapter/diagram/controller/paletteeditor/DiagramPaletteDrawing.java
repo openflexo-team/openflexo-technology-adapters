@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.DianaModelFactory;
 import org.openflexo.diana.GRStructureVisitor;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
@@ -71,14 +71,14 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 		final DrawingGRBinding<DiagramPalette> paletteBinding = bindDrawing(DiagramPalette.class, "palette",
 				new DrawingGRProvider<DiagramPalette>() {
 					@Override
-					public DrawingGraphicalRepresentation provideGR(DiagramPalette drawable, FGEModelFactory factory) {
+					public DrawingGraphicalRepresentation provideGR(DiagramPalette drawable, DianaModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable, (DiagramPaletteFactory) factory);
 					}
 				});
 		final ShapeGRBinding<DiagramPaletteElement> elementBinding = bindShape(DiagramPaletteElement.class, "paletteElement",
 				new ShapeGRProvider<DiagramPaletteElement>() {
 					@Override
-					public ShapeGraphicalRepresentation provideGR(DiagramPaletteElement drawable, FGEModelFactory factory) {
+					public ShapeGraphicalRepresentation provideGR(DiagramPaletteElement drawable, DianaModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable, (DiagramPaletteFactory) factory);
 					}
 				});

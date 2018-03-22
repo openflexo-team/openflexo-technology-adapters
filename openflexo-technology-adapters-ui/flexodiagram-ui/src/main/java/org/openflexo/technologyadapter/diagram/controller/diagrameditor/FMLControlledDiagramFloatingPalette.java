@@ -57,8 +57,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.diana.BackgroundStyle;
-import org.openflexo.diana.FGECoreUtils;
-import org.openflexo.diana.FGEUtils;
+import org.openflexo.diana.DianaCoreUtils;
+import org.openflexo.diana.DianaUtils;
 import org.openflexo.diana.ForegroundStyle;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ColorGradientBackgroundStyle.ColorGradientDirection;
@@ -67,14 +67,14 @@ import org.openflexo.diana.Drawing.RootNode;
 import org.openflexo.diana.Drawing.ShapeNode;
 import org.openflexo.diana.control.DianaEditor;
 import org.openflexo.diana.cp.ControlArea;
-import org.openflexo.diana.geom.FGEPoint;
-import org.openflexo.diana.geom.FGERectangle;
-import org.openflexo.diana.geom.FGERoundRectangle;
-import org.openflexo.diana.geom.FGEShape;
-import org.openflexo.diana.geom.FGEGeometricObject.Filling;
-import org.openflexo.diana.geom.FGEGeometricObject.SimplifiedCardinalDirection;
-import org.openflexo.diana.graphics.FGEGraphics;
-import org.openflexo.diana.swing.paint.FGEPaintManager;
+import org.openflexo.diana.geom.DianaPoint;
+import org.openflexo.diana.geom.DianaRectangle;
+import org.openflexo.diana.geom.DianaRoundRectangle;
+import org.openflexo.diana.geom.DianaShape;
+import org.openflexo.diana.geom.DianaGeometricObject.Filling;
+import org.openflexo.diana.geom.DianaGeometricObject.SimplifiedCardinalDirection;
+import org.openflexo.diana.graphics.DianaGraphics;
+import org.openflexo.diana.swing.paint.DianaPaintManager;
 import org.openflexo.diana.swing.view.JShapeView;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -98,7 +98,7 @@ import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
  * @author sylvain
  *
  */
-public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRectangle> implements PropertyChangeListener {
+public class FMLControlledDiagramFloatingPalette extends ControlArea<DianaRoundRectangle> implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramFloatingPalette.class.getPackage().getName());
 
@@ -108,8 +108,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		CREATE_SHAPE_AND_LINK, LINK_ONLY;
 	}
 
-	private FGERoundRectangle roleRect;
-	private FGERectangle edgeRect;
+	private DianaRoundRectangle roleRect;
+	private DianaRectangle edgeRect;
 
 	/** The vertical space between two elements of the palette */
 	private static final int SPACING = 5;
@@ -118,11 +118,11 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	/** The width of an element of the palette */
 	private static final int ELEMENTS_WIDTH = 12;
 
-	private static final ForegroundStyle NONE = FGECoreUtils.TOOLS_FACTORY.makeNoneForegroundStyle();
-	private static final BackgroundStyle DEFAULT = FGECoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
-	private static final ForegroundStyle NODE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.RED, 1.0f);
-	private static final ForegroundStyle EDGE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(FGEUtils.NICE_BROWN, 1.0f);
-	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.ORANGE, Color.WHITE,
+	private static final ForegroundStyle NONE = DianaCoreUtils.TOOLS_FACTORY.makeNoneForegroundStyle();
+	private static final BackgroundStyle DEFAULT = DianaCoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
+	private static final ForegroundStyle NODE_FOREGROUND = DianaCoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.RED, 1.0f);
+	private static final ForegroundStyle EDGE_FOREGROUND = DianaCoreUtils.TOOLS_FACTORY.makeForegroundStyle(DianaUtils.NICE_BROWN, 1.0f);
+	private static final BackgroundStyle NODE_BACKGROUND = DianaCoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.ORANGE, Color.WHITE,
 			ColorGradientDirection.NORTH_WEST_SOUTH_EAST);
 
 	static {
@@ -141,7 +141,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	protected ShapeNode<?> to = null;
 	protected DrawingTreeNode<?, ?> focusedNode;
 	private FMLControlledDiagramEditor controller;
-	private FGEPoint normalizedStartPoint;
+	private DianaPoint normalizedStartPoint;
 
 	private Rectangle previousRectangle;
 	private Mode mode;
@@ -174,11 +174,11 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 	public void paint(Graphics g, DiagramEditor controller) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null) {
-			FGEShape<?> fgeShape = getNode().getShape().getOutline();
+			DianaShape<?> fgeShape = getNode().getShape().getOutline();
 			RootNode<Diagram> rootNode = controller.getDrawing().getRoot();
 			// DrawingGraphicalRepresentation<?> drawingGR = controller.getDrawingGraphicalRepresentation();
 			double scale = controller.getScale();
-			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(
+			DianaPoint nearestOnOutline = fgeShape.getNearestPoint(
 					rootNode.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, getNode(), scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
 			Point fromPoint = getNode().convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline, rootNode, scale);
@@ -205,8 +205,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				}
 				Rectangle rect = new Rectangle(toPoint.x - 10, toPoint.y - 10, 20, 20);
 				g.drawRect(rect.x, rect.y, rect.width, rect.height);
-				FGERectangle r = new FGERectangle(rect);
-				FGEPoint outlineToPoint = r.nearestOutlinePoint(new FGEPoint(fromPoint.x, fromPoint.y));
+				DianaRectangle r = new DianaRectangle(rect);
+				DianaPoint outlineToPoint = r.nearestOutlinePoint(new DianaPoint(fromPoint.x, fromPoint.y));
 				g.drawLine(fromPoint.x, fromPoint.y, (int) outlineToPoint.x, (int) outlineToPoint.y);
 			}
 			int x, y, w, h;
@@ -231,7 +231,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	@Override
-	public void startDragging(DianaEditor<?> controller, FGEPoint startPoint) {
+	public void startDragging(DianaEditor<?> controller, DianaPoint startPoint) {
 		mode = null;
 		if (roleRect.contains(startPoint)) {
 			mode = Mode.CREATE_SHAPE_AND_LINK;
@@ -251,11 +251,11 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	@Override
-	public boolean dragToPoint(FGEPoint newRelativePoint, FGEPoint pointRelativeToInitialConfiguration, FGEPoint newAbsolutePoint,
-			FGEPoint initialPoint, MouseEvent event) {
+	public boolean dragToPoint(DianaPoint newRelativePoint, DianaPoint pointRelativeToInitialConfiguration, DianaPoint newAbsolutePoint,
+			DianaPoint initialPoint, MouseEvent event) {
 		if (drawEdge) {
 			DiagramView drawingView = controller.getDrawingView();
-			FGEPaintManager paintManager = drawingView.getPaintManager();
+			DianaPaintManager paintManager = drawingView.getPaintManager();
 			// Attempt to repaint relevant zone only
 			Rectangle oldBounds = previousRectangle;
 			if (oldBounds != null) {
@@ -328,10 +328,10 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				if (focused == null) {
 					focused = getNode().getDrawing().getRoot();
 				}
-				SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
-						new FGEPoint(getNode().convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
+				SimplifiedCardinalDirection direction = DianaPoint.getSimplifiedOrientation(
+						new DianaPoint(getNode().convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
 								getNode().getDrawing().getRoot(), controller.getScale())),
-						new FGEPoint(currentDraggingLocationInDrawingView));
+						new DianaPoint(currentDraggingLocationInDrawingView));
 				Point dropPoint = currentDraggingLocationInDrawingView;
 				if (dropPoint.x < 0) {
 					dropPoint.x = 0;
@@ -340,8 +340,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 					dropPoint.y = 0;
 				}
 
-				Point p = FGEUtils.convertPoint(getNode().getDrawing().getRoot(), dropPoint, focused, controller.getScale());
-				FGEPoint dropLocation = new FGEPoint(p.x / controller.getScale(), p.y / controller.getScale());
+				Point p = DianaUtils.convertPoint(getNode().getDrawing().getRoot(), dropPoint, focused, controller.getScale());
+				DianaPoint dropLocation = new DianaPoint(p.x / controller.getScale(), p.y / controller.getScale());
 				// ShapeNode<?> to = null;
 
 				switch (mode) {
@@ -366,7 +366,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				resetVariables();
 				DiagramView diagramView = ((DiagramEditor) controller).getDrawingView();
 				diagramView.resetFloatingPalette();
-				FGEPaintManager paintManager = diagramView.getPaintManager();
+				DianaPaintManager paintManager = diagramView.getPaintManager();
 				paintManager.invalidate(diagramView.getDrawing().getRoot());
 				paintManager.repaint(diagramView.getDrawing().getRoot());
 			}
@@ -377,7 +377,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		super.stopDragging(controller, focusedNode);
 	}
 
-	private void askAndApplyDropAndLinkScheme(final FGEPoint dropLocation, DrawingTreeNode<?, ?> focused) {
+	private void askAndApplyDropAndLinkScheme(final DianaPoint dropLocation, DrawingTreeNode<?, ?> focused) {
 
 		FlexoConceptInstance parentFlexoConceptInstance = null;
 		ShapeRole parentShapeRole = null;
@@ -454,7 +454,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		}
 	}
 
-	private void askAndApplyLinkScheme(final FGEPoint dropLocation, final ShapeNode<?> to) {
+	private void askAndApplyLinkScheme(final DianaPoint dropLocation, final ShapeNode<?> to) {
 
 		if (to.getDrawable() instanceof FMLControlledDiagramShape) {
 			final FMLControlledDiagramShape toShape = (FMLControlledDiagramShape) to.getDrawable();
@@ -512,13 +512,13 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 	}
 
-	protected void applyDropAndLinkScheme(final DropAndLinkScheme dropAndLinkScheme, final FGEPoint dropLocation,
+	protected void applyDropAndLinkScheme(final DropAndLinkScheme dropAndLinkScheme, final DianaPoint dropLocation,
 			/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
 		applyDropAndLinkScheme(dropAndLinkScheme.dropScheme, dropAndLinkScheme.linkScheme, dropLocation, parentFlexoConceptInstance,
 				parentShapeRole);
 	}
 
-	protected void applyDropAndLinkScheme(DropScheme dropScheme, LinkScheme linkScheme, FGEPoint dropLocation,
+	protected void applyDropAndLinkScheme(DropScheme dropScheme, LinkScheme linkScheme, DianaPoint dropLocation,
 			/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
 
 		logger.info("applyDropAndLinkScheme dropScheme=" + dropScheme + " linkScheme=" + linkScheme + " parentFlexoConceptInstance="
@@ -544,7 +544,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		currentDraggingLocationInDrawingView = null;
 	}
 
-	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, /*DiagramContainerElement<?> container*/
+	private FMLControlledDiagramShape createNewShape(DianaPoint dropLocation, /*DiagramContainerElement<?> container*/
 			FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DropScheme dropScheme) {
 
 		DropSchemeAction dropSchemeAction = new DropSchemeAction(dropScheme,
@@ -575,7 +575,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	@Override
-	public Rectangle paint(FGEGraphics drawingGraphics) {
+	public Rectangle paint(DianaGraphics drawingGraphics) {
 		// System.out.println("Focused:"+nodeGR.getIsFocused());
 
 		if (getNode().getIsSelected() && !getNode().getIsFocused()) {
@@ -587,15 +587,15 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		if (!getNode().getDrawing().isEditable()) {
 			return null;
 		}
-		AffineTransform at = FGEUtils.convertNormalizedCoordinatesAT(getNode(), getNode().getDrawing().getRoot());
+		AffineTransform at = DianaUtils.convertNormalizedCoordinatesAT(getNode(), getNode().getDrawing().getRoot());
 
 		// Graphics2D oldGraphics = drawingGraphics.cloneGraphics();
 
 		drawingGraphics.setDefaultForeground(NONE);
 		drawingGraphics.setDefaultBackground(DEFAULT);
-		FGERoundRectangle paletteRect = (FGERoundRectangle) getArea().transform(at);
-		FGERoundRectangle nodeRect = (FGERoundRectangle) this.roleRect.transform(at);
-		FGERectangle edgeRect = (FGERectangle) this.edgeRect.transform(at);
+		DianaRoundRectangle paletteRect = (DianaRoundRectangle) getArea().transform(at);
+		DianaRoundRectangle nodeRect = (DianaRoundRectangle) this.roleRect.transform(at);
+		DianaRectangle edgeRect = (DianaRectangle) this.edgeRect.transform(at);
 		double arrowSize = 4/** drawingGraphics.getScale() */
 		;
 
@@ -611,7 +611,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		// drawingGraphics.setDefaultBackground(EDGE_BACKGROUND);
 		drawingGraphics.useDefaultForegroundStyle();
 		// drawingGraphics.useDefaultBackgroundStyle();
-		FGEPoint eastPt, westPt, northPt, southPt;
+		DianaPoint eastPt, westPt, northPt, southPt;
 		switch (orientation) {
 			case EAST:
 				eastPt = edgeRect.getEastPt();
@@ -691,34 +691,34 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 		switch (orientation) {
 			case EAST:
-				roleRect = (FGERoundRectangle) new FGERoundRectangle(
+				roleRect = (DianaRoundRectangle) new DianaRoundRectangle(
 						getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2 + 0.5,
 						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED)
 								.transform(at);
-				edgeRect = (FGERectangle) new FGERectangle(getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2,
+				edgeRect = (DianaRectangle) new DianaRectangle(getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2,
 						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING + (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH,
 						ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
 				break;
 			case WEST:
-				roleRect = (FGERoundRectangle) new FGERoundRectangle(-SPACING - ELEMENTS_WIDTH,
+				roleRect = (DianaRoundRectangle) new DianaRoundRectangle(-SPACING - ELEMENTS_WIDTH,
 						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED)
 								.transform(at);
-				edgeRect = (FGERectangle) new FGERectangle(-SPACING - ELEMENTS_WIDTH,
+				edgeRect = (DianaRectangle) new DianaRectangle(-SPACING - ELEMENTS_WIDTH,
 						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING + (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH,
 						ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
 				break;
 			case NORTH:
-				roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
+				roleRect = (DianaRoundRectangle) new DianaRoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
 						-SPACING - ELEMENTS_HEIGHT, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED).transform(at);
-				edgeRect = (FGERectangle) new FGERectangle(
+				edgeRect = (DianaRectangle) new DianaRectangle(
 						(getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH), -SPACING - ELEMENTS_HEIGHT,
 						ELEMENTS_WIDTH, ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
 				break;
 			case SOUTH:
-				roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
+				roleRect = (DianaRoundRectangle) new DianaRoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
 						getNode().getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2,
 						2, Filling.FILLED).transform(at);
-				edgeRect = (FGERectangle) new FGERectangle(
+				edgeRect = (DianaRectangle) new DianaRectangle(
 						(getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH),
 						getNode().getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT,
 						Filling.FILLED).transform(at);
@@ -730,7 +730,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 	}
 
-	private static FGERoundRectangle makeRoundRect(ShapeNode<FMLControlledDiagramShape> node, SimplifiedCardinalDirection orientation) {
+	private static DianaRoundRectangle makeRoundRect(ShapeNode<FMLControlledDiagramShape> node, SimplifiedCardinalDirection orientation) {
 		double x, y, width, height;
 		int PALETTE_WIDTH = 0, PALETTE_HEIGHT = 0;
 		ShapeGraphicalRepresentation shapeGR = node.getGraphicalRepresentation();
@@ -750,28 +750,28 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
 				width = PALETTE_WIDTH;
 				height = PALETTE_HEIGHT;
-				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+				return new DianaRoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
 						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
 			case WEST:
 				x = -SPACING - ELEMENTS_WIDTH;
 				y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
 				width = PALETTE_WIDTH;
 				height = PALETTE_HEIGHT;
-				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+				return new DianaRoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
 						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
 			case NORTH:
 				x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
 				y = -SPACING - ELEMENTS_HEIGHT;
 				width = PALETTE_WIDTH;
 				height = PALETTE_HEIGHT;
-				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+				return new DianaRoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
 						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
 			case SOUTH:
 				x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
 				y = shapeGR.getHeight() + SPACING;
 				width = PALETTE_WIDTH;
 				height = PALETTE_HEIGHT;
-				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+				return new DianaRoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
 						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
 			default:
 				return null;

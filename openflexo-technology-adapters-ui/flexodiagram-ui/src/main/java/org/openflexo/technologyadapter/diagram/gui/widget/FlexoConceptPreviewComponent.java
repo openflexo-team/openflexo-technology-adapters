@@ -47,8 +47,8 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.openflexo.diana.FGEModelFactory;
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactory;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.swing.view.JDrawingView;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -78,13 +78,13 @@ public class FlexoConceptPreviewComponent extends JPanel
 	private final JLabel EMPTY_LABEL = new JLabel("<empty>");
 
 	/**
-	 * This is the FGE model factory shared by all preview components
+	 * This is the Diana model factory shared by all preview components
 	 */
-	public static FGEModelFactory FACTORY = null;
+	public static DianaModelFactory FACTORY = null;
 
 	static {
 		try {
-			FACTORY = new FGEModelFactoryImpl();
+			FACTORY = new DianaModelFactoryImpl();
 		} catch (ModelDefinitionException e) {
 			logger.severe(e.getMessage());
 			e.printStackTrace();

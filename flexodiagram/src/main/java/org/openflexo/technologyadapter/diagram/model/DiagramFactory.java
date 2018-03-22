@@ -41,10 +41,10 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.logging.Logger;
 
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
@@ -63,7 +63,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * @author sylvain
  * 
  */
-public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourceModelFactory<DiagramResource> {
+public class DiagramFactory extends DianaModelFactoryImpl implements PamelaResourceModelFactory<DiagramResource> {
 
 	private static final Logger logger = Logger.getLogger(DiagramFactory.class.getPackage().getName());
 
@@ -111,7 +111,7 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		return returned;
 	}
 
-	public DiagramShape makeNewShape(String name, ShapeType shapeType, FGEPoint fgePoint, DiagramContainerElement<?> container) {
+	public DiagramShape makeNewShape(String name, ShapeType shapeType, DianaPoint fgePoint, DiagramContainerElement<?> container) {
 		ShapeGraphicalRepresentation gr = makeShapeGraphicalRepresentation(shapeType);
 		if (fgePoint != null) {
 			gr.setX(fgePoint.getX());

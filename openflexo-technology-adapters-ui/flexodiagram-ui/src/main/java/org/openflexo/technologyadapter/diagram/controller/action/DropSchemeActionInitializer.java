@@ -106,7 +106,7 @@ public class DropSchemeActionInitializer
 					DiagramShapeGR myGR = (DiagramShapeGR) action.getPrimaryShape().getGraphicalRepresentation();
 					Point p = new Point((int) myGR.getX(), (int) myGR.getY());
 					Point newP = GraphicalRepresentation.convertPoint(expectedGR, p, parentNode, 1.0);
-					myGR.setLocation(new FGEPoint(newP.x, newP.y));
+					myGR.setLocation(new DianaPoint(newP.x, newP.y));
 					logger.info("border6 = " + myGR.getBorder());
 					logger.info("ShapeSpecification has been relocated");
 				}*/

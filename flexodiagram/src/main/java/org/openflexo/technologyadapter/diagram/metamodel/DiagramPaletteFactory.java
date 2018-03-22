@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import java.util.logging.Logger;
 
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.foundation.FlexoObject;
@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
  * @author sylvain
  * 
  */
-public class DiagramPaletteFactory extends FGEModelFactoryImpl implements PamelaResourceModelFactory<DiagramPaletteResource> {
+public class DiagramPaletteFactory extends DianaModelFactoryImpl implements PamelaResourceModelFactory<DiagramPaletteResource> {
 
 	private static final Logger logger = Logger.getLogger(DiagramPaletteFactory.class.getPackage().getName());
 

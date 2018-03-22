@@ -46,7 +46,7 @@ import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.diana.control.DrawingPalette;
 import org.openflexo.diana.control.DianaInteractiveEditor.EditorTool;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.gina.model.FIBComponent;
@@ -112,7 +112,7 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 	 * @return
 	 */
 	public boolean handleBasicGraphicalRepresentationDrop(DrawingTreeNode<?, ?> target, ShapeGraphicalRepresentation gr,
-			FGEPoint dropLocation, boolean applyCurrentForeground, boolean applyCurrentBackground, boolean applyCurrentTextStyle,
+			DianaPoint dropLocation, boolean applyCurrentForeground, boolean applyCurrentBackground, boolean applyCurrentTextStyle,
 			boolean applyCurrentShadowStyle, boolean isImage, boolean resize) {
 
 		if (getEditor() == null) {

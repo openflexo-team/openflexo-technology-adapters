@@ -43,12 +43,12 @@ import java.awt.Font;
 import java.util.logging.Logger;
 
 import org.openflexo.diana.BackgroundImageBackgroundStyle;
-import org.openflexo.diana.FGEConstants;
+import org.openflexo.diana.DianaConstants;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.BackgroundStyle.BackgroundStyleType;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.control.PaletteElement;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.Rectangle;
 import org.openflexo.diana.shapes.ShapeSpecification;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
@@ -134,7 +134,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 		gr.setTextStyle(FACTORY.makeTextStyle(Color.DARK_GRAY, DEFAULT_TEXT_FONT));
 		gr.setIsFloatingLabel(false);
 		gr.setForeground(FACTORY.makeForegroundStyle(Color.BLACK));
-		gr.setBackground(FACTORY.makeColoredBackground(FGEConstants.DEFAULT_BACKGROUND_COLOR));
+		gr.setBackground(FACTORY.makeColoredBackground(DianaConstants.DEFAULT_BACKGROUND_COLOR));
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
 
@@ -168,7 +168,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 			}
 
 			@Override
-			public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
+			public boolean elementDragged(DrawingTreeNode<?, ?> target, DianaPoint dropLocation) {
 				return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, applyCurrentForeground,
 						applyCurrentBackground, applyCurrentTextStyle, applyCurrentShadowStyle, isImage, true);
 			}

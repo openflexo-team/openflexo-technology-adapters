@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.DianaModelFactory;
 import org.openflexo.diana.GRStructureVisitor;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
@@ -83,20 +83,20 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 
 		final DrawingGRBinding<Diagram> drawingBinding = bindDrawing(Diagram.class, "drawing", new DrawingGRProvider<Diagram>() {
 			@Override
-			public DrawingGraphicalRepresentation provideGR(Diagram drawable, FGEModelFactory factory) {
+			public DrawingGraphicalRepresentation provideGR(Diagram drawable, DianaModelFactory factory) {
 				return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
 			}
 		});
 		final ShapeGRBinding<DiagramShape> shapeBinding = bindShape(DiagramShape.class, "shape", new ShapeGRProvider<DiagramShape>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(DiagramShape drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(DiagramShape drawable, DianaModelFactory factory) {
 				return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
 			}
 		});
 		final ConnectorGRBinding<DiagramConnector> connectorBinding = bindConnector(DiagramConnector.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<DiagramConnector>() {
 					@Override
-					public ConnectorGraphicalRepresentation provideGR(DiagramConnector drawable, FGEModelFactory factory) {
+					public ConnectorGraphicalRepresentation provideGR(DiagramConnector drawable, DianaModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
 					}
 				});

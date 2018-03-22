@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.DianaModelFactory;
 import org.openflexo.diana.GRStructureVisitor;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
@@ -75,11 +75,11 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	// private Hashtable<FlexoRole, FlexoConceptPreviewShapeGR> shapesGR;
 	// private Hashtable<FlexoRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
-	/*static FGEModelFactory PREVIEW_FACTORY;
+	/*static DianaModelFactory PREVIEW_FACTORY;
 	
 	static {
 		try {
-			PREVIEW_FACTORY = new FGEModelFactoryImpl();
+			PREVIEW_FACTORY = new DianaModelFactoryImpl();
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	private final Hashtable<FlexoRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
-	public FlexoConceptPreviewRepresentation(FlexoConcept model, FGEModelFactory factory) {
+	public FlexoConceptPreviewRepresentation(FlexoConcept model, DianaModelFactory factory) {
 		super(model, factory, PersistenceMode.UniqueGraphicalRepresentations);
 		// Sylvain: commented this because not movable nor rezizable shapes
 		// setEditable(false);
@@ -103,7 +103,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		final DrawingGRBinding<FlexoConcept> drawingBinding = bindDrawing(FlexoConcept.class, "flexoConcept",
 				new DrawingGRProvider<FlexoConcept>() {
 					@Override
-					public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
+					public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, DianaModelFactory factory) {
 						DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
 						returned.setWidth(WIDTH);
 						returned.setHeight(HEIGHT);
@@ -114,7 +114,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 				});
 		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapeRole", new ShapeGRProvider<ShapeRole>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, DianaModelFactory factory) {
 				/*if (drawable.getGraphicalRepresentation() == null) {
 					drawable.setGraphicalRepresentation(makeDefaultShapeGR());
 				}*/
@@ -131,7 +131,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
 					@Override
-					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
+					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, DianaModelFactory factory) {
 						/*if (drawable.getGraphicalRepresentation() == null) {
 							drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
 						}*/
@@ -141,7 +141,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		final ShapeGRBinding<ConnectorFromArtifact> fromArtefactBinding = bindShape(ConnectorFromArtifact.class, "fromArtifact",
 				new ShapeGRProvider<ConnectorFromArtifact>() {
 					@Override
-					public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, FGEModelFactory factory) {
+					public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, DianaModelFactory factory) {
 						return makeFromArtefactGR();
 					}
 
@@ -149,7 +149,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		final ShapeGRBinding<ConnectorToArtifact> toArtefactBinding = bindShape(ConnectorToArtifact.class, "toArtifact",
 				new ShapeGRProvider<ConnectorToArtifact>() {
 					@Override
-					public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, FGEModelFactory factory) {
+					public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, DianaModelFactory factory) {
 						return makeToArtefactGR();
 					}
 

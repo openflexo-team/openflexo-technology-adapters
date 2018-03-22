@@ -169,12 +169,12 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 	 * diagramResource.getDiagram();
 	 * 
 	 * DiagramShape shape1 = factory.makeNewShape("Shape1a",
-	 * ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+	 * ShapeType.RECTANGLE, new DianaPoint(100, 100), diagram);
 	 * shape1.getGraphicalRepresentation().setForeground(factory.
 	 * makeForegroundStyle(Color.RED));
 	 * shape1.getGraphicalRepresentation().setBackground(factory.
 	 * makeColoredBackground(Color.BLUE)); DiagramShape shape2 =
-	 * factory.makeNewShape("Shape2a", ShapeType.RECTANGLE, new FGEPoint(200,
+	 * factory.makeNewShape("Shape2a", ShapeType.RECTANGLE, new DianaPoint(200,
 	 * 100), diagram);
 	 * shape2.getGraphicalRepresentation().setForeground(factory.
 	 * makeForegroundStyle(Color.BLUE));
@@ -233,7 +233,7 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 	 * Diagram diagram = reloadedResource.getDiagram();
 	 * 
 	 * DiagramShape shape3 = factory.makeNewShape("Shape3a",
-	 * ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+	 * ShapeType.RECTANGLE, new DianaPoint(100, 100), diagram);
 	 * shape1.getGraphicalRepresentation().setForeground(factory.
 	 * makeForegroundStyle(Color.RED));
 	 * shape1.getGraphicalRepresentation().setBackground(factory.

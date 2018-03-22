@@ -46,7 +46,7 @@ import java.awt.Color;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.ModelEntity;
@@ -99,11 +99,11 @@ public class TestDiagram extends OpenflexoTestCase {
 		Diagram diagram = factory.newInstance(Diagram.class);
 		assertTrue(diagram instanceof Diagram);
 
-		DiagramShape shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+		DiagramShape shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new DianaPoint(100, 100), diagram);
 		shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
 		shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
 		assertTrue(shape1 instanceof DiagramShape);
-		DiagramShape shape2 = factory.makeNewShape("Shape2", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
+		DiagramShape shape2 = factory.makeNewShape("Shape2", ShapeType.RECTANGLE, new DianaPoint(200, 100), diagram);
 		shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
 		shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
 		assertTrue(shape2 instanceof DiagramShape);

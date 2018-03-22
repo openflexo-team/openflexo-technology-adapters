@@ -717,24 +717,24 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		int type = pi.currentSegment(coordinates);
 		switch (type) {
 			case PathIterator.SEG_MOVETO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.addToPoints(new DianaPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new DianaPoint(coordinates[0], coordinates[1]));
 				break;
 			case PathIterator.SEG_LINETO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.addToPoints(new DianaPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new DianaPoint(coordinates[0], coordinates[1]));
 				break;
 			case PathIterator.SEG_QUADTO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.addToPoints(new DianaPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new DianaPoint(coordinates[0], coordinates[1]));
 				break;
 			case PathIterator.SEG_CUBICTO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.addToPoints(new DianaPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new DianaPoint(coordinates[0], coordinates[1]));
 				break;
 			case PathIterator.SEG_CLOSE:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.addToPoints(new DianaPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new DianaPoint(coordinates[0], coordinates[1]));
 				break;
 			default:
 				break;
@@ -1256,7 +1256,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	/*private DiagramShape makeShapeFromBullet(TextRun textRun, RichTextRun rtr, DiagramShape shape, TextShape textShape) {
 		// Create Bullet
-		FGEPoint bulletPosition = new FGEPoint(textRun.getTextRuler().getBulletOffsets()[0] + rtr.getIndentLevel(), textRun.getTextRuler()
+		DianaPoint bulletPosition = new DianaPoint(textRun.getTextRuler().getBulletOffsets()[0] + rtr.getIndentLevel(), textRun.getTextRuler()
 				.getBulletOffsets()[1] + rtr.getLineSpacing() * 0.1 * rtr.getStartIndex());
 		DiagramShape newBulletShape = getDiagramFactory().makeNewShape("", ShapeType.CIRCLE, bulletPosition, getDiagram());
 		newBulletShape.getGraphicalRepresentation().setForeground(getDiagramFactory().makeNoneForegroundStyle());

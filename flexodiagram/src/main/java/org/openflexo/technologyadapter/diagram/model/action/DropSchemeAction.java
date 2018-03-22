@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
@@ -80,7 +80,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	private FlexoConceptInstance parentConceptInstance;
 	private ShapeRole parentShapeRole;
 
-	private FGEPoint dropLocation;
+	private DianaPoint dropLocation;
 
 	/**
 	 * Constructor to be used for creating a new action without factory
@@ -371,11 +371,11 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 		return null;
 	}
 
-	public FGEPoint getDropLocation() {
+	public DianaPoint getDropLocation() {
 		return dropLocation;
 	}
 
-	public void setDropLocation(FGEPoint dropLocation) {
+	public void setDropLocation(DianaPoint dropLocation) {
 		this.dropLocation = dropLocation;
 	}
 

@@ -43,7 +43,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.diana.ShapeGraphicalRepresentation;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -94,7 +94,7 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 	private DiagramContainerElement<?> parent;
 	private ShapeGraphicalRepresentation graphicalRepresentation;
 	private boolean nameSetToNull = false;
-	private FGEPoint dropLocation;
+	private DianaPoint dropLocation;
 
 	private AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -144,11 +144,11 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 		// System.out.println("diagram=" + newShape.getDiagram());
 	}
 
-	public FGEPoint getDropLocation() {
+	public DianaPoint getDropLocation() {
 		return dropLocation;
 	}
 
-	public void setDropLocation(FGEPoint dropLocation) {
+	public void setDropLocation(DianaPoint dropLocation) {
 		this.dropLocation = dropLocation;
 	}
 

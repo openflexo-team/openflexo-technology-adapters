@@ -55,7 +55,7 @@ import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.Drawing.ContainerNode;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.control.PaletteElement;
-import org.openflexo.diana.geom.FGEPoint;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -187,7 +187,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		}
 
 		@Override
-		public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
+		public boolean elementDragged(DrawingTreeNode<?, ?> target, DianaPoint dropLocation) {
 			if (target != null) {
 
 				if (getEditor() instanceof FMLControlledDiagramEditor) {
@@ -247,7 +247,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		return null;
 	}
 
-	public boolean handleFMLControlledDrop(DrawingTreeNode<?, ?> target, DiagramPaletteElement paletteElement, FGEPoint dropLocation,
+	public boolean handleFMLControlledDrop(DrawingTreeNode<?, ?> target, DiagramPaletteElement paletteElement, DianaPoint dropLocation,
 			FMLControlledDiagramEditor editor) {
 
 		FlexoConceptInstance parentFlexoConceptInstance = null;
@@ -312,14 +312,14 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		private final FMLControlledDiagramEditor controller;
 		private final DropScheme dropScheme;
 		private final DiagramPaletteElement paletteElement;
-		private final FGEPoint dropLocation;
+		private final DianaPoint dropLocation;
 		private final FlexoConceptInstance parentFlexoConceptInstance;
 		private final ShapeRole parentShapeRole;
 		DiagramContainerElement<?> container;
 
 		DrawingShapeActionListener(FMLControlledDiagramEditor controller, DropScheme dropScheme, DiagramContainerElement<?> container,
 				FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DiagramPaletteElement paletteElement,
-				FGEPoint dropLocation) {
+				DianaPoint dropLocation) {
 			this.controller = controller;
 			this.dropScheme = dropScheme;
 			this.parentFlexoConceptInstance = parentFlexoConceptInstance;

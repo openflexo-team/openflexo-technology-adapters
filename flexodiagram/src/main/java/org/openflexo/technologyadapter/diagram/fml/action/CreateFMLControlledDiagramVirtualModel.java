@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactory;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
@@ -137,7 +137,7 @@ public class CreateFMLControlledDiagramVirtualModel extends AbstractCreateNature
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation() throws ModelDefinitionException {
-		FGEModelFactory factory = new FGEModelFactoryImpl();
+		DianaModelFactory factory = new DianaModelFactoryImpl();
 		DrawingGraphicalRepresentation gr = factory.makeDrawingGraphicalRepresentation();
 		gr.setDrawWorkingArea(true);
 		gr.setWidth(260);

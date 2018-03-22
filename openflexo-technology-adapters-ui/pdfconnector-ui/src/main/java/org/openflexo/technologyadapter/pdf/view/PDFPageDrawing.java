@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.FGEModelFactory;
-import org.openflexo.diana.FGEModelFactoryImpl;
+import org.openflexo.diana.DianaModelFactory;
+import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.GRStructureVisitor;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.GRBinding.DrawingGRBinding;
@@ -69,11 +69,11 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 
 	private static final Logger logger = Logger.getLogger(PDFPageDrawing.class.getPackage().getName());
 
-	private static FGEModelFactory FACTORY;
+	private static DianaModelFactory FACTORY;
 
 	static {
 		try {
-			FACTORY = new FGEModelFactoryImpl();
+			FACTORY = new DianaModelFactoryImpl();
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,33 +158,33 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		final DrawingGRBinding<PDFDocumentPage> drawingBinding = bindDrawing(PDFDocumentPage.class, "drawing",
 				new DrawingGRProvider<PDFDocumentPage>() {
 					@Override
-					public DrawingGraphicalRepresentation provideGR(PDFDocumentPage drawable, FGEModelFactory factory) {
+					public DrawingGraphicalRepresentation provideGR(PDFDocumentPage drawable, DianaModelFactory factory) {
 						return drawingRepresentation;
 					}
 				});
 		final ShapeGRBinding<PDFDocumentPage> renderingPageBinding = bindShape(PDFDocumentPage.class, "renderingPage",
 				new ShapeGRProvider<PDFDocumentPage>() {
 					@Override
-					public ShapeGraphicalRepresentation provideGR(PDFDocumentPage drawable, FGEModelFactory factory) {
+					public ShapeGraphicalRepresentation provideGR(PDFDocumentPage drawable, DianaModelFactory factory) {
 						return renderingPageRepresentation;
 					}
 				});
 		final ShapeGRBinding<TextBox> textBoxBinding = bindShape(TextBox.class, "textBox", new ShapeGRProvider<TextBox>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(TextBox drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(TextBox drawable, DianaModelFactory factory) {
 				return textBoxRepresentation;
 			}
 		});
 		/*final ShapeGRBinding<TextBox> debugTextBoxBinding = bindShape(TextBox.class, "debugTextBox", new ShapeGRProvider<TextBox>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(TextBox drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(TextBox drawable, DianaModelFactory factory) {
 				return debugTextBoxRepresentation;
 			}
 		});*/
 
 		final ShapeGRBinding<ImageBox> imageBoxBinding = bindShape(ImageBox.class, "imageBox", new ShapeGRProvider<ImageBox>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(ImageBox drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(ImageBox drawable, DianaModelFactory factory) {
 				return imageBoxRepresentation;
 			}
 		});

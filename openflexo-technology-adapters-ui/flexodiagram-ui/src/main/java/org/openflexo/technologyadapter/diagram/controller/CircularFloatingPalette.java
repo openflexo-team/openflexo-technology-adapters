@@ -53,8 +53,8 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.diana.BackgroundStyle;
-import org.openflexo.diana.FGECoreUtils;
-import org.openflexo.diana.FGEUtils;
+import org.openflexo.diana.DianaCoreUtils;
+import org.openflexo.diana.DianaUtils;
 import org.openflexo.diana.ForegroundStyle;
 import org.openflexo.diana.ColorGradientBackgroundStyle.ColorGradientDirection;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
@@ -62,19 +62,19 @@ import org.openflexo.diana.Drawing.ShapeNode;
 import org.openflexo.diana.control.AbstractDianaEditor;
 import org.openflexo.diana.control.DianaEditor;
 import org.openflexo.diana.cp.ControlArea;
-import org.openflexo.diana.geom.FGEArc;
-import org.openflexo.diana.geom.FGECircle;
-import org.openflexo.diana.geom.FGEDimension;
-import org.openflexo.diana.geom.FGEPoint;
-import org.openflexo.diana.geom.FGERoundRectangle;
-import org.openflexo.diana.geom.FGEShape;
-import org.openflexo.diana.geom.FGEArc.ArcType;
-import org.openflexo.diana.geom.FGEGeometricObject.Filling;
-import org.openflexo.diana.geom.FGEGeometricObject.SimplifiedCardinalDirection;
-import org.openflexo.diana.geom.area.FGEArea;
-import org.openflexo.diana.graphics.FGEGraphics;
-import org.openflexo.diana.swing.graphics.JFGEGraphics;
-import org.openflexo.diana.swing.paint.FGEPaintManager;
+import org.openflexo.diana.geom.DianaArc;
+import org.openflexo.diana.geom.DianaCircle;
+import org.openflexo.diana.geom.DianaDimension;
+import org.openflexo.diana.geom.DianaPoint;
+import org.openflexo.diana.geom.DianaRoundRectangle;
+import org.openflexo.diana.geom.DianaShape;
+import org.openflexo.diana.geom.DianaArc.ArcType;
+import org.openflexo.diana.geom.DianaGeometricObject.Filling;
+import org.openflexo.diana.geom.DianaGeometricObject.SimplifiedCardinalDirection;
+import org.openflexo.diana.geom.area.DianaArea;
+import org.openflexo.diana.graphics.DianaGraphics;
+import org.openflexo.diana.swing.graphics.JDianaGraphics;
+import org.openflexo.diana.swing.paint.DianaPaintManager;
 import org.openflexo.diana.swing.view.JDrawingView;
 import org.openflexo.diana.swing.view.JShapeView;
 import org.openflexo.selection.SelectionManagingDianaEditor;
@@ -82,16 +82,16 @@ import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-public class CircularFloatingPalette extends ControlArea<FGEArea> implements PropertyChangeListener {
+public class CircularFloatingPalette extends ControlArea<DianaArea> implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(CircularFloatingPalette.class.getPackage().getName());
 
 	private final ShapeNode<DiagramElement<?>> shapeNode;
 	private final DiagramElement<?> target;
 
-	private static final BackgroundStyle DEFAULT = FGECoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
-	private static final ForegroundStyle NODE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.BLACK, 1.0f);
-	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.DARK_GRAY,
+	private static final BackgroundStyle DEFAULT = DianaCoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
+	private static final ForegroundStyle NODE_FOREGROUND = DianaCoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.BLACK, 1.0f);
+	private static final BackgroundStyle NODE_BACKGROUND = DianaCoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.DARK_GRAY,
 			Color.WHITE, ColorGradientDirection.NORTH_WEST_SOUTH_EAST);
 
 	static {
@@ -121,16 +121,16 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 	protected ShapeNode<?> to = null;
 	protected DrawingTreeNode<?, ?> focusedNode;
 	private SelectionManagingDianaEditor<?> controller;
-	private FGEPoint normalizedStartPoint;
+	private DianaPoint normalizedStartPoint;
 
 	private Rectangle previousRectangle;
 
 	public void paint(Graphics g, AbstractDianaEditor<?, ?, ?> controller) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null) {
-			FGEShape<?> fgeShape = shapeNode.getFGEShapeOutline();
+			DianaShape<?> fgeShape = shapeNode.getDianaShapeOutline();
 			// Unused DrawingGraphicalRepresentation drawingGR = controller.getDrawing().getRoot().getGraphicalRepresentation();
 			double scale = controller.getScale();
-			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(controller.getDrawing().getRoot()
+			DianaPoint nearestOnOutline = fgeShape.getNearestPoint(controller.getDrawing().getRoot()
 					.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, shapeNode, scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
 			Point fromPoint = shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline,
@@ -160,16 +160,16 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 	}
 
 	@Override
-	public void startDragging(DianaEditor<?> controller, FGEPoint startPoint) {
+	public void startDragging(DianaEditor<?> controller, DianaPoint startPoint) {
 
 	}
 
 	@Override
-	public boolean dragToPoint(FGEPoint newRelativePoint, FGEPoint pointRelativeToInitialConfiguration, FGEPoint newAbsolutePoint,
-			FGEPoint initialPoint, MouseEvent event) {
+	public boolean dragToPoint(DianaPoint newRelativePoint, DianaPoint pointRelativeToInitialConfiguration, DianaPoint newAbsolutePoint,
+			DianaPoint initialPoint, MouseEvent event) {
 		if (drawEdge) {
 			JDrawingView<?> drawingView = controller.getDrawingView();
-			FGEPaintManager paintManager = drawingView.getPaintManager();
+			DianaPaintManager paintManager = drawingView.getPaintManager();
 			// Attempt to repaint relevant zone only
 			Rectangle oldBounds = previousRectangle;
 			if (oldBounds != null) {
@@ -246,10 +246,10 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 				if (focusedNode == null) {
 					focusedNode = controller.getDrawing().getRoot();
 				}
-				// Unused SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
-				// Unused new FGEPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
+				// Unused SimplifiedCardinalDirection direction = DianaPoint.getSimplifiedOrientation(
+				// Unused new DianaPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
 				// Unused controller.getDrawing().getRoot(), controller.getScale())),
-				// Unused new FGEPoint(currentDraggingLocationInDrawingView));
+				// Unused new DianaPoint(currentDraggingLocationInDrawingView));
 				Point dropPoint = currentDraggingLocationInDrawingView;
 				if (dropPoint.x < 0) {
 					dropPoint.x = 0;
@@ -258,12 +258,12 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 					dropPoint.y = 0;
 				}
 
-				// Unused Point p = FGEUtils.convertPoint(controller.getDrawing().getRoot(), dropPoint, focusedNode, controller.getScale());
-				// Unused FGEPoint dropLocation = new FGEPoint(p.x / controller.getScale(), p.y / controller.getScale());
+				// Unused Point p = DianaUtils.convertPoint(controller.getDrawing().getRoot(), dropPoint, focusedNode, controller.getScale());
+				// Unused DianaPoint dropLocation = new DianaPoint(p.x / controller.getScale(), p.y / controller.getScale());
 			} finally {
 				// ((DiagramView) controller.getDrawingView()).resetFloatingPalette();
 				JDrawingView<?> drawingView = this.controller.getDrawingView();
-				FGEPaintManager paintManager = drawingView.getPaintManager();
+				DianaPaintManager paintManager = drawingView.getPaintManager();
 				paintManager.invalidate(drawingView.getDrawing().getRoot());
 				paintManager.repaint(drawingView.getDrawing().getRoot());
 			}
@@ -273,7 +273,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		super.stopDragging(controller, focusedNode);
 	}
 
-	private static DiagramShape createNewShape(FGEPoint dropLocation, DiagramElement<?> container, DropScheme dropScheme) {
+	private static DiagramShape createNewShape(DianaPoint dropLocation, DiagramElement<?> container, DropScheme dropScheme) {
 
 		return null;
 
@@ -310,7 +310,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 	}
 
 	@Override
-	public Rectangle paint(FGEGraphics drawingGraphics) {
+	public Rectangle paint(DianaGraphics drawingGraphics) {
 		// System.out.println("Focused:"+nodeGR.getIsFocused());
 		if (shapeNode.getIsSelected() && !shapeNode.getIsFocused()) {
 			return null;
@@ -321,13 +321,13 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		if (!shapeNode.getDrawing().isEditable()) {
 			return null;
 		}
-		AffineTransform at = FGEUtils.convertNormalizedCoordinatesAT(shapeNode, drawingGraphics.getDrawingTreeNode());
+		AffineTransform at = DianaUtils.convertNormalizedCoordinatesAT(shapeNode, drawingGraphics.getDrawingTreeNode());
 
-		Graphics2D oldGraphics = ((JFGEGraphics) drawingGraphics).cloneGraphics();
+		Graphics2D oldGraphics = ((JDianaGraphics) drawingGraphics).cloneGraphics();
 
-		// Unused FGERoundRectangle paletteRect = (FGERoundRectangle)
+		// Unused DianaRoundRectangle paletteRect = (DianaRoundRectangle)
 		getArea().transform(at);
-		FGEArea nodeRect = makeBaseRoundedArc(shapeNode, 1, 5);
+		DianaArea nodeRect = makeBaseRoundedArc(shapeNode, 1, 5);
 
 		// paletteRect.paint(drawingGraphics);
 
@@ -336,7 +336,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		drawingGraphics.setDefaultBackground(NODE_BACKGROUND);
 		nodeRect.paint(drawingGraphics);
 
-		((JFGEGraphics) drawingGraphics).releaseClonedGraphics(oldGraphics);
+		((JDianaGraphics) drawingGraphics).releaseClonedGraphics(oldGraphics);
 		return drawingGraphics.getDrawingTreeNode().convertNormalizedRectangleToViewCoordinates(nodeRect.getEmbeddingBounds(),
 				drawingGraphics.getScale());
 
@@ -356,23 +356,23 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 
 	private void updateElements(ShapeNode<DiagramElement<?>> shapeNode) {
 		setArea(makeRoundRect(shapeNode));
-		// Unused FGEArea roleRect =
+		// Unused DianaArea roleRect =
 		makeBaseRoundedArc(shapeNode, 1, 5);
 	}
 
-	private static FGEArea makeBaseRoundedArc(ShapeNode<DiagramElement<?>> shapeNode, double id, double arcNumber) {
+	private static DianaArea makeBaseRoundedArc(ShapeNode<DiagramElement<?>> shapeNode, double id, double arcNumber) {
 
-		FGECircle centerShape = new FGECircle(new FGEPoint(shapeNode.getX() + 50, shapeNode.getY() + 50), shapeNode.getWidth() / 3,
+		DianaCircle centerShape = new DianaCircle(new DianaPoint(shapeNode.getX() + 50, shapeNode.getY() + 50), shapeNode.getWidth() / 3,
 				Filling.FILLED);
-		FGEArc arc = new FGEArc(centerShape.getCenter(), new FGEDimension(centerShape.getHeight(), centerShape.getWidth()), id,
+		DianaArc arc = new DianaArc(centerShape.getCenter(), new DianaDimension(centerShape.getHeight(), centerShape.getWidth()), id,
 				360 / arcNumber - 5, ArcType.PIE);
-		FGEArea area = arc.substract(centerShape, true);
+		DianaArea area = arc.substract(centerShape, true);
 		return area;
 	}
 
-	private static FGERoundRectangle makeRoundRect(ShapeNode<DiagramElement<?>> shapeNode) {
+	private static DianaRoundRectangle makeRoundRect(ShapeNode<DiagramElement<?>> shapeNode) {
 
-		return new FGERoundRectangle(shapeNode.getX(), shapeNode.getY(), shapeNode.getWidth() + 50, shapeNode.getWidth() + 50, 13.0, 13.0,
+		return new DianaRoundRectangle(shapeNode.getX(), shapeNode.getY(), shapeNode.getWidth() + 50, shapeNode.getWidth() + 50, 13.0, 13.0,
 				Filling.FILLED);
 
 	}

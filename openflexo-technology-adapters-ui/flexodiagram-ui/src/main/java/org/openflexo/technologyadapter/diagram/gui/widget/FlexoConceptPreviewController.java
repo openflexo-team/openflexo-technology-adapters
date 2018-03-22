@@ -42,7 +42,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.diana.FGEModelFactory;
+import org.openflexo.diana.DianaModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.selection.SelectionManagingDianaEditor;
@@ -63,7 +63,7 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 	 * @return
 	 */
 	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept,
-			FGEModelFactory factory) {
+			DianaModelFactory factory) {
 		FlexoConceptPreviewRepresentation returned = flexoConceptPreviewRepresentations.get(flexoConcept);
 		if (returned == null) {
 			returned = new FlexoConceptPreviewRepresentation(flexoConcept, factory);
@@ -72,7 +72,7 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 		return returned;
 	}
 
-	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm, FGEModelFactory factory) {
+	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm, DianaModelFactory factory) {
 		super(obtainFlexoConceptPreviewRepresentations(flexoConcept, factory), sm, factory, null);
 	}
 
