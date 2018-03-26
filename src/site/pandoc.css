@@ -1,0 +1,473 @@
+/*
+ * I add this to html files generated with pandoc.
+ */
+
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  color: #444;
+  font-family: Palatino, 'Palatino Linotype', serif;
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 1em;
+  margin-left: 13em;
+  margin-right: 1em;
+  max-width: 45em;
+  background: #fefefe;
+  padding-top: 50px;
+}
+
+/*
+ * Titlebar
+ */
+.top{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 60px;
+  display: block;
+  background-color: #c8eaf4;
+  color: black;
+  margin-left: 0px;
+  border-bottom: 1px solid #617074;
+  z-index: 1000;
+}
+
+.title{
+  font-size: 2.5em;
+  margin-top: 0.3em;
+  margin-left: 1em;
+  line-height: 125%;
+  text-align: left;
+}
+
+:target:before {
+  content:"";
+  display:block;
+  height:65px; /* fixed header height*/
+  margin:-65px 0 0; /* negative fixed header height */
+}
+
+.main {
+    margin-top: 30px; /* Add a top margin to avoid content overlay */
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  font-size: 12px;
+  width: 200px;
+  z-index: 1000;
+  display: block;
+  padding: 10px 10px 10px 0px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  background-color: #c8eaf4;
+  border-top: 1px solid #617074;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  text-align: center;
+}
+
+.sidebar-bottom {
+  font-size: 18px;
+  position: fixed;
+  bottom: 0;
+  width: 200px;
+  padding: 10px 10px 10px 0px;
+}
+
+div.sidebar ul {
+  margin: 0;
+  padding: 0 0 0 2em;
+}
+
+div.sidebar ul ul {
+  margin: 0;
+  margin-left:-12px;
+}
+
+.author {
+  text-align: center;
+}
+
+.date {
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 0.7;
+}
+
+a {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #0b0080;
+}
+
+a:hover {
+  color: #06e;
+}
+
+a:active {
+  color: #faa700;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+*::-moz-selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #000;
+}
+
+*::selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #000;
+}
+
+a::-moz-selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #0645ad;
+}
+
+a::selection {
+  background: rgba(255, 255, 0, 0.3);
+  color: #0645ad;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #111;
+  font-weight: normal;
+}
+
+h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-top: 2em;
+  line-height: 125%;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 1em;
+  line-height: 125%;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1;
+  margin-top: 0.8em;
+  margin-bottom: 0em;
+}
+
+h4 {
+  font-size: 1.2em;
+  line-height: 1;
+  margin-top: 0.8em;
+  margin-bottom: 0em;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+h6 {
+  font-size: 0.9em;
+}
+
+blockquote {
+  color: #666666;
+  margin: 0;
+  padding-left: 3em;
+  border-left: 0.5em #EEE solid;
+}
+
+hr {
+  display: block;
+  height: 2px;
+  border: 0;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #eee;
+  margin: 1em 0;
+  padding: 0;
+}
+
+pre, code, kbd, samp {
+  color: #000;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+dfn {
+  font-style: italic;
+}
+
+ins {
+  background: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+ul, ol {
+  margin: 1em 0;
+  padding: 0 0 0 2em;
+}
+
+li p:last-child {
+  margin-bottom: 0;
+}
+
+ul ul, ol ol {
+  margin: .3em 0;
+}
+
+dl {
+  margin-bottom: 1em;
+}
+
+dt {
+  font-weight: bold;
+  margin-bottom: .8em;
+}
+
+dd {
+  margin: 0 0 .8em 2em;
+}
+
+dd:last-child {
+  margin-bottom: 0;
+}
+
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+  vertical-align: middle;
+}
+
+figure {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+figure img {
+  border: none;
+  margin: 0 auto;
+}
+
+figcaption {
+  font-size: 0.8em;
+  font-style: italic;
+  margin: 0 0 .8em;
+}
+
+table {
+  margin-bottom: 2em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table th {
+  padding: .2em 1em;
+  background-color: #eee;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+table td {
+  padding: .2em 1em;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  vertical-align: top;
+}
+
+p {
+  text-align: justify;
+}
+
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before {
+  left: -2.5em;
+  width: 1.5em;
+  font-size: 0.8em;
+  padding: 2px 4px;
+}
+
+pre.numberSource {
+  margin-left: 1em;
+  border-left: 1px;
+}
+
+div[data-caption].sourceCode:before{
+  content:attr(data-caption);
+  line-height: 1.4;
+  display:block;
+  text-align: right;
+  background:#666666;
+  color:#ffffff;
+  padding:0.2em 0em 0.2em 0em;
+  font-size: 120%;
+}
+
+div[data-caption=""].sourceCode:before{
+  line-height: inherit;
+  display:inherit;
+  text-align: inherit;
+  background:inherit;
+  color:inherit;
+  padding:inherit;
+  font-size:inherit;
+}
+
+pre.sourceCode {
+  background:#f2f2f2;
+  display:block;
+  line-height: 1;
+  padding:0.2em 0em 0.2em 0em;
+}
+
+div.sourceLine {
+  padding:0.1em;
+}
+
+div.sourceLine:empty {
+  display: none;
+}
+
+@media only screen and (min-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    filter: none !important;
+    -ms-filter: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+
+  a, a:visited {
+    text-decoration: underline;
+  }
+
+  hr {
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid black;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+    content: "";
+  }
+
+  pre, blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  tr, img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  @page :left {
+    margin: 15mm 20mm 15mm 10mm;
+}
+
+  @page :right {
+    margin: 15mm 10mm 15mm 20mm;
+}
+
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}

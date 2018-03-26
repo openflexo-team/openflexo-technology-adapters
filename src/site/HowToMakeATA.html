@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Fabien Dagnat" />
+  <meta name="dcterms.date" content="2018-03-23" />
+  <title>A tutorial for building technology adapters</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="pandoc.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<div class="top">
+  <div class="title">A tutorial for building technology adapters</div>
+</div>
+</header>
+<div id="sidebar" class="col-sm-3 col-md-2 sidebar">
+  <div class="sidebar-title">
+    Content
+  </div>
+  <ul>
+  <li><a href="#conceptual-view">Conceptual view</a></li>
+  <li><a href="#implementation-view">Implementation view</a></li>
+  </ul>
+  <div class="sidebar-bottom">
+          <p class="author">Fabien Dagnat</p>
+              <p class="date">March 23, 2018</p>
+      </div>
+</div>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<h1 id="conceptual-view">Conceptual view</h1>
+<p>A <em>Technology Adapter</em>, named TA after, is a library providing abstractions to give the model federation core access to an external source of data.</p>
+<p>A TA provides the definition of:</p>
+<ol type="1">
+<li><p>the abstractions representing the various elements of the external data, called here after, the <em>TA concepts</em></p></li>
+<li><p>the <em>actions</em> to manipulates these TA concepts instances from model federation behaviors</p></li>
+<li><p>a set of <em>model slot types</em> defining the way virtual model instances will be connected to the data</p></li>
+</ol>
+<h1 id="implementation-view">Implementation view</h1>
+<p>A TA is composed of a set of Java classes. It serves several objectives and therefore is structured as a set of Java packages. It is generally defined using Pamela.</p>
+<p>Let us suppose the TA is for the technology space XX. You should structure it around the following packages:</p>
+<ol type="1">
+<li><code>xx</code></li>
+</ol>
+</body>
+</html>
