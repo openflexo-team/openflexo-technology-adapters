@@ -64,7 +64,7 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 @ImplementationClass(SEInitializer.SEInitializerImpl.class)
 @XMLElement
 @FML("HbnInitializer")
-public interface SEInitializer extends AbstractActionScheme, TechnologySpecificFlexoBehaviour {
+public interface SEInitializer extends AbstractActionScheme, TechnologySpecificFlexoBehaviour<ExcelTechnologyAdapter> {
 
 	public static abstract class SEInitializerImpl extends AbstractActionSchemeImpl implements SEInitializer {
 

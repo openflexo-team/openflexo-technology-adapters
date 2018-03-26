@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.ScreenshotBuilder;
@@ -78,10 +77,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceFa
 @DeclareTechnologySpecificTypes({ DiagramType.class })
 @DeclareResourceTypes({ DiagramSpecificationResourceFactory.class, DiagramResourceFactory.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDiagramVirtualModelInstanceNature.class })
-public class DiagramTechnologyAdapter extends TechnologyAdapter {
-
-	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
-
+public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnologyAdapter> {
 	private ScreenshotBuilder<Diagram> screenshotBuilder;
 
 	private ScreenshotBuilder<DiagramPalette> diagramPaletteScreenshotBuilder;

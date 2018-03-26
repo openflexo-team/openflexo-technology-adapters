@@ -46,10 +46,4 @@ public class XMLTechnologyContextManager extends TechnologyContextManager<XMLTec
 	public XMLTechnologyContextManager(XMLTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 	}
-
-	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return super.getTechnologyAdapter();
-	}
-
 }

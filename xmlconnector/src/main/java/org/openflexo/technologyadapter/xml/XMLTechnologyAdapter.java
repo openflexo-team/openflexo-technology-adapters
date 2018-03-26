@@ -65,7 +65,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceFactory;
 
 @DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
 @DeclareResourceTypes({ XSDMetaModelResourceFactory.class, XMLFileResourceFactory.class })
-public class XMLTechnologyAdapter extends TechnologyAdapter {
+public class XMLTechnologyAdapter extends TechnologyAdapter<XMLTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(XMLTechnologyAdapter.class.getPackage().getName());
 

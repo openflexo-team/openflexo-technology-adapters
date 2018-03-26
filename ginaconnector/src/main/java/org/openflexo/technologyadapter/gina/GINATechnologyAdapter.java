@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.gina;
 
-import java.util.logging.Logger;
-
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
@@ -44,10 +42,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 @DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
 @DeclareResourceTypes({ GINAFIBComponentResourceFactory.class })
-public class GINATechnologyAdapter extends TechnologyAdapter {
-
-	private static final Logger LOGGER = Logger.getLogger(GINATechnologyAdapter.class.getPackage().getName());
-
+public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapter> {
 	public GINATechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
 

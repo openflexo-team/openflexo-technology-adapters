@@ -85,7 +85,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if (technologySpecificType instanceof XMLObject) {
 			return true;
 		}

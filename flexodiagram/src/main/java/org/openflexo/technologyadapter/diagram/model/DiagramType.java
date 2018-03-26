@@ -45,13 +45,12 @@ import java.util.Map;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.foundation.fml.TechnologyAdapterTypeFactory;
 import org.openflexo.foundation.fml.TechnologySpecificType;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
-public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
+public class DiagramType implements TechnologySpecificType<DiagramTechnologyAdapter> {
 
 	protected DiagramSpecification diagramSpecification;
 	protected String diagramSpecificationURI;
@@ -111,7 +110,7 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 	}
 
 	@Override
-	public TechnologyAdapter getSpecificTechnologyAdapter() {
+	public DiagramTechnologyAdapter getSpecificTechnologyAdapter() {
 		if (getDiagramSpecification() != null) {
 			return getDiagramSpecification().getTechnologyAdapter();
 		}
@@ -168,7 +167,7 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 	 * @author sylvain
 	 * 
 	 */
-	public static class DiagramTypeFactory extends TechnologyAdapterTypeFactory<DiagramType> {
+	public static class DiagramTypeFactory extends TechnologyAdapterTypeFactory<DiagramType, DiagramTechnologyAdapter> {
 
 		@Override
 		public Class<DiagramType> getCustomType() {
@@ -203,11 +202,9 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 			if (dsSpec != null) {
 				return getDiagramType(dsSpec);
 			}
-			else {
-				// We don't return UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE because we want here a mutable type
-				// if FlexoConcept might be resolved later
-				return new DiagramType(configuration, this);
-			}
+			// We don't return UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE because we want here a mutable type
+			// if FlexoConcept might be resolved later
+			return new DiagramType(configuration, this);
 		}
 
 		private DiagramSpecification diagramSpecType;

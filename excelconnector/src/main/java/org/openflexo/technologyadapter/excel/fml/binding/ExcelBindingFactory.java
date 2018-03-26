@@ -72,7 +72,7 @@ public final class ExcelBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if (technologySpecificType instanceof ExcelWorkbook) {
 			return true;
 		}

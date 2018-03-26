@@ -55,7 +55,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceFactory;
 @DeclareModelSlots({ DocXModelSlot.class })
 @DeclareResourceTypes({ DocXDocumentResourceFactory.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
-public class DocXTechnologyAdapter extends TechnologyAdapter {
+public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapter> {
 
 	// Sets default idStrategy when no modelSlot is used
 	private IdentifierManagementStrategy defaultIdStrategy = IdentifierManagementStrategy.Bookmark;

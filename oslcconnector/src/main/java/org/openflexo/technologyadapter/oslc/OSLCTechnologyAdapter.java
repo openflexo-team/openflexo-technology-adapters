@@ -60,8 +60,8 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
 @DeclareResourceTypes({ OSLCResourceFactory.class })
-public class OSLCTechnologyAdapter extends TechnologyAdapter {
-	private static String OSLC_FILE_EXTENSION = ".oslc";
+public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapter> {
+	// Unused private static String OSLC_FILE_EXTENSION = ".oslc";
 
 	protected static final Logger logger = Logger.getLogger(OSLCTechnologyAdapter.class.getPackage().getName());
 

@@ -98,7 +98,8 @@ public class SEFlexoConceptInstanceType extends FlexoConceptInstanceType {
 		}
 	}
 
-	public static class SEFlexoConceptInstanceTypeFactory extends TechnologyAdapterTypeFactory<SEFlexoConceptInstanceType> {
+	public static class SEFlexoConceptInstanceTypeFactory
+			extends TechnologyAdapterTypeFactory<SEFlexoConceptInstanceType, FMLTechnologyAdapter> {
 
 		@Override
 		public Class<SEFlexoConceptInstanceType> getCustomType() {

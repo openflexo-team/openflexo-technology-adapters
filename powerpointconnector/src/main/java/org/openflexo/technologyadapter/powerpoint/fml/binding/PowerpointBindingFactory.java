@@ -72,7 +72,7 @@ public final class PowerpointBindingFactory extends TechnologyAdapterBindingFact
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if (technologySpecificType instanceof PowerpointSlideshow) {
 			return true;
 		}

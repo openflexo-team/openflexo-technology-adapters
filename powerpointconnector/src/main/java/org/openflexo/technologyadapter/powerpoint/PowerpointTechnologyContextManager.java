@@ -47,10 +47,4 @@ public class PowerpointTechnologyContextManager extends TechnologyContextManager
 	public PowerpointTechnologyContextManager(PowerpointTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 	}
-
-	@Override
-	public PowerpointTechnologyAdapter getTechnologyAdapter() {
-		return (PowerpointTechnologyAdapter) super.getTechnologyAdapter();
-	}
-
 }

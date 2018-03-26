@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
  * 
  */
 @ModelEntity(isAbstract = true)
-public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour {
+public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour<DiagramTechnologyAdapter> {
 
 	@Override
 	public DiagramTechnologyAdapter getSpecificTechnologyAdapter();

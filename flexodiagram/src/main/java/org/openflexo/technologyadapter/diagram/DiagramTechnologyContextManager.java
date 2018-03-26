@@ -60,11 +60,6 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 		super(adapter, resourceCenterService);
 	}
 
-	@Override
-	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		return super.getTechnologyAdapter();
-	}
-
 	public DiagramSpecificationResource getDiagramSpecificationResource(String diagramSpecificationURI) {
 		return diagramSpecifications.get(diagramSpecificationURI);
 	}

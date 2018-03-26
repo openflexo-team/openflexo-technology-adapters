@@ -65,7 +65,7 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
 @DeclareResourceTypes({ PowerpointSlideshowResourceFactory.class })
-public class PowerpointTechnologyAdapter extends TechnologyAdapter {
+public class PowerpointTechnologyAdapter extends TechnologyAdapter<PowerpointTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(PowerpointTechnologyAdapter.class.getPackage().getName());
 

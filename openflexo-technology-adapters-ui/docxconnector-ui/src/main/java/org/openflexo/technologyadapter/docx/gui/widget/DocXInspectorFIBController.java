@@ -73,10 +73,9 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 		super(component, viewFactory, controller);
 	}
 
-	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> TextBinding<D, TA> createTextBinding(
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter<TA>> TextBinding<D, TA> createTextBinding(
 			DocXFragmentRole fragmentRole, TextSelection<D, TA> textSelection) {
 
-		
 		if (textSelection == null) {
 			return null;
 		}
@@ -93,7 +92,7 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 		return (TextBinding<D, TA>) createTextBinding.getNewTextBinding();
 	}
 
-	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> boolean deleteTextBinding(TextBinding<D, TA> textBinding) {
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter<TA>> boolean deleteTextBinding(TextBinding<D, TA> textBinding) {
 		textBinding.getFragmentRole().removeFromTextBindings(textBinding);
 		return textBinding.delete();
 	}
@@ -114,7 +113,7 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 		System.out.println("moveToTop " + textBinding);
 	}
 
-	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> ColumnTableBinding<D, TA> createColumnTableBinding(
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter<TA>> ColumnTableBinding<D, TA> createColumnTableBinding(
 			DocXTableRole tableRole) {
 		// System.out.println("createColumnTableBinding for " + tableRole);
 
@@ -125,7 +124,7 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 		return (ColumnTableBinding<D, TA>) createColumnTableBinding.getNewColumnTableBinding();
 	}
 
-	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> boolean deleteColumnTableBinding(
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter<TA>> boolean deleteColumnTableBinding(
 			ColumnTableBinding<D, TA> columnTableBinding) {
 		columnTableBinding.getTableRole().removeFromColumnBindings(columnTableBinding);
 		return columnTableBinding.delete();

@@ -250,7 +250,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 
 	}
 
-	private <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> void scrollTo(FlexoDocObject<D, TA> object,
+	private <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter<TA>> void scrollTo(FlexoDocObject<D, TA> object,
 			FlexoDocumentEditor<D, TA> docXEditor) {
 		if (!docXEditor.scrollTo(object, true))
 			SwingUtilities.invokeLater(() -> scrollTo(object, docXEditor));

@@ -59,7 +59,7 @@ public class PowerpointIconLibrary {
 	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/powerpoint_small.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (PowerpointSlideshow.class.isAssignableFrom(objectClass)) {
 			return POWERPOINT_TECHNOLOGY_ICON;
 		}

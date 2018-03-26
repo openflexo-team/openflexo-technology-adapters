@@ -94,7 +94,8 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SEVirtualModelInstanceTypeFactory extends AbstractVirtualModelInstanceTypeFactory<SEVirtualModelInstanceType> {
+	public static class SEVirtualModelInstanceTypeFactory
+			extends AbstractVirtualModelInstanceTypeFactory<SEVirtualModelInstanceType, ExcelTechnologyAdapter> {
 
 		public SEVirtualModelInstanceTypeFactory(ExcelTechnologyAdapter technologyAdapter) {
 			super(technologyAdapter);

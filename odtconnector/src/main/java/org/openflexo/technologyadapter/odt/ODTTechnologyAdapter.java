@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceFactory;
 
 @DeclareModelSlots({ ODTModelSlot.class })
 @DeclareResourceTypes({ ODTDocumentResourceFactory.class })
-public class ODTTechnologyAdapter extends TechnologyAdapter {
+public class ODTTechnologyAdapter extends TechnologyAdapter<ODTTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(ODTTechnologyAdapter.class.getPackage().getName());
 
