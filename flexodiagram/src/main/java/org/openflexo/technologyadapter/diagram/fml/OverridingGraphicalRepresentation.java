@@ -42,9 +42,8 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -127,25 +126,6 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 			return null;
 		}
 
-		/*public FMLDiagramPaletteElementBinding getPaletteElementBinding() {
-			return paletteElementBinding;
-		}*/
-
-		/*@Override
-		public String getPatternRoleName() {
-			return patternRoleName;
-		}
-
-		@Override
-		public void setPatternRoleName(String patternRoleName) {
-			this.patternRoleName = patternRoleName;
-		}*/
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
-			return "<not_implemented:" + getStringRepresentation() + ">";
-		}
-
 		public DiagramPalette getPalette() {
 			return getDiagramPaletteElementBinding().getPaletteElement().getPalette();
 		}
@@ -164,8 +144,8 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 
 	@ModelEntity
 	@XMLElement
-	public static interface ConnectorOverridingGraphicalRepresentation extends
-			OverridingGraphicalRepresentation<ConnectorGraphicalRepresentation> {
+	public static interface ConnectorOverridingGraphicalRepresentation
+			extends OverridingGraphicalRepresentation<ConnectorGraphicalRepresentation> {
 	}
 
 }

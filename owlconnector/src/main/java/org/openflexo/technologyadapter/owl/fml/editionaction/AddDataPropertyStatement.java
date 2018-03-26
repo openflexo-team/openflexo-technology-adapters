@@ -47,8 +47,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
@@ -122,7 +120,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			super();
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			out.append(
@@ -130,7 +128,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 							+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";",
 					context);
 			return out.toString();
-		}
+		}*/
 
 		@Override
 		public Type getSubjectType() {

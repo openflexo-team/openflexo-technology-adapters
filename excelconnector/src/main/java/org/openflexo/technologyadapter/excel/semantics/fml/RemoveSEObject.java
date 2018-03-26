@@ -47,8 +47,6 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.DeletionScheme;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -122,13 +120,6 @@ public interface RemoveSEObject extends AssignableAction<SEFlexoConceptInstance>
 				dataArea.setMandatory(true);
 			}
 			this.dataArea = dataArea;
-		}
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
-			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("RemoveSEObject " + getObjectToRemove().toString(), context);
-			return out.toString();
 		}
 
 		@Override

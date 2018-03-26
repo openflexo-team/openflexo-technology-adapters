@@ -48,7 +48,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
@@ -217,12 +216,6 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 
 			logger.warning("Could not find fragment matching template fragment. Abort.");
 			return null;
-		}
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
-			// TODO Auto-generated method stub
-			return super.getFMLRepresentation(context);
 		}
 
 	}

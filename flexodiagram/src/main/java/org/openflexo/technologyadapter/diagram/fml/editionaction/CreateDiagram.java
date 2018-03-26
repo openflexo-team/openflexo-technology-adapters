@@ -47,8 +47,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -150,13 +148,13 @@ public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot
 			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			out.append(getClass().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append("}", context);
 			return out.toString();
-		}
+		}*/
 
 		public String getDiagramName(RunTimeEvaluationContext evaluationContext) {
 			try {
@@ -243,8 +241,7 @@ public interface CreateDiagram extends TechnologySpecificAction<DiagramModelSlot
 		@Override
 		public DataBinding<FlexoResourceCenter<?>> getResourceCenter() {
 			if (resourceCenter == null) {
-				resourceCenter = new DataBinding<>(this, FlexoResourceCenter.class,
-						DataBinding.BindingDefinitionType.GET);
+				resourceCenter = new DataBinding<>(this, FlexoResourceCenter.class, DataBinding.BindingDefinitionType.GET);
 				resourceCenter.setBindingName("resourceCenter");
 			}
 			return resourceCenter;

@@ -49,7 +49,6 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -75,7 +74,6 @@ import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.Action
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
@@ -344,17 +342,17 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public final GR getGraphicalRepresentation() {
-			// System.out.println("Retrieve GR of " + this);
-			// System.out.println("metaModelElementReference=" + getMetamodelElementReference());
-			// System.out.println("metaModelElement=" + getMetamodelElement());
+			System.out.println("Retrieve GR of " + this);
+			System.out.println("metaModelElementReference=" + getMetamodelElementReference());
+			System.out.println("metaModelElement=" + getMetamodelElement());
 			if (getMetamodelElement() != null) {
 				// System.out.println("return " + getMetamodelElement().getGraphicalRepresentation());
 				return getMetamodelElement().getGraphicalRepresentation();
 			}
 
-			// System.out.println("J'arrive pas a obtenir de GR");
-			// System.out.println("DS=" + getDiagramSpecification());
-			// System.out.println("deprecatedGR=" + getDeprecatedGraphicalRepresentation());
+			System.out.println("J'arrive pas a obtenir de GR");
+			System.out.println("DS=" + getDiagramSpecification());
+			System.out.println("deprecatedGR=" + getDeprecatedGraphicalRepresentation());
 
 			// Create the diagram element in the meta model
 			if (getDiagramSpecification() != null) {
@@ -364,7 +362,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				}
 				T newMetamodelElement = makeDiagramElementInMetaModel(exampleDiagram, getDeprecatedGraphicalRepresentation());
 				setMetamodelElement(newMetamodelElement);
-				// System.out.println("newMetamodelElement=" + getMetamodelElement());
+				System.out.println("newMetamodelElement=" + getMetamodelElement());
 				return getMetamodelElement().getGraphicalRepresentation();
 			}
 
@@ -577,8 +575,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return DiagramTechnologyAdapter.class;
 		}
 
+		/*@Override
 		public String detailedFMLSpecifications(FMLRepresentationContext context) {
-
+		
 			if (getGrSpecifications() != null && getGrSpecifications().size() > 0) {
 				StringBuffer sb = new StringBuffer();
 				for (GraphicalElementSpecification ges : getGrSpecifications()) {
@@ -589,7 +588,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				return sb.toString();
 			}
 			return null;
-		}
+		}*/
 
 	}
 }

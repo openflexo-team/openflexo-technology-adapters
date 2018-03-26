@@ -47,8 +47,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
@@ -138,32 +136,32 @@ public interface AddObjectPropertyStatement
 			return null;
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			String objstr;
 			String subjstr;
 			String propstr;
-
+		
 			if (getSubject() != null)
 				subjstr = getSubject().toString();
 			else
 				subjstr = "<No Subject>";
-
+		
 			if (getObject() != null)
 				objstr = getObject().toString();
 			else
 				objstr = "<No Object>";
-
+		
 			if (getObjectProperty() != null)
 				propstr = getObjectProperty().getName();
 			else
 				propstr = "<No Property>";
-
+		
 			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
-
+		
 			return out.toString();
-		}
+		}*/
 
 		@Override
 		public Type getSubjectType() {

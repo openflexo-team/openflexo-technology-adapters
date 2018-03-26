@@ -51,8 +51,6 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -324,14 +322,14 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			return DiagramElement.class;
 		}
 
-		@Override
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			out.append((getSubject() != null ? getSubject().toString() : "?") + "."
 					+ (getGraphicalFeature() != null ? getGraphicalFeature().getName() : "?") + "="
 					+ (getValue() != null ? getValue().toString() : "?"), context);
 			return out.toString();
-		}
+		}*/
 
 		@Override
 		public String getStringRepresentation() {
@@ -361,8 +359,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				return new ValidationError<>(this, graphicalAction,
-						"graphical_action_has_no_valid_subject", v);
+				return new ValidationError<>(this, graphicalAction, "graphical_action_has_no_valid_subject", v);
 			}
 		}
 
