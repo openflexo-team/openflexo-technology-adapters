@@ -143,7 +143,7 @@ public class TestSimpleDocumentEditor3 extends AbstractTestDocX {
 	private static void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		DocXDocument doc = docResource.getResourceData(null);
+		DocXDocument doc = docResource.getResourceData();
 
 		Split defaultLayout = getDefaultLayout();
 

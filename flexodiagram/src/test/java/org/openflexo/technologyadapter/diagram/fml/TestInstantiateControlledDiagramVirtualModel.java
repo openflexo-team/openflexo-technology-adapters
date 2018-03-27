@@ -294,11 +294,11 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
 
-		newVirtualModelInstance.getResource().save(null);
+		newVirtualModelInstance.getResource().save();
 		assertTrue(((FMLRTVirtualModelInstanceResource) newVirtualModelInstance.getResource()).getIODelegate().exists());
 		assertFalse(newVirtualModelInstance.isModified());
 
-		diagram.getResource().save(null);
+		diagram.getResource().save();
 		assertTrue(((DiagramResource) diagram.getResource()).getIODelegate().exists());
 		assertFalse(diagram.isModified());
 
@@ -337,14 +337,14 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		FMLRTVirtualModelInstanceResource newViewResource = project.getVirtualModelInstanceRepository().getVirtualModelInstance(oldViewURI);
 		assertNotNull(newViewResource);
-		newViewResource.loadResourceData(null);
+		newViewResource.loadResourceData();
 		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
 		FMLRTVirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
 		assertNotNull(vmiResource);
 		assertNull(vmiResource.getLoadedResourceData());
-		vmiResource.loadResourceData(null);
+		vmiResource.loadResourceData();
 		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
 
 		assertEquals(1, newVirtualModelInstance.getFlexoConceptInstances().size());

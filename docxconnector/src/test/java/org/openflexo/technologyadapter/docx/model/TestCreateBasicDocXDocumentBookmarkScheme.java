@@ -117,7 +117,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		assertNotNull(newDocResource);
 		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", newDocResource.getURI());
 
-		assertNotNull(newDocument = newDocResource.getResourceData(null));
+		assertNotNull(newDocument = newDocResource.getResourceData());
 
 		System.out.println("Styles=" + newDocument.getStyles());
 
@@ -152,7 +152,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		assertEquals(0, newDocument.getRootElements().size());
 
-		newDocResource.save(null);
+		newDocResource.save();
 
 		assertFalse(newDocResource.isModified());
 	}
@@ -226,7 +226,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		assertEquals(normalStyle, text2.getNamedStyle());
 
 		assertTrue(newDocResource.isModified());
-		newDocResource.save(null);
+		newDocResource.save();
 		assertFalse(newDocResource.isModified());
 
 	}

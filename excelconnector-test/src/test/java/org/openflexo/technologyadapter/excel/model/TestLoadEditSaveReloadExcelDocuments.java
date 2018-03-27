@@ -92,7 +92,7 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 	public void testWorkbook1Loading() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		workbook1Resource = getExcelResource("Workbook1.xlsx", directoryRC);
-		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData(null);
+		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData();
 		System.out.println("Workbook1.xlsx:\n" + workbook1);
 
 		System.out.println("Now: " + workbook1Resource);
@@ -148,7 +148,7 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 		ExcelCell cell13 = row1.getExcelCellAt(2);
 		cell13.setCellStringValue("D");
 		System.out.println("Saving to " + workbook1Resource.getIODelegate().getSerializationArtefact());
-		workbook1Resource.save(null);
+		workbook1Resource.save();
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 		workbook1Resource.unloadResourceData(false);
 
 		System.out.println("Reload " + workbook1Resource.getIODelegate().getSerializationArtefact());
-		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData(null);
+		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData();
 
 		assertEquals(1, workbook1.getExcelSheets().size());
 		ExcelSheet sheet1 = workbook1.getExcelSheets().get(0);
@@ -200,7 +200,7 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 		// Put it back to C, otherwise it might fail in future tests
 		cell13.setCellStringValue("C");
 		System.out.println("Saving to " + workbook1Resource.getIODelegate().getSerializationArtefact());
-		workbook1Resource.save(null);
+		workbook1Resource.save();
 
 	}
 

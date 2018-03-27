@@ -141,7 +141,7 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 
 	public FlexoMetaModel<?> getMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		if (getFlexoOntologyModelSlot() != null) {
-			return getFlexoOntologyModelSlot().getMetaModelResource().getResourceData(null);
+			return getFlexoOntologyModelSlot().getMetaModelResource().getResourceData();
 		}
 		return null;
 	}

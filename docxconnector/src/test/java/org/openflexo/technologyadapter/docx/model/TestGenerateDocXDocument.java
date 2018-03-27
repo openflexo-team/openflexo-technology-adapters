@@ -164,11 +164,11 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 		// templateDocument.getWordprocessingMLPackage().getMainDocumentPart()
 
 		generatedResource.setResourceData(templateDocument);
-		generatedResource.save(null);
+		generatedResource.save();
 		generatedResource.unloadResourceData(false);
-		generatedResource.loadResourceData(null);
+		generatedResource.loadResourceData();
 
-		generatedDocument = generatedResource.getResourceData(null);
+		generatedDocument = generatedResource.getResourceData();
 
 		for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();

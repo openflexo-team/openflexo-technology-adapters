@@ -297,7 +297,7 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 		if (component.getResource().getIODelegate() instanceof StreamIODelegate) {
 			((StreamIODelegate<?>) component.getResource().getIODelegate()).setSaveToSourceResource(true);
 		}
-		component.getResource().save(null);
+		component.getResource().save();
 
 		return true;
 	}

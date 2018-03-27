@@ -94,7 +94,7 @@ public class TestLoadExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
 			Collection<ExcelWorkbookResource> workbooks = excelWorkbookRepository.getAllResources();
 			for (ExcelWorkbookResource excelWorkbook : workbooks) {
 				try {
-					excelWorkbook.loadResourceData(null);
+					excelWorkbook.loadResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {

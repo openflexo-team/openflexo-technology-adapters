@@ -138,7 +138,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 			try {
 
 				DocXDocumentResource templateResource = getAssignedModelSlot().getTemplateResource();
-				DocXDocument templateDocument = templateResource.getResourceData(null);
+				DocXDocument templateDocument = templateResource.getResourceData();
 
 				FlexoResource<DocXDocument> generatedResource = null;
 
@@ -155,11 +155,11 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 				// System.out.println("-------------> generating document " + generatedResource);
 
 				generatedResource.setResourceData(templateDocument);
-				generatedResource.save(null);
+				generatedResource.save();
 				generatedResource.unloadResourceData(false);
-				generatedResource.loadResourceData(null);
+				generatedResource.loadResourceData();
 
-				generatedDocument = generatedResource.getResourceData(null);
+				generatedDocument = generatedResource.getResourceData();
 
 				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> generatedElement : generatedDocument.getElements()) {
 					String oldId = generatedElement.getIdentifier();

@@ -62,7 +62,6 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCModelConverter;
-import org.openflexo.toolbox.IProgress;
 
 public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCServiceProviderCatalog> implements OSLCResourceResource {
 	private static final Logger logger = Logger.getLogger(OSLCResourceResourceImpl.class.getPackage().getName());
@@ -81,8 +80,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	}
 
 	@Override
-	public OSLCServiceProviderCatalog loadResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public OSLCServiceProviderCatalog loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 		// Unused AbstractResource unit = null;
 
 		if (getIODelegate().exists()) {
@@ -109,9 +107,9 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 	}
 
 	@Override
-	public void save(IProgress progress) throws SaveResourceException {
+	public void save() throws SaveResourceException {
 		try {
-			resourceData = getResourceData(progress);
+			resourceData = getResourceData();
 		} catch (FileNotFoundException e) {
 			// Unused OSLCResourceResource resourceData;
 			e.printStackTrace();

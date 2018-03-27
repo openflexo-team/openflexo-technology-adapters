@@ -264,7 +264,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 
 		public ExcelWorkbook getExcelWorkbook() {
 			try {
-				return getAction().getExcelWorkbookResource().getResourceData(null);
+				return getAction().getExcelWorkbookResource().getResourceData();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

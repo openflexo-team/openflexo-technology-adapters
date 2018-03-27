@@ -103,7 +103,7 @@ public interface ConfigureGINAFIBComponent
 				GINAFIBComponent fibComponent = null;
 				try {
 					if (modelSlot.getTemplateResource() != null) {
-						fibComponent = modelSlot.getTemplateResource().getResourceData(null);
+						fibComponent = modelSlot.getTemplateResource().getResourceData();
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -120,7 +120,7 @@ public interface ConfigureGINAFIBComponent
 				}
 
 				try {
-					return modelSlot.getTemplateResource().getResourceData(null);
+					return modelSlot.getTemplateResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

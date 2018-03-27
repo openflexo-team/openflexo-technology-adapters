@@ -115,7 +115,7 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		_newPalette = paletteResource.getDiagramPalette();
 		_newPalette.setDescription(description);
 		getFocusedObject().addToPalettes(_newPalette);
-		_newPalette.getResource().save(null);
+		_newPalette.getResource().save();
 
 	}
 

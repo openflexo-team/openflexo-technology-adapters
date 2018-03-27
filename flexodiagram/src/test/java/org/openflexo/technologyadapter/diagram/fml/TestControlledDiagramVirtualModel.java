@@ -139,7 +139,7 @@ public class TestControlledDiagramVirtualModel extends DiagramTestCase {
 
 		System.out.println("Hop, je viens creer un DS dans " + diagramSpecificationResource.getIODelegate().getSerializationArtefact());
 
-		diagramSpecificationResource.save(null);
+		diagramSpecificationResource.save();
 
 		assertNotNull(exampleDiagram = action.getNewDiagramSpecification().getExampleDiagrams().get(0));
 
@@ -189,7 +189,7 @@ public class TestControlledDiagramVirtualModel extends DiagramTestCase {
 		diagramPaletteElement.setGraphicalRepresentation(shapeGR);
 		paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
-		paletteResource.save(null);
+		paletteResource.save();
 
 	}
 
@@ -294,7 +294,7 @@ public class TestControlledDiagramVirtualModel extends DiagramTestCase {
 
 		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 

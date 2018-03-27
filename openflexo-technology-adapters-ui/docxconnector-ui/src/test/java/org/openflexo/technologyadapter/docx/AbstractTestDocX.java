@@ -120,7 +120,7 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 
 		DocXDocument document = null;
 		try {
-			document = documentResource.getResourceData(null);
+			document = documentResource.getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {

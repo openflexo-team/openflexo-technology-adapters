@@ -110,8 +110,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void test1LoadLibraryMetamodel()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test1LoadLibraryMetamodel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		XSDMetaModelResource mmRes = mmRepository.getResource("http://www.example.org/Library");
 
@@ -122,7 +121,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 		assertNotNull(mmRes);
 		assertFalse(mmRes.isLoaded());
 		if (!mmRes.isLoaded()) {
-			mmRes.loadResourceData(null);
+			mmRes.loadResourceData();
 		}
 		assertTrue(mmRes.isLoaded());
 

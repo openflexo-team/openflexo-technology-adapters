@@ -39,11 +39,11 @@
 package org.openflexo.technologyadapter.docx.fml;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -271,14 +271,14 @@ public class TestLibrary extends AbstractTestDocX {
 
 		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
 			System.out.println(" > rc " + rc.getDefaultBaseURI());
-			for (FlexoResource<?> r : rc.getAllResources(null)) {
+			for (FlexoResource<?> r : rc.getAllResources()) {
 				System.out.println("   >> " + r.getURI());
 			}
 		}
 
 		templateResource = getDocumentResource("ExampleLibrary.docx");
 
-		assertNotNull(templateDocument = templateResource.getResourceData(null));
+		assertNotNull(templateDocument = templateResource.getResourceData());
 
 		assertEquals(14, templateDocument.getElements().size());
 
@@ -507,7 +507,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		assertTrue(bookConcept.getCreationSchemes().contains(bookCreationScheme));
 
-		libraryVirtualModel.getResource().save(null);
+		libraryVirtualModel.getResource().save();
 
 		System.out.println(libraryVirtualModel.getFMLModelFactory().stringRepresentation(libraryVirtualModel));
 
@@ -635,7 +635,7 @@ public class TestLibrary extends AbstractTestDocX {
 		updateDocumentActionScheme = createUpdateDocument();
 		reinjectFromDocumentActionScheme = createReinjectFromDocument();
 
-		documentVirtualModel.getResource().save(null);
+		documentVirtualModel.getResource().save();
 
 		System.out.println(documentVirtualModel.getFMLModelFactory().stringRepresentation(documentVirtualModel));
 
@@ -1138,7 +1138,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		assertTrue(libraryVMI.isModified());
 
-		libraryVMI.getResource().save(null);
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 
@@ -1259,15 +1259,15 @@ public class TestLibrary extends AbstractTestDocX {
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
 
-		documentVMI.getResource().save(null);
-		newView.getResource().save(null);
+		documentVMI.getResource().save();
+		newView.getResource().save();
 
 		// assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		generatedDocument.getResource().save(null);
+		generatedDocument.getResource().save();
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(9, generatedDocument.getElements().size());
@@ -1330,15 +1330,15 @@ public class TestLibrary extends AbstractTestDocX {
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
 
-		documentVMI.getResource().save(null);
-		newView.getResource().save(null);
+		documentVMI.getResource().save();
+		newView.getResource().save();
 
 		// assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		generatedDocument.getResource().save(null);
+		generatedDocument.getResource().save();
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(27, generatedDocument.getElements().size());
@@ -1554,7 +1554,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
-		newViewResource.loadResourceData(null);
+		newViewResource.loadResourceData();
 		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		// TAKE CARE TO RELOAD all static fields as they are still pointing on
@@ -1592,7 +1592,7 @@ public class TestLibrary extends AbstractTestDocX {
 		FMLRTVirtualModelInstanceResource libraryVmiResource = newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).get(0);
 		assertNotNull(libraryVmiResource);
 		assertNull(libraryVmiResource.getLoadedResourceData());
-		libraryVmiResource.loadResourceData(null);
+		libraryVmiResource.loadResourceData();
 		assertNotNull(libraryVMI = libraryVmiResource.getVirtualModelInstance());
 		assertEquals(3, libraryVMI.getFlexoConceptInstances().size());
 
@@ -1605,7 +1605,7 @@ public class TestLibrary extends AbstractTestDocX {
 				.get(0);
 		assertNotNull(documentVmiResource);
 		assertNull(documentVmiResource.getLoadedResourceData());
-		documentVmiResource.loadResourceData(null);
+		documentVmiResource.loadResourceData();
 		assertNotNull(documentVMI = documentVmiResource.getVirtualModelInstance());
 		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
 
@@ -1701,9 +1701,9 @@ public class TestLibrary extends AbstractTestDocX {
 		assertTrue(documentVMI.isModified());
 		assertTrue(generatedDocument.isModified());
 
-		libraryVMI.getResource().save(null);
-		documentVMI.getResource().save(null);
-		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save();
+		documentVMI.getResource().save();
+		generatedDocument.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1866,9 +1866,9 @@ public class TestLibrary extends AbstractTestDocX {
 												// been modified
 		assertTrue(generatedDocument.isModified());
 
-		libraryVMI.getResource().save(null);
-		documentVMI.getResource().save(null);
-		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save();
+		documentVMI.getResource().save();
+		generatedDocument.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1953,9 +1953,9 @@ public class TestLibrary extends AbstractTestDocX {
 												// modified
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		documentVMI.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		documentVMI.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2040,8 +2040,8 @@ public class TestLibrary extends AbstractTestDocX {
 		assertFalse(documentVMI.isModified());
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2149,9 +2149,9 @@ public class TestLibrary extends AbstractTestDocX {
 												// added)
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		documentVMI.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		documentVMI.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());

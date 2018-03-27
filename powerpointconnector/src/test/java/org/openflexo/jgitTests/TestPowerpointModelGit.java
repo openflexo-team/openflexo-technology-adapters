@@ -158,8 +158,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				newVirtualModel.addToModelSlots(modelSlot);
 			}
 		}
-		newViewPoint.getResource().save(null);
-		newVirtualModel.getResource().save(null);
+		newViewPoint.getResource().save();
+		newVirtualModel.getResource().save();
 
 		assertNotNull(newVirtualModel);
 	}
@@ -174,7 +174,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			logger.info("Load file " + pssResource.getIODelegate().toString());
 			assertNotNull(pssResource);
 			assertFalse(pssResource.isLoaded());
-			pssResource.loadResourceData(null);
+			pssResource.loadResourceData();
 			assertTrue(pssResource.isLoaded());
 			assertNotNull(pssResource.getLoadedResourceData());
 		}
@@ -253,7 +253,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		// pptFile,
 		// powerpointAdapter.getTechnologyContextManager(), resourceCenter);
 
-		modelRes.save(null);
+		modelRes.save();
 
 		System.out.println("Serialization artefact = " + modelRes.getIODelegate().getSerializationArtefact());
 		System.out.println("pptFile = " + pptFile);

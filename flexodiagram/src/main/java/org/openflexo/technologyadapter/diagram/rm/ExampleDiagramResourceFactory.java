@@ -79,7 +79,7 @@ public class ExampleDiagramResourceFactory extends DiagramResourceFactory {
 			resourceData.setResource(returned);
 			returned.setResourceData(resourceData);
 			returned.setModified(true);
-			returned.save(null);
+			returned.save();
 		}
 
 		dsResource.getDiagramSpecification().addToExampleDiagrams(returned.getDiagram());

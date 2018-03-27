@@ -282,7 +282,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public DiagramSpecification getDiagramSpecification() {
 			if (getModelSlot() instanceof TypedDiagramModelSlot) {
 				try {
-					return ((TypedDiagramModelSlot) getModelSlot()).getMetaModelResource().getResourceData(null);
+					return ((TypedDiagramModelSlot) getModelSlot()).getMetaModelResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
@@ -577,6 +577,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return DiagramTechnologyAdapter.class;
 		}
 
+		@Override
 		public String detailedFMLSpecifications(FMLRepresentationContext context) {
 
 			if (getGrSpecifications() != null && getGrSpecifications().size() > 0) {

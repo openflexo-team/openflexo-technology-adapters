@@ -65,7 +65,6 @@ import org.openflexo.technologyadapter.excel.model.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.model.ExcelModelFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * Represents the resource associated to a {@link ExcelWorkbook}
@@ -102,7 +101,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	 * @throws FlexoException
 	 */
 	@Override
-	public ExcelWorkbook loadResourceData(IProgress progress) throws IOFlexoException {
+	public ExcelWorkbook loadResourceData() throws IOFlexoException {
 
 		converter = new BasicExcelModelConverter(this);
 
@@ -369,7 +368,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	@Override
 	public ExcelWorkbook getExcelWorkbook() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			return null;

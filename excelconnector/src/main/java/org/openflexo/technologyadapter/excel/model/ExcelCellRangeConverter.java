@@ -109,7 +109,7 @@ public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
 			if (documentResource != null) {
 				ExcelWorkbook document;
 				try {
-					document = documentResource.getResourceData(null);
+					document = documentResource.getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					return null;

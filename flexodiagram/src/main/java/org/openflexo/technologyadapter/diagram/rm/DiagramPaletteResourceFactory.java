@@ -115,7 +115,7 @@ public class DiagramPaletteResourceFactory extends
 			resourceData.setResource(returned);
 			returned.setResourceData(resourceData);
 			returned.setModified(true);
-			returned.save(null);
+			returned.save();
 		}
 
 		return returned;

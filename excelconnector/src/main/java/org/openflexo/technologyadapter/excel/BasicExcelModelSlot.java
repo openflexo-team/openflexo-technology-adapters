@@ -227,7 +227,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = model.getResource();
 					if (!resource.isLoaded()) {
-						resource.loadResourceData(null);
+						resource.loadResourceData();
 					}
 					System.out.println("Tiens, la faut retrouver " + URLDecoder.decode(objectURI, "UTF-8"));
 					return null;

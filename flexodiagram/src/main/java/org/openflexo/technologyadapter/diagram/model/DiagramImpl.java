@@ -232,7 +232,7 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 			DiagramResource resource = (DiagramResource) getResource();
 			if (resource.getMetaModelResource() != null) {
 				try {
-					return resource.getMetaModelResource().getResourceData(null);
+					return resource.getMetaModelResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

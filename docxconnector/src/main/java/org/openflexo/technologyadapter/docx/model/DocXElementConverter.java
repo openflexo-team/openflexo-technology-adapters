@@ -81,7 +81,7 @@ public class DocXElementConverter extends Converter<DocXElement> {
 				if (documentResource != null) {
 					DocXDocument document;
 					try {
-						document = documentResource.getResourceData(null);
+						document = documentResource.getResourceData();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 						return null;

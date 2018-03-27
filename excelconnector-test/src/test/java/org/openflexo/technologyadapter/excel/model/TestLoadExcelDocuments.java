@@ -52,10 +52,6 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.AbstractTestExcel;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
-import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.test.OrderedRunner;
@@ -83,7 +79,7 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 			Collection<ExcelWorkbookResource> documents = workbookRepository.getAllResources();
 			for (ExcelWorkbookResource docResource : documents) {
 				try {
-					docResource.loadResourceData(null);
+					docResource.loadResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {

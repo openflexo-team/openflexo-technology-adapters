@@ -66,7 +66,6 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.IProgress;
 import org.openflexo.xml.XMLRootElementInfo;
 import org.openflexo.xml.XMLRootElementReader;
 
@@ -89,10 +88,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	 * @throws SaveResourceException
 	 */
 	@Override
-	public final void save(IProgress progress) throws SaveResourceException {
-		if (progress != null) {
-			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
-		}
+	public final void save() throws SaveResourceException {
 		if (!isLoaded()) {
 			return;
 		}
@@ -130,7 +126,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public XMLModel loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
@@ -185,7 +181,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	public XMLModel getModelData() {
 
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -243,7 +239,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public XMLModel getResourceData(IProgress progress)
+	public XMLModel getResourceData()
 			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
@@ -252,7 +248,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		}
 		if (isLoadable() && !isLoaded()) {
 			setLoading(true);
-			resourceData = loadResourceData(progress);
+			resourceData = loadResourceData();
 			setLoading(false);
 			// That's fine, resource is loaded, now let's notify the loading of
 			// the resources
@@ -316,7 +312,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		}
 		if (clearIsModified) {
 			try {
-				getResourceData(null).clearIsModified(false);
+				getResourceData().clearIsModified(false);
 				// No need to reset the last memory update since it is valid
 				notifyResourceSaved();
 			} catch (Exception e) {

@@ -148,7 +148,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertTrue(viewPointResource.getIODelegate().exists());
 
 		templateResource = getDocumentResource("DocumentWithSomeImages.docx");
-		assertNotNull(templateDocument = templateResource.getResourceData(null));
+		assertNotNull(templateDocument = templateResource.getResourceData());
 		System.out.println(templateDocument.debugStructuredContents());
 		assertEquals(19, templateDocument.getElements().size());
 

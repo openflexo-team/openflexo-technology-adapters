@@ -72,7 +72,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 public interface CreateExcelResource extends AbstractCreateResource<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	public static abstract class CreateExcelResourceImpl
-			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter>implements CreateExcelResource {
+			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> implements CreateExcelResource {
 
 		private static final Logger logger = Logger.getLogger(CreateExcelResourceImpl.class.getPackage().getName());
 
@@ -106,7 +106,7 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 
 				newResource.setIsModified();
 
-				ExcelWorkbook workbook = newResource.getResourceData(null);
+				ExcelWorkbook workbook = newResource.getResourceData();
 
 				System.out.println("Return " + workbook);
 				return workbook;

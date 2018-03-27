@@ -122,7 +122,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 		newDiagramSpecification = newDSResource.getLoadedResourceData();
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 
-		newDSResource.save(null);
+		newDSResource.save();
 
 		if (makeDefaultExampleDiagram()) {
 			CreateExampleDiagram createDiagramAction = CreateExampleDiagram.actionType.makeNewEmbeddedAction(newDiagramSpecification, null,

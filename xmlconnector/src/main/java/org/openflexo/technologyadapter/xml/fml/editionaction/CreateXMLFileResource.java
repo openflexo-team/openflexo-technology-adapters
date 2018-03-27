@@ -96,10 +96,10 @@ public interface CreateXMLFileResource
 				newResource = createResource(xmlTA, XMLFileResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
 						XMLFileResource.XML_FILE_EXTENSION, true);
 
-				newResource.save(null);
+				newResource.save();
 				newResource.setIsModified();
 
-				XMLModel xmlModel = newResource.getResourceData(null);
+				XMLModel xmlModel = newResource.getResourceData();
 
 				return xmlModel;
 			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {

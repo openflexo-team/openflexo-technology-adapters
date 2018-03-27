@@ -93,7 +93,7 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(virtualModel);
 		if (modelSlot != null && modelSlot.getTemplateResource() != null) {
 			try {
-				return modelSlot.getTemplateResource().getResourceData(null);
+				return modelSlot.getTemplateResource().getResourceData();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

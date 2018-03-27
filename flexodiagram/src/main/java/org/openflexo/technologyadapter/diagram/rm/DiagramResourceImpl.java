@@ -54,7 +54,6 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
-import org.openflexo.toolbox.IProgress;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -95,7 +94,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	@Override
 	public Diagram getDiagram() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
@@ -122,9 +121,9 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	}
 
 	@Override
-	public Diagram loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
-			InconsistentDataException, InvalidModelDefinitionException {
-		Diagram returned = super.loadResourceData(progress);
+	public Diagram loadResourceData() throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException, InconsistentDataException,
+			InvalidModelDefinitionException {
+		Diagram returned = super.loadResourceData();
 		returned.clearIsModified();
 		return returned;
 	}

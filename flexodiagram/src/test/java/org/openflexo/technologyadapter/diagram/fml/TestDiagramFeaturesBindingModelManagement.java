@@ -204,7 +204,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		paletteElement.setGraphicalRepresentation(shapeGR);
 		paletteResource.getDiagramPalette().addToElements(paletteElement);
 
-		paletteResource.save(null);
+		paletteResource.save();
 
 	}
 
@@ -285,7 +285,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		DiagramShape newShape = createShapeInDiagram(exampleDiagram, "TestShape");
 		role.bindTo(newShape);
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
@@ -333,7 +333,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 
 		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
@@ -412,7 +412,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		createAddConnector.doAction();
 		assertTrue(createAddConnector.hasActionExecutionSucceeded());
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 		assertEquals(8, linkScheme.getBindingModel().getBindingVariablesCount());
 		assertNotNull(linkScheme.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
@@ -444,7 +444,7 @@ public class TestDiagramFeaturesBindingModelManagement extends DiagramTestCase {
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept2),
 				linkScheme.getBindingModel().bindingVariableNamed(LinkSchemeBindingModel.TO_TARGET).getType());
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 	}
 

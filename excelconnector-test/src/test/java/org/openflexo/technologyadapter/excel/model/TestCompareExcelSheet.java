@@ -87,7 +87,7 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 				if (excelWorkbook.getName().contains("exemple")) {
 					System.out.println("Testing on " + excelWorkbook);
 					try {
-						ExcelWorkbook excelModel = excelWorkbook.loadResourceData(null);
+						ExcelWorkbook excelModel = excelWorkbook.loadResourceData();
 						assertNotNull(excelWorkbook.getLoadedResourceData());
 						assertNotNull(excelModel);
 						assertEquals(excelModel, excelWorkbook.getLoadedResourceData());

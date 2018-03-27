@@ -101,21 +101,21 @@ public interface GenerateExcelResource extends CreateExcelResource {
 				ExcelWorkbookResource newResource;
 				try {
 
-					ExcelWorkbook templateDocument = templateResource.getResourceData(null);
+					ExcelWorkbook templateDocument = templateResource.getResourceData();
 
 					newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI,
 							getRelativePath(), ".xlsx", false);
 					System.out.println("Return new excel workbook resource: " + newResource);
 
 					newResource.setResourceData(templateDocument);
-					newResource.save(null);
+					newResource.save();
 					newResource.unloadResourceData(false);
 					templateResource.unloadResourceData(false);
-					newResource.loadResourceData(null);
+					newResource.loadResourceData();
 
 					System.out.println("Et hop on relit la RD");
 
-					ExcelWorkbook generatedDocument = newResource.getResourceData(null);
+					ExcelWorkbook generatedDocument = newResource.getResourceData();
 
 					System.out.println("Et hop, en fin de generate, on retourne " + generatedDocument);
 					System.out.println("-------> generatedDocument.getResource()=" + generatedDocument.getResource());

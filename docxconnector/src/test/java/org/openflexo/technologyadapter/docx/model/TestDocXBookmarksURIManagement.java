@@ -138,7 +138,7 @@ public class TestDocXBookmarksURIManagement extends AbstractTestDocX {
 
 		// Document is modified because a new id has been generated
 		if (simpleDocumentWithBookmarks.isModified() && !simpleDocumentWithBookmarks.getResource().isReadOnly()) {
-			simpleDocumentWithBookmarks.getResource().save(null);
+			simpleDocumentWithBookmarks.getResource().save();
 			assertFalse(simpleDocumentWithBookmarks.isModified());
 		}
 

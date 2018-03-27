@@ -39,14 +39,12 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
-import org.openflexo.toolbox.IProgress;
 
 public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocument> implements ODTDocumentResource {
 	private static final Logger logger = Logger.getLogger(ODTDocumentResourceImpl.class.getPackage().getName());
 
 	@Override
-	public ODTDocument loadResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public ODTDocument loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		System.out.println("Hop, on charge le document " + getFile());
 
@@ -54,9 +52,9 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 	}
 
 	@Override
-	public void save(IProgress progress) throws SaveResourceException {
+	public void save() throws SaveResourceException {
 		try {
-			resourceData = getResourceData(progress);
+			resourceData = getResourceData();
 		} catch (FileNotFoundException e) {
 			// Unused ODTDocument resourceData;
 			e.printStackTrace();
@@ -90,7 +88,7 @@ public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocum
 	@Override
 	public ODTDocument getODTDocument() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			return null;

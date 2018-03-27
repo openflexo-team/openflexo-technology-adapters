@@ -78,7 +78,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	@Override
 	public DiagramSpecification getDiagramSpecification() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

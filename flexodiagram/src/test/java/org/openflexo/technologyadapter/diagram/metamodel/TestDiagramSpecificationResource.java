@@ -140,7 +140,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		diagramSpecificationResource = diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(
 				diagramSpecificationName, diagramSpecificationURI, repository.getRootFolder(), true);
 
-		diagramSpecificationResource.save(null);
+		diagramSpecificationResource.save();
 		assertTrue(diagramSpecificationResource.getIODelegate().exists());
 
 		DiagramSpecificationResource retrievedResource = repository.getResource(diagramSpecificationURI);
@@ -179,9 +179,9 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		diagramPaletteElement.setGraphicalRepresentation(shapeGR);
 		paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
-		paletteResource.save(null);
+		paletteResource.save();
 		assertTrue(paletteResource.getIODelegate().exists());
-		diagramSpecificationResource.save(null);
+		diagramSpecificationResource.save();
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
@@ -223,8 +223,8 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 		diagramSpecificationResource.addToContents(exampleDiagramResource);
 		diagramSpecificationResource.getDiagramSpecification().addToExampleDiagrams(diagram);
-		diagramSpecificationResource.save(null);
-		exampleDiagramResource.save(null);
+		diagramSpecificationResource.save();
+		exampleDiagramResource.save();
 
 	}
 

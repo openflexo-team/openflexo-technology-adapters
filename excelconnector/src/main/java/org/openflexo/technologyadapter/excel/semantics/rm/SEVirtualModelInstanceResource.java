@@ -63,7 +63,6 @@ import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializerAction;
 import org.openflexo.technologyadapter.excel.semantics.model.ExcelMappingException;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * This is the {@link FlexoResource} encoding a {@link FMLRTVirtualModelInstance}
@@ -159,9 +158,9 @@ public interface SEVirtualModelInstanceResource
 		}
 
 		@Override
-		public SEVirtualModelInstance loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException,
-				InvalidXMLException, InconsistentDataException, InvalidModelDefinitionException {
-			SEVirtualModelInstance returned = super.loadResourceData(progress);
+		public SEVirtualModelInstance loadResourceData() throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
+				InconsistentDataException, InvalidModelDefinitionException {
+			SEVirtualModelInstance returned = super.loadResourceData();
 
 			try {
 				returned.updateData();

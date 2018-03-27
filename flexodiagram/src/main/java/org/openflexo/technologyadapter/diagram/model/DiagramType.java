@@ -149,7 +149,7 @@ public class DiagramType implements TechnologySpecificType<DiagramTechnologyAdap
 					.getResource(diagramSpecificationURI, DiagramSpecification.class);
 			if (dsSpecResource != null) {
 				try {
-					diagramSpecification = dsSpecResource.getResourceData(null);
+					diagramSpecification = dsSpecResource.getResourceData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -189,7 +189,7 @@ public class DiagramType implements TechnologySpecificType<DiagramTechnologyAdap
 						.getResourceManager().getResource(configuration, DiagramSpecification.class);
 				if (dsSpecResource != null) {
 					try {
-						dsSpec = dsSpecResource.getResourceData(null);
+						dsSpec = dsSpecResource.getResourceData();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

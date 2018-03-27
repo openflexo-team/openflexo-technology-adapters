@@ -224,7 +224,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		assertNotNull(newView);
 		assertNotNull(newView.getResource());
 		try {
-			newView.getResource().save(null);
+			newView.getResource().save();
 		} catch (SaveResourceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -308,7 +308,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		assertNull(newViewResource.getLoadedResourceData());
 
-		newViewResource.loadResourceData(null);
+		newViewResource.loadResourceData();
 		assertNotNull(newViewResource.getLoadedResourceData());
 		newView = newViewResource.getLoadedResourceData();
 	}

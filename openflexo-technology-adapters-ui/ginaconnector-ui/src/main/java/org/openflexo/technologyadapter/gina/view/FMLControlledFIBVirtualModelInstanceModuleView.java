@@ -344,7 +344,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 		if (component.getResource().getIODelegate() instanceof StreamIODelegate) {
 			((StreamIODelegate<?>) component.getResource().getIODelegate()).setSaveToSourceResource(true);
 		}
-		component.getResource().save(null);
+		component.getResource().save();
 
 		return true;
 	}
@@ -592,7 +592,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 	private static FlexoObject getRelevantObject(FlexoObject object) {
 		if (object instanceof FlexoResource<?> && ((FlexoResource<?>) object).isLoaded()) {
 			try {
-				return (FlexoObject) ((FlexoResource<?>) object).getResourceData(null);
+				return (FlexoObject) ((FlexoResource<?>) object).getResourceData();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {

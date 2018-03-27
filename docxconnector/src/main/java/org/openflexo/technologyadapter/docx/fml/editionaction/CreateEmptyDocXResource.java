@@ -107,7 +107,7 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 			if (newResource != null) {
 				DocXDocument returned;
 				try {
-					returned = newResource.getResourceData(null);
+					returned = newResource.getResourceData();
 					System.out.println("Return " + returned);
 					return returned;
 				} catch (FileNotFoundException e) {

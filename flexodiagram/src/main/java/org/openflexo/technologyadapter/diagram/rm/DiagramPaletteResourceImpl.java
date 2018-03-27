@@ -53,7 +53,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
-import org.openflexo.toolbox.IProgress;
 
 public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<DiagramPalette, DiagramPaletteFactory>
 		implements DiagramPaletteResource {
@@ -72,7 +71,7 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 	@Override
 	public DiagramPalette getDiagramPalette() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
@@ -108,10 +107,10 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 	 * @throws FileNotFoundException
 	 */
 	@Override
-	public DiagramPalette loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
+	public DiagramPalette loadResourceData() throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
 			InconsistentDataException, InvalidModelDefinitionException {
 
-		DiagramPalette returned = super.loadResourceData(progress);
+		DiagramPalette returned = super.loadResourceData();
 		// returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
 		// returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
 		if (getContainer() != null && getContainer().getDiagramSpecification() != null

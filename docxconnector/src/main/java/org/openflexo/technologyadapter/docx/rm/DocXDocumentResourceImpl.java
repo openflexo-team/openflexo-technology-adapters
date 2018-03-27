@@ -160,7 +160,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	@Override
 	public DocXDocument getDocument() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			return null;

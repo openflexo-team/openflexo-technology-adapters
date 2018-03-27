@@ -116,13 +116,13 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 		assertNotNull(newDocResource);
 		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx", newDocResource.getURI());
 
-		assertNotNull(newDocument = newDocResource.getResourceData(null));
+		assertNotNull(newDocument = newDocResource.getResourceData());
 
 		System.out.println(newDocument.debugStructuredContents());
 
 		assertEquals(0, newDocument.getRootElements().size());
 
-		newDocResource.save(null);
+		newDocResource.save();
 
 		assertFalse(newDocResource.isModified());
 	}
@@ -166,7 +166,7 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 		assertEquals(normalStyle, text2.getNamedStyle());
 
 		assertTrue(newDocResource.isModified());
-		newDocResource.save(null);
+		newDocResource.save();
 		assertFalse(newDocResource.isModified());
 
 		System.out.println(newDocument.debugStructuredContents());
@@ -191,7 +191,7 @@ public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
 			DocXParagraph text2 = (DocXParagraph) newDocument.getElements().get(4);
 			text2.addToRuns(newDocument.getFactory().makeDrawingRun(imageFile));
 			System.out.println(newDocument.debugStructuredContents());
-			newDocResource.save(null);
+			newDocResource.save();
 		}
 
 	}

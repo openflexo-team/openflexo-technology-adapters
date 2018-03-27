@@ -100,7 +100,7 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 		public ExcelWorkbook getExcelWorkbook() {
 			if (getExcelWorkbookResource() != null) {
 				try {
-					return getExcelWorkbookResource().getResourceData(null);
+					return getExcelWorkbookResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

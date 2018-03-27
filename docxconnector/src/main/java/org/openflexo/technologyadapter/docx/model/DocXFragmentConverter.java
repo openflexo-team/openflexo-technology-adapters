@@ -101,7 +101,7 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 			if (documentResource != null) {
 				DocXDocument document;
 				try {
-					document = documentResource.getResourceData(null);
+					document = documentResource.getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					return null;

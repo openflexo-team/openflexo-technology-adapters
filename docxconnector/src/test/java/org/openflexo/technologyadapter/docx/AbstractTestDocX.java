@@ -126,7 +126,7 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 
 		DocXDocument document = null;
 		try {
-			document = documentResource.getResourceData(null);
+			document = documentResource.getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {

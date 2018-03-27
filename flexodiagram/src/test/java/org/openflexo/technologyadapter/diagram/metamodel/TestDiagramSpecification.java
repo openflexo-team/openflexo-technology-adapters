@@ -224,7 +224,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		diagram.addToShapes(shape2);
 		diagram.addToConnectors(connector1);
 
-		exampleDiagramResource.save(null);
+		exampleDiagramResource.save();
 
 	}
 

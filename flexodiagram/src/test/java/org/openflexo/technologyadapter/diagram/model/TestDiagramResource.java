@@ -127,7 +127,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		assertNotNull(diagramResource);
 
-		diagramResource.save(null);
+		diagramResource.save();
 
 		assertTrue(diagramResource.getIODelegate().exists());
 
@@ -166,7 +166,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 			assertEquals(4, diagramResource.getLastID());
 
-			diagramResource.save(null);
+			diagramResource.save();
 
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());

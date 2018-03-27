@@ -158,7 +158,7 @@ public class CreateGINAFIBComponent
 	public GINAFIBComponent getNewComponent() {
 		if (getNewComponentResource() != null) {
 			try {
-				return getNewComponentResource().getResourceData(null);
+				return getNewComponentResource().getResourceData();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

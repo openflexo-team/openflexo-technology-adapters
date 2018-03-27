@@ -378,7 +378,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 				SEVirtualModelInstanceResource newResource = createResource(
 						getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class),
 						getResourceFactoryClass(), rc, resourceName, resourceURI, getRelativePath(), getSuffix(), true);
-				SEVirtualModelInstance data = newResource.getResourceData(null);
+				SEVirtualModelInstance data = newResource.getResourceData();
 				data.setVirtualModel(getVirtualModel());
 
 				FlexoProperty<SEVirtualModelInstance> flexoProperty = getAssignedFlexoProperty();
