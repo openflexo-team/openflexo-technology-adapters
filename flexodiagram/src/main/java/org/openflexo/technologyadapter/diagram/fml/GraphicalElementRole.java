@@ -217,9 +217,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
 
-	@Deprecated
-	public GR getDeprecatedGraphicalRepresentation();
-
 	/**
 	 * Called to configure using prototyping {@link DiagramElement} from metamodel
 	 * 
@@ -362,7 +359,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				if (exampleDiagram == null) {
 					exampleDiagram = getDiagramSpecification().createDefaultExampleDiagram(getServiceManager().getDefaultEditor());
 				}
-				T newMetamodelElement = makeDiagramElementInMetaModel(exampleDiagram, getDeprecatedGraphicalRepresentation());
+				T newMetamodelElement = makeDiagramElementInMetaModel(exampleDiagram);
 				setMetamodelElement(newMetamodelElement);
 				// System.out.println("newMetamodelElement=" + getMetamodelElement());
 				return getMetamodelElement().getGraphicalRepresentation();
@@ -372,7 +369,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return null;
 		}
 
-		public abstract T makeDiagramElementInMetaModel(Diagram exampleDiagram, GR graphicalRepresentation);
+		public abstract T makeDiagramElementInMetaModel(Diagram exampleDiagram);
 
 		// Convenient method to access spec for label feature
 		@Override

@@ -46,9 +46,6 @@ import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -77,18 +74,6 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static final String END_SHAPE_ROLE_KEY = "endShapeRole";
 
 	public static GraphicalFeature<?, ?>[] AVAILABLE_CONNECTOR_FEATURES = {};
-
-	@Override
-	@Deprecated
-	@Getter(value = "DeprecatedGraphicalRepresentation")
-	@CloningStrategy(StrategyType.CLONE)
-	@Embedded
-	@XMLElement
-	public ConnectorGraphicalRepresentation getDeprecatedGraphicalRepresentation();
-
-	@Deprecated
-	@Setter(value = "DeprecatedGraphicalRepresentation")
-	public void setDeprecatedGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
 	@XMLElement(context = "ArtifactFromGraphicalRepresentation_")
@@ -170,30 +155,9 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			handlePendingGRSpecs();
 		}
 
-		@Deprecated
-		private ConnectorGraphicalRepresentation deprecatedShapeGraphicalRepresentation;
-
 		@Override
-		@Deprecated
-		public ConnectorGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
-			if (getMetamodelElement() != null) {
-				return null;
-			}
-			return deprecatedShapeGraphicalRepresentation;
-		}
-
-		@Override
-		@Deprecated
-		public void setDeprecatedGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation) {
-			// System.out.println("Tiens, je trouve une ConnectorGraphicalRepresentation depreciee: " + graphicalRepresentation);
-			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
-		}
-
-		@Override
-		public DiagramConnector makeDiagramElementInMetaModel(Diagram exampleDiagram,
-				ConnectorGraphicalRepresentation graphicalRepresentation) {
+		public DiagramConnector makeDiagramElementInMetaModel(Diagram exampleDiagram) {
 			DiagramConnector returned = exampleDiagram.getDiagramFactory().makeNewConnector("Connector", null, null, exampleDiagram);
-			returned.setGraphicalRepresentation(graphicalRepresentation);
 			return returned;
 		}
 

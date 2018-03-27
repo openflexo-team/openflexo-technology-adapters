@@ -40,10 +40,8 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
 
-import org.openflexo.diana.DianaModelFactoryImpl;
 import org.openflexo.diana.ScreenshotBuilder;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
@@ -54,7 +52,6 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -505,16 +502,6 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnolog
 
 	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<DiagramElement<?>> diagramElement) {
 		this.fmlDiagramElementScreenshotBuilder = diagramElement;
-	}
-
-	// Override when required
-	@Override
-	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
-		try {
-			DianaModelFactoryImpl.installImplementingClasses(fMLModelFactory);
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

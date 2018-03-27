@@ -46,10 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
-import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -187,18 +184,6 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public static GraphicalFeature<?, ?>[] AVAILABLE_SHAPE_FEATURES = { POS_X_FEATURE, POS_Y_FEATURE, WIDTH_FEATURE, HEIGHT_FEATURE,
 			RELATIVE_TEXT_X_FEATURE, RELATIVE_TEXT_Y_FEATURE, ABSOLUTE_TEXT_X_FEATURE, ABSOLUTE_TEXT_Y_FEATURE };
 
-	@Override
-	@Deprecated
-	@Getter(value = "DeprecatedGraphicalRepresentation")
-	@CloningStrategy(StrategyType.CLONE)
-	@Embedded
-	@XMLElement
-	public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation();
-
-	@Deprecated
-	@Setter(value = "DeprecatedGraphicalRepresentation")
-	public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
-
 	@Getter(value = PARENT_SHAPE_ROLE_KEY)
 	@XMLElement(context = "Parent")
 	public ShapeRole getParentShapeRole();
@@ -292,30 +277,9 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 
 		}
 
-		@Deprecated
-		private ShapeGraphicalRepresentation deprecatedShapeGraphicalRepresentation;
-
 		@Override
-		@Deprecated
-		public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
-			if (getMetamodelElement() != null) {
-				return null;
-			}
-			return deprecatedShapeGraphicalRepresentation;
-		}
-
-		@Override
-		@Deprecated
-		public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
-			// System.out.println("Tiens, je trouve une ShapeGraphicalRepresentation depreciee: " + graphicalRepresentation);
-			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
-		}
-
-		@Override
-		public DiagramShape makeDiagramElementInMetaModel(Diagram exampleDiagram, ShapeGraphicalRepresentation graphicalRepresentation) {
+		public DiagramShape makeDiagramElementInMetaModel(Diagram exampleDiagram) {
 			DiagramShape returned = exampleDiagram.getDiagramFactory().makeNewShape("Shape", exampleDiagram);
-			// returned.setGraphicalRepresentation(graphicalRepresentation);
-			returned.getGraphicalRepresentation().setsWith(graphicalRepresentation);
 			return returned;
 		}
 

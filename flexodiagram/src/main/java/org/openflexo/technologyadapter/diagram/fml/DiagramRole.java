@@ -209,13 +209,7 @@ public interface DiagramRole extends GraphicalElementRole<Diagram, DrawingGraphi
 		}
 
 		@Override
-		@Deprecated
-		public DrawingGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
-			return null;
-		}
-
-		@Override
-		public Diagram makeDiagramElementInMetaModel(Diagram exampleDiagram, DrawingGraphicalRepresentation graphicalRepresentation) {
+		public Diagram makeDiagramElementInMetaModel(Diagram exampleDiagram) {
 			// Not applicable
 			return null;
 		}
