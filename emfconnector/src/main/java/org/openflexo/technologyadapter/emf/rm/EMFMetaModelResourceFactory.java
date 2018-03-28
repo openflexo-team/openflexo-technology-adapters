@@ -119,8 +119,8 @@ public class EMFMetaModelResourceFactory
 	protected <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
-		System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
-		System.out.println("sm=" + resource.getServiceManager());
+		// System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
+		// System.out.println("sm=" + resource.getServiceManager());
 
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(resource.getServiceManager());
 
