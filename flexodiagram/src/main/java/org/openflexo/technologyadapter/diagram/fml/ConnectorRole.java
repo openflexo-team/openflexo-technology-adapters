@@ -75,15 +75,13 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 	public static GraphicalFeature<?, ?>[] AVAILABLE_CONNECTOR_FEATURES = {};
 
-	@Getter(value = ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
-	@XMLElement(context = "ArtifactFromGraphicalRepresentation_")
+	@Getter(value = ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY, ignoreType = true)
 	public ShapeGraphicalRepresentation getArtifactFromGraphicalRepresentation();
 
 	@Setter(ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
 	public void setArtifactFromGraphicalRepresentation(ShapeGraphicalRepresentation artifactFromGraphicalRepresentation);
 
-	@Getter(value = ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY)
-	@XMLElement(context = "ArtifactToGraphicalRepresentation_")
+	@Getter(value = ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY, ignoreType = true)
 	public ShapeGraphicalRepresentation getArtifactToGraphicalRepresentation();
 
 	@Setter(ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY)

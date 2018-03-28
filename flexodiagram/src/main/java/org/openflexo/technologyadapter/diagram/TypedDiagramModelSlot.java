@@ -145,7 +145,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 	public DiagramSpecification getDiagramSpecification();
 
-	@Getter(TEMPLATE_DIAGRAM_KEY)
+	@Getter(value = TEMPLATE_DIAGRAM_KEY, ignoreType = true)
 	public Diagram getTemplateDiagram();
 
 	@Setter(TEMPLATE_DIAGRAM_KEY)

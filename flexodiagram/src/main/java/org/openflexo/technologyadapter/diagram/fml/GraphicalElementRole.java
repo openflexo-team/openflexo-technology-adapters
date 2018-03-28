@@ -174,7 +174,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	@Remover(DECLARED_GRSPECIFICATIONS_KEY)
 	public void _removeFromDeclaredGRSpecifications(GraphicalElementSpecification<?, GR> aDeclaredGRSpecification);
 
-	@Getter(METAMODEL_ELEMENT_KEY)
+	@Getter(value = METAMODEL_ELEMENT_KEY, ignoreType = true)
 	public T getMetamodelElement();
 
 	@Setter(METAMODEL_ELEMENT_KEY)

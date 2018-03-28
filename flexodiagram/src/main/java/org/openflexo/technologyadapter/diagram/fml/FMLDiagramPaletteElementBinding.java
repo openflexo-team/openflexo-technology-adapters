@@ -102,7 +102,7 @@ public interface FMLDiagramPaletteElementBinding extends FlexoConceptObject {
 	@Setter(DIAGRAM_MODEL_SLOT_KEY)
 	public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot);
 
-	@Getter(value = PALETTE_ELEMENT_KEY)
+	@Getter(value = PALETTE_ELEMENT_KEY, ignoreType = true)
 	public DiagramPaletteElement getPaletteElement();
 
 	@Setter(PALETTE_ELEMENT_KEY)
@@ -144,8 +144,9 @@ public interface FMLDiagramPaletteElementBinding extends FlexoConceptObject {
 	@Getter(
 			value = OVERRIDING_GRAPHICAL_REPRESENTATIONS_KEY,
 			cardinality = Cardinality.LIST,
-			inverse = OverridingGraphicalRepresentation.PALETTE_ELEMENT_BINDING_KEY)
-	@XMLElement
+			inverse = OverridingGraphicalRepresentation.PALETTE_ELEMENT_BINDING_KEY,
+			ignoreType = true)
+	// @XMLElement
 	public List<OverridingGraphicalRepresentation<?>> getOverridingGraphicalRepresentations();
 
 	@Setter(OVERRIDING_GRAPHICAL_REPRESENTATIONS_KEY)
@@ -289,7 +290,8 @@ public interface FMLDiagramPaletteElementBinding extends FlexoConceptObject {
 		}
 
 		private void decodePaletteElementId() {
-			if (paletteElementId != null) {}
+			if (paletteElementId != null) {
+			}
 			if (paletteElement == null && getDiagramModelSlot() != null && paletteElementId != null && paletteElementId.indexOf("#") > 0) {
 				String paletteURI = paletteElementId.substring(0, paletteElementId.indexOf("#"));
 				String elementName = paletteElementId.substring(paletteElementId.indexOf("#") + 1);
