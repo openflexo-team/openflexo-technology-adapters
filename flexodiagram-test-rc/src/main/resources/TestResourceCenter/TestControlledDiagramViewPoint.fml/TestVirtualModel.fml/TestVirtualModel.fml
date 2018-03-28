@@ -12,7 +12,7 @@ public class TestVirtualModel {
 
   @CreationScheme  
   TestVirtualModel:create() {  
-    diagram = CreateDiagram$CreateDiagramImpl_$$_jvst367_93diagram from diagram {    
+    diagram = CreateDiagram$CreateDiagramImpl_$$_jvstbac_90 {    
     };  
   }  
 
@@ -20,12 +20,13 @@ public class TestVirtualModel {
   @FlexoConcept  
   public class TestConcept {  
   
-    FlexoRole shape as ShapeSpecification from TestVirtualModel;  
+    @ShapeRole(cardinality=ZeroOne,readOnly=false)    
+    public DiagramShape shape {    
+    }  
   
     @DropScheme    
     TestConcept:drop() {    
-      shape = diagram.DIAGRAM::AddShape {      
-      };    
+      shape = diagram.AddShape();    
     }    
   
   }  
@@ -33,18 +34,21 @@ public class TestVirtualModel {
   @FlexoConcept  
   public class TestConcept2 {  
   
-    FlexoRole shape as ShapeSpecification from TestVirtualModel;  
+    @ShapeRole(cardinality=ZeroOne,readOnly=false)    
+    public DiagramShape shape {    
+    }  
   }  
 
   @FlexoConcept  
   public class TestLink {  
   
-    FlexoRole connector as ConnectorSpecification from TestVirtualModel;  
+    @ConnectorRole(cardinality=ZeroOne,readOnly=false)    
+    public DiagramConnector connector {    
+    }  
   
     @LinkScheme    
     TestLink:link() {    
-      connector = AddConnector$AddConnectorImpl_$$_jvst367_8e conformTo ConnectorSpecification from diagram {      
-      };    
+      connector = diagram.AddConnector();    
     }    
   
   }  
