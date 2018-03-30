@@ -353,17 +353,14 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			if (graphicalAction.getSubject().isSet() && graphicalAction.getSubject().isValid()) {
 				return null;
 			}
-			else {
-				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<>();
-				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
-					v.add(new SetsFlexoRoleForSubject(pr));
-				}
-				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
-					v.add(new SetsFlexoRoleForSubject(pr));
-				}
-				return new ValidationError<>(this, graphicalAction,
-						"graphical_action_has_no_valid_subject", v);
+			Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<>();
+			for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
+				v.add(new SetsFlexoRoleForSubject(pr));
 			}
+			for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
+				v.add(new SetsFlexoRoleForSubject(pr));
+			}
+			return new ValidationError<>(this, graphicalAction, "graphical_action_has_no_valid_subject", v);
 		}
 
 		protected static class SetsFlexoRoleForSubject extends FixProposal<GraphicalActionMustHaveASubject, GraphicalAction> {

@@ -47,8 +47,8 @@ import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -162,9 +162,6 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 
 	@Override
 	public void update(Observable o, Object arg);
-
-	@Override
-	public void setChanged();
 
 	public boolean hasChanged();
 

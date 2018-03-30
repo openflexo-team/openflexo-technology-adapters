@@ -49,9 +49,9 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
@@ -147,23 +147,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o == getGraphicalRepresentation()) {
-			if (getDiagram() != null) {
-				getDiagram().setChanged();
-			}
-		}
 	}
-
-	/*@Override
-	public void setChanged() {
-		super.setChanged();
-	}*/
-
-	/*@Override
-	public String getName() {
-		// System.out.println("On me demande mon nom, je retourne " + performSuperGetter(NAME));
-		return (String) performSuperGetter(NAME);
-	}*/
 
 	@Override
 	public synchronized void setChanged() {

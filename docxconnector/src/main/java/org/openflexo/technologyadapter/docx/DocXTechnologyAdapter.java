@@ -95,144 +95,13 @@ public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapt
 
 	@Override
 	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/*protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
-		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
-		if (isValidDocX(candidateElement)) {
-			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement, resourceCenter, defaultIdStrategy);
-			referenceResource(docXDocumentResource, resourceCenter);
-			// DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
-			// if (docXDocumentResource != null) {
-			// RepositoryFolder<DocXDocumentResource> folder;
-			// try {
-			// folder = docXDocumentRepository.getRepositoryFolder(candidateElement, true);
-			// docXDocumentRepository.registerResource(docXDocumentResource, folder);
-			// } catch (IOException e1) {
-			// e1.printStackTrace();
-			// }
-			// referenceResource(docXDocumentResource, resourceCenter);
-			// return docXDocumentResource;
-			// }
-		}
-		return null;
-	}*/
-
-	/*@Override
-	public void referenceResource(FlexoResource<?> resource, FlexoResourceCenter<?> resourceCenter) {
-		super.referenceResource(resource, resourceCenter);
-		if (resource instanceof DocXDocumentResource) {
-			registerInDocXDocumentRepository((DocXDocumentResource) resource, resourceCenter);
-		}
-	}*/
-
-	/*private void registerInDocXDocumentRepository(DocXDocumentResource docXDocumentResource, FlexoResourceCenter<?> resourceCenter) {
-		if (docXDocumentResource == null) {
-			return;
-		}
-		DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
-		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			RepositoryFolder<DocXDocumentResource> folder;
-			try {
-				folder = docXDocumentRepository
-						.getRepositoryFolder(((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
-				docXDocumentRepository.registerResource(docXDocumentResource, folder);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}*/
-
-	/**
-	 * Instantiate new workbook resource stored in supplied model file<br>
-	 *
-	 */
-	/*@Deprecated
-	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter,
-			IdentifierManagementStrategy idStrategy) {
-	
-		DocXDocumentResource returned = null;
-		if (docXDocumentItem instanceof File) {
-			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
-					resourceCenter, idStrategy);
-		}
-		else if (docXDocumentItem instanceof InJarResourceImpl) {
-			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((InJarResourceImpl) docXDocumentItem,
-					getTechnologyContextManager(), resourceCenter, idStrategy);
-		}
-		if (returned != null) {
-			getTechnologyContextManager().registerDocXDocumentResource(returned);
-		}
-		else {
-			logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
-		}
-	
-		return returned;
-	}*/
-
-	/*public boolean isValidDocX(Object candidateElement) {
-		if (candidateElement instanceof File && isValidDocXFile(((File) candidateElement))) {
-			return true;
-		}
-		else if (candidateElement instanceof InJarResourceImpl && isValidDocXInJar((InJarResourceImpl) candidateElement)) {
-			return true;
-		}
-		return false;
-	}*/
-
-	/**
-	 * Return flag indicating if supplied file appears as a valid workbook
-	 * 
-	 * @param candidateFile
-	 * 
-	 * @return
-	 */
-	/*public boolean isValidDocXFile(File candidateFile) {
-		return candidateFile.getName().endsWith(DOCX_FILE_EXTENSION);
-	}*/
-
-	/*public boolean isValidDocXInJar(InJarResourceImpl candidateInJar) {
-		if (candidateInJar.getRelativePath().endsWith(DOCX_FILE_EXTENSION)) {
-			return true;
-		}
-		return false;
-	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		return false;
 	}
-
-	/*@Override
-	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I serializationArtefact) {
-		boolean hasBeenLookedUp = false;
-		if (!isIgnorable(resourceCenter, serializationArtefact)) {
-			for (FlexoResourceFactory<?, ?, ?> resourceFactory : getResourceFactories()) {
-				FlexoResource<?> resource = tryToLookupResource(resourceFactory, resourceCenter, serializationArtefact);
-				if (resource != null) {
-					hasBeenLookedUp = true;
-				}
-			}
-		}
-		return hasBeenLookedUp;
-	}*/
-
-	/*@Override
-	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		return false;
-	}
-	
-	@Override
-	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		return false;
-	}*/
 
 	public <I> DocXDocumentRepository<I> getDocXDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
 		DocXDocumentRepository<I> returned = resourceCenter.retrieveRepository(DocXDocumentRepository.class, this);
@@ -242,44 +111,6 @@ public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapt
 		}
 		return returned;
 	}
-
-	/**
-	 * 
-	 * Create a {@link DocXDocumentRepository} for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
-	 * 
-	 */
-	/*public DocXDocumentRepository createDocXDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
-		DocXDocumentRepository returned = new DocXDocumentRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);
-		return returned;
-	}*/
-
-	/**
-	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
-	 * 
-	 * @param project
-	 * @param filename
-	 * @param modelUri
-	 * @param createEmptyDocument
-	 *            a flag indicating if created resource should encodes an empty (but existing) document or if resource data should remain
-	 *            empty
-	 * @return
-	 */
-	/*@Deprecated
-	public DocXDocumentResource createNewDocXDocumentResource(FlexoResourceCenter<?> rc, String filename, boolean createEmptyDocument,
-			IdentifierManagementStrategy idStrategy) {
-	
-		if (rc instanceof FileSystemBasedResourceCenter) {
-			return createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, File.separator + "DocX", filename, createEmptyDocument,
-					idStrategy);
-		}
-		else {
-			logger.warning(
-					"INVESTIGATE: not implemented yet, not able to create a DocX file in a Rc that is not fileBased: " + rc.toString());
-			return null;
-		}
-	
-	}*/
 
 	/**
 	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
@@ -310,19 +141,6 @@ public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapt
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
-
-		// DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-		// getTechnologyContextManager(), resourceCenter, idStrategy);
-
-		// referenceResource(docXDocumentResource, resourceCenter);
-
-		/*if (createEmptyDocument) {
-			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
-			document.setResource(docXDocumentResource);
-			docXDocumentResource.setResourceData(document);
-			docXDocumentResource.setModified(true);
-		}*/
-
 		return docXDocumentResource;
 	}
 
@@ -342,13 +160,4 @@ public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapt
 	public DocXDocumentResourceFactory getDocXDocumentResourceFactory() {
 		return getResourceFactory(DocXDocumentResourceFactory.class);
 	}
-
-	/*@Override
-	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
-		super.foundFolder(resourceCenter, folder);
-		if (resourceCenter.isDirectory(folder)) {
-			getDocXDocumentRepository(resourceCenter).getRepositoryFolder(folder, true);
-		}
-	}*/
-
 }

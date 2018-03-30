@@ -44,7 +44,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -142,35 +141,30 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 			}
-			else {
-				BindingModel bm = getContainer().getOwner().getBindingModel();
-				// Unused for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
-				// Unused bv = bm.getBindingVariableAt(i);
-				// Unused }
-				try {
-					if (getContainer().getBindingValue(evaluationContext) != null) {
-						return getContainer().getBindingValue(evaluationContext);
-					}
-					else {
-						// In case the toplevel is not specified set o the diagram top level.
-						Diagram diagram = getReceiver(evaluationContext);
-						return diagram;
-					}
-
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+			// Unused BindingModel bm = getContainer().getOwner().getBindingModel();
+			// Unused for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
+			// Unused bv = bm.getBindingVariableAt(i);
+			// Unused }
+			try {
+				if (getContainer().getBindingValue(evaluationContext) != null) {
+					return getContainer().getBindingValue(evaluationContext);
 				}
-				return null;
+				// In case the toplevel is not specified set o the diagram top level.
+				Diagram diagram = getReceiver(evaluationContext);
+				return diagram;
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
+			return null;
 		}
 
 		@Override
 		public ShapeRole getAssignedFlexoProperty() {
-			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
+			FlexoRole<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ShapeRole) {
 				return (ShapeRole) superFlexoRole;
 			}
@@ -227,8 +221,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		@Override
 		public DiagramShape execute(RunTimeEvaluationContext evaluationContext) {
 			DiagramContainerElement<?> container = getContainer(evaluationContext);
-			Diagram diagram = container.getDiagram();
+			if (container == null) {
+				logger.warning("When adding shape, cannot find container for action " + getAssignedFlexoProperty() + " container="
+						+ getContainer(evaluationContext) + " container=" + getContainer());
+				return null;
+			}
 
+			Diagram diagram = container.getDiagram();
 			DiagramFactory factory = diagram.getDiagramFactory();
 			DiagramShape newShape = factory.newInstance(DiagramShape.class);
 
@@ -273,12 +272,6 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			// Register reference
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
-
-			if (container == null) {
-				logger.warning("When adding shape, cannot find container for action " + getAssignedFlexoProperty() + " container="
-						+ getContainer(evaluationContext) + " container=" + getContainer());
-				return null;
-			}
 
 			container.addToShapes(newShape);
 
@@ -378,6 +371,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsContainerToShape(pr));
 				}
+				/* Unused
 				String details;
 				if (action.getContainer().isSet()) {
 					details = "Invalid container: " + action.getContainer() + " reason: " + action.getContainer().invalidBindingReason();
@@ -385,7 +379,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				else {
 					details = "Container not set";
 				}
-
+				*/
 				return new ValidationError<>(this, action, "add_shape_action_does_not_have_a_valid_container", v);
 			}
 			return null;
