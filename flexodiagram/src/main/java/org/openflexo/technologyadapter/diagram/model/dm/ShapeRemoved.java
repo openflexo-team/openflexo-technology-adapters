@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.model.dm;
 
+import org.openflexo.diana.GraphicalRepresentation;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
@@ -47,16 +48,16 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sguerin
  * 
  */
-public class ShapeRemoved extends DiagramDataModification {
+public class ShapeRemoved<G extends GraphicalRepresentation> extends DiagramDataModification<DiagramShape> {
 
-	private DiagramElement<?> _parent;
+	private DiagramElement<G> _parent;
 
-	public ShapeRemoved(DiagramShape shape, DiagramElement<?> parent) {
+	public ShapeRemoved(DiagramShape shape, DiagramElement<G> parent) {
 		super(shape, null);
 		_parent = parent;
 	}
 
-	public DiagramElement<?> getParent() {
+	public DiagramElement<G> getParent() {
 		return _parent;
 	}
 

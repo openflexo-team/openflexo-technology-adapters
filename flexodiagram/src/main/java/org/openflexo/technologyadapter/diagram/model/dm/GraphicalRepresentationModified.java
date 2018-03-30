@@ -38,17 +38,18 @@
 
 package org.openflexo.technologyadapter.diagram.model.dm;
 
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoRole;
 
-public class GraphicalRepresentationModified extends DiagramDataModification {
-	private FlexoRole flexoRole;
+public class GraphicalRepresentationModified<T> extends DiagramDataModification<ShapeGraphicalRepresentation> {
+	private FlexoRole<T> flexoRole;
 
-	public GraphicalRepresentationModified(FlexoRole flexoRole, Object graphicalRepresentation) {
+	public GraphicalRepresentationModified(FlexoRole<T> flexoRole, ShapeGraphicalRepresentation graphicalRepresentation) {
 		super(null, graphicalRepresentation);
 		this.flexoRole = flexoRole;
 	}
 
-	public FlexoRole getFlexoRole() {
+	public FlexoRole<T> getFlexoRole() {
 		return flexoRole;
 	}
 

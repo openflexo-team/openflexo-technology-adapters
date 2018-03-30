@@ -45,13 +45,13 @@ import org.openflexo.foundation.DataModification;
  * 
  * @author sguerin
  */
-public class DiagramDataModification extends DataModification {
+public abstract class DiagramDataModification<T> extends DataModification<T> {
 
-	public DiagramDataModification(Object oldValue, Object newValue) {
+	public DiagramDataModification(T oldValue, T newValue) {
 		super(oldValue, newValue);
 	}
 
-	public DiagramDataModification(String propertyName, Object oldValue, Object newValue) {
+	public DiagramDataModification(String propertyName, T oldValue, T newValue) {
 		super(propertyName, oldValue, newValue);
 	}
 

@@ -46,7 +46,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  * @author sguerin
  * 
  */
-public class ElementUpdated extends DiagramDataModification {
+public class ElementUpdated extends DiagramDataModification<DiagramElement<?>> {
 
 	public ElementUpdated(DiagramElement<?> o) {
 		super(null, o);
