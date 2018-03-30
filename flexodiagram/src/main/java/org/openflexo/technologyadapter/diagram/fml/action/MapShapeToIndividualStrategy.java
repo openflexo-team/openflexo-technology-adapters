@@ -227,7 +227,7 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 			newDropScheme.addToParameters(uriParameter);
 
 			// Add individual action
-			AddIndividual<?, ?, ?> newAddIndividual = flexoOntologyModelSlot.makeAddIndividualAction(individualFlexoRole, newDropScheme);
+			AddIndividual<?, ?, ?, ?> newAddIndividual = flexoOntologyModelSlot.makeAddIndividualAction(individualFlexoRole, newDropScheme);
 			newAddIndividual.setOntologyClass(getConcept());
 
 			AssignationAction<?> newAssignationAction = getTransformationAction().getFactory().newAssignationAction();

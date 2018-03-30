@@ -227,7 +227,7 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 			newLinkScheme.addToParameters(uriParameter);
 
 			// Add individual action
-			AddIndividual<?, ?, ?> newAddIndividual = flexoOntologyModelSlot.makeAddIndividualAction(individualFlexoRole, newLinkScheme);
+			AddIndividual<?, ?, ?, ?> newAddIndividual = flexoOntologyModelSlot.makeAddIndividualAction(individualFlexoRole, newLinkScheme);
 			newAddIndividual.setOntologyClass(getConcept());
 
 			AssignationAction<?> newAssignationAction = getTransformationAction().getFactory().newAssignationAction();
