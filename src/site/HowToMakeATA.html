@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Fabien Dagnat" />
-  <meta name="dcterms.date" content="2018-03-23" />
+  <meta name="dcterms.date" content="2018-03-26" />
   <title>A tutorial for building technology adapters</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -35,7 +35,7 @@
   </ul>
   <div class="sidebar-bottom">
           <p class="author">Fabien Dagnat</p>
-              <p class="date">March 23, 2018</p>
+              <p class="date">March 26, 2018</p>
       </div>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -51,7 +51,12 @@
 <p>A TA is composed of a set of Java classes. It serves several objectives and therefore is structured as a set of Java packages. It is generally defined using Pamela.</p>
 <p>Let us suppose the TA is for the technology space XX. You should structure it around the following packages:</p>
 <ol type="1">
-<li><code>xx</code></li>
+<li><code>xx</code> contains</li>
 </ol>
+<pre><code>1) The declaring class `XxTechnologyAdapter` defining its name, 
+
+2) The `XxTechnologyContextManager` extending `TechnologyContextManager&lt;XxTechnologyAdapter&gt;` to manage a context related to a technology. It encapsulates the TA instance, the resource center service (offering means to access resources) and stores the known resources of this technology.
+
+2) The various model slots, `YyXxModelSlot` interfaces</code></pre>
 </body>
 </html>
