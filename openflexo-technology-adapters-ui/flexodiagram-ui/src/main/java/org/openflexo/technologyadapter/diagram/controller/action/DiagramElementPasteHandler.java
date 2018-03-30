@@ -69,7 +69,6 @@ public class DiagramElementPasteHandler extends FlexoPasteHandler<DiagramContain
 	private final MouseSelectionManager selectionManager;
 
 	public static final int PASTE_DELTA = 10;
-	public static final String COPY_SUFFIX = "-copy";
 	public static final String REFLEXIVE_PASTE = "ReflexivePaste";
 
 	public DiagramElementPasteHandler(MouseSelectionManager selectionManager) {
