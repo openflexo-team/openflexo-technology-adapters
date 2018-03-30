@@ -23,8 +23,6 @@ package org.openflexo.technologyadapter.docx.model;
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -38,7 +36,6 @@ import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
-import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoDocRun;
@@ -105,39 +102,6 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 
 		protected String getEmbedId() {
 			return embedId;
-		}
-
-		@Deprecated
-		@Override
-		public File getImageFile() {
-
-			if (imageFile == null && StringUtils.isNotEmpty(embedId)) {
-
-				DocXDocument document = getFlexoDocument();
-
-				if (document != null && document instanceof DocXDocumentImpl
-						&& document.getResource().getIODelegate().getSerializationArtefact() instanceof File) {
-					MainDocumentPart documentPart = document.getWordprocessingMLPackage().getMainDocumentPart();
-					Relationship r = documentPart.getRelationshipsPart().getRelationshipByID(embedId);
-					RelationshipsPart relsPart = documentPart.getRelationshipsPart();
-
-					BinaryPartAbstractImage image = (BinaryPartAbstractImage) relsPart.getPart(embedId);
-
-					imageFile = new File(((DocXDocumentImpl) document).getTempDirectory(), r.getTarget());
-					System.out.println("imageFile=" + imageFile);
-					imageFile.getParentFile().mkdirs();
-
-					try (FileOutputStream out = new FileOutputStream(imageFile)) {
-						image.writeDataToOutputStream(out);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			return imageFile;
 		}
 
 		/**
