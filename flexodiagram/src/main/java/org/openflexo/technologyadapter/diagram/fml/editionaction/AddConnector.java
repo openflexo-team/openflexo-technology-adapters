@@ -274,13 +274,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public DiagramConnector execute(RunTimeEvaluationContext evaluationContext) {
 
-			System.out.println("Creating diagram connector");
-
 			DiagramShape fromShape = getFromShape(evaluationContext);
 			DiagramShape toShape = getToShape(evaluationContext);
-
-			System.out.println("From shape = " + fromShape);
-			System.out.println("To shape = " + toShape);
 
 			// NPE Protection
 			if (fromShape != null && toShape != null) {
@@ -298,10 +293,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 					// If no GR is defined for this shape, create a default one
 					if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
-						System.out.println("No GR, creating ");
 						grToUse = factory.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
-						System.out.println("Creating " + grToUse);
-						// getAssignedFlexoProperty().setGraphicalRepresentation(grToUse);
 					}
 					else {
 						grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
@@ -326,8 +318,6 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 					throw new IllegalArgumentException("No common ancestor");
 				}
 
-				System.out.println("Parent = " + parent);
-
 				ConnectorRole fr = getAssignedFlexoProperty();
 				if (fr != null) {
 					if (fr.getGraphicalRepresentation() != null) {
@@ -337,8 +327,6 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				else {
 					logger.warning("INVESTIGATE your ViewPoint, No FlexoRole defined for action " + this.getName());
 				}
-
-				System.out.println("Et hop, on ajoute le connecteur");
 
 				parent.addToConnectors(newConnector);
 
