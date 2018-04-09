@@ -71,11 +71,6 @@ public class DiagramResourceFactory
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SUFFIX);
 	}
 
-	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
-	}
-
 	public <I> DiagramResource makeDiagramResource(String baseName, String uri, DiagramSpecificationResource diagramSpecificationResource,
 			RepositoryFolder<DiagramResource, I> folder, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {
@@ -224,7 +219,6 @@ public class DiagramResourceFactory
 			try {
 				info = findDiagramInfo(new FileInputStream(diagramFile));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (info == null) {

@@ -97,11 +97,6 @@ public class DiagramSpecificationResourceFactory extends
 		return false;
 	}
 
-	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
-	}
-
 	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
 			RepositoryFolder<DiagramSpecificationResource, I> folder, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {
@@ -204,10 +199,8 @@ public class DiagramSpecificationResourceFactory extends
 					DiagramResource exampleDiagramRes = getExampleDiagramsResourceFactory().retrieveExampleDiagramResource(child,
 							dsResource);
 				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -216,10 +209,8 @@ public class DiagramSpecificationResourceFactory extends
 					// Unused DiagramPaletteResource paletteRes =
 					getPaletteResourceFactory().retrievePaletteResource(child, dsResource);
 				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -305,7 +296,6 @@ public class DiagramSpecificationResourceFactory extends
 			try {
 				vpi = findDiagramSpecificationInfo(new FileInputStream(diagramSpecificationXMLFile));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (vpi == null) {

@@ -72,11 +72,6 @@ public class DiagramPaletteResourceFactory extends
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_PALETTE_SUFFIX);
 	}
 
-	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
-	}
-
 	public <I> DiagramPaletteResource retrievePaletteResource(I serializationArtefact, DiagramSpecificationResource dsResource)
 			throws ModelDefinitionException, IOException {
 
@@ -229,7 +224,6 @@ public class DiagramPaletteResourceFactory extends
 			try {
 				info = findPaletteInfo(new FileInputStream(diagramPaletteFile));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (info == null) {

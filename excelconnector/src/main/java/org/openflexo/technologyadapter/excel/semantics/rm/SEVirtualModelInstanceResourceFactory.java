@@ -362,12 +362,6 @@ public class SEVirtualModelInstanceResourceFactory extends
 	}
 
 	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public SEVirtualModelInstance makeEmptyResourceData(SEVirtualModelInstanceResource resource) {
 		return resource.getFactory().newInstance(SEVirtualModelInstance.class/*, resource.getServiceManager()*/);
 	}
