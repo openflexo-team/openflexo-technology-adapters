@@ -258,13 +258,10 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 
 					return getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -291,16 +288,12 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				try {
 					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

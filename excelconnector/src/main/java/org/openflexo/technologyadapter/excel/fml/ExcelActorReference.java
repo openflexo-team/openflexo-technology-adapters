@@ -102,13 +102,10 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 				try {
 					return getExcelWorkbookResource().getResourceData();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

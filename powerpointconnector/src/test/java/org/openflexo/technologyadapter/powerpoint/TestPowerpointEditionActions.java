@@ -102,7 +102,6 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	 * modelSlot =
 	 * powerpointAdapter.makeModelSlot(BasicPowerpointModelSlot.class,
 	 * newVirtualModel); modelRes.save(null); } catch (SaveResourceException e)
-	 * { // TODO Auto-generated catch block e.printStackTrace(); } }
 	 */
 
 	/**

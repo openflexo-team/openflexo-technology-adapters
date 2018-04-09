@@ -122,10 +122,8 @@ public interface ConfigureGINAFIBComponent
 				try {
 					return modelSlot.getTemplateResource().getResourceData();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

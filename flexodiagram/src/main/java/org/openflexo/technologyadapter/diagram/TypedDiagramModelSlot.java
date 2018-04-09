@@ -280,7 +280,6 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public boolean isStrictMetaModelling() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

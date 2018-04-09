@@ -114,7 +114,6 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 					ModelContextLibrary.getCompoundModelContext(FMLControlledDiagramShape.class, FMLControlledDiagramConnector.class));
 			MODEL_FACTORY.setEditingContext(vmInstance.getServiceManager().getEditingContext());
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if ((virtualModelInstance != null) && (virtualModelInstance.getVirtualModel() != null)) {

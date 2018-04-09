@@ -234,13 +234,10 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 				try {
 					return resource.getMetaModelResource().getResourceData();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

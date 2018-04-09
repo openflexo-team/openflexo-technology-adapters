@@ -191,7 +191,6 @@ public class CreateFMLControlledDiagramVirtualModel extends AbstractCreateNature
 			try {
 				createDiagramPalette.setGraphicalRepresentation(makePaletteGraphicalRepresentation());
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			createDiagramPalette.doAction();

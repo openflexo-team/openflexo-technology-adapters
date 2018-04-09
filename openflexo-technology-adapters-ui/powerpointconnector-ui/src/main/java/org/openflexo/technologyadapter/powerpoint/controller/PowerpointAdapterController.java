@@ -105,7 +105,6 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 
 	@Override
 	public ImageIcon getModelIcon() {
-		// TODO Auto-generated method stub
 		return PowerpointIconLibrary.POWERPOINT_TECHNOLOGY_ICON;
 	}
 

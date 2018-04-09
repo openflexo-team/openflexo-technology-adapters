@@ -453,7 +453,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 					try {
 						font = getThemePart(document).getFontFromTheme(rFonts.getAsciiTheme()/*, themeFontLang*/);
 					} catch (Docx4JException e) {
-						// TODO Auto-generated catch block
 						// log.error(e.getMessage(), e);
 					}
 					if (font != null) {

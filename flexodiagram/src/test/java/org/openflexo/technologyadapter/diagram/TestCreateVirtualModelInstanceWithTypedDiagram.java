@@ -226,7 +226,6 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		try {
 			newView.getResource().save();
 		} catch (SaveResourceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// assertTrue(((ViewResource)

@@ -70,7 +70,6 @@ public interface XMLTypeRole extends FlexoRole<XMLType> {
 
 		@Override
 		public String getTypeDescription() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -86,7 +85,6 @@ public interface XMLTypeRole extends FlexoRole<XMLType> {
 
 		@Override
 		public ActorReference<XMLType> makeActorReference(XMLType object, FlexoConceptInstance epi) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

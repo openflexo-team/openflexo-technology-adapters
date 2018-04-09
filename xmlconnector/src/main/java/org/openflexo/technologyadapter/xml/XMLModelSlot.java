@@ -183,7 +183,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				try {
 					return mapParams.retrieveObjectWithURI(model, objectURI);
 				} catch (DuplicateURIException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -326,10 +325,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				try {
 					return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
 				} catch (SaveResourceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

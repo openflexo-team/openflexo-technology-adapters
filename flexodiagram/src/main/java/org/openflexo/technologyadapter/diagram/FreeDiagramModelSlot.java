@@ -107,19 +107,16 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 
 		@Override
 		public String getURIForObject(Diagram diagram, Object o) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Object retrieveObjectWithURI(Diagram diagram, String objectURI) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

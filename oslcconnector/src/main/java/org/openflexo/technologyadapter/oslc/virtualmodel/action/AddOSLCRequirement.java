@@ -143,13 +143,10 @@ public interface AddOSLCRequirement
 				OSLCRMModelConverter converter = resource.getConverter().getConverter(OSLCRMModelConverter.class);
 				oslcRequirement = converter.createOSLCRequirement(title, desc, creationFactory);
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

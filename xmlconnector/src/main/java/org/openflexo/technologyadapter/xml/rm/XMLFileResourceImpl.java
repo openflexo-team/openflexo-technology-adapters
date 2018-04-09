@@ -183,13 +183,10 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		try {
 			return getResourceData();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

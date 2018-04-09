@@ -82,13 +82,10 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 					try {
 						image = ImageIO.read(new ByteArrayInputStream(binaryImage.getBytes()));
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 			}
-
 			return image;
 		}
 

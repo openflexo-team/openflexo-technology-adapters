@@ -72,13 +72,11 @@ public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 
 		/*@Override
 		public boolean getIsPrimaryRole() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 		
 		@Override
 		public void setIsPrimaryRole(boolean isPrimary) {
-			// TODO Auto-generated method stub
 		
 		}*/
 
@@ -94,7 +92,6 @@ public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

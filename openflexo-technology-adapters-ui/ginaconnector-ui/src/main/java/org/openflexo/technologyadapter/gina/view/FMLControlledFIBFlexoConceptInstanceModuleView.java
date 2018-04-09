@@ -180,7 +180,6 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 						try {
 							saveEditedComponent();
 						} catch (SaveResourceException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -331,13 +330,10 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
 				editorController.getController().setVariableValue(variableAssignment.getVariable(), value);
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -365,13 +361,10 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
 				componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

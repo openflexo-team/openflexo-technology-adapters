@@ -74,7 +74,6 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCServiceProviderCatalog.class,
 					OSLCServiceProvider.class, OSLCQueryCapability.class, OSLCCreationFactory.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

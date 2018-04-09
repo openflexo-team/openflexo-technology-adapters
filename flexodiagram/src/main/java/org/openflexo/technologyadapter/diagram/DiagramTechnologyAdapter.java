@@ -108,7 +108,6 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnolog
 
 	@Override
 	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -417,13 +416,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnolog
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

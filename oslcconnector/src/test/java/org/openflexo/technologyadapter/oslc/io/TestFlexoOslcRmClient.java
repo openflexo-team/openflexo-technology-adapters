@@ -63,7 +63,6 @@ public class TestFlexoOslcRmClient extends OpenflexoTestCase {
 				}
 			}
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
 	}
@@ -81,7 +80,6 @@ public class TestFlexoOslcRmClient extends OpenflexoTestCase {
 			requirement.setInstanceShape(resourceShape.getAbout());
 			jazzResource.getConverter().getOslcClient().create(creationFactory, requirement, OslcMediaType.APPLICATION_RDF_XML);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
 	}

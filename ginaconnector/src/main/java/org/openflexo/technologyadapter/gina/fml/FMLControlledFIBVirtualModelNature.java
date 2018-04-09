@@ -95,13 +95,10 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 			try {
 				return modelSlot.getTemplateResource().getResourceData();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

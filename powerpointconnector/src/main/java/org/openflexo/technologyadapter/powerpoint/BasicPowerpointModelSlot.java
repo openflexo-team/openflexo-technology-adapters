@@ -121,7 +121,6 @@ public interface BasicPowerpointModelSlot extends PowerpointModelSlot {
 				return getUriProcessor().retrieveObjectWithURI(resourceData, objectURI);
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -139,10 +138,8 @@ public interface BasicPowerpointModelSlot extends PowerpointModelSlot {
 				return getModelSlotTechnologyAdapter().createNewSlideshow((FlexoResourceCenter<File>) view.getResourceCenter(), filename,
 						modelUri);
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;

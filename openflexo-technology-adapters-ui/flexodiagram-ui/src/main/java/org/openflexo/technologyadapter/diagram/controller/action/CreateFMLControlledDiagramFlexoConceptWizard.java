@@ -82,7 +82,6 @@ public class CreateFMLControlledDiagramFlexoConceptWizard extends CreateFlexoCon
 		
 			@Override
 			public String getFlexoConceptName() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		
@@ -94,7 +93,6 @@ public class CreateFMLControlledDiagramFlexoConceptWizard extends CreateFlexoCon
 		
 			@Override
 			public String getDropSchemeName() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		

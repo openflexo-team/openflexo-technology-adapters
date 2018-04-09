@@ -27,13 +27,10 @@ public class TestLoadOslcResources extends OpenflexoTestCase {
 				try {
 					resource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(resource.getLoadedResourceData());

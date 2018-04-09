@@ -106,13 +106,10 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 						logger.warning("Create a sheet requires a workbook");
 					}
 				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

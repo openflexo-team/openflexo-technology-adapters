@@ -63,13 +63,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapt
 
 	@Override
 	public GINATechnologyContextManager getTechnologyContextManager() {
-		// TODO Auto-generated method stub
 		return (GINATechnologyContextManager) super.getTechnologyContextManager();
 	}
 
 	@Override
 	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -129,13 +127,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapt
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		if (contents instanceof File) {
 			return (initializeGINAFile(resourceCenter, (File) contents) != null);
 		}
@@ -144,19 +140,16 @@ public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapt
 	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

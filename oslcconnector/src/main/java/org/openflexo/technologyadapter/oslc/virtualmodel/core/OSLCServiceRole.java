@@ -93,7 +93,6 @@ public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

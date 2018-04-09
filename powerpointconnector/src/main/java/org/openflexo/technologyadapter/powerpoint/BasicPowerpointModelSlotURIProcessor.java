@@ -160,7 +160,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends FlexoConceptObject
 
 		@Override
 		public BindingModel getBindingModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -171,7 +170,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends FlexoConceptObject
 
 		@Override
 		public String getURI() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

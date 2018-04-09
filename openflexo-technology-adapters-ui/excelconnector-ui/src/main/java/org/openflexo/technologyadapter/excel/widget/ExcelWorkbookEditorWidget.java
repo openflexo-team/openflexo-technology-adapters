@@ -135,7 +135,6 @@ public class ExcelWorkbookEditorWidget extends JPanel
 
 	@Override
 	public void setRevertValue(ExcelWorkbook object) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

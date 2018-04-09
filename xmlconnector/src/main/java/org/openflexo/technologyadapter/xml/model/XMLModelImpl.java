@@ -89,7 +89,6 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLIndividual.class, XMLPropertyValue.class,
 					XMLDataPropertyValue.class, XMLObjectPropertyValue.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -147,7 +146,6 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	@Override
 	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

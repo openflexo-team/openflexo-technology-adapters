@@ -97,7 +97,6 @@ public class DiagramFIBController extends FlexoFIBController {
 	@Override
 	@NotificationUnsafe
 	protected ImageIcon retrieveIconForObject(Object object) {
-		// TODO Auto-generated method stub
 		if (object instanceof FlexoObject) {
 			return DiagramIconLibrary.iconForObject((FlexoObject) object);
 		}

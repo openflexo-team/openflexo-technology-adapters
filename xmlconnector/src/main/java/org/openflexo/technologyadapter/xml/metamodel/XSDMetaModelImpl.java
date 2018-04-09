@@ -60,7 +60,6 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
     	try {
 			 MF = new ModelFactory(XSDMetaModel.class);
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

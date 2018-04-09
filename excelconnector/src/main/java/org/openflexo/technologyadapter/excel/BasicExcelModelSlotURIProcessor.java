@@ -161,13 +161,11 @@ public interface BasicExcelModelSlotURIProcessor extends FlexoConceptObject {
 
 		@Override
 		public BindingModel getBindingModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getURI() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

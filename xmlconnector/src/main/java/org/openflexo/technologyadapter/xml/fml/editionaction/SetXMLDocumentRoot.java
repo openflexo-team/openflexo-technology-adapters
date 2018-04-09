@@ -133,13 +133,10 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 					logger.warning("Invalid value in Binding :" + getParameter().getUnparsedBinding());
 				}
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

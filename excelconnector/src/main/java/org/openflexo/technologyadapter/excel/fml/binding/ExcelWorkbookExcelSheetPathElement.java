@@ -55,27 +55,23 @@ public class ExcelWorkbookExcelSheetPathElement extends SimplePathElement {
 
 	@Override
 	public String getLabel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		// TODO Auto-generated method stub
 
 	}
 

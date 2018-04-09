@@ -200,7 +200,6 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 				@Override
 				public List<? extends GraphicalElementEntry> getGraphicalElementEntries() {
-					// TODO Auto-generated method stub
 					return null;
 				}
 
@@ -409,7 +408,6 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public boolean isValid() {
-			// TODO Auto-generated method stub
 			return super.isValid();
 		}
 

@@ -221,7 +221,6 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
-			// TODO Auto-generated method stub
 			return super.getFMLRepresentation(context);
 		}
 

@@ -67,7 +67,6 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCRequirement.class,
 					OSLCRequirementCollection.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -88,7 +87,6 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 			oslcResource.setOSLCRequirement(requirement);
 			return oslcResource;
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

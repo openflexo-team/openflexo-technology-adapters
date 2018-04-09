@@ -258,10 +258,8 @@ public class FlexoOslcClient {
 				try {
 					services = retrieves(sp.getAbout().toString(), (Class<Service[]>) Array.newInstance(Service.class, 0).getClass());
 				} catch (NegativeArraySizeException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -518,10 +516,8 @@ public class FlexoOslcClient {
 			// Install the all-trusting host verifier
 			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

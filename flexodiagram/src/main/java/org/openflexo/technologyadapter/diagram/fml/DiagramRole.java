@@ -216,13 +216,11 @@ public interface DiagramRole extends GraphicalElementRole<Diagram, DrawingGraphi
 
 		@Override
 		public Diagram getMetamodelElement() {
-			// TODO Auto-generated method stub
 			return super.getMetamodelElement();
 		}
 
 		@Override
 		public void bindTo(Diagram metaModelConcept) {
-			// TODO Auto-generated method stub
 
 		}
 

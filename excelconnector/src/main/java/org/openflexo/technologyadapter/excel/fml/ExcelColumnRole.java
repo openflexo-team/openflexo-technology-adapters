@@ -82,7 +82,6 @@ public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

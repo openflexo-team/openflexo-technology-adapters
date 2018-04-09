@@ -82,7 +82,6 @@ public interface PowerpointSlideRole extends FlexoRole<PowerpointSlide> {
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 

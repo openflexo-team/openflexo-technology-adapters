@@ -179,7 +179,6 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapt
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -197,19 +196,16 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapt
 	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

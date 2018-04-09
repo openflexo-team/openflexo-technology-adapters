@@ -76,7 +76,6 @@ public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMet
 			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLType.class, XMLComplexType.class,
 					XMLSimpleType.class, XMLProperty.class, XMLDataProperty.class, XMLObjectProperty.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -152,37 +151,31 @@ public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMet
 
 	@Override
 	public String getDisplayableDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setIsReadOnly(boolean b) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public FlexoResource<XMLMetaModel> getResource() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setResource(FlexoResource<XMLMetaModel> resource) {
-		// TODO Auto-generated method stub
 
 	}
 

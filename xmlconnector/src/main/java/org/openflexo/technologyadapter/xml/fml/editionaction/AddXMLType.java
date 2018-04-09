@@ -156,13 +156,10 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 					logger.warning("CANNOT create a new type in a null MetaModel!");
 				}
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return newClass;

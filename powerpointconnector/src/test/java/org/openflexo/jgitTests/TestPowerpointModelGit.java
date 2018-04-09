@@ -196,7 +196,6 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				try {
 					gitDelegate.save(flexoResource);
 				} catch (NotImplementedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ObjectId commitId = gitDelegate.getGitObjectId();

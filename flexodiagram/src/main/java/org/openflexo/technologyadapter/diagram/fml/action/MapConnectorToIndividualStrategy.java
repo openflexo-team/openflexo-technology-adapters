@@ -154,13 +154,10 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 				return (IFlexoOntology<?>) metaMododel;
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

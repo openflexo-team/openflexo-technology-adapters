@@ -97,7 +97,6 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 					resourceData.setResource(this);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

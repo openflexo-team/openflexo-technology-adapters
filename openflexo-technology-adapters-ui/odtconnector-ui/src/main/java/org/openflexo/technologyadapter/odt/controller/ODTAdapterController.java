@@ -69,32 +69,27 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1,
 			FlexoPerspective arg2) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

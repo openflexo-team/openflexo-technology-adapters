@@ -117,38 +117,27 @@ public class PowerpointSlideshowView extends JTabbedPane implements SelectionSyn
 
 	@Override
 	public boolean isAutoscrolled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void fireObjectSelected(FlexoObject object) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void fireObjectDeselected(FlexoObject object) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void fireResetSelection() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void fireBeginMultipleSelection() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void fireEndMultipleSelection() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

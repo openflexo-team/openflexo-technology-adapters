@@ -272,7 +272,6 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 								return obj;
 							}
 						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

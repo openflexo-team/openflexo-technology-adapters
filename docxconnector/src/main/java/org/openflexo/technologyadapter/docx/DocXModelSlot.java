@@ -182,7 +182,6 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 				return getModelSlotTechnologyAdapter().createNewDocXDocumentResource((FileSystemBasedResourceCenter) resourceCenter,
 						relativePath, filename, false, getIdStrategy());
 			}
-			// TODO
 			logger.warning("Could not create docx in this kind of ResourceCenter");
 			return null;
 		}*/
