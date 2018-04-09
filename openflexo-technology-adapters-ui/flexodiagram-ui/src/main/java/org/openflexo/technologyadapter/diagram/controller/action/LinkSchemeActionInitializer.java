@@ -71,11 +71,23 @@ public class LinkSchemeActionInitializer
 			}
 			return parameterRetriever.retrieveParameters();
 		};
+
 	}
 
 	@Override
 	protected FlexoActionRunnable<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> getDefaultFinalizer() {
 		return (e, action) -> {
+			// Well, not easy to understand here
+			// The new connector has well be added to the diagram, and the drawing (which listen to the diagram) has well received the
+			// event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the connector has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the
+			// DiagamConnector,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new connector is FML-controlled
+			action.getNewConnector().getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null,
+					action.getNewConnector().getParent());
+
 			getController().getSelectionManager().setSelectedObject(action.getNewConnector());
 			return true;
 		};

@@ -217,6 +217,9 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 		}
 		if (!list.contains(fmlControlledDiagramElement)) {
 			list.add(fmlControlledDiagramElement);
+			if (fmlControlledDiagramElement instanceof FMLControlledDiagramShape) {
+				((FMLControlledDiagramShape) fmlControlledDiagramElement).listenFloatingPaletteChanges();
+			}
 		}
 	}
 

@@ -72,7 +72,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FMLControlledDiagramElement.FMLControlledDiagramElementImpl.class)
-public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoObject {
+public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+		extends FlexoObject, PropertyChangeListener {
 
 	public static final String DRAWING_KEY = "drawing";
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
@@ -147,7 +148,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public void setLabel(String aName);
 
 	public static abstract class FMLControlledDiagramElementImpl<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-			implements FMLControlledDiagramElement<E, GR>, PropertyChangeListener {
+			implements FMLControlledDiagramElement<E, GR> {
 
 		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<>();
 
