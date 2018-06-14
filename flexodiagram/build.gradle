@@ -7,7 +7,7 @@ dependencies {
   compile diana()
 
   // external dep
-  compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.12'
+  compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.17'
 
   // testing dep
   testCompile testUtils()
