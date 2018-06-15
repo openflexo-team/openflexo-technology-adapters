@@ -45,12 +45,10 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.fml.binding.PowerpointBindingFactory;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
@@ -86,13 +84,8 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter<PowerpointTec
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/PowerPointTechnologyAdapter";
-	}
-
-	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
-		return new PowerpointTechnologyContextManager(this, service);
 	}
 
 	@Override
@@ -205,11 +198,6 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter<PowerpointTec
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		return false;
 	}*/
-
-	@Override
-	public PowerpointTechnologyContextManager getTechnologyContextManager() {
-		return (PowerpointTechnologyContextManager) super.getTechnologyContextManager();
-	}
 
 	/**
 	 * 

@@ -39,27 +39,17 @@
 
 package org.openflexo.technologyadapter.powerpoint.rm;
 
+import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
-import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyContextManager;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointModelFactory;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(PowerpointSlideshowResourceImpl.class)
 @XMLElement
-public interface PowerpointSlideshowResource extends TechnologyAdapterResource<PowerpointSlideshow, PowerpointTechnologyAdapter> {
-
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
-
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public PowerpointTechnologyContextManager getTechnologyContextManager();
-
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(PowerpointTechnologyContextManager technologyContextManager);
-
-}
+public interface PowerpointSlideshowResource extends TechnologyAdapterResource<PowerpointSlideshow, PowerpointTechnologyAdapter>,
+		PamelaResource<PowerpointSlideshow, PowerpointModelFactory> {}
