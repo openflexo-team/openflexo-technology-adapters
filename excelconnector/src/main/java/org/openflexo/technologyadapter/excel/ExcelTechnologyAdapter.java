@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRangeConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
@@ -80,7 +79,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter<ExcelTechnologyAda
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/ExcelTechnologyAdapter";
 	}
 
@@ -95,14 +94,9 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter<ExcelTechnologyAda
 	}
 
 	@Override
-	public TechnologyContextManager<ExcelTechnologyAdapter> getTechnologyContextManager() {
-		return super.getTechnologyContextManager();
-	}
-
-	@Override
 	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
 		super.initFMLModelFactory(fMLModelFactory);
-	
+
 		fMLModelFactory.addConverter(new ExcelCellRangeConverter(getServiceManager()));
 	}
 
@@ -115,7 +109,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter<ExcelTechnologyAda
 		return returned;
 	}
 
-	public ExcelWorkbookResourceFactory getExcelWorkbookResourceFactory() {
+	private ExcelWorkbookResourceFactory getExcelWorkbookResourceFactory() {
 		return getResourceFactory(ExcelWorkbookResourceFactory.class);
 	}
 
