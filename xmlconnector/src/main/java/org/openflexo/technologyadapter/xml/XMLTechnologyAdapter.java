@@ -89,7 +89,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter<XMLTechnologyAdapter
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/XMLTechnologyAdapter";
 	}
 

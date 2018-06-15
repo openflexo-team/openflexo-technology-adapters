@@ -57,7 +57,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter<ODTTechnologyAdapter
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/ODTTechnologyAdapter";
 	}
 

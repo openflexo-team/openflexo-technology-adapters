@@ -92,7 +92,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnolog
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/DiagramTechnologyAdapter";
 	}
 
@@ -378,7 +378,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnolog
 	}
 
 	@Override
-	public <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+	protected <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (resourceCenter.isDirectory(contents)) {
 			if (FlexoResourceCenter.isContainedInDirectoryWithSuffix(resourceCenter, contents,
 					DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {

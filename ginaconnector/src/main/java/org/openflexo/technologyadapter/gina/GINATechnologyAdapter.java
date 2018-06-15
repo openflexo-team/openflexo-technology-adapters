@@ -52,7 +52,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapt
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/GINATechnologyAdapter";
 	}
 

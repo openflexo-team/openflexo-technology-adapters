@@ -79,7 +79,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapt
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/DocXTechnologyAdapter";
 	}
 

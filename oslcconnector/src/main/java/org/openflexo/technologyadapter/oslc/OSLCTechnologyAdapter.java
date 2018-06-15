@@ -76,7 +76,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapt
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/OSLCTechnologyAdapter";
 	}
 
