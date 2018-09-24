@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+	<groupId>org.openflexo</groupId>
+	<artifactId>openflexo-technology-adapters</artifactId>
+		<version>1.9.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>oslcconnector</artifactId>
+  <description>technology Adapter for OSLC data</description>
+  <url>http://www.openflexo.com/technologyadapter/oslcconnector</url>
+  <properties>
+    <technology.prefix>OSLC</technology.prefix>
+    <oslcVersion>1.8.0-SNAPSHOT</oslcVersion>
+  </properties>
+  <dependencies>
+    <dependency>
+    	<groupId>org.openflexo</groupId>
+      	<artifactId>flexo-foundation</artifactId>
+      	<scope>compile</scope>
+    </dependency>
+   <!-- <dependency>
+    	<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+       	<artifactId>oslc4j-core</artifactId>
+       	<version>3.0.0-SNAPSHOT</version>
+    </dependency> --> 
+    <dependency>
+    	<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+       	<artifactId>oslc4j-wink</artifactId>
+       	<version>3.0.0-SNAPSHOT</version>
+       	<!-- Exclude org.slf4j 1.6.1 to use 1.6.4 used by Openflexo -->
+       	<exclusions>
+			<exclusion>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+       	<artifactId>slf4j-api</artifactId>
+       	<version>1.6.4</version>
+    </dependency>
+   <!-- <dependency>
+    	<groupId>xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+       	<version>2.11.0</version>   
+    </dependency> --> 
+    <dependency>
+   		<groupId>org.eclipse.lyo.clients</groupId>
+    	<artifactId>oslc-java-client</artifactId>
+    	<version>3.0.0-SNAPSHOT</version>
+    	<exclusions>
+			<exclusion>
+				<groupId>org.apache.wink</groupId>
+            	<artifactId>wink-client-apache-httpclient</artifactId>
+			</exclusion>
+			<!--  <exclusion>
+				<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+    			<artifactId>oslc4j-jena-provider</artifactId>
+			</exclusion>-->
+			<exclusion>
+				<groupId>net.oauth.core</groupId>
+       	 		<artifactId>oauth-httpclient4</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>
+    <!--  <dependency>
+    	<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+    	<artifactId>oslc4j-jena-provider</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+		<exclusions>
+			<exclusion>
+				 <groupId>xerces</groupId>
+            	 <artifactId>xercesImpl</artifactId>
+			</exclusion>
+			<exclusion>
+				 <groupId>xml-apis</groupId>
+            	 <artifactId>xml-apis</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>-->
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+	</dependency>
+	<dependency>
+		<groupId>net.oauth.core</groupId>
+        <artifactId>oauth-httpclient4</artifactId>
+        <version>20090913</version>
+        <scope>compile</scope>
+        <exclusions>
+			<exclusion>
+				<groupId>org.apache.httpcomponents</groupId>
+            	<artifactId>httpclient</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>
+    <dependency>
+    	<groupId>org.openflexo</groupId>
+      	<artifactId>flexo-foundation</artifactId>
+      	<classifier>tests</classifier>
+      	<scope>test</scope>
+    </dependency>
+    <dependency>
+		<groupId>org.openflexo</groupId>
+		<artifactId>flexoutils</artifactId>
+		<classifier>tests</classifier>
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+  <name>OSLC technology adaptor</name>
+</project>
