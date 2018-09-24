@@ -37,7 +37,7 @@
 		<module>owlconnector</module>
 		<!--  <module>owlconnector-rc</module> -->
 		<module>emfconnector</module>
-		<module>csvconnector</module>
+		<!--  <module>csvconnector</module> -->
 		<module>excelconnector</module>
 		<module>powerpointconnector</module>
 		<module>xmlconnector</module>
