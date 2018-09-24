@@ -45,7 +45,7 @@
 		<module>docxconnector</module>
 		<module>odtconnector</module>
 		<module>pdfconnector</module>
-		<module>freeplaneconnector</module>
+		<!--  <module>freeplaneconnector</module> -->
 		<!--  <module>openflexo-technologyadapter-archetype</module>
 		<module>openflexo-technologyadapter-archetype-simplemodel</module>-->
 	</modules>
