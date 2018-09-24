@@ -54,6 +54,11 @@
 
 			<dependency>
 				<groupId>org.openflexo</groupId>
+				<artifactId>testutils</artifactId>
+				<version>${connie.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-foundation</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
