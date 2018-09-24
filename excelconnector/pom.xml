@@ -42,7 +42,7 @@
 			<artifactId>flexoutils</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>-_>
+		</dependency>-->
 		<!--  3rd party -->
 			<!--  <dependency>
 				<groupId>org.apache.poi</groupId>
