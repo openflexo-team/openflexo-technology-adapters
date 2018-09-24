@@ -37,12 +37,12 @@
 				<artifactId>flexo-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
-			<dependency>
+			<!--  <dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
@@ -56,12 +56,12 @@
 				<artifactId>flexo-ontology-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ontology-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ontology-ui</artifactId>
@@ -75,12 +75,12 @@
 				<artifactId>flexo-documentation-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
-			<dependency>
+			<!--  <dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-documentation-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-documentation-ui</artifactId>
@@ -95,12 +95,12 @@
 				<artifactId>fml-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
-			<dependency>
+			<!--  <dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>fml-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>fml-technologyadapter-ui</artifactId>
@@ -114,12 +114,12 @@
 				<artifactId>fml-rt-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
-			<dependency>
+			<!--  <dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>fml-rt-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>fml-rt-technologyadapter-ui</artifactId>

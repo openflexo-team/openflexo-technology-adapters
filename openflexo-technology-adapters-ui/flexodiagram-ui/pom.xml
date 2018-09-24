@@ -35,27 +35,27 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-technologyadapter-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-rt-technologyadapter-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-rt-technologyadapter-ui</artifactId>
 			<classifier>tests</classifier>
@@ -84,7 +84,7 @@
             <artifactId>gina-swing</artifactId>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

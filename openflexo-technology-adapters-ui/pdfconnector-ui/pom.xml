@@ -23,7 +23,7 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-documentation-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 			<classifier>tests</classifier>
@@ -58,7 +58,7 @@
             <artifactId>gina-swing</artifactId>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 
 	</dependencies>
 </project>

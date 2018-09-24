@@ -29,18 +29,18 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology</artifactId>
 			<classifier>tests</classifier>
@@ -51,7 +51,7 @@
 			<artifactId>flexoutils</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-core</artifactId>

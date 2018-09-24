@@ -20,7 +20,7 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
@@ -31,7 +31,7 @@
 			<artifactId>flexoutils</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			  <artifactId>poi-scratchpad</artifactId>

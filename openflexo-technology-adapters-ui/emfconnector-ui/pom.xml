@@ -26,18 +26,18 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology-ui</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology-ui</artifactId>
 			<classifier>tests</classifier>
@@ -67,17 +67,17 @@
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
-        <dependency>
+        <!--  <dependency>
             <groupId>org.openflexo</groupId>
             <artifactId>gina-swing</artifactId>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 	</dependencies>
 </project>
 

@@ -18,17 +18,15 @@
 			<artifactId>flexo-foundation</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>flexoutils</artifactId>
-			<classifier>tests</classifier>
-			<scope>test</scope>
+			<artifactId>testutils</artifactId>
 		</dependency>
 
 		<!--  <dependency>

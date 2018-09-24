@@ -11,7 +11,7 @@
   <url>http://www.openflexo.com/technologyadapter/oslcconnector</url>
   <properties>
     <technology.prefix>OSLC</technology.prefix>
-    <oslcVersion>1.8.0-SNAPSHOT</oslcVersion>
+    <oslcVersion>1.9.0-SNAPSHOT</oslcVersion>
   </properties>
   <dependencies>
     <dependency>
@@ -101,17 +101,15 @@
 			</exclusion>
 		</exclusions>
     </dependency>
-    <dependency>
+    <!--  <dependency>
     	<groupId>org.openflexo</groupId>
       	<artifactId>flexo-foundation</artifactId>
       	<classifier>tests</classifier>
       	<scope>test</scope>
-    </dependency>
+    </dependency>-->
     <dependency>
 		<groupId>org.openflexo</groupId>
-		<artifactId>flexoutils</artifactId>
-		<classifier>tests</classifier>
-		<scope>test</scope>
+		<artifactId>testutils</artifactId>
 	</dependency>
   </dependencies>
   <name>OSLC technology adaptor</name>
