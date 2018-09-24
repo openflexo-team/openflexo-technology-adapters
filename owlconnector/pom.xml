@@ -20,11 +20,11 @@
 		<jena-core.version>2.13.0</jena-core.version>
 	</properties>
 	<dependencies>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo.rc</groupId>
 			<artifactId>owlconnector-rc</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
