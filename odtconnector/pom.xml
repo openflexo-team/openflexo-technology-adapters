@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-technology-adapters</artifactId>
+		<version>1.9.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>odtconnector</artifactId>
+	<description>Technology Adapter for .odt documents</description>
+	<url>http://www.openflexo.com/technologyadapter/odtconnector</url>
+	<properties>
+		<technology.prefix>DOCX</technology.prefix>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!--  <dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>testutils</artifactId>
+		</dependency>
+
+		<!--  <dependency>
+			<groupId>org.jopendocument</groupId>
+			<artifactId>jOpenDocument</artifactId>
+		</dependency>-->
+
+		<!--  <dependency>
+			<groupId>isorelax</groupId>
+			<artifactId>isorelax</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>msv</groupId>
+			<artifactId>msv</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>relaxngDatatype</groupId>
+			<artifactId>relaxngDatatype</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>xsdlib</groupId>
+			<artifactId>xsdlib</artifactId>
+		</dependency>-->
+
+	</dependencies>
+</project>
