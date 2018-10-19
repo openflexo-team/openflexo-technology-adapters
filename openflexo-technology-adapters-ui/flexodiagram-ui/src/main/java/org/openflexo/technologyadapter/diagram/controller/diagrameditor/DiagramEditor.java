@@ -109,13 +109,13 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	private JDianaLayoutWidget layoutWidget;
 	private JDianaStyles stylesWidget;
 	private JDianaPalette commonPalette;
-	private AbstractDiagramPalette commonPaletteModel;
+	private DiagramEditorPaletteModel commonPaletteModel;
 	private Hashtable<DiagramPalette, ContextualPalette> contextualPaletteModels;
 	private Hashtable<DiagramPalette, JDianaPalette> contextualPalettes;
 
 	private final SwingToolFactory swingToolFactory;
 
-	public AbstractDiagramPalette makeCommonPalette() {
+	public DiagramEditorPaletteModel makeCommonPalette() {
 		return new CommonPalette(this);
 	}
 
@@ -388,7 +388,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 						DiagramPalette palette = (DiagramPalette) evt.getOldValue();
 						JDianaPalette removedPalette = contextualPalettes.get(palette);
 						removedPalette.delete();
-						AbstractDiagramPalette removedPaletteModel = contextualPaletteModels.get(palette);
+						DiagramEditorPaletteModel removedPaletteModel = contextualPaletteModels.get(palette);
 						removedPaletteModel.delete();
 						// unregisterPalette(removedPalette);
 						contextualPalettes.remove(palette);

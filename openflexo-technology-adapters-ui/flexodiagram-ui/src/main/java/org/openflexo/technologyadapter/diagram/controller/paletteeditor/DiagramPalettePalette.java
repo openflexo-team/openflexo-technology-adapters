@@ -38,20 +38,16 @@
 
 package org.openflexo.technologyadapter.diagram.controller.paletteeditor;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.logging.Logger;
 
-import org.openflexo.diana.DianaConstants;
-import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.Drawing.ContainerNode;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
-import org.openflexo.diana.control.DrawingPalette;
-import org.openflexo.diana.control.PaletteElement;
+import org.openflexo.diana.PaletteElementSpecification;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.control.DianaInteractiveEditor.EditorTool;
+import org.openflexo.diana.control.PaletteElement;
+import org.openflexo.diana.control.PaletteModel;
 import org.openflexo.diana.geom.DianaPoint;
-import org.openflexo.diana.shapes.Rectangle;
-import org.openflexo.diana.shapes.ShapeSpecification;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
@@ -60,25 +56,26 @@ import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteEl
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class DiagramPalettePalette extends DrawingPalette {
+public class DiagramPalettePalette extends PaletteModel {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
 
-	private static final int GRID_WIDTH = 50;
+	/*private static final int GRID_WIDTH = 50;
 	private static final int GRID_HEIGHT = 40;
 	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
-	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
+	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);*/
 
 	private final DiagramPaletteEditor editor;
 
 	public DiagramPalettePalette(DiagramPaletteEditor editor) {
-		super(200, 200, "default");
+		super("default", 200, 200, 40, 30, 10, 10);
+		// super(200, 200, "default");
 
 		this.editor = editor;
 
-		ShapeSpecification[] ssp = new ShapeSpecification[13];
-
+		/*ShapeSpecification[] ssp = new ShapeSpecification[13];
+		
 		ssp[0] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		ssp[1] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		((Rectangle) ssp[1]).setIsRounded(true);
@@ -94,7 +91,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 		ssp[10] = FACTORY.makeShape(ShapeType.ARC);
 		ssp[11] = FACTORY.makeShape(ShapeType.PLUS);
 		ssp[12] = FACTORY.makeShape(ShapeType.CHEVRON);
-
+		
 		int px = 0;
 		int py = 0;
 		for (ShapeSpecification sspi : ssp) {
@@ -104,7 +101,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 				px = 0;
 				py++;
 			}
-		}
+		}*/
 
 	}
 
@@ -112,7 +109,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 		return editor;
 	}
 
-	private PaletteElement makePaletteElement(ShapeSpecification shapeSpecification, int px, int py) {
+	/*private PaletteElement makePaletteElement(ShapeSpecification shapeSpecification, int px, int py) {
 		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
 		FACTORY.applyDefaultProperties(gr);
 		// if (gr.getDimensionConstraints() == DimensionConstraints.CONSTRAINED_DIMENSIONS) {
@@ -135,13 +132,13 @@ public class DiagramPalettePalette extends DrawingPalette {
 		gr.setBackground(FACTORY.makeColoredBackground(DianaConstants.DEFAULT_BACKGROUND_COLOR));
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
-
+	
 		return makePaletteElement(gr, true, true, true, true);
+	
+	}*/
 
-	}
-
-	private PaletteElement makePaletteElement(final ShapeGraphicalRepresentation gr, final boolean applyCurrentForeground,
-			final boolean applyCurrentBackground, final boolean applyCurrentTextStyle, final boolean applyCurrentShadowStyle) {
+	@Override
+	protected PaletteElement buildPaletteElement(PaletteElementSpecification paletteElement) {
 		@SuppressWarnings("serial")
 		PaletteElement returned = new PaletteElement() {
 			@Override
@@ -175,16 +172,16 @@ public class DiagramPalettePalette extends DrawingPalette {
 					shapeGR.setWidth(50);
 					shapeGR.setHeight(40);
 				}
-				if (applyCurrentForeground) {
+				if (paletteElement.getApplyCurrentForeground()) {
 					shapeGR.setForeground(getEditor().getInspectedForegroundStyle().cloneStyle());
 				}
-				if (applyCurrentBackground) {
+				if (paletteElement.getApplyCurrentBackground()) {
 					shapeGR.setBackground(getEditor().getInspectedBackgroundStyle().cloneStyle());
 				}
-				if (applyCurrentTextStyle) {
+				if (paletteElement.getApplyCurrentTextStyle()) {
 					shapeGR.setTextStyle(getEditor().getInspectedTextStyle().cloneStyle());
 				}
-				if (applyCurrentShadowStyle) {
+				if (paletteElement.getApplyCurrentShadowStyle()) {
 					shapeGR.setShadowStyle(getEditor().getInspectedShadowStyle().cloneStyle());
 				}
 
@@ -209,20 +206,20 @@ public class DiagramPalettePalette extends DrawingPalette {
 
 			@Override
 			public String getName() {
-				return null;
+				return paletteElement.getName();
 			}
 
 			@Override
 			public ShapeGraphicalRepresentation getGraphicalRepresentation() {
-				return gr;
+				return paletteElement.getGraphicalRepresentation();
 			}
 
 			@Override
 			public void delete(Object... context) {
-				gr.delete();
+				paletteElement.delete();
 			}
 
-			/*public DrawingPalette getPalette() {
+			/*public PaletteModel getPalette() {
 				return CommonPalette.this;
 			}*/
 		};
@@ -274,7 +271,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 			}
 
 			@Override
-			public DrawingPalette getPalette() {
+			public PaletteModel getPalette() {
 				return DiagramPalettePalette.this;
 			}
 

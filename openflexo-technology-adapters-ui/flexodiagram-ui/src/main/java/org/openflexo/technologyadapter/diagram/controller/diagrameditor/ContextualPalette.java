@@ -50,10 +50,11 @@ import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.diana.DrawingGraphicalRepresentation;
-import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.Drawing.ContainerNode;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
+import org.openflexo.diana.PaletteElementSpecification;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.control.PaletteElement;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -72,17 +73,17 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
 
-public class ContextualPalette extends AbstractDiagramPalette implements PropertyChangeListener {
+public class ContextualPalette extends DiagramEditorPaletteModel implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(ContextualPalette.class.getPackage().getName());
 
 	private DiagramPalette diagramPalette;
 
 	public ContextualPalette(DiagramPalette diagramPalette, DiagramEditor editor) {
-		super(editor,
-				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getWidth() : 300,
-				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getHeight() : 300,
-				diagramPalette.getName());
+		super(editor, diagramPalette.getName(),
+				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getWidth() : 200,
+				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getHeight() : 200,
+				40, 30, 10, 10);
 
 		this.diagramPalette = diagramPalette;
 
@@ -159,6 +160,13 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 	protected ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element, DiagramEditor editor) {
 		// System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
+	}
+
+	@Override
+	protected PaletteElement buildPaletteElement(PaletteElementSpecification paletteElement) {
+		// TODO
+		// return new ContextualPaletteElement(paletteElement.getGraphicalRepresentation());
+		return null;
 	}
 
 	@SuppressWarnings("serial")

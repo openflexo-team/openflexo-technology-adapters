@@ -40,12 +40,12 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.util.logging.Logger;
 
-import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.Drawing.ContainerNode;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.diana.control.DrawingPalette;
 import org.openflexo.diana.control.DianaInteractiveEditor.EditorTool;
+import org.openflexo.diana.control.PaletteModel;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
@@ -61,15 +61,22 @@ import org.openflexo.technologyadapter.diagram.model.action.AddShape;
 import org.openflexo.view.FlexoFrame;
 import org.openflexo.view.controller.FlexoFIBController;
 
-public abstract class AbstractDiagramPalette extends DrawingPalette {
+/**
+ * Abstract implementation of a {@link PaletteModel} in the context of {@link DiagramEditor}
+ * 
+ * @author sylvain
+ *
+ */
+public abstract class DiagramEditorPaletteModel extends PaletteModel {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(AbstractDiagramPalette.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(DiagramEditorPaletteModel.class.getPackage().getName());
 
 	private DiagramEditor editor;
 
-	public AbstractDiagramPalette(DiagramEditor editor, int width, int height, String title) {
-		super(width, height, title);
+	public DiagramEditorPaletteModel(DiagramEditor editor, String title, int paletteWidth, int paletteHeight, int elementWidth,
+			int elementHeight, int marginWidth, int marginHeight) {
+		super(title, paletteWidth, paletteHeight, elementWidth, elementHeight, marginWidth, marginHeight);
 		this.editor = editor;
 	}
 
