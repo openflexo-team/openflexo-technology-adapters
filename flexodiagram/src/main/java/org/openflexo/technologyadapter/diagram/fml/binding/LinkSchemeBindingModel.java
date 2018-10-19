@@ -63,11 +63,13 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 		super(linkScheme);
 
 		fromTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.FROM_TARGET,
-				linkScheme.getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getFromTargetFlexoConcept()) : DiagramShape.class);
+				linkScheme.getFromTargetFlexoConcept() != null
+						? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getFromTargetFlexoConcept())
+						: FlexoConceptInstanceType.UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE);
 		toTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.TO_TARGET,
-				linkScheme.getToTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getToTargetFlexoConcept()) : DiagramShape.class);
+				linkScheme.getToTargetFlexoConcept() != null
+						? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getToTargetFlexoConcept())
+						: FlexoConceptInstanceType.UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE);
 		addToBindingVariables(fromTargetBindingVariable);
 		addToBindingVariables(toTargetBindingVariable);
 	}
@@ -91,12 +93,15 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 		if (evt.getSource() == getFlexoBehaviour()) {
 			if (evt.getPropertyName().equals(LinkScheme.FROM_TARGET_FLEXO_CONCEPT_KEY) && fromTargetBindingVariable != null) {
 				// The LinkScheme changes it's FROM target's FlexoConcept
-				fromTargetBindingVariable.setType(getFlexoBehaviour().getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getFlexoBehaviour().getFromTargetFlexoConcept()) : DiagramShape.class);
-			} else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY) && toTargetBindingVariable != null) {
+				fromTargetBindingVariable.setType(getFlexoBehaviour().getFromTargetFlexoConcept() != null
+						? FlexoConceptInstanceType.getFlexoConceptInstanceType(getFlexoBehaviour().getFromTargetFlexoConcept())
+						: DiagramShape.class);
+			}
+			else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY) && toTargetBindingVariable != null) {
 				// The LinkScheme changes it's TO target's FlexoConcept
-				toTargetBindingVariable.setType(getFlexoBehaviour().getToTargetFlexoConcept() != null ? FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getFlexoBehaviour().getToTargetFlexoConcept()) : DiagramShape.class);
+				toTargetBindingVariable.setType(getFlexoBehaviour().getToTargetFlexoConcept() != null
+						? FlexoConceptInstanceType.getFlexoConceptInstanceType(getFlexoBehaviour().getToTargetFlexoConcept())
+						: DiagramShape.class);
 			}
 		}
 	}
