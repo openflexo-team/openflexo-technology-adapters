@@ -174,11 +174,11 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<DianaRoundR
 
 	public void paint(Graphics g, DiagramEditor controller) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null) {
-			DianaShape<?> fgeShape = getNode().getShape().getOutline();
+			DianaShape<?> dianaShape = getNode().getShape().getOutline();
 			RootNode<Diagram> rootNode = controller.getDrawing().getRoot();
 			// DrawingGraphicalRepresentation<?> drawingGR = controller.getDrawingGraphicalRepresentation();
 			double scale = controller.getScale();
-			DianaPoint nearestOnOutline = fgeShape.getNearestPoint(
+			DianaPoint nearestOnOutline = dianaShape.getNearestPoint(
 					rootNode.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, getNode(), scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
 			Point fromPoint = getNode().convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline, rootNode, scale);

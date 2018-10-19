@@ -78,8 +78,7 @@ public class DiagramFactory extends DianaModelFactoryImpl implements PamelaResou
 		this.resource = resource;
 		setEditingContext(editingContext);
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getIODelegate() != null
-				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
+		if (resource != null && resource.getIODelegate() != null && resource.getIODelegate().getSerializationArtefactAsResource() != null) {
 			relativePathResourceConverter
 					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
@@ -111,11 +110,11 @@ public class DiagramFactory extends DianaModelFactoryImpl implements PamelaResou
 		return returned;
 	}
 
-	public DiagramShape makeNewShape(String name, ShapeType shapeType, DianaPoint fgePoint, DiagramContainerElement<?> container) {
+	public DiagramShape makeNewShape(String name, ShapeType shapeType, DianaPoint dianaPoint, DiagramContainerElement<?> container) {
 		ShapeGraphicalRepresentation gr = makeShapeGraphicalRepresentation(shapeType);
-		if (fgePoint != null) {
-			gr.setX(fgePoint.getX());
-			gr.setY(fgePoint.getY());
+		if (dianaPoint != null) {
+			gr.setX(dianaPoint.getX());
+			gr.setY(dianaPoint.getY());
 		}
 		DiagramShape returned = newInstance(DiagramShape.class);
 		returned.setGraphicalRepresentation(gr);

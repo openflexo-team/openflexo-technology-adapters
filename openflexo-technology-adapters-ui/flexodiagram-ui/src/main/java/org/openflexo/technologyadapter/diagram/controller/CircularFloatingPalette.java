@@ -127,10 +127,10 @@ public class CircularFloatingPalette extends ControlArea<DianaArea> implements P
 
 	public void paint(Graphics g, AbstractDianaEditor<?, ?, ?> controller) {
 		if (drawEdge && currentDraggingLocationInDrawingView != null) {
-			DianaShape<?> fgeShape = shapeNode.getDianaShapeOutline();
+			DianaShape<?> dianaShape = shapeNode.getDianaShapeOutline();
 			// Unused DrawingGraphicalRepresentation drawingGR = controller.getDrawing().getRoot().getGraphicalRepresentation();
 			double scale = controller.getScale();
-			DianaPoint nearestOnOutline = fgeShape.getNearestPoint(controller.getDrawing().getRoot()
+			DianaPoint nearestOnOutline = dianaShape.getNearestPoint(controller.getDrawing().getRoot()
 					.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, shapeNode, scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
 			Point fromPoint = shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline,
