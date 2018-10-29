@@ -42,7 +42,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.technologyadapter.excel.AbstractTestExcel;
+import org.openflexo.technologyadapter.excel.AbstractTestExcelUI;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
@@ -58,7 +58,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestFIBCellRangeSelector extends AbstractTestExcel {
+public class TestFIBCellRangeSelector extends AbstractTestExcelUI {
 
 	private static FIBCellRangeSelector selector;
 
