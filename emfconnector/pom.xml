@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>emfconnector</artifactId>
 	<name>EMF technology connector</name>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/EMF/</url>
+    </issueManagement>
 	<properties>
 		<emfuml.baseversion>5.0.0</emfuml.baseversion>
 		<emfuml.version>5.0.1</emfuml.version>

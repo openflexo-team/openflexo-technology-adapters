@@ -9,6 +9,10 @@
 	<artifactId>ginaconnector</artifactId>
 	<description>Technology Adapter for GINA (rich interfaces framework)</description>
 	<url>http://www.openflexo.org/technologyadapter/ginaconnector</url>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/GINATA/</url>
+    </issueManagement>
 	<properties>
 		<technology.prefix>GIN</technology.prefix>
 	</properties>

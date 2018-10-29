@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>owlconnector-ui</artifactId>
 	<name>OWL technology connector UI</name>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/OWL/</url>
+    </issueManagement>
   <build>
 		<plugins>
 			<plugin>

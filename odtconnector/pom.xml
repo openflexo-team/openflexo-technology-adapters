@@ -9,6 +9,10 @@
 	<artifactId>odtconnector</artifactId>
 	<description>Technology Adapter for .odt documents</description>
 	<url>http://www.openflexo.com/technologyadapter/odtconnector</url>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/ODT/</url>
+    </issueManagement>
 	<properties>
 		<technology.prefix>DOCX</technology.prefix>
 	</properties>

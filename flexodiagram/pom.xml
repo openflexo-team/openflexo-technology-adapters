@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>flexodiagram</artifactId>
 	<name>FlexoDiagram technology adapter</name>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/DIANATA/</url>
+    </issueManagement>
 	<build>
 		<plugins>
 			<plugin>

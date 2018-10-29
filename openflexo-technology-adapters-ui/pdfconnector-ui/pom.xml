@@ -9,6 +9,10 @@
 	<artifactId>pdfconnector-ui</artifactId>
 	<description>Technology Adapter graphical interface for .pdf documents</description>
 	<url>http://www.openflexo.com/technologyadapter/pdfconnector-ui</url>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/PDF/</url>
+    </issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>

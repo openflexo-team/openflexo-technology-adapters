@@ -9,6 +9,10 @@
 	<artifactId>docxconnector</artifactId>
 	<description>Technology Adapter for .docx documents</description>
 	<url>http://www.openflexo.com/technologyadapter/docxconnector</url>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/DOCX/</url>
+    </issueManagement>
 	<properties>
 		<technology.prefix>DOCX</technology.prefix>
 	</properties>

@@ -9,6 +9,10 @@
 	<artifactId>docxconnector-ui</artifactId>
 	<description>Technology Adapter graphical interface for .docx documents</description>
 	<url>http://www.openflexo.com/technologyadapter/docxconnector-ui</url>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/DOCX/</url>
+    </issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>

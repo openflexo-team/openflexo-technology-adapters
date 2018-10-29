@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>emfconnector-ui</artifactId>
 	<name>EMF technology connector UI</name>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/EMF/</url>
+    </issueManagement>
 	<build>
 		<plugins>
 			<plugin>

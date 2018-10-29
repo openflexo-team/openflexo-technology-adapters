@@ -9,6 +9,10 @@
   <artifactId>oslcconnector</artifactId>
   <description>technology Adapter for OSLC data</description>
   <url>http://www.openflexo.com/technologyadapter/oslcconnector</url>
+  <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/OSLC/</url>
+  </issueManagement>
   <properties>
     <technology.prefix>OSLC</technology.prefix>
     <oslcVersion>1.9.0-SNAPSHOT</oslcVersion>

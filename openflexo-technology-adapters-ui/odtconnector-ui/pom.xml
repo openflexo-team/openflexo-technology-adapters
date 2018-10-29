@@ -9,6 +9,10 @@
 	<artifactId>odtconnector-ui</artifactId>
 	<description>Technology Adapter graphical interface for .odt documents</description>
 	<url>http://www.openflexo.com/technologyadapter/docxconnector-ui</url>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/ODT/</url>
+    </issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>

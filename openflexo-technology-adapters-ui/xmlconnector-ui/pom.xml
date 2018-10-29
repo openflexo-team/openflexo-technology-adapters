@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>xmlconnector-ui</artifactId>
 	<name>XML technology connector UI</name>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/XML/</url>
+    </issueManagement>
 	<build>
 		<plugins>
 			<plugin>

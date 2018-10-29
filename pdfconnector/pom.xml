@@ -9,6 +9,10 @@
 	<artifactId>pdfconnector</artifactId>
 	<description>Technology Adapter for .pdf documents</description>
 	<url>http://www.openflexo.com/technologyadapter/pdfconnector</url>
+    <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/PDF/</url>
+    </issueManagement>
 	<properties>
 		<technology.prefix>DOCX</technology.prefix>
 	</properties>

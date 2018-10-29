@@ -9,6 +9,10 @@
 	<artifactId>oslcconnector-ui</artifactId>
 	<description>technology Adapter graphical interface for OSLC data</description>
 	<url>http://www.openflexo.com/technologyadapter/oslcconnector-ui</url>
+   <issueManagement>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/OSLC/</url>
+   </issueManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
