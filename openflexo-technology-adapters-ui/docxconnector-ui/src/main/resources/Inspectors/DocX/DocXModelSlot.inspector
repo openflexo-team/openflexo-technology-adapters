@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
+	titleFont="SansSerif,0,12" darkLevel="0"
+	dataClassName="org.openflexo.technologyadapter.docx.DocXModelSlot"
+	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label label="template" index="12"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=12;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+				name="MetaModelLabel" localize="true" />
+			<Custom componentClassName="org.openflexo.components.widget.FIBResourceSelector"
+				localize="true" manageDynamicModel="true" name="TemplateSelector"
+				index="13" data="data.templateResource"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+				<Assignment variable="component.resourceManager"
+					value="data.serviceManager.resourceManager" />
+				<Assignment variable="component.technologyAdapter" value="data.modelSlotTechnologyAdapter" />
+				<Assignment variable="component.resourceDataClass" value="data.type" />
+			</Custom>
+			<Label label="id_strategy" index="14"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=14;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+				name="IdStrategy" localize="true" />
+			<DropDown index="15" data="data.idStrategy"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=15;location=right)"
+				name="IdStrategyDD" format="object.stringRepresentation"
+				localize="false"
+				iteratorClassName="org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy"
+				autoSelectFirstRow="false" showReset="false" />
+		</Tab>
+		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" />
+	</TabPanel>
+	<LocalizedDictionary />
+	<Parameter name="title" value="DocX Model Slot" />
+</Panel>

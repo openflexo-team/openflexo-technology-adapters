@@ -43,16 +43,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.foundation.fml.TechnologyAdapterTypeFactory;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.toolbox.StringUtils;
 
 public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 
 	protected DiagramSpecification diagramSpecification;
+	protected String diagramSpecificationURI;
+	// factory stored for unresolved types
+	// should be nullified as quickly as possible (nullified when resolved)
+	protected CustomTypeFactory<?> customTypeFactory;
 
 	private DiagramType(DiagramSpecification diagramSpecification) {
 		this.diagramSpecification = diagramSpecification;
+	}
+
+	protected DiagramType(String diagramSpecificationURI, CustomTypeFactory<?> customTypeFactory) {
+		this.diagramSpecificationURI = diagramSpecificationURI;
+		this.customTypeFactory = customTypeFactory;
 	}
 
 	public DiagramSpecification getDiagramSpecification() {
@@ -68,19 +81,28 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 	public boolean isTypeAssignableFrom(Type aType, boolean permissive) {
 		// System.out.println("isTypeAssignableFrom " + aType + " (i am a " + this + ")");
 		if (aType instanceof DiagramType) {
-			return diagramSpecification.equals(((DiagramType) aType).getDiagramSpecification());
+			return diagramSpecification == null || diagramSpecification.equals(((DiagramType) aType).getDiagramSpecification());
 		}
 		return false;
 	}
 
 	@Override
+	public boolean isOfType(Object object, boolean permissive) {
+		if (!(object instanceof Diagram)) {
+			return false;
+		}
+		return getDiagramSpecification() == ((Diagram) object).getDiagramSpecification();
+	}
+
+	@Override
 	public String simpleRepresentation() {
-		return "DiagramType" + ":" + (diagramSpecification != null ? diagramSpecification.toString() : null);
+		return getClass().getSimpleName() + "<"
+				+ (diagramSpecification != null ? diagramSpecification.getName() : "NotFound:" + diagramSpecificationURI) + ">";
 	}
 
 	@Override
 	public String fullQualifiedRepresentation() {
-		return "DiagramType" + ":" + (diagramSpecification != null ? diagramSpecification.toString() : null);
+		return getClass().getName() + "<" + getSerializationRepresentation() + ">";
 	}
 
 	@Override
@@ -90,10 +112,13 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 
 	@Override
 	public TechnologyAdapter getSpecificTechnologyAdapter() {
-		return getDiagramSpecification().getTechnologyAdapter();
+		if (getDiagramSpecification() != null) {
+			return getDiagramSpecification().getTechnologyAdapter();
+		}
+		return null;
 	}
 
-	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<DiagramSpecification, DiagramType>();
+	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<>();
 
 	public static DiagramType getDiagramType(DiagramSpecification diagramSpecification) {
 
@@ -107,20 +132,109 @@ public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 
 	@Override
 	public String getSerializationRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
+		return (diagramSpecification != null ? diagramSpecification.getURI() : diagramSpecificationURI);
 	}
 
 	@Override
 	public boolean isResolved() {
-		// TODO Auto-generated method stub
-		return true;
+		return diagramSpecification != null || StringUtils.isEmpty(diagramSpecificationURI);
 	}
 
 	@Override
 	public void resolve(CustomTypeFactory<?> factory) {
-		// TODO Auto-generated method stub
+		// System.out.println("******* resolve " + getSerializationRepresentation() + " with " + factory);
+		if (factory instanceof DiagramTypeFactory) {
+			DiagramSpecificationResource dsSpecResource = null;
+			dsSpecResource = (DiagramSpecificationResource) ((DiagramTypeFactory) factory).getTechnologyAdapter()
+					.getTechnologyAdapterService().getServiceManager().getResourceManager()
+					.getResource(diagramSpecificationURI, DiagramSpecification.class);
+			if (dsSpecResource != null) {
+				try {
+					diagramSpecification = dsSpecResource.getResourceData(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				this.customTypeFactory = null;
+			}
+			else {
+				this.customTypeFactory = factory;
+			}
+		}
+	}
 
+	/**
+	 * Factory for DiagramType instances
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class DiagramTypeFactory extends TechnologyAdapterTypeFactory<DiagramType> {
+
+		@Override
+		public Class<DiagramType> getCustomType() {
+			return DiagramType.class;
+		}
+
+		public DiagramTypeFactory(DiagramTechnologyAdapter technologyAdapter) {
+			super(technologyAdapter);
+		}
+
+		@Override
+		public DiagramType makeCustomType(String configuration) {
+
+			DiagramSpecification dsSpec = null;
+			DiagramSpecificationResource dsSpecResource = null;
+
+			if (configuration != null) {
+				dsSpecResource = (DiagramSpecificationResource) getTechnologyAdapter().getTechnologyAdapterService().getServiceManager()
+						.getResourceManager().getResource(configuration, DiagramSpecification.class);
+				if (dsSpecResource != null) {
+					try {
+						dsSpec = dsSpecResource.getResourceData(null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			else {
+				dsSpec = getDiagramSpecificationType();
+			}
+
+			if (dsSpec != null) {
+				return getDiagramType(dsSpec);
+			}
+			else {
+				// We don't return UNDEFINED_FLEXO_CONCEPT_INSTANCE_TYPE because we want here a mutable type
+				// if FlexoConcept might be resolved later
+				return new DiagramType(configuration, this);
+			}
+		}
+
+		private DiagramSpecification diagramSpecType;
+
+		public DiagramSpecification getDiagramSpecificationType() {
+			return diagramSpecType;
+		}
+
+		public void setDiagramSpecificationType(DiagramSpecification diagramSpecType) {
+			if (diagramSpecType != this.diagramSpecType) {
+				DiagramSpecification oldDiagramSpecType = this.diagramSpecType;
+				this.diagramSpecType = diagramSpecType;
+				getPropertyChangeSupport().firePropertyChange("diagramSpecificationType", oldDiagramSpecType, diagramSpecType);
+			}
+		}
+
+		@Override
+		public String toString() {
+			return "Diagram conform to DiagramSpecification";
+		}
+
+		@Override
+		public void configureFactory(DiagramType type) {
+			if (type != null) {
+				setDiagramSpecificationType(type.getDiagramSpecification());
+			}
+		}
 	}
 
 }

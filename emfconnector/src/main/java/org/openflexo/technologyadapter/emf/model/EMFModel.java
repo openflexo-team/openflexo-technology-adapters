@@ -68,8 +68,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * 
  * @author gbesancon
  */
-public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoModel<EMFModel, EMFMetaModel>,
-		IFlexoOntology<EMFTechnologyAdapter> {
+public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements FlexoModel<EMFModel, EMFMetaModel>, IFlexoOntology<EMFTechnologyAdapter> {
 
 	/** Resource. */
 	protected EMFModelResource modelResource;
@@ -188,8 +188,6 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 		getResource().save(null);
 	}
 
-
-
 	/**
 	 * Getter of metaModel.
 	 * 
@@ -293,7 +291,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
-		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> concepts = new ArrayList<>();
 		concepts.addAll(getIndividuals());
 		return Collections.unmodifiableList(concepts);
 	}
@@ -345,7 +343,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 	 */
 	@Override
 	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<>();
 		result.addAll(converter.getIndividuals().values());
 		return Collections.unmodifiableList(result);
 	}
@@ -393,10 +391,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 	 */
 	@Override
 	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
-		if (result == null) {
-			result = getDataProperty(objectURI);
-		}
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = getDataProperty(objectURI);
 		if (result == null) {
 			result = getObjectProperty(objectURI);
 		}

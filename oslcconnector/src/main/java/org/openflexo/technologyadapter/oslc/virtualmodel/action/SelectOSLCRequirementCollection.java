@@ -42,33 +42,28 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 
-@FIBPanel("Fib/SelectOSLCRequirementCollectionPanel.fib")
 @ModelEntity
 @ImplementationClass(SelectOSLCRequirementCollection.SelectOSLCRequirementCollectionImpl.class)
 @XMLElement
 @FML("SelectOSLCRequirementCollection")
-public interface SelectOSLCRequirementCollection extends FetchRequest<OSLCCoreModelSlot, OSLCRequirementCollection> {
+public interface SelectOSLCRequirementCollection
+		extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection> {
 
-	public static abstract class SelectOSLCRequirementCollectionImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCRequirementCollection>
+	public static abstract class SelectOSLCRequirementCollectionImpl
+			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection>
 			implements SelectOSLCRequirementCollection {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirementCollection.class.getPackage().getName());
-
-		public SelectOSLCRequirementCollectionImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {
@@ -76,20 +71,9 @@ public interface SelectOSLCRequirementCollection extends FetchRequest<OSLCCoreMo
 		}
 
 		@Override
-		public List<OSLCRequirementCollection> execute(FlexoBehaviourAction action) {
+		public List<OSLCRequirementCollection> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(action).getAccessedResourceData();
-
-			List<OSLCRequirementCollection> returned = filterWithConditions(null, action);
+			List<OSLCRequirementCollection> returned = filterWithConditions(null, evaluationContext);
 
 			return returned;
 		}

@@ -46,7 +46,9 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -57,8 +59,8 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 
 	private static final Logger logger = Logger.getLogger(AddConnector.class.getPackage().getName());
 
-	public static FlexoActionType<AddConnector, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<AddConnector, DiagramShape, DiagramElement<?>>(
-			"add_connector", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<AddConnector, DiagramShape, DiagramElement<?>> actionType = new FlexoActionFactory<AddConnector, DiagramShape, DiagramElement<?>>(
+			"add_connector", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -94,8 +96,16 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 
 	private boolean automaticallyCreateConnector = false;
 
-	AddConnector(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private AddConnector(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -112,11 +122,17 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 				logger.warning("No common ancestors for " + getFromShape() + " and " + getToShape());
 				throw new IllegalArgumentException("No common ancestor");
 			}
-			newConnector = getFocusedObject().getDiagram().getDiagramFactory()
-					.makeNewConnector(getNewConnectorName(), getFromShape(), getToShape(), parent);
-			newConnector.setDescription(annotation);
+			newConnector = getFocusedObject().getDiagram().getDiagramFactory().makeNewConnector(getNewConnectorName(), getFromShape(),
+					getToShape(), parent);
+
+			if (getGraphicalRepresentation() != null) {
+				newConnector.setGraphicalRepresentation(getGraphicalRepresentation());
+			}
+
+			// newConnector.setDescription(annotation);
 			parent.addToConnectors(newConnector);
-		} else {
+		}
+		else {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Focused property is null !");
 			}
@@ -139,7 +155,7 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 	}
 
 	public void setFromShape(DiagramShape fromShape) {
-		fromShape = fromShape;
+		this.fromShape = fromShape;
 	}
 
 	public DiagramConnector getConnector() {

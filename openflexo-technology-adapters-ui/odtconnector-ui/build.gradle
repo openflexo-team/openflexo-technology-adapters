@@ -1,0 +1,9 @@
+dependencies {
+    compile project(":odtconnector")
+
+  // openflexo dep
+   compile flexoUi()
+  // external dep
+  // testing dep
+    testCompile flexoUiTest()
+}

@@ -44,10 +44,9 @@ import java.util.logging.Logger;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.AddClass;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
+import org.openflexo.foundation.ontology.fml.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -59,13 +58,13 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 @ImplementationClass(AddOWLClass.AddOWLClassImpl.class)
 @XMLElement
 @FML("AddOWLClass")
-public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction<OWLClass> {
+public interface AddOWLClass extends AddClass<OWLModelSlot, OWLOntology, OWLClass>, OWLAction<OWLClass> {
 
-	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLClass> implements AddOWLClass {
+	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLOntology, OWLClass> implements AddOWLClass {
 
 		private static final Logger logger = Logger.getLogger(AddOWLClass.class.getPackage().getName());
 
-		private final String dataPropertyURI = null;
+		// Unused private final String dataPropertyURI = null;
 
 		public AddOWLClassImpl() {
 			super();
@@ -82,11 +81,12 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction
 		}
 
 		@Override
-		public OWLClass execute(FlexoBehaviourAction action) {
+		public OWLClass execute(RunTimeEvaluationContext evaluationContext) {
+
 			OWLClass father = getOntologyClass();
 			String newClassName = null;
 			try {
-				newClassName = getClassName().getBindingValue(action);
+				newClassName = getClassName().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e1) {
 				e1.printStackTrace();
 			} catch (NullReferenceException e1) {
@@ -96,18 +96,21 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction
 			}
 			OWLClass newClass = null;
 			try {
+				OWLOntology ontology = getReceiver(evaluationContext);
 				logger.info("Adding class " + newClassName + " as " + father);
-				newClass = getModelSlotInstance(action).getAccessedResourceData().createOntologyClass(newClassName, father);
-				logger.info("Added class " + newClass.getName() + " as " + father);
+				logger.info("ontology=" + ontology);
+				if (ontology != null) {
+					newClass = ontology.createOntologyClass(newClassName, father);
+					logger.info("Added class " + newClass.getName() + " as " + father);
+				}
+				else {
+					logger.warning("Could not access ontology " + getReceiver());
+				}
 			} catch (DuplicateURIException e) {
 				e.printStackTrace();
 			}
 			return newClass;
-		}
 
-		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

@@ -1,130 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
-	titleFont="SansSerif,0,12" darkLevel="0"
-	dataClassName="org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell"
-	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
-	font="SansSerif,0,12" name="Inspector">
-	<TabPanel name="Tab" constraints="border(location=center)">
-		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
-			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
-			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="Row" index="2" data=""
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="" format="" icon="" tooltip="" localize="true" enable=""
-				clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" />
-			<Panel layout="gridbag" hGap="5" vGap="5" flowAlignment="LEADING"
-				borderTitle="Panel" darkLevel="0" index="3" data=""
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="">
-				<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
-					format="" icon="" tooltip="" localize="true" enable=""
-					manageDynamicModel="true" opaque="false" clickAction=""
-					doubleClickAction="" rightClickAction="" enterPressedAction=""
-					valueChangedAction="" valueTransform="" valueValidator=""
-					name="AddCellRowCC" index="3" data="data.row"
-					constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-					visible="(!(data.isRowIndex))">
-					<Assignment variable="component.bindable" value="data" />
-					<Dependancy componentName="isRowIndexCB" />
-				</Custom>
-				<CheckBox selected="false" index="3" data="data.isRowIndex"
-					constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-					visible="" name="isRowIndexCB" format="" icon="" tooltip=""
-					localize="true" enable="" clickAction="" doubleClickAction=""
-					rightClickAction="" enterPressedAction="" valueChangedAction=""
-					valueTransform="" valueValidator="" />
-				<Label label="row index" index="3" data=""
-					constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-					visible="" format="" icon="" tooltip="" localize="true" enable=""
-					clickAction="" doubleClickAction="" rightClickAction=""
-					enterPressedAction="" valueChangedAction="" valueTransform=""
-					valueValidator="" />
-				<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
-					format="" icon="" tooltip="" localize="true" enable=""
-					manageDynamicModel="true" opaque="false" clickAction=""
-					doubleClickAction="" rightClickAction="" enterPressedAction=""
-					valueChangedAction="" valueTransform="" valueValidator="" index="5"
-					data="data.rowIndex"
-					constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-					visible="data.isRowIndex">
-					<Assignment variable="component.bindable" value="data" />
-					<Dependancy componentName="isRowIndexCB" />
-				</Custom>
-				<Label label="sheet" index="3" data=""
-					constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-					visible="data.isRowIndex" format="" icon="" tooltip="" localize="true"
-					enable="" clickAction="" doubleClickAction="" rightClickAction=""
-					enterPressedAction="" valueChangedAction="" valueTransform=""
-					valueValidator="">
-					<Dependancy componentName="isRowIndexCB" />
-				</Label>
-				<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
-					format="" icon="" tooltip="" localize="true" enable=""
-					manageDynamicModel="true" opaque="false" clickAction=""
-					doubleClickAction="" rightClickAction="" enterPressedAction=""
-					valueChangedAction="" valueTransform="" valueValidator=""
-					name="AddCellSheetCC" index="3" data="data.sheet"
-					constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-					visible="data.isRowIndex">
-					<Assignment variable="component.bindable" value="data" />
-					<Dependancy componentName="isRowIndexCB" />
-				</Custom>
-			</Panel>
-			<Label label="column index" align="right" index="6" data=""
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="" format="" icon="" tooltip="" localize="true" enable=""
-				clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
-				format="" icon="" tooltip="" localize="true" enable=""
-				manageDynamicModel="true" opaque="false" clickAction=""
-				doubleClickAction="" rightClickAction="" enterPressedAction=""
-				valueChangedAction="" valueTransform="" valueValidator="" index="5"
-				data="data.columnIndex"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="">
-				<Assignment variable="component.bindable" value="data" />
+<Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
+	p:modelEntity="org.openflexo.gina.utils.FIBInspector" borderLeft="0"
+	sizeAdjustment="OriginalSize" controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	borderRight="0" border="empty" trackViewPortWidth="true" font="SansSerif,0,12"
+	align="left" borderBottom="0" titleFont="SansSerif,0,12" borderTop="0"
+	trackViewPortHeight="true" layout="border" name="Inspector">
+	<Parameter id="1" name="title" value="AddExcelCell action" />
+	<TabPanel id="2" name="Tab" constraints="border(location=center)">
+		<Tab id="3" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+			borderLeft="0" sizeAdjustment="OriginalSize" border="empty"
+			borderRight="0" trackViewPortWidth="true" index="0" font="SansSerif,0,11"
+			align="left" borderBottom="0" titleFont="SansSerif,0,11" borderTop="0"
+			trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			useScrollBar="true" title="Basic" layout="twocols" name="BasicTab">
+			<CheckBox id="8" selected="true" name="checkbox" data="data.isRowIndex" index="6"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" />
+			<Label id="9" name="Label" align="left" index="7"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
+				label="address_row_by_index" />
+			<Label id="4" visible="data.isRowIndex" name="SheetLabel"
+				index="8" localize="true" align="left"
+				constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=2;insetsRight=0;insetsTop=5;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+				label="sheet">
+				<Dependancy id="5" componentName="isRowIndexCB" />
+			</Label>
+			<Custom id="6" visible="data.isRowIndex" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="AddCellSheetCC" data="data.sheet" index="9"
+				constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)">
+				<Assignment id="7" mandatory="true" value="data"
+					variable="component.bindable" />
 			</Custom>
-			<Label label="cell type" align="right" index="6" data=""
+			<Label id="10" visible="(!(data.isRowIndex))" name="RowLabel"
+				index="10" align="left"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="Row" />
+			<Custom id="11" visible="(!(data.isRowIndex))"
+				manageDynamicModel="true" dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="AddCellRowCC" data="data.row" index="11"
+				constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)">
+				<Assignment id="12" mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="13" visible="data.isRowIndex" name="RowIndexLabel"
+				index="12" align="left"
+				constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=2;insetsRight=0;insetsTop=5;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+				label="row index" />
+			<Custom id="14" visible="data.isRowIndex" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="CustomSelector" data="data.rowIndex" index="13"
+				constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right;padX=0;padY=0;weightX=1.0;weightY=0.0)">
+				<Assignment id="15" mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="16" name="ColumnIndexLabel" index="14" align="right"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="" format="" icon="" tooltip="" localize="true" enable=""
-				clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" />
-			<DropDown index="7" data="data.cellType"
+				label="column index" />
+			<Custom id="17" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="CustomSelector2" data="data.columnIndex" index="15"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment id="18" mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="19" name="CellToCopyLabel" index="16" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="cell_to_copy" />
+			<Custom id="20" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="CustomSelector3" data="data.cellToCopy" index="17"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment id="18" mandatory="true" value="data"
+					variable="component.bindable" />
+			</Custom>
+			<Label id="21" name="CellTypeLabel" index="18" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="cell_type" />
+			<DropDown id="22" data="data.cellType" index="19" localize="true"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="" format="object.name" icon="" tooltip="" localize="true"
-				enable="" clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" list="data.availableCellTypes" array=""
-				iteratorClassName="org.openflexo.technologyadapter.excel.model.ExcelCell$CellType"
-				autoSelectFirstRow="false">
-			</DropDown>
-			<Label label="value" align="right" index="7" data=""
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
-				visible="" format="" icon="" tooltip="" localize="true" enable=""
-				clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
-				format="" icon="" tooltip="" localize="true" enable=""
-				manageDynamicModel="true" opaque="false" clickAction=""
-				doubleClickAction="" rightClickAction="" enterPressedAction=""
-				valueChangedAction="" valueTransform="" valueValidator="" index="7"
-				data="data.value"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="">
-				<Assignment variable="component.bindable" value="data" />
+				format="object.name" showText="true"
+				iteratorClassName="org.openflexo.technologyadapter.excel.model.CellType"
+				showIcon="false" name="DropDown" list="data.availableCellTypes" />
+			<Label id="23" name="ValueLabel" index="20" align="right"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				label="value" />
+			<Custom id="24" manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.connie.DataBinding"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				name="CustomSelector3" data="data.value" index="21"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment id="25" mandatory="true" value="data"
+					variable="component.bindable" />
 			</Custom>
 		</Tab>
 	</TabPanel>
-	<LocalizedDictionary>
-		<Localized key="Advanced" lang="French" value="Avancé" />
-		<Localized key="Basic" lang="French" value="Basique" />
+	<FIBVariable id="26" name="data"
+		type="org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell" />
+	<LocalizedDictionary id="27">
+		<Localized id="28" value="Avancé" lang="French" key="Advanced" />
+		<Localized id="29" value="Basique" lang="French" key="Basic" />
 	</LocalizedDictionary>
-	<Parameter name="title" value="AddExcelCell action" />
-</Panel>
+</Inspector>

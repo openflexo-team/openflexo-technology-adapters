@@ -61,10 +61,6 @@ public interface OSLCResource extends OSLCObject {
 
 	public static abstract class OSLCResourceImpl extends OSLCObjectImpl implements OSLCResource {
 
-		public OSLCResourceImpl() {
-			// TODO Auto-generated constructor stub
-		}
-
 		@Override
 		public String getUri() {
 			return getName();

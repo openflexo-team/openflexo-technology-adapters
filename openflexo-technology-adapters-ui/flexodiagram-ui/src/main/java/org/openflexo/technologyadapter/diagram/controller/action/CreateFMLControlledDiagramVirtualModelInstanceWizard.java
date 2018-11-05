@@ -41,16 +41,18 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 import java.awt.Image;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.action.AbstractCreateVirtualModelInstanceWizard;
 
-public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
-		AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
+public class CreateFMLControlledDiagramVirtualModelInstanceWizard
+		extends AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger
@@ -61,9 +63,48 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
 		super(action, controller);
 	}
 
+	/*@Override
+	protected AbstractCreateVirtualModelInstanceWizard<CreateBasicVirtualModelInstance>.AbstractChooseVirtualModel<?> makeChooseVirtualModel() {
+		return new ChooseVirtualModel();
+	}*/
+
+	@Override
+	protected ChooseVirtualModel makeChooseVirtualModel() {
+		return new ChooseVirtualModel();
+	}
+
+	@Override
+	protected ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel makeChooseAndConfigureCreationScheme() {
+		return new ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel();
+	}
+
+	/**
+	 * This step is used to set {@link VirtualModel} to be used, as well as name and title of the {@link FMLRTVirtualModelInstance}
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	@FIBPanel("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib")
+	public class ChooseVirtualModel extends AbstractChooseVirtualModel {
+
+		@Override
+		public String getTitle() {
+			return action.getLocales().localizedForKey("choose_fml_controlled_diagram_virtual_model");
+		}
+
+	}
+
+	@FIBPanel("Fib/Wizard/ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel.fib")
+	public class ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel extends AbstractChooseAndConfigureCreationScheme {
+
+		public ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel() {
+			super(action.getCreationSchemeAction());
+		}
+	}
+
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("create_fml_controlled_diagram");
+		return action.getLocales().localizedForKey("create_fml_controlled_diagram");
 	}
 
 	@Override

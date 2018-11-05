@@ -45,9 +45,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -55,7 +54,7 @@ import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 @SuppressWarnings("serial")
-public class FMLControlledDiagramModuleView extends JPanel implements ModuleView<VirtualModelInstance>, PropertyChangeListener {
+public class FMLControlledDiagramModuleView extends JPanel implements ModuleView<FMLRTVirtualModelInstance>, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramModuleView.class.getPackage().getName());
@@ -78,11 +77,16 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 		bottomPanel.add(editor.getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		editor.getFlexoController().setInfoMessage("Controlled diagramming - CTRL-drag to draw edges", false);
+		editor.getFlexoController().setInfoMessage(getInfoMessage(), false);
 
 		validate();
 
 		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+	}
+
+	public String getInfoMessage() {
+		return "Controlled diagramming - CTRL-drag to draw edges";
+		// return FlexoLocalization.getMainLocalizer().localizedForKey("controlled_diagramming")
 	}
 
 	public FMLControlledDiagramEditor getEditor() {
@@ -102,7 +106,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	}
 
 	@Override
-	public VirtualModelInstance getRepresentedObject() {
+	public FMLRTVirtualModelInstance getRepresentedObject() {
 		return editor.getVirtualModelInstance();
 	}
 
@@ -116,6 +120,11 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		System.out.println("FMLControlledDiagramModuleView WILL HIDE !!!!!!");
 
+		getEditor().getFlexoController().getControllerModel().setRightViewVisible(false);
+
+		perspective.setTopRightView(null);
+		perspective.setBottomRightView(null);
+
 		getEditor().getFlexoController().getEditingContext().unregisterPasteHandler(getEditor().getPasteHandler());
 
 		bottomPanel.remove(getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getScaleSelector().getComponent());
@@ -126,6 +135,29 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	public void willShow() {
 
 		System.out.println("FMLControlledDiagramModuleView WILL SHOW !!!!!!");
+
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(getEditor().getPaletteView());
+		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+
+		DiagramTechnologyAdapterController diagramTAController = getDiagramTechnologyAdapterController(getEditor().getFlexoController());
+
+		diagramTAController.getInspectors().attachToEditor(getEditor());
+		diagramTAController.getDialogInspectors().attachToEditor(getEditor());
+		diagramTAController.getScaleSelector().attachToEditor(getEditor());
+
+		perspective.setBottomRightView(
+				getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getInspectors().getPanelGroup());
+
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Force right view to be visible
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});*/
+
+		getEditor().getFlexoController().getControllerModel().setRightViewVisible(true);
 
 		getEditor().getFlexoController().getEditingContext().registerPasteHandler(getEditor().getPasteHandler());
 
@@ -144,15 +176,15 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
 		// Sets palette view of editor to be the top right view
-		perspective.setTopRightView(getEditor().getPaletteView());
+		/*perspective.setTopRightView(getEditor().getPaletteView());
 		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
-
+		
 		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
 		getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
-
+		
 		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -160,8 +192,8 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 				controller.getControllerModel().setRightViewVisible(true);
 			}
 		});
-
-		controller.getControllerModel().setRightViewVisible(true);
+		
+		controller.getControllerModel().setRightViewVisible(true);*/
 	}
 
 	@Override

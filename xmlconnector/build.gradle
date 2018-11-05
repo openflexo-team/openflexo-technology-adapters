@@ -1,0 +1,17 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  compile flexoOntology()
+  // external dep
+  compile 'com.sun.xsom:xsom:20140925'
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+  
+  // Test resource center
+  testRuntime project(':xmlconnector-test-rc')
+  
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

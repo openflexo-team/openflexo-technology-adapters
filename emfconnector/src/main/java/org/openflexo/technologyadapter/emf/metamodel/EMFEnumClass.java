@@ -45,19 +45,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
@@ -133,11 +128,12 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
-		} else {
+		}
+		else {
 			annotations = Collections.emptyList();
 		}
 		return annotations;
@@ -242,8 +238,6 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
 		return visitor.visit(this);
 	}
-
-
 
 	/**
 	 * Follow the link.

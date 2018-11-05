@@ -43,13 +43,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.rt.controller.VirtualModelInstancePasteHandler;
-import org.openflexo.fml.rt.controller.VirtualModelInstancePasteHandler.HeterogeneousPastingContext;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.action.FlexoClipboard;
-import org.openflexo.foundation.action.PasteAction.PastingContext;
+import org.openflexo.foundation.action.copypaste.FlexoClipboard;
+import org.openflexo.foundation.action.copypaste.PastingContext;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.model.factory.Clipboard;
 import org.openflexo.selection.MouseSelectionManager;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -69,32 +69,32 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramPasteHandler.class.getPackage().getName());
 
-	private final VirtualModelInstance virtualModelInstance;
+	private final FMLRTVirtualModelInstance virtualModelInstance;
 	private final FMLControlledDiagramEditor editor;
 
 	public static final int PASTE_DELTA = 10;
 	public static final String REFLEXIVE_PASTE = "ReflexivePaste";
 
-	public FMLControlledDiagramPasteHandler(VirtualModelInstance virtualModelInstance, FMLControlledDiagramEditor editor) {
+	public FMLControlledDiagramPasteHandler(FMLRTVirtualModelInstance virtualModelInstance, FMLControlledDiagramEditor editor) {
 		this.virtualModelInstance = virtualModelInstance;
 		this.editor = editor;
 	}
 
 	public class FMLControlledDiagramPastingContext extends HeterogeneousPastingContext {
-		public FMLControlledDiagramPastingContext(VirtualModelInstance holder, Event event) {
+		public FMLControlledDiagramPastingContext(VirtualModelInstance<?, ?> holder, Event event) {
 			super(holder, event);
 		}
 
 		public Diagram getDiagram() {
-			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getPastingPointHolder());
+			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram((FMLRTVirtualModelInstance) getPastingPointHolder());
 		}
 	}
 
 	@Override
-	public PastingContext<VirtualModelInstance> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
-			FlexoClipboard clipboard, Event event) {
+	public PastingContext<VirtualModelInstance<?, ?>> retrievePastingContext(FlexoObject focusedObject,
+			List<FlexoObject> globalSelection, FlexoClipboard clipboard, Event event) {
 
-		PastingContext<VirtualModelInstance> returned = null;
+		PastingContext<VirtualModelInstance<?, ?>> returned = null;
 
 		// System.out.println("retrievePastingContext() in FMLControlledDiagramPasteHander, focusedObject=" + focusedObject);
 
@@ -123,7 +123,8 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 
 			if (reflexivePaste) {
 				returned.setPasteProperty(REFLEXIVE_PASTE, "true");
-			} else {
+			}
+			else {
 				returned.setPasteProperty(REFLEXIVE_PASTE, "false");
 			}
 		}
@@ -133,7 +134,7 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	}
 
 	@Override
-	public void prepareClipboardForPasting(FlexoClipboard clipboard, PastingContext<VirtualModelInstance> pastingContext) {
+	public void prepareClipboardForPasting(FlexoClipboard clipboard, PastingContext<VirtualModelInstance<?, ?>> pastingContext) {
 
 		System.out.println("Preparing clipboard for pasting in FMLControlledDiagramPasteHander");
 
@@ -174,18 +175,19 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 					if (diagramClipboard.getSingleContents() instanceof DiagramShape) {
 						DiagramShape shapeBeingPasted = (DiagramShape) diagramClipboard.getSingleContents();
 						System.out.println("La shape que je decale: " + shapeBeingPasted);
-						shapeBeingPasted.getGraphicalRepresentation().setX(
-								shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
-						shapeBeingPasted.getGraphicalRepresentation().setY(
-								shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setX(shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setY(shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
 					}
-				} else {
+				}
+				else {
 					for (Object o : diagramClipboard.getMultipleContents()) {
 						if (o instanceof DiagramShape) {
-							((DiagramShape) o).getGraphicalRepresentation().setX(
-									((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
-							((DiagramShape) o).getGraphicalRepresentation().setY(
-									((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
+							((DiagramShape) o).getGraphicalRepresentation()
+									.setX(((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
+							((DiagramShape) o).getGraphicalRepresentation()
+									.setY(((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
 						}
 					}
 				}
@@ -195,12 +197,13 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 				if (diagramClipboard.isSingleObject()) {
 					if (diagramClipboard.getSingleContents() instanceof DiagramShape) {
 						DiagramShape shapeBeingPasted = (DiagramShape) diagramClipboard.getSingleContents();
-						shapeBeingPasted.getGraphicalRepresentation().setX(
-								((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getX());
-						shapeBeingPasted.getGraphicalRepresentation().setY(
-								((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getY());
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setX(((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getX());
+						shapeBeingPasted.getGraphicalRepresentation()
+								.setY(((MouseSelectionManager) editor.getSelectionManager()).getLastClickedPoint().getY());
 					}
-				} else {
+				}
+				else {
 					boolean deltaSet = false;
 					double deltaX = Double.NaN;
 					double deltaY = Double.NaN;

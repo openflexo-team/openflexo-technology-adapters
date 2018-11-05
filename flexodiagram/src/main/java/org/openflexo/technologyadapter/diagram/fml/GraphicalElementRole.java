@@ -47,15 +47,17 @@ import java.util.logging.Logger;
 import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -66,18 +68,19 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.FreeDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationChanged;
-import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationModified;
+import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
-public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoRole<T>,
-		Bindable {
+public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+		extends FlexoRole<T>, Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new HackClassInit();
 
@@ -133,6 +136,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	@PropertyIdentifier(type = Vector.class)
 	public static final String DECLARED_GRSPECIFICATIONS_KEY = "declaredGRSpecifications";
 
+	@PropertyIdentifier(type = DiagramElement.class)
+	String METAMODEL_ELEMENT_KEY = "metamodelElement";
+	@PropertyIdentifier(type = FlexoObjectReference.class)
+	String METAMODEL_ELEMENT_REFERENCE_KEY = "metamodelElementReference";
+
 	@Getter(value = EXAMPLE_LABEL_KEY)
 	@XMLAttribute
 	public String getExampleLabel();
@@ -166,7 +174,20 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	@Remover(DECLARED_GRSPECIFICATIONS_KEY)
 	public void _removeFromDeclaredGRSpecifications(GraphicalElementSpecification<?, GR> aDeclaredGRSpecification);
 
-	public void updateGraphicalRepresentation(GR graphicalRepresentation);
+	@Getter(METAMODEL_ELEMENT_KEY)
+	public T getMetamodelElement();
+
+	@Setter(METAMODEL_ELEMENT_KEY)
+	public void setMetamodelElement(T anElement);
+
+	@Getter(value = METAMODEL_ELEMENT_REFERENCE_KEY, isStringConvertable = true)
+	@XMLAttribute
+	public FlexoObjectReference<T> getMetamodelElementReference();
+
+	@Setter(METAMODEL_ELEMENT_REFERENCE_KEY)
+	public void setMetamodelElementReference(FlexoObjectReference<T> anElementReference);
+
+	public GR getGraphicalRepresentation();
 
 	// Convenient method to access spec for label feature
 	public DataBinding<String> getLabel();
@@ -196,21 +217,22 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
 
-	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
-			FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
+	@Deprecated
+	public GR getDeprecatedGraphicalRepresentation();
 
-		@SuppressWarnings("unused")
+	/**
+	 * Called to configure using prototyping {@link DiagramElement} from metamodel
+	 * 
+	 * @param metaModelShape
+	 */
+	public void bindTo(T metaModelConcept);
+
+	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+			extends FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
+
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
 
-		// private boolean readOnlyLabel;
-
-		private String exampleLabel = "label";
-
 		protected List<GraphicalElementSpecification<?, GR>> grSpecifications;
-
-		// private Vector<GraphicalElementAction> actions;
-
-		private GR graphicalRepresentation;
 
 		private boolean defaultSpecificationsInitialized = false;
 
@@ -218,7 +240,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		public GraphicalElementRoleImpl() {
 			super();
-			pendingGRSpecs = new ArrayList<GraphicalElementSpecification<?, GR>>();
+			pendingGRSpecs = new ArrayList<>();
 			// Don't do it now: remember that this is forbidden to call from the constructor any method which has to be interpretated by
 			// PAMELA
 			// initDefaultSpecifications();
@@ -236,12 +258,12 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		protected void initDefaultSpecifications() {
 			if (getFMLModelFactory() != null) {
 				defaultSpecificationsInitialized = true;
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
+				grSpecifications = new ArrayList<>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					//logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
-							GraphicalElementSpecification.class);
-					newGraphicalElementSpecification.setPatternRole(this);
+					// logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
+							.newInstance(GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setFlexoRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
 					newGraphicalElementSpecification.setMandatory(true);
@@ -288,51 +310,69 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return true;
 		}
 
-		public final GR getGraphicalRepresentation() {
-			return graphicalRepresentation;
-		}
+		private FlexoObjectReference<T> metaModelElementReference;
 
-		public final void setGraphicalRepresentation(GR graphicalRepresentation) {
-			GR oldGR = this.graphicalRepresentation;
-			if (this.graphicalRepresentation != graphicalRepresentation) {
-				this.graphicalRepresentation = graphicalRepresentation;
-				setChanged();
-				notifyObservers(new GraphicalRepresentationChanged(this, graphicalRepresentation));
+		@Override
+		public T getMetamodelElement() {
+			if (metaModelElementReference != null) {
+				return metaModelElementReference.getObject(true);
 			}
+			return null;
 		}
 
 		@Override
-		public final void updateGraphicalRepresentation(GR graphicalRepresentation) {
-			if (getGraphicalRepresentation() != null) {
-				getGraphicalRepresentation().setsWith(graphicalRepresentation);
-				setChanged();
-				notifyObservers(new GraphicalRepresentationModified(this, graphicalRepresentation));
-			} else {
-				setGraphicalRepresentation(graphicalRepresentation);
+		public void setMetamodelElement(T anElement) {
+			T old = (metaModelElementReference != null ? metaModelElementReference.getObject() : null);
+			if (metaModelElementReference != null) {
+				metaModelElementReference.setObject(anElement);
 			}
-		}
-
-		protected final void _setGraphicalRepresentationNoNotification(GR graphicalRepresentation) {
-			this.graphicalRepresentation = graphicalRepresentation;
-		}
-
-		private BindingDefinition LABEL;
-
-		public BindingDefinition getLabelBindingDefinition() {
-			if (LABEL == null) {
-				LABEL = new BindingDefinition("label", String.class, DataBinding.BindingDefinitionType.GET_SET, false) {
-					@Override
-					public DataBinding.BindingDefinitionType getBindingDefinitionType() {
-						if (getReadOnlyLabel()) {
-							return DataBinding.BindingDefinitionType.GET;
-						} else {
-							return DataBinding.BindingDefinitionType.GET_SET;
-						}
-					}
-				};
+			else {
+				metaModelElementReference = new FlexoObjectReference<>(anElement);
 			}
-			return LABEL;
+			getPropertyChangeSupport().firePropertyChange(METAMODEL_ELEMENT_KEY, old, anElement);
 		}
+
+		@Override
+		public FlexoObjectReference<T> getMetamodelElementReference() {
+			return metaModelElementReference;
+		}
+
+		@Override
+		public void setMetamodelElementReference(FlexoObjectReference<T> anElementReference) {
+			this.metaModelElementReference = anElementReference;
+		}
+
+		@Override
+		public final GR getGraphicalRepresentation() {
+			// System.out.println("Retrieve GR of " + this);
+			// System.out.println("metaModelElementReference=" + getMetamodelElementReference());
+			// System.out.println("metaModelElement=" + getMetamodelElement());
+			if (getMetamodelElement() != null) {
+				// System.out.println("return " + getMetamodelElement().getGraphicalRepresentation());
+				return getMetamodelElement().getGraphicalRepresentation();
+			}
+
+			// System.out.println("J'arrive pas a obtenir de GR");
+			// System.out.println("DS=" + getDiagramSpecification());
+			// System.out.println("deprecatedGR=" + getDeprecatedGraphicalRepresentation());
+
+			// Create the diagram element in the meta model
+			if (getDiagramSpecification() != null) {
+				Diagram exampleDiagram = getDiagramSpecification().getDefaultExampleDiagram();
+				if (exampleDiagram == null) {
+					exampleDiagram = getDiagramSpecification().createDefaultExampleDiagram(getServiceManager().getDefaultEditor());
+				}
+				T newMetamodelElement = makeDiagramElementInMetaModel(exampleDiagram, getDeprecatedGraphicalRepresentation());
+				setMetamodelElement(newMetamodelElement);
+				// System.out.println("newMetamodelElement=" + getMetamodelElement());
+				return getMetamodelElement().getGraphicalRepresentation();
+			}
+
+			logger.warning("GraphicalElementRole not connected to any DiagramSpecification");
+			return null;
+		}
+
+		public abstract T makeDiagramElementInMetaModel(Diagram exampleDiagram, GR graphicalRepresentation);
 
 		// Convenient method to access spec for label feature
 		@Override
@@ -373,44 +413,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return getFlexoConcept().getInspector().getBindingFactory();
 		}
 
-		/*@Override
-		public BindingModel getBindingModel() {
-			return getFlexoConcept().getInspector().getBindingModel();
-		}*/
-
-		/*public boolean getIsPrimaryRepresentationRole() {
-			if (getFlexoConcept() == null) {
-				return false;
-			}
-			return getFlexoConcept().getPrimaryRepresentationRole() == this;
-		}
-
-		public void setIsPrimaryRepresentationRole(boolean isPrimary) {
-			if (getFlexoConcept() == null) {
-				return;
-			}
-			if (isPrimary) {
-				getFlexoConcept().setPrimaryRepresentationRole(this);
-			} else {
-				getFlexoConcept().setPrimaryRepresentationRole(null);
-			}
-		}
-
-		public boolean isIncludedInPrimaryRepresentationRole() {
-			return getIsPrimaryRepresentationRole();
-		}
-
-		@Override
-		public boolean getIsPrimaryRole() {
-			return getIsPrimaryRepresentationRole();
-		}
-
-		@Override
-		public void setIsPrimaryRole(boolean isPrimary) {
-			setIsPrimaryRepresentationRole(isPrimary);
-		}
-		*/
-
 		@Override
 		public boolean containsShapes() {
 			for (ShapeRole role : getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
@@ -422,46 +424,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		@Override
-		public String getExampleLabel() {
-			return exampleLabel;
-		}
-
-		@Override
-		public void setExampleLabel(String exampleLabel) {
-			this.exampleLabel = exampleLabel;
-		}
-
-		/*@Override
-		public Vector<GraphicalElementAction> getActions() {
-			if (actions == null) {
-				actions = new Vector<GraphicalElementAction>();
-			}
-			return actions;
-		}
-
-		public void setActions(Vector<GraphicalElementAction> someActions) {
-			actions = someActions;
-		}
-
-		@Override
-		public void addToActions(GraphicalElementAction anAction) {
-			anAction.setGraphicalElementPatternRole(this);
-			actions.add(anAction);
-			setChanged();
-			notifyObservers(new GraphicalElementActionInserted(anAction, this));
-		}
-
-		@Override
-		public void removeFromActions(GraphicalElementAction anAction) {
-			anAction.setGraphicalElementPatternRole(null);
-			actions.remove(anAction);
-			setChanged();
-			notifyObservers(new GraphicalElementActionRemoved(anAction, this));
-		}*/
-
-		@Override
 		public List<ActionMask> getReferencedMasks() {
-			ArrayList<GraphicalElementAction.ActionMask> returned = new ArrayList<GraphicalElementAction.ActionMask>();
+			ArrayList<GraphicalElementAction.ActionMask> returned = new ArrayList<>();
 			for (GraphicalElementAction a : getActions()) {
 				if (!returned.contains(a.getActionMask())) {
 					returned.add(a.getActionMask());
@@ -472,7 +436,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementAction> getActions(ActionMask mask) {
-			ArrayList<GraphicalElementAction> returned = new ArrayList<GraphicalElementAction>();
+			ArrayList<GraphicalElementAction> returned = new ArrayList<>();
 			for (GraphicalElementAction a : getActions()) {
 				if (a.getActionMask() == mask) {
 					returned.add(a);
@@ -497,19 +461,20 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
-			if (grSpecifications == null && getFMLModelFactory() != null) {
+
+			if ((grSpecifications == null) && getFMLModelFactory() != null) {
 				initDefaultSpecifications();
-			} else if (grSpecifications == null) {
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
 		}
 
 		@Override
 		public GraphicalElementSpecification<?, GR> getGraphicalElementSpecification(String featureName) {
-			for (GraphicalElementSpecification<?, GR> spec : getGrSpecifications()) {
-				if (spec.getFeatureName().equals(featureName)) {
-					return spec;
+			if (getGrSpecifications() != null) {
+				for (GraphicalElementSpecification<?, GR> spec : getGrSpecifications()) {
+					if (spec.getFeatureName().equals(featureName)) {
+						return spec;
+					}
 				}
 			}
 			return null;
@@ -525,10 +490,12 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> _getDeclaredGRSpecifications() {
-			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<GraphicalElementSpecification<?, GR>>();
-			for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
-				if (spec.getValue().isSet()) {
-					returned.add((GraphicalElementSpecification<?, GR>) spec);
+			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<>();
+			if (getGrSpecifications() != null) {
+				for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
+					if (spec.getValue().isSet()) {
+						returned.add((GraphicalElementSpecification<?, GR>) spec);
+					}
 				}
 			}
 			return returned;
@@ -544,11 +511,12 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
-			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
-					.getFeatureName());
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(
+					aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(aSpec.getValue());
 				existingSpec.setReadOnly(aSpec.getReadOnly());
 			}
@@ -562,7 +530,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					// Factory is not accessible yet, and thus, GRSpecs not available yet
 					// We store it in pendingGRSpecs for future use
 					pendingGRSpecs.add(aSpec);
-				} else {
+				}
+				else {
 					registerGRSpecification(aSpec);
 				}
 			}
@@ -573,17 +542,18 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(null);
 			}
 		}
 
 		@Override
-		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
 		}
@@ -600,6 +570,25 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				}
 			}
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return DiagramTechnologyAdapter.class;
+		}
+
+		public String detailedFMLSpecifications(FMLRepresentationContext context) {
+
+			if (getGrSpecifications() != null && getGrSpecifications().size() > 0) {
+				StringBuffer sb = new StringBuffer();
+				for (GraphicalElementSpecification ges : getGrSpecifications()) {
+					if (ges.getValue().isSet()) {
+						sb.append("  " + ges.getFeatureName() + " = " + ges.getValue().toString() + ";" + StringUtils.LINE_SEPARATOR);
+					}
+				}
+				return sb.toString();
+			}
+			return null;
 		}
 
 	}

@@ -41,6 +41,9 @@ package org.openflexo.technologyadapter.emf.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -50,23 +53,25 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
  * 
  * @author gbesancon
  */
-public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+@ModelEntity
+public interface EMFMetaModelRepository<I>
+		extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter, I> {
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param adapter
-	 * @param resourceCenter
-	 */
-	public EMFMetaModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
-		super(adapter, resourceCenter);
-	}
-
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/EMFTechnologyAdapter/MetaModels";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
+	public static <I> EMFMetaModelRepository<I> instanciateNewRepository(EMFTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(EMFMetaModelRepository.class);
+			EMFMetaModelRepository<I> newRepository = factory.newInstance(EMFMetaModelRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(resourceCenter.getLocales().localizedForKey("[Metamodels]"));
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

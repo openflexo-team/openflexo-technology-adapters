@@ -46,7 +46,6 @@ import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 
 /**
  * Abstract Simple implementation of Flexo ontology object.
@@ -54,7 +53,8 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
  * @author gbesancon
  * 
  */
-public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements InnerResourceData<EMFModel>{
+public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements InnerResourceData<EMFModel> {
 
 	/** MetaModel. */
 	protected final EMFModel ontology;
@@ -69,10 +69,10 @@ public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntolo
 		this.object = object;
 	}
 
+	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return getEMFModel().getTechnologyAdapter();
 	}
-
 
 	/**
 	 * Return the {@link ResourceData} where this object is defined (the global functional root object giving access to the
@@ -81,10 +81,10 @@ public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntolo
 	 * @return
 	 */
 	@Override
-	public EMFModel getResourceData(){
+	public EMFModel getResourceData() {
 		return ontology;
 	}
-	
+
 	/**
 	 * Follow the link.
 	 * 
@@ -113,4 +113,9 @@ public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntolo
 		return object;
 	}
 
+	@Override
+	public String getDescription() {
+		// TODO
+		return null;
+	}
 }

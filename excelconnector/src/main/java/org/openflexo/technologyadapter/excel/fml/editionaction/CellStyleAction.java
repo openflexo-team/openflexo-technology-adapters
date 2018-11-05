@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -50,6 +51,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -60,15 +62,19 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.CellAlignmentStyleFeature;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.CellBorderStyleFeature;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.CellStyleFeature;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellAlignmentStyleFeature;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellBorderStyleFeature;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellPatternStyleFeature;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleObject;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
 @XMLElement
 @FML("CellStyleAction")
-public interface CellStyleAction extends ExcelAction<ExcelCell> {
+public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -77,12 +83,21 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 	@PropertyIdentifier(type = CellStyleFeature.class)
 	public static final String CELL_STYLE_KEY = "cellStyle";
 
+	@PropertyIdentifier(type = CellBorderStyleFeature.class)
+	public static final String CELL_BORDER_STYLE_KEY = "cellBorderStyle";
+	@PropertyIdentifier(type = CellAlignmentStyleFeature.class)
+	public static final String CELL_ALIGNEMENT_STYLE_KEY = "cellAlignementStyle";
+	@PropertyIdentifier(type = CellPatternStyleFeature.class)
+	public static final String CELL_PATTERN_STYLE_KEY = "cellPatternStyle";
+	@PropertyIdentifier(type = Color.class)
+	public static final String CELL_COLOR_STYLE_KEY = "cellColorStyle";
+
 	@Getter(value = SUBJECT_KEY)
 	@XMLAttribute
-	public DataBinding<ExcelCell> getSubject();
+	public DataBinding<ExcelStyleObject> getSubject();
 
 	@Setter(SUBJECT_KEY)
-	public void setSubject(DataBinding<ExcelCell> subject);
+	public void setSubject(DataBinding<ExcelStyleObject> subject);
 
 	@Getter(value = VALUE_KEY)
 	@XMLAttribute
@@ -100,20 +115,50 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 
 	public List<CellStyleFeature> getAvailableCellStyles();
 
+	@Getter(value = CELL_BORDER_STYLE_KEY)
+	@XMLAttribute
 	public CellBorderStyleFeature getCellBorderStyle();
 
+	@Getter(value = CELL_ALIGNEMENT_STYLE_KEY)
+	@XMLAttribute
 	public CellAlignmentStyleFeature getCellAlignmentStyle();
+
+	@Getter(value = CELL_PATTERN_STYLE_KEY)
+	@XMLAttribute
+	public CellPatternStyleFeature getCellPatternStyle();
+
+	@Getter(value = CELL_COLOR_STYLE_KEY)
+	@XMLAttribute
+	public Color getCellColorStyle();
+
+	@Setter(CELL_BORDER_STYLE_KEY)
+	public void setCellBorderStyle(CellBorderStyleFeature style);
+
+	@Setter(CELL_ALIGNEMENT_STYLE_KEY)
+	public void setCellAlignmentStyle(CellAlignmentStyleFeature style);
+
+	@Setter(CELL_PATTERN_STYLE_KEY)
+	public void setCellPatternStyle(CellPatternStyleFeature style);
+
+	@Setter(CELL_COLOR_STYLE_KEY)
+	public void setCellColorStyle(Color style);
 
 	public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles();
 
 	public List<CellBorderStyleFeature> getAvailableCellBorderStyles();
 
+	public List<CellPatternStyleFeature> getAvailableCellPatternStyles();
+
 	public boolean isAlignmentStyle();
 
 	public boolean isBorderStyle();
 
-	public static abstract class CellStyleActionImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
-			CellStyleAction {
+	public boolean isColorStyle();
+
+	public boolean isPatternStyle();
+
+	public static abstract class CellStyleActionImpl extends
+			TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelStyleObject> implements CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 
@@ -127,7 +172,11 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 
 		private CellAlignmentStyleFeature cellAlignmentStyle = null;
 
+		private CellPatternStyleFeature cellPatternStyle = null;
+
 		private DataBinding<?> value;
+
+		private Color color;
 
 		@Override
 		public Type getAssignableType() {
@@ -150,7 +199,7 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<?> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -167,31 +216,31 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 			this.value = value;
 		}
 
-		private DataBinding<ExcelCell> subject;
+		private DataBinding<ExcelStyleObject> subject;
 
 		@Override
-		public DataBinding<ExcelCell> getSubject() {
+		public DataBinding<ExcelStyleObject> getSubject() {
 			if (subject == null) {
-				subject = new DataBinding<ExcelCell>(this, ExcelCell.class, DataBinding.BindingDefinitionType.GET);
+				subject = new DataBinding<>(this, ExcelStyleObject.class, DataBinding.BindingDefinitionType.GET);
 				subject.setBindingName("subject");
 			}
 			return subject;
 		}
 
 		@Override
-		public void setSubject(DataBinding<ExcelCell> subject) {
+		public void setSubject(DataBinding<ExcelStyleObject> subject) {
 			if (subject != null) {
 				subject.setOwner(this);
 				subject.setBindingName("subject");
-				subject.setDeclaredType(ExcelCell.class);
+				subject.setDeclaredType(ExcelStyleObject.class);
 				subject.setBindingDefinitionType(BindingDefinitionType.GET);
 			}
 			this.subject = subject;
 		}
 
-		public ExcelCell getSubject(FlexoBehaviourAction action) {
+		public ExcelStyleObject getSubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getSubject().getBindingValue(action);
+				return getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -232,14 +281,32 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 				if (cellStyle.equals(CellStyleFeature.BorderBottom) || cellStyle.equals(CellStyleFeature.BorderTop)
 						|| cellStyle.equals(CellStyleFeature.BorderLeft) || cellStyle.equals(CellStyleFeature.BorderRight)) {
 					isBorderStyle = true;
-				} else {
+				}
+				else {
 					isBorderStyle = false;
 				}
-				if (cellStyle.equals(CellStyleFeature.Alignment)) {
+				if (cellStyle.equals(CellStyleFeature.AlignmentV) || cellStyle.equals(CellStyleFeature.AlignmentH)) {
 					isAlignmentStyle = true;
-				} else {
+				}
+				else {
 					isAlignmentStyle = false;
 				}
+				if (cellStyle.equals(CellStyleFeature.Background) || cellStyle.equals(CellStyleFeature.Foreground)) {
+					isColorStyle = true;
+				}
+				else {
+					isColorStyle = false;
+				}
+				if (cellStyle.equals(CellStyleFeature.Pattern)) {
+					isPatternStyle = true;
+				}
+				else {
+					isPatternStyle = false;
+				}
+				getPropertyChangeSupport().firePropertyChange("isBorderStyle", null, isBorderStyle);
+				getPropertyChangeSupport().firePropertyChange("isAlignmentStyle", null, isAlignmentStyle);
+				getPropertyChangeSupport().firePropertyChange("isColorStyle", null, isColorStyle);
+				getPropertyChangeSupport().firePropertyChange("isPatternStyle", null, isPatternStyle);
 			}
 		}
 
@@ -248,8 +315,8 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		@Override
 		public List<CellStyleFeature> getAvailableCellStyles() {
 			if (availableCellStyles == null) {
-				availableCellStyles = new Vector<CellStyleFeature>();
-				for (CellStyleFeature cellStyle : ExcelCell.CellStyleFeature.values()) {
+				availableCellStyles = new Vector<>();
+				for (CellStyleFeature cellStyle : ExcelStyleManager.CellStyleFeature.values()) {
 					availableCellStyles.add(cellStyle);
 				}
 			}
@@ -292,6 +359,7 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 			return cellBorderStyle;
 		}
 
+		@Override
 		public void setCellBorderStyle(CellBorderStyleFeature cellBorderStyle) {
 			this.cellBorderStyle = cellBorderStyle;
 		}
@@ -301,8 +369,8 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		@Override
 		public List<CellBorderStyleFeature> getAvailableCellBorderStyles() {
 			if (availableCellBorderStyles == null) {
-				availableCellBorderStyles = new Vector<CellBorderStyleFeature>();
-				for (CellBorderStyleFeature cellBorderStyle : ExcelCell.CellBorderStyleFeature.values()) {
+				availableCellBorderStyles = new Vector<>();
+				for (CellBorderStyleFeature cellBorderStyle : ExcelStyleManager.CellBorderStyleFeature.values()) {
 					availableCellBorderStyles.add(cellBorderStyle);
 				}
 			}
@@ -345,6 +413,7 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 			return cellAlignmentStyle;
 		}
 
+		@Override
 		public void setCellAlignmentStyle(CellAlignmentStyleFeature cellAlignmentStyle) {
 			this.cellAlignmentStyle = cellAlignmentStyle;
 		}
@@ -354,8 +423,8 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		@Override
 		public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles() {
 			if (availableCellAlignmentStyles == null) {
-				availableCellAlignmentStyles = new Vector<CellAlignmentStyleFeature>();
-				for (CellAlignmentStyleFeature cellAlignmentStyle : ExcelCell.CellAlignmentStyleFeature.values()) {
+				availableCellAlignmentStyles = new Vector<>();
+				for (CellAlignmentStyleFeature cellAlignmentStyle : ExcelStyleManager.CellAlignmentStyleFeature.values()) {
 					availableCellAlignmentStyles.add(cellAlignmentStyle);
 				}
 			}
@@ -375,20 +444,94 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 			_cellAlignmentStyleName = cellAlignmentStyleName;
 		}
 
+		// SPECIAL PATTERN STYLES
+
+		private boolean isPatternStyle = false;
+
+		private final String _cellPatternStyleName = null;
+
+		@Override
+		public boolean isPatternStyle() {
+			return isPatternStyle;
+		}
+
+		@Override
+		public CellPatternStyleFeature getCellPatternStyle() {
+			if (cellPatternStyle == null) {
+				if (_cellPatternStyleName != null) {
+					for (CellPatternStyleFeature cellPatternStyle : getAvailableCellPatternStyles()) {
+						if (cellPatternStyle.name().equals(_cellPatternStyleName)) {
+							return cellPatternStyle;
+						}
+					}
+				}
+			}
+			return cellPatternStyle;
+		}
+
+		private List<CellPatternStyleFeature> availableCellPatternStyles = null;
+
+		@Override
+		public List<CellPatternStyleFeature> getAvailableCellPatternStyles() {
+			if (availableCellPatternStyles == null) {
+				availableCellPatternStyles = new Vector<>();
+				for (CellPatternStyleFeature cellPatternStyle : ExcelStyleManager.CellPatternStyleFeature.values()) {
+					availableCellPatternStyles.add(cellPatternStyle);
+				}
+			}
+			return availableCellPatternStyles;
+		}
+
+		@Override
+		public void setCellPatternStyle(CellPatternStyleFeature cellPatternStyle) {
+			this.cellPatternStyle = cellPatternStyle;
+		}
+
+		// SPECIAL COLOR STYLES
+
+		private boolean isColorStyle = false;
+
+		@Override
+		public boolean isColorStyle() {
+			return isColorStyle;
+		}
+
+		@Override
+		public Color getCellColorStyle() {
+			if (color == null) {
+				color = new Color(0, 0, 0);
+				color = java.awt.Color.WHITE;
+			}
+			return color;
+		}
+
+		@Override
+		public void setCellColorStyle(Color color) {
+			this.color = color;
+		}
+
 		// ACTION
 
 		@Override
-		public ExcelCell execute(FlexoBehaviourAction action) {
-			logger.info("Perform graphical action " + action);
-			ExcelCell excelCell = getSubject(action);
+		public ExcelStyleObject execute(RunTimeEvaluationContext evaluationContext) {
+			logger.info("Perform graphical action " + evaluationContext);
+			ExcelStyleObject excelCellStyleObject = getSubject(evaluationContext);
 			Object value = null;
 			try {
 				if (isAlignmentStyle) {
 					value = getCellAlignmentStyle();
-				} else if (isBorderStyle) {
+				}
+				else if (isBorderStyle) {
 					value = getCellBorderStyle();
-				} else {
-					value = getValue().getBindingValue(action);
+				}
+				else if (isColorStyle) {
+					value = getCellColorStyle();
+				}
+				else if (isPatternStyle) {
+					value = getCellPatternStyle();
+				}
+				else {
+					value = getValue().getBindingValue(evaluationContext);
 				}
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
@@ -398,12 +541,12 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 				e.printStackTrace();
 			}
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Element is " + excelCell);
+				logger.fine("Element is " + excelCellStyleObject);
 				logger.fine("Feature is " + getCellStyle());
 				logger.fine("Value is " + value);
 			}
-			excelCell.setCellStyle(cellStyle, value);
-			return excelCell;
+			excelCellStyleObject.setStyle(cellStyle, value);
+			return excelCellStyleObject;
 		}
 
 	}

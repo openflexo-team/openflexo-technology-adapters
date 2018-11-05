@@ -44,9 +44,11 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
 @ModelEntity
@@ -55,7 +57,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 @FML("XMLTypeRole")
 public interface XMLTypeRole extends FlexoRole<XMLType> {
 
-	public static abstract class XMLTypeRoleImpl extends FlexoRoleImpl<XMLType> implements XMLTypeRole {
+	public static abstract class XMLTypeRoleImpl extends FlexoRoleImpl<XMLType>implements XMLTypeRole {
 
 		public XMLTypeRoleImpl() {
 			super();
@@ -86,6 +88,11 @@ public interface XMLTypeRole extends FlexoRole<XMLType> {
 		public ActorReference<XMLType> makeActorReference(XMLType object, FlexoConceptInstance epi) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return XMLTechnologyAdapter.class;
 		}
 
 	}

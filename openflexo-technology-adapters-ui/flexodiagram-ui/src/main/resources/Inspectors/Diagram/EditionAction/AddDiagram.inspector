@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
-	dataClassName="org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram"
+	dataClassName="org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram"
 	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
 	font="SansSerif,0,12" name="Inspector">
 	<TabPanel name="Tab" constraints="border(location=center)">
@@ -16,8 +16,8 @@
 				localize="true" manageDynamicModel="true" name="DSSelector" index="5"
 				data="data.diagramSpecificationResource"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;location=right)">
-				<Assignment variable="component.informationSpace"
-					value="data.serviceManager.informationSpace" />
+				<Assignment variable="component.resourceManager"
+					value="data.serviceManager.resourceManager" />
 				<Assignment variable="component.technologyAdapter" value="data.modelSlot.technologyAdapter" />
 			</Custom>
 			<Label label="diagram_name" align="right" index="6" data=""
@@ -26,7 +26,7 @@
 				clickAction="" doubleClickAction="" rightClickAction=""
 				enterPressedAction="" valueChangedAction="" valueTransform=""
 				valueValidator="" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				format="" icon="" tooltip="" localize="true" enable=""
 				manageDynamicModel="true" clickAction="" doubleClickAction=""
 				rightClickAction="" enterPressedAction="" valueChangedAction=""

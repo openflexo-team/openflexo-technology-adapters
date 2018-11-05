@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -56,8 +56,8 @@ public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPalett
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, FMLObject> actionType = new FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, FMLObject>(
-			"add_new_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramPaletteElement, DiagramPalette, FMLObject> actionType = new FlexoActionFactory<CreateDiagramPaletteElement, DiagramPalette, FMLObject>(
+			"add_new_palette_element", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -88,7 +88,7 @@ public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPalett
 	private DiagramPaletteElement _newElement;
 	private Object _graphicalRepresentation;
 
-	CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

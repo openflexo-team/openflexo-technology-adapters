@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.view.FIBBrowserView;
 import org.openflexo.view.controller.FlexoController;
@@ -59,14 +60,14 @@ public class FIBDiagramPaletteBrowser extends FIBBrowserView<DiagramPalette> {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDiagramPaletteBrowser.fib");
 
 	public FIBDiagramPaletteBrowser(DiagramPalette diagramPalette, FlexoController controller) {
-		super(diagramPalette, controller, FIB_FILE);
+		super(diagramPalette, controller, FIB_FILE, controller.getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales());
 	}
 
 	// Please uncomment this for a live test
 	// Never commit this uncommented since it will not compile on continuous build
 	// To have icon, you need to choose "Test interface" in the editor (otherwise, flexo controller is not insanciated in EDIT mode)
 	/*public static void main(String[] args) {
-
+	
 		try {
 			FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 		} catch (SecurityException e) {
@@ -76,35 +77,35 @@ public class FIBDiagramPaletteBrowser extends FIBBrowserView<DiagramPalette> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		TestApplicationContext testApplicationContext = new TestApplicationContext(
 				new FileResource("src/test/resources/TestResourceCenter"));
-		final ViewPointLibrary viewPointLibrary = testApplicationContext.getViewPointLibrary();
-
+		final VirtualModelLibrary viewPointLibrary = testApplicationContext.getViewPointLibrary();
+	
 		ViewPointResource vpRes = viewPointLibrary
 				.getViewPointResource("http://www.agilebirds.com/openflexo/ViewPoints/Basic/BasicOntology.owl");
-
+	
 		DiagramPaletteResource dpRes = vpRes.getContents(DiagramPaletteResource.class).get(0);
 		final DiagramPalette diagramPalette = dpRes.getDiagramPalette();
-
+	
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
 				return makeArray(diagramPalette);
 			}
-
+	
 			@Override
 			public File getFIBFile() {
 				return FIB_FILE;
 			}
-
+	
 			@Override
 			public FIBController makeNewController(FIBComponent component) {
 				return new FlexoFIBController(component);
 			}
 		};
 		editor.launch();
-
+	
 	}*/
 
 }

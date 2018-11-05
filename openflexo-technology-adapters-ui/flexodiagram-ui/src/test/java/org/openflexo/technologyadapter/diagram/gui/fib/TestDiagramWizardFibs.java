@@ -39,35 +39,105 @@
 package org.openflexo.technologyadapter.diagram.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
 public class TestDiagramWizardFibs extends GenericFIBTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(),
-				"Fib/Wizard/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(), "Fib/Wizard/"));
 	}
 
 	@Test
-	public void testChooseOption() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ChooseOption.fib");
+	public void testChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel.fib");
+	}
+
+	@Test
+	public void testChooseFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib");
+	}
+
+	@Test
+	public void testCreateNewDiagramSpecification() {
+		validateFIB("Fib/Wizard/CreateDiagramVirtualModel/CreateNewDiagramSpecification.fib");
+	}
+
+	@Test
+	public void testDescribeFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/CreateDiagramVirtualModel/DescribeFMLControlledDiagramVirtualModel.fib");
+	}
+
+	@Test
+	public void testUseExistingDiagramSpecification() {
+		validateFIB("Fib/Wizard/CreateDiagramVirtualModel/UseExistingDiagramSpecification.fib");
+	}
+
+	@Test
+	public void testDescribeDiagram() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeDiagram.fib");
+	}
+
+	@Test
+	public void testDescribeDiagramPalette() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeDiagramPalette.fib");
+	}
+
+	@Test
+	public void testDescribeDiagramSpecification() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeDiagramSpecification.fib");
+	}
+
+	@Test
+	public void testDescribeExampleDiagram() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeExampleDiagram.fib");
+	}
+
+	@Test
+	public void testConfigurePaletteElementForNewFlexoConcept() {
+		validateFIB("Fib/Wizard/CreateFMLElement/ConfigurePaletteElementForNewFlexoConcept.fib");
+	}
+
+	@Test
+	public void testChooseCreationStrategy() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ChooseCreationStrategy.fib");
+	}
+
+	@Test
+	public void testConfigureBlankFlexoConceptFromConnectorCreationStrategyStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib");
+	}
+
+	@Test
+	public void testConfigureBlankFlexoConceptFromShapeCreationStrategyStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapConnectorToFlexoConceptlnstanceStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapConnectorToIndividualStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToIndividualStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapShapeToFlexoConceptlnstanceStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToFlexoConceptlnstanceStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapShapeToIndividualStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToIndividualStep.fib");
 	}
 
 	@Test
 	public void testCreateConnectorInExistingFlexoConcept() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithConnector() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithShape() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
 	}
 
 	@Test
@@ -83,6 +153,16 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	@Test
 	public void testReplaceShapeInExistingFlexoConcept() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
+	}
+
+	@Test
+	public void testPutToPaletteFromConceptOptions() {
+		validateFIB("Fib/Wizard/PutToPalette/PutToPaletteFromConceptOptions.fib");
+	}
+
+	@Test
+	public void testPutToPaletteFromShapeOptions() {
+		validateFIB("Fib/Wizard/PutToPalette/PutToPaletteFromShapeOptions.fib");
 	}
 
 }

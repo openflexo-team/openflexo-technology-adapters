@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml;
 
 import java.util.logging.Logger;
@@ -80,8 +79,8 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 	@Setter(PARENT_URI_KEY)
 	public void setParentURI(String parentURI);
 
-	public abstract static class SubClassStatementActorReferenceImpl extends ActorReferenceImpl<SubClassStatement> implements
-			SubClassStatementActorReference {
+	public abstract static class SubClassStatementActorReferenceImpl extends ActorReferenceImpl<SubClassStatement>
+			implements SubClassStatementActorReference {
 
 		static final Logger logger = FlexoLogger.getLogger(SubClassStatementActorReferenceImpl.class.getPackage().toString());
 
@@ -113,7 +112,7 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 		}
 
 		@Override
-		public SubClassStatement getModellingElement() {
+		public SubClassStatement getModellingElement(boolean forceLoading) {
 			if (statement == null) {
 				OWLOntology ontology = (OWLOntology) getModelSlotInstance().getAccessedResourceData();
 				if (ontology != null) {
@@ -123,7 +122,8 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 						// TODO: also handle value here
 						statement = ((OWLConcept<?>) subject).getSubClassStatement(parent);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
 			}

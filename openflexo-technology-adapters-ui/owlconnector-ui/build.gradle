@@ -1,0 +1,43 @@
+dependencies {
+  compile project(":owlconnector")
+
+  // openflexo dep
+  compile flexoUi()
+  compile flexoOntologyUi()
+
+  runtime fmlTechnologyAdapterUi()
+
+  // external dep
+  // testing dep
+  testCompile flexoUiTest()
+
+  // Test resource center
+  testRuntime project(':owlconnector-test-rc')
+}
+task nonuiTest(type: Test) {
+  ignoreFailures = true
+  exclude '**/TestFIBOWLClassSelector.class'
+  exclude '**/TestFIBOWLIndividualSelector.class'
+  exclude '**/TestFIBOWLOntologyBrowser.class'
+  exclude '**/TestFIBOWLOntologyBrowserOnSKOSOntology.class'
+  exclude '**/TestFIBOWLOntologyEditor.class'
+  exclude '**/TestFIBOWLOntologyEditorOnArchimate.class'
+  exclude '**/TestFIBOWLOntologyEditorOnSKOSOntology.class'
+  exclude '**/TestFIBOWLPropertySelector*'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
+  include '**/TestFIBOWLClassSelector.class'
+  include '**/TestFIBOWLIndividualSelector.class'
+  include '**/TestFIBOWLOntologyBrowser.class'
+  include '**/TestFIBOWLOntologyBrowserOnSKOSOntology.class'
+  include '**/TestFIBOWLOntologyEditor.class'
+  include '**/TestFIBOWLOntologyEditorOnArchimate.class'
+  include '**/TestFIBOWLOntologyEditorOnSKOSOntology.class'
+  include '**/TestFIBOWLPropertySelector.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
+}

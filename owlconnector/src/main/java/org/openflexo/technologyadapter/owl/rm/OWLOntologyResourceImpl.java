@@ -38,32 +38,24 @@
 
 package org.openflexo.technologyadapter.owl.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.RDFWriter;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.toolbox.IProgress;
-
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
 
 /**
  * Represents the resource associated to a {@link OWLOntology}
@@ -74,75 +66,6 @@ import com.hp.hpl.jena.rdf.model.RDFWriter;
 public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology> implements OWLOntologyResource {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceImpl.class.getPackage().getName());
-
-	/**
-	 * Creates a new {@link OWLOntologyResource} asserting this is an explicit creation: no file is present on file system<br>
-	 * This method should not be used to retrieve the resource from a file in the file system, use
-	 * {@link #retrieveOWLOntologyResource(File, OWLOntologyLibrary)} instead
-	 * 
-	 * @param ontologyURI
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					OWLOntologyResource.class));
-			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
-			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
-			returned.setOntologyLibrary(ontologyLibrary);
-			returned.initName(owlFile.getName());
-			// returned.setFile(owlFile);
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
-			returned.setURI(ontologyURI);
-			// Register the ontology
-			ontologyLibrary.registerResource(returned);
-
-			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-
-			// Creates the ontology
-			returned.setResourceData(OWLOntology.createOWLEmptyOntology(ontologyURI, owlFile, ontologyLibrary,
-					ontologyLibrary.getTechnologyAdapter()));
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
-	 * system<br>
-	 * This method should not be used to explicitely build a new ontology
-	 * 
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					OWLOntologyResource.class));
-			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
-			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
-			returned.setOntologyLibrary(ontologyLibrary);
-			returned.initName(OWLOntology.findOntologyName(owlFile));
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
-			returned.setURI(OWLOntology.findOntologyURI(owlFile));
-			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			// Register the ontology
-			ontologyLibrary.registerOntology(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * Load the &quot;real&quot; load resource data of this resource.
@@ -156,8 +79,10 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 * @throws FlexoException
 	 */
 	@Override
-	public OWLOntology loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		OWLOntology returned = new OWLOntology(getURI(), getFile(), getOntologyLibrary(), getTechnologyAdapter());
+	public OWLOntology loadResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+		OWLOntology returned = new OWLOntology(getURI(), getIODelegate().getSerializationArtefactAsResource(), getOntologyLibrary(),
+				getTechnologyAdapter());
 		returned.setResource(this);
 		resourceData = returned;
 		return returned;
@@ -175,70 +100,62 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFileFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getIODelegate().getSerializationArtefact());
 			}
-			throw new SaveResourcePermissionDeniedException(getFileFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFileFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			_writeToFile();
-			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+				logger.info("Succeeding to save Resource " + getURI());
 			}
 		}
 	}
 
 	private void _writeToFile() throws SaveResourceException {
-		System.out.println("Saving OWL ontology to " + getFile().getAbsolutePath());
-		FileOutputStream out = null;
+		System.out.println("Saving OWL ontology to " + getIODelegate().getSerializationArtefact());
 		try {
 			OWLOntology ontology = getResourceData(null);
 			OntModel ontModel = ontology.getOntModel();
 			ontModel.setNsPrefix("base", ontology.getURI());
-			out = new FileOutputStream(getFile());
-			RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
-			writer.setProperty("xmlbase", ontology.getURI());
-			writer.write(ontModel.getBaseModel(), out, ontology.getURI());
-			// getOntModel().setNsPrefix("base", getOntologyURI());
-			// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
-			clearIsModified(true);
-			logger.info("Wrote " + getFile());
+			try (OutputStream out = getIODelegate().getSerializationArtefactAsResource().openOutputStream()) {
+				// out = new FileOutputStream(getFile());
+				RDFWriter writer = ontModel.getWriter("RDF/XML-ABBREV");
+				writer.setProperty("xmlbase", ontology.getURI());
+				writer.write(ontModel.getBaseModel(), out, ontology.getURI());
+				// getOntModel().setNsPrefix("base", getOntologyURI());
+				// getOntModel().write(out, "RDF/XML-ABBREV", getOntologyURI()); // "RDF/XML-ABBREV"
+				clearIsModified(true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			logger.warning("FileNotFoundException: " + e.getMessage());
-			throw new SaveResourceException(getFileFlexoIODelegate());
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.warning("IOException: " + e.getMessage());
-				throw new SaveResourceException(getFileFlexoIODelegate());
-			}
+			throw new SaveResourceException(getIODelegate());
 		}
-
 	}
 
 	@Override
@@ -283,14 +200,6 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	@Override
 	public Class<OWLOntology> getResourceDataClass() {
 		return OWLOntology.class;
-	}
-
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
-	}
-
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
 	}
 
 }

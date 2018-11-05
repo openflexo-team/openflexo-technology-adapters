@@ -38,29 +38,30 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
-public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateExampleDiagramFromPPTSlide, DiagramSpecification> {
+public class CreateExampleDiagramFromPPTSlide
+		extends AbstractCreateDiagramFromPPTSlide<CreateExampleDiagramFromPPTSlide, DiagramSpecification> {
 
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> actionType = new FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject>(
-			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> actionType = new FlexoActionFactory<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject>(
+			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -92,39 +93,37 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram from ppt slide");
-		String newDiagramURI = getFocusedObject().getURI() + "/" + getDiagramName();
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class);
 
-		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), newDiagramURI, getDiagramFile(), getFocusedObject().getResource()));
-		getFocusedObject().getResource().addToContents(getDiagramResource());
-		getFocusedObject().addToExampleDiagrams(getDiagramResource().getDiagram());
-		getDiagramResource().save(null);
-		if (getSlide() != null){
-		super.convertSlideToDiagram(getSlide());
+		try {
+			DiagramResource newDiagramResource = _makeDiagram();
+
+			setDiagramResource(newDiagramResource);
+
+			if (getSlide() != null) {
+				super.convertSlideToDiagram(getSlide());
+			}
+			else {
+				System.out.println("Error: no Slide");
+			}
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
 		}
-		else {
-			System.out.println("Error: no Slide");
-		}
-	}
-	
-	@Override
-	public File getDiagramFile() {
-		if (super.getDiagramFile() == null) {
-			return getDefaultDiagramFile();
-		}
-		return super.getDiagramFile();
+
 	}
 
-	@Override
-	public void setDiagramFile(File diagramFile) {
-		setDiagramFile(diagramFile);
+	protected DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		String diagramName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
+				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
+				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), true);
+
+		return newDiagramResource;
 	}
 
-	public File getDefaultDiagramFile() {
-		return new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}
 }

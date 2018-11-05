@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -50,36 +51,36 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.apache.jena.graph.GraphMaker;
+import org.apache.jena.graph.impl.SimpleGraphMaker;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.ModelMaker;
+import org.apache.jena.rdf.model.ModelReader;
+import org.apache.jena.rdf.model.impl.ModelCom;
+import org.apache.jena.shared.AlreadyExistsException;
+import org.apache.jena.shared.DoesNotExistException;
+import org.apache.jena.util.iterator.ExtendedIterator;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.converter.OntologyObjectConverter;
 import org.openflexo.foundation.ontology.OntologyUtils;
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
+import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
-import org.openflexo.toolbox.ToolBox;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
-import com.hp.hpl.jena.graph.GraphMaker;
-import com.hp.hpl.jena.graph.impl.SimpleGraphMaker;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ModelMaker;
-import com.hp.hpl.jena.rdf.model.ModelReader;
-import com.hp.hpl.jena.rdf.model.impl.ModelCom;
-import com.hp.hpl.jena.shared.AlreadyExistsException;
-import com.hp.hpl.jena.shared.DoesNotExistException;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 /**
  * The {@link OWLOntologyLibrary} works in conjunction with a {@link FlexoResourceCenterService}. It provides the mechanism to keep
@@ -88,17 +89,22 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
  * @author sylvain
  * 
  */
-public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAdapter> implements ModelMaker,
-		RemovalListener<OWLOntology, Set<OWLOntology>> {
+public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter>
+		implements ModelMaker, RemovalListener<OWLOntology, Set<OWLOntology>> {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyLibrary.class.getPackage().getName());
 
-	public static final String FLEXO_CONCEPT_ONTOLOGY_URI = "http://www.agilebirds.com/openflexo/ontologies/FlexoConceptsOntology.owl";
+	// public static final String FLEXO_CONCEPT_ONTOLOGY_URI =
+	// "http://www.agilebirds.com/openflexo/ontologies/FlexoConceptsOntology.owl";
 
-	public static final String OPENFLEXO_DESCRIPTION_URI = FLEXO_CONCEPT_ONTOLOGY_URI + "#openflexoDescription";
-	public static final String BUSINESS_DESCRIPTION_URI = FLEXO_CONCEPT_ONTOLOGY_URI + "#businessDescription";
-	public static final String TECHNICAL_DESCRIPTION_URI = FLEXO_CONCEPT_ONTOLOGY_URI + "#technicalDescription";
-	public static final String USER_MANUAL_DESCRIPTION_URI = FLEXO_CONCEPT_ONTOLOGY_URI + "#userManualDescription";
+	// public static final String OPENFLEXO_DESCRIPTION_URI =
+	// FLEXO_CONCEPT_ONTOLOGY_URI + "#openflexoDescription";
+	// public static final String BUSINESS_DESCRIPTION_URI =
+	// FLEXO_CONCEPT_ONTOLOGY_URI + "#businessDescription";
+	// public static final String TECHNICAL_DESCRIPTION_URI =
+	// FLEXO_CONCEPT_ONTOLOGY_URI + "#technicalDescription";
+	// public static final String USER_MANUAL_DESCRIPTION_URI =
+	// FLEXO_CONCEPT_ONTOLOGY_URI + "#userManualDescription";
 
 	private final SimpleGraphMaker graphMaker;
 
@@ -112,7 +118,8 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
-		} else {
+		}
+		else {
 			StatementWithProperty returned = new StatementWithProperty(aProperty);
 			statementsWithProperty.put(aProperty, returned);
 			return returned;
@@ -122,22 +129,24 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 	public OWLOntologyLibrary(OWLTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 
-		ontologyObjectConverter = new OntologyObjectConverter(null/*this*/);
+		ontologyObjectConverter = new OntologyObjectConverter(null/* this */);
 		graphMaker = new SimpleGraphMaker();
 
-		ontologies = new HashMap<String, OWLOntologyResource>();
-		dataTypes = new HashMap<String, OWLDataType>();
+		ontologies = new HashMap<>();
+		dataTypes = new HashMap<>();
 
-		statementsWithProperty = new Hashtable<OWLProperty, StatementWithProperty>();
+		statementsWithProperty = new Hashtable<>();
 
 	}
 
 	private boolean defaultOntologiesLoaded = false;
 
 	public void init() {
+
 		if (defaultOntologiesLoaded) {
 			return;
 		}
+
 		logger.info("Instantiating OWLOntologyLibrary Done. Trying to load some ontologies...");
 
 		logger.info("ontologies=" + ontologies);
@@ -145,35 +154,39 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 		logger.info("rcService=" + getServiceManager().getResourceCenterService());
 		logger.info("resources centers: " + getServiceManager().getResourceCenterService().getResourceCenters());
 
-		// logger.info("getRDFSOntology()=" + getRDFSOntology());
-		// logger.info("getRDFOntology()=" + getRDFOntology());
-		// logger.info("getOWLOntology()=" + getOWLOntology());
-		// logger.info("getFlexoConceptOntology()=" + getFlexoConceptOntology());
+		logger.info("getRDFSOntology()=" + getRDFSOntology());
+		logger.info("getRDFOntology()=" + getRDFOntology());
+		logger.info("getOWLOntology()=" + getOWLOntology());
+		// logger.info("getFlexoConceptOntology()=" +
+		// getFlexoConceptOntology());
 
 		FlexoResource<OWLOntology> rdfsOntologyResource = ontologies.get(RDFSURIDefinitions.RDFS_ONTOLOGY_URI);
 		logger.info("rdfsOntologyResource=" + rdfsOntologyResource);
 
-		if (getRDFSOntology() != null && getRDFOntology() != null && getOWLOntology() != null && getFlexoConceptOntology() != null) {
+		if (getRDFSOntology() != null && getRDFOntology() != null && getOWLOntology() != null
+		/* && getFlexoConceptOntology() != null */) {
 			logger.info("Loading some ontologies...");
 			getRDFSOntology().loadWhenUnloaded();
 			getRDFOntology().loadWhenUnloaded();
 			getOWLOntology().loadWhenUnloaded();
-			// Because some ontologies have cross reference, we update again concept and properties to setup cross references
+			// Because some ontologies have cross reference, we update again
+			// concept and properties to setup cross references
 			getRDFSOntology().updateConceptsAndProperties();
 			getRDFOntology().updateConceptsAndProperties();
 			getOWLOntology().updateConceptsAndProperties();
-			// Because we have updated again, we have to clear the modification stamp
+			// Because we have updated again, we have to clear the modification
+			// stamp
 			getRDFSOntology().clearIsModified();
 			getRDFOntology().clearIsModified();
 			getOWLOntology().clearIsModified();
-			getFlexoConceptOntology().loadWhenUnloaded();
+			// getFlexoConceptOntology().loadWhenUnloaded();
 			defaultOntologiesLoaded = true;
 		}
 	}
 
 	@Override
 	public OWLTechnologyAdapter getTechnologyAdapter() {
-		return (OWLTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 	public OWLDataType getDataType(String dataTypeURI) {
@@ -187,7 +200,7 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 	}
 
 	public List<OWLDataType> getDataTypes() {
-		ArrayList<OWLDataType> returned = new ArrayList<OWLDataType>();
+		ArrayList<OWLDataType> returned = new ArrayList<>();
 		for (OWLDataType dt : dataTypes.values()) {
 			returned.add(dt);
 		}
@@ -210,22 +223,20 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 	 * @return
 	 */
 	public OWLOntology getOntology(String ontologyURI) {
-		/*for (FlexoResourceCenter rc : resourceCenterService.getResourceCenters()) {
-			MetaModelRepository<? extends OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> mmRep = rc
-					.getMetaModelRepository(adapter);
-			OWLOntologyResource mmResource = mmRep.getResource(ontologyURI);
-			if (mmResource != null) {
-				return mmResource.getResourceData();
-			}
-			ModelRepository<? extends OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> mRep = rc
-					.getModelRepository(adapter);
-			OWLOntologyResource mResource = mmRep.getResource(ontologyURI);
-			if (mResource != null) {
-				return mResource.getResourceData();
-			}
-		}
-		logger.warning("Not found ontology: " + ontologyURI);
-		return null;*/
+		/*
+		 * for (FlexoResourceCenter rc :
+		 * resourceCenterService.getResourceCenters()) { MetaModelRepository<?
+		 * extends OWLOntologyResource, OWLOntology, OWLOntology,
+		 * OWLTechnologyAdapter> mmRep = rc .getMetaModelRepository(adapter);
+		 * OWLOntologyResource mmResource = mmRep.getResource(ontologyURI); if
+		 * (mmResource != null) { return mmResource.getResourceData(); }
+		 * ModelRepository<? extends OWLOntologyResource, OWLOntology,
+		 * OWLOntology, OWLTechnologyAdapter> mRep = rc
+		 * .getModelRepository(adapter); OWLOntologyResource mResource =
+		 * mmRep.getResource(ontologyURI); if (mResource != null) { return
+		 * mResource.getResourceData(); } }
+		 * logger.warning("Not found ontology: " + ontologyURI); return null;
+		 */
 		FlexoResource<OWLOntology> ontologyResource = ontologies.get(ontologyURI);
 		if (ontologyResource != null) {
 			try {
@@ -245,9 +256,10 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 		return null;
 	}
 
-	public OWLOntology getFlexoConceptOntology() {
-		return getOntology(FLEXO_CONCEPT_ONTOLOGY_URI);
-	}
+	/*
+	 * public OWLOntology getFlexoConceptOntology() { return
+	 * getOntology(FLEXO_CONCEPT_ONTOLOGY_URI); }
+	 */
 
 	public OWLOntology getRDFOntology() {
 		return getOntology(RDFURIDefinitions.RDF_ONTOLOGY_URI);
@@ -259,6 +271,10 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 
 	public OWLOntology getOWLOntology() {
 		return getOntology(OWL2URIDefinitions.OWL_ONTOLOGY_URI);
+	}
+
+	public Collection<OWLOntologyResource> getRegisteredOntologies() {
+		return ontologies.values();
 	}
 
 	@Override
@@ -289,15 +305,16 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 			return ont.getOntModel();
 		}
 		if (!strict) {
-			/*OWLMetaModel newOntology = new OWLMetaModel(name, null, this);
-			newOntology.setOntModel(createFreshModel());
-			ontologies.put(name, newOntology);
-			setChanged();
-			notifyObservers(new OntologyImported(newOntology));
-			return newOntology.getOntModel();*/
+			/*
+			 * OWLMetaModel newOntology = new OWLMetaModel(name, null, this);
+			 * newOntology.setOntModel(createFreshModel()); ontologies.put(name,
+			 * newOntology); setChanged(); notifyObservers(new
+			 * OntologyImported(newOntology)); return newOntology.getOntModel();
+			 */
 			logger.warning("Not implemented yet !!!");
 			return null;
-		} else {
+		}
+		else {
 			throw new DoesNotExistException(name);
 		}
 	}
@@ -317,12 +334,12 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 			}
 			return createDefaultModel();
 		}
-		/*OWLMetaModel newOntology = new OWLMetaModel(name, null, this);
-		newOntology.setOntModel(createFreshModel());
-		ontologies.put(name, newOntology);
-		setChanged();
-		notifyObservers(new OntologyImported(newOntology));
-		return newOntology.getOntModel();*/
+		/*
+		 * OWLMetaModel newOntology = new OWLMetaModel(name, null, this);
+		 * newOntology.setOntModel(createFreshModel()); ontologies.put(name,
+		 * newOntology); setChanged(); notifyObservers(new
+		 * OntologyImported(newOntology)); return newOntology.getOntModel();
+		 */
 		logger.warning("Not implemented yet !!!");
 		return null;
 	}
@@ -391,7 +408,7 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 		if (StringUtils.isEmpty(conceptURI.trim())) {
 			return false;
 		}
-		return conceptURI.equals(ToolBox.getJavaName(conceptURI, true, false)) && !isDuplicatedURI(ontologyURI, conceptURI);
+		return conceptURI.equals(JavaUtils.getJavaName(conceptURI)) && !isDuplicatedURI(ontologyURI, conceptURI);
 	}
 
 	/**
@@ -431,6 +448,8 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 			return allImportedOntologiesMapCache.get(ontology);
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+			System.err.println("Caused by: ");
+			e.getCause().printStackTrace();
 			return null;
 		}
 	}

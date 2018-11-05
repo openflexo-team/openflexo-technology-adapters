@@ -44,21 +44,22 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(SelectPowerpointSlide.SelectPowerpointSlideImpl.class)
 @XMLElement
 @FML("SelectPowerpointSlide")
-public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlide> {
+public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide> {
 
-	public static abstract class SelectPowerpointSlideImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlide> implements
-			SelectPowerpointSlide {
+	public static abstract class SelectPowerpointSlideImpl
+			extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide> implements SelectPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointSlide.class.getPackage().getName());
 
@@ -68,24 +69,7 @@ public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModel
 		}
 
 		@Override
-		public List<PowerpointSlide> execute(FlexoBehaviourAction action) {
-
-			if (getModelSlotInstance(action) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
-
-			/*ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getResourceData();
-
-			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
-
-			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
-
-			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, action);*/
+		public List<PowerpointSlide> execute(RunTimeEvaluationContext evaluationContext) {
 
 			return null;
 		}

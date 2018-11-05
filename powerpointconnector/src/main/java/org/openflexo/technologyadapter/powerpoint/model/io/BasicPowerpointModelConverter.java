@@ -48,7 +48,6 @@ import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
 import org.apache.poi.hslf.model.ShapeGroup;
-import org.apache.poi.hslf.model.SimpleShape;
 import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.model.TextBox;
 import org.apache.poi.hslf.usermodel.SlideShow;
@@ -60,7 +59,6 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointPicture;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShapeGroup;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointSimpleShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointTextBox;
@@ -70,7 +68,7 @@ public class BasicPowerpointModelConverter {
 	private static final Logger logger = Logger.getLogger(BasicPowerpointModelConverter.class.getPackage().getName());
 
 	/** Powerpoint Objects. */
-	protected final Map<Object, PowerpointObject> powerpointObjects = new HashMap<Object, PowerpointObject>();
+	protected final Map<Object, PowerpointObject> powerpointObjects = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -94,7 +92,8 @@ public class BasicPowerpointModelConverter {
 	/**
 	 * Convert a Sheet into an Excel Sheet
 	 */
-	public PowerpointSlide convertPowerpointSlideToSlide(Slide slide, PowerpointSlideshow slideshow, PowerpointTechnologyAdapter technologyAdapter) {
+	public PowerpointSlide convertPowerpointSlideToSlide(Slide slide, PowerpointSlideshow slideshow,
+			PowerpointTechnologyAdapter technologyAdapter) {
 		PowerpointSlide powerpointSlide = null;
 		if (powerpointObjects.get(slide) == null) {
 			powerpointSlide = new PowerpointSlide(slide, slideshow, technologyAdapter);
@@ -103,7 +102,8 @@ public class BasicPowerpointModelConverter {
 				PowerpointShape powerpointShape = convertPowerpointShapeToShape(shape, powerpointSlide, technologyAdapter);
 				powerpointSlide.addToPowerpointShapes(powerpointShape);
 			}
-		} else {
+		}
+		else {
 			powerpointSlide = (PowerpointSlide) powerpointObjects.get(slide);
 		}
 		return powerpointSlide;
@@ -112,38 +112,39 @@ public class BasicPowerpointModelConverter {
 	/**
 	 * Convert a Shape into a PowerpointShape
 	 */
-	public PowerpointShape convertPowerpointShapeToShape(Shape shape, PowerpointSlide powerpointSlide, PowerpointTechnologyAdapter technologyAdapter) {
-		PowerpointShape powerpointShape=null;
+	public PowerpointShape convertPowerpointShapeToShape(Shape shape, PowerpointSlide powerpointSlide,
+			PowerpointTechnologyAdapter technologyAdapter) {
+		PowerpointShape powerpointShape = null;
 		if (powerpointObjects.get(shape) == null) {
-			if(shape instanceof TextBox){
-				powerpointShape = new PowerpointTextBox((TextBox)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof TextBox) {
+				powerpointShape = new PowerpointTextBox((TextBox) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof AutoShape){
-				powerpointShape = new PowerpointAutoShape((AutoShape)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof AutoShape) {
+				powerpointShape = new PowerpointAutoShape((AutoShape) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof Line){
-				powerpointShape = new PowerpointLine((Line)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof Line) {
+				powerpointShape = new PowerpointLine((Line) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof Picture){
-				powerpointShape = new PowerpointPicture((Picture)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof Picture) {
+				powerpointShape = new PowerpointPicture((Picture) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof Line){
-				powerpointShape = new PowerpointLine((Line)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof Line) {
+				powerpointShape = new PowerpointLine((Line) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof Background){
-				powerpointShape = new PowerpointBackground((Background)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof Background) {
+				powerpointShape = new PowerpointBackground((Background) shape, powerpointSlide, technologyAdapter);
 			}
-			if(shape instanceof ShapeGroup){
-				powerpointShape = new PowerpointShapeGroup((ShapeGroup)shape, powerpointSlide, technologyAdapter);
+			if (shape instanceof ShapeGroup) {
+				powerpointShape = new PowerpointShapeGroup((ShapeGroup) shape, powerpointSlide, technologyAdapter);
 			}
 			powerpointObjects.put(shape, powerpointShape);
-		} else {
+		}
+		else {
 			powerpointShape = (PowerpointShape) powerpointObjects.get(shape);
 		}
 
 		return powerpointShape;
 	}
-
 
 	/**
 	 * Getter of excel objects.

@@ -44,22 +44,19 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.CannotRenameException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.resource.ScreenshotBuilder;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 
 /**
  * Default implementation for a diagram in Openflexo build-in diagram technology<br>
@@ -75,24 +72,24 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	private ScreenshotImage<Diagram> screenshotImage;
 	private File expectedScreenshotImageFile = null;
 
-	public static DiagramResource newDiagramResource(String diagramName, String diagramTitle, String uri, File diagramFile,
-			DiagramSpecification diagramSpecification, FlexoServiceManager serviceManager) throws InvalidFileNameException,
-			SaveResourceException {
-
+	/*public static DiagramResource newDiagramResource(String diagramName, String diagramTitle, String uri, File diagramFile,
+			DiagramSpecification diagramSpecification, FlexoResourceCenter<?> resourceCenter, FlexoServiceManager serviceManager)
+					throws InvalidFileNameException, SaveResourceException {
+	
 		DiagramResource newDiagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, uri, diagramFile,
-				diagramSpecification.getResource(), serviceManager);
-
+				diagramSpecification.getResource(), resourceCenter, serviceManager);
+	
 		Diagram newDiagram = newDiagramResource.getFactory().makeNewDiagram(diagramSpecification);
 		newDiagramResource.setResourceData(newDiagram);
 		newDiagram.setResource(newDiagramResource);
 		// diagramSpecification.addToExampleDiagrams(newDiagram);
-
+	
 		newDiagram.setTitle(diagramTitle);
-
+	
 		newDiagramResource.save(null);
-
+	
 		return newDiagramResource;
-	}
+	}*/
 
 	@Override
 	public DiagramSpecification getMetaModel() {
@@ -101,16 +98,17 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		if (getResource() != null && getResource().getServiceManager() != null) {
-			return getResource().getServiceManager().getService(TechnologyAdapterService.class)
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		if (getResource() != null) {
+			FlexoServiceManager sm = getResource().getServiceManager();
+			if (sm != null)
+				return sm.getService(TechnologyAdapterService.class).getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 		return null;
 	}
 
 	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+		if (expectedScreenshotImageFile == null && getResource().getIODelegate() instanceof FileIODelegate) {
+			FileIODelegate delegate = (FileIODelegate) getResource().getIODelegate();
 			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 		}
 		return expectedScreenshotImageFile;
@@ -135,7 +133,7 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 		return null;
 	}
 
-	private ScreenshotImage<Diagram> tryToLoadScreenshotImage() {
+	private static ScreenshotImage<Diagram> tryToLoadScreenshotImage() {
 		// TODO
 		/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
 			BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());
@@ -170,6 +168,14 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	public synchronized void setIsModified() {
 		super.setIsModified();
 		screenshotModified = true;
+	}
+
+	@Override
+	protected String getDefaultName() {
+		if (getResource() != null) {
+			return getResource().getName();
+		}
+		return "Diagram" + getFlexoID();
 	}
 
 	@Override
@@ -278,4 +284,9 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	private String diagramSpecificationURI;
 
+	@Override
+	public Object getObject(String objectURI) {
+		// TODO
+		return null;
+	}
 }

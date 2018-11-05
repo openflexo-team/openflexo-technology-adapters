@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -57,7 +56,7 @@ import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 @FML("SubClassStatementRole")
 public interface SubClassStatementRole extends StatementRole<SubClassStatement> {
 
-	public static abstract class SubClassStatementRoleImpl extends StatementRoleImpl<SubClassStatement> implements SubClassStatementRole {
+	public static abstract class SubClassStatementRoleImpl extends StatementRoleImpl<SubClassStatement>implements SubClassStatementRole {
 
 		static final Logger logger = FlexoLogger.getLogger(SubClassStatementRole.class.getPackage().toString());
 
@@ -72,7 +71,7 @@ public interface SubClassStatementRole extends StatementRole<SubClassStatement> 
 
 		@Override
 		public String getTypeDescription() {
-			return FlexoLocalization.localizedForKey("sub_class_statement");
+			return getLocales().localizedForKey("sub_class_statement");
 		}
 
 		@Override

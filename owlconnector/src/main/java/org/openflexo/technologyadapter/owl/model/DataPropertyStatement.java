@@ -43,11 +43,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataPropertyValue;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class DataPropertyStatement extends PropertyStatement implements IFlexoOntologyDataPropertyValue<OWLTechnologyAdapter> {
 
@@ -61,7 +60,8 @@ public class DataPropertyStatement extends PropertyStatement implements IFlexoOn
 		property = getOntology().getDataProperty(s.getPredicate().getURI());
 		if (s.getObject() instanceof Literal) {
 			literal = (Literal) s.getObject();
-		} else {
+		}
+		else {
 			logger.warning("DataPropertyStatement: object is not a Literal !");
 		}
 	}

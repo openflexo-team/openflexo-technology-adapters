@@ -44,9 +44,10 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -114,11 +115,11 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 		}
 
 		@Override
-		public ActorReference<XMLIndividual> makeActorReference(XMLIndividual object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ActorReference<XMLIndividual> makeActorReference(XMLIndividual object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			XMLActorReference<XMLIndividual> returned = factory.newInstance(XMLActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
 		}
@@ -139,6 +140,11 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getTypeDescription() + " from "
 					+ getModelSlot().getName() + " ;", context);
 			return out.toString();
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return XMLTechnologyAdapter.class;
 		}
 
 	}

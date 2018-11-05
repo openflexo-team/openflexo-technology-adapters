@@ -43,10 +43,8 @@ import java.util.logging.Logger;
 
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -58,7 +56,6 @@ import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-@FIBPanel("Fib/AddOSLCResourcePanel.fib")
 @ModelEntity
 @ImplementationClass(AddOSLCResource.AddOSLCResourceImpl.class)
 @XMLElement
@@ -75,8 +72,9 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 	@Setter(CREATION_FACTORY)
 	public void setCreationFactory(DataBinding<CreationFactory> creationFactory);
 
-	public static abstract class AddOSLCResourceImpl extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCResource> implements
-			AddOSLCResource {
+	public static abstract class AddOSLCResourceImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource>
+			implements AddOSLCResource {
 
 		private DataBinding<CreationFactory> creationFactory;
 
@@ -92,7 +90,7 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		}
 
 		@Override
-		public OSLCResource execute(FlexoBehaviourAction action) {
+		public OSLCResource execute(RunTimeEvaluationContext evaluationContext) {
 
 			OSLCResource resource = null;
 
@@ -100,14 +98,9 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
-		}
-
-		@Override
 		public DataBinding<CreationFactory> getCreationFactory() {
 			if (creationFactory == null) {
-				creationFactory = new DataBinding<CreationFactory>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
+				creationFactory = new DataBinding<>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
 				creationFactory.setBindingName("creationFactory");
 			}
 			return creationFactory;

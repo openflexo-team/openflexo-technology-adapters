@@ -38,16 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagram;
 import org.openflexo.view.controller.ActionInitializer;
@@ -64,26 +61,16 @@ public class DeleteDiagramInitializer extends ActionInitializer<DeleteDiagram, D
 
 	@Override
 	protected FlexoActionInitializer<DeleteDiagram> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteDiagram>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagram action) {
-				return FlexoController.confirm(FlexoLocalization.localizedForKey("really_delete_this_diagram_?"));
-			}
-		};
+		return (e, action) -> FlexoController.confirm(action.getLocales().localizedForKey("really_delete_this_diagram_?"));
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagram> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagram>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagram action) {
-				return true;
-			}
-		};
+		return (e, action) -> true;
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

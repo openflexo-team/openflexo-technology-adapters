@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.FileNotFoundException;
@@ -51,23 +50,22 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 
-public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLResource {
-	
-	protected static final Logger logger   = Logger.getLogger(XMLResourceImpl.class.getPackage().getName());
+public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel>implements XMLResource {
 
+	protected static final Logger logger = Logger.getLogger(XMLResourceImpl.class.getPackage().getName());
 
 	@Override
-    public XMLModel getModel() {
-        return getModelData();
-    }
+	public XMLModel getModel() {
+		return getModelData();
+	}
 
 	@Override
 	public XMLModel getModelData() {
 
 		if (resourceData == null) {
-			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-			//, getTechnologyAdapter()); 
-			//new XMLModel(this.getTechnologyAdapter());
+			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+			// , getTechnologyAdapter());
+			// new XMLModel(this.getTechnologyAdapter());
 			resourceData.setResource(this);
 		}
 
@@ -82,11 +80,12 @@ public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implem
 				e.printStackTrace();
 			}
 		}
+
 		return resourceData;
 	}
 
 	@Override
-	public void attachMetamodel(){
+	public void attachMetamodel() {
 		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
 		if (mmRes != null) {
 			resourceData.setMetaModel(mmRes.getMetaModelData());
@@ -95,5 +94,5 @@ public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implem
 			logger.warning("Setting a null Metamodel for Model " + this.getURI());
 		}
 	}
-	
+
 }

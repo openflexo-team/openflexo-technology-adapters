@@ -48,14 +48,13 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.ConversionException;
+import org.apache.jena.ontology.OntProperty;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.ConversionException;
-import com.hp.hpl.jena.ontology.OntProperty;
 
 public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> {
 
@@ -80,12 +79,12 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	protected OWLProperty(OntProperty anOntProperty, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anOntProperty, ontology, adapter);
 		ontProperty = anOntProperty;
-		superProperties = new Vector<OWLProperty>();
-		domainStatementList = new ArrayList<DomainStatement>();
-		rangeStatementList = new ArrayList<RangeStatement>();
+		superProperties = new Vector<>();
+		domainStatementList = new ArrayList<>();
+		rangeStatementList = new ArrayList<>();
 		domainList = null;
 		rangeList = null;
-		referencingRestrictions = new ArrayList<OWLRestriction>();
+		referencingRestrictions = new ArrayList<>();
 	}
 
 	/**
@@ -145,9 +144,9 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	private void updateSuperProperties(OntProperty anOntProperty) {
 		// superClasses.clear();
 		try {
-			Iterator it = anOntProperty.listSuperProperties(true);
+			Iterator<? extends OntProperty> it = anOntProperty.listSuperProperties(true);
 			while (it.hasNext()) {
-				OntProperty father = (OntProperty) it.next();
+				OntProperty father = it.next();
 				OWLProperty fatherProp = getOntology().getProperty(father.getURI());
 				if (fatherProp != null) {
 					if (!superProperties.contains(fatherProp)) {
@@ -184,7 +183,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	@Override
 	public final List<OWLProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
-			List<OWLProperty> returned = new Vector<OWLProperty>();
+			List<OWLProperty> returned = new Vector<>();
 			for (OWLDataProperty p : ((OWLOntology) context).getAccessibleDataProperties()) {
 				if (p.isSubConceptOf(this)) {
 					if (!returned.contains(p)) {
@@ -335,7 +334,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	public List<OWLConcept<?>> getDomainList() {
 		if (domainList == null) {
-			domainList = new ArrayList<OWLConcept<?>>();
+			domainList = new ArrayList<>();
 			for (DomainStatement s : getDomainStatementList()) {
 				if (s.getDomain() != null) {
 					domainList.add(s.getDomain());
@@ -347,7 +346,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	public List<OWLConcept<?>> getRangeList() {
 		if (rangeList == null) {
-			rangeList = new ArrayList<OWLConcept<?>>();
+			rangeList = new ArrayList<>();
 			for (RangeStatement s : getRangeStatementList()) {
 				if (s.getRange() != null) {
 					rangeList.add(s.getRange());

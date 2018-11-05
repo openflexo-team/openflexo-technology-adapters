@@ -40,22 +40,32 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-// FIXME when we have discussed about File repo issues
-// public class XSDMetaModelRepository extends TechnologyAdapterResourceRepository<XSDMetaModelResource, XMLTechnologyAdapter,  XMLMetaModel > {
-public class XSDMetaModelRepository extends MetaModelRepository<XSDMetaModelResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter > {
-	public XSDMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
-		super(adapter, resourceCenter);
-	}
+@ModelEntity
+public interface XSDMetaModelRepository<I>
+		extends MetaModelRepository<XSDMetaModelResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, I> {
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/XMLTechnologyAdapter/MetaModels";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
+	public static <I> XSDMetaModelRepository<I> instanciateNewRepository(XMLTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(XSDMetaModelRepository.class);
+			XSDMetaModelRepository<I> newRepository = factory.newInstance(XSDMetaModelRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(resourceCenter.getLocales().localizedForKey("[Metamodels]"));
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

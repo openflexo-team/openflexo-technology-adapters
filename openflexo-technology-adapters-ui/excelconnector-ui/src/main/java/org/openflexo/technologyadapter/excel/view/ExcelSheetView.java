@@ -49,6 +49,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeSupport;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
@@ -68,7 +69,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
@@ -85,8 +85,10 @@ import org.openflexo.swing.msct.MultiSpanCellTable;
 import org.openflexo.swing.msct.MultiSpanCellTableModel;
 import org.openflexo.swing.msct.TableCellExtendedRenderer;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRange;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.view.controller.FlexoController;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Widget allowing to edit/view a ExcelSheet.<br>
@@ -96,11 +98,13 @@ import org.openflexo.view.controller.FlexoController;
  * 
  */
 @SuppressWarnings("serial")
-public class ExcelSheetView extends JPanel {
+public class ExcelSheetView extends JPanel implements HasPropertyChangeSupport {
 	static final Logger logger = Logger.getLogger(ExcelSheetView.class.getPackage().getName());
 
+	public static final String SELECTED_CELL = "selectedCell";
+	public static final String SELECTED_CELL_RANGE = "selectedCellRange";
+
 	private final ExcelSheet sheet;
-	private final FlexoController controller;
 
 	private final ExcelSheetTableModel tableModel;
 	private final MultiSpanCellTable table;
@@ -108,10 +112,12 @@ public class ExcelSheetView extends JPanel {
 	private final JTextField cellIdentifier;
 	private final JTextField cellValue;
 
-	public ExcelSheetView(ExcelSheet sheet, FlexoController controller) {
+	private PropertyChangeSupport pcSupport;
+
+	public ExcelSheetView(ExcelSheet sheet) {
 		super(new BorderLayout());
+		pcSupport = new PropertyChangeSupport(this);
 		this.sheet = sheet;
-		this.controller = controller;
 		tableModel = new ExcelSheetTableModel();
 		table = new MultiSpanCellTable(tableModel);
 		table.setBackground(Color.WHITE);
@@ -127,9 +133,9 @@ public class ExcelSheetView extends JPanel {
 				col.setPreferredWidth(25);
 				col.setMinWidth(25);
 				col.setMaxWidth(100);
-				// col.setResizable(false);
 				col.setHeaderValue(null);
-			} else {
+			}
+			else {
 				col.setWidth(sheet.getSheet().getColumnWidth(i - 1) / 40);
 				col.setPreferredWidth(sheet.getSheet().getColumnWidth(i - 1) / 40);
 				col.setHeaderValue("" + Character.toChars(i + 64)[0]);
@@ -150,22 +156,6 @@ public class ExcelSheetView extends JPanel {
 				valueEditedForSelectedCell(cellValue.getText());
 			}
 		});
-		/*cellValue.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				valueEditedForSelectedCell(cellValue.getText());
-			}
-		});*/
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.add(cellIdentifier, BorderLayout.WEST);
 		topPanel.add(cellValue, BorderLayout.CENTER);
@@ -208,11 +198,11 @@ public class ExcelSheetView extends JPanel {
 		/*for (Object p : sheet.getSheet().getWorkbook().getAllPictures()) {
 			System.out.println("Picture: " + p);
 		}
-
+		
 		System.out.println("class = " + sheet.getSheet().getClass());
-
+		
 		if (sheet.getSheet() instanceof HSSFSheet) {
-
+		
 			List<HSSFShape> shapes = ((HSSFSheet) sheet.getSheet()).getDrawingPatriarch().getChildren();
 			System.out.println("Prout=" + shapes);
 			for (int i = 0; i < shapes.size(); i++) {
@@ -220,23 +210,42 @@ public class ExcelSheetView extends JPanel {
 				if (shapes.get(i) instanceof HSSFPicture) {
 					HSSFPicture pic = (HSSFPicture) shapes.get(i);
 					HSSFPictureData picdata = ((HSSFSheet) sheet.getSheet()).getWorkbook().getAllPictures().get(pic.getPictureIndex());
-
+		
 					System.out.println("New picture found : " + pic);
 					System.out.println("Anchor : " + pic.getAnchor());
 					System.out.println("file extension " + picdata.suggestFileExtension());
-
+		
 					// int pictureIndex = this.newSheet.getWorkbook().addPicture( picdata.getData(), picdata.getFormat());
-
+		
 					// this.newSheet.createDrawingPatriarch().createPicture((HSSFClientAnchor)pic.getAnchor()r, pictureIndex);
-
+		
 				}
-
+		
 			}
 		}*/
 	}
 
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return "deleted";
+	}
+
+	public void delete() {
+		getPropertyChangeSupport().firePropertyChange("deleted", false, true);
+		pcSupport = null;
+	}
+
 	public ExcelSheet getSheet() {
 		return sheet;
+	}
+
+	public MultiSpanCellTable getTable() {
+		return table;
 	}
 
 	/**
@@ -314,15 +323,16 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Color foreground = null;
 			Color background = null;
 
 			Border border = null;
 			Font font = null;
 
-			DefaultTableCellRenderer returned = (DefaultTableCellRenderer) super.getTableCellRendererComponent(table, column == 0 ? value
-					: "", isSelected, hasFocus, row, column);
+			DefaultTableCellRenderer returned = (DefaultTableCellRenderer) super.getTableCellRendererComponent(table,
+					column == 0 ? value : "", isSelected, hasFocus, row, column);
 
 			if (column == 0) {
 
@@ -344,7 +354,8 @@ public class ExcelSheetView extends JPanel {
 			ExcelCell cell = tableModel.getCellAt(row, column);
 			if (cell.getCell() == null) {
 				// border = new EmptyCellBorder();
-			} else {
+			}
+			else {
 				border = new CellBorder(row, column);
 			}
 
@@ -354,30 +365,30 @@ public class ExcelSheetView extends JPanel {
 				foreground = getForegroundColor(style);
 				font = getFont(style);
 
-				switch (style.getAlignment()) {
-					case CellStyle.ALIGN_CENTER:
+				switch (style.getAlignmentEnum()) {
+					case CENTER:
 						returned.setHorizontalAlignment(SwingConstants.CENTER);
 						break;
-					case CellStyle.ALIGN_LEFT:
+					case LEFT:
 						returned.setHorizontalAlignment(SwingConstants.LEFT);
 						break;
-					case CellStyle.ALIGN_RIGHT:
+					case RIGHT:
 						returned.setHorizontalAlignment(SwingConstants.RIGHT);
 						break;
 					default:
 						returned.setHorizontalAlignment(SwingConstants.LEFT);
 				}
-				switch (style.getVerticalAlignment()) {
-					case CellStyle.VERTICAL_TOP:
+				switch (style.getVerticalAlignmentEnum()) {
+					case TOP:
 						returned.setVerticalAlignment(SwingConstants.TOP);
 						break;
-					case CellStyle.VERTICAL_BOTTOM:
+					case BOTTOM:
 						returned.setVerticalAlignment(SwingConstants.BOTTOM);
 						break;
-					case CellStyle.VERTICAL_CENTER:
+					case CENTER:
 						returned.setVerticalAlignment(SwingConstants.CENTER);
 						break;
-					case CellStyle.VERTICAL_JUSTIFY:
+					case JUSTIFY:
 						returned.setVerticalAlignment(SwingConstants.CENTER);
 						break;
 					default:
@@ -387,7 +398,8 @@ public class ExcelSheetView extends JPanel {
 			if (isSelected) {
 				returned.setForeground((foreground != null) ? foreground : table.getSelectionForeground());
 				returned.setBackground(table.getSelectionBackground());
-			} else {
+			}
+			else {
 				returned.setForeground((foreground != null) ? foreground : table.getForeground());
 				returned.setBackground((background != null) ? background : table.getBackground());
 			}
@@ -399,7 +411,8 @@ public class ExcelSheetView extends JPanel {
 					returned.setForeground((foreground != null) ? foreground : UIManager.getColor("Table.focusCellForeground"));
 					// returned.setBackground(Color.BLUE/*UIManager.getColor("Table.focusCellBackground")*/);
 				}
-			} else {
+			}
+			else {
 				returned.setBorder(border != null ? border : noFocusBorder);
 			}
 
@@ -425,30 +438,30 @@ public class ExcelSheetView extends JPanel {
 				Rectangle2D stringBounds = fm.getStringBounds(cell.getDisplayValue(), g);
 				int x;
 				int y;
-				switch (cell.getCellStyle().getAlignment()) {
-					case CellStyle.ALIGN_CENTER:
+				switch (cell.getCellStyle().getAlignmentEnum()) {
+					case CENTER:
 						x = (int) (cellBounds.x - stringBounds.getCenterX() + cellBounds.getWidth() / 2);
 						break;
-					case CellStyle.ALIGN_LEFT:
+					case LEFT:
 						x = (int) (cellBounds.x - stringBounds.getX());
 						break;
-					case CellStyle.ALIGN_RIGHT:
+					case RIGHT:
 						x = (int) (cellBounds.x - stringBounds.getX());
 						break;
 					default:
 						x = (int) (cellBounds.x - stringBounds.getX());
 				}
-				switch (cell.getCellStyle().getVerticalAlignment()) {
-					case CellStyle.VERTICAL_TOP:
+				switch (cell.getCellStyle().getVerticalAlignmentEnum()) {
+					case TOP:
 						y = (int) (cellBounds.y - stringBounds.getY());
 						break;
-					case CellStyle.VERTICAL_BOTTOM:
+					case BOTTOM:
 						y = (cellBounds.y + cellBounds.height - 3);
 						break;
-					case CellStyle.VERTICAL_CENTER:
+					case CENTER:
 						y = (int) (cellBounds.y - stringBounds.getCenterY() + cellBounds.getHeight() / 2);
 						break;
-					case CellStyle.VERTICAL_JUSTIFY:
+					case JUSTIFY:
 						y = (int) (cellBounds.y - stringBounds.getCenterY() + cellBounds.getHeight() / 2);
 						break;
 					default:
@@ -463,7 +476,7 @@ public class ExcelSheetView extends JPanel {
 
 		/*
 		FontMetrics fm = SwingUtilities2.getFontMetrics(label, g);
-
+		
 		private String layout(JLabel label, FontMetrics fm,
 		        int width, int height) {
 		Insets insets = label.getInsets(null);
@@ -513,7 +526,8 @@ public class ExcelSheetView extends JPanel {
 				if (hasTopBorder()) {
 					if (cellStyle instanceof HSSFCellStyle) {
 						g.setColor(getColor(((HSSFCellStyle) cellStyle).getTopBorderColor()));
-					} else if (cellStyle instanceof XSSFCellStyle) {
+					}
+					else if (cellStyle instanceof XSSFCellStyle) {
 						g.setColor(getColor(((XSSFCellStyle) cellStyle).getTopBorderXSSFColor()));
 					}
 					g.drawLine(x, y, width - 1, y);
@@ -521,7 +535,8 @@ public class ExcelSheetView extends JPanel {
 				if (hasLeftBorder()) {
 					if (cellStyle instanceof HSSFCellStyle) {
 						g.setColor(getColor(((HSSFCellStyle) cellStyle).getLeftBorderColor()));
-					} else if (cellStyle instanceof XSSFCellStyle) {
+					}
+					else if (cellStyle instanceof XSSFCellStyle) {
 						g.setColor(getColor(((XSSFCellStyle) cellStyle).getLeftBorderXSSFColor()));
 					}
 					g.drawLine(x, y, x, height - 1);
@@ -529,7 +544,8 @@ public class ExcelSheetView extends JPanel {
 				if (hasBottomBorder()) {
 					if (cellStyle instanceof HSSFCellStyle) {
 						g.setColor(getColor(((HSSFCellStyle) cellStyle).getBottomBorderColor()));
-					} else if (cellStyle instanceof XSSFCellStyle) {
+					}
+					else if (cellStyle instanceof XSSFCellStyle) {
 						g.setColor(getColor(((XSSFCellStyle) cellStyle).getBottomBorderXSSFColor()));
 					}
 					g.drawLine(x, height - 1, width - 1, height - 1);
@@ -537,7 +553,8 @@ public class ExcelSheetView extends JPanel {
 				if (hasRightBorder()) {
 					if (cellStyle instanceof HSSFCellStyle) {
 						g.setColor(getColor(((HSSFCellStyle) cellStyle).getRightBorderColor()));
-					} else if (cellStyle instanceof XSSFCellStyle) {
+					}
+					else if (cellStyle instanceof XSSFCellStyle) {
 						g.setColor(getColor(((XSSFCellStyle) cellStyle).getRightBorderXSSFColor()));
 					}
 					g.drawLine(width - 1, y, width - 1, height - 1);
@@ -586,18 +603,19 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		protected Font getFont(CellStyle cellStyle) {
-			org.apache.poi.ss.usermodel.Font poiFont = sheet.getWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
+			org.apache.poi.ss.usermodel.Font poiFont = sheet.getExcelWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
 			int fontStyle = Font.PLAIN;
 			if (poiFont.getItalic()) {
 				fontStyle = Font.PLAIN;
-			} else if (poiFont.getBoldweight() == org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD) {
+			}
+			else if (poiFont.getBold()) {
 				fontStyle = Font.BOLD;
 			}
 			return new Font(poiFont.getFontName(), fontStyle, poiFont.getFontHeightInPoints());
 		}
 
 		protected Color getForegroundColor(CellStyle cellStyle) {
-			org.apache.poi.ss.usermodel.Font poiFont = sheet.getWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
+			org.apache.poi.ss.usermodel.Font poiFont = sheet.getExcelWorkbook().getWorkbook().getFontAt(cellStyle.getFontIndex());
 			return getFontColor(poiFont);
 		}
 
@@ -606,16 +624,18 @@ public class ExcelSheetView extends JPanel {
 			int green = 0;
 			int blue = 0;
 			if (poiFont instanceof HSSFFont) {
-				HSSFColor color = ((HSSFFont) poiFont).getHSSFColor((HSSFWorkbook) sheet.getWorkbook().getWorkbook());
+				HSSFColor color = ((HSSFFont) poiFont).getHSSFColor((HSSFWorkbook) sheet.getExcelWorkbook().getWorkbook());
 				if (color == null) {
 					return new Color(0, 0, 0);
-				} else {
+				}
+				else {
 					short[] rgb = color.getTriplet();
 					red = rgb[0];
 					green = rgb[1];
 					blue = rgb[2];
 				}
-			} else if (poiFont instanceof XSSFFont) {
+			}
+			else if (poiFont instanceof XSSFFont) {
 				XSSFColor color = ((XSSFFont) poiFont).getXSSFColor();
 				byte[] rgb = null;
 				if (color == null) {
@@ -623,7 +643,7 @@ public class ExcelSheetView extends JPanel {
 					short[] triplets = HSSFColor.getIndexHash().get(index).getTriplet();
 					return new Color(triplets[0], triplets[1], triplets[2]);
 				}
-				rgb = color.getRgb();
+				rgb = color.getRGB();
 				red = (rgb[0] < 0) ? (rgb[0] + 256) : rgb[0];
 				green = (rgb[1] < 0) ? (rgb[1] + 256) : rgb[1];
 				blue = (rgb[2] < 0) ? (rgb[2] + 256) : rgb[2];
@@ -648,7 +668,7 @@ public class ExcelSheetView extends JPanel {
 		}
 
 		private Color getColor(int colorIdx) {
-			HSSFPalette palette = ((HSSFWorkbook) sheet.getWorkbook().getWorkbook()).getCustomPalette();
+			HSSFPalette palette = ((HSSFWorkbook) sheet.getExcelWorkbook().getWorkbook()).getCustomPalette();
 			HSSFColor color = palette.getColor(colorIdx);
 			if (color == null) {
 				return null;
@@ -665,7 +685,7 @@ public class ExcelSheetView extends JPanel {
 			if (color == null) {
 				return null;
 			}
-			byte[] rgb = color.getRgb();
+			byte[] rgb = color.getRGB();
 			if (rgb == null) {
 				return new Color(0, 0, 0);
 			}
@@ -676,22 +696,124 @@ public class ExcelSheetView extends JPanel {
 		}
 	}
 
+	private boolean isUpdatingSelectedRange = false;
+
+	public void setCellRange(ExcelCellRange range) {
+		try {
+			isUpdatingSelectedRange = true;
+			if (range != null) {
+				selectedCellRange = range;
+				selectedCell = range.getTopLeftCell();
+				table.clearSelection();
+				table.addRowSelectionInterval(range.getTopLeftCell().getRowIndex(), range.getBottomRightCell().getRowIndex());
+				table.addColumnSelectionInterval(range.getTopLeftCell().getColumnIndex() + 1,
+						range.getBottomRightCell().getColumnIndex() + 1);
+			}
+			else {
+				selectedCellRange = null;
+				selectedCell = null;
+				table.clearSelection();
+			}
+		} finally {
+			isUpdatingSelectedRange = false;
+			updateHeaders();
+		}
+	}
+
 	protected void selectionChanged() {
-		ExcelCell selected = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
-		if (selected == null) {
+
+		if (isUpdatingSelectedRange) {
+			// Done programmatically: do not react to that
+			return;
+		}
+
+		if (table.getSelectedRow() < 0 || table.getSelectedColumn() < 0) {
+			return;
+		}
+
+		ExcelCell oldSelectedCell = selectedCell;
+		ExcelCellRange oldSelectedCellRange = selectedCellRange;
+
+		int minRow = table.getSelectedRow();
+		int maxRow = table.getSelectedRow();
+		int minCol = table.getSelectedColumn();
+		int maxCol = table.getSelectedColumn();
+		boolean foundSelection = false;
+
+		for (int selectedRow : table.getSelectedRows()) {
+			foundSelection = true;
+			if (selectedRow < minRow) {
+				minRow = selectedRow;
+			}
+			if (selectedRow > maxRow) {
+				maxRow = selectedRow;
+			}
+		}
+		for (int selectedColumn : table.getSelectedColumns()) {
+			foundSelection = true;
+			if (selectedColumn < minCol) {
+				minCol = selectedColumn;
+			}
+			if (selectedColumn > maxCol) {
+				maxCol = selectedColumn;
+			}
+		}
+
+		if (foundSelection) {
+			selectedCell = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
+			ExcelCell topLeftCell = sheet.getCellAt(minRow, minCol - 1);
+			ExcelCell bottomRightCell = sheet.getCellAt(maxRow, maxCol - 1);
+			selectedCellRange = sheet.getFactory().makeExcelCellRange(topLeftCell, bottomRightCell);
+		}
+		else {
+			selectedCell = null;
+			selectedCellRange = null;
+		}
+		updateHeaders();
+
+		getPropertyChangeSupport().firePropertyChange(SELECTED_CELL, oldSelectedCell, selectedCell);
+		getPropertyChangeSupport().firePropertyChange(SELECTED_CELL_RANGE, oldSelectedCellRange, selectedCellRange);
+
+	}
+
+	private void updateHeaders() {
+
+		if (selectedCellRange != null) {
+			if (selectedCellRange.isSingleCell()) {
+				// Single cell selection
+				ExcelCell cell = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
+				cellIdentifier.setText(cell.getIdentifier());
+				cellValue.setText(cell.getDisplayCellSpecification());
+			}
+			else {
+				// Cell range selection
+				cellIdentifier.setText(selectedCellRange.getIdentifier());
+				cellValue.setText(selectedCell.getDisplayCellSpecification());
+			}
+		}
+		else {
 			cellIdentifier.setText("");
 			cellValue.setText("");
-		} else {
-			cellIdentifier.setText(selected.getCellIdentifier());
-			cellValue.setText(selected.getDisplayCellSpecification());
 		}
+	}
+
+	private ExcelCell selectedCell = null;
+	private ExcelCellRange selectedCellRange = null;
+
+	public ExcelCell getSelectedCell() {
+		return selectedCell;
+	}
+
+	public ExcelCellRange getSelectedCellRange() {
+		return selectedCellRange;
 	}
 
 	protected void valueEditedForSelectedCell(String value) {
 		ExcelCell selected = sheet.getCellAt(table.getSelectedRow(), table.getSelectedColumn() - 1);
 		if (selected == null) {
 			return;
-		} else {
+		}
+		else {
 			setValueForCell(selected, value);
 		}
 	}

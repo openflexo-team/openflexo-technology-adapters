@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
@@ -73,8 +73,8 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		pptInspectorGroup = controller.loadInspectorGroup("PowerPoint", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
+		pptInspectorGroup = controller.loadInspectorGroup("PowerPoint", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup pptInspectorGroup;
@@ -120,7 +120,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PowerpointSlide.class);
 		}
@@ -152,7 +152,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 		if (object instanceof PowerpointSlideshow) {
 			return new PowerpointSlideshowView((PowerpointSlideshow) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<PowerpointTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 }

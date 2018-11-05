@@ -38,10 +38,12 @@
 
 package org.openflexo.technologyadapter.owl.fml;
 
-import org.openflexo.foundation.fml.OntologicObjectRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.ontology.fml.OntologicObjectRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
 
 @ModelEntity(isAbstract = true)
@@ -49,7 +51,7 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 @FML("StatementRole")
 public abstract interface StatementRole<T extends OWLStatement> extends OntologicObjectRole<T> {
 
-	public static abstract class StatementRoleImpl<T extends OWLStatement> extends OntologicObjectRoleImpl<T> implements StatementRole<T> {
+	public static abstract class StatementRoleImpl<T extends OWLStatement> extends OntologicObjectRoleImpl<T>implements StatementRole<T> {
 
 		/**
 		 * Encodes the default cloning strategy
@@ -64,6 +66,11 @@ public abstract interface StatementRole<T extends OWLStatement> extends Ontologi
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
 			return true;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return OWLTechnologyAdapter.class;
 		}
 
 	}

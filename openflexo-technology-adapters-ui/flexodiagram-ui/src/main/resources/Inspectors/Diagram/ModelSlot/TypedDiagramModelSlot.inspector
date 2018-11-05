@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot"
 	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
@@ -9,12 +9,26 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="bindings" index="14"
+			<Label label="template_diagram" index="14"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+				name="TemplateDiagramLabel" localize="true" />
+			<DropDown index="15" data="data.templateDiagram" list="data.diagramSpecification.exampleDiagrams"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=right)"
+				width="150" name="TemplateDiagramDD" format="object.name" localize="true"
+				iteratorClassName="org.openflexo.technologyadapter.diagram.model.Diagram"
+				autoSelectFirstRow="true" />
+			<CheckBox index="16" data="data.initializeWithContents"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+				name="PaintDecoration" localize="true"/>
+			<Label label="initialize_with_contents_of_diagram" index="17"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;location=right)"
+				name="InitializeWithContentsLabel" localize="true"/>
+			<Label label="bindings" index="18"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;location=left)"
 				name="BindingsLabel" localize="true" />
 			<Panel id="32" darkLevel="0" useScrollBar="false"
 				protectContent="false" opaque="false" layout="gridbag" borderRight="0"
-				border="rounded3d" trackViewPortWidth="true" index="15"
+				border="rounded3d" trackViewPortWidth="true" index="19"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
 				borderBottom="2" borderTitle="" borderTop="2" trackViewPortHeight="true">
 				<Table id="36" name="FMLPaletteElementBindingTable"
@@ -22,7 +36,7 @@
 					manageDynamicModel="true" enable="true" selectionMode="MultipleIntervalSelection"
 					index="-1" localize="true"
 					constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=0;index=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-					visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+					visibleRowCount="6" createNewRowOnClick="false" rowHeight="18"
 					textSelectionColor="255,255,255"
 					iteratorClassName="org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding"
 					backgroundSelectionColor="41,90,209" useScrollBar="false"
@@ -54,7 +68,7 @@
 					visible="true" enable="(FMLPaletteElementBindingTable.selected != null)"
 					selectionMode="MultipleIntervalSelection" index="-1" localize="true"
 					constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-					visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+					visibleRowCount="6" createNewRowOnClick="false" rowHeight="18"
 					textSelectionColor="255,255,255"
 					iteratorClassName="org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindingParameter"
 					backgroundSelectionColor="41,90,209" useScrollBar="false"
@@ -74,6 +88,13 @@
 						displayTitle="true" />
 				</Table>
 			</Panel>
+			<Label name="ModelSlotLabel">
+				<Parameter name="hidden" value="true" />
+			</Label>
+			<DropDown name="ModelSlotDD">
+				<Parameter name="hidden" value="true" />
+			</DropDown>
+			
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="3" font="SansSerif,0,11" useScrollBar="true"

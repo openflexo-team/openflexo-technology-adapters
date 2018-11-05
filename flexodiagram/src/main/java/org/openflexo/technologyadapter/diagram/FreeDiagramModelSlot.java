@@ -46,10 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -61,12 +57,11 @@ import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
+import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
  * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
@@ -78,7 +73,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  */
 @DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
 @DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
-@DeclareEditionActions({ AddDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
+@DeclareEditionActions({ CreateDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
 @DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(FreeDiagramModelSlot.FreeDiagramModelSlotImpl.class)
@@ -111,29 +106,13 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new FreeDiagramModelSlotInstanceConfiguration(this, action);
-		}
-
-		@Override
-		public DiagramResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return null;
-		}
-
-		@Override
-		public DiagramResource createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri) {
-			return null;
-		}
-
-		@Override
-		public String getURIForObject(FreeModelSlotInstance<Diagram, ? extends FreeModelSlot<Diagram>> msInstance, Object o) {
+		public String getURIForObject(Diagram diagram, Object o) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(FreeModelSlotInstance<Diagram, ? extends FreeModelSlot<Diagram>> msInstance, String objectURI) {
+		public Object retrieveObjectWithURI(Diagram diagram, String objectURI) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -144,6 +123,30 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 			return null;
 		}
 
+		/**
+		 * Overrides super implementation by providing default graphical representations
+		 */
+		/*
+		@Override
+		public <PR extends FlexoRole<?>> PR makeFlexoRole(Class<PR> flexoRoleClass) {
+			PR returned = super.makeFlexoRole(flexoRoleClass);
+			if (ShapeRole.class.isAssignableFrom(flexoRoleClass)) {
+				ShapeRole shapeRole = (ShapeRole) returned;
+				ShapeGraphicalRepresentation gr = getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+				gr.setWidth(80);
+				gr.setHeight(50);
+				gr.setX(20);
+				gr.setY(20);
+				gr.setIsFloatingLabel(false);
+				shapeRole.setGraphicalRepresentation(gr);
+			}
+			if (ConnectorRole.class.isAssignableFrom(flexoRoleClass)) {
+				ConnectorRole connectorRole = (ConnectorRole) returned;
+				connectorRole.setGraphicalRepresentation(getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE));
+			}
+			return returned;
+		}
+		*/
 	}
 
 }

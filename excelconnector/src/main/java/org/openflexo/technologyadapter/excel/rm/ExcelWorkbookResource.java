@@ -39,27 +39,27 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
+import org.openflexo.foundation.resource.PamelaResource;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyContextManager;
+import org.openflexo.technologyadapter.excel.model.BasicExcelModelConverter;
+import org.openflexo.technologyadapter.excel.model.ExcelModelFactory;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 @ModelEntity
 @ImplementationClass(ExcelWorkbookResourceImpl.class)
 @XMLElement
-public interface ExcelWorkbookResource extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> {
+public interface ExcelWorkbookResource
+		extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter>, PamelaResource<ExcelWorkbook, ExcelModelFactory> {
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+	public BasicExcelModelConverter getConverter();
 
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public ExcelTechnologyContextManager getTechnologyContextManager();
+	public <I> ExcelWorkbook createOrLoadExcelWorkbook(StreamIODelegate<I> ioDelegate);
 
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(ExcelTechnologyContextManager technologyContextManager);
+	public ExcelWorkbook getExcelWorkbook();
 
 }

@@ -39,63 +39,16 @@
 package org.openflexo.technologyadapter.powerpoint.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hslf.model.AutoShape;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.openflexo.swing.msct.CellSpan;
-import org.openflexo.swing.msct.MultiSpanCellTable;
-import org.openflexo.swing.msct.MultiSpanCellTableModel;
-import org.openflexo.swing.msct.TableCellExtendedRenderer;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointAutoShape;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointTextBox;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointTextShape;
 import org.openflexo.view.controller.FlexoController;
 
 /**
@@ -123,7 +76,7 @@ public class PowerpointSlideView extends JPanel {
 		slidePane.setPreferredSize(dimension);
 
 		JScrollPane pan = new JScrollPane(slidePane);
-		
+
 		add(pan, BorderLayout.CENTER);
 	}
 
@@ -136,29 +89,28 @@ public class PowerpointSlideView extends JPanel {
 	 * 
 	 */
 	class PowerpointSlidePane extends JLayeredPane {
-		
+
 		private PowerpointSlide slide;
 
 		public PowerpointSlidePane(PowerpointSlide slide) {
 			super();
 			this.slide = slide;
 		}
-		
+
 		public PowerpointSlide getSlide() {
 			return slide;
 		}
-		
+
 		public void setSlide(PowerpointSlide slide) {
 			this.slide = slide;
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponents(g);
-			try{
-				slide.getSlide().draw((Graphics2D)g);
-			}
-			catch(ArrayIndexOutOfBoundsException e){
+			try {
+				slide.getSlide().draw((Graphics2D) g);
+			} catch (ArrayIndexOutOfBoundsException e) {
 				logger.warning("This slide might contains unparsable comments");
 			}
 

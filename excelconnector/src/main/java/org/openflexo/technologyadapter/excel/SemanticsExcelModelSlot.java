@@ -1,87 +1,111 @@
-/**
- * 
- * Copyright (c) 2014-2015, Openflexo
- * 
- * This file is part of Excelconnector, a component of the software infrastructure 
+/*
+ * Copyright (c) 2013-2017, Openflexo
+ *
+ * This file is part of Flexo-foundation, a component of the software infrastructure
  * developed at Openflexo.
- * 
- * 
- * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
- * version 1.1 of the License, or any later version ), which is available at 
+ *
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either
+ * version 1.1 of the License, or any later version ), which is available at
  * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
- * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * and the GNU General Public License (GPL, either version 3 of the License, or any
  * later version), which is available at http://www.gnu.org/licenses/gpl.html .
- * 
+ *
  * You can redistribute it and/or modify under the terms of either of these licenses
- * 
+ *
  * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
  * must include the following additional permission.
  *
- *          Additional permission under GNU GPL version 3 section 7
+ *           Additional permission under GNU GPL version 3 section 7
+ *           If you modify this Program, or any covered work, by linking or
+ *           combining it with software containing parts covered by the terms
+ *           of EPL 1.0, the licensors of this Program grant you additional permission
+ *           to convey the resulting work.
  *
- *          If you modify this Program, or any covered work, by linking or 
- *          combining it with software containing parts covered by the terms 
- *          of EPL 1.0, the licensors of this Program grant you additional permission
- *          to convey the resulting work. * 
- * 
- * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
- * PARTICULAR PURPOSE. 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.
  *
  * See http://www.openflexo.org/license.html for details.
- * 
- * 
+ *
+ *
  * Please contact Openflexo (openflexo-contacts@openflexo.org)
  * or visit www.openflexo.org if you need additional information.
- * 
+ *
+ */
+
+/*
+ * (c) Copyright 2013- Openflexo
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package org.openflexo.technologyadapter.excel;
 
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.InferedFMLRTModelSlot;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.fml.BusinessConceptInstanceRole;
-import org.openflexo.technologyadapter.excel.fml.BusinessConceptTypeRole;
-import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
-import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
-import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
-import org.openflexo.technologyadapter.excel.fml.editionaction.AddBusinessConceptInstance;
-import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
-import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
+import org.openflexo.technologyadapter.excel.semantics.fml.CreateSEResource;
+import org.openflexo.technologyadapter.excel.semantics.fml.InsertSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.RemoveSEObject;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEColumnRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEDataAreaRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEReferenceRole;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType;
+import org.openflexo.technologyadapter.excel.semantics.model.SEObjectActorReference;
+import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 
 /**
- * Implementation of the ModelSlot class for the Excel technology adapter<br>
- * We assert here that the spreadsheet is interpretated through a ExcelMetaModel, and data are wrapped into BusinessConcepts.
+ * An implementation of a {@link ModelSlot} providing basic access to a set of data stored in an excel workbook, and reflected as FML
+ * instances objects<br>
  * 
- * @author Vincent Leildé, Sylvain Guérin
+ * This {@link ModelSlot} is contract-based, as it is configured with a {@link VirtualModel} modelling data beeing accessed through this
+ * {@link ModelSlot}. It means that data stored in database is locally reflected as {@link FlexoConceptInstance}s in a
+ * {@link VirtualModelInstance} (instance of contract {@link VirtualModel})
+ * 
+ * 
+ * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ BusinessConceptTypeRole.class, BusinessConceptInstanceRole.class })
-@DeclareEditionActions({ AddBusinessConceptInstance.class })
 @ModelEntity
-@ImplementationClass(SemanticsExcelModelSlot.SemanticsExcelModelSlotImpl.class)
 @XMLElement
-public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, ExcelMetaModel> {
+@ImplementationClass(SemanticsExcelModelSlot.SemanticsExcelModelSlotImpl.class)
+@DeclareFlexoRoles({ SEColumnRole.class, SEDataAreaRole.class, SEReferenceRole.class })
+@DeclareEditionActions({ CreateSEResource.class, InsertSEObject.class, RemoveSEObject.class })
+@DeclareFlexoBehaviours({ SEInitializer.class })
+@DeclareActorReferences({ SEObjectActorReference.class })
+public interface SemanticsExcelModelSlot extends InferedFMLRTModelSlot<SEVirtualModelInstance, ExcelTechnologyAdapter> {
 
-	public abstract static class SemanticsExcelModelSlotImpl extends TypeAwareModelSlotImpl<ExcelModel, ExcelMetaModel> implements
-			SemanticsExcelModelSlot {
+	abstract class SemanticsExcelModelSlotImpl extends InferedFMLRTModelSlotImpl<SEVirtualModelInstance, ExcelTechnologyAdapter>
+			implements SemanticsExcelModelSlot {
 
-		private static final Logger logger = Logger.getLogger(SemanticsExcelModelSlot.class.getPackage().getName());
+		private SEVirtualModelInstanceType type;
 
 		@Override
 		public Class<ExcelTechnologyAdapter> getTechnologyAdapterClass() {
@@ -89,69 +113,29 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		}
 
 		@Override
-		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
-				return "cell";
-			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
-				return "row";
-			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
-				return "sheet";
-			}
-			return null;
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> flexoRoleClass) {
+			return super.defaultFlexoRoleName(flexoRoleClass);
+		}
+
+		@Override
+		public ExcelTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (ExcelTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
+			if (type == null || type.getVirtualModel() != getAccessedVirtualModel()) {
+				type = SEVirtualModelInstanceType.getVirtualModelInstanceType(getAccessedVirtualModel());
+			}
+			return type;
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<SemanticsExcelModelSlot, ExcelModel> createConfiguration(CreateVirtualModelInstance action) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
-				String modelUri, FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter,
-				String relativePath, String filename, String modelUri,
-				FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getURIForObject(
-				TypeAwareModelSlotInstance<ExcelModel, ExcelMetaModel, ? extends TypeAwareModelSlot<ExcelModel, ExcelMetaModel>> msInstance,
-				Object o) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<ExcelModel, ExcelMetaModel, ? extends TypeAwareModelSlot<ExcelModel, ExcelMetaModel>> msInstance,
-				String objectURI) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean isStrictMetaModelling() {
-			return true;
-		}
-
-		@Override
-		public String getTypeDescription() {
-			// TODO Auto-generated method stub
-			return null;
+		public void setAccessedVirtualModel(VirtualModel aVirtualModel) {
+			if (aVirtualModel != getAccessedVirtualModel()) {
+				super.setAccessedVirtualModel(aVirtualModel);
+				type = SEVirtualModelInstanceType.getVirtualModelInstanceType(getAccessedVirtualModel());
+			}
 		}
 
 	}

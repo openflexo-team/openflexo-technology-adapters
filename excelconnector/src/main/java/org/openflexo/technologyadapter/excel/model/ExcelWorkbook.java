@@ -38,98 +38,258 @@
 
 package org.openflexo.technologyadapter.excel.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
-public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook> {
+/**
+ * Represents an excel workbook, as a concept wrapping {@link Workbook} POI concept
+ * 
+ * @author sylvain
+ *
+ */
+@ModelEntity
+@ImplementationClass(value = ExcelWorkbook.ExcelWorkbookImpl.class)
+@XMLElement
+@Imports({ @Import(ExcelCellRange.class) })
+public interface ExcelWorkbook extends ExcelObject, ResourceData<ExcelWorkbook> {
 
-	private Workbook workbook;
-	private ExcelWorkbookResource resource;
-	private List<ExcelSheet> excelSheets;
-	private BasicExcelModelConverter converter;
-	private ArrayList<ExcelObject> accessibleExcelObjects;
+	@PropertyIdentifier(type = Workbook.class)
+	public static final String WORKBOOK_KEY = "workbook";
+	@PropertyIdentifier(type = ExcelSheet.class, cardinality = Cardinality.LIST)
+	public static final String EXCEL_SHEETS_KEY = "excelSheets";
 
-	public Workbook getWorkbook() {
-		return workbook;
-	}
+	/**
+	 * Return name of the workbook
+	 * 
+	 * @return
+	 */
+	public String getName();
 
-	public ExcelWorkbook(Workbook workbook, ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		this.workbook = workbook;
-		excelSheets = new ArrayList<ExcelSheet>();
-	}
+	/**
+	 * Return workbook wrapped by this {@link ExcelWorkbook}
+	 * 
+	 * @return
+	 */
+	@Getter(value = WORKBOOK_KEY, ignoreType = true)
+	public Workbook getWorkbook();
 
-	public ExcelWorkbook(ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		excelSheets = new ArrayList<ExcelSheet>();
-	}
+	/**
+	 * Sets workbook wrapped by this {@link ExcelWorkbook}
+	 * 
+	 * @param workbook
+	 */
+	@Setter(WORKBOOK_KEY)
+	public void setWorkbook(Workbook workbook);
 
-	public ExcelWorkbook(Workbook workbook, BasicExcelModelConverter converter, ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		this.workbook = workbook;
-		this.converter = converter;
-		excelSheets = new ArrayList<ExcelSheet>();
-	}
+	/**
+	 * Return all {@link ExcelSheet} defined in this {@link ExcelWorkbook}
+	 * 
+	 * @return
+	 */
+	@Getter(value = EXCEL_SHEETS_KEY, cardinality = Cardinality.LIST, inverse = ExcelSheet.EXCEL_WORKBOOK_KEY)
+	@XMLElement
+	@Embedded
+	@CloningStrategy(StrategyType.CLONE)
+	public List<ExcelSheet> getExcelSheets();
 
-	public BasicExcelModelConverter getConverter() {
-		return converter;
-	}
+	@Setter(EXCEL_SHEETS_KEY)
+	public void setExcelSheets(List<ExcelSheet> excelSheets);
+
+	@Adder(EXCEL_SHEETS_KEY)
+	@PastingPoint
+	public void addToExcelSheets(ExcelSheet anExcelSheet);
+
+	@Remover(EXCEL_SHEETS_KEY)
+	public void removeFromExcelSheets(ExcelSheet anExcelSheet);
+
+	/**
+	 * Get an Excel Sheet within a workbook using its name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetByName(String name);
+
+	/**
+	 * Get an ExcelSheet(Technology adapter abstraction) from a Sheet(Poi abstraction).
+	 * 
+	 * @param sheet
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetFromSheet(Sheet sheet);
+
+	/**
+	 * Get an Excel Sheet using its position in a workbook in the list of sheets
+	 * 
+	 * @param position
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetAtPosition(int position);
+
+	public ExcelStyleManager getStyleManager();
+
+	public BasicExcelModelConverter getConverter();
 
 	@Override
-	public FlexoResource<ExcelWorkbook> getResource() {
-		return resource;
-	}
+	public ExcelWorkbookResource getResource();
 
-	@Override
-	public void setResource(FlexoResource<ExcelWorkbook> resource) {
-		this.resource = (ExcelWorkbookResource) resource;
-	}
+	/**
+	 * Default base implementation for {@link ExcelWorkbook}
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public static abstract class ExcelWorkbookImpl extends ExcelObjectImpl implements ExcelWorkbook {
 
-	@Override
-	public String getName() {
-		return getResource().getName();
-	}
+		private static final Logger logger = Logger.getLogger(ExcelObjectImpl.class.getPackage().getName());
 
-	public List<ExcelSheet> getExcelSheets() {
-		return excelSheets;
-	}
+		// private Workbook workbook;
 
-	public void addToExcelSheets(ExcelSheet newExcelSheet) {
-		this.excelSheets.add(newExcelSheet);
-		addToAccessibleExcelObjects(newExcelSheet);
-	}
+		// private ExcelWorkbookResource resource;
+		// private List<ExcelSheet> excelSheets;
 
-	public void removeFromExcelSheets(ExcelSheet deletedExcelSheet) {
-		this.excelSheets.remove(deletedExcelSheet);
-		removeFromAccessibleExcelObjects(deletedExcelSheet);
-	}
+		// private ArrayList<ExcelObject> accessibleExcelObjects;
 
-	public List<ExcelObject> getAccessibleExcelObjects() {
-		if(accessibleExcelObjects==null){
-			accessibleExcelObjects = new ArrayList<ExcelObject>();
+		private final ExcelStyleManager styleManager;
+
+		public ExcelWorkbookImpl() {
+			styleManager = new ExcelStyleManager(this);
 		}
-		return accessibleExcelObjects;
-	}
-	
-	public void addToAccessibleExcelObjects(ExcelObject excelObject){
-		getAccessibleExcelObjects().add(excelObject);
-	}
-	
-	public void removeFromAccessibleExcelObjects(ExcelObject excelObject){
-		getAccessibleExcelObjects().remove(excelObject);
-	}
 
-	@Override
-	public String getUri() {
-		return getName();
+		/*@Override
+		public Workbook getWorkbook() {
+			return workbook;
+		}*/
+
+		/*public ExcelWorkbook(Workbook workbook, ExcelTechnologyAdapter adapter) {
+			super(adapter);
+			this.workbook = workbook;
+			excelSheets = new ArrayList<ExcelSheet>();
+			styleManager = new ExcelStyleManager(this);
+		}
+		
+		public ExcelWorkbook(ExcelTechnologyAdapter adapter) {
+			super(adapter);
+			excelSheets = new ArrayList<ExcelSheet>();
+			styleManager = new ExcelStyleManager(this);
+		}
+		
+		public ExcelWorkbook(Workbook workbook, BasicExcelModelConverter converter, ExcelTechnologyAdapter adapter) {
+			super(adapter);
+			this.workbook = workbook;
+			this.converter = converter;
+			excelSheets = new ArrayList<ExcelSheet>();
+			styleManager = new ExcelStyleManager(this);
+		}*/
+
+		@Override
+		public ExcelWorkbook getResourceData() {
+			return this;
+		}
+
+		@Override
+		public ExcelWorkbookResource getResource() {
+			return (ExcelWorkbookResource) performSuperGetter(FLEXO_RESOURCE);
+		}
+
+		@Override
+		public String getName() {
+			return getResource().getName();
+		}
+
+		/*@Override
+		public List<ExcelSheet> getExcelSheets() {
+			return excelSheets;
+		}
+		
+		@Override
+		public void addToExcelSheets(ExcelSheet newExcelSheet) {
+			this.excelSheets.add(newExcelSheet);
+			addToAccessibleExcelObjects(newExcelSheet);
+		}*/
+
+		/**
+		 * Get an Excel Sheet within a workbook using its name.
+		 * 
+		 * @param name
+		 * @return
+		 */
+		@Override
+		public ExcelSheet getExcelSheetByName(String name) {
+			for (ExcelSheet excelSheet : getExcelSheets()) {
+				if (excelSheet.getName().equals(name)) {
+					return excelSheet;
+				}
+			}
+			return null;
+			/*Sheet sheet = workbook.getSheet(name);
+			return getExcelSheetFromSheet(sheet);*/
+		}
+
+		/**
+		 * Get an Excel Sheet using its position in a workbook in the list of sheets
+		 * 
+		 * @param place
+		 * @return
+		 */
+		@Override
+		public ExcelSheet getExcelSheetAtPosition(int position) {
+			/*Sheet sheet = workbook.getSheetAt(position);
+			return getExcelSheetFromSheet(sheet);*/
+			return getExcelSheets().get(position);
+		}
+
+		/**
+		 * Get an ExcelSheet(Technology adapter abstraction) from a Sheet(Poi abstraction).
+		 * 
+		 * @param sheet
+		 * @return
+		 */
+		@Override
+		public ExcelSheet getExcelSheetFromSheet(Sheet sheet) {
+			for (ExcelSheet excelSheet : getExcelSheets()) {
+				if (excelSheet.getSheet().equals(sheet)) {
+					return excelSheet;
+				}
+			}
+			logger.warning("No converted sheet found for " + sheet.getSheetName());
+			return null;
+		}
+
+		@Override
+		public ExcelStyleManager getStyleManager() {
+			return styleManager;
+		}
+
+		@Override
+		public BasicExcelModelConverter getConverter() {
+			return getResource().getConverter();
+		}
+
+		@Override
+		public String toString() {
+			return super.toString() + "-" + getResource();
+		}
 	}
 
 }

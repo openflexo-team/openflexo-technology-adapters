@@ -45,9 +45,10 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -55,28 +56,28 @@ import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateObjectProperty extends FlexoAction<CreateObjectProperty, OWLObject, OWLConcept> {
+public class CreateObjectProperty extends FlexoAction<CreateObjectProperty, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(CreateObjectProperty.class.getPackage().getName());
 
-	public static FlexoActionType<CreateObjectProperty, OWLObject, OWLConcept> actionType = new FlexoActionType<CreateObjectProperty, OWLObject, OWLConcept>(
-			"create_object_property", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateObjectProperty, OWLObject, OWLConcept<?>> actionType = new FlexoActionFactory<CreateObjectProperty, OWLObject, OWLConcept<?>>(
+			"create_object_property", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateObjectProperty makeNewAction(OWLObject focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+		public CreateObjectProperty makeNewAction(OWLObject focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 			return new CreateObjectProperty(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(OWLObject object, Vector<OWLConcept> globalSelection) {
+		public boolean isVisibleForSelection(OWLObject object, Vector<OWLConcept<?>> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(OWLObject object, Vector<OWLConcept> globalSelection) {
+		public boolean isEnabledForSelection(OWLObject object, Vector<OWLConcept<?>> globalSelection) {
 			return object != null && !object.getOntology().getIsReadOnly();
 		}
 
@@ -96,14 +97,22 @@ public class CreateObjectProperty extends FlexoAction<CreateObjectProperty, OWLO
 
 	private OWLObjectProperty newProperty;
 
-	private static final String VALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_well_formed_and_valid_regarding_its_unicity");
-	private static final String INVALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_not_valid_please_choose_another_class_name");
+	private static final String VALID_URI_LABEL = "uri_is_well_formed_and_valid_regarding_its_unicity";
+	private static final String INVALID_URI_LABEL = "uri_is_not_valid_please_choose_another_class_name";
 
-	CreateObjectProperty(OWLObject focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+	private CreateObjectProperty(OWLObject focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		newPropertyName = "newProperty";
 		parentProperty = null;
 		isValid();
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -122,7 +131,7 @@ public class CreateObjectProperty extends FlexoAction<CreateObjectProperty, OWLO
 	@Override
 	public boolean isValid() {
 		boolean returned = !StringUtils.isEmpty(newPropertyName) && getOntology().testValidURI(newPropertyName);
-		validURILabel = returned ? VALID_URI_LABEL : INVALID_URI_LABEL;
+		validURILabel = returned ? getLocales().localizedForKey(VALID_URI_LABEL) : getLocales().localizedForKey(INVALID_URI_LABEL);
 		return returned;
 	}
 

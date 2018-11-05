@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 
 public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorGraphicalRepresentation> implements DiagramConnector {
@@ -128,16 +128,16 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	public String getClassNameKey() {
 		return "oe_connector";
 	}
-
+	
 	@Override
 	public String getFullyQualifiedName() {
 		return getParent().getFullyQualifiedName() + "." + getName();
 	}
-
+	
 	public DiagramShape getEndShape() {
 		return endShape;
 	}
-
+	
 	public void setEndShape(DiagramShape endShape) {
 		this.endShape = endShape;
 		// NPE Protection
@@ -145,16 +145,16 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 			endShape.addToIncomingConnectors(this);
 		}
 	}
-
+	
 	public DiagramShape getStartShape() {
 		return startShape;
 	}
-
+	
 	public void setStartShape(DiagramShape startShape) {
 		this.startShape = startShape;
 		startShape.addToOutgoingConnectors(this);
 	}
-
+	
 	@Override
 	public boolean isContainedIn(DiagramElement<?> o) {
 		if (o == this) {
@@ -168,19 +168,19 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 		}
 		return false;
 	}
-
+	
 	@Override
 	public String getDisplayableDescription() {
 		return "ConnectorSpecification" + (getFlexoConcept() != null ? " representing " + getFlexoConcept() : "");
 	}
-
+	
 	@Override
 	public ConnectorRole getPatternRole() {
 		return (ConnectorRole) super.getPatternRole();
 	}
-
+	
 	private List<DiagramElement<?>> descendants;
-
+	
 	@Override
 	public List<DiagramElement<?>> getDescendants() {
 		if (descendants == null) {
@@ -189,7 +189,7 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 		}
 		return descendants;
 	}
-
+	
 	private void appendDescendants(DiagramElement<?> current, List<DiagramElement<?>> descendants) {
 		descendants.add(current);
 		for (DiagramElement<?> child : current.getChilds()) {
@@ -200,8 +200,13 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	}*/
 
 	@Override
-	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance) {
+	public ConnectorRole getPatternRole(FMLRTVirtualModelInstance vmInstance) {
 		return (ConnectorRole) super.getPatternRole(vmInstance);
+	}
+
+	@Override
+	protected String getDefaultName() {
+		return "Connector" + getFlexoID();
 	}
 
 }

@@ -47,6 +47,7 @@ import javax.swing.Icon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -54,7 +55,7 @@ import org.openflexo.technologyadapter.owl.model.action.CreateDataProperty;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateDataPropertyInitializer extends ActionInitializer<CreateDataProperty, OWLObject, OWLConcept> {
+public class CreateDataPropertyInitializer extends ActionInitializer<CreateDataProperty, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -84,7 +85,7 @@ public class CreateDataPropertyInitializer extends ActionInitializer<CreateDataP
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return OWLIconLibrary.ONTOLOGY_DATA_PROPERTY_ICON;
 	}
 

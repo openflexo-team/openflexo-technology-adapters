@@ -67,10 +67,11 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
 
 /**
  * FlexoOslcClient provides HighLevel services to manipulate OSLC resource. It creates and uses an OslcRestClient to access OSLC resource.
- * FlexoOslcClient provides basic services : <li>{@link #create(CreationFactory factory, T resource) create(CreationFactory factory, T
- * resource)}</li> <li>{@link #delete(T resource) delete(T resource)}</li> <li>{@link #retrieve(String resourceUri) retrieve(String
- * resourceUri)}</li> <li>
- * {@link #update(T resource) update(T resource)}</li>
+ * FlexoOslcClient provides basic services :
+ * <li>{@link #create(CreationFactory factory, T resource) create(CreationFactory factory, T resource)}</li>
+ * <li>{@link #delete(T resource) delete(T resource)}</li>
+ * <li>{@link #retrieve(String resourceUri) retrieve(String resourceUri)}</li>
+ * <li>{@link #update(T resource) update(T resource)}</li>
  * 
  * @author Vincent
  * 
@@ -282,7 +283,7 @@ public class FlexoOslcClient {
 	 * @return a CreationFactory
 	 */
 	public CreationFactory[] getCreationFactories(final String type, Service service) {
-		List<CreationFactory> correctCreationFactories = new ArrayList<CreationFactory>();
+		List<CreationFactory> correctCreationFactories = new ArrayList<>();
 		final CreationFactory[] creationFactories = service.getCreationFactories();
 		for (final CreationFactory creationFactory : creationFactories) {
 			final URI[] resourceTypes = creationFactory.getResourceTypes();
@@ -314,7 +315,7 @@ public class FlexoOslcClient {
 	 * @return a QueryCapability
 	 */
 	public QueryCapability[] getQueryCapabilities(final String type, Service service) {
-		List<QueryCapability> correctQueryCapabilities = new ArrayList<QueryCapability>();
+		List<QueryCapability> correctQueryCapabilities = new ArrayList<>();
 		final QueryCapability[] queryCapabilities = service.getQueryCapabilities();
 		for (final QueryCapability queryCapability : queryCapabilities) {
 			final URI[] resourceTypes = queryCapability.getResourceTypes();
@@ -375,16 +376,17 @@ public class FlexoOslcClient {
 		return null;
 	}
 
-	private <T extends AbstractResource> T[] retrievesSingleKindOfElements(String uri, Class<T> resourceClasses) {
-		try {
-			return retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
-		} catch (URISyntaxException e) {
-			logger.warning("URI " + uri + " is not correct");
-			e.printStackTrace();
-			return null;
+	/* Unused
+		private <T extends AbstractResource> T[] retrievesSingleKindOfElements(String uri, Class<T> resourceClasses) {
+			try {
+				return retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
+			} catch (URISyntaxException e) {
+				logger.warning("URI " + uri + " is not correct");
+				e.printStackTrace();
+				return null;
+			}
 		}
-	}
-
+	*/
 	/**
 	 * Get the resource using an OslcRestClient. If the resource class is not given, then it will be determinated using the providers.
 	 * 
@@ -393,13 +395,11 @@ public class FlexoOslcClient {
 	 * @return an OSLC resource
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends AbstractResource> T getClientResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
+	private static <T extends AbstractResource> T getClientResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
 		if (resourceClass == null) {
 			return (T) getResource(client);
 		}
-		else {
-			return getResource(client, resourceClass);
-		}
+		return getResource(client, resourceClass);
 	}
 
 	/**
@@ -409,7 +409,7 @@ public class FlexoOslcClient {
 	 * @return an OSLC resource
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends AbstractResource> T getResource(FlexoOslcRestClient client) {
+	private static <T extends AbstractResource> T getResource(FlexoOslcRestClient client) {
 		T result = null;
 		try {
 			// Try to get the resource
@@ -435,7 +435,7 @@ public class FlexoOslcClient {
 		return result;
 	}
 
-	private <T extends AbstractResource> T convertStringToAbstractResource(String source) {
+	private static <T extends AbstractResource> T convertStringToAbstractResource(String source) {
 		// TODO
 		return null;
 	}
@@ -447,7 +447,7 @@ public class FlexoOslcClient {
 	 * @param resourceClass
 	 * @return an OSLC resource
 	 */
-	private <T extends AbstractResource> T getResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
+	private static <T extends AbstractResource> T getResource(FlexoOslcRestClient client, final Class<T> resourceClass) {
 		T result = null;
 		try {
 			result = client.getOslcResource(resourceClass);
@@ -464,7 +464,7 @@ public class FlexoOslcClient {
 	 * @param resourceClass
 	 * @return an OSLC resource
 	 */
-	private <T extends AbstractResource> T[] getResources(FlexoOslcRestClient client, final Class<T[]> resourceClass) {
+	private static <T extends AbstractResource> T[] getResources(FlexoOslcRestClient client, final Class<T[]> resourceClass) {
 		T[] result = null;
 		try {
 			result = client.getOslcResources(resourceClass);
@@ -540,7 +540,7 @@ public class FlexoOslcClient {
 		//that are random enough that they will not make the encryption vulnerable to attack
 		secureRandom = new SecureRandom();
 	    secureRandom.nextInt();
-
+	
 	    setupServerKeystore();
 	    setupClientKeyStore();
 	    

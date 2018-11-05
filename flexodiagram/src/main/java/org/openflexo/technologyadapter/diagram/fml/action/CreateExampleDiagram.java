@@ -38,25 +38,23 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -64,8 +62,8 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagram.class.getPackage().getName());
 
-	public static FlexoActionType<CreateExampleDiagram, DiagramSpecification, FMLObject> actionType = new FlexoActionType<CreateExampleDiagram, DiagramSpecification, FMLObject>(
-			"create_example_diagram", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateExampleDiagram, DiagramSpecification, FMLObject> actionType = new FlexoActionFactory<CreateExampleDiagram, DiagramSpecification, FMLObject>(
+			"create_example_diagram", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -99,87 +97,65 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	private DiagramResource newDiagramResource;
 
-	CreateExampleDiagram(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateExampleDiagram(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add example diagram");
 
-		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
-		File newDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()), newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
+		try {
+			newDiagramResource = _makeDiagram();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
+
+		/*String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
+		File newDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()),
+				newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
-				getFocusedObject(), getServiceManager());
+				getFocusedObject(), getFocusedObject().getResource().getResourceCenter(), getServiceManager());
 		getFocusedObject().getResource().addToContents(newDiagramResource);
 		getFocusedObject().addToExampleDiagrams(newDiagramResource.getDiagram());
 		newDiagramResource.getDiagram().setDescription(description);
-		newDiagramResource.save(null);
+		newDiagramResource.save(null);*/
 
 	}
 
-	private String errorMessage;
+	protected DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-	public String getErrorMessage() {
-		isValid();
-		// System.out.println("valid=" + isValid());
-		// System.out.println("errorMessage=" + errorMessage);
-		return errorMessage;
+		String diagramName = getNewDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getNewDiagramName()
+				: getNewDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
+				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), true);
+
+		return newDiagramResource;
 	}
 
 	@Override
 	public boolean isValid() {
-		/*if (diagramSpecification == null) {
-			errorMessage = noDiagramSpecificationSelectedMessage();
-			return false;
-		}*/
-		if (StringUtils.isEmpty(newDiagramName)) {
-			errorMessage = noNameMessage();
+		if (StringUtils.isEmpty(getNewDiagramName())) {
 			return false;
 		}
 
-		if (!newDiagramName.equals(JavaUtils.getClassName(newDiagramName))
-				&& !newDiagramName.equals(JavaUtils.getVariableName(newDiagramName))) {
-			errorMessage = invalidNameMessage();
+		if (!getNewDiagramName().equals(JavaUtils.getClassName(getNewDiagramName()))
+				&& !getNewDiagramName().equals(JavaUtils.getVariableName(getNewDiagramName()))) {
 			return false;
 		}
 
 		if (StringUtils.isEmpty(newDiagramTitle)) {
-			errorMessage = noTitleMessage();
 			return false;
 		}
 
-		// TODO: handle duplicated name and uri
+		if (getFocusedObject().getExampleDiagram(getNewDiagramName()) != null) {
+			return false;
+		}
+
 		return true;
-	}
-
-	public String noDiagramSpecificationSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
-	}
-
-	public String noTitleMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
-	}
-
-	public String noFileMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_file_defined");
-	}
-
-	public String existingFileMessage() {
-		return FlexoLocalization.localizedForKey("file_already_existing");
-	}
-
-	public String noNameMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
-	}
-
-	public String invalidNameMessage() {
-		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
-	}
-
-	public String duplicatedNameMessage() {
-		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public Diagram getNewDiagram() {
@@ -191,7 +167,12 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setNewDiagramName(String newDiagramName) {
-		this.newDiagramName = newDiagramName;
+		if ((newDiagramName == null && this.newDiagramName != null)
+				|| (newDiagramName != null && !newDiagramName.equals(this.newDiagramName))) {
+			String oldValue = this.newDiagramName;
+			this.newDiagramName = newDiagramName;
+			getPropertyChangeSupport().firePropertyChange("newDiagramName", oldValue, newDiagramName);
+		}
 	}
 
 	public String getNewDiagramTitle() {
@@ -199,7 +180,12 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setNewDiagramTitle(String newDiagramTitle) {
-		this.newDiagramTitle = newDiagramTitle;
+		if ((newDiagramTitle == null && this.newDiagramTitle != null)
+				|| (newDiagramTitle != null && !newDiagramTitle.equals(this.newDiagramTitle))) {
+			String oldValue = this.newDiagramTitle;
+			this.newDiagramTitle = newDiagramTitle;
+			getPropertyChangeSupport().firePropertyChange("newDiagramTitle", oldValue, newDiagramTitle);
+		}
 	}
 
 	public String getDescription() {
@@ -207,7 +193,11 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		if ((description == null && this.description != null) || (description != null && !description.equals(this.description))) {
+			String oldValue = this.description;
+			this.description = description;
+			getPropertyChangeSupport().firePropertyChange("description", oldValue, description);
+		}
 	}
 
 }

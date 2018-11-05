@@ -38,31 +38,22 @@
 
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DiagramAction.DiagramActionImpl.class)
-public interface DiagramAction<MS extends DiagramModelSlot, T> extends TechnologySpecificAction<MS, T> {
+public interface DiagramAction<MS extends DiagramModelSlot, T> extends TechnologySpecificActionDefiningReceiver<MS, Diagram, T> {
 
 	@Override
 	public DiagramTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T> extends TechnologySpecificActionImpl<DiagramModelSlot, T> {
-
-		@Override
-		public DiagramModelSlot getModelSlot() {
-			DiagramModelSlot returned = super.getModelSlot();
-			if (returned == null) {
-				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
-					return getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
-				}
-			}
-			return returned;
-		}
+	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T>
+			extends TechnologySpecificActionDefiningReceiverImpl<MS, Diagram, T> {
 
 		@Override
 		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {

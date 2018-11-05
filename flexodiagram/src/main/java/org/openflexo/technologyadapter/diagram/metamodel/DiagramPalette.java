@@ -40,18 +40,18 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.resource.ScreenshotBuilder;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
@@ -61,6 +61,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.validation.Validable;
@@ -68,7 +69,6 @@ import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 
 @ModelEntity
 @ImplementationClass(DiagramPalette.DiagramPaletteImpl.class)
@@ -79,6 +79,15 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 	public static final String PALETTE_ELEMENTS_KEY = "elements";
 	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
+	@PropertyIdentifier(type = String.class)
+	String DESCRIPTION_KEY = "description";
+
+	@Getter(value = DESCRIPTION_KEY)
+	@XMLAttribute
+	public String getDescription();
+
+	@Setter(DESCRIPTION_KEY)
+	public void setDescription(String description);
 
 	/**
 	 * Return palette element identified by its name
@@ -134,7 +143,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		private ScreenshotImage<DiagramPalette> screenshotImage;
 		private File expectedScreenshotImageFile = null;
 
-		public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
+		/*public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
 				DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
 			DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
 					diagramSpecification.getResource(), diagramPaletteName, serviceManager);
@@ -149,7 +158,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 				e.printStackTrace();
 			}
 			return diagramPaletteResource;
-		}
+		}*/
 
 		// private DiagramPaletteFactory factory;
 
@@ -159,6 +168,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			//_elements = new Vector<DiagramPaletteElement>();
 		}*/
 
+		@Override
 		public FlexoServiceManager getServiceManager() {
 			return getResource().getServiceManager();
 		}
@@ -214,8 +224,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
-			return getElements();
+		public Collection<Validable> getEmbeddedValidableObjects() {
+			Collection<Validable> result = new ArrayList<>();
+			for (Validable v : getElements())
+				result.add(v);
+			return result;
 		}
 
 		@Override
@@ -235,6 +248,9 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		@Override
 		public String getName() {
 			if (getResource() != null) {
+				if (getResource().getName().endsWith(".palette")) {
+					return getResource().getName().substring(0, getResource().getName().indexOf(".palette"));
+				}
 				return getResource().getName();
 			}
 			return null;
@@ -254,12 +270,12 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			public Vector<DiagramPaletteElement> getElements() {
 				return _elements;
 			}
-
+		
 			@Override
 			public void setElements(Vector<DiagramPaletteElement> elements) {
 				_elements = elements;
 			}
-
+		
 			@Override
 			public void addToElements(DiagramPaletteElement obj) {
 				obj.setPalette(this);
@@ -267,7 +283,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 				setChanged();
 				notifyObservers(new DiagramPaletteElementInserted(obj, this));
 			}
-
+		
 			@Override
 			public boolean removeFromElements(DiagramPaletteElement obj) {
 				obj.setPalette(null);
@@ -281,7 +297,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			public DrawingGraphicalRepresentation getGraphicalRepresentation() {
 				return graphicalRepresentation;
 			}
-
+		
 			@Override
 			public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation) {
 				this.graphicalRepresentation = graphicalRepresentation;
@@ -315,8 +331,8 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		private File getExpectedScreenshotImageFile() {
-			if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-				FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+			if (expectedScreenshotImageFile == null && getResource().getIODelegate() instanceof FileIODelegate) {
+				FileIODelegate delegate = (FileIODelegate) getResource().getIODelegate();
 				expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 			}
 			return expectedScreenshotImageFile;
@@ -341,7 +357,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			return null;
 		}
 
-		private ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
+		private static ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
 			// TODO
 			/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
 				BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());

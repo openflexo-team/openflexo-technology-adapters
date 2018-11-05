@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.lang.reflect.Type;
@@ -48,13 +47,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
@@ -62,6 +56,9 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.editionaction.CreateXMLFileResource;
+import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
@@ -73,7 +70,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
  * 
  */
 @DeclareFlexoRoles({ XMLIndividualRole.class })
-@DeclareEditionActions({ AddXMLIndividual.class })
+@DeclareEditionActions({ CreateXMLFileResource.class, AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
@@ -101,19 +98,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		}
 
 		@Override
-		public TechnologyAdapterResource<XMLModel, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<XMLModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath,
-				String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
 		public FreeXMLURIProcessor createURIProcessor() {
 			FreeXMLURIProcessor xsuriProc = getFMLModelFactory().newInstance(FreeXMLURIProcessor.class);
 			xsuriProc.setModelSlot(this);
@@ -135,11 +119,9 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 
 			if (mapParams == null) {
 				XMLType s = aXmlType.getSuperType();
-				if (mapParams == null) {
-					// on ne cherche que le premier...
-					logger.info("SEARCHING for an uriProcessor for " + s.getURI());
-					mapParams = retrieveURIProcessorForType(s);
-				}
+				// on ne cherche que le premier...
+				logger.info("SEARCHING for an uriProcessor for " + s.getURI());
+				mapParams = retrieveURIProcessorForType(s);
 
 				if (mapParams != null) {
 					logger.info("UPDATING the MapUriProcessors for an uriProcessor for " + aXmlType.getURI());
@@ -218,11 +200,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new FreeXMLModelSlotInstanceConfiguration(this, action);
-		}
-
-		@Override
 		public Type getType() {
 			return XMLModel.class;
 		}
@@ -231,6 +208,7 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> flexoRoleClass) {
 			return flexoRoleClass.getSimpleName();
 		}
+
 	}
 
 }

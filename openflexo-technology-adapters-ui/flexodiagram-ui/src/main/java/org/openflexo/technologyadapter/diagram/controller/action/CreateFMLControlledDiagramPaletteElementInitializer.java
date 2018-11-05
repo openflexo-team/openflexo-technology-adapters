@@ -38,14 +38,12 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -53,7 +51,7 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
 public class CreateFMLControlledDiagramPaletteElementInitializer extends
-		ActionInitializer<CreateFMLControlledDiagramPaletteElement, AbstractVirtualModel<?>, FMLObject> {
+		ActionInitializer<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -64,28 +62,22 @@ public class CreateFMLControlledDiagramPaletteElementInitializer extends
 
 	@Override
 	protected FlexoActionInitializer<CreateFMLControlledDiagramPaletteElement> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLControlledDiagramPaletteElement>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramPaletteElement action) {
-				// TODO
-				return true;
-			}
+		return (e, action) -> {
+			// TODO
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateFMLControlledDiagramPaletteElement> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLControlledDiagramPaletteElement>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledDiagramPaletteElement action) {
-				getController().getSelectionManager().setSelectedObject(action.getNewElement());
-				return true;
-			}
+		return (e, action) -> {
+			getController().getSelectionManager().setSelectedObject(action.getNewElement());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

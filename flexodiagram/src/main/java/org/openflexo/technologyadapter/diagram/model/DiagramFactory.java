@@ -71,12 +71,17 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
+	private RelativePathResourceConverter relativePathResourceConverter;
+
 	public DiagramFactory(DiagramResource resource, EditingContext editingContext) throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
 		this.resource = resource;
 		setEditingContext(editingContext);
-		if(resource!=null){
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+		if (resource != null && resource.getIODelegate() != null
+				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
+			relativePathResourceConverter
+					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 
@@ -162,7 +167,8 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		if (newlyCreatedObject instanceof FlexoObject) {
 			if (getResource() != null) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
-			} else {
+			}
+			else {
 				logger.warning("Could not access resource beeing deserialized");
 			}
 		}

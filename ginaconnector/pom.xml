@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-technology-adapters</artifactId>
+		<version>1.9.0</version>
+	</parent>
+	<artifactId>ginaconnector</artifactId>
+	<description>Technology Adapter for GINA (rich interfaces framework)</description>
+	<url>http://www.openflexo.org/technologyadapter/ginaconnector</url>
+	<properties>
+		<technology.prefix>GIN</technology.prefix>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!--  <dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>-->
+	</dependencies>
+</project>

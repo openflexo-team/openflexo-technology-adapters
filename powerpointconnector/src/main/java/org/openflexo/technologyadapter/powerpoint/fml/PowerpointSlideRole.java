@@ -42,12 +42,14 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 
 @ModelEntity
@@ -85,13 +87,18 @@ public interface PowerpointSlideRole extends FlexoRole<PowerpointSlide> {
 		}
 
 		@Override
-		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return PowerpointTechnologyAdapter.class;
 		}
 
 	}

@@ -41,10 +41,9 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.HasValueRestriction;
+import org.apache.jena.rdf.model.Resource;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.HasValueRestriction;
-import com.hp.hpl.jena.rdf.model.Resource;
 
 public class HasValueRestrictionClass extends OWLRestriction {
 

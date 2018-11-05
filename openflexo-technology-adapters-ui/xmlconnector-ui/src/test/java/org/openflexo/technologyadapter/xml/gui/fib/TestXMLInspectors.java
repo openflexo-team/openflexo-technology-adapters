@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
+import org.openflexo.gina.test.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -63,6 +63,11 @@ public class TestXMLInspectors extends GenericFIBInspectorTestCase {
 	@Test
 	public void testGetXMLDocumentRootInspector() {
 		validateFIB("Inspectors/XML/EditionAction/GetXMLDocumentRoot.inspector");
+	}
+
+	@Test
+	public void testSetXMLDocumentRootInspector() {
+		validateFIB("Inspectors/XML/EditionAction/SetXMLDocumentRoot.inspector");
 	}
 
 	@Test

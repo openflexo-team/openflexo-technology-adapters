@@ -59,11 +59,9 @@ import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 @ModelEntity
 @ImplementationClass(DiagramResourceImpl.class)
 @XMLElement
-public interface DiagramResource extends PamelaResource<Diagram, DiagramFactory>,
-		TechnologyAdapterResource<Diagram, DiagramTechnologyAdapter>,
+public interface DiagramResource
+		extends PamelaResource<Diagram, DiagramFactory>, TechnologyAdapterResource<Diagram, DiagramTechnologyAdapter>,
 		FlexoModelResource<Diagram, DiagramSpecification, DiagramTechnologyAdapter, DiagramTechnologyAdapter> {
-
-	public static final String DIAGRAM_SUFFIX = ".diagram";
 
 	public Diagram getDiagram();
 

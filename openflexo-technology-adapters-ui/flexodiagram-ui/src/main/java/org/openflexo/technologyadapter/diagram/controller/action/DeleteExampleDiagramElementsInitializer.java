@@ -38,24 +38,21 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElements;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class DeleteExampleDiagramElementsInitializer extends ActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
+public class DeleteExampleDiagramElementsInitializer
+		extends ActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -66,30 +63,22 @@ public class DeleteExampleDiagramElementsInitializer extends ActionInitializer<D
 
 	@Override
 	protected FlexoActionInitializer<DeleteDiagramElements> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				return FlexoController.confirm(FlexoLocalization.localizedForKey("would_you_like_to_delete_those_objects"));
-			}
-		};
+		return (e, action) -> FlexoController.confirm(action.getLocales().localizedForKey("would_you_like_to_delete_those_objects"));
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagramElements> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				if (getController().getSelectionManager().getLastSelectedObject() != null
-						&& getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
-					getController().getSelectionManager().resetSelection();
-				}
-				return true;
+		return (e, action) -> {
+			if (getController().getSelectionManager().getLastSelectedObject() != null
+					&& getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
+				getController().getSelectionManager().resetSelection();
 			}
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

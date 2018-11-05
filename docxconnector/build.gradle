@@ -1,0 +1,24 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  compile flexoDocumentation()
+  // external dep
+  compile 'org.docx4j:docx4j:3.3.0'
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+  
+  // Test resource center
+  testRuntime project(':docxconnector-test-rc')  
+}
+if (JavaVersion.current().isJava9Compatible()) {
+	tasks.withType(JavaCompile) {
+		options.compilerArgs.addAll(['--add-modules', 'java.xml.bind'])
+    }
+	tasks.withType(Test) {
+		jvmArgs += ['--add-modules', 'java.xml.bind']
+    }
+}  
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

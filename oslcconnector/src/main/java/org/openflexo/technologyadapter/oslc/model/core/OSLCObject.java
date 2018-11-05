@@ -36,10 +36,10 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -90,6 +90,13 @@ public interface OSLCObject extends TechnologyObject<OSLCTechnologyAdapter> {
 			return technologyAdapter;
 		}
 
+		@Override
+		public LocalizedDelegate getLocales() {
+			if (getTechnologyAdapter() != null) {
+				return getTechnologyAdapter().getLocales();
+			}
+			return super.getLocales();
+		}
 	}
 
 }

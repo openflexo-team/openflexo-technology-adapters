@@ -38,22 +38,27 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
+import java.awt.image.BufferedImage;
+
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
+import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
- * Define the "controlled-diagram" nature of a {@link VirtualModelInstance}<br>
+ * Define the "controlled-diagram" nature of a {@link FMLRTVirtualModelInstance}<br>
  * 
- * A {@link FMLControlledDiagramVirtualModelInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDiagramVirtualModelInstanceNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature {
+public class FMLControlledDiagramVirtualModelInstanceNature
+		implements VirtualModelInstanceNature, ScreenshotableNature<FMLRTVirtualModelInstance> {
 
 	public static FMLControlledDiagramVirtualModelInstanceNature INSTANCE = new FMLControlledDiagramVirtualModelInstanceNature();
 
@@ -62,17 +67,18 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled diagram
+	 * Return boolean indicating if supplied {@link FMLRTVirtualModelInstance} might be interpreted as a FML-Controlled diagram
 	 */
 	@Override
-	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
+	public boolean hasNature(FMLRTVirtualModelInstance virtualModelInstance) {
 
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
-		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+		VirtualModel virtualModel = virtualModelInstance.getVirtualModel();
+		if (virtualModel == null || !virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 			return false;
 		}
 
-		TypedDiagramModelSlot diagramMS = virtualModelInstance.getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+		TypedDiagramModelSlot diagramMS = virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 
 		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> msInstance = (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) virtualModelInstance
 				.getModelSlotInstance(diagramMS);
@@ -89,17 +95,17 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 	}
 
 	public static TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> getModelSlotInstance(
-			VirtualModelInstance virtualModelInstance) {
+			FMLRTVirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getModelSlotInstance(virtualModelInstance);
 
 	}
 
-	public static Diagram getDiagram(VirtualModelInstance virtualModelInstance) {
+	public static Diagram getDiagram(FMLRTVirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getDiagram(virtualModelInstance);
 	}
 
-	private TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> _getModelSlotInstance(
-			VirtualModelInstance virtualModelInstance) {
+	private static TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> _getModelSlotInstance(
+			FMLRTVirtualModelInstance virtualModelInstance) {
 		TypedDiagramModelSlot diagramMS = virtualModelInstance.getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
 
 		return (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) virtualModelInstance
@@ -107,8 +113,18 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 
 	}
 
-	private Diagram _getDiagram(VirtualModelInstance virtualModelInstance) {
-		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
+	private static Diagram _getDiagram(FMLRTVirtualModelInstance virtualModelInstance) {
+		TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> diagramModelSlotInstance = _getModelSlotInstance(
+				virtualModelInstance);
+		if (diagramModelSlotInstance != null) {
+			return diagramModelSlotInstance.getAccessedResourceData();
+		}
+		return null;
 	}
 
+	@Override
+	public BufferedImage getScreenshot(FMLRTVirtualModelInstance object) {
+		System.out.println("Please perform the screenshot here !!!!!!!!!");
+		return null;
+	}
 }

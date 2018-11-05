@@ -63,8 +63,8 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public static abstract class PowerpointActorReferenceImpl<T extends PowerpointObject> extends ActorReferenceImpl<T> implements
-			PowerpointActorReference<T> {
+	public static abstract class PowerpointActorReferenceImpl<T extends PowerpointObject> extends ActorReferenceImpl<T>
+			implements PowerpointActorReference<T> {
 
 		private static final Logger logger = FlexoLogger.getLogger(PowerpointActorReferenceImpl.class.getPackage().toString());
 
@@ -79,13 +79,14 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 		}
 
 		@Override
-		public T getModellingElement() {
+		public T getModellingElement(boolean forceLoading) {
 			if (object == null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				if (msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
-					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance.getAccessedResourceData(), objectURI);
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}
@@ -102,7 +103,7 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 			if (object != null && getModelSlotInstance() != null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
 				/** Model Slot is responsible for URI mapping */
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance.getAccessedResourceData(), object);
 			}
 		}
 
@@ -110,7 +111,7 @@ public interface PowerpointActorReference<T extends PowerpointObject> extends Ac
 		public String getObjectURI() {
 			if (object != null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance.getAccessedResourceData(), object);
 			}
 			return objectURI;
 		}

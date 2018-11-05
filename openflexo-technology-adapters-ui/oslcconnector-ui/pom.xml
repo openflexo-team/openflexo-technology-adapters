@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.7.1-SNAPSHOT</version>
+		<version>1.9.0</version>
 	</parent>
 	<artifactId>oslcconnector-ui</artifactId>
 	<description>technology Adapter graphical interface for OSLC data</description>
@@ -13,21 +13,27 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>oslcconnector</artifactId>
-			<version>1.7.1</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
+        <!--  <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>gina-swing</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency> -->
 	</dependencies>
 </project>

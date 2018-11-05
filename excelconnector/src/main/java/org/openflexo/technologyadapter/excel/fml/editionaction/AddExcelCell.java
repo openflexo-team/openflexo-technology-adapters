@@ -44,13 +44,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -59,8 +57,8 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
+import org.openflexo.technologyadapter.excel.model.CellType;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
-import org.openflexo.technologyadapter.excel.model.ExcelCell.CellType;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -83,6 +81,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 	public static final String ROW_INDEX_KEY = "rowIndex";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SHEET_KEY = "sheet";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CELL_TO_COPY_KEY = "cellToCopy";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String IS_ROW_INDEX_KEY = "isRowIndex";
 
@@ -95,10 +95,10 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	@Getter(value = VALUE_KEY)
 	@XMLAttribute
-	public DataBinding<String> getValue();
+	public DataBinding<Object> getValue();
 
 	@Setter(VALUE_KEY)
-	public void setValue(DataBinding<String> value);
+	public void setValue(DataBinding<Object> value);
 
 	@Getter(value = CELL_TYPE_KEY)
 	@XMLAttribute
@@ -137,24 +137,28 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
-	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
-			AddExcelCell {
+	@Getter(value = CELL_TO_COPY_KEY)
+	@XMLAttribute
+	public DataBinding<ExcelCell> getCellToCopy();
+
+	@Setter(CELL_TO_COPY_KEY)
+	public void setCellToCopy(DataBinding<ExcelCell> cellToCopy);
+
+	public static abstract class AddExcelCellImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelCell> implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
-		private DataBinding<String> value;
-
+		private DataBinding<Object> value;
 		private DataBinding<Integer> columnIndex;
-
 		private DataBinding<Integer> rowIndex;
-
 		private DataBinding<ExcelRow> row;
-
 		private DataBinding<ExcelSheet> sheet;
+		private DataBinding<ExcelCell> cellToCopy;
 
 		private CellType cellType = null;
 
-		private boolean isRowIndex = false;
+		// private boolean isRowIndex = false;
 
 		public AddExcelCellImpl() {
 			super();
@@ -166,94 +170,102 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		}
 
 		@Override
-		public ExcelCell execute(FlexoBehaviourAction action) {
+		public ExcelCell execute(RunTimeEvaluationContext evaluationContext) {
 
 			ExcelCell excelCell = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(action);
-			if (modelSlotInstance.getResourceData() != null) {
-
-				try {
-					ExcelRow excelRow = null;
-					if (isRowIndex) {
-						Integer rowIndex = getRowIndex().getBindingValue(action);
-						ExcelSheet excelSheet = getSheet().getBindingValue(action);
-						if (excelSheet != null && rowIndex != null) {
-							excelRow = excelSheet.getRowAt(rowIndex);
-						} else if (excelSheet == null) {
-							logger.severe("Excel sheet is not defined.");
-						} else if (rowIndex == null) {
-							logger.severe("Row index is not defined.");
-						}
-
-					} else {
-						excelRow = getRow().getBindingValue(action);
+			try {
+				ExcelRow excelRow = null;
+				if (isRowIndex()) {
+					Integer rowIndex = getRowIndex().getBindingValue(evaluationContext);
+					ExcelSheet excelSheet = getSheet().getBindingValue(evaluationContext);
+					if (excelSheet != null && rowIndex != null) {
+						excelRow = excelSheet.getRowAt(rowIndex);
+					}
+					else if (excelSheet == null) {
+						logger.severe("Excel sheet is not defined.");
+					}
+					else if (rowIndex == null) {
+						logger.severe("Row index is not defined.");
 					}
 
-					Integer columnIndex = getColumnIndex().getBindingValue(action);
-					// If this is possible, create the cell
-					if (columnIndex != null) {
-						if (excelRow != null) {
-							Cell cell = null;
-							String value = getValue().getBindingValue(action);
-							// If this cell exists, just get it
-							if (excelRow.getCellAt(columnIndex) != null) {
-								excelCell = excelRow.getCellAt(columnIndex);
-							} else {
-								cell = excelRow.getRow().createCell(columnIndex);
-								excelCell = modelSlotInstance.getAccessedResourceData().getConverter()
-										.convertExcelCellToCell(cell, excelRow, null);
-							}
-							if (value != null) {
-								excelCell.setCellValue(value);
-							} else {
-								logger.warning("Create a cell requires a value.");
-							}
-							modelSlotInstance.getResourceData().setIsModified();
-						} else {
-							logger.warning("Create a cell requires a row.");
-						}
-					} else {
-						logger.warning("Create a cell requires a column index.");
-					}
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				}
+				else {
+					excelRow = getRow().getBindingValue(evaluationContext);
 				}
 
-			} else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
+				System.out.println("On vient faire AddExcelCell pour row=" + excelRow);
+
+				Integer columnIndex = getColumnIndex().getBindingValue(evaluationContext);
+
+				System.out.println("columnIndex=" + columnIndex);
+
+				// If this is possible, create the cell
+				if (columnIndex != null) {
+					if (excelRow != null) {
+						Object value = getValue().getBindingValue(evaluationContext);
+						// If this cell exists, just get it
+						if (excelRow.getExcelCellAt(columnIndex) != null) {
+							excelCell = excelRow.getExcelCellAt(columnIndex);
+						}
+						else {
+							excelCell = excelRow.createCellAt(columnIndex);
+							/*Cell cell = excelRow.getRow().createCell(columnIndex);
+							BasicExcelModelConverter converter = ((ExcelWorkbookResource) excelRow.getResourceData().getResource())
+									.getConverter();
+							excelCell = converter.convertExcelCellToCell(cell, excelRow, null);*/
+						}
+
+						ExcelCell cellToCopy = getCellToCopy().getBindingValue(evaluationContext);
+
+						System.out.println("excelCell=" + excelCell);
+						System.out.println("cellToCopy=" + cellToCopy);
+						System.out.println("value=" + value);
+
+						if (cellToCopy != null) {
+							excelCell.copyCellFrom(cellToCopy);
+						}
+
+						if (value != null) {
+							excelCell.setCellValue(value);
+						}
+						else {
+							logger.warning("Create a cell requires a value.");
+						}
+						excelCell.getExcelSheet().getExcelWorkbook().setIsModified();
+					}
+					else {
+						logger.warning("Create a cell requires a row.");
+					}
+				}
+				else {
+					logger.warning("Create a cell requires a column index.");
+				}
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
 
 			return excelCell;
 		}
 
 		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(action);
-		}
-
-		@Override
-		public DataBinding<String> getValue() {
+		public DataBinding<Object> getValue() {
 			if (value == null) {
-				value = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				value = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
 		}
 
 		@Override
-		public void setValue(DataBinding<String> value) {
+		public void setValue(DataBinding<Object> value) {
 			if (value != null) {
 				value.setOwner(this);
-				value.setDeclaredType(String.class);
+				value.setDeclaredType(Object.class);
 				value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
@@ -263,7 +275,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<Integer> getRowIndex() {
 			if (rowIndex == null) {
-				rowIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				rowIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				rowIndex.setBindingName("rowIndex");
 			}
 			return rowIndex;
@@ -283,7 +295,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<Integer> getColumnIndex() {
 			if (columnIndex == null) {
-				columnIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				columnIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				columnIndex.setBindingName("columnIndex");
 			}
 			return columnIndex;
@@ -324,8 +336,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public List<CellType> getAvailableCellTypes() {
 			if (availableCellTypes == null) {
-				availableCellTypes = new Vector<CellType>();
-				for (CellType cellType : ExcelCell.CellType.values()) {
+				availableCellTypes = new Vector<>();
+				for (CellType cellType : CellType.values()) {
 					availableCellTypes.add(cellType);
 				}
 			}
@@ -348,7 +360,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<ExcelRow> getRow() {
 			if (row == null) {
-				row = new DataBinding<ExcelRow>(this, ExcelRow.class, DataBinding.BindingDefinitionType.GET);
+				row = new DataBinding<>(this, ExcelRow.class, DataBinding.BindingDefinitionType.GET);
 				row.setBindingName("row");
 			}
 			return row;
@@ -368,7 +380,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		@Override
 		public DataBinding<ExcelSheet> getSheet() {
 			if (sheet == null) {
-				sheet = new DataBinding<ExcelSheet>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
+				sheet = new DataBinding<>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
 				sheet.setBindingName("sheet");
 			}
 			return sheet;
@@ -386,13 +398,23 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		}
 
 		@Override
-		public boolean isRowIndex() {
-			return isRowIndex;
+		public DataBinding<ExcelCell> getCellToCopy() {
+			if (cellToCopy == null) {
+				cellToCopy = new DataBinding<>(this, ExcelCell.class, DataBinding.BindingDefinitionType.GET);
+				cellToCopy.setBindingName("cellToCopy");
+			}
+			return cellToCopy;
 		}
 
 		@Override
-		public void setRowIndex(boolean isRowIndex) {
-			this.isRowIndex = isRowIndex;
+		public void setCellToCopy(DataBinding<ExcelCell> cellToCopy) {
+			if (cellToCopy != null) {
+				cellToCopy.setOwner(this);
+				cellToCopy.setDeclaredType(ExcelCell.class);
+				cellToCopy.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				cellToCopy.setBindingName("cellToCopy");
+			}
+			this.cellToCopy = cellToCopy;
 		}
 
 	}

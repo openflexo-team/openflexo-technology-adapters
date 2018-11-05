@@ -42,18 +42,16 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette.DiagramPaletteImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.toolbox.StringUtils;
@@ -62,8 +60,8 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramPalette.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionType = new FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject>(
-			"create_new_palette", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionType = new FlexoActionFactory<CreateDiagramPalette, DiagramSpecification, FlexoObject>(
+			"create_new_palette", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -96,16 +94,23 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	private DiagramPalette _newPalette;
 
-	CreateDiagramPalette(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private CreateDiagramPalette(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram palette to diagram specification");
 
-		DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
-				(DrawingGraphicalRepresentation) graphicalRepresentation, getServiceManager());
+		// DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
+		// (DrawingGraphicalRepresentation) graphicalRepresentation, getServiceManager());
+
+		DiagramPaletteResource paletteResource;
+		try {
+			paletteResource = _makeDiagramPalette();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
 
 		_newPalette = paletteResource.getDiagramPalette();
 		_newPalette.setDescription(description);
@@ -114,15 +119,27 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	}
 
+	protected DiagramPaletteResource _makeDiagramPalette() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		String paletteName = getNewPaletteName() + (getNewPaletteName().endsWith(".palette") ? "" : ".palette");
+
+		DiagramPaletteResource newPaletteResource = diagramTA.getDiagramSpecificationResourceFactory().getPaletteResourceFactory()
+				.makeDiagramPaletteResource(paletteName, getFocusedObject().getResource(), true);
+
+		return newPaletteResource;
+	}
+
 	public DiagramPalette getNewPalette() {
 		return _newPalette;
 	}
 
-	private String nameValidityMessage = EMPTY_NAME;
+	private String nameValidityMessage = null;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
+	private static final String NAME_IS_VALID = "name_is_valid";
+	private static final String DUPLICATED_NAME = "this_name_is_already_used_please_choose_an_other_one";
+	private static final String EMPTY_NAME = "empty_name";
 
 	public String getNameValidityMessage() {
 		return nameValidityMessage;
@@ -130,13 +147,16 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	public boolean isNameValid() {
 		if (StringUtils.isEmpty(newPaletteName)) {
-			nameValidityMessage = EMPTY_NAME;
+			nameValidityMessage = getLocales().localizedForKey(EMPTY_NAME);
 			return false;
-		} else if (getFocusedObject().getPalette(newPaletteName) != null) {
-			nameValidityMessage = DUPLICATED_NAME;
+		}
+		else if (getFocusedObject().getPalette(newPaletteName) != null) {
+			nameValidityMessage = getLocales().localizedForKey(DUPLICATED_NAME);
+			;
 			return false;
-		} else {
-			nameValidityMessage = NAME_IS_VALID;
+		}
+		else {
+			nameValidityMessage = getLocales().localizedForKey(NAME_IS_VALID);
 			return true;
 		}
 	}

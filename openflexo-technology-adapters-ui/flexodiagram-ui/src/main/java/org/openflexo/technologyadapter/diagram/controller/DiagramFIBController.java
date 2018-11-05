@@ -42,10 +42,12 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.utils.FIBInspector;
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBTab;
+import org.openflexo.gina.utils.FIBInspector;
+import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
@@ -62,12 +64,12 @@ public class DiagramFIBController extends FlexoFIBController {
 
 	protected static final Logger logger = FlexoLogger.getLogger(DiagramFIBController.class.getPackage().getName());
 
-	public DiagramFIBController(FIBComponent component) {
-		super(component);
+	public DiagramFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
+		super(component, viewFactory);
 	}
 
-	public DiagramFIBController(FIBComponent component, FlexoController controller) {
-		super(component, controller);
+	public DiagramFIBController(FIBComponent component, GinaViewFactory<?> viewFactory, FlexoController controller) {
+		super(component, viewFactory, controller);
 	}
 
 	public Diagram createExampleDiagram(DiagramSpecification diagramSpecification) {
@@ -93,11 +95,13 @@ public class DiagramFIBController extends FlexoFIBController {
 	}
 
 	@Override
-	public ImageIcon iconForObject(Object object) {
+	@NotificationUnsafe
+	protected ImageIcon retrieveIconForObject(Object object) {
 		// TODO Auto-generated method stub
 		if (object instanceof FlexoObject) {
 			return DiagramIconLibrary.iconForObject((FlexoObject) object);
-		} else {
+		}
+		else {
 			return DiagramIconLibrary.DIAGRAM_ICON;
 		}
 

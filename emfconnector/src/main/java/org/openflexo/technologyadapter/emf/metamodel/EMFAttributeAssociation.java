@@ -52,8 +52,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute> implements
-		IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> {
+public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
+		implements IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -90,7 +90,7 @@ public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
 	 */
 	@Override
 	public EMFClassClass getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(), null);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
 	 */
 	@Override
 	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
-		return ontology.getConverter().convertAttributeProperty(ontology, object,null,null);
+		return ontology.getConverter().convertAttributeProperty(ontology, object, null, null);
 	}
 
 	@Override
@@ -140,5 +140,11 @@ public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
 	@Override
 	public void setName(String name) throws Exception {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public String toString() {
+		return "[" + getName() + " " /*+ getFeature() + " domain=" + getDomain() + " range=" */ + getRange() + " " + getLowerBound() + "/"
+				+ getUpperBound() + "]";
 	}
 }

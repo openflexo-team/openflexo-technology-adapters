@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
@@ -48,7 +47,6 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Setter;
 
-
 /**
  * 
  * Represents an XML Attribute in an XMLModel
@@ -58,7 +56,7 @@ import org.openflexo.model.annotations.Setter;
  */
 @ModelEntity
 @ImplementationClass(XMLPropertyImpl.class)
-public interface XMLProperty  extends XMLObject, Comparable {
+public interface XMLProperty extends XMLObject, Comparable<XMLProperty> {
 
 	/**
 	 * The Type of the given attribute. This might be a simple type
@@ -73,24 +71,25 @@ public interface XMLProperty  extends XMLObject, Comparable {
 	 */
 
 	public static final String IS_FROM_ELEMENT = "isFromElement";
-	
+
 	@Initializer
 	public XMLProperty init(@Parameter(NAME) String s, @Parameter(TYPE) Type t, @Parameter(CONTAINER) XMLType container);
-	
+
 	@Getter(CONTAINER)
 	public XMLType getContainer();
 
 	@Setter(CONTAINER)
 	public void setContainer(XMLType containedIn);
-	
-	@Getter(value = TYPE, ignoreType=true)
+
+	@Getter(value = TYPE, ignoreType = true)
 	public XMLType getType();
-	
+
 	@Setter(TYPE)
 	public void setType(XMLType aType);
-	
+
 	/**
 	 * Returns true if this property was created from an XML element and false if from an XMLAttribute
+	 * 
 	 * @return
 	 */
 	@Getter(value = IS_FROM_ELEMENT, defaultValue = "false")
@@ -98,5 +97,5 @@ public interface XMLProperty  extends XMLObject, Comparable {
 
 	@Setter(IS_FROM_ELEMENT)
 	public void setIsFromElement(boolean fromElement);
-	
+
 }

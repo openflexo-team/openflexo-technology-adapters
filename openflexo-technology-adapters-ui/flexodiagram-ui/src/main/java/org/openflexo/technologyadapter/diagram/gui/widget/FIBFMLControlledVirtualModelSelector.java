@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 import org.openflexo.fml.controller.widget.FIBVirtualModelSelector;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
@@ -82,28 +82,37 @@ public class FIBFMLControlledVirtualModelSelector extends FIBVirtualModelSelecto
 	}
 
 	@Override
-	protected boolean isAcceptableValue(Object o) {
-		if (getDiagramSpecification() == null) {
-			return super.isAcceptableValue(o);
-		} else {
-			if (super.isAcceptableValue(o)) {
-				if(o instanceof VirtualModelResource){
-					return hasDiagramSpecification((VirtualModelResource)o);
-				}
+	public boolean isAcceptableValue(Object o) {
+		if (super.isAcceptableValue(o) && o instanceof VirtualModelResource) {
+			if (getDiagramSpecification() == null) {
+				return isFMLControlledVirtualModel((VirtualModelResource) o);
 			}
-			return false;
+			else {
+				return hasDiagramSpecification((VirtualModelResource) o);
+			}
 		}
+		return false;
 	}
 
-	public boolean hasDiagramSpecification(VirtualModelResource virtualModelResource){
-		if(virtualModelResource!=null){
+	public boolean hasDiagramSpecification(VirtualModelResource virtualModelResource) {
+		if (virtualModelResource != null) {
 			VirtualModel virtualModel = virtualModelResource.getVirtualModel();
-			if(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)
-					&& FMLControlledDiagramVirtualModelNature.hasDiagramSpecification(virtualModel,  getDiagramSpecification())){
+			if (virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)
+					&& FMLControlledDiagramVirtualModelNature.hasDiagramSpecification(virtualModel, getDiagramSpecification())) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	public boolean isFMLControlledVirtualModel(VirtualModelResource virtualModelResource) {
+		if (virtualModelResource != null) {
+			VirtualModel virtualModel = virtualModelResource.getVirtualModel();
+			if (virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

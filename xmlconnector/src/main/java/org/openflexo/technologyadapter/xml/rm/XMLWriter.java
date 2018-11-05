@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.IOException;
@@ -57,7 +56,8 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-
+import org.openflexo.toolbox.StringUtils;
+import org.openflexo.xml.XMLCst;
 
 /**
  * This SaxHandler is used to serialize any XML file, either conformant or not to an XSD file The behavior of the Handler depends on the
@@ -79,7 +79,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 	private static XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
 
-	public XMLWriter(R resource, OutputStreamWriter out) throws XMLStreamException, IOException {
+	public XMLWriter(R resource, OutputStreamWriter out) {
 		super();
 		this.taRes = resource;
 		outputStr = out;
@@ -94,7 +94,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
 			XMLModel model = ((XMLModel) taRes.getResourceData(null));
-			if ( model.getNamespace().size() == 2){
+			if (model.getNamespace().size() == 2) {
 				NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
 				NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
 			}
@@ -127,11 +127,10 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		}
 	}
 
-	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException, IOException,
-	ResourceLoadingCancelledException, FlexoException {
+	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
-		if (nSURI != null && !nSURI.isEmpty()){
+		if (nSURI != null && !nSURI.isEmpty()) {
 			myWriter.writeNamespace(nSPrefix, nSURI);
 		}
 		// Attributes
@@ -145,7 +144,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		// CDATA
 		String content = rootIndiv.getContentDATA();
 		if (content != null && !content.isEmpty()) {
-			myWriter.writeCData(content);
+			myWriter.writeCharacters(content);
 			myWriter.writeCharacters(LINE_SEP);
 		}
 		// Element End
@@ -161,6 +160,12 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 		// Attributes
 		writeAttributes(indiv);
+
+		// Text
+		if (StringUtils.isNotEmpty(indiv.getText())) {
+			myWriter.writeCharacters(indiv.getText());
+		}
+
 		// children node
 		for (Object i : indiv.getChildren()) {
 			writeElement(i, ((XMLIndividual) i).getName());
@@ -168,7 +173,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		// CDATA
 		String content = indiv.getContentDATA();
 		if (content != null && !content.isEmpty()) {
-			myWriter.writeCData(content);
+			myWriter.writeCharacters(content);
 			myWriter.writeCharacters(LINE_SEP);
 		}
 		// Element End
@@ -177,39 +182,34 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 	}
 
 	private void writeAttributes(XMLIndividual indiv) throws XMLStreamException {
-		// Simple Attributes First
-		String value = null;
-
-		// Data Properties
-		for (XMLProperty prop : indiv.getType().getProperties()) {
-			if (prop instanceof XMLDataProperty && !prop.isFromXMLElement()) {
-				value = indiv.getPropertyStringValue(prop);
-				if (value != null) {
-					myWriter.writeAttribute(prop.getName(), value);
-				}
-			}
-		}
 
 		for (XMLProperty prop : indiv.getType().getProperties()) {
-			if (prop instanceof XMLDataProperty && prop.isFromXMLElement()) {
 
-				List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
-				if (valueList != null && valueList.size() > 0) {
-					myWriter.writeStartElement(prop.getName());
-					for (Object o : valueList) {
-						if (o != null) {
-							myWriter.writeCData(o.toString());
+			// Data Properties
+			if (prop instanceof XMLDataProperty) {
+				if (prop.isFromXMLElement()) {
+					List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
+					if (valueList != null && valueList.size() > 0) {
+						myWriter.writeStartElement(prop.getName());
+						for (Object o : valueList) {
+							if (o != null) {
+								myWriter.writeCharacters(o.toString());
+							}
 						}
+						myWriter.writeEndElement();
+						myWriter.writeCharacters(LINE_SEP);
 					}
-					myWriter.writeEndElement();
-					myWriter.writeCharacters(LINE_SEP);
+				}
+				else {
+					String value = indiv.getPropertyStringValue(prop);
+					if (value != null && !prop.getName().equals(XMLCst.CDATA_ATTR_NAME)) {
+						myWriter.writeAttribute(prop.getName(), value);
+					}
 				}
 			}
-		}
-		// Object Properties
-		for (XMLProperty prop : indiv.getType().getProperties()) {
 
-			if (prop instanceof XMLObjectProperty) {
+			// Object Properties
+			else if (prop instanceof XMLObjectProperty) {
 				List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
 				if (valueList != null) {
 					for (Object o : valueList) {

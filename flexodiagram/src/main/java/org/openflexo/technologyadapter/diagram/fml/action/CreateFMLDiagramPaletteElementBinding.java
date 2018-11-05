@@ -46,12 +46,11 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
@@ -59,13 +58,13 @@ import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindi
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class CreateFMLDiagramPaletteElementBinding extends
-		FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
+public class CreateFMLDiagramPaletteElementBinding
+		extends FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBinding.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject>(
-			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType = new FlexoActionFactory<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject>(
+			"create_new_palette_binding", FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -94,15 +93,16 @@ public class CreateFMLDiagramPaletteElementBinding extends
 
 	private String description;
 
-	CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
+	private CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
 		logger.info("Add palette element binding to typed diagram modelslot");
-		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getFMLModelFactory().newInstance(
-				FMLDiagramPaletteElementBinding.class);
+		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getFMLModelFactory()
+				.newInstance(FMLDiagramPaletteElementBinding.class);
 		newBinding.setDiagramModelSlot(getFocusedObject());
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
@@ -123,9 +123,9 @@ public class CreateFMLDiagramPaletteElementBinding extends
 
 	private final String nameValidityMessage = EMPTY_NAME;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
+	private static final String NAME_IS_VALID = "name_is_valid";
+	private static final String DUPLICATED_NAME = "this_name_is_already_used_please_choose_an_other_one";
+	private static final String EMPTY_NAME = "empty_name";
 
 	public String getNameValidityMessage() {
 		return nameValidityMessage;

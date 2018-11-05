@@ -53,10 +53,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
-import org.openflexo.rm.Resource;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
@@ -77,17 +76,15 @@ public class TestSepelOntology extends OpenflexoTestCase {
 
 	private static OWLTechnologyAdapter owlAdapter;
 	private static OWLOntologyLibrary ontologyLibrary;
-	private static ResourceRepository<OWLOntologyResource> ontologyRepository;
+	// private static ResourceRepositoryImpl<OWLOntologyResource, ?> ontologyRepository;
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		// Unused Resource rsc =
+		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getInformationSpace().getAllRepositories(owlAdapter);
-		ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
-		assertNotNull(ontologyRepository);
 	}
 
 	private static OWLOntology mappingSpecification;
@@ -97,8 +94,34 @@ public class TestSepelOntology extends OpenflexoTestCase {
 	@TestOrder(1)
 	public void instanciateOntologies() {
 
-		OWLOntologyResource mappingSpecificationResource = ontologyRepository
-				.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
+		OWLOntologyResource mappingSpecificationResource = null;
+
+		System.out.println("ontologyLibrary=" + ontologyLibrary);
+		for (OWLOntologyResource r : ontologyLibrary.getRegisteredOntologies()) {
+			System.out.println(" % " + r);
+		}
+
+		System.out.println("Repositories=");
+		for (ResourceRepository<?, ?> rr : owlRepositories) {
+			System.out.println(" - " + rr);
+		}
+
+		/*for (ResourceRepositoryImpl<?, ?> ontoRepo : owlRepositories) {
+			mappingSpecificationResource = (OWLOntologyResource) ontoRepo
+					.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+		
+			if (mappingSpecificationResource != null) {
+				ontologyRepository = (ResourceRepositoryImpl<OWLOntologyResource, ?>) ontoRepo;
+			}
+		}*/
+
+		mappingSpecificationResource = (OWLOntologyResource) ontologyLibrary
+				.getResourceWithURI("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+		assertNotNull(mappingSpecificationResource);
+
+		// assertNotNull(ontologyRepository);
+
 		try {
 			mappingSpecificationResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -114,8 +137,12 @@ public class TestSepelOntology extends OpenflexoTestCase {
 
 		assertNotNull(mappingSpecification = mappingSpecificationResource.getLoadedResourceData());
 
-		OWLOntologyResource inputModel1Resource = ontologyRepository
-				.getResource("http://www.thalesgroup.com/ontologies/sepel-ng/SEPELInputModel1.owl");
+		// OWLOntologyResource inputModel1Resource = ontologyRepository
+		// .getResource("http://www.thalesgroup.com/ontologies/sepel-ng/SEPELInputModel1.owl");
+
+		OWLOntologyResource inputModel1Resource = (OWLOntologyResource) ontologyLibrary
+				.getResourceWithURI("http://www.thalesgroup.com/ontologies/sepel-ng/SEPELInputModel1.owl");
+
 		try {
 			inputModel1Resource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -136,7 +163,7 @@ public class TestSepelOntology extends OpenflexoTestCase {
 	}
 
 	@Test
-	@TestOrder(1)
+	@TestOrder(2)
 	public void testRedefinition() {
 
 		OWLClass rootClassForInputModel1InMS = mappingSpecification

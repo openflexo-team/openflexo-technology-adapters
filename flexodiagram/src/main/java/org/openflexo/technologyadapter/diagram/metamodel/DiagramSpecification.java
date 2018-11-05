@@ -42,13 +42,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
@@ -62,11 +60,11 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 import org.openflexo.toolbox.ChainedCollection;
 
 /**
@@ -81,17 +79,18 @@ import org.openflexo.toolbox.ChainedCollection;
 @ModelEntity
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
-public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>,
-		ResourceData<DiagramSpecification> {
+public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = String.class)
-	public static final String URI_KEY = "URI";
+	public static final String URI_KEY = "uri";
 	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
 	public static final String EXAMPLE_DIAGRAMS_KEY = "exampleDiagrams";
+	@PropertyIdentifier(type = String.class)
+	String DESCRIPTION_KEY = "description";
 
 	/**
 	 * Return title of this DiagramSpecification
@@ -107,6 +106,13 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 	 */
 	@Setter(value = NAME_KEY)
 	public void setName(String name);
+
+	@Getter(value = DESCRIPTION_KEY)
+	@XMLAttribute
+	public String getDescription();
+
+	@Setter(DESCRIPTION_KEY)
+	public void setDescription(String description);
 
 	@Override
 	@Getter(value = URI_KEY)
@@ -154,6 +160,10 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 	public List<DiagramPaletteElement> getAllPaletteElements();
 
+	public Diagram getDefaultExampleDiagram();
+
+	public Diagram createDefaultExampleDiagram(FlexoEditor editor);
+
 	public static abstract class DiagramSpecificationImpl extends FlexoObjectImpl implements DiagramSpecification {
 
 		private static final Logger logger = Logger.getLogger(DiagramSpecification.class.getPackage().getName());
@@ -177,22 +187,30 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * @param viewPoint
 		 * @return
 		 */
-		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, RepositoryFolder<?> folder,
+		/*public static DiagramSpecification newDiagramSpecification(String uri, String baseName, RepositoryFolder<?> folder,
 				FlexoServiceManager serviceManager) {
 			// File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName +
 			// DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
 			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(baseName, folder, uri,
-					serviceManager);
+					folder.getResourceRepository().getResourceCenter(), serviceManager);
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
 			dsRes.setResourceData(diagramSpecification);
 			diagramSpecification.setResource(dsRes);
+		
+			DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramSpecificationRepository dsRepository = folder.getResourceRepository().getResourceCenter()
+					.getRepository(DiagramSpecificationRepository.class, diagramTA);
+			dsRepository.registerResource(dsRes);
+			diagramTA.referenceResource(dsRes, folder.getResourceRepository().getResourceCenter());
+		
 			try {
 				dsRes.save(null);
 			} catch (SaveResourceException e) {
 				e.printStackTrace();
 			}
 			return diagramSpecification;
-		}
+		}*/
 
 		// Used during deserialization, do not use it
 		public DiagramSpecificationImpl() {
@@ -201,6 +219,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			palettes = null;
 		}
 
+		@Override
 		public FlexoServiceManager getServiceManager() {
 			return getResource().getServiceManager();
 		}
@@ -210,7 +229,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadDiagramPalettesWhenUnloaded() {
-			palettes = new ArrayList<DiagramPalette>();
+			palettes = new ArrayList<>();
 			if (getResource() != null) {
 				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
 					if (r instanceof DiagramPaletteResource) {
@@ -228,7 +247,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadExampleDiagramsWhenUnloaded() {
-			exampleDiagrams = new ArrayList<Diagram>();
+			exampleDiagrams = new ArrayList<>();
 			if (getResource() != null) {
 				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
 					if (r instanceof DiagramResource) {
@@ -308,8 +327,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
-			if (!palettes.contains(aPalette)) {
-				System.out.println("Adding palette " + aPalette.hashCode());
+			if (aPalette != null && !palettes.contains(aPalette)) {
 				palettes.add(aPalette);
 				getPropertyChangeSupport().firePropertyChange("palettes", null, aPalette);
 			}
@@ -320,7 +338,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
-			if (palettes.contains(aPalette)) {
+			if (aPalette != null && palettes.contains(aPalette)) {
 				palettes.remove(aPalette);
 				getPropertyChangeSupport().firePropertyChange("palettes", aPalette, null);
 			}
@@ -387,7 +405,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		@Override
 		public List<DiagramPaletteElement> getAllPaletteElements() {
 			if (paletteElements == null) {
-				paletteElements = new ArrayList<DiagramPaletteElement>();
+				paletteElements = new ArrayList<>();
 			}
 			paletteElements.clear();
 			for (DiagramPalette palette : getPalettes()) {
@@ -401,10 +419,10 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		}
-
+		
 		private Vector<FlexoConcept> _allFlexoConceptWithDropScheme;
 		private Vector<FlexoConcept> _allFlexoConceptWithLinkScheme;
-
+		
 		public Vector<FlexoConcept> getAllFlexoConceptWithDropScheme() {
 		if (_allFlexoConceptWithDropScheme == null) {
 		_allFlexoConceptWithDropScheme = new Vector<FlexoConcept>();
@@ -416,7 +434,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return _allFlexoConceptWithDropScheme;
 		}
-
+		
 		public Vector<FlexoConcept> getAllFlexoConceptWithLinkScheme() {
 		if (_allFlexoConceptWithLinkScheme == null) {
 		_allFlexoConceptWithLinkScheme = new Vector<FlexoConcept>();
@@ -428,21 +446,21 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return _allFlexoConceptWithLinkScheme;
 		}
-
+		
 		@Override
 		public void addToFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.addToFlexoConcepts(pattern);
 		}
-
+		
 		@Override
 		public void removeFromFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.removeFromFlexoConcepts(pattern);
 		}
-
+		
 		public Vector<LinkScheme> getAllConnectors() {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
 		for (FlexoConcept ep : getFlexoConcepts()) {
@@ -452,7 +470,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return returned;
 		}
-
+		
 		public Vector<LinkScheme> getConnectorsMatching(FlexoConcept fromConcept, FlexoConcept toConcept) {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
 		for (FlexoConcept ep : getFlexoConcepts()) {
@@ -464,7 +482,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return returned;
 		}
-
+		
 		@Override
 		public boolean handleVariable(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramFlexoBehaviour.TOP_LEVEL)) {
@@ -524,6 +542,23 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			deleteObservers();
 			// isDeleted = true;
 			return true;
+		}
+
+		@Override
+		public Diagram getDefaultExampleDiagram() {
+			if (getExampleDiagrams().size() > 0) {
+				return getExampleDiagrams().get(0);
+			}
+			return null;
+		}
+
+		@Override
+		public Diagram createDefaultExampleDiagram(FlexoEditor editor) {
+			CreateExampleDiagram createDiagramAction = CreateExampleDiagram.actionType.makeNewAction(this, null, editor);
+			createDiagramAction.setNewDiagramName("DefaultExampleDiagram");
+			createDiagramAction.setNewDiagramTitle("Default example diagram");
+			createDiagramAction.doAction();
+			return createDiagramAction.getNewDiagram();
 		}
 	}
 

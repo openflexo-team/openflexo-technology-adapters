@@ -36,14 +36,13 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -63,7 +62,7 @@ public class StatementDisplayableRepresentationPathElement extends SimplePathEle
 
 	public static final String DISPLAYABLE_REPRESENTATION = "displayableRepresentation";
 
-	public StatementDisplayableRepresentationPathElement(BindingPathElement parent) {
+	public StatementDisplayableRepresentationPathElement(IBindingPathElement parent) {
 		super(parent, DISPLAYABLE_REPRESENTATION, String.class); // Type is dynamically retrieved
 	}
 
@@ -74,7 +73,7 @@ public class StatementDisplayableRepresentationPathElement extends SimplePathEle
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_property");
+		return FlexoLocalization.getMainLocalizer().localizedForKey("displayable_representation");
 	}
 
 	@Override
@@ -87,8 +86,8 @@ public class StatementDisplayableRepresentationPathElement extends SimplePathEle
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

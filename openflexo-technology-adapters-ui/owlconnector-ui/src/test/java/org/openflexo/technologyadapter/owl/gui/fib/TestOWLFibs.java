@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.owl.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -83,22 +83,22 @@ public class TestOWLFibs extends GenericFIBTestCase {
 	public void testFIBOntologyLibraryBrowser() {
 		validateFIB("Fib/FIBOntologyLibraryBrowser.fib");
 	}
-
+	
 	@Test
 	public void testFIBOWLClassEditor() {
 		validateFIB("Fib/FIBOWLClassEditor.fib");
 	}
-
+	
 	@Test
 	public void testFIBOWLDataPropertyEditor() {
 		validateFIB("Fib/FIBOWLDataPropertyEditor.fib");
 	}
-
+	
 	@Test
 	public void testFIBOWLIndividualEditor() {
 		validateFIB("Fib/FIBOWLIndividualEditor.fib");
 	}
-
+	
 	@Test
 	public void testFIBOWLObjectPropertyEditor() {
 		validateFIB("Fib/FIBOWLObjectPropertyEditor.fib");

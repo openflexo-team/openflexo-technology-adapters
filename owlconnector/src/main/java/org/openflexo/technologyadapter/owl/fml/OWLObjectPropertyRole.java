@@ -38,11 +38,13 @@
 
 package org.openflexo.technologyadapter.owl.fml;
 
-import org.openflexo.foundation.fml.ObjectPropertyRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.ontology.fml.ObjectPropertyRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 
 @ModelEntity
@@ -51,11 +53,16 @@ import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 @FML("OWLObjectPropertyRole")
 public interface OWLObjectPropertyRole extends ObjectPropertyRole<OWLObjectProperty> {
 
-	public static abstract class OWLObjectPropertyRoleImpl extends ObjectPropertyRoleImpl<OWLObjectProperty> implements
-			OWLObjectPropertyRole {
+	public static abstract class OWLObjectPropertyRoleImpl extends ObjectPropertyRoleImpl<OWLObjectProperty>
+			implements OWLObjectPropertyRole {
 
 		public OWLObjectPropertyRoleImpl() {
 			super();
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return OWLTechnologyAdapter.class;
 		}
 
 	}

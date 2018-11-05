@@ -38,9 +38,11 @@
 
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -66,7 +68,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<DiagramShape, ShapeGraphicalRepresentation> {
 
 	/**
-	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting shape
+	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
+	 * shape
 	 * 
 	 * @return a list of {@link LinkScheme}
 	 */
@@ -87,6 +90,12 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 	 * @return a list of {@link DropAndLinkScheme}
 	 */
 	public List<DropAndLinkScheme> getAvailableDropAndLinkSchemes(FlexoConcept targetFlexoConcept);
+
+	/**
+	 * Called to listen notification that may change floating palette of related shape<br>
+	 * Basically we listen to the right VirtualModel for a new or deleted FlexoConcept
+	 */
+	public void listenFloatingPaletteChanges();
 
 	/**
 	 * Represents the concatenation of a DropScheme and a LinkScheme, together compatible
@@ -124,7 +133,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<DropAndLinkScheme>();
+			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
@@ -146,8 +155,8 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
-		 * shape
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
+		 * starting shape
 		 * 
 		 * @return a list of {@link LinkScheme}
 		 */
@@ -160,7 +169,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
+			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
@@ -178,8 +187,8 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
-		 * shape, and where toTarget is compatible with supplied targetFlexoConcept
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
+		 * starting shape, and where toTarget is compatible with supplied targetFlexoConcept
 		 * 
 		 * @return a list of {@link LinkScheme}
 		 */
@@ -192,7 +201,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				return null;
 			}
 
-			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
+			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<>();
 			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
@@ -205,6 +214,43 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				}
 			}
 			return availableLinkSchemeFromThisShape;
+		}
+
+		/**
+		 * Called to listen notification that may change floating palette of related shape<br>
+		 * Basically we listen to the right VirtualModel for a new or deleted FlexoConcept
+		 */
+		@Override
+		public void listenFloatingPaletteChanges() {
+			if (getFlexoConceptInstance() != null && getFlexoConceptInstance().getVirtualModelInstance() != null
+					&& getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel() != null) {
+				getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel().getPropertyChangeSupport()
+						.addPropertyChangeListener(this);
+			}
+		}
+
+		@Override
+		public boolean delete(Object... context) {
+			if (getFlexoConceptInstance() != null && getFlexoConceptInstance().getVirtualModelInstance() != null
+					&& getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel() != null) {
+				getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel().getPropertyChangeSupport()
+						.removePropertyChangeListener(this);
+			}
+			return super.delete(context);
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (getFlexoConceptInstance() != null && getFlexoConceptInstance().getVirtualModelInstance() != null
+					&& getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel() != null) {
+				if (evt.getSource() == getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel()) {
+					if (evt.getPropertyName().equals(VirtualModel.FLEXO_CONCEPTS_KEY)) {
+						ShapeNode<FMLControlledDiagramShapeImpl> shapeNode = getDrawing().getShapeNode(this);
+						shapeNode.clearControlAreas();
+					}
+				}
+			}
+			super.propertyChange(evt);
 		}
 
 	}

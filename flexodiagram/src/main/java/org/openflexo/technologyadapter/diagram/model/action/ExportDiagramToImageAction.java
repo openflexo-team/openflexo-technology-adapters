@@ -47,14 +47,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.openflexo.fge.ContainerGraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoGUIAction;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -67,8 +69,8 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 
 	private static final Logger logger = Logger.getLogger(ExportDiagramToImageAction.class.getPackage().getName());
 
-	public static final FlexoActionType<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionType<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>>(
-			"export_diagram_to_image", FlexoActionType.docGroup) {
+	public static final FlexoActionFactory<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<ExportDiagramToImageAction, DiagramElement<?>, DiagramElement<?>>(
+			"export_diagram_to_image", FlexoActionFactory.docGroup) {
 
 		@Override
 		public boolean isEnabledForSelection(DiagramElement<?> object, Vector<DiagramElement<?>> globalSelection) {
@@ -102,7 +104,15 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
-	private ScreenshotImage screenshot;
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
+	private ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> screenshot;
 
 	private File dest;
 
@@ -118,16 +128,16 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 					int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 					switch (result) {
-					case JOptionPane.YES_OPTION:
-						super.approveSelection();
-						return;
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CLOSED_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
+						case JOptionPane.YES_OPTION:
+							super.approveSelection();
+							return;
+						case JOptionPane.NO_OPTION:
+							return;
+						case JOptionPane.CLOSED_OPTION:
+							return;
+						case JOptionPane.CANCEL_OPTION:
+							cancelSelection();
+							return;
 					}
 				}
 				if (!f.exists() && getDialogType() == SAVE_DIALOG) {
@@ -137,7 +147,7 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 			}
 		};
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setDialogTitle(FlexoLocalization.localizedForKey("save_as_image", chooser));
+		chooser.setDialogTitle(getLocales().localizedForKey("save_as_image", chooser));
 
 		for (ImageType type : ImageType.values()) {
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(type.name(), type.getExtension());
@@ -172,26 +182,25 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		}
 		if (saveScreenshot() != null) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
-	public ScreenshotImage<DiagramElement> getScreenshot() {
-		if(getFocusedObject() instanceof DiagramShape){
-			if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
-				setScreenshot((ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage());
+	public ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> getScreenshot() {
+		if (getFocusedObject() instanceof DiagramShape) {
+			if (this.screenshot == null || this.screenshot != ((DiagramShape) getFocusedObject()).getScreenshotImage()) {
+				setScreenshot(((DiagramShape) getFocusedObject()).getScreenshotImage());
 			}
 		}
-		if(getFocusedObject() instanceof Diagram){
-			if(this.screenshot==null ||this.screenshot != ((Diagram)getFocusedObject()).getScreenshotImage()){
-				setScreenshot((ScreenshotImage<Diagram>) ((Diagram)getFocusedObject()).getScreenshotImage());
+		if (getFocusedObject() instanceof Diagram) {
+			if (this.screenshot == null || this.screenshot != ((Diagram) getFocusedObject()).getScreenshotImage()) {
+				setScreenshot(((Diagram) getFocusedObject()).getScreenshotImage());
 			}
 		}
 		return this.screenshot;
 	}
 
-	public void setScreenshot(ScreenshotImage screenshot) {
+	public void setScreenshot(ScreenshotImage<? extends DiagramElement<? extends ContainerGraphicalRepresentation>> screenshot) {
 		this.screenshot = screenshot;
 	}
 

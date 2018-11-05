@@ -1,0 +1,14 @@
+dependencies {
+  compile project(":ginaconnector")
+
+  // openflexo dep
+   compile flexoUi()
+   compile fmlTechnologyAdapterUi()
+   compile fmlRtTechnologyAdapterUi()
+  // external dep
+  // testing dep
+    testCompile flexoUiTest()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

@@ -48,7 +48,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -83,8 +83,8 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 		try {
 			factory = new DiagramSpecificationFactory(null, null);
 
-			ModelEntity<DiagramSpecification> diagramSpecificationEntity = factory.getModelContext().getModelEntity(
-					DiagramSpecification.class);
+			ModelEntity<DiagramSpecification> diagramSpecificationEntity = factory.getModelContext()
+					.getModelEntity(DiagramSpecification.class);
 
 			assertNotNull(diagramSpecificationEntity);
 

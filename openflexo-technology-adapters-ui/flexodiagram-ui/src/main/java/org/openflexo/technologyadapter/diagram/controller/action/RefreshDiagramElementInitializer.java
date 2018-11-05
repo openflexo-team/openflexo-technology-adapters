@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.RefreshDiagramElement;
@@ -57,7 +58,7 @@ public class RefreshDiagramElementInitializer extends ActionInitializer<RefreshD
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.REFRESH_ICON;
 	}
 

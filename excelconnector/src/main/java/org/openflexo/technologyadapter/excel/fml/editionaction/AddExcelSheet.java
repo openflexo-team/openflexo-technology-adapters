@@ -43,14 +43,11 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -97,8 +94,8 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 	@Setter(OVERRIDE_KEY)
 	public void setOverride(boolean override);
 
-	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelSheet> implements
-			AddExcelSheet {
+	public static abstract class AddExcelSheetImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> implements AddExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(AddExcelSheet.class.getPackage().getName());
 
@@ -118,82 +115,49 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		}
 
 		@Override
-		public ExcelSheet execute(FlexoBehaviourAction action) {
+		public ExcelSheet execute(RunTimeEvaluationContext evaluationContext) {
 
 			ExcelSheet result = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(action);
-			if (modelSlotInstance.getResourceData() != null) {
-				Workbook wb = modelSlotInstance.getAccessedResourceData().getWorkbook();
-				Sheet sheet = null;
-				try {
-					if (wb != null) {
-						String name = getSheetName().getBindingValue(action);
-						if (name != null) {
-							// Create or retrieve this sheet
-							sheet = retrieveOrCreateSheet(wb, name);
-							// Instanciate Wrapper.
-							result = modelSlotInstance.getAccessedResourceData().getConverter()
-									.convertExcelSheetToSheet(sheet, modelSlotInstance.getAccessedResourceData(), null);
-							modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
-							modelSlotInstance.getAccessedResourceData().setIsModified();
-						} else {
-							logger.warning("Create a sheet requires a name");
-						}
-					} else {
-						logger.warning("Create a sheet requires a workbook");
-					}
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			ExcelWorkbook excelWB = getReceiver(evaluationContext);
+			// Sheet sheet = null;
+			try {
+				if (excelWB != null) {
+					String name = getSheetName().getBindingValue(evaluationContext);
+					if (name != null) {
+						// Create or retrieve this sheet
+						result = excelWB.getConverter().newSheet(name, getOverride());
 
-			} else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
+						// sheet = retrieveOrCreateSheet(wb, name);
+						// Instanciate Wrapper.
+						// result = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelSheetToSheet(sheet,
+						// modelSlotInstance.getAccessedResourceData(), null);
+						// modelSlotInstance.getAccessedResourceData().addToExcelSheets(result);
+						excelWB.setIsModified();
+					}
+					else {
+						logger.warning("Create a sheet requires a name");
+					}
+				}
+				else {
+					logger.warning("Create a sheet requires a workbook");
+				}
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
 
 			return result;
-		}
 
-		// Create an Excel Sheet or get the existing one.
-		private Sheet retrieveOrCreateSheet(Workbook wb, String name) {
-			Sheet sheet = null;
-			// A sheet with this name already exists
-			if (wb.getSheet(name) != null) {
-				if (override) {
-					// Override it
-					wb.removeSheetAt(wb.getSheetIndex(name));
-					sheet = wb.createSheet(name);
-					logger.info("Override excel sheet with the name " + name);
-				} else {
-					// Retrieve the existing one
-					sheet = wb.getSheet(name);
-					logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
-				}
-			} else {
-				// Create a new one
-				sheet = wb.createSheet(name);
-				logger.info("Create a new excel sheet with the name " + name);
-			}
-			return sheet;
-		}
-
-		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(action);
 		}
 
 		@Override
 		public DataBinding<String> getSheetName() {
 			if (sheetName == null) {
-				sheetName = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				sheetName = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				sheetName.setBindingName("sheetName");
 			}
 			return sheetName;
@@ -213,7 +177,7 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		@Override
 		public DataBinding<List<ExcelRow>> getSheetRows() {
 			if (sheetRows == null) {
-				sheetRows = new DataBinding<List<ExcelRow>>(this, List.class, DataBinding.BindingDefinitionType.GET);
+				sheetRows = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET);
 				sheetRows.setBindingName("sheetRows");
 			}
 			return sheetRows;

@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -46,17 +45,11 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 import org.openflexo.toolbox.IProgress;
@@ -75,86 +68,6 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	protected Resource modelResource;
 
 	/**
-	 * Creates a new {@link OWLOntologyResource} asserting this is an explicit creation: no file is present on file system<br>
-	 * This method should not be used to retrieve the resource from a file in the file system, use
-	 * {@link #retrieveOWLOntologyResource(File, OWLOntologyLibrary)} instead
-	 * 
-	 * @param ontologyURI
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
-			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
-			// returned.setFile(modelFile);
-			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
-			returned.setURI(modelFile.toURI().toString());
-			returned.setMetaModelResource(emfMetaModelResource);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerModel(returned);
-			// Creates the EMF model from scratch
-			EMFModelConverter converter = new EMFModelConverter();
-			EMFModel resourceData = converter.convertModel(returned.getMetaModelResource().getMetaModelData(), returned.getEMFResource());
-			returned.setResourceData(resourceData);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * URI here is the full path to the file
-	 */
-	@Override
-	public String getURI() {
-		// TODO FIX THIS When refactoring with clean IoDelegate support
-		return ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().toURI().toString();
-	}
-
-	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
-	 * system<br>
-	 * This method should not be used to explicitely build a new ontology
-	 * 
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
-			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
-			returned.setURI(modelFile.toURI().toString());
-			returned.setMetaModelResource(emfMetaModelResource);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerModel(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
@@ -167,15 +80,12 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	@Override
 	public EMFModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		try {
-			getEMFResource().load(null);
-			EMFModelConverter converter = new EMFModelConverter();
-			EMFModel resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
-			setResourceData(resourceData);
-			return resourceData;
-		} catch (IOException e) {
-			throw new FlexoException(e);
-		}
+
+		EMFModelConverter converter = new EMFModelConverter();
+		EMFModel resourceData;
+		resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
+		setResourceData(resourceData);
+		return resourceData;
 	}
 
 	/**
@@ -190,30 +100,30 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
+			throw new SaveResourceException(getIODelegate());
 		}
 
-		if (!getFlexoIODelegate().hasWritePermission()) {
+		if (!getIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
 				// logger.warning("Permission denied : " + getFile().getAbsolutePath());
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getIODelegate().willWriteOnDisk();
 			writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			getIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getIODelegate().toString());
 			}
 		}
 	}
@@ -247,9 +157,8 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	private void writeToFile() throws SaveResourceException {
 		try {
 			getEMFResource().save(null);
-			logger.info("Wrote " + getFlexoIODelegate().toString());
+			logger.info("Wrote " + getIODelegate().toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -259,13 +168,15 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * 
 	 * @return the modelResource value
 	 */
+	@Override
 	public Resource getEMFResource() {
 		if (modelResource == null) {
 			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();
 			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
-			} else {
+			}
+			else {
 				if (!mmResource.isLoaded()) {
 					try {
 						mmResource.loadResourceData(null);
@@ -285,7 +196,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
 			// RESOURCES!!
-			modelResource = mmResource.createEMFModelResource(getFlexoIODelegate());
+			modelResource = mmResource.createEMFModelResource(getIODelegate());
 
 		}
 		return modelResource;

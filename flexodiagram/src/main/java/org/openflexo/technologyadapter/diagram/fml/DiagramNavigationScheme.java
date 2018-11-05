@@ -38,8 +38,11 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.NavigationScheme;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.nature.FlexoNature;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -56,6 +59,19 @@ public interface DiagramNavigationScheme extends NavigationScheme, DiagramFlexoB
 			super();
 		}
 
+		/**
+		 * Returns nature which we will try to use to display target object
+		 * 
+		 * @return
+		 */
+		@Override
+		public <O extends FlexoObject> FlexoNature<O> getDisplayNature(O targetObject) {
+			if (targetObject instanceof VirtualModelInstance
+					&& ((VirtualModelInstance) targetObject).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)) {
+				return (FlexoNature<O>) FMLControlledDiagramVirtualModelInstanceNature.INSTANCE;
+			}
+			return super.getDisplayNature(targetObject);
+		}
 	}
 
 }

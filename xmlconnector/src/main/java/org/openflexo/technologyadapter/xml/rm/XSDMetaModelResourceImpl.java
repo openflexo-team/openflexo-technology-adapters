@@ -38,19 +38,15 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -85,24 +81,6 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	private boolean isLoading = false;
 	private boolean isReadOnly = true;
 
-	public static XSDMetaModelResource makeXSDMetaModelResource(File xsdMetaModelFile, String uri,
-			XMLTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					XSDMetaModelResource.class));
-			XSDMetaModelResource returned = factory.newInstance(XSDMetaModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setURI(uri);
-			returned.initName("Unnamed");
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xsdMetaModelFile, factory));
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@Override
 	public XMLMetaModel getMetaModelData() {
 		try {
@@ -121,12 +99,18 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not immediately available.
+	 *            a progress monitor in case the resource data is not
+	 *            immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
+	 * @throws FlexoException
 	 */
 	@Override
-	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
+	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FlexoException {
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
+		}
 
 		if (loadWhenUnloaded())
 			return resourceData;
@@ -272,7 +256,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		}
 		isLoading = true;
 		isLoaded = false;
-		schemaSet = XSOMUtils.read(getFile());
+		schemaSet = XSOMUtils.read(getInputStream());
 		if (schemaSet != null) {
 			fetcher = new XSDeclarationsFetcher();
 			fetcher.fetch(schemaSet);
@@ -281,7 +265,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			loadObjectProperties();
 			isLoaded = true;
 		} else
-			logger.info("I've not been able to parse the file" + getFile());
+			logger.info("I've not been able to parse the stream" + getInputStream());
 		isLoading = false;
 		return isLoaded;
 	}
@@ -330,13 +314,30 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		return XMLMetaModel.class;
 	}
 
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+	/**
+	 * Return a FlexoIOStreamDelegate associated to this flexo resource
+	 * 
+	 * @return
+	 */
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
+		}
+		return null;
 	}
 
-	@Override
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
+	}
+
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
 	}
 
 }

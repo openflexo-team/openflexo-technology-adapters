@@ -53,13 +53,13 @@ import javax.swing.JPopupMenu;
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.PaletteElementSpecification;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
@@ -73,16 +73,17 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
 
-public class ContextualPalette extends AbstractDiagramPalette implements PropertyChangeListener {
+public class ContextualPalette extends DiagramEditorPaletteModel implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(ContextualPalette.class.getPackage().getName());
 
 	private DiagramPalette diagramPalette;
 
 	public ContextualPalette(DiagramPalette diagramPalette, DiagramEditor editor) {
-		super(editor, diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getWidth()
-				: 300, diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getHeight()
-				: 300, diagramPalette.getName());
+		super(editor, diagramPalette.getName(),
+				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getWidth() : 200,
+				diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getHeight() : 200,
+				40, 30, 10, 10);
 
 		this.diagramPalette = diagramPalette;
 
@@ -115,7 +116,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 					// updatePalette();
 					// getController().updatePalette(diagramPalette, oldPaletteView);
 					logger.warning("Sans doute des choses a faire ici ???");
-				} else if (evt.getOldValue() instanceof DiagramPaletteElement) {
+				}
+				else if (evt.getOldValue() instanceof DiagramPaletteElement) {
 					ContextualPaletteElement e = getContextualPaletteElement((DiagramPaletteElement) evt.getOldValue());
 					removeElement(e);
 					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
@@ -137,8 +139,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 	}
 
-	private Vector<DropScheme> getAvailableDropSchemes(FlexoConcept pattern, DrawingTreeNode<?, ?> target) {
-		Vector<DropScheme> returned = new Vector<DropScheme>();
+	private static Vector<DropScheme> getAvailableDropSchemes(FlexoConcept pattern, DrawingTreeNode<?, ?> target) {
+		Vector<DropScheme> returned = new Vector<>();
 		for (DropScheme dropScheme : pattern.getFlexoBehaviours(DropScheme.class)) {
 			if (dropScheme.isTopTarget() && target instanceof DrawingGraphicalRepresentation) {
 				returned.add(dropScheme);
@@ -158,6 +160,13 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 	protected ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element, DiagramEditor editor) {
 		// System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
+	}
+
+	@Override
+	protected PaletteElement buildPaletteElement(PaletteElementSpecification paletteElement) {
+		// TODO
+		// return new ContextualPaletteElement(paletteElement.getGraphicalRepresentation());
+		return null;
 	}
 
 	@SuppressWarnings("serial")
@@ -181,9 +190,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 				return getAvailableDropSchemes(target, diagramPaletteElement).size() > 0;
 			}
 
-			return getEditor() != null
-					&& target instanceof ContainerNode
-					&& (target.getDrawable() instanceof Diagram || target.getDrawable() instanceof DiagramShape || target.getDrawable() instanceof FMLControlledDiagramElement);
+			return getEditor() != null && target instanceof ContainerNode && (target.getDrawable() instanceof Diagram
+					|| target.getDrawable() instanceof DiagramShape || target.getDrawable() instanceof FMLControlledDiagramElement);
 		}
 
 		@Override
@@ -192,7 +200,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 				if (getEditor() instanceof FMLControlledDiagramEditor) {
 					return handleFMLControlledDrop(target, diagramPaletteElement, dropLocation, (FMLControlledDiagramEditor) getEditor());
-				} else {
+				}
+				else {
 					return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, false, false, false,
 							false, false, false);
 				}
@@ -218,10 +227,10 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 		if (getEditor() instanceof FMLControlledDiagramEditor) {
 
-			VirtualModelInstance vmi = ((FMLControlledDiagramEditor) getEditor()).getVirtualModelInstance();
+			FMLRTVirtualModelInstance vmi = ((FMLControlledDiagramEditor) getEditor()).getVirtualModelInstance();
 			TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(vmi.getVirtualModel());
 
-			ArrayList<DropScheme> availableDropSchemes = new ArrayList<DropScheme>();
+			ArrayList<DropScheme> availableDropSchemes = new ArrayList<>();
 
 			for (FMLDiagramPaletteElementBinding fmlDiagramPaletteElementBinding : ms.getPaletteElementBindings(paletteElement)) {
 
@@ -231,7 +240,8 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 					if (ds.isTopTarget()) {
 						availableDropSchemes.add(ds);
 					}
-				} else if (target.getDrawable() instanceof FMLControlledDiagramShape) {
+				}
+				else if (target.getDrawable() instanceof FMLControlledDiagramShape) {
 					FMLControlledDiagramShape fmlControlledShape = (FMLControlledDiagramShape) target.getDrawable();
 					if (ds.isValidTarget(fmlControlledShape.getFlexoConceptInstance().getFlexoConcept(), fmlControlledShape.getRole())) {
 						availableDropSchemes.add(ds);
@@ -269,20 +279,21 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		if (availableDropSchemes.size() == 0) {
 			logger.warning("Unexpected empty list: availableDropSchemes");
 			return false;
-		} else if (availableDropSchemes.size() > 1) {
+		}
+		else if (availableDropSchemes.size() > 1) {
 			JPopupMenu popup = new JPopupMenu();
 			for (final DropScheme dropScheme : availableDropSchemes) {
-				JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(dropScheme.getLabel() != null ? dropScheme.getLabel()
-						: dropScheme.getName()));
-				menuItem.addActionListener(new DrawingShapeActionListener(editor, dropScheme, parentFlexoConceptInstance, parentShapeRole,
-						paletteElement, dropLocation));
+				JMenuItem menuItem = new JMenuItem(dropScheme.getDeclaringVirtualModel().getLocalizedDictionary()
+						.localizedForKey(dropScheme.getLabel() != null ? dropScheme.getLabel() : dropScheme.getName()));
+				menuItem.addActionListener(new DrawingShapeActionListener(editor, dropScheme, container, parentFlexoConceptInstance,
+						parentShapeRole, paletteElement, dropLocation));
 				popup.add(menuItem);
 			}
 			popup.show(editor.getDrawingView(), (int) dropLocation.x, (int) dropLocation.y);
-		} else { // availableDropSchemes.size() == 1
-			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(editor.getVirtualModelInstance(), null, editor
-					.getFlexoController().getEditor());
-			action.setDropScheme(availableDropSchemes.get(0));
+		}
+		else { // availableDropSchemes.size() == 1
+			DropSchemeAction action = new DropSchemeAction(availableDropSchemes.get(0), editor.getVirtualModelInstance(), null,
+					editor.getFlexoController().getEditor());
 			action.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);
@@ -312,8 +323,9 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		private final FGEPoint dropLocation;
 		private final FlexoConceptInstance parentFlexoConceptInstance;
 		private final ShapeRole parentShapeRole;
+		DiagramContainerElement<?> container;
 
-		DrawingShapeActionListener(FMLControlledDiagramEditor controller, DropScheme dropScheme,
+		DrawingShapeActionListener(FMLControlledDiagramEditor controller, DropScheme dropScheme, DiagramContainerElement<?> container,
 				FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DiagramPaletteElement paletteElement,
 				FGEPoint dropLocation) {
 			this.controller = controller;
@@ -322,17 +334,26 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			this.parentShapeRole = parentShapeRole;
 			this.paletteElement = paletteElement;
 			this.dropLocation = dropLocation;
+			this.container = container;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(), null, controller
-					.getFlexoController().getEditor());
-			action.setDropScheme(dropScheme);
+			DropSchemeAction action = new DropSchemeAction(dropScheme, controller.getVirtualModelInstance(), null,
+					controller.getFlexoController().getEditor());
 			action.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);
 			action.doAction();
+
+			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the DiagamShape,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new shape is FML-controlled
+
+			container.getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, container);
+
 		}
 
 	}

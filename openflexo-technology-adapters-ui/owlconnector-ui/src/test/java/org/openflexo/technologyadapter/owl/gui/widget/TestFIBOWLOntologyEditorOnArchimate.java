@@ -38,9 +38,7 @@
 
 package org.openflexo.technologyadapter.owl.gui.widget;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -55,33 +53,25 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyEditor;
-import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
-import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
-import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
-import org.openflexo.technologyadapter.owl.model.OWLIndividual;
-import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
-import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
-import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBOWLOntologyBrowser
- * copy of the test on SKOSontology to test performance Issues
+ * Test the structural and behavioural features of FIBOWLOntologyBrowser copy of the test on SKOSontology to test performance Issues
  * 
  * @author sylvain
  * 
@@ -89,7 +79,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static OWLOntologyResource ontologyResource;
 	private static FIBOWLOntologyEditor editor;
@@ -99,11 +89,23 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 	@BeforeClass
 	public static void setupClass() {
-		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + rc.getDefaultBaseURI() + " " + rc.getBaseArtefact());
+			for (FlexoResource<?> r : rc.getAllResources(null)) {
+				System.out.println(" >>> " + r.getURI());
+			}
+		}
+
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		initGUI();
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchronously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
 	}
 
 	@Test
@@ -114,14 +116,20 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getInformationSpace().getAllRepositories(owlTA);
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ResourceRepository<OWLOntologyResource> ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
+		ResourceRepository<OWLOntologyResource, ?> ontologyRepository = null;
+		for (ResourceRepository<?, ?> rep : owlRepositories) {
+			if (rep.getSize() > 0) {
+				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) rep;
+				break;
+			}
+		}
 
 		assertNotNull(ontologyRepository);
 
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.bolton.ac.uk/archimate");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.bolton.ac.uk/archimate",
+				OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
@@ -158,6 +166,7 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 	private static OWLOntology archimateOntology, owlOntology;
 	private static OWLClass thing;
+
 	@Test
 	@TestOrder(2)
 	public void test2InstanciateWidget() {
@@ -165,16 +174,15 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 		logger.info("test2InstanciateWidget");
 
-
 		previousDate = System.currentTimeMillis();
 
 		editor = new FIBOWLOntologyEditor(ontologyResource.getLoadedResourceData(), null);
 
 		gcDelegate.addTab("FIBOntologyEditor", editor.getFIBController());
-		
+
 		currentDate = System.currentTimeMillis();
-		System.out.println (" initial creation of view took : " + (currentDate-previousDate));
-		previousDate=currentDate;
+		System.out.println(" initial creation of view took : " + (currentDate - previousDate));
+		previousDate = currentDate;
 
 	}
 
@@ -188,96 +196,92 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 		previousDate = System.currentTimeMillis();
 		int i = 4;
 
-		while (i>0){
+		while (i > 0) {
 			i--;
 			editor.setShowIndividuals(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (FALSE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowIndividuals (FALSE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowClasses(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowClasses (FALSE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowClasses (FALSE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowDataProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowDataProperties (FALSE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowDataProperties (FALSE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowObjectProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowObjectProperties (FALSE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowObjectProperties (FALSE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowAnnotationProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowAnnotationProperties (FALSE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowAnnotationProperties (FALSE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println (" update   took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" update   took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowClasses(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowClasses (TRUE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowClasses (TRUE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowDataProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowDataProperties (TRUE) took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowDataProperties (TRUE) took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowObjectProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowObjectProperties (TRUE)  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowObjectProperties (TRUE)  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowAnnotationProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowAnnotationProperties (TRUE) took: " + (currentDate-previousDate));
-			previousDate=currentDate;
+			System.out.println(" setShowAnnotationProperties (TRUE) took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.setShowIndividuals(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (TRUE) took: " + (currentDate-previousDate));
-			previousDate=currentDate;
-
+			System.out.println(" setShowIndividuals (TRUE) took: " + (currentDate - previousDate));
+			previousDate = currentDate;
 
 			editor.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println (" update  took: " + (currentDate-previousDate));
-			previousDate=currentDate;
-			
-	        int mb = 1024*1024;
-	         
-	        //Getting the runtime reference from system
-	        Runtime runtime = Runtime.getRuntime();
-	         
-	        System.out.println("##### Heap utilization statistics [MB] #####");
-	         
-	        //Print used memory
-	        System.out.println("Used Memory:"
-	            + (runtime.totalMemory() - runtime.freeMemory()) / mb);
-	 
-	        //Print free memory
-	        System.out.println("Free Memory:"
-	            + runtime.freeMemory() / mb);
-	         
-	        //Print total available memory
-	        System.out.println("Total Memory:" + runtime.totalMemory() / mb);
-	 
-	        //Print Maximum available memory
-	        System.out.println("Max Memory:" + runtime.maxMemory() / mb);
-			
+			System.out.println(" update  took: " + (currentDate - previousDate));
+			previousDate = currentDate;
+
+			int mb = 1024 * 1024;
+
+			// Getting the runtime reference from system
+			Runtime runtime = Runtime.getRuntime();
+
+			System.out.println("##### Heap utilization statistics [MB] #####");
+
+			// Print used memory
+			System.out.println("Used Memory:" + (runtime.totalMemory() - runtime.freeMemory()) / mb);
+
+			// Print free memory
+			System.out.println("Free Memory:" + runtime.freeMemory() / mb);
+
+			// Print total available memory
+			System.out.println("Total Memory:" + runtime.totalMemory() / mb);
+
+			// Print Maximum available memory
+			System.out.println("Max Memory:" + runtime.maxMemory() / mb);
+
 		}
 	}
 
-
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBOWLOntologyEditorOnArchimate.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBOWLOntologyEditorOnArchimate.class.getSimpleName());
 	}
 
 	@AfterClass

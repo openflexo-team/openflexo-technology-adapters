@@ -59,8 +59,8 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMetaModel {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLMetaModelImpl.class.getPackage()
-			.getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(XMLMetaModelImpl.class.getPackage().getName());
 
 	protected Map<String, XMLType> types = null;
 
@@ -68,7 +68,7 @@ public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMet
 
 	public XMLMetaModelImpl() {
 		super();
-		types = new HashMap<String, XMLType>();
+		types = new HashMap<>();
 	}
 
 	static {
@@ -116,10 +116,12 @@ public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMet
 
 	@Override
 	public XMLType createNewType(String uri, String localName, boolean simpleType) {
+
 		XMLType aType = null;
 		if (simpleType) {
 			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLSimpleType.class, this);
-		} else {
+		}
+		else {
 			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLComplexType.class, this);
 		}
 		aType.setIsAbstract(false);

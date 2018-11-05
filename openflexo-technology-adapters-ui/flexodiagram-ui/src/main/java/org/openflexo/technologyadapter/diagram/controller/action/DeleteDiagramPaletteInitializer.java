@@ -38,14 +38,11 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -62,18 +59,13 @@ public class DeleteDiagramPaletteInitializer extends ActionInitializer<DeleteDia
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagramPalette> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagramPalette>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramPalette action) {
-				return true;
-			}
-		};
+		return (e, action) -> true;
 	}
 
 }

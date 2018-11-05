@@ -57,7 +57,7 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 
 	public XMLComplexTypeImpl() {
 		super();
-		this.properties = new HashMap<String, XMLProperty>();
+		this.properties = new HashMap<>();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,13 +89,19 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 			if (aType != null) {
 				if (aType instanceof XMLComplexType) {
 					prop = XMLMetaModelImpl.getModelFactory().newInstance(XMLObjectProperty.class, name, aType, this);
-				} else if (aType instanceof XMLSimpleType) {
+				}
+				else if (aType instanceof XMLSimpleType) {
 					prop = XMLMetaModelImpl.getModelFactory().newInstance(XMLDataProperty.class, name, aType, this);
-				} else {
+				}
+				else if (aType.equals(String.class)) {
+					prop = XMLMetaModelImpl.getModelFactory().newInstance(XMLDataProperty.class, name, aType, this);
+				}
+				else {
 					logger.warning("UNABLE to create a new property named [" + name + "] as it does not map to any known type: "
 							+ aType.toString());
 				}
-			} else {
+			}
+			else {
 				logger.warning("UNABLE to create a new property named [" + name + "]  with a NULL type ");
 			}
 			if (prop != null)

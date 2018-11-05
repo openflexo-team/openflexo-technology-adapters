@@ -52,8 +52,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference> implements
-		IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> {
+public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
+		implements IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -101,7 +101,7 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public EMFClassClass getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(), null);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
-		return ontology.getConverter().convertReferenceObjectProperty(ontology, object,null,null);
+		return ontology.getConverter().convertReferenceObjectProperty(ontology, object, null, null);
 	}
 
 	@Override
@@ -141,4 +141,11 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	public Integer getUpperBound() {
 		return object.getUpperBound();
 	}
+
+	@Override
+	public String toString() {
+		return "[" + getName() + " " /*+ getFeature() + " domain=" + getDomain() + " range=" */ + getRange() + " " + getLowerBound() + "/"
+				+ getUpperBound() + "]";
+	}
+
 }

@@ -45,6 +45,7 @@ import static org.junit.Assert.fail;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -59,32 +60,32 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.DefaultFlexoEditor;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.PrimitiveRole;
-import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
-import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
+import org.openflexo.foundation.fml.action.AddUseDeclaration;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
+import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
 import org.openflexo.foundation.fml.binding.FlexoPropertyBindingVariable;
-import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
 import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.ontology.fml.action.CreateIndividualRole;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
@@ -102,17 +103,20 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTestCase {
 
+	private static final String VIEWPOINT_NAME = "TestLibraryViewPoint";
+	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestLibraryViewPoint";
+
 	static FlexoEditor editor;
-	static ViewPoint viewPoint;
+	static VirtualModel viewPoint;
 	static VirtualModel virtualModel1;
 
 	static FlexoConcept flexoConceptA;
 
-	static FlexoProject project;
-	static View newView;
-	static VirtualModelInstance vmi1;
-	static VirtualModelInstance vmi2;
-	static VirtualModelInstance vmi3;
+	static FlexoProject<?> project;
+	static FMLRTVirtualModelInstance newView;
+	static FMLRTVirtualModelInstance vmi1;
+	static FMLRTVirtualModelInstance vmi2;
+	static FMLRTVirtualModelInstance vmi3;
 	static FlexoConceptInstance fci;
 	static private boolean renameWasNotified;
 	static private boolean typeChangedWasNotified;
@@ -127,85 +131,90 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 	static private OWLObjectProperty hasObjectProperty;
 
+	static private DirectoryResourceCenter resourceCenter;
+
 	/**
 	 * Init
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(1)
-	public void init() {
-		instanciateTestServiceManager();
+	public void init() throws IOException {
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 
 		editor = new DefaultFlexoEditor(null, serviceManager);
 		assertNotNull(editor);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 
+		resourceCenter = makeNewDirectoryResourceCenter();
+		assertNotNull(resourceCenter);
 	}
 
 	/**
 	 * Test {@link ViewPoint} creation, check {@link BindingModel}
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreateViewPoint() {
-		viewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint", resourceCenter.getDirectory(),
-				serviceManager.getViewPointLibrary());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewPointResource) viewPoint.getResource()).getDirectory()).exists());
-		assertTrue(((ViewPointResource) viewPoint.getResource()).getFlexoIODelegate().exists());
+	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
+
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+
+		System.out.println("resourceCenter=" + resourceCenter);
+		System.out.println(
+				"fmlTechnologyAdapter.getGlobalRepository(resourceCenter)=" + fmlTechnologyAdapter.getGlobalRepository(resourceCenter));
+		System.out.println("fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder()="
+				+ fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder());
+
+		VirtualModelResource viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(), true);
+		viewPoint = viewPointResource.getLoadedResourceData();
+
+		// viewPoint = ViewPointImpl.newViewPoint("TestViewPoint",
+		// "http://openflexo.org/test/TestViewPoint",
+		// resourceCenter.getDirectory(),
+		// serviceManager.getViewPointLibrary(), resourceCenter);
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) viewPoint.getResource()).getDirectory()).exists());
+		assertTrue(((VirtualModelResource) viewPoint.getResource()).getIODelegate().exists());
 
 		assertNotNull(viewPoint.getBindingModel());
-		assertEquals(2, viewPoint.getBindingModel().getBindingVariablesCount());
-		assertNotNull(viewPoint.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(viewPoint.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
+		assertEquals(1, viewPoint.getBindingModel().getBindingVariablesCount());
+		assertNotNull(viewPoint.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY));
 
 	}
 
 	/**
 	 * Test {@link VirtualModel} creation, check {@link BindingModel}
+	 * 
+	 * @throws ModelDefinitionException
 	 */
 	@Test
 	@TestOrder(3)
-	public void testCreateVirtualModel() throws SaveResourceException {
+	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		virtualModel1 = VirtualModelImpl.newVirtualModel("VM1", viewPoint);
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource("VM1", viewPoint.getVirtualModelResource(), true);
+		virtualModel1 = newVMResource.getLoadedResourceData();
+
+		// virtualModel1 = VirtualModelImpl.newVirtualModel("VM1", viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel1.getResource()).getDirectory()).exists());
-		assertTrue(((VirtualModelResource) virtualModel1.getResource()).getFlexoIODelegate().exists());
+		assertTrue(((VirtualModelResource) virtualModel1.getResource()).getIODelegate().exists());
 
 		assertNotNull(virtualModel1.getBindingModel());
-		assertEquals(4, virtualModel1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(ViewType.getViewType(viewPoint),
-				virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), virtualModel1.getBindingModel()
-				.bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-
-		// We disconnect VirtualModel from ViewPoint, and we check BindingModel evolution
-		viewPoint.removeFromVirtualModels(virtualModel1);
-		System.out.println("VirtualModel BindingModel = " + virtualModel1.getBindingModel());
-		assertNotNull(virtualModel1.getBindingModel());
-		assertEquals(2, virtualModel1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		// assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		// assertEquals(View.class, virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		// assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), virtualModel1.getBindingModel()
-		// .bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-
-		// We reconnect VirtualModel again, and we check BindingModel evolution
-		viewPoint.addToVirtualModels(virtualModel1);
-		System.out.println("VirtualModel BindingModel = " + virtualModel1.getBindingModel());
-		assertEquals(4, virtualModel1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(ViewType.getViewType(viewPoint),
-				virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), virtualModel1.getBindingModel()
-				.bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
+		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY));
+		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY));
+		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(viewPoint),
+				virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY).getType());
+		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1),
+				virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY).getType());
 
 	}
 
@@ -214,7 +223,11 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	 */
 	@Test
 	@TestOrder(4)
-	public void testCreateOWLModelSlot() throws SaveResourceException {
+	public void testCreateOWLModelSlot() {
+
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel1, null, editor);
+		useDeclarationAction.setModelSlotClass(OWLModelSlot.class);
+		useDeclarationAction.doAction();
 
 		newModelSlot = technologicalAdapter.makeModelSlot(OWLModelSlot.class, virtualModel1);
 		newModelSlot.setName(OWL_MODEL_SLOT_NAME);
@@ -224,7 +237,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		newModelSlot.setIsReadOnly(false);
 
 		assertNotNull(newModelSlot);
-		// TODO: ask Sylvain why we need this... when you provide a virtualModel container
+		// TODO: ask Sylvain why we need this... when you provide a virtualModel
+		// container
 		virtualModel1.addToModelSlots(newModelSlot);
 
 		assertNotNull(virtualModel1.getModelSlot(OWL_MODEL_SLOT_NAME));
@@ -258,86 +272,70 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 		((VirtualModelResource) virtualModel1.getResource()).save(null);
 
-		System.out.println("Saved: " + ((VirtualModelResource) virtualModel1.getResource()).getFlexoIODelegate().toString());
+		System.out.println("Saved: " + ((VirtualModelResource) virtualModel1.getResource()).getIODelegate().toString());
 
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
 
-		assertEquals(7, flexoConceptA.getBindingModel().getBindingVariablesCount());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(ViewType.getViewType(viewPoint),
-				flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
-		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+		assertEquals(3, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY));
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY));
+		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY).getType());
+		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY).getType());
 
 		// Disconnect FlexoConcept
 		virtualModel1.removeFromFlexoConcepts(flexoConceptA);
 
-		assertEquals(2, flexoConceptA.getBindingModel().getBindingVariablesCount());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
+		assertEquals(1, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
 
 		// Reconnect FlexoConcept
 		virtualModel1.addToFlexoConcepts(flexoConceptA);
 
-		assertEquals(7, flexoConceptA.getBindingModel().getBindingVariablesCount());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(ViewType.getViewType(viewPoint),
-				flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
-		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+		assertEquals(3, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY));
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY));
+		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY).getType());
+		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY).getType());
 
 	}
 
 	@Test
 	@TestOrder(6)
-	public void testOWLIndividualRoleBindingModelManagement() throws SaveResourceException {
+	public void testOWLIndividualRoleBindingModelManagement() {
 
-		CreateFlexoRole createPR1 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreatePrimitiveRole createPR1 = CreatePrimitiveRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR1.setRoleName("aStringInA");
-		createPR1.setFlexoRoleClass(PrimitiveRole.class);
 		createPR1.setPrimitiveType(PrimitiveType.String);
 		createPR1.doAction();
 
-		CreateFlexoRole createPR2 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreatePrimitiveRole createPR2 = CreatePrimitiveRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR2.setRoleName("aBooleanInA");
-		createPR2.setFlexoRoleClass(PrimitiveRole.class);
 		createPR2.setPrimitiveType(PrimitiveType.Boolean);
 		createPR2.doAction();
 
-		CreateFlexoRole createPR3 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreatePrimitiveRole createPR3 = CreatePrimitiveRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR3.setRoleName("anIntegerInA");
-		createPR3.setFlexoRoleClass(PrimitiveRole.class);
 		createPR3.setPrimitiveType(PrimitiveType.Integer);
 		createPR3.doAction();
 
-		CreateFlexoRole createPR4 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreateIndividualRole createPR4 = CreateIndividualRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR4.setRoleName("anIndividual");
 		createPR4.setFlexoRoleClass(OWLIndividualRole.class);
 		createPR4.setIndividualType(basicConcept);
 		createPR4.doAction();
 
-		CreateFlexoRole createPR5 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreateTechnologyRole createPR5 = CreateTechnologyRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR5.setRoleName("anObjectProperty");
 		createPR5.setFlexoRoleClass(OWLObjectPropertyRole.class);
 		createPR5.doAction();
 		OWLObjectPropertyRole aRole = (OWLObjectPropertyRole) createPR5.getNewFlexoRole();
 		aRole.setParentProperty(hasObjectProperty);
 
-		CreateFlexoRole createPR6 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		CreateTechnologyRole createPR6 = CreateTechnologyRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR6.setRoleName("anObjectPropertyStatement");
 		createPR6.setFlexoRoleClass(ObjectPropertyStatementRole.class);
 		createPR6.doAction();
@@ -354,8 +352,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
 		System.out.println("OWLIndividualRole BindingModel = " + flexoConceptA.getAccessibleProperty("anIndividual").getBindingModel());
 
-		FlexoPropertyBindingVariable bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed(
-				"anIndividual");
+		FlexoPropertyBindingVariable bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel()
+				.bindingVariableNamed("anIndividual");
 
 		List<? extends SimplePathElement> listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
 
@@ -392,19 +390,16 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			System.out.println("   -- " + spe.getPropertyName() + " [ " + spe.getType().toString() + "]");
 		}
 
-		assertEquals(13, flexoConceptA.getBindingModel().getBindingVariablesCount());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(ViewType.getViewType(viewPoint),
-				flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
-		assertEquals(VirtualModelInstanceType.getFlexoConceptInstanceType(virtualModel1), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
-		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY));
-		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA), flexoConceptA.getBindingModel()
-				.bindingVariableNamed(FlexoConceptBindingModel.FLEXO_CONCEPT_INSTANCE_PROPERTY).getType());
+		assertEquals(9, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY));
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY));
+		assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.CONTAINER_PROPERTY).getType());
+		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA),
+				flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.THIS_PROPERTY).getType());
+		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY));
+		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConceptA),
+				flexoConceptA.getBindingModel().bindingVariableNamed(FlexoConceptBindingModel.THIS_PROPERTY).getType());
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed("aStringInA"));
 		assertEquals(String.class, flexoConceptA.getBindingModel().bindingVariableNamed("aStringInA").getType());
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed("aBooleanInA"));
@@ -463,10 +458,11 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
 	}
 
-	private void checkBindingVariableAccess(String variableName, Bindable owner, BindingEvaluationContext beContext, Object expectedValue) {
+	private static void checkBindingVariableAccess(String variableName, Bindable owner, BindingEvaluationContext beContext,
+			Object expectedValue) {
 		BindingVariable bv = owner.getBindingModel().bindingVariableNamed(variableName);
 		assertNotNull(bv);
-		DataBinding<Object> db = new DataBinding<Object>(bv.getVariableName(), owner, bv.getType(), BindingDefinitionType.GET);
+		DataBinding<Object> db = new DataBinding<>(bv.getVariableName(), owner, bv.getType(), BindingDefinitionType.GET);
 		assertTrue(db.isValid());
 		try {
 			assertEquals(expectedValue, db.getBindingValue(beContext));
@@ -482,8 +478,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		}
 	}
 
-	private void checkBinding(String binding, Bindable owner, BindingEvaluationContext beContext, Object expectedValue) {
-		DataBinding<Object> db = new DataBinding<Object>(binding, owner, Object.class, BindingDefinitionType.GET);
+	private static void checkBinding(String binding, Bindable owner, BindingEvaluationContext beContext, Object expectedValue) {
+		DataBinding<Object> db = new DataBinding<>(binding, owner, Object.class, BindingDefinitionType.GET);
 		assertTrue(db.isValid());
 		try {
 			assertEquals(expectedValue, db.getBindingValue(beContext));

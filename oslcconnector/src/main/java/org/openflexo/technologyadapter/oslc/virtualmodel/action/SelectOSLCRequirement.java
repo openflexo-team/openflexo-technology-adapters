@@ -43,33 +43,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 
-@FIBPanel("Fib/SelectOSLCRequirementPanel.fib")
 @ModelEntity
 @ImplementationClass(SelectOSLCRequirement.SelectOSLCRequirementImpl.class)
 @XMLElement
 @FML("SelectOSLCRequirement")
-public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCRequirement> {
+public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> {
 
-	public static abstract class SelectOSLCRequirementImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCRequirement> implements
-			SelectOSLCRequirement {
+	public static abstract class SelectOSLCRequirementImpl
+			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> implements SelectOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirement.class.getPackage().getName());
-
-		public SelectOSLCRequirementImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {
@@ -77,22 +70,24 @@ public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, O
 		}
 
 		@Override
-		public List<OSLCRequirement> execute(FlexoBehaviourAction action) {
+		public List<OSLCRequirement> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
+			// Unused OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
+
+			/*if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
-			}
+			}*/
 
-			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(action).getAccessedResourceData();
+			// OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
-			List<OSLCRequirement> selectedOSLCRequirements = new ArrayList<OSLCRequirement>();
+			List<OSLCRequirement> selectedOSLCRequirements = new ArrayList<>();
 
-			List<OSLCRequirement> returned = filterWithConditions(selectedOSLCRequirements, action);
+			List<OSLCRequirement> returned = filterWithConditions(selectedOSLCRequirements, evaluationContext);
 
 			return returned;
 		}

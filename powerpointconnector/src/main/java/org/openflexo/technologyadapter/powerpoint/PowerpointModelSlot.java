@@ -44,16 +44,13 @@ import java.util.logging.Logger;
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
-public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
+public interface PowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> {
 
 	@Implementation
 	public abstract class PowerpointModelSlotImpl implements PowerpointModelSlot {
@@ -64,7 +61,8 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (Slide.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
-			} else if (AutoShape.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (AutoShape.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
 			logger.warning("Unexpected pattern property: " + patternRoleClass.getName());
@@ -82,24 +80,17 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 		}
 
 		@Override
-		public String getURIForObject(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance, Object o) {
-			// TODO Auto-generated method stub
+		public String getURIForObject(PowerpointSlideshow resourceData, Object o) {
+			// TODO
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> msInstance,
-				String objectURI) {
-			// TODO Auto-generated method stub
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) {
+			// TODO
 			return null;
 		}
 
-		@Override
-		public ModelSlotInstanceConfiguration<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> createConfiguration(
-				CreateVirtualModelInstance action) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 }

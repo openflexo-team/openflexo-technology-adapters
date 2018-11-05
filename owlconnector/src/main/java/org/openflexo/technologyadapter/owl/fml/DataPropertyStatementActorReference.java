@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml;
 
 import java.util.logging.Logger;
@@ -97,8 +96,8 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 	@Setter(VALUE_KEY)
 	public void setValue(String value);
 
-	public static abstract class DataPropertyStatementActorReferenceImpl extends ActorReferenceImpl<DataPropertyStatement> implements
-			DataPropertyStatementActorReference {
+	public static abstract class DataPropertyStatementActorReferenceImpl extends ActorReferenceImpl<DataPropertyStatement>
+			implements DataPropertyStatementActorReference {
 
 		static final Logger logger = FlexoLogger.getLogger(DataPropertyStatementActorReferenceImpl.class.getPackage().toString());
 
@@ -124,7 +123,7 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 			value = o.getLiteral().toString();
 			dataPropertyURI = o.getProperty().getURI();
 		}
-
+		
 		// Constructor used during deserialization
 		public DataPropertyStatementActorReference(FlexoProject project) {
 			super(project);
@@ -141,7 +140,7 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 		}
 
 		@Override
-		public DataPropertyStatement getModellingElement() {
+		public DataPropertyStatement getModellingElement(boolean forceLoading) {
 			if (statement == null) {
 				OWLOntology ontology = (OWLOntology) getModelSlotInstance().getAccessedResourceData();
 				if (ontology != null) {
@@ -151,7 +150,8 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 						// TODO: also handle value here
 						statement = subject.getDataPropertyStatement(property);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
 			}

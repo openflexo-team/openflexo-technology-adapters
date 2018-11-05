@@ -64,7 +64,7 @@ public class PowerpointSlide extends PowerpointObject {
 		super(adapter);
 		this.slide = slide;
 		this.powerpointSlideshow = powerpointSlideshow;
-		powerpointShapes = new ArrayList<PowerpointShape>();
+		powerpointShapes = new ArrayList<>();
 	}
 
 	@Override

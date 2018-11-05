@@ -48,7 +48,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -81,6 +81,8 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public static final String GRAPHICAL_REPRESENTATION = "graphicalRepresentation";
 	public static final String NAME = "name";
 	public static final String PARENT = "parent";
+
+	public String getIdentifier();
 
 	/**
 	 * Return name of this diagram element
@@ -171,23 +173,23 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	/**
 	 * Return {@link FlexoConceptInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
 	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
-	 * {@link VirtualModelInstance}
+	 * {@link FMLRTVirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
-	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance);
+	public FlexoConceptInstance getFlexoConceptInstance(FMLRTVirtualModelInstance vmInstance);
 
 	/**
 	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting that
 	 * this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in
-	 * {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * {@link VirtualModel} of supplied {@link FMLRTVirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
-	public GraphicalElementRole<?, ?> getPatternRole(VirtualModelInstance vmInstance);
+	public GraphicalElementRole<?, ?> getPatternRole(FMLRTVirtualModelInstance vmInstance);
 
 }

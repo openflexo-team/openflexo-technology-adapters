@@ -36,14 +36,13 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -54,7 +53,7 @@ public class URIPathElement extends SimplePathElement {
 
 	private static final Logger logger = Logger.getLogger(URIPathElement.class.getPackage().getName());
 
-	public URIPathElement(BindingPathElement parent) {
+	public URIPathElement(IBindingPathElement parent) {
 		super(parent, "uri", String.class);
 	}
 
@@ -65,7 +64,7 @@ public class URIPathElement extends SimplePathElement {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_concept_uri");
+		return FlexoLocalization.getMainLocalizer().localizedForKey("uri");
 	}
 
 	@Override
@@ -78,8 +77,8 @@ public class URIPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

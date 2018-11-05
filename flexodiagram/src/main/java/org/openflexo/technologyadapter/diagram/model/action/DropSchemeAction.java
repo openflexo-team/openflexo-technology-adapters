@@ -44,24 +44,16 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.InvalidParametersException;
-import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
-import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
@@ -72,81 +64,96 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 /**
  * Tooling for DropScheme in Openflexo<br>
  * This feature is wrapped into a {@link FlexoAction}<br>
- * The focused object is a VirtualModelInstance with a FMLControlledDiagramVirtualModelInstanceNature
+ * The focused object is a FMLRTVirtualModelInstance with a FMLControlledDiagramVirtualModelInstanceNature
  * 
  * @author sylvain
  * 
  */
-public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
+public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, FMLRTVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject>(
-			"drop_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	private DiagramPaletteElement paletteElement;
+	private DiagramShape primaryShape;
 
-		/**
-		 * Factory method
-		 */
-		@Override
-		public DropSchemeAction makeNewAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
-				FlexoEditor editor) {
-			return new DropSchemeAction(focusedObject, globalSelection, editor);
-		}
-
-		@Override
-		public boolean isVisibleForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return false;
-		}
-
-		@Override
-		public boolean isEnabledForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return object.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
-		}
-
-	};
-
-	static {
-		FlexoObjectImpl.addActionForClass(actionType, VirtualModelInstance.class);
-	}
-
-	private DiagramPaletteElement _paletteElement;
-	private DropScheme _dropScheme;
-	private DiagramShape _primaryShape;
-
+	// The concept in which we drop
 	private FlexoConceptInstance parentConceptInstance;
 	private ShapeRole parentShapeRole;
 
 	private FGEPoint dropLocation;
 
-	DropSchemeAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
-		super(actionType, focusedObject, globalSelection, editor);
+	/**
+	 * Constructor to be used for creating a new action without factory
+	 * 
+	 * @param dropScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param editor
+	 */
+	public DropSchemeAction(DropScheme dropScheme, FMLRTVirtualModelInstance focusedObject,
+			Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
+		super(dropScheme, focusedObject, globalSelection, editor);
 	}
+
+	/**
+	 * Constructor to be used for creating a new action as an action embedded in another one
+	 * 
+	 * @param dropScheme
+	 * @param focusedObject
+	 * @param globalSelection
+	 * @param ownerAction
+	 */
+	public DropSchemeAction(DropScheme dropScheme, FMLRTVirtualModelInstance focusedObject,
+			Vector<VirtualModelInstanceObject> globalSelection, FlexoAction<?, ?, ?> ownerAction) {
+		super(dropScheme, focusedObject, globalSelection, ownerAction);
+	}
+
+	@Override
+	public boolean isValid() {
+		if (!super.isValid()) {
+			return false;
+		}
+
+		if (getDropLocation() == null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/*@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}*/
 
 	// private Hashtable<EditionAction,FlexoObject> createdObjects;
 
-	private FlexoConceptInstance flexoConceptInstance;
+	// private FlexoConceptInstance flexoConceptInstance;
 
-	@Override
+	/*@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
 		logger.info("Drop palette element");
-
-		logger.info("project=" + getProject());
+	
+		// logger.info("project=" + getProject());
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
-
+	
 		System.out.println("1-isModified=" + getVirtualModelInstance().isModified());
-
+	
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
-
-		logger.info("flexoConceptInstance=" + flexoConceptInstance);
-		logger.info("epi project=" + flexoConceptInstance.getProject());
-		logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
-
-		System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
-
-		applyEditionActions();
-
-		System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
-	}
+	
+		// logger.info("flexoConceptInstance=" + flexoConceptInstance);
+		// logger.info("epi project=" + flexoConceptInstance.getProject());
+		// logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
+	
+		// System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
+	
+		executeControlGraph();
+	
+		// System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
+	}*/
 
 	public void setParentInformations(FlexoConceptInstance parentConceptInstance, ShapeRole parentShapeRole) {
 		this.parentConceptInstance = parentConceptInstance;
@@ -164,7 +171,8 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	public DiagramContainerElement<?> getParent() {
 		if (parentConceptInstance == null) {
 			return getDiagram();
-		} else {
+		}
+		else {
 			return parentConceptInstance.getFlexoActor(getParentShapeRole());
 		}
 	}
@@ -174,58 +182,63 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 		return getParent().getDiagram();
 	}
 
-	public DropScheme getDropScheme() {
+	/*public DropScheme getDropScheme() {
 		return _dropScheme;
 	}
-
+	
 	public void setDropScheme(DropScheme dropScheme) {
 		_dropScheme = dropScheme;
 	}
-
+	
 	@Override
 	public DropScheme getFlexoBehaviour() {
 		return getDropScheme();
-	}
+	}*/
 
 	public DiagramPaletteElement getPaletteElement() {
-		return _paletteElement;
+		return paletteElement;
 	}
 
 	public void setPaletteElement(DiagramPaletteElement paletteElement) {
-		_paletteElement = paletteElement;
+		this.paletteElement = paletteElement;
 	}
 
 	public DiagramShape getPrimaryShape() {
-		return _primaryShape;
+		return primaryShape;
 	}
 
+	/*@Override
+	public FMLRTVirtualModelInstance getFlexoConceptInstance() {
+		return (FMLRTVirtualModelInstance) getVirtualModelInstance();
+	}
+	
 	@Override
-	public FlexoConceptInstance getFlexoConceptInstance() {
+	public FlexoConceptInstance getNewFlexoConceptInstance() {
 		return flexoConceptInstance;
 	}
-
+	
 	@Override
-	public VirtualModelInstance retrieveVirtualModelInstance() {
+	public FMLRTVirtualModelInstance retrieveVirtualModelInstance() {
 		return getFocusedObject();
-	}
+	}*/
 
 	@Override
 	public <T> void hasPerformedAction(EditionAction anAction, T object) {
 		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddShape) {
-			AddShape action = (AddShape) anAction;
+			// AddShape action = (AddShape) anAction;
 			DiagramShape newShape = (DiagramShape) object;
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
 				// Declare shape as new shape only if it is the primary representation property of the EP
 
-				_primaryShape = newShape;
+				primaryShape = newShape;
 				gr.setX(dropLocation.getX());
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getAssignedFlexoProperty().containsShapes()
+				/*if (!action.getAssignedFlexoProperty().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
@@ -259,7 +272,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 							gr.setAbsoluteTextY(gr.getAbsoluteTextY() - deltaY);
 						}
 					}
-				}
+				}*/
 				/*} else if (action.getPatternRole().getParentShapeAsDefinedInAction()) {
 					Object graphicalRepresentation = action.getFlexoConcept().getPrimaryRepresentationRole().getGraphicalRepresentation();
 					if (graphicalRepresentation instanceof ShapeGraphicalRepresentation) {
@@ -268,7 +281,8 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 						gr.setY(dropLocation.y + gr.getY() - primaryGR.getY());
 					}
 				}*/
-			} else {
+			}
+			else {
 				logger.warning("Inconsistant data: shape has not been created");
 			}
 
@@ -289,11 +303,11 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
 				// Declare shape as new shape only if it is the primary representation property of the EP
-
-				_primaryShape = newShape;
+	
+				primaryShape = newShape;
 				gr.setX(dropLocation.getX());
 				gr.setY(dropLocation.getY());
-
+	
 				// Temporary comment this portion of code if child shapes are declared inside this shape
 				if (!action.getFlexoRole().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
@@ -332,20 +346,20 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			} else {
 				logger.warning("Inconsistant data: shape has not been created");
 			}
-
+	
 		}
 		return assignedObject;
 	}*/
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DropSchemeBindingModel.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(DropSchemeBindingModel.TARGET) && getFlexoBehaviour().getTargetFlexoConcept() != null) {
 			return parentConceptInstance;
 		}
 		return super.getValue(variable);
 	}
 
-	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole patternRole) {
+	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole<?, ?> patternRole) {
 		/*if (getPaletteElement() != null) {
 			if (getPaletteElement().getOverridingGraphicalRepresentation(patternRole) != null) {
 				return getPaletteElement().getOverridingGraphicalRepresentation(patternRole);

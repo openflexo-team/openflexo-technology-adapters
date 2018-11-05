@@ -45,6 +45,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.IconMarker;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -53,7 +54,6 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Utility class containing all icons used in context of VEModule
@@ -65,13 +65,16 @@ public class DiagramIconLibrary extends IconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DiagramIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource DIAGRAM_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram_big.png"));
+	public static final ImageIconResource DIAGRAM_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/Diagram-64x64.png"));
 	public static final ImageIconResource DIAGRAM_MEDIUM_ICON = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/Diagram_medium.png"));
+			ResourceLocator.locateResource("Icons/Diagram-32x32.png"));
 
+	public static final ImageIconResource DIAGRAM_PALETTE_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/DiagramPalette64x64.png"));
 	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramPalette.png"));
-	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram.png"));
+	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram-16x16.png"));
 	public static final ImageIconResource SHAPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramShape.png"));
 	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramConnector.png"));
@@ -99,22 +102,30 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
 
+	public static final IconMarker DROP_SCHEME_MARKER = new IconMarker(DROP_SCHEME_ICON, 45, 0);
+
 	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UnknownIcon.gif"));
 
 	public static ImageIcon iconForObject(FlexoObject object) {
 		if (object instanceof Diagram) {
 			return DIAGRAM_ICON;
-		} else if (object instanceof DiagramConnector) {
+		}
+		else if (object instanceof DiagramConnector) {
 			return CONNECTOR_ICON;
-		} else if (object instanceof DiagramShape) {
+		}
+		else if (object instanceof DiagramShape) {
 			return SHAPE_ICON;
-		} else if (object instanceof DiagramSpecification) {
+		}
+		else if (object instanceof DiagramSpecification) {
 			return DIAGRAM_SPECIFICATION_ICON;
-		} else if (object instanceof DiagramPalette) {
+		}
+		else if (object instanceof DiagramPalette) {
 			return DIAGRAM_PALETTE_ICON;
-		} else if (object instanceof DiagramPaletteElement) {
+		}
+		else if (object instanceof DiagramPaletteElement) {
 			return SHAPE_ICON;
-		} else if (object instanceof FMLDiagramPaletteElementBinding) {
+		}
+		else if (object instanceof FMLDiagramPaletteElementBinding) {
 			return FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 		}
 		logger.warning("No icon for " + object.getClass());

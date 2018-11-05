@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.excel;
 
 import java.io.UnsupportedEncodingException;
@@ -47,8 +46,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -57,6 +56,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelObject;
 
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlotURIProcessor.BasicExcelModelSlotURIProcessorImpl.class)
+@Deprecated
 public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 	// URI Calculation
@@ -69,8 +69,8 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 	public void setModelSlot(BasicExcelModelSlot excelModelSlot);
 
-	public static abstract class BasicExcelModelSlotURIProcessorImpl extends FlexoConceptObjectImpl implements
-			BasicExcelModelSlotURIProcessor {
+	public static abstract class BasicExcelModelSlotURIProcessorImpl extends FlexoConceptObjectImpl
+			implements BasicExcelModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlotURIProcessor.class.getPackage().getName());
 
@@ -79,7 +79,7 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
+		private final Map<String, ExcelObject> uriCache = new HashMap<>();
 
 		// Serialized properties
 
@@ -101,7 +101,7 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			return getModelSlot().getVirtualModel();
 		}
 
@@ -143,7 +143,7 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 			String builtURI = null;
 
 			try {
-				builtURI = URLEncoder.encode(excelObject.getUri(), "UTF-8");
+				builtURI = URLEncoder.encode(excelObject.getSerializationIdentifier(), "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				logger.warning("Cannot process URI - Unexpected encoding error");
 				e.printStackTrace();

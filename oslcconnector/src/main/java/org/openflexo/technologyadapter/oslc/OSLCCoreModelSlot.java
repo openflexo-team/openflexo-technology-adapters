@@ -46,13 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -94,14 +88,6 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 			return OSLCTechnologyAdapter.class;
 		}
 
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public OSLCCoreModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new OSLCCoreModelSlotInstanceConfiguration(this, action);
-		}
-
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OSLCResourceRole.class.isAssignableFrom(patternRoleClass)) {
@@ -111,38 +97,20 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 		}
 
 		@Override
-		public String getURIForObject(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
-			if (o instanceof IFlexoOntologyObject) {
-				return ((IFlexoOntologyObject) o).getURI();
-			}
+		public String getURIForObject(OSLCServiceProviderCatalog resourceData, Object o) {
+			// TODO
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(
-				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
-				String objectURI) {
-			return msInstance.getResourceData().getObject(objectURI);
+		public Object retrieveObjectWithURI(OSLCServiceProviderCatalog resourceData, String objectURI) {
+			// TODO
+			return null;
 		}
 
 		@Override
 		public Type getType() {
 			return OSLCResource.class;
-		}
-
-		@Override
-		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createProjectSpecificEmptyResource(View view, String filename,
-				String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
-				String relativePath, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		@Override

@@ -46,7 +46,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -54,13 +53,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.ResourceRepository;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyEditor;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
@@ -86,7 +83,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBOWLOntologyEditorOnSKOSOntology extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static OWLOntologyResource ontologyResource;
 	private static FIBOWLOntologyEditor editor;
@@ -95,11 +92,16 @@ public class TestFIBOWLOntologyEditorOnSKOSOntology extends OpenflexoTestCaseWit
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		// Resource rsc =
+		// ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		initGUI();
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchronously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
 	}
 
 	@Test
@@ -110,14 +112,8 @@ public class TestFIBOWLOntologyEditorOnSKOSOntology extends OpenflexoTestCaseWit
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getInformationSpace().getAllRepositories(owlTA);
-
-		ResourceRepository<OWLOntologyResource> ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
-
-		assertNotNull(ontologyRepository);
-
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.w3.org/2004/02/skos/core",
+				OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
@@ -195,8 +191,8 @@ public class TestFIBOWLOntologyEditorOnSKOSOntology extends OpenflexoTestCaseWit
 		assertNotNull(nothing = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "Nothing"));
 
 		assertNotNull(topObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
-		assertNotNull(bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#"
-				+ "bottomObjectProperty"));
+		assertNotNull(
+				bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
 		assertNotNull(bottomDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
 		assertNotNull(topDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
 
@@ -591,7 +587,7 @@ public class TestFIBOWLOntologyEditorOnSKOSOntology extends OpenflexoTestCaseWit
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBOWLOntologyEditorOnSKOSOntology.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBOWLOntologyEditorOnSKOSOntology.class.getSimpleName());
 	}
 
 	@AfterClass

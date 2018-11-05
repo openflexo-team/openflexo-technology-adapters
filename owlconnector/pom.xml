@@ -4,11 +4,10 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.7.0-SNAPSHOT</version>
+		<version>1.9.0</version>
 	</parent>
 	<artifactId>owlconnector</artifactId>
 	<name>OWL technology connector</name>
-	<version>1.7.0-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -21,13 +20,29 @@
 		<jena-core.version>2.13.0</jena-core.version>
 	</properties>
 	<dependencies>
+		<!--  <dependency>
+			<groupId>org.openflexo.rc</groupId>
+			<artifactId>owlconnector-rc</artifactId>
+			<version>${project.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-ontology</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!--  <dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-ontology</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
@@ -36,7 +51,7 @@
 			<artifactId>flexoutils</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-core</artifactId>

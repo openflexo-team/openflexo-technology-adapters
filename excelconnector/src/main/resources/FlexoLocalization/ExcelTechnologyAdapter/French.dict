@@ -1,0 +1,17 @@
+cells_range=Plage de cellules
+choose_virtual_model_name_and_template_excel=Choisir un classeur excel d'exemple et un nom pour le VirtualModel
+configure_jdbc_connection=Configurer la connexion JDBC
+create_semantics_excel_virtual_model=Cr\u00E9er un VirtualModel de type excel s\u00E9mantique
+create_virtual_model_reflecting_an_excel_workbook=Cr\u00E9er un VirtualModel refl\u00E9tant un classeur excel
+create_virtual_model_reflecting_an_excel_workbook_interpretation=Cr\u00E9er un VirtualModel refl\u00E9tant une interpr\u00E9tation d'un classeur excel
+data_area=Zone de donn\u00E9es
+identify_new_concept=Identifier un nouveau concept
+object_type=object_type
+please_define_data_range=Veuillez d\u00E9finir une plage de valeurs
+please_enter_name_for_new_flexo_concept=Veuillez entrer le nom du nouveau concept
+please_enter_name_for_new_virtual_model=Veuillez entrer le nom du nouveau VirtualModel
+please_select_an_excel_workbook_to_be_used_as_a_template=Veuillez choisir un classeur excel comme exemple
+required=Requis
+row_index=Index de la ligne
+technology=Technologie
+template=Exemple

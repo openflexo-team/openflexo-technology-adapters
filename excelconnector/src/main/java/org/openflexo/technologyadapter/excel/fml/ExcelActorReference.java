@@ -38,11 +38,14 @@
 
 package org.openflexo.technologyadapter.excel.fml;
 
+import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -52,6 +55,8 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 /**
  * Implements {@link ActorReference} for {@link ExcelObject} as modelling elements.<br>
@@ -77,8 +82,8 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public abstract static class ExcelActorReferenceImpl<T extends ExcelObject> extends ActorReferenceImpl<T> implements
-			ExcelActorReference<T> {
+	public abstract static class ExcelActorReferenceImpl<T extends ExcelObject> extends ActorReferenceImpl<T>
+			implements ExcelActorReference<T> {
 
 		private static final Logger logger = FlexoLogger.getLogger(ExcelActorReference.class.getPackage().toString());
 
@@ -92,16 +97,49 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 			super();
 		}
 
-		@Override
-		public T getModellingElement() {
-			if (object == null) {
-				ModelSlotInstance msInstance = getModelSlotInstance();
-				if (msInstance != null && msInstance.getAccessedResourceData() != null) {
-					/** Model Slot is responsible for URI mapping */
-					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
-					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
+		public ExcelWorkbook getExcelWorkbook() {
+			if (getExcelWorkbookResource() != null) {
+				try {
+					return getExcelWorkbookResource().getResourceData(null);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ResourceLoadingCancelledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FlexoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+			}
+			return null;
+		}
+
+		public ExcelWorkbookResource getExcelWorkbookResource() {
+			ModelSlotInstance<?, ?> msInstance = getModelSlotInstance();
+			if (msInstance != null && msInstance.getResource() instanceof ExcelWorkbookResource) {
+				return (ExcelWorkbookResource) msInstance.getResource();
+			}
+			return null;
+		}
+
+		@Override
+		public T getModellingElement(boolean forceLoading) {
+			if (object == null && objectURI != null) {
+				System.out.println("Tiens j'essaie de trouver l'objet avec l'URI " + objectURI);
+				System.out.println("msInstance=" + getModelSlotInstance());
+				System.out.println("msInstance.getModelSlot()=" + getModelSlotInstance().getModelSlot());
+				System.out.println("ExcelWorkbookResource=" + getExcelWorkbookResource());
+				ExcelWorkbookResource res = getExcelWorkbookResource();
+				object = (T) res.getConverter().fromSerializationIdentifier(objectURI);
+				System.out.println("je trouve " + object);
+
+				/*if (msInstance != null && msInstance.getAccessedResourceData() != null) {
+					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
+				}
+				else {
+					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
+				}*/
 			}
 			if (object == null) {
 				logger.warning("Could not retrieve object " + objectURI);
@@ -113,18 +151,15 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 		@Override
 		public void setModellingElement(T object) {
 			this.object = object;
-			if (object != null && getModelSlotInstance() != null) {
-				ModelSlotInstance msInstance = getModelSlotInstance();
-				/** Model Slot is responsible for URI mapping */
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+			if (object != null) {
+				objectURI = object.getSerializationIdentifier();
 			}
 		}
 
 		@Override
 		public String getObjectURI() {
 			if (object != null) {
-				ModelSlotInstance msInstance = getModelSlotInstance();
-				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+				return object.getSerializationIdentifier();
 			}
 			return objectURI;
 		}

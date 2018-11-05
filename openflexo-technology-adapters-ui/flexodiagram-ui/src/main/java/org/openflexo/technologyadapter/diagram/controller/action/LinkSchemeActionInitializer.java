@@ -44,12 +44,13 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
@@ -58,13 +59,14 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.ParametersRetriever;
 
-public class LinkSchemeActionInitializer extends
-		ActionInitializer<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> {
+public class LinkSchemeActionInitializer
+		extends ActionInitializer<LinkSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public LinkSchemeActionInitializer(ControllerActionInitializer actionInitializer) {
-		super(LinkSchemeAction.actionType, actionInitializer);
+		super(LinkSchemeAction.class, actionInitializer);
 	}
 
 	@Override
@@ -72,7 +74,9 @@ public class LinkSchemeActionInitializer extends
 		return new FlexoActionInitializer<LinkSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
-				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action);
+				getController().willExecute(action);
+				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action,
+						getController() != null ? getController().getApplicationContext() : null);
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
 				}
@@ -86,6 +90,17 @@ public class LinkSchemeActionInitializer extends
 		return new FlexoActionFinalizer<LinkSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
+				// Well, not easy to understand here
+				// The new connector has well be added to the diagram, and the drawing (which listen to the diagram) has well received the
+				// event
+				// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+				// Since the connector has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the
+				// DiagamConnector,
+				// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+				// sure that the Drawing can discover that the new connector is FML-controlled
+				action.getNewConnector().getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null,
+						action.getNewConnector().getParent());
+
 				getController().getSelectionManager().setSelectedObject(action.getNewConnector());
 				return true;
 			}
@@ -98,7 +113,7 @@ public class LinkSchemeActionInitializer extends
 			@Override
 			public boolean handleException(FlexoException exception, LinkSchemeAction action) {
 				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
+					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
 					return true;
 				}
 				return false;
@@ -107,7 +122,7 @@ public class LinkSchemeActionInitializer extends
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

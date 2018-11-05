@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.oslcconnector.test.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
+import org.openflexo.gina.test.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 

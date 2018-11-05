@@ -38,8 +38,7 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 
 import org.xml.sax.ErrorHandler;
@@ -51,12 +50,12 @@ import com.sun.xml.xsom.parser.XSOMParser;
 
 public class XSOMUtils {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSOMUtils.class.getPackage()
-			.getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(XSOMUtils.class.getPackage().getName());
 
-	public static XSSchemaSet read(File xsdFile) {
+	public static XSSchemaSet read(InputStream xsdInputStream) {
 		if (logger.isLoggable(Level.INFO)) {
-			logger.info("Loading an XSD file " + xsdFile.getName());
+			logger.info("Loading an XSD " + xsdInputStream);
 		}
 		XSOMParser parser = new XSOMParser();
 		parser.setErrorHandler(new ErrorHandler() {
@@ -85,10 +84,8 @@ public class XSOMUtils {
 		});
 
 		try {
-			parser.parse(xsdFile);
+			parser.parse(xsdInputStream);
 		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		XSSchemaSet result = null;

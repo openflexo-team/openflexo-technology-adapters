@@ -43,32 +43,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-@FIBPanel("Fib/SelectOSLCResourcePanel.fib")
 @ModelEntity
 @ImplementationClass(SelectOSLCResource.SelectOSLCResourceImpl.class)
 @XMLElement
 @FML("SelectOSLCResource")
-public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCResource> {
+public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> {
 
-	public static abstract class SelectOSLCResourceImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCResource> implements
-			SelectOSLCResource {
+	public static abstract class SelectOSLCResourceImpl
+			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements SelectOSLCResource {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCResource.class.getPackage().getName());
-
-		public SelectOSLCResourceImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {
@@ -76,22 +70,11 @@ public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLC
 		}
 
 		@Override
-		public List<OSLCResource> execute(FlexoBehaviourAction action) {
+		public List<OSLCResource> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
+			List<OSLCResource> selectedOSLCResources = new ArrayList<>();
 
-			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(action).getAccessedResourceData();
-
-			List<OSLCResource> selectedOSLCResources = new ArrayList<OSLCResource>();
-
-			List<OSLCResource> returned = filterWithConditions(selectedOSLCResources, action);
+			List<OSLCResource> returned = filterWithConditions(selectedOSLCResources, evaluationContext);
 
 			return returned;
 		}

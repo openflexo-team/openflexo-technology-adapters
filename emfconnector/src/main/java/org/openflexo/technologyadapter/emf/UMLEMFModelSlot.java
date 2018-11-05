@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.emf;
 
 import java.util.logging.Logger;
@@ -46,7 +45,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -77,8 +75,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 @ImplementationClass(UMLEMFModelSlot.UMLEMFModelSlotImpl.class)
 @XMLElement
 @FML("UMLEMFModelSlot")
-public interface UMLEMFModelSlot extends EMFModelSlot{
-
+public interface UMLEMFModelSlot extends EMFModelSlot {
 
 	public static abstract class UMLEMFModelSlotImpl extends EMFModelSlotImpl implements UMLEMFModelSlot {
 
@@ -89,39 +86,31 @@ public interface UMLEMFModelSlot extends EMFModelSlot{
 		@Override
 		@Getter(value = META_MODEL_URI_KEY)
 		@XMLAttribute
-		public String getMetaModelURI(){
+		public String getMetaModelURI() {
 			return EMFTechnologyAdapter.UML_MM_URI;
 		}
 
 		@Override
 		@Setter(META_MODEL_URI_KEY)
-		public void setMetaModelURI(String metaModelURI){
+		public void setMetaModelURI(String metaModelURI) {
 			// TODO: do best here sometime.
 			logger.warning("You cannot override MetaModel URI here, I will use the default URI for UML");
-			performSuperSetter(META_MODEL_URI_KEY,EMFTechnologyAdapter.UML_MM_URI);
+			performSuperSetter(META_MODEL_URI_KEY, EMFTechnologyAdapter.UML_MM_URI);
 		}
-		
+
 		@Override
-		public  FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> getMetaModelResource(){
-			return  getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+		public FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> getMetaModelResource() {
+			return getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 		}
 
 		@Override
 		public void setMetaModelResource(FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			EMFMetaModelResource umlMetamodelREsource = getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+			EMFMetaModelResource umlMetamodelREsource = getModelSlotTechnologyAdapter().getTechnologyContextManager()
+					.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 			if (metaModelResource != umlMetamodelREsource) {
 				logger.warning("You cannot override MetaModel Resource here, I will use the default MetaModelResource for UML");
 			}
 			super.setMetaModelResource(umlMetamodelREsource);
-		}
-		
-		
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public UMLEMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new UMLEMFModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override

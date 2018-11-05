@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -68,11 +68,11 @@ import org.openflexo.fge.swing.control.tools.JDianaPalette;
 import org.openflexo.fge.swing.control.tools.JDianaStyles;
 import org.openflexo.fge.swing.control.tools.JDianaToolSelector;
 import org.openflexo.fge.swing.view.JDrawingView;
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBDialog;
-import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.utils.JFIBDialog;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -94,7 +94,7 @@ import org.openflexo.view.controller.FlexoFIBController;
  * @author sylvain
  * 
  */
-public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements PropertyChangeListener /* GraphicalFlexoObserver*/{
+public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> {
 
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
@@ -109,13 +109,13 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	private JDianaLayoutWidget layoutWidget;
 	private JDianaStyles stylesWidget;
 	private JDianaPalette commonPalette;
-	private AbstractDiagramPalette commonPaletteModel;
-	private Hashtable<DiagramPalette, AbstractDiagramPalette> contextualPaletteModels;
+	private DiagramEditorPaletteModel commonPaletteModel;
+	private Hashtable<DiagramPalette, ContextualPalette> contextualPaletteModels;
 	private Hashtable<DiagramPalette, JDianaPalette> contextualPalettes;
 
 	private final SwingToolFactory swingToolFactory;
 
-	public AbstractDiagramPalette makeCommonPalette() {
+	public DiagramEditorPaletteModel makeCommonPalette() {
 		return new CommonPalette(this);
 	}
 
@@ -124,8 +124,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	}
 
 	public DiagramEditor(Drawing<Diagram> diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
-		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getModel()
-				.getResource()).getFactory(), swingToolFactory);
+		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null,
+				((DiagramResource) diagramDrawing.getModel().getResource()).getFactory(), swingToolFactory);
 
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
@@ -153,8 +153,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			commonPalette = swingToolFactory.makeDianaPalette(commonPaletteModel);
 			commonPalette.attachToEditor(this);
 
-			contextualPaletteModels = new Hashtable<DiagramPalette, AbstractDiagramPalette>();
-			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
+			contextualPaletteModels = new Hashtable<>();
+			contextualPalettes = new Hashtable<>();
 
 			if (diagramDrawing.getModel().getDiagramSpecification() != null) {
 				for (DiagramPalette palette : diagramDrawing.getModel().getDiagramSpecification().getPalettes()) {
@@ -179,7 +179,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 				if (action.getNewShapeName() == null) {
 					action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
 				}
-
+				
 				action.doAction();*/
 
 				handleNewShapeCreation(graphicalRepresentation, parentNode, graphicalRepresentation.getLocation(), true, true, true, true,
@@ -240,16 +240,16 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		// shapeGR.setAllowToLeaveBounds(true);
 
 		if (isImage) {
-			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
-			FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
-					new FlexoFIBController(fibComponent, getFlexoController()));
+			FIBComponent fibComponent = getFIBLibrary().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
+			JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
+					new FlexoFIBController(fibComponent, SwingViewFactory.INSTANCE, getFlexoController()));
 		}
 
 		AddShape action = AddShape.actionType.makeNewAction(container, null, getFlexoController().getEditor());
 		action.setGraphicalRepresentation(shapeGR);
 		action.setNewShapeName(shapeGR.getText());
 		if (action.getNewShapeName() == null) {
-			action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
+			action.setNewShapeName(action.getLocales().localizedForKey("shape"));
 		}
 
 		// action.nameSetToNull = true;
@@ -321,6 +321,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return "Common";
 	}
 
+	public Collection<ContextualPalette> getContextualPalettes() {
+		return contextualPaletteModels.values();
+	}
+
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
 			paletteView = makePaletteView();
@@ -332,14 +336,13 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		// logger.info("Building PaletteView with " + contextualPalettes);
 
 		paletteView = new JTabbedPane();
-		orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
+		orderedPalettes = new Vector<>(contextualPalettes.keySet());
 		Collections.sort(orderedPalettes);
 
 		for (DiagramPalette palette : orderedPalettes) {
 			paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
 		}
-		paletteView.add(FlexoLocalization.localizedForKey(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane()),
-				getCommonPalette().getPaletteViewInScrollPane());
+		paletteView.add(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane());
 		paletteView.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -385,7 +388,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 						DiagramPalette palette = (DiagramPalette) evt.getOldValue();
 						JDianaPalette removedPalette = contextualPalettes.get(palette);
 						removedPalette.delete();
-						AbstractDiagramPalette removedPaletteModel = contextualPaletteModels.get(palette);
+						DiagramEditorPaletteModel removedPaletteModel = contextualPaletteModels.get(palette);
 						removedPaletteModel.delete();
 						// unregisterPalette(removedPalette);
 						contextualPalettes.remove(palette);
@@ -443,4 +446,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return null;
 	}
 
+	public FIBLibrary getFIBLibrary() {
+		if (getFlexoController() != null) {
+			return getFlexoController().getApplicationFIBLibraryService().getApplicationFIBLibrary();
+		}
+		return null;
+	}
 }

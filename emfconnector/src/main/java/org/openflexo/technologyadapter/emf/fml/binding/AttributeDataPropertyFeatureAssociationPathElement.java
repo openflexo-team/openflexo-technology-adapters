@@ -43,14 +43,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeAssociation;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePathElement {
@@ -60,7 +59,7 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 
 	private static final Logger logger = Logger.getLogger(AttributeDataPropertyFeatureAssociationPathElement.class.getPackage().getName());
 
-	public AttributeDataPropertyFeatureAssociationPathElement(BindingPathElement parent, EMFAttributeAssociation association,
+	public AttributeDataPropertyFeatureAssociationPathElement(IBindingPathElement parent, EMFAttributeAssociation association,
 			EMFAttributeDataProperty property) {
 		super(parent, property.getName(), property.getRange().getAccessedType());
 		this.association = association;
@@ -79,7 +78,8 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 				return getDataProperty().getRange().getAccessedType();
 			}
 			return Object.class;
-		} else {
+		}
+		else {
 			if (getDataProperty() != null && getDataProperty().getRange() != null) {
 				return new ParameterizedTypeImpl(List.class, getDataProperty().getRange().getAccessedType());
 			}
@@ -99,7 +99,7 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
+		// Unused EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
 		Object emfAnswer = ((EMFObjectIndividual) target).getObject().eGet(dataProperty.getObject());
 		// System.out.println("AttributeDataPropertyFeatureAssociationPathElement, returning " + emfAnswer + " of " + (emfAnswer != null ?
 		// emfAnswer.getClass() : null));
@@ -107,8 +107,8 @@ public class AttributeDataPropertyFeatureAssociationPathElement extends SimplePa
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		((EMFObjectIndividual) target).getObject().eSet(dataProperty.getObject(), value);
 	}
 }

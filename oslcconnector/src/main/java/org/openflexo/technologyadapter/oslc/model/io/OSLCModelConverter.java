@@ -38,16 +38,12 @@
 
 package org.openflexo.technologyadapter.oslc.model.io;
 
-import java.lang.reflect.Array;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
@@ -56,7 +52,7 @@ public class OSLCModelConverter {
 
 	private static final Logger logger = Logger.getLogger(OSLCModelConverter.class.getPackage().getName());
 
-	protected final Map<Object, OSLCObject> OSLCObjects = new HashMap<Object, OSLCObject>();
+	protected final Map<Object, OSLCObject> OSLCObjects = new HashMap<>();
 
 	private OSLCTechnologyAdapter technologyAdapter;
 	private final FlexoOslcClient oslcClient;
@@ -69,7 +65,7 @@ public class OSLCModelConverter {
 	public OSLCModelConverter(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
 		this.adaptorConfiguration = adaptorConfiguration;
 		oslcClient = new FlexoOslcClient(adaptorConfiguration);
-		converters = new ArrayList<OSLCModelDedicatedConverter>();
+		converters = new ArrayList<>();
 		converters.add(new OSLCCoreModelConverter(this));
 		converters.add(new OSLCRMModelConverter(this));
 	}
@@ -95,6 +91,7 @@ public class OSLCModelConverter {
 		return OSLCObjects;
 	}
 
+	/* Unused
 	private <T extends AbstractResource> T[] retrieveResources(String uri, Class<T> resourceClasses) {
 		try {
 			return oslcClient.retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
@@ -104,7 +101,8 @@ public class OSLCModelConverter {
 			return null;
 		}
 	}
-
+	*/
+	/* Unused
 	private <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
 		try {
 			return oslcClient.retrieve(uri, resourceClass);
@@ -114,7 +112,7 @@ public class OSLCModelConverter {
 			return null;
 		}
 	}
-
+	
 	private Object getOSLCObjectFromFlexoOSLCObject(OSLCObject object) {
 		for (Entry entry : OSLCObjects.entrySet()) {
 			Object key = entry.getKey();
@@ -124,6 +122,7 @@ public class OSLCModelConverter {
 		}
 		return null;
 	}
+	*/
 
 	public FlexoOslcClient getOslcClient() {
 		return oslcClient;

@@ -41,13 +41,12 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-import com.hp.hpl.jena.ontology.OntProperty;
-
-public class OWLDataProperty extends OWLProperty implements IFlexoOntologyDataProperty<OWLTechnologyAdapter>,
-		Comparable<IFlexoOntologyDataProperty<OWLTechnologyAdapter>> {
+public class OWLDataProperty extends OWLProperty
+		implements IFlexoOntologyDataProperty<OWLTechnologyAdapter>, Comparable<IFlexoOntologyDataProperty<OWLTechnologyAdapter>> {
 
 	static final Logger logger = Logger.getLogger(IFlexoOntologyDataProperty.class.getPackage().getName());
 

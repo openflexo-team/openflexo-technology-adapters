@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -61,18 +61,18 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @FML("RemoveEMFObjectIndividual")
 public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
-	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual> implements
-			RemoveEMFObjectIndividual {
+	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual>
+			implements RemoveEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(RemoveEMFObjectIndividual.class.getPackage().getName());
 
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(RunTimeEvaluationContext)
 		 */
 		@Override
-		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EObject object = objectIndividual.getObject();
 			// EObject container = object.eContainer();
@@ -94,7 +94,6 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndivid
 
 		@Override
 		public FlexoProperty getAssignedFlexoProperty() {
-			// TODO Auto-generated method stub
 			return super.getAssignedFlexoProperty();
 		}
 	}

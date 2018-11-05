@@ -1,0 +1,12 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  // external dep
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+  testRuntime flexoTestResources()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

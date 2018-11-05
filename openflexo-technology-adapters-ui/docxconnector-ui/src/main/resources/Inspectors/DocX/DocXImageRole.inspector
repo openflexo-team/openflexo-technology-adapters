@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
+	titleFont="SansSerif,0,12" darkLevel="0"
+	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXImageRole"
+	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label label="template_image" index="8"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom
+				componentClassName="org.openflexo.components.doc.editorkit.widget.FIBDocImageSelector"
+				localize="true" manageDynamicModel="true" index="9" data="data.drawingRun"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
+				<Assignment variable="component.document" value="data.document" />
+				<Assignment variable="component.flexoController" value="controller.flexoController" />
+			</Custom>
+
+			<Label index="10" label="object_to_represent"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom index="11" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.representedObject"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+
+			<Label index="12" label="nature"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<DropDown index="13" data="data.nature" list="data.availableNatures" format="object.simpleName"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true"
+				iteratorClassName="java.lang.Class"
+				autoSelectFirstRow="true" />
+
+			<Label label="preview" index="14"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Panel index="15" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+				useScrollBar="true" protectContent="false" height="60" layout="border"
+				controllerClassName="org.openflexo.gina.controller.FIBController"
+				border="empty" trackViewPortWidth="true" width="60"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+				titleFont="SansSerif,0,11" trackViewPortHeight="true"
+				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
+				<Custom
+					componentClassName="org.openflexo.components.doc.editorkit.widget.FlexoDocFragmentEditorWidget"
+					dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
+					localize="true" manageDynamicModel="true" name="DocXEditor" data="data.imageFragment"
+					constraints="border(location=center)">
+				</Custom>
+			</Panel>
+
+
+		</Tab>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Basic" lang="French" value="Basique" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Document's image" />
+</Panel>

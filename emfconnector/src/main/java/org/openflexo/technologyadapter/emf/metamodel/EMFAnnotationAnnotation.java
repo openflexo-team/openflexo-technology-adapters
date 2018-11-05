@@ -90,7 +90,7 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 	 */
 	@Override
 	public Map<String, String> getDetails() {
-		Map<String, String> details = new HashMap<String, String>();
+		Map<String, String> details = new HashMap<>();
 		for (Entry<String, String> entry : object.getDetails().entrySet()) {
 			details.put(entry.getKey(), entry.getValue());
 		}

@@ -46,8 +46,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -79,8 +78,8 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 	@Setter(value = PARAMETER_KEY)
 	public void setParameter(DataBinding<Object> param);
 
-	public static abstract class SetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
-			SetXMLDocumentRoot {
+	public static abstract class SetXMLDocumentRootImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<XMLModelSlot, XMLModel, XMLIndividual> implements SetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(SetXMLDocumentRoot.class.getPackage().getName());
 
@@ -90,7 +89,7 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		public DataBinding<Object> getParameter() {
 
 			if (parameter == null) {
-				parameter = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				parameter = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				parameter.setBindingName("parameter");
 			}
 			return parameter;
@@ -119,19 +118,18 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		}
 
 		@Override
-		public XMLIndividual execute(FlexoBehaviourAction action) {
+		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
-			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
-			XMLModel model = modelSlotInstance.getAccessedResourceData();
-			XMLModelSlot modelSlot = modelSlotInstance.getModelSlot();
+			XMLModel model = getReceiver(evaluationContext);
 
 			XMLIndividual rootIndiv = null;
 
 			try {
-				Object o = getParameter().getBindingValue(action);
+				Object o = getParameter().getBindingValue(evaluationContext);
 				if (o instanceof XMLIndividual) {
 					rootIndiv = (XMLIndividual) o;
-				} else {
+				}
+				else {
 					logger.warning("Invalid value in Binding :" + getParameter().getUnparsedBinding());
 				}
 			} catch (TypeMismatchException e) {
@@ -150,6 +148,7 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 			}
 
 			return rootIndiv;
+
 		}
 
 		@Override

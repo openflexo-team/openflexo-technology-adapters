@@ -40,6 +40,7 @@
 
 package org.openflexo.technologyadapter.emf.model.io;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,12 +80,12 @@ public class EMFModelConverter {
 	/** Builder. */
 	protected EMFModelBuilder builder = new EMFModelBuilder();
 	/** Concepts. */
-	protected final Map<EObject, EMFObjectIndividual> individuals = new HashMap<EObject, EMFObjectIndividual>();
+	protected final Map<EObject, EMFObjectIndividual> individuals = new HashMap<>();
 	/** Property Values. */
-	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>>();
+	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<>();
 
 	/** Concepts. */
-	protected final Map<EObject, List<EMFAnnotationAnnotation>> annotations = new HashMap<EObject, List<EMFAnnotationAnnotation>>();
+	protected final Map<EObject, List<EMFAnnotationAnnotation>> annotations = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -98,8 +99,16 @@ public class EMFModelConverter {
 	 * @param metaModel
 	 * @param aResource
 	 * @return
+	 * @throws IOException
 	 */
 	public EMFModel convertModel(EMFMetaModel metaModel, Resource aResource) {
+		if (!aResource.isLoaded()) {
+			try {
+				aResource.load(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		EMFModel model = builder.buildModel(metaModel, this, aResource);
 		for (EObject aObject : aResource.getContents()) {
 			convertObjectIndividual(model, aObject);
@@ -134,46 +143,45 @@ public class EMFModelConverter {
 			// Convert Structural Features
 			EClass objectClass = eObject.eClass();
 			for (EStructuralFeature eSF : objectClass.getEAllStructuralFeatures()) {
-					if (eSF instanceof EAttribute){
-						// Attribute
-						convertObjectIndividualAttribute(model, eObject, (EAttribute) eSF);
+				if (eSF instanceof EAttribute) {
+					// Attribute
+					convertObjectIndividualAttribute(model, eObject, (EAttribute) eSF);
+				}
+				else if (eSF instanceof EReference) {
+					// Annotation content
+					if (eObject instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS) {
+						convertObjectIndividualAnnotations(model, individual, eObject, (EReference) eSF);
 					}
-					else if (eSF instanceof EReference){
-						// Annotation content
-						if (eObject instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
-							convertObjectIndividualAnnotations(model, individual, eObject, (EReference) eSF);
-						}
-						else{
-							// Other References
-							convertObjectIndividualReferenceObjectPropertyValue(model, eObject, (EReference) eSF);
-						}
+					else {
+						// Other References
+						convertObjectIndividualReferenceObjectPropertyValue(model, eObject, (EReference) eSF);
 					}
+				}
 			}
 
-
-		} else {
+		}
+		else {
 			individual = individuals.get(eObject);
 		}
 		return individual;
 	}
+
 	/**
 	 * Convert a EAnnotation to an Annotation
 	 * 
 	 * @param model
 	 * @param emfAnswer
 	 * @param eObject
-	 * @param eSF 
+	 * @param eSF
 	 * @return
 	 */
 
+	private void convertObjectIndividualAnnotations(EMFModel model, EMFObjectIndividual indiv, EObject eObject, EReference eSF) {
 
-
-	private void convertObjectIndividualAnnotations(EMFModel model,EMFObjectIndividual indiv, EObject eObject, EReference eSF) {
-
-		List< EMFAnnotationAnnotation> listAnn = annotations.get(eObject);
-		if (listAnn == null){
-			listAnn =  new ArrayList< EMFAnnotationAnnotation>();
-			annotations.put(eObject,listAnn);
+		List<EMFAnnotationAnnotation> listAnn = annotations.get(eObject);
+		if (listAnn == null) {
+			listAnn = new ArrayList<>();
+			annotations.put(eObject, listAnn);
 		}
 
 		if (annotations != null) {
@@ -190,14 +198,13 @@ public class EMFModelConverter {
 				}
 			}
 
-		} 
+		}
 	}
 
-	
-	
-	private EMFAnnotationAnnotation convertObjectAnnotationl(EMFModel model, EMFObjectIndividual container, EAnnotation anAnnotation) {
+	private static EMFAnnotationAnnotation convertObjectAnnotationl(EMFModel model, EMFObjectIndividual container,
+			EAnnotation anAnnotation) {
 		// TODO, for now basic support for Annotations
-		EMFAnnotationAnnotation annotation = new EMFAnnotationAnnotation(model,anAnnotation);
+		EMFAnnotationAnnotation annotation = new EMFAnnotationAnnotation(model, anAnnotation);
 		// TODO : add annotations to container.addAnnotation();
 		return annotation;
 	}
@@ -214,9 +221,11 @@ public class EMFModelConverter {
 
 		if (reference instanceof EObject) {
 			return convertObjectIndividual(model, (EObject) reference);
-		} else if (reference instanceof Enum) {
+		}
+		else if (reference instanceof Enum) {
 			return reference;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected " + reference + " of " + (reference != null ? reference.getClass() : null));
 			return reference;
 		}
@@ -250,7 +259,8 @@ public class EMFModelConverter {
 		IFlexoOntologyPropertyValue propertyValue = null;
 		if (eAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
 			propertyValue = convertObjectIndividualAttributeDataPropertyValue(model, eObject, eAttribute);
-		} else {
+		}
+		else {
 			propertyValue = convertObjectIndividualAttributeObjectPropertyValue(model, eObject, eAttribute);
 		}
 		return propertyValue;
@@ -273,7 +283,8 @@ public class EMFModelConverter {
 		if (propertyValues.get(eObject).get(eAttribute) == null) {
 			propertyValue = builder.buildObjectIndividualAttributeDataPropertyValue(model, eObject, eAttribute);
 			propertyValues.get(eObject).put(eAttribute, propertyValue);
-		} else {
+		}
+		else {
 			propertyValue = (EMFObjectIndividualAttributeDataPropertyValue) propertyValues.get(eObject).get(eAttribute);
 		}
 		return propertyValue;
@@ -296,7 +307,8 @@ public class EMFModelConverter {
 		if (propertyValues.get(eObject).get(eAttribute) == null) {
 			propertyValue = builder.buildObjectIndividualAttributeObjectPropertyValue(model, eObject, eAttribute);
 			propertyValues.get(eObject).put(eAttribute, propertyValue);
-		} else {
+		}
+		else {
 			propertyValue = (EMFObjectIndividualAttributeObjectPropertyValue) propertyValues.get(eObject).get(eAttribute);
 		}
 		return propertyValue;
@@ -314,10 +326,11 @@ public class EMFModelConverter {
 			EObject eObject, EReference eReference) {
 		Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> listVals = propertyValues.get(eObject);
 		if (listVals == null) {
-			listVals =  new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
-			propertyValues.put(eObject,listVals);
+			listVals = new HashMap<>();
+			propertyValues.put(eObject, listVals);
 		}
-		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = (EMFObjectIndividualReferenceObjectPropertyValue) listVals.get(eReference);
+		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = (EMFObjectIndividualReferenceObjectPropertyValue) listVals
+				.get(eReference);
 		if (propertyValue == null) {
 			propertyValue = builder.buildObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
 			propertyValues.get(eObject).put(eReference, propertyValue);
@@ -328,7 +341,8 @@ public class EMFModelConverter {
 					if (value instanceof EObject) {
 						convertObjectIndividual(model, (EObject) value);
 					}
-				} else if (eReference.getUpperBound() == -1) {
+				}
+				else if (eReference.getUpperBound() == -1) {
 					if (value instanceof EList) {
 						for (Object aListValue : (EList<Object>) value) {
 							if (aListValue instanceof EObject) {
@@ -339,7 +353,7 @@ public class EMFModelConverter {
 				}
 			}
 
-		} 
+		}
 		return propertyValue;
 	}
 

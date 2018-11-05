@@ -42,12 +42,14 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 
 @ModelEntity
@@ -57,11 +59,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell;
 public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 
 	public static abstract class ExcelCellRoleImpl extends FlexoRoleImpl<ExcelCell> implements ExcelCellRole {
-
-		public ExcelCellRoleImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getType() {
@@ -78,11 +75,11 @@ public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 			// TODO Auto-generated method stub
 			return false;
 		}
-
+		
 		@Override
 		public void setIsPrimaryRole(boolean isPrimary) {
 			// TODO Auto-generated method stub
-
+		
 		}*/
 
 		/**
@@ -102,13 +99,18 @@ public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 		}
 
 		@Override
-		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ExcelActorReference<ExcelCell> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return ExcelTechnologyAdapter.class;
 		}
 
 	}

@@ -59,14 +59,15 @@ public class FIBOWLOntologyLibraryBrowser extends FIBBrowserView<OWLOntologyLibr
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologyLibraryBrowser.fib");
 
 	public FIBOWLOntologyLibraryBrowser(OWLOntologyLibrary ontologyLibrary, FlexoController controller) {
-		super(ontologyLibrary, controller, FIB_FILE);
+		super(ontologyLibrary, controller, FIB_FILE,
+				ontologyLibrary != null ? ontologyLibrary.getTechnologyAdapter().getLocales() : controller.getFlexoLocales());
 	}
 
 	// Please uncomment this for a live test
 	// Never commit this uncommented since it will not compile on continuous build
 	// To have icon, you need to choose "Test interface" in the editor (otherwise, flexo controller is not insanciated in EDIT mode)
 	/*public static void main(String[] args) {
-
+	
 		try {
 			FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 		} catch (SecurityException e) {
@@ -76,21 +77,21 @@ public class FIBOWLOntologyLibraryBrowser extends FIBBrowserView<OWLOntologyLibr
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		final FlexoResourceCenter testResourceCenter = LocalResourceCenterImplementation
 				.instanciateTestLocalResourceCenterImplementation(new FileResource("TestResourceCenter"));
-
+	
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
 				return makeArray(testResourceCenter.retrieveBaseOntologyLibrary());
 			}
-
+	
 			@Override
 			public File getFIBFile() {
 				return FIB_FILE;
 			}
-
+	
 			@Override
 			public FIBController makeNewController(FIBComponent component) {
 				return new FlexoFIBController<OntologyLibrary>(component);

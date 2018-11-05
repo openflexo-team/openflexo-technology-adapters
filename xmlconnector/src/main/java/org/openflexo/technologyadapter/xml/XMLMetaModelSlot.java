@@ -46,12 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -73,18 +68,14 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @DeclareEditionActions({ AddXMLType.class })
 @DeclareFetchRequests({})
 @ModelEntity
-@ImplementationClass(XMLMetaModelSlot.XSDModelSlotImpl.class)
+@ImplementationClass(XMLMetaModelSlot.XMLMetaModelSlotImpl.class)
 @XMLElement
 @FML("XMLMetaModelSlot")
 public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
-	public static abstract class XSDModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
+	public static abstract class XMLMetaModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
 
 		static final Logger logger = Logger.getLogger(XMLMetaModelSlot.class.getPackage().getName());
-
-		public XSDModelSlotImpl() {
-			super();
-		}
 
 		@Override
 		public Class<XMLTechnologyAdapter> getTechnologyAdapterClass() {
@@ -95,7 +86,8 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "XMLType";
-			} else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "XMLIndividual";
 			}
 			return null;
@@ -111,30 +103,5 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		// FIXME
-
-		@Override
-		public TechnologyAdapterResource<XMLMetaModel, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			// TODO
-			// return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
-			return null;
-		}
-
-		@Override
-		public TechnologyAdapterResource<XMLMetaModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
-				String relativePath, String filename, String modelUri) {
-			// TODO
-			// return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
-			// relativePath,
-			// filename, modelUri, (XSDMetaModelResource) metaModelResource);
-			return null;
-		}
-
-		@Override
-		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<XMLMetaModel>, XMLMetaModel> createConfiguration(
-				CreateVirtualModelInstance action) {
-			// TODO
-			return null;
-		}
 	}
 }

@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCCreationFactory;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCQueryCapability;
@@ -52,7 +53,6 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class OSLCIconLibrary {
 	private static final Logger logger = Logger.getLogger(OSLCIconLibrary.class.getPackage().getName());

@@ -38,22 +38,26 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.icon.FMLIconLibrary;
+import org.openflexo.gina.controller.FIBController.Status;
+import org.openflexo.icon.IconFactory;
+import org.openflexo.icon.IconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
+import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -69,36 +73,48 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 
 	@Override
 	protected FlexoActionInitializer<CreateDiagramPalette> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramPalette>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
-				FGEModelFactory factory;
-				try {
-					factory = new FGEModelFactoryImpl();
-					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
-					return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
-				} catch (ModelDefinitionException e1) {
-					e1.printStackTrace();
-					return false;
-				}
+		return (e, action) -> {
+
+			try {
+				FGEModelFactory factory = new FGEModelFactoryImpl();
+				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
+			} catch (ModelDefinitionException e1) {
+				e1.printStackTrace();
 			}
+
+			Wizard wizard = new CreateDiagramPaletteWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
+			}
+			return true;
+
+			/*FGEModelFactory factory;
+			try {
+				FGEModelFactory factory = new FGEModelFactoryImpl();
+				action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
+				return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
+			} catch (ModelDefinitionException e1) {
+				e1.printStackTrace();
+				return false;
+			}*/
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramPalette> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramPalette>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramPalette action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
-				return true;
-			}
+		return (e, action) -> {
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(DiagramTechnologyAdapter.class));
+			getController().setCurrentEditedObjectAsModuleView(action.getNewPalette());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
-		return FMLIconLibrary.VIEWPOINT_ICON;
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
+		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_PALETTE_ICON, IconLibrary.NEW_MARKER);
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(FGEModelFactory factory) {

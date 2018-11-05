@@ -51,9 +51,11 @@ public class DiagramCst {
 	// UI components
 	// public static Resource DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramFlexoConceptView.fib");
 	public static Resource DIAGRAM_SPECIFICATION_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramSpecificationView.fib");
+	public static Resource FML_CONTROLLED_DIAGRAM_VIRTUAL_MODEL_VIEW_FIB = ResourceLocator
+			.locateResource("Fib/FMLControlledDiagramVirtualModelView.fib");
 
 	// Dialog components
-	public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
+	// public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
 	public static Resource CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateExampleDiagramDialog.fib");
 	public static Resource CREATE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/CreateDiagramFromPPTDialog.fib");
@@ -65,8 +67,8 @@ public class DiagramCst {
 	public static Resource IMPORT_IMAGE_FILE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/ImportImageFileDialog.fib");
 	public static Resource DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeleteDiagramElementsDialog.fib");
-	public static Resource REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
-			.locateResource("Fib/Dialog/ReindexDiagramElementsDialog.fib");
+	// public static Resource REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
+	// .locateResource("Fib/Dialog/ReindexDiagramElementsDialog.fib");
 	public static Resource DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeleteDiagramElementsAndFlexoConceptInstancesDialog.fib");
 

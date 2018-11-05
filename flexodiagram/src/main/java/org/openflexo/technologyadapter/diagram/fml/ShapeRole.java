@@ -44,12 +44,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -59,8 +55,9 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 @ModelEntity
@@ -69,25 +66,144 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 @FML("ShapeRole")
 public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraphicalRepresentation> {
 
-	@PropertyIdentifier(type = GraphicalRepresentation.class)
-	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
-	@PropertyIdentifier(type = ShapeRole.class)
-	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapeRole";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_X_KEY = "previewX";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_Y_KEY = "previewY";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_WIDTH_KEY = "previewWidth";
+	@PropertyIdentifier(type = Double.class)
+	public static final String PREVIEW_HEIGHT_KEY = "previewHeight";
 
-	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	// @PropertyIdentifier(type = GraphicalRepresentation.class)
+	// public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
+	@PropertyIdentifier(type = ShapeRole.class)
+	public static final String PARENT_SHAPE_ROLE_KEY = "parentShapeRole";
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> POS_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"x", ShapeGraphicalRepresentation.X) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getX();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setX(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> POS_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"y", ShapeGraphicalRepresentation.Y) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getY();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setY(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> WIDTH_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"width", ShapeGraphicalRepresentation.WIDTH) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getWidth();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setWidth(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> HEIGHT_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"height", ShapeGraphicalRepresentation.HEIGHT) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getHeight();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setHeight(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> RELATIVE_TEXT_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"relativeTextX", ShapeGraphicalRepresentation.RELATIVE_TEXT_X) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getRelativeTextX();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setRelativeTextX(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> RELATIVE_TEXT_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"relativeTextY", ShapeGraphicalRepresentation.RELATIVE_TEXT_Y) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getRelativeTextY();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setRelativeTextY(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> ABSOLUTE_TEXT_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"absoluteTextX", ShapeGraphicalRepresentation.ABSOLUTE_TEXT_X) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getAbsoluteTextX();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setAbsoluteTextX(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> ABSOLUTE_TEXT_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
+			"absoluteTextY", ShapeGraphicalRepresentation.ABSOLUTE_TEXT_Y) {
+		@Override
+		public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
+			return gr.getAbsoluteTextY();
+		}
+
+		@Override
+		public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
+			gr.setAbsoluteTextY(value.doubleValue());
+		}
+	};
+
+	public static GraphicalFeature<?, ?>[] AVAILABLE_SHAPE_FEATURES = { POS_X_FEATURE, POS_Y_FEATURE, WIDTH_FEATURE, HEIGHT_FEATURE,
+			RELATIVE_TEXT_X_FEATURE, RELATIVE_TEXT_Y_FEATURE, ABSOLUTE_TEXT_X_FEATURE, ABSOLUTE_TEXT_Y_FEATURE };
+
+	@Override
+	@Deprecated
+	@Getter(value = "DeprecatedGraphicalRepresentation")
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
-	public ShapeGraphicalRepresentation getGraphicalRepresentation();
+	public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation();
 
-	@Setter(GRAPHICAL_REPRESENTATION_KEY)
-	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
+	@Deprecated
+	@Setter(value = "DeprecatedGraphicalRepresentation")
+	public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
-	@Getter(value = PARENT_SHAPE_PATTERN_ROLE_KEY)
+	@Getter(value = PARENT_SHAPE_ROLE_KEY)
 	@XMLElement(context = "Parent")
 	public ShapeRole getParentShapeRole();
 
-	@Setter(PARENT_SHAPE_PATTERN_ROLE_KEY)
+	@Setter(PARENT_SHAPE_ROLE_KEY)
 	public void setParentShapeRole(ShapeRole parentShapeRole);
 
 	public boolean isContainedIn(ShapeRole container);
@@ -97,15 +213,55 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setParentShapeAsDefinedInAction(boolean flag);
 
 	/**
-	 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
-	 * roles of current flexo concept which are not already in the containment subtree
+	 * Get the list of shape roles that can be set as parent shape pattern property. This list contains all other shape pattern roles of
+	 * current flexo concept which are not already in the containment subtree
 	 * 
 	 * @return
 	 */
 	public List<ShapeRole> getPossibleParentShapeRoles();
 
-	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation> implements
-			ShapeRole {
+	@Getter(value = PREVIEW_X_KEY, defaultValue = "3.14")
+	@XMLAttribute
+	public double getPreviewX();
+
+	@Setter(value = PREVIEW_X_KEY)
+	public void setPreviewX(double aValue);
+
+	@Getter(value = PREVIEW_Y_KEY, defaultValue = "3.14")
+	@XMLAttribute
+	public double getPreviewY();
+
+	@Setter(value = PREVIEW_Y_KEY)
+	public void setPreviewY(double aValue);
+
+	@Getter(value = PREVIEW_WIDTH_KEY, defaultValue = "50.0")
+	@XMLAttribute
+	public double getPreviewWidth();
+
+	@Setter(value = PREVIEW_WIDTH_KEY)
+	public void setPreviewWidth(double aValue);
+
+	@Getter(value = PREVIEW_HEIGHT_KEY, defaultValue = "40.0")
+	@XMLAttribute
+	public double getPreviewHeight();
+
+	@Setter(value = PREVIEW_HEIGHT_KEY)
+	public void setPreviewHeight(double aValue);
+
+	/**
+	 * Called to configure a {@link ShapeRole} using prototyping {@link DiagramShape} from metamodel
+	 * 
+	 * Example label is retrieved from name of shape<br>
+	 * Preview size is normalized on a 250:200 rectangle when bigger<br>
+	 * Preview location is centered on a 250:200 rectangle
+	 * 
+	 * @param metaModelShape
+	 */
+	@Override
+	public void bindTo(DiagramShape metaModelShape);
+
+	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
+			implements ShapeRole {
 
 		private static final Logger logger = Logger.getLogger(ShapeRole.class.getPackage().getName());
 
@@ -122,10 +278,10 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					//logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
-							GraphicalElementSpecification.class);
-					newGraphicalElementSpecification.setPatternRole(this);
+					// logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
+							.newInstance(GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setFlexoRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
 					newGraphicalElementSpecification.setMandatory(true);
@@ -136,19 +292,62 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 
 		}
 
+		@Deprecated
+		private ShapeGraphicalRepresentation deprecatedShapeGraphicalRepresentation;
+
 		@Override
+		@Deprecated
+		public ShapeGraphicalRepresentation getDeprecatedGraphicalRepresentation() {
+			if (getMetamodelElement() != null) {
+				return null;
+			}
+			return deprecatedShapeGraphicalRepresentation;
+		}
+
+		@Override
+		@Deprecated
+		public void setDeprecatedGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
+			// System.out.println("Tiens, je trouve une ShapeGraphicalRepresentation depreciee: " + graphicalRepresentation);
+			this.deprecatedShapeGraphicalRepresentation = graphicalRepresentation;
+		}
+
+		@Override
+		public DiagramShape makeDiagramElementInMetaModel(Diagram exampleDiagram, ShapeGraphicalRepresentation graphicalRepresentation) {
+			DiagramShape returned = exampleDiagram.getDiagramFactory().makeNewShape("Shape", exampleDiagram);
+			// returned.setGraphicalRepresentation(graphicalRepresentation);
+			returned.getGraphicalRepresentation().setsWith(graphicalRepresentation);
+			return returned;
+		}
+
+		/*@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getOwningVirtualModel().getName() + ";", context);
+			VirtualModel vm = getOwningVirtualModel();
+			if (vm != null) {
+				out.append("FlexoRole " + getName() + " as ShapeSpecification from " + vm.getName() + ";", context);
+			}
+			else {
+				out.append("FlexoRole " + getName() + " -- NO OWNING MODEL;", context);
+			}
 			return out.toString();
-		}
+		}*/
+
+		/*@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
+			out.append((getReceiver().isValid() ? getReceiver().toString() + "." : "") + getTechnologyAdapterIdentifier() + "::"
+					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
+			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
+			out.append("}", context);
+			return out.toString();
+		}*/
 
 		@Override
 		public String getTypeDescription() {
-			return FlexoLocalization.localizedForKey("shape");
+			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("shape");
 		}
 
-		public void tryToFindAGR() {
+		/*public void tryToFindAGR() {
 			if (getGraphicalRepresentation() == null && getModelSlot() instanceof TypedDiagramModelSlot) {
 				// Try to find one somewhere
 				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getModelSlot();
@@ -158,7 +357,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					}
 				}
 			}
-		}
+		}*/
 
 		@Override
 		public Type getType() {
@@ -166,7 +365,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		}
 
 		private boolean detectLoopInParentShapePatternRoleDefinition() {
-			List<ShapeRole> list = new ArrayList<ShapeRole>();
+			List<ShapeRole> list = new ArrayList<>();
 			ShapeRole current = this;
 			while (!list.contains(current) && current != null) {
 				list.add(current);
@@ -193,11 +392,27 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					logger.warning("Detecting a loop in parent shape pattern property definition. Resetting parent shape pattern property");
 					this.parentShapeRole = null;
 				}
+
+				// center the shape in the parent
+				if (parentShapeRole != null && getGraphicalRepresentation() != null) {
+					getGraphicalRepresentation()
+							.setX((parentShapeRole.getGraphicalRepresentation().getWidth() - getGraphicalRepresentation().getWidth()) / 2);
+					getGraphicalRepresentation().setY(
+							(parentShapeRole.getGraphicalRepresentation().getHeight() - getGraphicalRepresentation().getHeight()) / 2);
+				}
+				else {
+					// Center shape in preview
+					if (getGraphicalRepresentation() != null) {
+						getGraphicalRepresentation().setX((250 - getGraphicalRepresentation().getWidth()) / 2);
+						getGraphicalRepresentation().setY((200 - getGraphicalRepresentation().getHeight()) / 2);
+					}
+				}
 				// setChanged();
 				// notifyObservers();
-				getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole, parentShapeRole);
+				getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_ROLE_KEY, oldParentShapeRole, parentShapeRole);
+				getPropertyChangeSupport().firePropertyChange("parentShapeAsDefinedInAction", oldParentShapeRole, parentShapeRole);
 				if (getFlexoConcept() != null) {
-					getFlexoConcept().getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole,
+					getFlexoConcept().getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_ROLE_KEY, oldParentShapeRole,
 							parentShapeRole);
 				}
 			}
@@ -216,7 +431,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				if (possibleParentPatternRole.size() > 0) {
 					setParentShapeRole(possibleParentPatternRole.get(0));
 				}
-			} else {
+			}
+			else {
 				// System.out.println("setParentShapePatternRole with null");
 				setParentShapeRole(null);
 				// flag = true;
@@ -242,7 +458,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		 */
 		@Override
 		public List<ShapeRole> getPossibleParentShapeRoles() {
-			List<ShapeRole> returned = new ArrayList<ShapeRole>();
+			List<ShapeRole> returned = new ArrayList<>();
 			if (getFlexoConcept() != null) {
 				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 				for (ShapeRole shapeRole : shapesPatternRoles) {
@@ -254,124 +470,45 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			return returned;
 		}
 
-		/*@Override
-		public boolean isEmbeddedIn(ShapeRole aPR) {
-			if (getParentShapePatternRole() != null) {
-				if (getParentShapePatternRole() == aPR) {
-					return true;
-				} else {
-					return getParentShapePatternRole().isEmbeddedIn(aPR);
-				}
-			}
-			return false;
-		}*/
+		/**
+		 * Called to configure a {@link ShapeRole} using prototyping {@link DiagramShape} from metamodel
+		 * 
+		 * Example label is retrieved from name of shape<br>
+		 * Preview size is normalized on a 250:200 rectangle when bigger<br>
+		 * Preview location is centered on a 250:200 rectangle
+		 * 
+		 * @param metaModelShape
+		 */
+		@Override
+		public void bindTo(DiagramShape metaModelShape) {
 
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> POS_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"x", ShapeGraphicalRepresentation.X) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getX();
+			if (metaModelShape == null) {
+				logger.warning("Could not bind to a null " + metaModelShape);
+				return;
 			}
 
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setX(value.doubleValue());
-			}
-		};
+			setMetamodelElement(metaModelShape);
 
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> POS_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"y", ShapeGraphicalRepresentation.Y) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getY();
+			setExampleLabel(metaModelShape.getName());
+
+			if (metaModelShape.getGraphicalRepresentation().getWidth() > 230) {
+				setPreviewWidth(230);
+			}
+			else {
+				setPreviewWidth(metaModelShape.getGraphicalRepresentation().getWidth());
 			}
 
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setY(value.doubleValue());
+			if (metaModelShape.getGraphicalRepresentation().getHeight() > 230) {
+				setPreviewHeight(230);
 			}
-		};
-
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> WIDTH_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"width", ShapeGraphicalRepresentation.WIDTH) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getWidth();
+			else {
+				setPreviewHeight(metaModelShape.getGraphicalRepresentation().getHeight());
 			}
 
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setWidth(value.doubleValue());
-			}
-		};
+			setPreviewX((250 - getPreviewWidth()) / 2);
+			setPreviewY((200 - getPreviewHeight()) / 2);
 
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> HEIGHT_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"height", ShapeGraphicalRepresentation.HEIGHT) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getHeight();
-			}
-
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setHeight(value.doubleValue());
-			}
-		};
-
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> RELATIVE_TEXT_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"relativeTextX", ShapeGraphicalRepresentation.RELATIVE_TEXT_X) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getRelativeTextX();
-			}
-
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setRelativeTextX(value.doubleValue());
-			}
-		};
-
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> RELATIVE_TEXT_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"relativeTextY", ShapeGraphicalRepresentation.RELATIVE_TEXT_Y) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getRelativeTextY();
-			}
-
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setRelativeTextY(value.doubleValue());
-			}
-		};
-
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> ABSOLUTE_TEXT_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"absoluteTextX", ShapeGraphicalRepresentation.ABSOLUTE_TEXT_X) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getAbsoluteTextX();
-			}
-
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setAbsoluteTextX(value.doubleValue());
-			}
-		};
-
-		public static GraphicalFeature<Double, ShapeGraphicalRepresentation> ABSOLUTE_TEXT_Y_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
-				"absoluteTextY", ShapeGraphicalRepresentation.ABSOLUTE_TEXT_Y) {
-			@Override
-			public Double retrieveFromGraphicalRepresentation(ShapeGraphicalRepresentation gr) {
-				return gr.getAbsoluteTextY();
-			}
-
-			@Override
-			public void applyToGraphicalRepresentation(ShapeGraphicalRepresentation gr, Double value) {
-				gr.setAbsoluteTextY(value.doubleValue());
-			}
-		};
-
-		public static GraphicalFeature<?, ?>[] AVAILABLE_FEATURES = { POS_X_FEATURE, POS_Y_FEATURE, WIDTH_FEATURE, HEIGHT_FEATURE,
-				RELATIVE_TEXT_X_FEATURE, RELATIVE_TEXT_Y_FEATURE, ABSOLUTE_TEXT_X_FEATURE, ABSOLUTE_TEXT_Y_FEATURE };
+		}
 
 	}
 

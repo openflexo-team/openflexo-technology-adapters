@@ -1,0 +1,60 @@
+use org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
+
+/**
+ * 
+ * @version 0.1
+ */
+@VirtualModel(uri="http://www.openflexo.org/test/excel/RootVM.fml/PersonListing.fml")
+public class PersonListing {
+
+  @SEDataAreaRole(cardinality=ZeroMany,readOnly=false)  
+  public SEDataArea<SEFlexoConceptInstanceType<Person>> persons;
+
+  @CreationScheme  
+  PersonListing:create() {  
+  
+  }  
+
+  @DeletionScheme  
+  Void delete() {  
+  
+  }  
+
+  @SEInitializer  
+  Void initialize() {  
+  
+  }  
+
+  @ActionScheme  
+  public Void addPerson(Integer index) {  
+    Person.create("<enter name>")  
+  }  
+
+
+  @FlexoConcept  
+  public class Person {  
+  
+    @SEColumnRole(cardinality=One,readOnly=false)    
+    public String sexe;  
+    @SEColumnRole(cardinality=One,readOnly=false)    
+    public String name;  
+    @SEColumnRole(cardinality=One,readOnly=false)    
+    public String activity;  
+    @SEColumnRole(cardinality=One,readOnly=false)    
+    public Integer age;  
+    @SEColumnRole(cardinality=One,readOnly=false)    
+    public String city;  
+  
+    @CreationScheme    
+    Person:create(String name) {    
+      name = parameters.name;    
+    }    
+  
+    @DeletionScheme    
+    Void delete() {    
+      RemoveSEObject this    
+    }    
+  
+  }  
+
+}

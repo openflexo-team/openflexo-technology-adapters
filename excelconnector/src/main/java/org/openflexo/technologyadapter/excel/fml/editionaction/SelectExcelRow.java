@@ -49,7 +49,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -66,7 +66,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ImplementationClass(SelectExcelRow.SelectExcelRowImpl.class)
 @XMLElement
 @FML("SelectExcelRow")
-public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelRow> {
+public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelRow> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String EXCEL_SHEET_KEY = "excelSheet";
@@ -78,7 +78,8 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 	@Setter(EXCEL_SHEET_KEY)
 	public void setExcelSheet(DataBinding<ExcelSheet> excelSheet);
 
-	public static abstract class SelectExcelRowImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelRow> implements SelectExcelRow {
+	public static abstract class SelectExcelRowImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow>
+			implements SelectExcelRow {
 
 		private static final Logger logger = Logger.getLogger(SelectExcelRow.class.getPackage().getName());
 
@@ -94,51 +95,41 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 		}
 
 		@Override
-		public List<ExcelRow> execute(FlexoBehaviourAction action) {
+		public List<ExcelRow> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
+			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getAccessedResourceData();
-
-			List<ExcelRow> selectedExcelRows = new ArrayList<ExcelRow>();
+			List<ExcelRow> selectedExcelRows = new ArrayList<>();
 			ExcelSheet excelSheet;
 			try {
-				excelSheet = getExcelSheet().getBindingValue(action);
+				excelSheet = getExcelSheet().getBindingValue(evaluationContext);
 
 				if (excelSheet != null) {
 					selectedExcelRows.addAll(excelSheet.getExcelRows());
-				} else {
+				}
+				else {
 					for (ExcelSheet excelSheetItem : excelWorkbook.getExcelSheets()) {
 						selectedExcelRows.addAll(excelSheetItem.getExcelRows());
 					}
 				}
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			List<ExcelRow> returned = filterWithConditions(selectedExcelRows, action);
+			List<ExcelRow> returned = filterWithConditions(selectedExcelRows, evaluationContext);
 
 			return returned;
+
 		}
 
 		@Override
 		public DataBinding<ExcelSheet> getExcelSheet() {
 			if (excelSheet == null) {
-				excelSheet = new DataBinding<ExcelSheet>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
+				excelSheet = new DataBinding<>(this, ExcelSheet.class, DataBinding.BindingDefinitionType.GET);
 				excelSheet.setBindingName("excelSheet");
 			}
 			return excelSheet;

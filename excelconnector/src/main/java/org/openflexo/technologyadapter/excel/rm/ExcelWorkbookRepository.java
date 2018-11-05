@@ -40,7 +40,10 @@
 package org.openflexo.technologyadapter.excel.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
@@ -50,18 +53,25 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
  * @author sylvain
  * 
  */
-public class ExcelWorkbookRepository extends
-		TechnologyAdapterFileResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook> {
+@ModelEntity
+public interface ExcelWorkbookRepository<I>
+		extends TechnologyAdapterResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook, I> {
 
-	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
-		super(adapter, resourceCenter);
-	}
-
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/ExcelTechnologyAdapter/Workbooks";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
+	public static <I> ExcelWorkbookRepository<I> instanciateNewRepository(ExcelTechnologyAdapter technologyAdapter,
+			FlexoResourceCenter<I> resourceCenter) {
+		ModelFactory factory;
+		try {
+			factory = new ModelFactory(ExcelWorkbookRepository.class);
+			ExcelWorkbookRepository<I> newRepository = factory.newInstance(ExcelWorkbookRepository.class);
+			newRepository.setTechnologyAdapter(technologyAdapter);
+			newRepository.setResourceCenter(resourceCenter);
+			newRepository.setBaseArtefact(resourceCenter.getBaseArtefact());
+			newRepository.getRootFolder().setRepositoryContext(null);
+			return newRepository;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

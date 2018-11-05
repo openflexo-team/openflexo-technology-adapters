@@ -43,12 +43,15 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
+import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
@@ -63,10 +66,9 @@ import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class XMLAdapterController extends TechnologyAdapterController<XMLTechnologyAdapter> {
+public class XMLAdapterController extends FlexoOntologyTechnologyAdapterController<XMLTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(XMLAdapterController.class.getPackage().getName());
 
@@ -83,8 +85,8 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		xmlInspectorGroup = controller.loadInspectorGroup("XML", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
+		xmlInspectorGroup = controller.loadInspectorGroup("XML", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup xmlInspectorGroup;
@@ -165,9 +167,9 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> flexoRoleClass) {
 
-		if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+		if (XMLIndividualRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(XMLIndividualRole.class);
 		}
 		return null;
@@ -208,10 +210,15 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 			FlexoPerspective perspective) {
 		if (object instanceof XMLModel) {
 			return new XMLModelView((XMLModel) object, controller, perspective);
-		} else if (object instanceof XMLMetaModel) {
+		}
+		else if (object instanceof XMLMetaModel) {
 			return new XMLMetaModelView((XMLMetaModel) object, controller, perspective);
 		}
-		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
+	@Override
+	public OntologyBrowserModel<XMLTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<XMLTechnologyAdapter> context) {
+		return new OntologyBrowserModel<>(context);
+	}
 }

@@ -82,10 +82,6 @@ public interface OSLCServiceProviderCatalog extends OSLCResource, ResourceData<O
 
 	public static abstract class OSLCServiceProviderCatalogImpl extends OSLCResourceImpl implements OSLCServiceProviderCatalog {
 
-		public OSLCServiceProviderCatalogImpl() {
-			// TODO Auto-generated constructor stub
-		}
-
 		@Override
 		public String getUri() {
 			return getOSLCServiceProviderCatalog().getAbout().toString();

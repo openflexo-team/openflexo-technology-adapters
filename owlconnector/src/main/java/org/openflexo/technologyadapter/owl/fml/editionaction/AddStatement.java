@@ -46,11 +46,10 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.SetPropertyValueAction;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
+import org.openflexo.foundation.ontology.fml.editionaction.SetPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -64,8 +63,8 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddStatement.AddStatementImpl.class)
-public abstract interface AddStatement<S extends OWLStatement> extends TechnologySpecificAction<OWLModelSlot, S>,
-		SetPropertyValueAction<S>, OWLAction<S> {
+public abstract interface AddStatement<S extends OWLStatement>
+		extends TechnologySpecificActionDefiningReceiver<OWLModelSlot, OWLOntology, S>, SetPropertyValueAction<S>, OWLAction<S> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -81,8 +80,8 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 
 	public OWLOntology getMetaModel();
 
-	public static abstract class AddStatementImpl<S extends OWLStatement> extends TechnologySpecificActionImpl<OWLModelSlot, S> implements
-			AddStatement<S> {
+	public static abstract class AddStatementImpl<S extends OWLStatement>
+			extends TechnologySpecificActionDefiningReceiverImpl<OWLModelSlot, OWLOntology, S> implements AddStatement<S> {
 
 		private static final Logger logger = Logger.getLogger(AddStatement.class.getPackage().getName());
 
@@ -90,9 +89,9 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 			super();
 		}
 
-		public OWLConcept<?> getPropertySubject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertySubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getSubject().getBindingValue(action);
+				return (OWLConcept<?>) getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -105,7 +104,11 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 
 		@Override
 		public OWLOntology getMetaModel() {
-			return this.getModelSlot().getMetaModelResource().getMetaModelData();
+			// return this.getModelSlot().getMetaModelResource().getMetaModelData();
+			if (getInferedModelSlot() != null) {
+				return getInferedModelSlot().getMetaModelResource().getMetaModelData();
+			}
+			return null;
 		}
 
 		/*@Override
@@ -171,11 +174,6 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 				return object.getSubject();
 			}
 
-		}
-
-		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

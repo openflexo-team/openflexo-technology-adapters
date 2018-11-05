@@ -43,11 +43,14 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -57,8 +60,8 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 	private static final Logger logger = Logger.getLogger(AddShape.class.getPackage().getName());
 
-	public static FlexoActionType<AddShape, DiagramContainerElement<?>, DiagramElement<?>> actionType = new FlexoActionType<AddShape, DiagramContainerElement<?>, DiagramElement<?>>(
-			"add_new_shape", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<AddShape, DiagramContainerElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<AddShape, DiagramContainerElement<?>, DiagramElement<?>>(
+			"add_new_shape", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -91,9 +94,18 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 	private DiagramContainerElement<?> parent;
 	private ShapeGraphicalRepresentation graphicalRepresentation;
 	private boolean nameSetToNull = false;
+	private FGEPoint dropLocation;
 
-	AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private AddShape(DiagramContainerElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -113,11 +125,15 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		// System.out.println("GR=" + getGraphicalRepresentation());
 
-		newShape = getFocusedObject().getDiagram().getDiagramFactory()
-				.makeNewShape(getNewShapeName(), getGraphicalRepresentation(), getParent());
+		newShape = getFocusedObject().getDiagram().getDiagramFactory().makeNewShape(getNewShapeName(), getGraphicalRepresentation(),
+				getParent());
 
 		if (getGraphicalRepresentation() != null) {
 			newShape.setGraphicalRepresentation(getGraphicalRepresentation());
+			if (getDropLocation() != null) {
+				getGraphicalRepresentation().setX(getDropLocation().x);
+				getGraphicalRepresentation().setY(getDropLocation().y);
+			}
 		}
 
 		getParent().addToShapes(newShape);
@@ -126,6 +142,14 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		// System.out.println("newShape=" + newShape);
 		// System.out.println("diagram=" + newShape.getDiagram());
+	}
+
+	public FGEPoint getDropLocation() {
+		return dropLocation;
+	}
+
+	public void setDropLocation(FGEPoint dropLocation) {
+		this.dropLocation = dropLocation;
 	}
 
 	public DiagramShape getNewShape() {

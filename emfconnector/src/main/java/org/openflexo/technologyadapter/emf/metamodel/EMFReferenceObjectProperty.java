@@ -51,7 +51,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -62,8 +61,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReference> implements
-		IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
+public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReference>
+		implements IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -141,11 +140,12 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> result = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			result = new ArrayList<IFlexoOntologyAnnotation>();
+			result = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				result.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
-		} else {
+		}
+		else {
 			result = Collections.emptyList();
 		}
 		return result;
@@ -218,7 +218,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> result = new ArrayList<>();
 		if (ontology.getConverter().getReferenceAssociations().get(object) != null) {
 			result.add(ontology.getConverter().getReferenceAssociations().get(object));
 		}
@@ -232,7 +232,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getRange() {
-		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(), null);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
 		// FIXME Pas de sens car ce lien ce fait plutot avec l'association (en EMF le lien est 1-1-1 donc pas de soucis.)
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(), null);
 	}
 
 	/**
@@ -277,8 +277,6 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 		return Collections.emptyList();
 	}
 
-
-
 	/**
 	 * Follow the link.
 	 * 
@@ -291,7 +289,6 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "EMFClassReference: " + getName() + " range=" + getRange() + " domain=" + getDomain();
 	}
 }

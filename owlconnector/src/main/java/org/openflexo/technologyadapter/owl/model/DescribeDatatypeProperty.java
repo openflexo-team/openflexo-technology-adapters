@@ -61,12 +61,11 @@ package org.openflexo.technologyadapter.owl.model;
 //	 Imports
 //////////////	/
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.OntResource;
+import org.apache.jena.ontology.DatatypeProperty;
+import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.ontology.OntResource;
 
 /**
  * <p>
@@ -88,8 +87,8 @@ public class DescribeDatatypeProperty {
 	// Instance variables
 	// ////////////////////////////////
 
-	private Map m_anonIDs = new HashMap();
-	private int m_anonCount = 0;
+	// Unused private Map m_anonIDs = new HashMap<>();
+	// Unused private int m_anonCount = 0;
 
 	// Constructors
 	// ////////////////////////////////
@@ -111,14 +110,14 @@ public class DescribeDatatypeProperty {
 		out.println();
 
 		// sub-classes
-		for (Iterator i = property.listSuperProperties(true); i.hasNext();) {
+		for (Iterator<? extends OntProperty> i = property.listSuperProperties(true); i.hasNext();) {
 			out.print("  is a sub-class of ");
 			renderPropertyDescription(out, (DatatypeProperty) i.next());
 			out.println();
 		}
 
 		// super-classes
-		for (Iterator i = property.listSubProperties(true); i.hasNext();) {
+		for (Iterator<? extends OntProperty> i = property.listSubProperties(true); i.hasNext();) {
 			out.print("  is a super-class of ");
 			renderPropertyDescription(out, (DatatypeProperty) i.next());
 			out.println();

@@ -42,7 +42,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModelObject;
@@ -115,7 +115,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			return getDiagramPaletteElementBinding().getVirtualModel();
 		}
 

@@ -38,28 +38,23 @@
 
 package org.openflexo.technologyadapter.excel;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
-import org.openflexo.technologyadapter.excel.rm.ExcelMetaModelRepository;
-import org.openflexo.technologyadapter.excel.rm.ExcelModelRepository;
+import org.openflexo.technologyadapter.excel.model.ExcelCellRangeConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
-import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
-import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceImpl;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
+import org.openflexo.technologyadapter.excel.semantics.fml.SEVirtualModelInstanceType.SEVirtualModelInstanceTypeFactory;
+import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceRepository;
+import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceResourceFactory;
 
 /**
  * This class defines and implements the Excel technology adapter
@@ -68,7 +63,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceImpl;
  * 
  */
 @DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
-@DeclareRepositoryType({ ExcelWorkbookRepository.class, ExcelMetaModelRepository.class, ExcelModelRepository.class })
+@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class, SEVirtualModelInstanceResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(ExcelTechnologyAdapter.class.getPackage().getName());
@@ -90,7 +85,12 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/ExcelTechnologyAdapter";
+	}
+
+	@Override
+	public ExcelTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new ExcelTechnologyContextManager(this, service);
 	}
 
@@ -105,16 +105,16 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @param resourceCenter
 	 */
-	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-
+	/*@Override
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	
 		ExcelWorkbookRepository wbRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
 		if (wbRepository == null) {
 			wbRepository = createWorkbookRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			// if (item instanceof File) {
@@ -123,16 +123,16 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			ExcelWorkbookResource wbRes = tryToLookupWorkbook(resourceCenter, item);
 			// }
 		}
-
+	
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
+	
+	}*/
 
-	}
-
-	protected ExcelWorkbookResource tryToLookupWorkbook(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
+	/*protected ExcelWorkbookResource tryToLookupWorkbook(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		ExcelTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidWorkbook(candidateElement)) {
-			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement);
+			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement, resourceCenter);
 			ExcelWorkbookRepository wbRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
 			if (wbRes != null) {
 				RepositoryFolder<ExcelWorkbookResource> folder;
@@ -147,40 +147,44 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook) {
-
+	/*public ExcelWorkbookResource retrieveWorkbookResource(Object workbook, FlexoResourceCenter<?> resourceCenter) {
+	
 		ExcelWorkbookResource returned = getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (workbook instanceof File) {
-				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager());
-			} else if (workbook instanceof InJarResourceImpl) {
+				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager(),
+						resourceCenter);
+			}
+			else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
-						getTechnologyContextManager());
+						getTechnologyContextManager(), resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ExcelWorkbook resource for " + workbook);
 			}
 		}
-
+	
 		return returned;
-	}
+	}*/
 
-	public boolean isValidWorkbook(Object candidateElement) {
+	/*public boolean isValidWorkbook(Object candidateElement) {
 		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Return flag indicating if supplied file appears as a valid workbook
@@ -189,36 +193,48 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @return
 	 */
-	public boolean isValidWorkbookFile(File candidateFile) {
-		return candidateFile.getName().endsWith(".xlsx") || candidateFile.getName().endsWith(".xls");
-	}
+	/*public boolean isValidWorkbookFile(File candidateFile) {
+		return (candidateFile.getName().endsWith(".xlsx") || candidateFile.getName().endsWith(".xls"))
+				&& !(candidateFile.getName().startsWith("~"));
+	}*/
 
-	public boolean isValidWorkbookInJar(InJarResourceImpl candidateInJar) {
+	/*public boolean isValidWorkbookInJar(InJarResourceImpl candidateInJar) {
 		if (candidateInJar.getRelativePath().endsWith(".xlsx") || candidateInJar.getRelativePath().endsWith(".xls")) {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		return false;
 	}
 
-	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	/*@Override
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
 			if (tryToLookupWorkbook(resourceCenter, candidateFile) != null) {
+				return true;
 			}
 		}
+		return false;
 	}
-
+	
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+		return false;
 	}
+	
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		return false;
+	}
+	
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		return false;
+	}*/
 
 	@Override
 	public ExcelTechnologyContextManager getTechnologyContextManager() {
@@ -230,33 +246,53 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * Create a workbook repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public ExcelWorkbookRepository createWorkbookRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public ExcelWorkbookRepository createWorkbookRepository(FlexoResourceCenter<?> resourceCenter) {
 		ExcelWorkbookRepository returned = new ExcelWorkbookRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);
 		return returned;
+	}*/
+
+	public <I> ExcelWorkbookRepository<I> getExcelWorkbookRepository(FlexoResourceCenter<I> resourceCenter) {
+		ExcelWorkbookRepository<I> returned = resourceCenter.retrieveRepository(ExcelWorkbookRepository.class, this);
+		if (returned == null) {
+			returned = ExcelWorkbookRepository.instanciateNewRepository(this, resourceCenter);
+			resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);
+		}
+		return returned;
 	}
 
-	/**
-	 * Create empty model.
-	 * 
-	 * @param modelFile
-	 * @param modelUri
-	 * @param metaModelResource
-	 * @param technologyContextManager
-	 * @return
-	 */
-	public ExcelWorkbookResource createNewWorkbook(FlexoProject project, String excelFilename, String modelUri) {
+	@Override
+	public String getIdentifier() {
+		return "XLS";
+	}
 
-		File excelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), excelFilename);
+	public ExcelWorkbookResourceFactory getExcelWorkbookResourceFactory() {
+		return getResourceFactory(ExcelWorkbookResourceFactory.class);
+	}
 
-		modelUri = excelFile.toURI().toString();
+	public <I> SEVirtualModelInstanceRepository<I> getSEVirtualModelInstanceRepository(FlexoResourceCenter<I> resourceCenter) {
+		SEVirtualModelInstanceRepository<I> returned = resourceCenter.retrieveRepository(SEVirtualModelInstanceRepository.class, this);
+		if (returned == null) {
+			returned = SEVirtualModelInstanceRepository.instanciateNewRepository(this, resourceCenter);
+			resourceCenter.registerRepository(returned, SEVirtualModelInstanceRepository.class, this);
+		}
+		return returned;
+	}
 
-		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(modelUri, excelFile,
-				getTechnologyContextManager());
+	private SEVirtualModelInstanceTypeFactory hbnVmiFactory;
 
-		getTechnologyContextManager().registerResource(workbookResource);
+	public SEVirtualModelInstanceTypeFactory getVirtualModelInstanceTypeFactory() {
+		if (hbnVmiFactory == null) {
+			hbnVmiFactory = new SEVirtualModelInstanceTypeFactory(this);
+		}
+		return hbnVmiFactory;
+	}
 
-		return workbookResource;
+	@Override
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
+		super.initFMLModelFactory(fMLModelFactory);
+
+		fMLModelFactory.addConverter(new ExcelCellRangeConverter(getServiceManager()));
 	}
 
 }

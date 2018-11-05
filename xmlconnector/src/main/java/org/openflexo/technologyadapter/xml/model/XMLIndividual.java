@@ -60,6 +60,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 /**
  * 
  * an XMLIndividual represents a single instance of XML Element in a XMLModel
@@ -80,6 +81,9 @@ public interface XMLIndividual extends XMLObject {
 	public static final String CHILD = "children";
 	public static final String PARENT = "parent";
 	public static final String PROPERTIES_VALUES = "propertiesValues";
+
+	public static final String TEXT = "text";
+
 	/**
 	 * Property used to host XML's PCDATA textual content
 	 */
@@ -89,24 +93,22 @@ public interface XMLIndividual extends XMLObject {
 	public XMLIndividual init(@Parameter(MODEL) XMLModel m, @Parameter(TYPE) XMLType t);
 
 	@Getter(MODEL)
-    public XMLModel getContainerModel();
+	public XMLModel getContainerModel();
 
 	@Getter(TYPE)
 	public XMLComplexType getType();
-	
+
 	@Setter(TYPE)
 	public void setType(XMLComplexType aType);
-	
+
 	@Getter(_UUID)
 	public String getUUID();
-	
 
 	@Getter(PARENT)
 	public XMLIndividual getParent();
-	
+
 	@Setter(PARENT)
 	public void setParent(XMLIndividual xmlind);
-	
 
 	@Getter(value = CHILD, cardinality = Cardinality.LIST, inverse = PARENT)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -119,7 +121,7 @@ public interface XMLIndividual extends XMLObject {
 	@Adder(CHILD)
 	@PastingPoint
 	public void addChild(XMLIndividual ind);
-	
+
 	@Getter(value = PROPERTIES_VALUES, cardinality = Cardinality.MAP)
 	public Map<? extends XMLProperty, ? extends XMLPropertyValue> getPropertiesValues();
 
@@ -128,22 +130,30 @@ public interface XMLIndividual extends XMLObject {
 	public XMLPropertyValue getPropertyValue(XMLProperty prop);
 
 	public String getPropertyStringValue(XMLProperty prop);
-	
+
 	@Adder(value = PROPERTIES_VALUES)
 	public void addPropertyValue(XMLProperty prop, XMLPropertyValue value);
 
 	public void addPropertyValue(String name, Object value);
 
 	public void addPropertyValue(XMLProperty prop, Object value);
-	
+
 	@Remover(value = PROPERTIES_VALUES)
 	public void deletePropertyValues(XMLProperty attr);
-	
+
+	@Getter(TEXT)
+	public String getText();
+
+	@Setter(TEXT)
+	public void setText(String value);
+
 	@Getter(CONTENT)
 	public String getContentDATA();
-	
+
+	@Setter(CONTENT)
+	public void setContentDATA(String value);
+
 	// TODO : refactor to get rid of any JDOM reference
 	public Element toXML(Document doc);
-
 
 }

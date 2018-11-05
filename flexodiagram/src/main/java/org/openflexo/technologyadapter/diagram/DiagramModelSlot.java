@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.util.logging.Logger;
-
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
@@ -62,7 +61,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 public interface DiagramModelSlot extends ModelSlot<Diagram> {
 
 	@Implementation
-	public abstract class DiagramModelSlotImpl implements DiagramModelSlot {
+	abstract class DiagramModelSlotImpl implements DiagramModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DiagramModelSlot.class.getPackage().getName());
 

@@ -46,7 +46,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviour;
@@ -214,11 +213,14 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 
 		@Override
 		public FlexoConcept getFlexoConcept() {
-			return getDiagramModelSlot().getFlexoConcept();
+			if (getDiagramModelSlot() != null) {
+				return getDiagramModelSlot().getFlexoConcept();
+			}
+			return null;
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			if (getDiagramModelSlot() != null) {
 				return getDiagramModelSlot().getVirtualModel();
 			}
@@ -228,7 +230,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		@Override
 		public TypedDiagramModelSlot getDiagramModelSlot() {
 			if (diagramModelSlot == null && dropScheme != null) {
-				AbstractVirtualModel<?> vm = dropScheme.getOwningVirtualModel();
+				VirtualModel vm = dropScheme.getOwningVirtualModel();
 				if (vm != null && vm.getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 					diagramModelSlot = vm.getModelSlots(TypedDiagramModelSlot.class).get(0);
 				}
@@ -300,11 +302,13 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			if (paletteElement == null && getDiagramModelSlot() != null && paletteElementId != null && paletteElementId.indexOf("#") > 0) {
 				String paletteURI = paletteElementId.substring(0, paletteElementId.indexOf("#"));
 				String elementName = paletteElementId.substring(paletteElementId.indexOf("#") + 1);
-				DiagramSpecification ds = getDiagramModelSlot().getMetaModelResource().getMetaModelData();
-				if (ds != null) {
-					DiagramPalette palette = ds.getPalette(paletteURI);
-					if (palette != null) {
-						paletteElement = palette.getPaletteElement(elementName);
+				if (getDiagramModelSlot().getMetaModelResource() != null) {
+					DiagramSpecification ds = getDiagramModelSlot().getMetaModelResource().getMetaModelData();
+					if (ds != null) {
+						DiagramPalette palette = ds.getPalette(paletteURI);
+						if (palette != null) {
+							paletteElement = palette.getPaletteElement(elementName);
+						}
 					}
 				}
 			}
@@ -361,21 +365,21 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		/*public Vector<FMLDiagramPaletteElementBindingParameter> getParameters() {
 			return parameters;
 		}
-
+		
 		public void setParameters(Vector<FMLDiagramPaletteElementBindingParameter> parameters) {
 			this.parameters = parameters;
 		}
-
+		
 		public void addToParameters(FMLDiagramPaletteElementBindingParameter parameter) {
 			parameter.setElementBinding(this);
 			parameters.add(parameter);
 		}
-
+		
 		public void removeFromParameters(FMLDiagramPaletteElementBindingParameter parameter) {
 			parameter.setElementBinding(null);
 			parameters.remove(parameter);
 		}
-
+		
 		public FMLDiagramPaletteElementBindingParameter getParameter(String name) {
 			for (FMLDiagramPaletteElementBindingParameter p : parameters) {
 				if (p.getName().equals(name)) {
@@ -389,7 +393,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			if (boundFlexoConcept == null) {
 				return;
 			}
-			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<FMLDiagramPaletteElementBindingParameter>();
+			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<>();
 			unusedParameterInstances.addAll(getParameters());
 
 			for (FlexoBehaviour es : boundFlexoConcept.getFlexoBehaviours()) {
@@ -398,7 +402,8 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 					if (parameterInstance != null) {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
-					} else if (getOwningVirtualModel() != null) {
+					}
+					else if (getOwningVirtualModel() != null && getFMLModelFactory() != null) {
 						FMLModelFactory factory = getFMLModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);
@@ -424,11 +429,11 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		public Vector<OverridingGraphicalRepresentation> getOverridingGraphicalRepresentations() {
 			return overridingGraphicalRepresentations;
 		}
-
+		
 		public void setOverridingGraphicalRepresentations(Vector<OverridingGraphicalRepresentation> overridingGraphicalRepresentations) {
 			this.overridingGraphicalRepresentations.addAll(overridingGraphicalRepresentations);
 		}
-
+		
 		@Override
 		public void addToOverridingGraphicalRepresentations(OverridingGraphicalRepresentation anOverridingGraphicalRepresentation) {
 			overridingGraphicalRepresentations.add(anOverridingGraphicalRepresentation);
@@ -436,7 +441,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			setChanged();
 			notifyObservers();
 		}
-
+		
 		@Override
 		public void removeFromOverridingGraphicalRepresentations(OverridingGraphicalRepresentation anOverridingGraphicalRepresentation) {
 			overridingGraphicalRepresentations.remove(anOverridingGraphicalRepresentation);
@@ -487,7 +492,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		@Override
 		public List<FlexoConcept> allAvailableFlexoConcepts() {
 			if (getOwningVirtualModel() != null) {
-				List<FlexoConcept> returned = new ArrayList<FlexoConcept>();
+				List<FlexoConcept> returned = new ArrayList<>();
 				for (FlexoConcept ep : getOwningVirtualModel().getFlexoConcepts()) {
 					if (ep.getFlexoBehaviours(DropScheme.class).size() > 0) {
 						returned.add(ep);

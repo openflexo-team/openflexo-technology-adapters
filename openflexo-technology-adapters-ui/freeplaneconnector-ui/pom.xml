@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.7.1-SNAPSHOT</version>
+		<version>1.9.0</version>
 	</parent>
 	<artifactId>freeplaneconnector-ui</artifactId>
 	<description>technology Adapter graphical interface for Freeplane data</description>
@@ -43,5 +43,11 @@
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>gina-swing</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>

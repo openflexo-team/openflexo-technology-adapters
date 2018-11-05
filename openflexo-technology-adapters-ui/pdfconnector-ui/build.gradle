@@ -1,0 +1,10 @@
+dependencies {
+  compile project(":pdfconnector")
+
+  // openflexo dep
+  compile flexoUi()
+  // external dep
+
+  // testing dep
+  testCompile flexoUiTest()
+}

@@ -36,12 +36,10 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -55,20 +53,19 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @ImplementationClass(XSDMetaModelResourceImpl.class)
 @XMLElement
-public interface XSDMetaModelResource extends TechnologyAdapterResource<XMLMetaModel, XMLTechnologyAdapter>,
-		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
-
+public interface XSDMetaModelResource extends FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
 
+	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public XMLTechnologyContextManager getTechnologyContextManager();
 
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(XMLTechnologyContextManager technologyContextManager);
-	
+
 	@Override
 	public XMLMetaModel getMetaModelData();
-	
-	public FileFlexoIODelegate getFileFlexoIODelegate();
+
+	public FileIODelegate getFileFlexoIODelegate();
 }

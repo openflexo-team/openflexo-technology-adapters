@@ -41,8 +41,9 @@ package org.openflexo.technologyadapter.owl.gui;
 
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.FIBIndividualSelector;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.FIBIndividualSelector;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 
@@ -55,7 +56,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
  * 
  */
 @SuppressWarnings("serial")
-public class FIBOWLIndividualSelector extends FIBIndividualSelector {
+public class FIBOWLIndividualSelector extends FIBIndividualSelector<OWLTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(FIBOWLIndividualSelector.class.getPackage().getName());
 
 	private final boolean showOWLAndRDFConcepts = false;
@@ -98,7 +99,7 @@ public class FIBOWLIndividualSelector extends FIBIndividualSelector {
 	}
 
 	@Override
-	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology<OWLTechnologyAdapter> ontology) {
 		return new OWLOntologyBrowserModel((OWLOntology) ontology);
 	}
 

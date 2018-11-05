@@ -64,7 +64,7 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IFlexoOntologyClass<EMFTechnologyAdapter> {
+public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFlexoOntologyClass<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -142,11 +142,12 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
-		} else {
+		}
+		else {
 			annotations = Collections.emptyList();
 		}
 		return annotations;
@@ -159,13 +160,13 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getFeatureAssociations()
 	 */
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getDeclaredFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>(
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>(
 				0);
 		for (EAttribute attribute : object.getEAttributes()) {
-			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this,null));
+			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this, null));
 		}
 		for (EReference reference : object.getEReferences()) {
-			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference,this,null));
+			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference, this, null));
 		}
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -178,7 +179,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>();
 		appendFeatureAssociation(this, featureAssociations);
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -250,21 +251,19 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
 
-
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
-		for (EClass superClass : object.getESuperTypes()) {		
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<>();
+		for (EClass superClass : object.getESuperTypes()) {
 			// prevent returning classes from EcorePackage when not in Ecore MM
-			EPackage myRootPackage = ((EMFMetaModel) ontology).getResource().getPackage();
+			EPackage myRootPackage = ontology.getResource().getPackage();
 			if (myRootPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,myRootPackage));
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass, myRootPackage));
 			}
-			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE){
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
+			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass, org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
 			}
 		}
 		return Collections.unmodifiableList(superClasses);
 	}
-
 
 	/**
 	 * Follow the link.
@@ -276,7 +275,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 
 		System.out.println("Looking for subclasses of: " + this.getName());
 
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<>();
 		if (context instanceof EMFMetaModel) {
 			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {
 				if (classEntry.getValue().getOntology() == context) {

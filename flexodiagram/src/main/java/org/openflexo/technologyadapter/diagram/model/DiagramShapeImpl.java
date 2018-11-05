@@ -45,11 +45,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.ScreenshotBuilder;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.ScreenshotBuilder;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -96,6 +96,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	/**
 	 * Reset graphical representation to be the one defined in related pattern property
 	 */
+
 	/*@Override
 	public void resetGraphicalRepresentation() {
 		getGraphicalRepresentation().setsWith(getPatternRole().getGraphicalRepresentation(), GraphicalRepresentation.TEXT,
@@ -133,31 +134,31 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	/*public Vector<DiagramConnector> getIncomingConnectors() {
 		return incomingConnectors;
 	}
-
+	
 	public void setIncomingConnectors(Vector<DiagramConnector> incomingConnectors) {
 		this.incomingConnectors = incomingConnectors;
 	}
-
+	
 	public void addToIncomingConnectors(DiagramConnector connector) {
 		incomingConnectors.add(connector);
 	}
-
+	
 	public void removeFromIncomingConnectors(DiagramConnector connector) {
 		incomingConnectors.remove(connector);
 	}
-
+	
 	public Vector<DiagramConnector> getOutgoingConnectors() {
 		return outgoingConnectors;
 	}
-
+	
 	public void setOutgoingConnectors(Vector<DiagramConnector> outgoingConnectors) {
 		this.outgoingConnectors = outgoingConnectors;
 	}
-
+	
 	public void addToOutgoingConnectors(DiagramConnector connector) {
 		outgoingConnectors.add(connector);
 	}
-
+	
 	public void removeFromOutgoingConnectors(DiagramConnector connector) {
 		outgoingConnectors.remove(connector);
 	}*/
@@ -173,26 +174,26 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 			this.dropScheme = dropScheme;
 			this.linkScheme = linkScheme;
 		}
-
+	
 		public DropScheme dropScheme;
 		public LinkScheme linkScheme;
-
+	
 	}
-
+	
 	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(FlexoConcept targetFlexoConcept) {
 		if (getFlexoConcept() == null) {
 			return null;
 		}
-
+	
 		Vector<DropAndLinkScheme> availableLinkSchemeFromThisShape = null;
-
+	
 		ViewPoint viewPoint = getDiagram().getViewPoint();
 		if (viewPoint == null) {
 			return null;
 		}
-
+	
 		availableLinkSchemeFromThisShape = new Vector<DropAndLinkScheme>();
-
+	
 		for (FlexoConcept ep1 : getDiagramSpecification().getFlexoConcepts()) {
 			for (DropScheme ds : ep1.getDropSchemes()) {
 				if (ds.getTargetFlexoConcept() == targetFlexoConcept || ds.getTopTarget() && targetFlexoConcept == null) {
@@ -208,24 +209,24 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				}
 			}
 		}
-
+	
 		return availableLinkSchemeFromThisShape;
 	}
-
+	
 	public Vector<LinkScheme> getAvailableLinkSchemeFromThisShape() {
 		if (getFlexoConcept() == null) {
 			return null;
 		}
-
+	
 		Vector<LinkScheme> availableLinkSchemeFromThisShape = null;
-
+	
 		ViewPoint calc = getDiagram().getViewPoint();
 		if (calc == null) {
 			return null;
 		}
-
+	
 		availableLinkSchemeFromThisShape = new Vector<LinkScheme>();
-
+	
 		for (FlexoConcept ep : getDiagramSpecification().getFlexoConcepts()) {
 			for (LinkScheme ls : ep.getLinkSchemes()) {
 				if (ls.getFromTargetFlexoConcept() != null && ls.getFromTargetFlexoConcept().isAssignableFrom(getFlexoConcept())
@@ -235,23 +236,23 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				}
 			}
 		}
-
+	
 		return availableLinkSchemeFromThisShape;
 	}
-
+	
 	@Override
 	public ShapeRole getPatternRole() {
 		return (ShapeRole) super.getPatternRole();
 	}*/
 
 	@Override
-	public ShapeRole getPatternRole(VirtualModelInstance vmInstance) {
+	public ShapeRole getPatternRole(FMLRTVirtualModelInstance vmInstance) {
 		return (ShapeRole) super.getPatternRole(vmInstance);
 	}
 
 	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getDiagram().getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate) (getDiagram().getResource()).getFlexoIODelegate();
+		if (expectedScreenshotImageFile == null && getDiagram().getResource().getIODelegate() instanceof FileIODelegate) {
+			FileIODelegate delegate = (FileIODelegate) (getDiagram().getResource()).getIODelegate();
 			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram_container_element.png");
 		}
 		return expectedScreenshotImageFile;
@@ -276,7 +277,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		return null;
 	}
 
-	private ScreenshotImage<DiagramShape> tryToLoadScreenshotImage() {
+	private static ScreenshotImage<DiagramShape> tryToLoadScreenshotImage() {
 		// TODO
 		/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
 			BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());
@@ -311,7 +312,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	@Override
 	public boolean delete(Object... context) {
 		// A list of connectors that may be deleted if a shape is connected to it
-		List<DiagramConnector> dependingConnectors = new ArrayList<DiagramConnector>();
+		List<DiagramConnector> dependingConnectors = new ArrayList<>();
 		dependingConnectors.addAll(getStartConnectors());
 		dependingConnectors.addAll(getEndConnectors());
 		for (Iterator<DiagramConnector> connectors = dependingConnectors.iterator(); connectors.hasNext();) {
@@ -320,10 +321,17 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 				logger.info("Try to delete undeleted DiagramConnector " + connector);
 				connector.delete();
 				logger.info("DiagramConnector " + connector + " has been successfully deleted");
-			} else {
+			}
+			else {
 				logger.info("DiagramConnector " + connector + " has already been successfully deleted");
 			}
 		}
 		return super.delete(context);
 	}
+
+	@Override
+	protected String getDefaultName() {
+		return "Shape" + getFlexoID();
+	}
+
 }

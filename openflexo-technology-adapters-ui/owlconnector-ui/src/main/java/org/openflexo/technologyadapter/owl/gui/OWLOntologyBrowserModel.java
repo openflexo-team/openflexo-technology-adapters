@@ -43,12 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
@@ -201,7 +201,7 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 		}
 
 		// Remove Thing references if list is non trivially the Thing singleton
-		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>(
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<>(
 				potentialStorageClasses)) {
 			if (c2 == null || (c2.isRootConcept() && potentialStorageClasses.size() > 1)) {
 				potentialStorageClasses.remove(c2);

@@ -45,8 +45,10 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -61,8 +63,8 @@ public class ResetGraphicalRepresentations extends FlexoAction<ResetGraphicalRep
 
 	private static final Logger logger = Logger.getLogger(ResetGraphicalRepresentations.class.getPackage().getName());
 
-	public static FlexoActionType<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionType<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>>(
-			"reset_graphical_representations", FlexoActionType.editGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionFactory<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>>(
+			"reset_graphical_representations", FlexoActionFactory.editGroup, FlexoActionFactory.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -89,8 +91,16 @@ public class ResetGraphicalRepresentations extends FlexoAction<ResetGraphicalRep
 		FlexoObjectImpl.addActionForClass(ResetGraphicalRepresentations.actionType, Diagram.class);
 	}
 
-	ResetGraphicalRepresentations(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	private ResetGraphicalRepresentations(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override

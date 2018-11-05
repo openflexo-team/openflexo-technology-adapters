@@ -65,6 +65,11 @@ public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour 
 			}
 			return null;
 		}
+
+		protected String getTechnologyAdapterIdentifier() {
+			return getSpecificTechnologyAdapter().getIdentifier();
+		}
+
 	}
 
 }

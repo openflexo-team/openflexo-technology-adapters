@@ -45,28 +45,28 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
 
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.TestFlexoServiceManager;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-
 @RunWith(OrderedRunner.class)
-public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
+public class TestPizza extends OpenflexoTestCase {
 
-	private static TestFlexoServiceManager testServiceManager;
 	private static OWLTechnologyAdapter owlAdapter;
 	private static OWLOntologyLibrary ontologyLibrary;
+
+	public static final String FLEXO_CONCEPT_ONTOLOGY_URI = "http://www.agilebirds.com/openflexo/ontologies/FlexoConceptsOntology.owl";
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -74,11 +74,19 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
-		
+
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies")));
-		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
-		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
+		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
+		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+
+		for (FlexoResourceCenter<?> rc : serviceManager.getResourceCenterService().getResourceCenters()) {
+			System.out.println("> rc: " + rc.getDefaultBaseURI() + " " + rc.getBaseArtefact());
+			for (FlexoResource<?> r : rc.getAllResources(null)) {
+				System.out.println(" >>> " + r.getURI());
+			}
+		}
+
 	}
 
 	/**
@@ -87,14 +95,18 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(2)
 	public void test1LoadTestResourceCenter() {
-		
 
-		File myOntology = ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl"));
+		// Resource myOntology =
+		// ResourceLocator.locateResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
+		// File myOntologyFile = ((FileResourceImpl) myOntology).getFile();
 
-		System.out.println("Found: " + myOntology);
-		OWLOntology hop = new OWLOntology(OWLOntology.findOntologyURI(myOntology), myOntology, ontologyLibrary, owlAdapter);
+		OWLOntology hop = ontologyLibrary.getOntology("http://www.denali.be/flexo/ontologies/PizzaOntology/PizzaOntology.owl");
 
-		// importedOntologyLibraries.debug();
+		System.out.println("Found: " + hop);
+
+		Object myOntologyFile = hop.getResource().getIODelegate().getSerializationArtefact();
+
+		System.out.println("myOntologyFile: " + myOntologyFile);
 
 		hop.loadWhenUnloaded();
 
@@ -106,8 +118,8 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 		File createdFile = null;
 
 		try {
-			File f = File.createTempFile("MyPizza", ".owl");
-			createdFile = new File(myOntology.getParent(), f.getName());
+			createdFile = File.createTempFile("MyPizza", ".owl");
+			// createdFile = new File(myOntologyFile.getParent(), f.getName());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,18 +137,17 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 		OntClass pipiClass = ontModel.createClass(URI + "#" + "pipi");
 		pipiClass.addSuperClass(cacaClass);
 
-		OWLOntology flexoConceptsOntology = ontologyLibrary.getOntology(OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
+		OWLOntology flexoConceptsOntology = ontologyLibrary.getOntology(FLEXO_CONCEPT_ONTOLOGY_URI);
 
-		ontModel.getDocumentManager().loadImport(flexoConceptsOntology.getOntModel(), OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
-		ontModel.getDocumentManager().addModel(OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI, flexoConceptsOntology.getOntModel(), true);
+		ontModel.getDocumentManager().loadImport(flexoConceptsOntology.getOntModel(), FLEXO_CONCEPT_ONTOLOGY_URI);
+		ontModel.getDocumentManager().addModel(FLEXO_CONCEPT_ONTOLOGY_URI, flexoConceptsOntology.getOntModel(), true);
 		ontModel.loadImports();
 		ontModel.getDocumentManager().loadImports(ontModel);
 
-		OntClass flexoConceptClass = flexoConceptsOntology.getOntModel().createClass(
-				OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI + "#" + "FlexoConcept");
+		OntClass flexoConceptClass = flexoConceptsOntology.getOntModel().createClass(FLEXO_CONCEPT_ONTOLOGY_URI + "#" + "FlexoConcept");
 
-		for (Iterator i = flexoConceptClass.listSuperClasses(); i.hasNext();) {
-			OntClass unParent = (OntClass) i.next();
+		for (Iterator<OntClass> i = flexoConceptClass.listSuperClasses(); i.hasNext();) {
+			OntClass unParent = i.next();
 			System.out.println("FlexoConcept, comme parent j'ai: " + unParent);
 		}
 		pipiClass.addSuperClass(flexoConceptClass);
@@ -147,17 +158,17 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 			System.out.println("J'importe " + (String) o);
 		}
 
-		for (Iterator i = ontModel.listSubModels(true); i.hasNext();) {
-			OntModel unModele = (OntModel) i.next();
+		for (Iterator<OntModel> i = ontModel.listSubModels(true); i.hasNext();) {
+			OntModel unModele = i.next();
 			System.out.println("Comme sub-model j'ai: " + unModele);
 		}
 
-		for (Iterator i = ontModel.getDocumentManager().listDocuments(); i.hasNext();) {
+		for (Iterator<String> i = ontModel.getDocumentManager().listDocuments(); i.hasNext();) {
 			System.out.println("Comme document j'ai: " + i.next());
 		}
 
 		String ONTOLOGY_C = URI;
-		String ONTOLOGY_A = OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI;
+		String ONTOLOGY_A = FLEXO_CONCEPT_ONTOLOGY_URI;
 		String ONTOLOGY_B = "http://www.openflexo.org/test/Family.owl";
 		String ONTOLOGY_D = "http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl";
 
@@ -171,12 +182,16 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 
 		// create an ont model spec that uses a custom document manager to
 		// look for imports in the database
-		/*OntModelSpec oms = getMaker();
-		oms.setDocumentManager( new DbAwareDocumentManager( m_maker ) );*/
+		/*
+		 * OntModelSpec oms = getMaker(); oms.setDocumentManager( new
+		 * DbAwareDocumentManager( m_maker ) );
+		 */
 
 		// create the ontology model
-		/*Model base = m_maker.createModel( ONTOLOGY_C );
-		OntModel om = ModelFactory.createOntologyModel( oms, base );*/
+		/*
+		 * Model base = m_maker.createModel( ONTOLOGY_C ); OntModel om =
+		 * ModelFactory.createOntologyModel( oms, base );
+		 */
 
 		// read in some content which does importing
 		ontModel.read(new StringReader(SOURCE), ONTOLOGY_C, "N3");
@@ -185,61 +200,68 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 		// System.out.println( "Combined model contents:" );
 		// ontModel.writeAll( System.out, "N3", null );
 
-		// Model base = importedOntologyLibrary.createModel("http://my-pizza.com");
-		/*Model base = null; //new ModelCom(importedOntologyLibrary.getGraphMaker().createGraph("http://my-pizza.com"));
-		
-		
-		OntModel ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, importedOntologyLibrary, base);
+		// Model base =
+		// importedOntologyLibrary.createModel("http://my-pizza.com");
+		/*
+		 * Model base = null; //new
+		 * ModelCom(importedOntologyLibrary.getGraphMaker().createGraph(
+		 * "http://my-pizza.com"));
+		 * 
+		 * 
+		 * OntModel ontModel =
+		 * ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM,
+		 * importedOntologyLibrary, base);
+		 * 
+		 * ontModel.createOntology("http://my-pizza.com");
+		 * 
+		 * //ontModel.addSubModel(importedOntologyLibrary.getOntology(
+		 * ImportedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI).getOntModel());
+		 * 
+		 * //ontModel.read(importedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
+		 * 
+		 * //ontModel.getDocumentManager().addModel(importedOntologyLibrary.
+		 * FLEXO_CONCEPT_ONTOLOGY_URI,
+		 * importedOntologyLibrary.getOntology(ImportedOntologyLibrary.
+		 * FLEXO_CONCEPT_ONTOLOGY_URI).getOntModel());
+		 * 
+		 * // URI declarations String familyUri = "http://my-pizza.com"; String
+		 * relationshipUri = "http://purl.org/vocab/relationship/";
+		 * 
+		 * // Create an empty Model // Model model =
+		 * ModelFactory.createDefaultModel();
+		 * 
+		 * // Create a Resource for each family member, identified by their URI
+		 * OntClass adam = ontModel.createClass(familyUri+"adam"); OntClass beth
+		 * = ontModel.createClass(familyUri+"beth"); OntClass chuck =
+		 * ontModel.createClass(familyUri+"chuck"); OntClass dotty =
+		 * ontModel.createClass(familyUri+"dotty"); // and so on for other
+		 * family members
+		 * 
+		 * // Create properties for the different types of relationship to
+		 * represent OntProperty childOf =
+		 * ontModel.createOntProperty(relationshipUri+"childOf"); OntProperty
+		 * parentOf = ontModel.createOntProperty(relationshipUri+"parentOf");
+		 * OntProperty siblingOf =
+		 * ontModel.createOntProperty(relationshipUri+"siblingOf"); OntProperty
+		 * spouseOf = ontModel.createOntProperty(relationshipUri+"spouseOf");
+		 * 
+		 * // Add properties to adam describing relationships to other family
+		 * members adam.addProperty(siblingOf,beth);
+		 * adam.addProperty(spouseOf,dotty); adam.addProperty(parentOf,chuck);
+		 * 
+		 * // Can also create statements directly . . . Statement statement =
+		 * ontModel.createStatement(adam,parentOf,dotty);
+		 * 
+		 * // but remember to add the created statement to the model
+		 * ontModel.add(statement);
+		 * 
+		 * //ontModel.addLoadedImport(importedOntologyLibrary.
+		 * FLEXO_CONCEPT_ONTOLOGY_URI);
+		 */
 
-		ontModel.createOntology("http://my-pizza.com");
-		
-		//ontModel.addSubModel(importedOntologyLibrary.getOntology(ImportedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI).getOntModel());
-		
-		//ontModel.read(importedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
-		
-		//ontModel.getDocumentManager().addModel(importedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI, importedOntologyLibrary.getOntology(ImportedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI).getOntModel());
-		
-		//		 URI declarations
-		String familyUri = "http://my-pizza.com";
-		String relationshipUri = "http://purl.org/vocab/relationship/";
-
-		//		 Create an empty Model
-		//	Model model = ModelFactory.createDefaultModel();
-
-		//		 Create a Resource for each family member, identified by their URI
-		OntClass adam = ontModel.createClass(familyUri+"adam");
-		OntClass beth = ontModel.createClass(familyUri+"beth");
-		OntClass chuck = ontModel.createClass(familyUri+"chuck");
-		OntClass dotty = ontModel.createClass(familyUri+"dotty");
-		//		 and so on for other family members
-
-		//		 Create properties for the different types of relationship to represent
-		OntProperty childOf = ontModel.createOntProperty(relationshipUri+"childOf");
-		OntProperty parentOf = ontModel.createOntProperty(relationshipUri+"parentOf");
-		OntProperty siblingOf = ontModel.createOntProperty(relationshipUri+"siblingOf");
-		OntProperty spouseOf = ontModel.createOntProperty(relationshipUri+"spouseOf");
-
-		//		 Add properties to adam describing relationships to other family members
-		adam.addProperty(siblingOf,beth);
-		adam.addProperty(spouseOf,dotty);
-		adam.addProperty(parentOf,chuck);
-
-		//		 Can also create statements directly . . .
-		Statement statement = ontModel.createStatement(adam,parentOf,dotty);
-
-		//		 but remember to add the created statement to the model
-		ontModel.add(statement);
-
-		//ontModel.addLoadedImport(importedOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI);
-		*/
-
-		FileOutputStream out;
-		try {
-			out = new FileOutputStream(createdFile);
-			ontModel.write(out, null/*,"http://my-pizza.com"*/);
-			out.close();
+		try (FileOutputStream out = new FileOutputStream(createdFile)) {
+			ontModel.write(out, null/* ,"http://my-pizza.com" */);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -254,12 +276,9 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println(SOURCE2);
 		ontModel.read(new StringReader(SOURCE2), ONTOLOGY_C, "N3");
 
-		try {
-			out = new FileOutputStream(createdFile);
-			ontModel.write(out, null/*,"http://my-pizza.com"*/);
-			out.close();
+		try (FileOutputStream out = new FileOutputStream(createdFile)) {
+			ontModel.write(out, null/* ,"http://my-pizza.com" */);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

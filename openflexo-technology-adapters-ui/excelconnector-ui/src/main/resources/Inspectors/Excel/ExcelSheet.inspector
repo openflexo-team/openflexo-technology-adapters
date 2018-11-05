@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.excel.model.ExcelSheet"
 	controllerClassName="org.openflexo.inspector.FIBInspectorController"
@@ -15,7 +15,7 @@
 				showFooter="true" selectionMode="MultipleIntervalSelection"
 				localize="true" manageDynamicModel="true" name="table" data="data.excelRows"
 				constraints="border(location=center)">
-				<NumberColumn numberType="IntegerType" data="iterator.rowNum"
+				<NumberColumn numberType="IntegerType" data="iterator.rowIndex"
 					title="number" columnWidth="30" resizable="false" displayTitle="false"
 					name="number" />
 				<LabelColumn data="iterator.row.getCell(0).toString"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel layout="border" darkLevel="0"
+	dataClassName="org.openflexo.technologyadapter.excel.widget.FIBCellRangeSelector"
+	controllerClassName="org.openflexo.technologyadapter.excel.widget.FIBCellRangeSelector$CellRangeSelectorFIBController"
+	opaque="false" width="270" height="300">
+	<Custom componentClassName="org.openflexo.technologyadapter.excel.widget.ExcelWorkbookEditorWidget"
+		dataClassForComponent="org.openflexo.technologyadapter.excel.model.ExcelWorkbook"
+		localize="true" manageDynamicModel="true" name="WBEditor" index="13"
+		data="data.excelWorkbook"
+		constraints="border(location=center)">
+	</Custom>
+
+
+	<Panel layout="flow" hGap="5" vGap="0" flowAlignment="CENTER"
+		borderTitle="Panel" darkLevel="0" index="3" constraints="border(location=south)"
+		opaque="false">
+		<Button action="controller.apply()" buttonType="Trigger" label="apply"
+			localize="true" enable="(data.selectedValue != null)" index="0"
+			constraints="flow(index=0)" />
+		<Button action="controller.cancel()" buttonType="Trigger"
+			label="cancel" localize="true" index="1" constraints="flow(index=1)" />
+		<Button action="controller.reset()" buttonType="Trigger" label="reset"
+			localize="true" index="2" constraints="flow(index=2)" />
+	</Panel>
+	<LocalizedDictionary />
+</Panel>

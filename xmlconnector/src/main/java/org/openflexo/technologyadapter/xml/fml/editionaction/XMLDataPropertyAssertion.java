@@ -44,10 +44,10 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.AbstractAssertion;
-import org.openflexo.foundation.fml.editionaction.AddIndividual;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
+import org.openflexo.foundation.ontology.fml.editionaction.AbstractAssertion;
+import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -77,11 +77,11 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	@Override
 	@Getter(value = ACTION_KEY, inverse = AddXMLIndividual.DATA_ASSERTIONS_KEY)
-	public AddIndividual<?, ?> getAction();
+	public AddIndividual<?, ?, ?> getAction();
 
 	@Override
 	@Setter(ACTION_KEY)
-	public void setAction(AddIndividual<?, ?> action);
+	public void setAction(AddIndividual<?, ?, ?> action);
 
 	@Getter(value = DATA_PROPERTY_NAME_KEY)
 	@XMLAttribute
@@ -101,7 +101,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	public void setDataProperty(XMLDataProperty p);
 
-	public Object getValue(FlexoBehaviourAction action);
+	public Object getValue(RunTimeEvaluationContext evaluationContext);
 
 	public java.lang.reflect.Type getType();
 
@@ -126,7 +126,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 		@Override
 		public XMLDataProperty getDataProperty() {
-			AddXMLIndividual act = (AddXMLIndividual) getAction();
+			AddXMLIndividual act = (AddXMLIndividual) (AddIndividual) getAction();
 			String pname = _getDataPropertyName();
 			if (act != null && pname != null) {
 				String typeURI = act.getTypeURI();
@@ -146,9 +146,9 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		}
 
 		@Override
-		public Object getValue(FlexoBehaviourAction action) {
+		public Object getValue(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getValue().getBindingValue(action);
+				return getValue().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -172,7 +172,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		@Override
 		public DataBinding<?> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -191,8 +191,8 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	}
 
-	public static class DataPropertyAssertionMustDefineAnOntologyProperty extends
-			ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
+	public static class DataPropertyAssertionMustDefineAnOntologyProperty
+			extends ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
 		public DataPropertyAssertionMustDefineAnOntologyProperty() {
 			super(XMLDataPropertyAssertion.class, "data_property_assertion_must_define_an_ontology_property");
 		}
@@ -201,7 +201,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		public ValidationIssue<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> applyValidation(
 				XMLDataPropertyAssertion assertion) {
 			if (assertion.getDataProperty() == null) {
-				return new ValidationError<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion>(this, assertion,
+				return new ValidationError<>(this, assertion,
 						"data_property_assertion_does_not_define_an_ontology_property");
 			}
 			return null;

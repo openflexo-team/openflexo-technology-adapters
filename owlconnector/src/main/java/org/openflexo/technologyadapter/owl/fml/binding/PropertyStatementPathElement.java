@@ -42,12 +42,11 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.ontology.IndividualOfClass;
-import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
@@ -65,22 +64,25 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 	private final OWLProperty property;
 
-	public static PropertyStatementPathElement makePropertyStatementPathElement(BindingPathElement aParent, OWLProperty property) {
+	public static PropertyStatementPathElement makePropertyStatementPathElement(IBindingPathElement aParent, OWLProperty property) {
 		if (property instanceof OWLDataProperty) {
 			return new DataPropertyStatementPathElement(aParent, (OWLDataProperty) property);
-		} else if (property instanceof OWLObjectProperty) {
+		}
+		else if (property instanceof OWLObjectProperty) {
 			if (((OWLObjectProperty) property).isLiteralRange()) {
 				return new ObjectPropertyStatementAccessingLiteralPathElement(aParent, (OWLObjectProperty) property);
-			} else {
+			}
+			else {
 				return new ObjectPropertyStatementAccessingObjectPathElement(aParent, (OWLObjectProperty) property);
 			}
-		} else {
+		}
+		else {
 			logger.warning("unexpected property " + property);
 			return null;
 		}
 	}
 
-	private PropertyStatementPathElement(BindingPathElement parent, OWLProperty property) {
+	private PropertyStatementPathElement(IBindingPathElement parent, OWLProperty property) {
 		super(parent, property.getName(), OWLIndividual.class);
 		this.property = property;
 	}
@@ -106,7 +108,7 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 	public static class DataPropertyStatementPathElement extends PropertyStatementPathElement {
 
-		private DataPropertyStatementPathElement(BindingPathElement parent, OWLDataProperty property) {
+		private DataPropertyStatementPathElement(IBindingPathElement parent, OWLDataProperty property) {
 			super(parent, property);
 		}
 
@@ -124,7 +126,8 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		}
 
 		@Override
-		public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof OWLIndividual) {
 				// System.out.println("Property " + getPropertyName() + " for individual " + target + " return "
 				// + ((OWLIndividual) target).getPropertyValue(getProperty()));
@@ -135,8 +138,8 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		}
 
 		@Override
-		public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-				NullReferenceException {
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof OWLIndividual) {
 				// System.out.println("Property " + getPropertyName() + " for individual " + target + " sets value " + value);
 				((OWLIndividual) target).setPropertyValue(getProperty(), value);
@@ -148,7 +151,7 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 	public static class ObjectPropertyStatementAccessingObjectPathElement extends PropertyStatementPathElement {
 
-		private ObjectPropertyStatementAccessingObjectPathElement(BindingPathElement parent, OWLObjectProperty property) {
+		private ObjectPropertyStatementAccessingObjectPathElement(IBindingPathElement parent, OWLObjectProperty property) {
 			super(parent, property);
 		}
 
@@ -159,14 +162,15 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 		@Override
 		public Type getType() {
-			if (getProperty().getRange() instanceof OWLClass) {
+			if (getProperty().getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass(getProperty().getRange());
 			}
 			return OWLIndividual.class;
 		}
 
 		@Override
-		public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof OWLIndividual) {
 				return ((OWLIndividual) target).getPropertyValue(getProperty());
 			}
@@ -175,15 +179,15 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		}
 
 		@Override
-		public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-				NullReferenceException {
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			logger.warning("Please implement me, target=" + target + " context=" + context);
 		}
 	}
 
 	public static class ObjectPropertyStatementAccessingLiteralPathElement extends PropertyStatementPathElement {
 
-		private ObjectPropertyStatementAccessingLiteralPathElement(BindingPathElement parent, OWLObjectProperty property) {
+		private ObjectPropertyStatementAccessingLiteralPathElement(IBindingPathElement parent, OWLObjectProperty property) {
 			super(parent, property);
 		}
 
@@ -193,7 +197,8 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		}
 
 		@Override
-		public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof OWLIndividual) {
 				return ((OWLIndividual) target).getPropertyValue(getProperty());
 			}
@@ -202,8 +207,8 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		}
 
 		@Override
-		public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-				NullReferenceException {
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
 			logger.warning("Please implement me, target=" + target + " context=" + context);
 		}
 	}

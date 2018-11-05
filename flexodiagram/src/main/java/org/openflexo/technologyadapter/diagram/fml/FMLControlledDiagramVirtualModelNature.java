@@ -38,10 +38,9 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -49,7 +48,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 /**
  * Define the "controlled-diagram" nature of a {@link VirtualModel}<br>
  * 
- * A {@link FMLControlledDiagramVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDiagramVirtualModelNature} might be seen as an interpretation of a given {@link FMLRTVirtualModelInstance}
  * 
  * @author sylvain
  * 
@@ -66,7 +65,7 @@ public class FMLControlledDiagramVirtualModelNature implements VirtualModelNatur
 	 * Return boolean indicating if supplied {@link VirtualModel} might be interpreted as a FML-Controlled diagram
 	 */
 	@Override
-	public boolean hasNature(AbstractVirtualModel<?> virtualModel) {
+	public boolean hasNature(VirtualModel virtualModel) {
 
 		// VirtualModel should have one and only one TypedDiagramModelSlot
 		if (virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() != 1) {
@@ -83,16 +82,16 @@ public class FMLControlledDiagramVirtualModelNature implements VirtualModelNatur
 		return true;
 	}
 
-	public static boolean hasDiagramSpecification(AbstractVirtualModel<?> virtualModel, DiagramSpecification diagramSpecification) {
+	public static boolean hasDiagramSpecification(VirtualModel virtualModel, DiagramSpecification diagramSpecification) {
 		return (((DiagramSpecificationResource) getTypedDiagramModelSlot(virtualModel).getMetaModelResource()).getDiagramSpecification()
 				.equals(diagramSpecification));
 	}
 
-	public static TypedDiagramModelSlot getTypedDiagramModelSlot(AbstractVirtualModel<?> virtualModel) {
+	public static TypedDiagramModelSlot getTypedDiagramModelSlot(VirtualModel virtualModel) {
 		return INSTANCE._getTypedDiagramModelSlot(virtualModel);
 	}
 
-	private TypedDiagramModelSlot _getTypedDiagramModelSlot(AbstractVirtualModel<?> virtualModel) {
+	private static TypedDiagramModelSlot _getTypedDiagramModelSlot(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() == 1) {
 			return virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		}

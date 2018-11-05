@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	height="400" opaque="false" layout="twocols"
+	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	border="empty" trackViewPortWidth="true" width="600"
+	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptWizard$ConfigureBlankFlexoConceptFromShapeCreationStrategyStep"
+	trackViewPortHeight="true">
+	<LocalizedDictionary id="1" />
+	<Label id="52" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="11" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="graphical_elements" readOnly="false">
+	</Label>
+	<Table id="54" showFooter="false" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+		manageDynamicModel="true" selectionMode="MultipleIntervalSelection"
+		boundToSelectionManager="false" controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="11" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+		textSelectionColor="255,255,255" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept$DrawingObjectEntry"
+		backgroundSelectionColor="41,90,209" useScrollBar="true"
+		backgroundNonSelectionColor="255,255,255" data="data.action.drawingObjectEntries"
+		autoSelectFirstRow="false" name="drawingObjectEntriesTable"
+		textNonSelectionColor="0,0,0" readOnly="false"
+		backgroundSecondarySelectionColor="173,215,255">
+		<CheckBoxColumn id="55" data="iterator.selectThis"
+			displayTitle="false" title="checkbox" name="checkbox" columnWidth="20"
+			resizable="false" showIcon="false" />
+		<TextFieldColumn id="56" data="iterator.flexoRoleName"
+			displayTitle="true" title="role_name" columnWidth="50" resizable="true"
+			showIcon="false" />
+		<LabelColumn id="57" data="iterator.parentEntry.flexoRoleName"
+			displayTitle="true" title="parent" name="label" columnWidth="50"
+			resizable="true" showIcon="false" />
+		<TextFieldColumn id="58"
+			data="iterator.graphicalObject.graphicalRepresentation.toString"
+			displayTitle="true" title="graphical_representation" columnWidth="300"
+			resizable="true" showIcon="false" />
+	</Table>
+</Panel>

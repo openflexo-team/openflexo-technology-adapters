@@ -46,7 +46,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -68,10 +67,15 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
-	public DiagramPaletteFactory(EditingContext editingContext, DiagramPaletteResource paletteResource) throws ModelDefinitionException {
+	private RelativePathResourceConverter relativePathResourceConverter;
+
+	public DiagramPaletteFactory(DiagramPaletteResource paletteResource, EditingContext editingContext) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
-		if (paletteResource != null) {
-			addConverter(new RelativePathResourceConverter(paletteResource.getFlexoIODelegate().getParentPath()));
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+		if (paletteResource != null && paletteResource.getIODelegate() != null
+				&& paletteResource.getIODelegate().getSerializationArtefactAsResource() != null) {
+			relativePathResourceConverter
+					.setContainerResource(paletteResource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 		setEditingContext(editingContext);
 		this.resource = paletteResource;
@@ -132,7 +136,8 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 			if (newlyCreatedObject instanceof FlexoObject) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
 			}
-		} else {
+		}
+		else {
 			logger.warning("Could not access resource beeing deserialized");
 		}
 	}

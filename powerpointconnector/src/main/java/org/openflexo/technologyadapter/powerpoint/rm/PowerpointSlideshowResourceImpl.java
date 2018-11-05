@@ -39,28 +39,27 @@
 package org.openflexo.technologyadapter.powerpoint.rm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyContextManager;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.model.io.BasicPowerpointModelConverter;
+import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.IProgress;
 
 /**
@@ -69,95 +68,10 @@ import org.openflexo.toolbox.IProgress;
  * @author vincent,sguerin
  * 
  */
-public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow> implements PowerpointSlideshowResource {
+public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow>
+		implements PowerpointSlideshowResource {
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceImpl.class.getPackage().getName());
-
-	/**
-	 * Creates a new {@link ExcelModelResource} asserting this is an explicit creation: no file is present on file system<br>
-	 * This method should not be used to retrieve the resource from a file in the file system, use
-	 * {@link #retrieveOWLOntologyResource(File, OWLOntologyLibrary)} instead
-	 * 
-	 * @param ontologyURI
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File powerpointFile,
-			PowerpointTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					PowerpointSlideshowResource.class));
-			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
-					.newInstance(PowerpointSlideshowResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(powerpointFile.getName());
-
-			// returned.setFile(powerpointFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(powerpointFile);
-
-			returned.setURI(modelURI);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
-
-			PowerpointSlideshow resourceData = new PowerpointSlideshow(technologyContextManager.getTechnologyAdapter());
-			returned.setResourceData(resourceData);
-			resourceData.setResource(returned);
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
-	 * system<br>
-	 * 
-	 */
-	public static PowerpointSlideshowResource retrievePowerpointSlideshowResource(File modelFile,
-			PowerpointTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					PowerpointSlideshowResource.class));
-			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
-					.newInstance(PowerpointSlideshowResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(modelFile.getName());
-
-			// returned.setFile(modelFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-
-			returned.setURI(modelFile.toURI().toString());
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
-
-			/*try {
-				PowerpointSlideshow resourceData = returned.loadResourceData(null);
-				returned.setResourceData(resourceData);
-				resourceData.setResource(returned);
-				returned.save(null);
-			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidPowerpointFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * Load the &quot;real&quot; load resource data of this resource.
@@ -171,35 +85,36 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * @throws FlexoException
 	 */
 	@Override
-	public PowerpointSlideshow loadResourceData(IProgress progress) throws InvalidPowerpointFormatException {
+	public PowerpointSlideshow loadResourceData(IProgress progress) throws FlexoException {
+
+		if (!getIODelegate().exists() || getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load PowerPoint document with this IO/delegate: " + getIODelegate());
+		}
 
 		PowerpointSlideshow resourceData = null;
 		SlideShow ssOpenned = null;
-		FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
+
 		try {
-			if (!getFlexoIODelegate().exists()) {
-
-				// Creates a new file
-				delegate.getFile().createNewFile();
-				ssOpenned = new SlideShow();
-
-				BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();
-				resourceData = converter.convertPowerpointSlideshow(ssOpenned, getTechnologyAdapter());
-				// TODO how to change this?
-				resourceData.setResource(this/*retrieveExcelWorkbookResource(getFile(), getTechnologyContextManager())*/);
-				setResourceData(resourceData);
-				FileOutputStream fos = new FileOutputStream(delegate.getFile());
-				ssOpenned.write(fos);
-				fos.close();
-			} else {
-				FileInputStream fis = new FileInputStream(delegate.getFile());
-				ssOpenned = new SlideShow(fis);
-				BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();
-				resourceData = converter.convertPowerpointSlideshow(ssOpenned, getTechnologyAdapter());
-				resourceData.setResource(this);
-				setResourceData(resourceData);
-				fis.close();
-			}
+			/*
+			 * if (!getFlexoIODelegate().exists()) {
+			 * 
+			 * // Creates a new file delegate.getFile().createNewFile();
+			 * ssOpenned = new SlideShow();
+			 * 
+			 * BasicPowerpointModelConverter converter = new
+			 * BasicPowerpointModelConverter(); resourceData =
+			 * converter.convertPowerpointSlideshow(ssOpenned,
+			 * getTechnologyAdapter()); // TODO how to change this?
+			 * resourceData.setResource(this); setResourceData(resourceData);
+			 * FileOutputStream fos = new FileOutputStream(delegate.getFile());
+			 * ssOpenned.write(fos); fos.close(); } else {
+			 */
+			ssOpenned = new SlideShow(getInputStream());
+			BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();
+			resourceData = converter.convertPowerpointSlideshow(ssOpenned, getTechnologyAdapter());
+			resourceData.setResource(this);
+			setResourceData(resourceData);
+			// }
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (OfficeXmlFileException e) {
@@ -210,57 +125,16 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	}
 
 	/**
-	 * Save the &quot;real&quot; resource data of this resource.
-	 * 
-	 * @throws SaveResourceException
-	 */
-	@Override
-	public void save(IProgress progress) throws SaveResourceException {
-		PowerpointSlideshow resourceData;
-		try {
-			resourceData = getResourceData(progress);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		} catch (ResourceLoadingCancelledException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		} catch (FlexoException e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		}
-
-		if (!getFlexoIODelegate().hasWritePermission()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
-			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
-		}
-		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
-			writeToFile(resourceData.getSlideShow());
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
-			notifyResourceStatusChanged();
-			resourceData.clearIsModified(false);
-			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
-			}
-		}
-	}
-
-	/**
 	 * Write file.
 	 * 
 	 * @throws SaveResourceException
 	 */
-	private void writeToFile(SlideShow slideshow) throws SaveResourceException {
-		logger.info("Wrote " + getFlexoIODelegate().toString());
-		FileOutputStream fileOut;
-		FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
+	private void write(SlideShow slideshow, OutputStream out) throws SaveResourceException {
+		logger.info("Wrote " + getIODelegate().toString());
+
 		try {
-			fileOut = new FileOutputStream(delegate.getFile());
-			slideshow.write(fileOut);
-			fileOut.close();
+			slideshow.write(out);
+			out.close();
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -275,4 +149,139 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	public Class<PowerpointSlideshow> getResourceDataClass() {
 		return PowerpointSlideshow.class;
 	}
+
+	/**
+	 * Return a FlexoIOStreamDelegate associated to this flexo resource
+	 * 
+	 * @return
+	 */
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
+		}
+		return null;
+	}
+
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
+	}
+
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
+	}
+
+	/**
+	 * Save the &quot;real&quot; resource data of this resource.
+	 * 
+	 * @throws SaveResourceException
+	 */
+	@Override
+	public final void save(IProgress progress) throws SaveResourceException {
+		if (progress != null) {
+			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
+		}
+		if (!isLoaded()) {
+			return;
+		}
+		if (!isDeleted()) {
+			saveResourceData(true);
+			resourceData.clearIsModified(false);
+		}
+	}
+
+	/**
+	 * Save current resource data to current XML resource file.<br>
+	 * Forces XML version to be the latest one.
+	 * 
+	 * @return
+	 */
+	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
+		// System.out.println("PamelaResourceImpl Saving " + getFile());
+		if (!getIODelegate().hasWritePermission()) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.warning("Permission denied : " + getIODelegate().toString());
+			}
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
+		}
+		if (resourceData != null) {
+			_saveResourceData(resourceData, clearIsModified);
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("Succeeding to save " + getIODelegate().getSerializationArtefact());
+			}
+		}
+		if (clearIsModified) {
+			try {
+				getResourceData(null).clearIsModified(false);
+				// No need to reset the last memory update since it is valid
+				notifyResourceSaved();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	protected void _saveResourceData(PowerpointSlideshow slideShow, boolean clearIsModified) throws SaveResourceException {
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new SaveResourceException(getIODelegate());
+		}
+
+		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
+
+		if (logger.isLoggable(Level.INFO)) {
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact());
+		}
+
+		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
+			File temporaryFile = null;
+			try {
+				File fileToSave = ((FileIODelegate) getFlexoIOStreamDelegate()).getFile();
+				// Make local copy
+				makeLocalCopy(fileToSave);
+				// Using temporary file
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
+				if (logger.isLoggable(Level.FINE)) {
+					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+				}
+				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+					write(slideShow.getSlideShow(), fos);
+				}
+				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
+				FileUtils.rename(temporaryFile, fileToSave);
+			} catch (IOException e) {
+				e.printStackTrace();
+				if (temporaryFile != null) {
+					temporaryFile.delete();
+				}
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + getIODelegate().getSerializationArtefact());
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getIODelegate(), e);
+			}
+		}
+		else {
+			write(slideShow.getSlideShow(), getOutputStream());
+		}
+
+		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+		if (clearIsModified) {
+			notifyResourceStatusChanged();
+		}
+	}
+
+	private static void makeLocalCopy(File file) throws IOException {
+		if (file != null && file.exists()) {
+			String localCopyName = file.getName() + "~";
+			File localCopy = new File(file.getParentFile(), localCopyName);
+			FileUtils.copyFileToFile(file, localCopy);
+		}
+	}
+
 }

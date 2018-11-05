@@ -43,43 +43,29 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.fib.controller.FIBController.Status;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, RepositoryFolder, FlexoObject> {
+public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, RepositoryFolder<DiagramResource, ?>, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public CreateDiagramInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateDiagram.actionType, actionInitializer);
-	}
-
-	private Status chooseVirtualModel(CreateDiagram action) {
-		return instanciateShowDialogAndReturnStatus(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
-	}
-
-	/*private Status chooseAndConfigureCreationScheme(CreateDiagram action) {
-		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB);
-	}*/
-
-	private Status configureModelSlot(CreateDiagram action, ModelSlot configuredModelSlot) {
-		/*return instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
-				getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));*/
-		return null;
 	}
 
 	@Override
@@ -89,41 +75,18 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 			public boolean run(EventObject e, CreateDiagram action) {
 				if (action.skipChoosePopup) {
 					return true;
-				} else {
+				}
+				else {
 
-					return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
+					Wizard wizard = new CreateDiagramWizard(action, getController());
+					WizardDialog dialog = new WizardDialog(wizard, getController());
+					dialog.showDialog();
+					if (dialog.getStatus() != Status.VALIDATED) {
+						// Operation cancelled
+						return false;
+					}
+					return true;
 
-					// int step = 0;
-					// boolean shouldContinue = true;
-					/*while (shouldContinue) {
-						Status result;
-						if (step == 0) {
-							result = chooseVirtualModel(action);
-						} else if (step == action.getStepsNumber() - 1 && action.getDiagramSpecification() != null
-								&& action.getDiagramSpecification().hasCreationScheme()) {
-							result = chooseAndConfigureCreationScheme(action);
-						} else {
-							ModelSlot configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
-							// result = configureModelSlot(action, configuredModelSlot);
-
-							//
-							result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
-									getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
-						}
-						if (result == Status.CANCELED) {
-							return false;
-						} else if (result == Status.VALIDATED) {
-							return true;
-						} else if (result == Status.NEXT && step + 1 < action.getStepsNumber()) {
-							step = step + 1;
-						} else if (result == Status.BACK && step - 1 >= 0) {
-							step = step - 1;
-						}
-					}*/
-
-					// return instanciateAndShowDialog(action, VECst.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-
-					// return false;
 				}
 
 			}
@@ -132,32 +95,26 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagram> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagram>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagram action) {
-				// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
-				getController().selectAndFocusObject(action.getNewDiagram());
-				return true;
-			}
+		return (e, action) -> {
+			// getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+			getController().selectAndFocusObject(action.getNewDiagram());
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoExceptionHandler<CreateDiagram> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<CreateDiagram>() {
-			@Override
-			public boolean handleException(FlexoException exception, CreateDiagram action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 

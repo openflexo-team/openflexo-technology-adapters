@@ -39,6 +39,7 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -57,14 +58,18 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
  */
 @ModelEntity
 @ImplementationClass(EMFModelResourceImpl.class)
-public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter>,TechnologyAdapterResource<EMFModel,EMFTechnologyAdapter> {
+public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter>,
+		TechnologyAdapterResource<EMFModel, EMFTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
+	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public EMFTechnologyContextManager getTechnologyContextManager();
 
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
+
+	public Resource getEMFResource();
 
 }

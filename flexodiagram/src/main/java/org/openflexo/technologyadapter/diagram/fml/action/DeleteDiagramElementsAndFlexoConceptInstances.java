@@ -38,27 +38,22 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.DeletionSchemeAction;
-import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionType;
+import org.openflexo.foundation.fml.rt.action.DeletionSchemeActionFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -71,13 +66,13 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author vincent, sylvain
  *
  */
-public class DeleteDiagramElementsAndFlexoConceptInstances extends
-		FlexoAction<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
+public class DeleteDiagramElementsAndFlexoConceptInstances
+		extends FlexoAction<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramElementsAndFlexoConceptInstances.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> actionType = new FlexoActionType<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject>(
-			"delete", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> actionType = new FlexoActionFactory<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject>(
+			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -116,7 +111,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 		// A diagram element is deleteable
 		if (deleteableSelected(focusedObject)) {
 			return true;
-		} else {
+		}
+		else {
 			for (FlexoObject object : globalSelection) {
 				if (deleteableSelected(object)) {
 					return true;
@@ -129,7 +125,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 	private static boolean deleteableSelected(FlexoObject focusedObject) {
 		if (focusedObject instanceof DiagramElement) {
 			return true;
-		} else if (focusedObject instanceof FlexoConceptInstance) {
+		}
+		else if (focusedObject instanceof FlexoConceptInstance) {
 			// A flexo concept instance is deleatable if only it contains a deletion scheme
 			FlexoConceptInstance fci = (FlexoConceptInstance) focusedObject;
 			if (!fci.getFlexoConcept().getDeletionSchemes().isEmpty()) {
@@ -158,12 +155,12 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 		// First delete Flexo Concept Instance via their selected deletion scheme
 		for (FlexoConceptInstanceElementEntry fciEntry : getFlexoConceptInstancesToBeDeleted()) {
 			if (fciEntry.getCurrentDeletionScheme() != null) {
-				VirtualModelInstance vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
-				DeletionSchemeActionType deletionSchemeActionType = new DeletionSchemeActionType(fciEntry.currentDeletionScheme,
+				VirtualModelInstance<?, ?> vmi = fciEntry.getFlexoConceptInstance().getVirtualModelInstance();
+				DeletionSchemeActionFactory deletionSchemeActionFactory = new DeletionSchemeActionFactory(fciEntry.currentDeletionScheme,
 						fciEntry.getFlexoConceptInstance());
-				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionType.makeNewEmbeddedAction(
-						fciEntry.getFlexoConceptInstance(), null, this);
-				deletionSchemeAction.setVirtualModelInstance(vmi);
+				DeletionSchemeAction deletionSchemeAction = deletionSchemeActionFactory
+						.makeNewEmbeddedAction(fciEntry.getFlexoConceptInstance(), null, this);
+				// deletionSchemeAction.setVirtualModelInstance(vmi);
 				// deletionSchemeAction.setDeletionScheme(fciEntry.currentDeletionScheme);
 				deletionSchemeAction.doAction();
 				vmi.removeFromFlexoConceptInstances(fciEntry.getFlexoConceptInstance());
@@ -199,7 +196,8 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 			if (!diagramElt.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + diagramElt);
 				diagramElt.delete();
-			} else {
+			}
+			else {
 				logger.info("DiagramElement " + diagramElt + " has been successfully deleted");
 			}
 		}
@@ -218,7 +216,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 	}
 
 	private void initSelectedFlexoConceptInstanceEntries() {
-		selectedFlexoConceptInstanceEntries = new ArrayList<FlexoConceptInstanceElementEntry>();
+		selectedFlexoConceptInstanceEntries = new ArrayList<>();
 		for (FlexoObject object : getGlobalSelectionAndFocusedObject()) {
 			if (object instanceof FlexoConceptInstance) {
 				selectedFlexoConceptInstanceEntries.add(new FlexoConceptInstanceElementEntry((FlexoConceptInstance) object));
@@ -229,7 +227,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 	// TODO
 	public List<DiagramElement<?>> getDiagramElementsToBeDeleted() {
 		// A list of connectors that may be deleted if a shape is connected to it
-		List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+		List<DiagramConnector> impliedConnectors = new ArrayList<>();
 		for (DiagramElement<?> o : getSelectedDiagramElements()) {
 			if (o instanceof DiagramShape) {
 				impliedConnectors.addAll(((DiagramShape) o).getStartConnectors());
@@ -248,7 +246,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 	}
 
 	private void initSelectedDiagramElements() {
-		selectedDiagramElements = new ArrayList<DiagramElement<?>>();
+		selectedDiagramElements = new ArrayList<>();
 		for (FlexoObject object : getGlobalSelectionAndFocusedObject()) {
 			if (object instanceof DiagramElement) {
 				selectedDiagramElements.add((DiagramElement<?>) object);
@@ -258,7 +256,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 
 	public List<FlexoObject> getAllObjectsToBeDeleted() {
 		if (allObjectsToBeDeleted == null) {
-			allObjectsToBeDeleted = new ArrayList<FlexoObject>();
+			allObjectsToBeDeleted = new ArrayList<>();
 			computeAllObjectsToBeDeleted();
 		}
 		return allObjectsToBeDeleted;
@@ -297,7 +295,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 
 		public FlexoConceptInstanceElementEntry(FlexoConceptInstance flexoConceptInstance) {
 			this.flexoConceptInstance = flexoConceptInstance;
-			deletedElements = new ArrayList<FlexoObject>();
+			deletedElements = new ArrayList<>();
 			if (!flexoConceptInstance.getFlexoConcept().getDeletionSchemes().isEmpty()) {
 				this.currentDeletionScheme = flexoConceptInstance.getFlexoConcept().getDeletionSchemes().get(0);
 				computeDeletedElements();
@@ -335,7 +333,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 		}
 
 		private void computeDeletedElements() {
-			try {
+			/*try {
 				deletedElements.clear();
 				if (currentDeletionScheme != null && currentDeletionScheme.getActions() != null) {
 					for (EditionAction ea : currentDeletionScheme.getActions()) {
@@ -355,7 +353,7 @@ public class DeleteDiagramElementsAndFlexoConceptInstances extends
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 		private void update() {

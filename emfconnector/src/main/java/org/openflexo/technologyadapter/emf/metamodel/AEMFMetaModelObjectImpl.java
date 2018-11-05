@@ -53,13 +53,13 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * @author gbesancon
  * 
  */
-public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements InnerResourceData<EMFMetaModel>{
+public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements InnerResourceData<EMFMetaModel> {
 
 	/** MetaModel. */
 	protected final EMFMetaModel ontology;
 	/** EMF Object Wrapped. */
 	protected final T object;
-
 
 	/**
 	 * Return the {@link ResourceData} where this object is defined (the global functional root object giving access to the
@@ -68,11 +68,10 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	 * @return
 	 */
 	@Override
-	public EMFMetaModel getResourceData(){
+	public EMFMetaModel getResourceData() {
 		return ontology;
 	}
-	
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -88,7 +87,7 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	 */
 	@Override
 	public EMFMetaModel getFlexoOntology() {
-		return  ontology;
+		return ontology;
 	}
 
 	/**
@@ -112,6 +111,11 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return getEMFMetaModel().getTechnologyAdapter();
+	}
+
+	@Override
+	public String getDescription() {
+		return null;
 	}
 
 }

@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -52,9 +52,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 public class DiagramTechnologyContextManager extends TechnologyContextManager<DiagramTechnologyAdapter> {
 
 	/** Stores all known DiagramSpecification where key is the URI of DiagramSpecification */
-	protected Map<String, DiagramSpecificationResource> diagramSpecifications = new HashMap<String, DiagramSpecificationResource>();
+	protected Map<String, DiagramSpecificationResource> diagramSpecifications = new HashMap<>();
 	/** Stores all known Diagrams where key is the URI of Diagram */
-	protected Map<String, DiagramResource> diagrams = new HashMap<String, DiagramResource>();
+	protected Map<String, DiagramResource> diagrams = new HashMap<>();
 
 	public DiagramTechnologyContextManager(DiagramTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
@@ -62,21 +62,21 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
-	public DiagramSpecificationResource getDiagramSpecificationResource(Object diagramSpecification) {
-		return diagramSpecifications.get(diagramSpecification);
+	public DiagramSpecificationResource getDiagramSpecificationResource(String diagramSpecificationURI) {
+		return diagramSpecifications.get(diagramSpecificationURI);
 	}
 
 	public DiagramResource getDiagramResource(File diagramFile) {
-		for(Entry<String,DiagramResource> entry :diagrams.entrySet()){
-			 if(entry.getValue().getFlexoIODelegate() instanceof FileFlexoIODelegate){
-				 FileFlexoIODelegate delegate = (FileFlexoIODelegate)entry.getValue().getFlexoIODelegate();
-				 if(delegate.getFile().equals(diagramFile)){
-					 return entry.getValue();
-				 }
-			 }
+		for (Entry<String, DiagramResource> entry : diagrams.entrySet()) {
+			if (entry.getValue().getIODelegate() instanceof FileIODelegate) {
+				FileIODelegate delegate = (FileIODelegate) entry.getValue().getIODelegate();
+				if (delegate.getFile().equals(diagramFile)) {
+					return entry.getValue();
+				}
+			}
 		}
 		return diagrams.get(diagramFile);
 	}

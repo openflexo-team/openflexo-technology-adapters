@@ -1,0 +1,16 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  compile ginaApi()
+  // external dep
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+  
+   // Test resource center
+  testRuntime project(':ginaconnector-test-rc')
+  
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

@@ -96,8 +96,8 @@ public interface ObjectPropertyStatementActorReference extends ActorReference<Ob
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public static abstract class ObjectPropertyStatementActorReferenceImpl extends ActorReferenceImpl<ObjectPropertyStatement> implements
-			ObjectPropertyStatementActorReference {
+	public static abstract class ObjectPropertyStatementActorReferenceImpl extends ActorReferenceImpl<ObjectPropertyStatement>
+			implements ObjectPropertyStatementActorReference {
 
 		static final Logger logger = FlexoLogger.getLogger(ObjectPropertyStatementActorReferenceImpl.class.getPackage().toString());
 
@@ -123,7 +123,7 @@ public interface ObjectPropertyStatementActorReference extends ActorReference<Ob
 			objectURI = o.getStatementObject().getURI();
 			objectPropertyURI = o.getProperty().getURI();
 		}
-
+		
 		// Constructor used during deserialization
 		public ObjectPropertyStatementActorReference(FlexoProject project) {
 			super(project);
@@ -140,7 +140,7 @@ public interface ObjectPropertyStatementActorReference extends ActorReference<Ob
 		}
 
 		@Override
-		public ObjectPropertyStatement getModellingElement() {
+		public ObjectPropertyStatement getModellingElement(boolean forceLoading) {
 			if (statement == null) {
 				OWLOntology ontology = (OWLOntology) getModelSlotInstance().getAccessedResourceData();
 				if (ontology != null) {
@@ -151,7 +151,8 @@ public interface ObjectPropertyStatementActorReference extends ActorReference<Ob
 						// TODO: also handle value here
 						statement = subject.getObjectPropertyStatement(property, object);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
 			}

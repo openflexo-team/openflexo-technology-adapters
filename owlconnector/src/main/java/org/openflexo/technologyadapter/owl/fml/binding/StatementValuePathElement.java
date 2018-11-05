@@ -36,18 +36,18 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
@@ -66,13 +66,21 @@ public class StatementValuePathElement extends SimplePathElement {
 
 	private OWLDataProperty property = null;
 
-	public StatementValuePathElement(BindingPathElement parent) {
+	public StatementValuePathElement(IBindingPathElement parent) {
 		super(parent, VALUE, null); // Type is dynamically retrieved
 		if (parent.getType() instanceof StatementWithProperty) {
 			property = (OWLDataProperty) ((StatementWithProperty) parent.getType()).getProperty();
-		} else {
+		}
+		else {
 			logger.warning("Unexpected type: " + parent.getType());
 		}
+	}
+
+	public LocalizedDelegate getLocales() {
+		if (property != null) {
+			return property.getLocales();
+		}
+		return FlexoLocalization.getMainLocalizer();
 	}
 
 	@Override
@@ -92,7 +100,7 @@ public class StatementValuePathElement extends SimplePathElement {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_property_value");
+		return getLocales().localizedForKey("owl_property_value");
 	}
 
 	@Override
@@ -105,8 +113,8 @@ public class StatementValuePathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

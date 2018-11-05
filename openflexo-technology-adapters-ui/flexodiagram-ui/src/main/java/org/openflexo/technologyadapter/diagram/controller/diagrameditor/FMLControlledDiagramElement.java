@@ -51,6 +51,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -71,7 +72,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FMLControlledDiagramElement.FMLControlledDiagramElementImpl.class)
-public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoObject {
+public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+		extends FlexoObject, PropertyChangeListener {
 
 	public static final String DRAWING_KEY = "drawing";
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
@@ -146,9 +148,9 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public void setLabel(String aName);
 
 	public static abstract class FMLControlledDiagramElementImpl<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-			implements FMLControlledDiagramElement<E, GR>, PropertyChangeListener {
+			implements FMLControlledDiagramElement<E, GR> {
 
-		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>>();
+		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<>();
 
 		@Override
 		public void setDiagramElement(E diagramElement) {
@@ -168,8 +170,8 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					// Now that we have access to the diagram element, GR could be retrieved
 					// But we also need to notify the parent that this diagram element is now to be managed
 					if (diagramElement.getParent() != null) {
-						diagramElement.getParent().getPropertyChangeSupport()
-								.firePropertyChange(DiagramContainerElement.SHAPES, null, diagramElement.getParent().getShapes());
+						diagramElement.getParent().getPropertyChangeSupport().firePropertyChange(DiagramContainerElement.SHAPES, null,
+								diagramElement.getParent().getShapes());
 					}
 				}
 
@@ -196,7 +198,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				}
 				listeners.clear();
 				performSuperSetter(ROLE_KEY, aRole);
-				if (aRole != null) {
+				if (aRole != null && aRole.getGrSpecifications() != null) {
 					for (GraphicalElementSpecification<?, GR> grSpec : aRole.getGrSpecifications()) {
 						listenToGRSpecification(grSpec);
 					}
@@ -208,7 +210,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 			BindingValueChangeListener<T> l = new BindingValueChangeListener<T>(grSpec.getValue(), getFlexoConceptInstance()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					System.out.println("value changed for " + grSpec + " newValue=" + newValue);
+					// System.out.println("value changed for " + grSpec + " newValue=" + newValue);
 					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, newValue);
 				}
 			};
@@ -273,6 +275,19 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		// TODO: to it generically for all GRSpecs
 		@Override
 		public void setLabel(String aLabel) {
+
+			// We handle here a special use case encountered in FME
+			// When a FlexoConceptInstance changes its type (its FlexoConcept)
+			// The role that was registered is not good anymore
+			// What we do here is checking that it's the "good" role
+			if (getRole().getFlexoConcept() != getFlexoConceptInstance().getFlexoConcept()) {
+				ObjectLookupResult r = getDrawing().getObjectLookupResult(getDiagramElement());
+				if (r != null) {
+					GraphicalElementRole<E, GR> newRole = (GraphicalElementRole<E, GR>) r.property;
+					setRole(newRole);
+				}
+			}
+
 			if (getRole().getLabel() != null) {
 				try {
 					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());

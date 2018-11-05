@@ -43,12 +43,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
@@ -58,12 +58,12 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
-	protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestXSD.class.getPackage().getName());
 
-	private static XMLTechnologyAdapter   xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository  modelRepository;
-	private static String                 baseUrl = null;
+	private static XMLTechnologyAdapter xmlAdapter;
+	private static XSDMetaModelRepository<?> mmRepository;
+	private static XMLModelRepository<?> modelRepository;
+	private static String baseUrl = null;
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -72,19 +72,18 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 
-		instanciateTestServiceManager();
-
 		log("test0LoadTestResourceCenter()");
-		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		try {
-			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		instanciateTestServiceManager(XMLTechnologyAdapter.class);
+
+		FlexoResourceCenter<?> resourceCenter = serviceManager.getResourceCenterService()
+				.getFlexoResourceCenter("http://openflexo.org/xml-test");
+
+		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
+		baseUrl = resourceCenter.getDefaultBaseURI();
+
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		assertNotNull(mmRepository);
 		assertNotNull(modelRepository);
 		assertEquals(3, mmRepository.getAllResources().size());
@@ -96,7 +95,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 		log("test1LibraryMetaModelPresentAndLoaded()");
 		XSDMetaModelResource libraryRes = mmRepository.getResource("http://www.example.org/Library");
 		assertNotNull(libraryRes);
-		
+
 		assertFalse(libraryRes.isLoaded());
 		assertNotNull(libraryRes.getMetaModelData());
 		assertTrue(libraryRes.isLoaded());

@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.FIBOntologyBrowser;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.FIBOntologyBrowser;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;

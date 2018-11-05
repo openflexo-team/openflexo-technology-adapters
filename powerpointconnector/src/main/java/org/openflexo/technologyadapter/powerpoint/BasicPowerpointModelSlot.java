@@ -46,12 +46,6 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -63,7 +57,6 @@ import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerp
 import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
-import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
 
 /**
  * Implementation of a basic ModelSlot class for the Powerpoint technology adapter<br>
@@ -78,10 +71,10 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
 @ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
 @XMLElement
 @FML("BasicPowerpointModelSlot")
-public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
+public interface BasicPowerpointModelSlot extends PowerpointModelSlot {
 
-	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements
-			BasicPowerpointModelSlot {
+	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow>
+			implements BasicPowerpointModelSlot {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlot.class.getPackage().getName());
 
@@ -103,7 +96,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
-			} else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
 			return null;
@@ -115,24 +109,16 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<BasicPowerpointModelSlot, PowerpointSlideshow> createConfiguration(
-				CreateVirtualModelInstance action) {
-			return new BasicPowerpointModelSlotInstanceConfiguration(this, action);
-		}
-
-		@Override
-		public String getURIForObject(FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance,
-				Object o) {
+		public String getURIForObject(PowerpointSlideshow resourceData, Object o) {
 			PowerpointObject powerpointObject = (PowerpointObject) o;
-			return getUriProcessor().getURIForObject(msInstance, powerpointObject);
+			return getUriProcessor().getURIForObject(resourceData, powerpointObject);
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(
-				FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance, String objectURI) {
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) {
 
 			try {
-				return getUriProcessor().retrieveObjectWithURI(msInstance, objectURI);
+				return getUriProcessor().retrieveObjectWithURI(resourceData, objectURI);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -146,17 +132,21 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 			return (PowerpointTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		@Override
-		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
-		}
-
-		@Override
-		public PowerpointSlideshowResource createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath,
-				String filename, String modelUri) {
-			// TODO Auto-generated method stub
+		/*@Override
+		public PowerpointSlideshowResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename,
+				String modelUri) {
+			try {
+				return getModelSlotTechnologyAdapter().createNewSlideshow((FlexoResourceCenter<File>) view.getResourceCenter(), filename,
+						modelUri);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return null;
-		}
+		}*/
 
 	}
 

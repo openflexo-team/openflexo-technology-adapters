@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.view.SelectionSynchronizedFIBView;
 import org.openflexo.view.controller.FlexoController;
@@ -60,7 +61,7 @@ public class FIBExcelSheetView extends SelectionSynchronizedFIBView {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/ExcelSheetPanel.fib");
 
 	public FIBExcelSheetView(ExcelSheet sheet, FlexoController controller) {
-		super(sheet, controller, FIB_FILE);
+		super(sheet, controller, FIB_FILE, controller.getTechnologyAdapter(ExcelTechnologyAdapter.class).getLocales());
 	}
 
 }

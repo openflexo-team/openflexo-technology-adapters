@@ -46,13 +46,14 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.action.DeleteOntologyObjects;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOntologyObjects, OWLConcept, OWLConcept> {
+public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -85,7 +86,7 @@ public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOn
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

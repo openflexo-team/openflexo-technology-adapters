@@ -36,26 +36,19 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.rm.OSLCRepository;
-import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
-import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResourceImpl;
+import org.openflexo.technologyadapter.oslc.rm.OSLCResourceFactory;
 import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFactory;
 
 /**
@@ -66,7 +59,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
  */
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
-@DeclareRepositoryType({ OSLCRepository.class })
+@DeclareResourceTypes({ OSLCResourceFactory.class })
 public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	private static String OSLC_FILE_EXTENSION = ".oslc";
 
@@ -83,7 +76,12 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/OSLCTechnologyAdapter";
+	}
+
+	@Override
+	public OSLCTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new OSLCTechnologyContextManager(this, service);
 	}
 
@@ -92,30 +90,30 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return BINDING_FACTORY;
 	}
 
-	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	/*@Override
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
 		if (oslcRepository == null) {
 			oslcRepository = createOSLCRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			if (item instanceof File) {
 				// System.out.println("searching " + item);
 				File candidateFile = (File) item;
-				tryToLookupOSLCResources(resourceCenter, candidateFile);
+				tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile);
 			}
 		}
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
-	}
+		notifyRepositoryStructureChanged();
+	}*/
 
-	protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+	/*protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<File> resourceCenter, File candidateFile) {
 		if (isValidOSLCFile(candidateFile)) {
-			OSLCResourceResource oslcRes = retrieveOSLCResource(candidateFile);
+			OSLCResourceResource oslcRes = retrieveOSLCResource(candidateFile, resourceCenter);
 			OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
 			if (oslcRes != null) {
 				RepositoryFolder<OSLCResourceResource> folder;
@@ -130,29 +128,41 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public OSLCResourceResource retrieveOSLCResource(File cdlFile) {
+	/*public <I> OSLCResourceResource retrieveOSLCResource(I cdlFile, FlexoResourceCenter<I> resourceCenter) {
 		OSLCResourceResource oslcResource = null;
-
+	
 		// TODO: try to look-up already found file
-		oslcResource = OSLCResourceResourceImpl.retrieveOSLCResource(cdlFile, getTechnologyContextManager());
-
-		return oslcResource;
-	}
+		if (cdlFile instanceof File) {
+			oslcResource = OSLCResourceResourceImpl.retrieveOSLCResource((File) cdlFile, getTechnologyContextManager(), resourceCenter);
+	
+			return oslcResource;
+		}
+		return null;
+	}*/
 
 	/**
 	 * 
 	 * Create a cdl unit repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public OSLCRepository createOSLCRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public OSLCRepository createOSLCRepository(FlexoResourceCenter<?> resourceCenter) {
 		OSLCRepository returned = new OSLCRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, OSLCRepository.class, this);
+		return returned;
+	}*/
+
+	public <I> OSLCRepository<I> getOSLCRepository(FlexoResourceCenter<I> resourceCenter) {
+		OSLCRepository<I> returned = resourceCenter.retrieveRepository(OSLCRepository.class, this);
+		if (returned == null) {
+			returned = OSLCRepository.instanciateNewRepository(this, resourceCenter);
+			resourceCenter.registerRepository(returned, OSLCRepository.class, this);
+		}
 		return returned;
 	}
 
@@ -163,9 +173,9 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @return
 	 */
-	public boolean isValidOSLCFile(File candidateFile) {
+	/*public boolean isValidOSLCFile(File candidateFile) {
 		return candidateFile.getName().endsWith(OSLC_FILE_EXTENSION);
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
@@ -173,26 +183,52 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	/*@Override
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+		boolean returned = false;
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
-			tryToLookupOSLCResources(resourceCenter, candidateFile);
+			returned = (tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile) != null);
 		}
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
+		return returned;
 	}
-
+	
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
+	
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
 
 	@Override
 	public OSLCTechnologyContextManager getTechnologyContextManager() {
-		// TODO Auto-generated method stub
 		return (OSLCTechnologyContextManager) super.getTechnologyContextManager();
 	}
+
+	@Override
+	public String getIdentifier() {
+		return "OSLC";
+	}
+
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getOSLCRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
 
 }

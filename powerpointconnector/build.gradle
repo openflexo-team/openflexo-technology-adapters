@@ -1,0 +1,19 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  // external dep
+  compile group: 'org.apache.poi', name: 'poi', version: '3.12'
+  compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.12'
+  //    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.12'
+
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+  
+  	// Test resource center
+    testRuntime project(':powerpointconnector-test-rc')
+  
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

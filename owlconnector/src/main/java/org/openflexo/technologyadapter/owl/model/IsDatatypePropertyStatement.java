@@ -41,9 +41,8 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class IsDatatypePropertyStatement extends IsAStatement {
 

@@ -52,13 +52,13 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
+import org.openflexo.foundation.ontology.fml.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -68,22 +68,23 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.validation.FixProposal;
-import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.technologyadapter.owl.fml.ObjectPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(AddObjectPropertyStatement.AddObjectPropertyStatementImpl.class)
 @XMLElement
 @FML("AddObjectPropertyStatement")
-public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyStatement>,
-		SetObjectPropertyValueAction<ObjectPropertyStatement> {
+public interface AddObjectPropertyStatement
+		extends AddStatement<ObjectPropertyStatement>, SetObjectPropertyValueAction<ObjectPropertyStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";
@@ -112,8 +113,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
-			AddObjectPropertyStatement {
+	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement>
+			implements AddObjectPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddObjectPropertyStatement.class.getPackage().getName());
 
@@ -129,7 +130,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ObjectPropertyStatementRole) {
 				return (ObjectPropertyStatementRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -145,15 +147,18 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 			if (getSubject() != null)
 				subjstr = getSubject().toString();
-			else subjstr = "<No Subject>";
+			else
+				subjstr = "<No Subject>";
 
 			if (getObject() != null)
 				objstr = getObject().toString();
-			else objstr = "<No Object>";
+			else
+				objstr = "<No Object>";
 
 			if (getObjectProperty() != null)
 				propstr = getObjectProperty().getName();
-			else propstr = "<No Property>";
+			else
+				propstr = "<No Property>";
 
 			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
 
@@ -185,9 +190,10 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
-			} else {
+			if (StringUtils.isNotEmpty(objectPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLObjectProperty(objectPropertyURI, getOwningVirtualModel());
+			}
+			else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getObjectProperty();
 				}
@@ -202,13 +208,16 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				if (getAssignedFlexoProperty() != null) {
 					if (getAssignedFlexoProperty().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
 						objectPropertyURI = ontologyProperty.getURI();
-					} else {
+					}
+					else {
 						getAssignedFlexoProperty().setObjectProperty((OWLObjectProperty) ontologyProperty);
 					}
-				} else {
+				}
+				else {
 					objectPropertyURI = ontologyProperty.getURI();
 				}
-			} else {
+			}
+			else {
 				objectPropertyURI = null;
 			}
 		}
@@ -230,9 +239,9 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			this.objectPropertyURI = objectPropertyURI;
 		}
 
-		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertyObject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getObject().getBindingValue(action);
+				return (OWLConcept<?>) getObject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -244,8 +253,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		public Type getObjectType() {
-			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty
-					&& getObjectProperty().getRange() instanceof IFlexoOntologyClass) {
+			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty && getObjectProperty().getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange());
 			}
 			return IFlexoOntologyConcept.class;
@@ -296,10 +304,10 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public ObjectPropertyStatement execute(RunTimeEvaluationContext evaluationContext) {
 			OWLObjectProperty property = getObjectProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			OWLConcept<?> object = getPropertyObject(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			OWLConcept<?> object = getPropertyObject(evaluationContext);
 			if (property == null) {
 				return null;
 			}
@@ -315,8 +323,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	}
 
 	@DefineValidationRule
-	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty extends
-			ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty
+			extends ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 		public AddObjectPropertyStatementActionMustDefineAnObjectProperty() {
 			super(AddObjectPropertyStatement.class, "add_object_property_statement_action_must_define_an_object_property");
 		}
@@ -325,18 +333,17 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		public ValidationIssue<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> applyValidation(
 				AddObjectPropertyStatement action) {
 			if (action.getObjectProperty() == null && action.getOwner() instanceof AssignationAction) {
-				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>>();
+				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<>();
 				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(ObjectPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
-				return new ValidationError<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>(this,
-						action, "add_object_property_statement_action_does_not_define_an_object_property", v);
+				return new ValidationWarning<>(this, action, "add_object_property_statement_action_does_not_define_an_object_property", v);
 			}
 			return null;
 		}
 
-		protected static class SetsFlexoRole extends
-				FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+		protected static class SetsFlexoRole
+				extends FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 
 			private final ObjectPropertyStatementRole flexoRole;
 
@@ -352,7 +359,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			@Override
 			protected void fixAction() {
 				AddObjectPropertyStatement action = getValidable();
-				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
+				((AssignationAction<?>) action.getOwner()).setAssignation(new DataBinding<>(flexoRole.getRoleName()));
 			}
 
 		}

@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.UnsupportedEncodingException;
@@ -49,32 +48,32 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlotURIProcessor.BasicPowerpointModelSlotURIProcessorImpl.class)
 @XMLElement
 public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject {
 
-	public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject);
+	public String getURIForObject(PowerpointSlideshow resourceData, PowerpointObject powerpointObject);
 
 	// get the Object given the URI
-	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
+	public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) throws Exception;
 
 	public BasicPowerpointModelSlot getModelSlot();
 
 	public void setModelSlot(BasicPowerpointModelSlot powerpointModelSlot);
 
-	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends FlexoConceptObjectImpl implements
-			BasicPowerpointModelSlotURIProcessor {
+	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends FlexoConceptObjectImpl
+			implements BasicPowerpointModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlotURIProcessor.class.getPackage().getName());
 
@@ -83,7 +82,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, PowerpointObject> uriCache = new HashMap<String, PowerpointObject>();
+		private final Map<String, PowerpointObject> uriCache = new HashMap<>();
 
 		public BasicPowerpointModelSlotURIProcessorImpl(String typeURI) {
 			super();
@@ -96,7 +95,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			return getModelSlot().getVirtualModel();
 		}
 
@@ -139,7 +138,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		// URI Calculation
 
 		@Override
-		public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject) {
+		public String getURIForObject(PowerpointSlideshow resourceData, PowerpointObject powerpointObject) {
 			String builtURI = null;
 
 			try {
@@ -160,7 +159,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		// get the Object given the URI
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception {
+		public Object retrieveObjectWithURI(PowerpointSlideshow resourceData, String objectURI) throws Exception {
 			PowerpointObject o = uriCache.get(objectURI);
 			return o;
 		}
@@ -172,7 +171,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public Collection<Validable> getEmbeddedValidableObjects() {
 			return Collections.emptyList();
 		}
 

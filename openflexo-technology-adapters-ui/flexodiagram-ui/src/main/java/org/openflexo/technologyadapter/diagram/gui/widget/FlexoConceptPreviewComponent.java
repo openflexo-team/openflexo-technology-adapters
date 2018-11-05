@@ -48,19 +48,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.controller.FIBSelectable;
-import org.openflexo.fib.model.FIBCustom;
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.fge.FGEModelFactory;
+import org.openflexo.fge.FGEModelFactoryImpl;
+import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.controller.FIBSelectable;
+import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 
 // TODO: this should inherit from FIBJPanel
-public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomComponent<FlexoConcept, JPanel>,
-		FIBSelectable<GraphicalElementRole<?, ?>> {
+public class FlexoConceptPreviewComponent extends JPanel
+		implements FIBCustomComponent<FlexoConcept>, FIBSelectable<GraphicalElementRole<?, ?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewComponent.class.getPackage().getName());
@@ -73,11 +77,25 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 
 	private final JLabel EMPTY_LABEL = new JLabel("<empty>");
 
+	/**
+	 * This is the FGE model factory shared by all preview components
+	 */
+	public static FGEModelFactory FACTORY = null;
+
+	static {
+		try {
+			FACTORY = new FGEModelFactoryImpl();
+		} catch (ModelDefinitionException e) {
+			logger.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	public FlexoConceptPreviewComponent() {
 		super();
 		setLayout(new BorderLayout());
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 	}
 
 	@Override
@@ -114,8 +132,9 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 				previewController = null;
 			}
 			if (object != null) {
-				previewController = new FlexoConceptPreviewController(object, selectionManager);
-				add(previewController.getDrawingView(), BorderLayout.CENTER);
+				previewController = new FlexoConceptPreviewController(object, selectionManager, FACTORY);
+				JDrawingView<FlexoConcept> drawingView = previewController.getDrawingView();
+				add(drawingView, BorderLayout.CENTER);
 			}
 			revalidate();
 			repaint();
@@ -126,16 +145,12 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 		return selectionManager;
 	}
 
+	@CustomComponentParameter(name = "selectionManager", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setSelectionManager(SelectionManager selectionManager) {
 		this.selectionManager = selectionManager;
 		if (previewController != null) {
 			previewController.setSelectionManager(selectionManager);
 		}
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return this;
 	}
 
 	@Override
@@ -184,7 +199,7 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 			}
 		}
 		if (previewController.getSelectedObjects().size() > 0) {
-			List<GraphicalElementRole<?, ?>> returned = new ArrayList<GraphicalElementRole<?, ?>>();
+			List<GraphicalElementRole<?, ?>> returned = new ArrayList<>();
 			for (DrawingTreeNode<?, ?> dtn : previewController.getSelectedObjects()) {
 				returned.add((GraphicalElementRole<?, ?>) dtn.getDrawable());
 			}

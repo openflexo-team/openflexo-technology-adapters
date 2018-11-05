@@ -38,16 +38,16 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import javax.swing.*;
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramSpecification;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -64,27 +64,29 @@ public class CreateDiagramSpecificationInitializer extends ActionInitializer<Cre
 
 	@Override
 	protected FlexoActionInitializer<CreateDiagramSpecification> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateDiagramSpecification>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramSpecification action) {
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB);
+		return (e, action) -> {
+			Wizard wizard = new CreateDiagramSpecificationWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
 			}
+			return true;
+			// return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<CreateDiagramSpecification> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateDiagramSpecification>() {
-			@Override
-			public boolean run(EventObject e, CreateDiagramSpecification action) {
-				getController().selectAndFocusObject(action.getNewDiagramSpecification());
-				return true;
-			}
+		return (e, action) -> {
+			getController().selectAndFocusObject(action.getNewDiagramSpecification());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 	}
 

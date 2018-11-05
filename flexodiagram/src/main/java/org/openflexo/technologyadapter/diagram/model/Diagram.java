@@ -39,9 +39,8 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -62,8 +61,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 @ModelEntity
 @ImplementationClass(DiagramImpl.class)
 @XMLElement(xmlTag = "Diagram")
-public interface Diagram extends DiagramContainerElement<DrawingGraphicalRepresentation>, FlexoModel<Diagram, DiagramSpecification>,
-		ResourceData<Diagram> {
+public interface Diagram extends DiagramContainerElement<DrawingGraphicalRepresentation>, FlexoModel<Diagram, DiagramSpecification> {
 
 	public static final String URI = "uri";
 	public static final String TITLE = "title";
@@ -167,4 +165,5 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	 * @return
 	 */
 	public ScreenshotImage<Diagram> getScreenshotImage();
+
 }

@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -50,7 +51,10 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -70,6 +74,7 @@ import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalFeature;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -114,8 +119,8 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 	public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures();
 
-	public static abstract class GraphicalActionImpl extends TechnologySpecificActionImpl<TypedDiagramModelSlot, DiagramElement<?>>
-			implements GraphicalAction {
+	public static abstract class GraphicalActionImpl extends
+			TechnologySpecificActionDefiningReceiverImpl<TypedDiagramModelSlot, Diagram, DiagramElement<?>> implements GraphicalAction {
 
 		private static final Logger logger = Logger.getLogger(GraphicalAction.class.getPackage().getName());
 
@@ -150,7 +155,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public DataBinding<Object> getValue() {
 			if (value == null) {
-				value = new DataBinding<Object>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
+				value = new DataBinding<>(this, getGraphicalFeatureType(), BindingDefinitionType.GET);
 				value.setBindingName("value");
 			}
 			return value;
@@ -170,7 +175,8 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public GraphicalFeature<?, ?> getGraphicalFeature() {
 			if (graphicalFeature == null) {
-				if (_graphicalFeatureName != null) {
+				// System.out.println("Attempt to lookup " + _graphicalFeatureName + " from " + getAvailableGraphicalFeatures());
+				if (_graphicalFeatureName != null && getAvailableGraphicalFeatures() != null) {
 					for (GraphicalFeature<?, ?> GF : getAvailableGraphicalFeatures()) {
 						if (GF.getName().equals(_graphicalFeatureName)) {
 							return GF;
@@ -188,41 +194,25 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 		private List<GraphicalFeature<?, ?>> availableFeatures = null;
 
-		/*@Override
-		public GraphicalElementRole getPatternRole() {
-			try {
-				return super.getPatternRole();
-			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern property type");
-				setPatternRole(null);
-				return null;
-			}
-		}
-
-		@Override
-		public void setPatternRole(GraphicalElementRole patternRole) {
-			System.out.println("set pattern property with " + patternRole);
-			super.setPatternRole(patternRole);
-			availableFeatures = null;
-		}*/
-
 		@Override
 		public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures() {
 			if (availableFeatures == null) {
-				availableFeatures = new Vector<GraphicalFeature<?, ?>>();
+				// System.out.println("On calcule la liste des features, subject=" + getSubject());
 				if (getSubject().isSet() && getSubject().isValid()) {
 					Class<?> accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
+					// System.out.println("What about: " + accessedClass + " from " + getSubject().getAnalyzedType());
 					if (DiagramElement.class.isAssignableFrom(accessedClass)) {
+						availableFeatures = new ArrayList<>();
 						for (GraphicalFeature<?, ?> GF : GraphicalElementRole.AVAILABLE_FEATURES) {
 							availableFeatures.add(GF);
 						}
 						if (DiagramShape.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ShapeRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ShapeRole.AVAILABLE_SHAPE_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
 						if (DiagramConnector.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ConnectorRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ConnectorRole.AVAILABLE_CONNECTOR_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
@@ -252,7 +242,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public DataBinding<DiagramElement<?>> getSubject() {
 			if (subject == null) {
-				subject = new DataBinding<DiagramElement<?>>(this, DiagramElement.class, DataBinding.BindingDefinitionType.GET);
+				subject = new DataBinding<>(this, DiagramElement.class, DataBinding.BindingDefinitionType.GET);
 				subject.setBindingName("subject");
 			}
 			return subject;
@@ -269,9 +259,9 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			this.subject = subject;
 		}
 
-		public DiagramElement<?> getSubject(FlexoBehaviourAction<?, ?, ?> action) {
+		public DiagramElement<?> getSubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getSubject().getBindingValue(action);
+				return getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -287,22 +277,24 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			super.notifiedBindingChanged(binding);
 			if (binding == getSubject()) {
 				availableFeatures = null;
+				System.out.println("OK, on change les features disponibles, et on trouve: " + getAvailableGraphicalFeatures());
+				getPropertyChangeSupport().firePropertyChange("availableGraphicalFeatures", null, getAvailableGraphicalFeatures());
 			}
-		}
-
-		@Override
-		public String getStringRepresentation() {
-			return getClass().getSimpleName() + " (" + getSubject() + "." + _getGraphicalFeatureName() + "=" + getValue() + ")";
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public DiagramElement<?> execute(FlexoBehaviourAction<?, ?, ?> action) {
-			logger.info("Perform graphical action " + action);
-			DiagramElement<?> graphicalElement = getSubject(action);
+		public DiagramElement<?> execute(RunTimeEvaluationContext evaluationContext) {
+			logger.info("Perform graphical action " + evaluationContext);
+			if (getGraphicalFeature() == null) {
+				logger.warning("No graphical feature supplied, aborting");
+				return null;
+			}
+
+			DiagramElement<?> graphicalElement = getSubject(evaluationContext);
 			Object value = null;
 			try {
-				value = getValue().getBindingValue(action);
+				value = getValue().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -315,7 +307,12 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				logger.fine("Feature is " + getGraphicalFeature());
 				logger.fine("Value is " + value);
 			}
-			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(), value);
+
+			Object castedValue = null;
+			castedValue = TypeUtils.castTo(value, ((GraphicalFeature) getGraphicalFeature()).getType());
+
+			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(),
+					castedValue);
 			return graphicalElement;
 		}
 
@@ -325,6 +322,22 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				return getSubject().getAnalyzedType();
 			}
 			return DiagramElement.class;
+		}
+
+		@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
+			out.append((getSubject() != null ? getSubject().toString() : "?") + "."
+					+ (getGraphicalFeature() != null ? getGraphicalFeature().getName() : "?") + "="
+					+ (getValue() != null ? getValue().toString() : "?"), context);
+			return out.toString();
+		}
+
+		@Override
+		public String getStringRepresentation() {
+			return getHeaderContext() + (getSubject() != null ? getSubject().toString() : "?") + "."
+					+ (getGraphicalFeature() != null ? getGraphicalFeature().getName() : "?") + "="
+					+ (getValue() != null ? getValue().toString() : "?");
 		}
 
 	}
@@ -339,15 +352,16 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		public ValidationIssue<GraphicalActionMustHaveASubject, GraphicalAction> applyValidation(GraphicalAction graphicalAction) {
 			if (graphicalAction.getSubject().isSet() && graphicalAction.getSubject().isValid()) {
 				return null;
-			} else {
-				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
+			}
+			else {
+				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<>();
 				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,
+				return new ValidationError<>(this, graphicalAction,
 						"graphical_action_has_no_valid_subject", v);
 			}
 		}

@@ -41,8 +41,9 @@ package org.openflexo.technologyadapter.owl.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.OntologyView;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -55,14 +56,15 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class OWLOntologyView extends OntologyView<OWLOntology> {
+public class OWLOntologyView extends OntologyView<OWLOntology, OWLTechnologyAdapter> {
 
-	public OWLOntologyView(OWLOntology object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+	public OWLOntologyView(OWLOntology ontology, FlexoController controller, FlexoPerspective perspective) {
+		super(ontology, controller, perspective,
+				ontology != null ? ontology.getTechnologyAdapter().getLocales() : controller.getFlexoLocales());
 	}
 
 	@Override
-	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology<OWLTechnologyAdapter> ontology) {
 		return new OWLOntologyBrowserModel((OWLOntology) ontology);
 	}
 

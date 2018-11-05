@@ -36,14 +36,15 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml;
 
-import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.ontology.fml.IndividualRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 
 @ModelEntity
@@ -56,6 +57,16 @@ public interface OWLIndividualRole extends IndividualRole<OWLIndividual> {
 
 		public OWLIndividualRoleImpl() {
 			super();
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return OWLTechnologyAdapter.class;
+		}
+
+		@Override
+		public Class<OWLIndividual> getOntologyIndividualClass() {
+			return OWLIndividual.class;
 		}
 
 	}

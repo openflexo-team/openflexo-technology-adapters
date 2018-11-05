@@ -1,0 +1,15 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  // external dep
+  compile 'org.eclipse.lyo.oslc4j.core:oslc4j-wink:2.1.0'
+  compile 'javax.servlet:servlet-api:2.5'
+  compile 'net.oauth.core:oauth-httpclient4:20090913'
+  compile group: 'org.eclipse.lyo.clients', name: 'oslc-java-client', version: '3.0.0-20150202.133917-1'
+  // testing dep
+    testCompile testUtils()
+    testCompile flexoFoundationTest()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

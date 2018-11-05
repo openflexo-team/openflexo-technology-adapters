@@ -47,7 +47,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
@@ -62,11 +62,14 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
+import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.OWLRestriction;
 import org.openflexo.technologyadapter.owl.model.OWLRestriction.RestrictionType;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
+import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(AddRestrictionStatement.AddRestrictionStatementImpl.class)
@@ -142,8 +145,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		public OWLProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null) {
-				return (OWLProperty) getOwningVirtualModel().getOntologyProperty(_getPropertyURI());
+			if (StringUtils.isNotEmpty(_getPropertyURI()) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLProperty(_getPropertyURI(), getOwningVirtualModel());
 			}
 			return null;
 		}
@@ -152,9 +155,9 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			_setPropertyURI(p != null ? p.getURI() : null);
 		}
 
-		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertyObject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getObject().getBindingValue(action);
+				return (OWLConcept<?>) getObject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -170,8 +173,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		public Type getObjectType() {
 			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty
 					&& ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange() instanceof IFlexoOntologyClass) {
-				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty())
-						.getRange());
+				return IndividualOfClass
+						.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange());
 			}
 			return IFlexoOntologyConcept.class;
 		}
@@ -179,7 +182,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<?> getObject() {
 			if (object == null) {
-				object = new DataBinding<Object>(this, getObjectType(), BindingDefinitionType.GET);
+				object = new DataBinding<>(this, getObjectType(), BindingDefinitionType.GET);
 				object.setBindingName("object");
 			}
 			return object;
@@ -201,7 +204,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<RestrictionType> getRestrictionType() {
 			if (restrictionType == null) {
-				restrictionType = new DataBinding<RestrictionType>(this, RestrictionType.class, BindingDefinitionType.GET);
+				restrictionType = new DataBinding<>(this, RestrictionType.class, BindingDefinitionType.GET);
 				restrictionType.setBindingName("restrictionType");
 			}
 			return restrictionType;
@@ -218,10 +221,10 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			this.restrictionType = restrictionType;
 		}
 
-		public RestrictionType getRestrictionType(FlexoBehaviourAction action) {
+		public RestrictionType getRestrictionType(RunTimeEvaluationContext evaluationContext) {
 			RestrictionType restrictionType = null;
 			try {
-				restrictionType = getRestrictionType().getBindingValue(action);
+				restrictionType = getRestrictionType().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -240,7 +243,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		@Override
 		public DataBinding<Integer> getCardinality() {
 			if (cardinality == null) {
-				cardinality = new DataBinding<Integer>(this, Integer.class, BindingDefinitionType.GET);
+				cardinality = new DataBinding<>(this, Integer.class, BindingDefinitionType.GET);
 				cardinality.setBindingName("cardinality");
 			}
 			return cardinality;
@@ -257,9 +260,9 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			this.cardinality = cardinality;
 		}
 
-		public int getCardinality(FlexoBehaviourAction action) {
+		public int getCardinality(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getCardinality().getBindingValue(action);
+				return getCardinality().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -276,10 +279,11 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		@Override
-		public OWLStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public OWLStatement execute(RunTimeEvaluationContext evaluationContext) {
+
 			OWLProperty property = getObjectProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			OWLConcept<?> object = getPropertyObject(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			OWLConcept<?> object = getPropertyObject(evaluationContext);
 
 			// System.out.println("property="+property+" "+property.getURI());
 			// System.out.println("subject="+subject+" "+subject.getURI());
@@ -288,10 +292,11 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			// System.out.println("cardinality="+getParameterValues().get(action.getCardinality()));
 
 			if (subject instanceof OWLClass && object instanceof OWLClass && property instanceof OWLProperty) {
-				RestrictionType restrictionType = getRestrictionType(action);
-				int cardinality = getCardinality(action);
-				OWLRestriction restriction = getModelSlotInstance(action).getAccessedResourceData().createRestriction((OWLClass) subject,
-						property, restrictionType, cardinality, (OWLClass) object);
+				RestrictionType restrictionType = getRestrictionType(evaluationContext);
+				int cardinality = getCardinality(evaluationContext);
+				OWLOntology ontology = getReceiver(evaluationContext);
+				OWLRestriction restriction = ontology.createRestriction((OWLClass) subject, property, restrictionType, cardinality,
+						(OWLClass) object);
 
 				if (subject instanceof OWLClass) {
 					if (subject instanceof OWLClass) {
@@ -304,6 +309,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			}
 
 			return null;
+
 		}
 
 	}

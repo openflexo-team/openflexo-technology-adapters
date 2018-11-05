@@ -45,7 +45,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -53,12 +52,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.ResourceRepository;
-import org.openflexo.rm.Resource;
+import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLPropertySelector;
@@ -85,7 +82,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static OWLOntologyResource ontologyResource;
 
@@ -109,8 +106,9 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		// Unused Resource rsc =
+		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
+		instanciateTestServiceManager(OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		initGUI();
@@ -124,14 +122,8 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getInformationSpace().getAllRepositories(owlTA);
-
-		ResourceRepository<OWLOntologyResource> ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
-
-		assertNotNull(ontologyRepository);
-
-		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
-		ontologyResource = ontologyRepository.getResource("http://www.w3.org/2004/02/skos/core");
+		ontologyResource = (OWLOntologyResource) serviceManager.getResourceManager().getResource("http://www.w3.org/2004/02/skos/core",
+				OWLOntology.class);
 
 		assertNotNull(ontologyResource);
 
@@ -210,8 +202,8 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 		assertNotNull(nothing = owlOntology.getClass(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "Nothing"));
 
 		assertNotNull(topObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topObjectProperty"));
-		assertNotNull(bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#"
-				+ "bottomObjectProperty"));
+		assertNotNull(
+				bottomObjectProperty = owlOntology.getObjectProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomObjectProperty"));
 		assertNotNull(bottomDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "bottomDataProperty"));
 		assertNotNull(topDataProperty = owlOntology.getDataProperty(OWL2URIDefinitions.OWL_ONTOLOGY_URI + "#" + "topDataProperty"));
 
@@ -330,7 +322,7 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 	}
 
 	@Test
-	@TestOrder(7)
+	@TestOrder(8)
 	public void setShowDataPropertyOnly() {
 
 		selector.setSelectDataProperties(true);
@@ -343,6 +335,7 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 		assertSameList(obm.getRoots(), thing, notation);
 
 		assertEquals(3, obm.getChildren(thing).size());
+
 		assertSameList(obm.getChildren(thing), resource, topDataProperty, bottomDataProperty);
 
 		assertEquals(2, obm.getChildren(resource).size());
@@ -354,7 +347,7 @@ public class TestFIBOWLPropertySelector extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBOWLPropertySelector.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBOWLPropertySelector.class.getSimpleName());
 	}
 
 	@AfterClass

@@ -65,7 +65,6 @@ import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -123,11 +122,13 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 					if (controller instanceof FMLControlledDiagramEditor) {
 						handleFMLControlledEdge(controller, context);
-					} else {
+					}
+					else {
 						performAddDefaultConnector(controller);
 					}
 
-					// System.out.println("Add ConnectorSpecification contextualMenuInvoker="+contextualMenuInvoker+" point="+contextualMenuClickedPoint);
+					// System.out.println("Add ConnectorSpecification contextualMenuInvoker="+contextualMenuInvoker+"
+					// point="+contextualMenuClickedPoint);
 					/*CompoundEdit drawEdge = editingContext.getUndoManager().startRecording("Draw edge");
 					DiagramConnector newConnector = factory.makeNewConnector("edge", fromShape.getDrawable(), toShape.getDrawable(),
 							controller.getDrawing().getModel());
@@ -186,25 +187,25 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 		/*	private void performAddConnector(DiagramEditor controller, ConnectorGraphicalRepresentation connectorGR, String text) {
 				CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
-
+		
 				DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
 				DiagramShape endShape = controller.getShapeForShapeNode(toShape);
-
+		
 				AddConnector action = AddConnector.actionType.makeNewAction(startShape, null, controller.getFlexoController().getEditor());
 				action.setToShape(endShape);
 				action.setGraphicalRepresentation(connectorGR);
 				action.setNewConnectorName(text);
 				action.doAction();
-
+		
 				System.out.println("Added new connector !");
 				editingContext.getUndoManager().stopRecording(drawEdgeEdit);
 				controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
-
+		
 				drawEdge = false;
 				fromShape = null;
 				toShape = null;
 				controller.getDrawingView().setDrawEdgeAction(null);
-
+		
 			}*/
 
 		private void handleFMLControlledEdge(final DiagramEditor controller, MouseControlContext context) {
@@ -225,7 +226,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				FlexoConceptInstance endFlexoConceptInstance = (FlexoConceptInstance) endObject;
 
 				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
-				List<LinkScheme> availableConnectors = new ArrayList<LinkScheme>();
+				List<LinkScheme> availableConnectors = new ArrayList<>();
 				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
 					if (flexoConcept.getFlexoBehaviours(LinkScheme.class) != null) {
 						for (LinkScheme linkScheme : flexoConcept.getFlexoBehaviours(LinkScheme.class)) {
@@ -239,13 +240,13 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				if (availableConnectors.size() > 0) {
 					JPopupMenu popup = new JPopupMenu();
 					for (final LinkScheme linkScheme : availableConnectors) {
-						JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(linkScheme.getLabel() != null ? linkScheme
-								.getLabel() : linkScheme.getName()));
-						menuItem.addActionListener(new DrawingEdgeActionListener((FMLControlledDiagramEditor) controller, startShape,
-								endShape, linkScheme));
+						JMenuItem menuItem = new JMenuItem(linkScheme.getDeclaringVirtualModel().getLocalizedDictionary()
+								.localizedForKey(linkScheme.getLabel() != null ? linkScheme.getLabel() : linkScheme.getName()));
+						menuItem.addActionListener(
+								new DrawingEdgeActionListener((FMLControlledDiagramEditor) controller, startShape, endShape, linkScheme));
 						popup.add(menuItem);
 					}
-					JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey("graphical_connector_only"));
+					JMenuItem menuItem = new JMenuItem(startObject.getLocales().localizedForKey("graphical_connector_only"));
 					menuItem.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -254,10 +255,12 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					});
 					popup.add(menuItem);
 					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
-				} else {
+				}
+				else {
 					performAddDefaultConnector(controller);
 				}
-			} else {
+			}
+			else {
 				performAddDefaultConnector(controller);
 			}
 
@@ -269,7 +272,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 						aivalableConnectorFlexoRoles.addAll(flexoConcept.getFlexoRoles(ConnectorRole.class));
 					}
 				}
-
+			
 				if (aivalableConnectorFlexoRoles.size() > 0) {
 					JPopupMenu popup = new JPopupMenu();
 					for (final ConnectorRole connectorPatternFlexoRole : aivalableConnectorFlexoRoles) {
@@ -309,7 +312,8 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				DrawingTreeNode<?, ?> dtn = controller.getDrawingView().getFocusRetriever().getFocusedObject(event);
 				if (dtn instanceof ShapeNode && dtn != fromShape && !fromShape.getAncestors().contains(dtn)) {
 					toShape = (ShapeNode<DiagramShape>) dtn;
-				} else {
+				}
+				else {
 					toShape = null;
 				}
 				currentDraggingLocationInDrawingView = getPointInDrawingView(controller, context);
@@ -321,20 +325,15 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 		public void paint(Graphics g, AbstractDianaEditor controller) {
 			if (drawEdge && currentDraggingLocationInDrawingView != null) {
-				Point from = controller
-						.getDrawing()
-						.getRoot()
-						.convertRemoteNormalizedPointToLocalViewCoordinates(fromShape.getShape().getShape().getCenter(), fromShape,
-								controller.getScale());
+				Point from = controller.getDrawing().getRoot().convertRemoteNormalizedPointToLocalViewCoordinates(
+						fromShape.getShape().getShape().getCenter(), fromShape, controller.getScale());
 				Point to = currentDraggingLocationInDrawingView;
 				if (toShape != null) {
-					to = controller
-							.getDrawing()
-							.getRoot()
-							.convertRemoteNormalizedPointToLocalViewCoordinates(toShape.getShape().getShape().getCenter(), toShape,
-									controller.getScale());
+					to = controller.getDrawing().getRoot().convertRemoteNormalizedPointToLocalViewCoordinates(
+							toShape.getShape().getShape().getCenter(), toShape, controller.getScale());
 					g.setColor(Color.BLUE);
-				} else {
+				}
+				else {
 					g.setColor(Color.RED);
 				}
 				g.drawLine(from.x, from.y, to.x, to.y);
@@ -358,9 +357,8 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(), null, controller
-						.getFlexoController().getEditor());
-				action.setLinkScheme(linkScheme);
+				LinkSchemeAction action = new LinkSchemeAction(linkScheme, controller.getVirtualModelInstance(), null,
+						controller.getFlexoController().getEditor());
 				action.setFromShape(sourceShape);
 				action.setToShape(targetShape);
 				action.doAction();

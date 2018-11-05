@@ -46,37 +46,39 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 
-public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OWLConcept, OWLConcept> {
+public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeleteOntologyObjects.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteOntologyObjects, OWLConcept, OWLConcept> actionType = new FlexoActionType<DeleteOntologyObjects, OWLConcept, OWLConcept>(
-			"delete", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>> actionType = new FlexoActionFactory<DeleteOntologyObjects, OWLConcept<?>, OWLConcept<?>>(
+			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteOntologyObjects makeNewAction(OWLConcept focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+		public DeleteOntologyObjects makeNewAction(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 			return new DeleteOntologyObjects(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(OWLConcept object, Vector<OWLConcept> globalSelection) {
+		public boolean isVisibleForSelection(OWLConcept<?> object, Vector<OWLConcept<?>> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(OWLConcept focusedObject, Vector<OWLConcept> globalSelection) {
-			Vector<OWLConcept> objectsToDelete = objectsToDelete(focusedObject, globalSelection);
+		public boolean isEnabledForSelection(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection) {
+			Vector<OWLConcept<?>> objectsToDelete = objectsToDelete(focusedObject, globalSelection);
 			if (objectsToDelete.size() == 0) {
 				return false;
 			}
@@ -94,25 +96,33 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 		FlexoObjectImpl.addActionForClass(DeleteOntologyObjects.actionType, OWLConcept.class);
 	}
 
-	protected static Vector<OWLConcept> objectsToDelete(OWLConcept focusedObject, Vector<OWLConcept> globalSelection) {
-		Vector<OWLConcept> returned = new Vector<OWLConcept>();
+	protected static Vector<OWLConcept<?>> objectsToDelete(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection) {
+		Vector<OWLConcept<?>> returned = new Vector<>();
 		if (globalSelection == null || !globalSelection.contains(focusedObject)) {
 			returned.add(focusedObject);
 		}
 		if (globalSelection != null) {
-			for (FlexoOntologyObjectImpl o : globalSelection) {
+			for (FlexoOntologyObjectImpl<?> o : globalSelection) {
 				if (o instanceof OWLClass || o instanceof OWLIndividual || o instanceof OWLObjectProperty
 						|| o instanceof IFlexoOntologyDataProperty) {
-					returned.add((OWLConcept) o);
+					returned.add((OWLConcept<?>) o);
 				}
 			}
 		}
 		return returned;
 	}
 
-	protected DeleteOntologyObjects(OWLConcept focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
+	protected DeleteOntologyObjects(OWLConcept<?> focusedObject, Vector<OWLConcept<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		logger.info("Created DeleteOntologyObjects action focusedObject=" + focusedObject + "globalSelection=" + globalSelection);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -126,12 +136,12 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 		if (logger.isLoggable(Level.INFO)) {
 			logger.info("selection to delete is: " + getObjectsToDelete());
 		}
-		for (OWLConcept o : getObjectsToDelete()) {
+		for (OWLConcept<?> o : getObjectsToDelete()) {
 			o.delete();
 		}
 	}
 
-	private Vector<OWLConcept> _objectsToDelete;
+	private Vector<OWLConcept<?>> _objectsToDelete;
 
 	/**
 	 * This method returns all the objects on which the delete method needs to be called. This should not be done by some other code than
@@ -139,7 +149,7 @@ public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OW
 	 * 
 	 * @return All the objects to be deleted.
 	 */
-	public Vector<OWLConcept> getObjectsToDelete() {
+	public Vector<OWLConcept<?>> getObjectsToDelete() {
 		if (_objectsToDelete == null) {
 			_objectsToDelete = objectsToDelete(getFocusedObject(), getGlobalSelection());
 		}

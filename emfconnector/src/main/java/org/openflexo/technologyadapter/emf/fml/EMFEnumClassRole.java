@@ -38,11 +38,13 @@
 
 package org.openflexo.technologyadapter.emf.fml;
 
-import org.openflexo.foundation.fml.ClassRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.ontology.fml.ClassRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 
 @ModelEntity
@@ -51,10 +53,15 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 @FML("EMFEnumRole")
 public interface EMFEnumClassRole extends ClassRole<EMFEnumClass> {
 
-	public static abstract class EMFEnumClassRoleImpl extends ClassRoleImpl<EMFEnumClass> implements EMFEnumClassRole {
+	public static abstract class EMFEnumClassRoleImpl extends ClassRoleImpl<EMFEnumClass>implements EMFEnumClassRole {
 
 		public EMFEnumClassRoleImpl() {
 			super();
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return EMFTechnologyAdapter.class;
 		}
 
 	}

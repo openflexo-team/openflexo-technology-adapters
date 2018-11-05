@@ -39,24 +39,23 @@
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.fml.binding.PowerpointBindingFactory;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceImpl;
+import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceFactory;
 
 /**
  * This class defines and implements the Powerpoint technology adapter
@@ -65,7 +64,7 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  * 
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
-@DeclareRepositoryType({ PowerpointSlideShowRepository.class })
+@DeclareResourceTypes({ PowerpointSlideshowResourceFactory.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(PowerpointTechnologyAdapter.class.getPackage().getName());
@@ -87,6 +86,11 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/PowerPointTechnologyAdapter";
+	}
+
+	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new PowerpointTechnologyContextManager(this, service);
 	}
@@ -102,16 +106,16 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @param resourceCenter
 	 */
-	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-
+	/*@Override
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	
 		PowerpointSlideShowRepository ssRepository = resourceCenter.getRepository(PowerpointSlideShowRepository.class, this);
 		if (ssRepository == null) {
 			ssRepository = createSlideshowRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			if (item instanceof File) {
@@ -120,15 +124,15 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 				PowerpointSlideshowResource ssRes = tryToLookupSlideshow(resourceCenter, candidateFile);
 			}
 		}
-
+	
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
-	}
+		notifyRepositoryStructureChanged();
+	}*/
 
-	protected PowerpointSlideshowResource tryToLookupSlideshow(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+	/*protected PowerpointSlideshowResource tryToLookupSlideshow(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		PowerpointTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidSlideshowFile(candidateFile)) {
-			PowerpointSlideshowResource ssRes = retrieveSlideshowResource(candidateFile);
+			PowerpointSlideshowResource ssRes = retrieveSlideshowResource(candidateFile, resourceCenter);
 			PowerpointSlideShowRepository ssRepository = resourceCenter.getRepository(PowerpointSlideShowRepository.class, this);
 			if (ssRes != null) {
 				RepositoryFolder<PowerpointSlideshowResource> folder;
@@ -143,21 +147,22 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public PowerpointSlideshowResource retrieveSlideshowResource(File slideshowFile) {
+	/*public PowerpointSlideshowResource retrieveSlideshowResource(File slideshowFile, FlexoResourceCenter<?> resourceCenter) {
 		PowerpointSlideshowResource ssResource = null;
-
+	
 		// TODO: try to look-up already found file
-
-		ssResource = PowerpointSlideshowResourceImpl.retrievePowerpointSlideshowResource(slideshowFile, getTechnologyContextManager());
-
+	
+		ssResource = PowerpointSlideshowResourceImpl.retrievePowerpointSlideshowResource(slideshowFile, getTechnologyContextManager(),
+				resourceCenter);
+	
 		return ssResource;
-	}
+	}*/
 
 	/**
 	 * Return flag indicating if supplied file appears as a valid slide show
@@ -166,29 +171,43 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @return
 	 */
-	public boolean isValidSlideshowFile(File candidateFile) {
+	/*public boolean isValidSlideshowFile(File candidateFile) {
 		return candidateFile.getName().endsWith(".pptx") || candidateFile.getName().endsWith(".ppt");
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		return false;
 	}
 
-	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	/*@Override
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
 			if (tryToLookupSlideshow(resourceCenter, candidateFile) != null) {
+				return true;
 			}
 		}
+		return false;
 	}
-
+	
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
+	
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
 
 	@Override
 	public PowerpointTechnologyContextManager getTechnologyContextManager() {
@@ -200,9 +219,18 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * Create a workbook repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public PowerpointSlideShowRepository createSlideshowRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public PowerpointSlideShowRepository createSlideshowRepository(FlexoResourceCenter<?> resourceCenter) {
 		PowerpointSlideShowRepository returned = new PowerpointSlideShowRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, PowerpointSlideShowRepository.class, this);
+		return returned;
+	}*/
+
+	public <I> PowerpointSlideShowRepository<I> getPowerpointSlideShowRepository(FlexoResourceCenter<I> resourceCenter) {
+		PowerpointSlideShowRepository<I> returned = resourceCenter.retrieveRepository(PowerpointSlideShowRepository.class, this);
+		if (returned == null) {
+			returned = PowerpointSlideShowRepository.instanciateNewRepository(this, resourceCenter);
+			resourceCenter.registerRepository(returned, PowerpointSlideShowRepository.class, this);
+		}
 		return returned;
 	}
 
@@ -214,19 +242,45 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * @param metaModelResource
 	 * @param technologyContextManager
 	 * @return
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
-	public PowerpointSlideshowResource createNewSlideshow(FlexoProject project, String pptFilename, String modelUri) {
+	@Deprecated
+	public PowerpointSlideshowResource createNewSlideshow(FlexoResourceCenter<File> rc, String pptFilename, String modelUri)
+			throws SaveResourceException, ModelDefinitionException {
 
-		File pptFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), pptFilename);
+		if (rc instanceof FlexoProject) {
+			File pptFile = new File(((FlexoProject<File>) rc).getProjectDirectory(), pptFilename);
 
-		modelUri = pptFile.toURI().toString();
+			modelUri = pptFile.toURI().toString();
 
-		PowerpointSlideshowResource slideshowResource = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(modelUri, pptFile,
-				getTechnologyContextManager());
+			PowerpointSlideshowResource slideshowResource = getPowerpointSlideshowResourceFactory().makeResource(pptFile, rc, true);
 
-		getTechnologyContextManager().registerResource(slideshowResource);
+			getTechnologyContextManager().registerResource(slideshowResource);
 
-		return slideshowResource;
+			return slideshowResource;
+		}
+		else {
+			logger.warning("UNABLE TO CREATE NEW FILE => not a FlexoProject: " + rc.toString());
+			return null;
+		}
 	}
+
+	@Override
+	public String getIdentifier() {
+		return "PPT";
+	}
+
+	public PowerpointSlideshowResourceFactory getPowerpointSlideshowResourceFactory() {
+		return getResourceFactory(PowerpointSlideshowResourceFactory.class);
+	}
+
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getPowerpointSlideShowRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
 
 }

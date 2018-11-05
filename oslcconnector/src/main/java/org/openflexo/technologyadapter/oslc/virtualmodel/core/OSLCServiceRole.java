@@ -42,13 +42,15 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCService;
 
 @ModelEntity
@@ -80,11 +82,11 @@ public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 		}
 
 		@Override
-		public ActorReference<OSLCService> makeActorReference(OSLCService object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ActorReference<OSLCService> makeActorReference(OSLCService object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<OSLCService> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
 		}
@@ -94,5 +96,11 @@ public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 			// TODO Auto-generated method stub
 			return false;
 		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return OSLCTechnologyAdapter.class;
+		}
+
 	}
 }

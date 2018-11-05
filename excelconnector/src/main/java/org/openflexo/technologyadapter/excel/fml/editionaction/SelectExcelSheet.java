@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -57,16 +57,12 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ImplementationClass(SelectExcelSheet.SelectExcelSheetImpl.class)
 @XMLElement
 @FML("SelectExcelSheet")
-public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelSheet> {
+public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> {
 
-	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelSheet> implements SelectExcelSheet {
+	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet>
+			implements SelectExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(SelectExcelSheet.class.getPackage().getName());
-
-		public SelectExcelSheetImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		public Type getFetchedType() {
@@ -74,26 +70,18 @@ public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, Exce
 		}
 
 		@Override
-		public List<ExcelSheet> execute(FlexoBehaviourAction action) {
+		public List<ExcelSheet> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
-				logger.warning("Could not access model slot instance. Abort.");
-				return null;
-			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
-				logger.warning("Could not access model adressed by model slot instance. Abort.");
-				return null;
-			}
+			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getAccessedResourceData();
-
-			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
+			List<ExcelSheet> selectedExcelSheets = new ArrayList<>(0);
 
 			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
 
-			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, action);
+			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, evaluationContext);
 
 			return returned;
+
 		}
 	}
 }

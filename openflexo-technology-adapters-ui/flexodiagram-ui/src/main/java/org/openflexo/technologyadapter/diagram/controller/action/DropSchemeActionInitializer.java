@@ -43,17 +43,17 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.controller.DropSchemeParametersRetriever;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -63,12 +63,14 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject> {
+public class DropSchemeActionInitializer
+		extends ActionInitializer<DropSchemeAction, FMLRTVirtualModelInstance, VirtualModelInstanceObject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public DropSchemeActionInitializer(ControllerActionInitializer actionInitializer) {
-		super(DropSchemeAction.actionType, actionInitializer);
+		super(DropSchemeAction.class, actionInitializer);
 	}
 
 	@Override
@@ -76,73 +78,80 @@ public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAct
 		return new FlexoActionInitializer<DropSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, DropSchemeAction action) {
-				DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action);
+				getController().willExecute(action);
+
+				DropSchemeActionWizard wizard = new DropSchemeActionWizard(action, getController());
+				if (!wizard.isSkipable()) {
+					WizardDialog dialog = new WizardDialog(wizard, getController());
+					dialog.showDialog();
+					if (dialog.getStatus() != Status.VALIDATED) {
+						// Operation cancelled
+						return false;
+					}
+				}
+				return true;
+				/*getController().willExecute(action);
+				DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action, getController());
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
 				}
-				return parameterRetriever.retrieveParameters();
+				return parameterRetriever.retrieveParameters();*/
 			}
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DropSchemeAction> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DropSchemeAction>() {
-			@Override
-			public boolean run(EventObject e, DropSchemeAction action) {
-				/*	DiagramShape shape = action.getPrimaryShape();
-					logger.info("border5 = " + ((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation()).getBorder());
-					if (shape.getParent() != action.getParent()) {
-						DiagramShapeGR parentNode = (DiagramShapeGR) shape.getParent().getGraphicalRepresentation();
-						DiagramShapeGR expectedGR = (DiagramShapeGR) action.getParent().getGraphicalRepresentation();
-						DiagramShapeGR myGR = (DiagramShapeGR) action.getPrimaryShape().getGraphicalRepresentation();
-						Point p = new Point((int) myGR.getX(), (int) myGR.getY());
-						Point newP = GraphicalRepresentation.convertPoint(expectedGR, p, parentNode, 1.0);
-						myGR.setLocation(new FGEPoint(newP.x, newP.y));
-						logger.info("border6 = " + myGR.getBorder());
-						logger.info("ShapeSpecification has been relocated");
-					}*/
+		return (e, action) -> {
+			/*	DiagramShape shape = action.getPrimaryShape();
+				logger.info("border5 = " + ((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation()).getBorder());
+				if (shape.getParent() != action.getParent()) {
+					DiagramShapeGR parentNode = (DiagramShapeGR) shape.getParent().getGraphicalRepresentation();
+					DiagramShapeGR expectedGR = (DiagramShapeGR) action.getParent().getGraphicalRepresentation();
+					DiagramShapeGR myGR = (DiagramShapeGR) action.getPrimaryShape().getGraphicalRepresentation();
+					Point p = new Point((int) myGR.getX(), (int) myGR.getY());
+					Point newP = GraphicalRepresentation.convertPoint(expectedGR, p, parentNode, 1.0);
+					myGR.setLocation(new FGEPoint(newP.x, newP.y));
+					logger.info("border6 = " + myGR.getBorder());
+					logger.info("ShapeSpecification has been relocated");
+				}*/
 
-				getController().getSelectionManager().setSelectedObject(action.getPrimaryShape());
-				if (action.getPrimaryShape() != null) {
-					ModuleView<?> moduleView = getController().moduleViewForObject(action.getPrimaryShape().getDiagram(), false);
-					if (moduleView instanceof FreeDiagramModuleView) {
+			getController().getSelectionManager().setSelectedObject(action.getPrimaryShape());
+			if (action.getPrimaryShape() != null) {
+				ModuleView<?> moduleView = getController().moduleViewForObject(action.getPrimaryShape().getDiagram(), false);
+				if (moduleView instanceof FreeDiagramModuleView) {
 
-						ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
-								.getShapeNode(action.getPrimaryShape());
-						JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
-								.shapeViewForNode(shapeNode);
-						if (shapeView != null) {
-							if (shapeView.getLabelView() != null) {
-								shapeNode.setContinuousTextEditing(true);
-								shapeView.getLabelView().startEdition();
-								// shapeView.continueEdition();
-							}
+					ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
+							.getShapeNode(action.getPrimaryShape());
+					JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
+							.shapeViewForNode(shapeNode);
+					if (shapeView != null) {
+						if (shapeView.getLabelView() != null) {
+							shapeNode.setContinuousTextEditing(true);
+							shapeView.getLabelView().startEdition();
+							// shapeView.continueEdition();
 						}
 					}
 				}
-
-				return true;
 			}
+
+			return true;
 		};
 	}
 
 	@Override
 	protected FlexoExceptionHandler<DropSchemeAction> getDefaultExceptionHandler() {
-		return new FlexoExceptionHandler<DropSchemeAction>() {
-			@Override
-			public boolean handleException(FlexoException exception, DropSchemeAction action) {
-				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
-					return true;
-				}
-				return false;
+		return (exception, action) -> {
+			if (exception instanceof NotImplementedException) {
+				FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
+				return true;
 			}
+			return false;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionFactory) {
 		return DiagramIconLibrary.SHAPE_ICON;
 	}
 

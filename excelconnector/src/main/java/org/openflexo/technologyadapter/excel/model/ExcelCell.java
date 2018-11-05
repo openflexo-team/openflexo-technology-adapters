@@ -39,18 +39,26 @@
 package org.openflexo.technologyadapter.excel.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellReference;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.connie.type.PrimitiveType;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
 
 /**
  * Represents an Excel cell, implemented as a wrapper of a POI Cell
@@ -58,264 +66,75 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
  * @author vincent, sylvain
  * 
  */
-public class ExcelCell extends ExcelObject {
+@ModelEntity
+@ImplementationClass(value = ExcelCell.ExcelCellImpl.class)
+@XMLElement
+public interface ExcelCell extends ExcelObject, ExcelStyleObject {
 
-	static final Logger logger = Logger.getLogger(ExcelCell.class.getPackage().getName());
-
-	private Cell cell;
-	private final ExcelRow excelRow;
-
-	private CellRangeAddress cellRange = null;
-
-	public enum CellType {
-		Blank, Numeric, String, NumericFormula, StringFormula, Boolean, Error, Empty, Unknown
-	}
-
-	public enum CellStyleFeature {
-		Foreground, Background, Pattern, Alignment, Font, BorderBottom, BorderTop, BorderLeft, BorderRight
-	}
-
-	public enum CellBorderStyleFeature {
-		BORDER_DASH_DOT,
-		BORDER_DASH_DOT_DOT,
-		BORDER_DASHED,
-		BORDER_DOTTED,
-		BORDER_DOUBLE,
-		BORDER_HAIR,
-		BORDER_MEDIUM,
-		BORDER_MEDIUM_DASH_DOT,
-		BORDER_MEDIUM_DASH_DOT_DOT,
-		BORDER_MEDIUM_DASHED,
-		BORDER_NONE,
-		BORDER_SLANTED_DASH_DOT,
-		BORDER_THICK,
-		BORDER_THIN
-	}
-
-	public enum CellAlignmentStyleFeature {
-		ALIGN_CENTER,
-		ALIGN_CENTER_SELECTION,
-		ALIGN_FILL,
-		ALIGN_GENERAL,
-		ALIGN_JUSTIFY,
-		ALIGN_LEFT,
-		ALIGN_RIGHT,
-		VERTICAL_BOTTOM,
-		VERTICAL_CENTER,
-		VERTICAL_JUSTIFY,
-		VERTICAL_TOP
-	}
-
-	public enum CellFontStyleFeature {
-		ANSI_CHARSET,
-		BOLDWEIGHT_BOLD,
-		BOLDWEIGHT_NORMAL,
-		COLOR_NORMAL,
-		COLOR_RED,
-		DEFAULT_CHARSET,
-		SS_NONE,
-		SS_SUB,
-		SS_SUPER,
-		SYMBOL_CHARSET,
-		U_DOUBLE,
-		U_DOUBLE_ACCOUNTING,
-		U_NONE,
-		U_SINGLE,
-		U_SINGLE_ACCOUNTING
-	}
-
-	public Cell getCell() {
-		return cell;
-	}
-
-	public ExcelCell(Cell cell, ExcelRow excelRow, ExcelTechnologyAdapter adapter) {
-		super(adapter);
-		this.cell = cell;
-		this.excelRow = excelRow;
-	}
-
-	public ExcelRow getExcelRow() {
-		return excelRow;
-	}
-
-	public ExcelSheet getExcelSheet() {
-		return getExcelRow().getExcelSheet();
-	}
-
-	public int getColumnIndex() {
-		if (cell != null) {
-			return cell.getColumnIndex();
-		} else {
-			return getExcelRow().getExcelCells().indexOf(this);
-		}
-	}
-
-	public int getRowIndex() {
-		if (cell != null) {
-			return cell.getRowIndex();
-		} else {
-			return getExcelRow().getRowIndex();
-		}
-	}
-
-	@Override
-	public String getName() {
-		return "cell." + "row" + cell.getRowIndex() + "." + "col_" + cell.getColumnIndex();
-	}
-
-	public void merge(CellRangeAddress cellRange) {
-		this.cellRange = cellRange;
-	}
+	@PropertyIdentifier(type = ExcelRow.class)
+	public static final String EXCEL_ROW_KEY = "excelRow";
+	@PropertyIdentifier(type = Cell.class)
+	public static final String CELL_KEY = "cell";
 
 	/**
-	 * Indicated if this cell is merged
+	 * Return {@link ExcelRow} where this {@link ExcelCell} is defined
 	 * 
 	 * @return
 	 */
-	public boolean isMerged() {
-		return cellRange != null;
-	}
+	@Getter(value = EXCEL_ROW_KEY)
+	public ExcelRow getExcelRow();
 
 	/**
-	 * Return the list of cells with which this cell has been merged
+	 * Sets {@link ExcelRow} where this {@link ExcelCell} is defined
+	 * 
+	 * @param workbook
+	 */
+	@Setter(EXCEL_ROW_KEY)
+	public void setExcelRow(ExcelRow row);
+
+	/**
+	 * Return cell wrapped by this {@link ExcelCell}
 	 * 
 	 * @return
 	 */
-	public List<ExcelCell> getMergedCells() {
-		if (isMerged()) {
-			List<ExcelCell> returned = new ArrayList<ExcelCell>();
-			for (int row = cellRange.getFirstRow(); row <= cellRange.getLastRow(); row++) {
-				for (int col = cellRange.getFirstColumn(); col <= cellRange.getLastColumn(); col++) {
-					returned.add(getExcelSheet().getCellAt(row, col));
-				}
-			}
-			return returned;
-		} else {
-			return null;
-		}
-	}
+	@Getter(value = CELL_KEY, ignoreType = true)
+	public Cell getCell();
 
 	/**
-	 * Return the top left merged cell
+	 * Sets cell wrapped by this {@link ExcelCell}
+	 * 
+	 * @param sheet
+	 */
+	@Setter(CELL_KEY)
+	public void setCell(Cell cell);
+
+	/**
+	 * Return {@link ExcelSheet} where this cell is defined
 	 * 
 	 * @return
 	 */
-	public ExcelCell getTopLeftMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getFirstRow(), cellRange.getFirstColumn());
-		}
-		return null;
-	}
+	public ExcelSheet getExcelSheet();
 
 	/**
-	 * Return the top right merged cell
+	 * Return identifier of the cell under the form <code>B7</code>
 	 * 
 	 * @return
 	 */
-	public ExcelCell getTopRightMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getFirstRow(), cellRange.getLastColumn());
-		}
-		return null;
-	}
+	public String getIdentifier();
 
 	/**
-	 * Return the bottom left merged cell
+	 * Return index of the column this cell belongs to
 	 * 
 	 * @return
 	 */
-	public ExcelCell getBottomLeftMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getLastRow(), cellRange.getFirstColumn());
-		}
-		return null;
-	}
+	public int getColumnIndex();
 
 	/**
-	 * Return the bottom right merged cell
+	 * Return index of the row this cell belongs to
 	 * 
 	 * @return
 	 */
-	public ExcelCell getBottomRightMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getLastRow(), cellRange.getLastColumn());
-		}
-		return null;
-	}
-
-	/**
-	 * Return the merged cell located at the top and at same column
-	 * 
-	 * @return
-	 */
-	public ExcelCell getTopMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getFirstRow(), getColumnIndex());
-		}
-		return null;
-	}
-
-	/**
-	 * Return the merged cell located at the bottom and at same column
-	 * 
-	 * @return
-	 */
-	public ExcelCell getBottomMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getLastRow(), getColumnIndex());
-		}
-		return null;
-	}
-
-	/**
-	 * Return the merged cell located at the left and at same row
-	 * 
-	 * @return
-	 */
-	public ExcelCell getLeftMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(getRowIndex(), cellRange.getFirstColumn());
-		}
-		return null;
-	}
-
-	/**
-	 * Return the merged cell located at the right and at same row
-	 * 
-	 * @return
-	 */
-	public ExcelCell getRightMergedCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(getRowIndex(), cellRange.getLastColumn());
-		}
-		return null;
-	}
-
-	/**
-	 * Return the cell located at the top of this cell.<br>
-	 * If cell is merged, return first non-merged cell located at the top of this cell
-	 * 
-	 * @return
-	 */
-	public ExcelCell getUpperCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getFirstRow() - 1, getColumnIndex());
-		}
-		return getExcelSheet().getCellAt(getRowIndex() - 1, getColumnIndex());
-	}
-
-	/**
-	 * Return the cell located at the bottom of this cell.<br>
-	 * If cell is merged, return first non-merged cell located at the bottom of this cell
-	 * 
-	 * @return
-	 */
-	public ExcelCell getLowerCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(cellRange.getLastRow() + 1, getColumnIndex());
-		}
-		return getExcelSheet().getCellAt(getRowIndex() + 1, getColumnIndex());
-	}
+	public int getRowIndex();
 
 	/**
 	 * Return the cell located at the left of this cell.<br>
@@ -323,12 +142,7 @@ public class ExcelCell extends ExcelObject {
 	 * 
 	 * @return
 	 */
-	public ExcelCell getPreviousCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(getRowIndex(), cellRange.getFirstColumn() - 1);
-		}
-		return getExcelSheet().getCellAt(getRowIndex(), getColumnIndex() - 1);
-	}
+	public ExcelCell getPreviousCell();
 
 	/**
 	 * Return the cell located at the right of this cell.<br>
@@ -336,408 +150,907 @@ public class ExcelCell extends ExcelObject {
 	 * 
 	 * @return
 	 */
-	public ExcelCell getNextCell() {
-		if (isMerged()) {
-			return getExcelSheet().getCellAt(getRowIndex(), cellRange.getLastColumn() + 1);
-		}
-		return getExcelSheet().getCellAt(getRowIndex(), getColumnIndex() + 1);
-	}
+	public ExcelCell getNextCell();
 
 	/**
 	 * Return type of this cell
 	 * 
 	 * @return
 	 */
-	public CellType getCellType() {
-		if (cell == null) {
-			return CellType.Empty;
-		}
-		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_BLANK:
-				return CellType.Blank;
-			case Cell.CELL_TYPE_NUMERIC:
-				return CellType.Numeric;
-			case Cell.CELL_TYPE_STRING:
-				return CellType.String;
-			case Cell.CELL_TYPE_FORMULA:
-				try {
-					cell.getNumericCellValue();
-					return CellType.NumericFormula;
-				} catch (IllegalStateException e1) {
-					try {
-						cell.getStringCellValue();
-						return CellType.StringFormula;
-					} catch (IllegalStateException e2) {
-						return CellType.Unknown;
-					}
-				}
-			case Cell.CELL_TYPE_BOOLEAN:
-				return CellType.Boolean;
-			case Cell.CELL_TYPE_ERROR:
-				return CellType.Error;
-			default:
-				return CellType.Unknown;
-		}
-	}
+	public CellType getCellType();
 
-	private static final DataFormatter FORMATTER = new DataFormatter();
+	public void setCellType(CellType cellType);
 
 	/**
 	 * Return the value to be displayed in a generic viewer
 	 * 
 	 * @return
 	 */
-	public String getDisplayValue() {
-		try {
-			return FORMATTER.formatCellValue(cell, getExcelSheet().getEvaluator());
-		} catch (RuntimeException e) {
-			return "!ERROR: " + e.getMessage();
-		}
-	}
+	public String getDisplayValue();
 
 	/**
 	 * Return the value (set or computed) associated with this cell
 	 * 
 	 * @return
 	 */
-	public Object getCellValue() {
-		switch (getCellType()) {
-			case Blank:
-				return null;
-			case Boolean:
-				return cell.getBooleanCellValue();
-			case Numeric:
-				if (DateUtil.isCellDateFormatted(cell)) {
-					return cell.getDateCellValue();
-				}
-				return cell.getNumericCellValue();
-			case NumericFormula:
-				if (DateUtil.isCellDateFormatted(cell)) {
-					return cell.getDateCellValue();
-				}
-				return cell.getNumericCellValue();
-			case String:
-				return cell.getStringCellValue();
-			case StringFormula:
-				return cell.getStringCellValue();
-			case Empty:
-				return null;
-			case Error:
-				return cell.getErrorCellValue();
-			case Unknown:
-				return "???";
-			default:
-				return "????";
-		}
-	};
+	public Object getCellValue();
 
-	public String getCellValueAsString() {
-		switch (getCellType()) {
-			case Blank:
-				return null;
-			case Boolean:
-				return Boolean.toString(cell.getBooleanCellValue());
-			case Numeric:
-				if (DateUtil.isCellDateFormatted(cell)) {
-					return cell.getDateCellValue().toString();
-				}
-				return Double.toString(cell.getNumericCellValue());
-			case NumericFormula:
-				if (DateUtil.isCellDateFormatted(cell)) {
-					return cell.getDateCellValue().toString();
-				}
-				return Double.toString(cell.getNumericCellValue());
-			case String:
-				return cell.getStringCellValue();
-			case StringFormula:
-				return cell.getStringCellValue();
-			case Empty:
-				return null;
-			case Error:
-				return Byte.toString(cell.getErrorCellValue());
-			case Unknown:
-				return "???";
-			default:
-				return "????";
-		}
-	}
+	public String getCellValueAsString();
 
-	private void setCellFormula(String formula) {
-		if (formula.startsWith("=")) {
-			formula = formula.substring(formula.indexOf("=") + 1);
-		}
-		try {
-			cell.setCellFormula(formula);
-		} catch (IllegalArgumentException e) {
-			logger.warning("Cannot parse forumla: " + formula);
-		}
-		getExcelSheet().getEvaluator().clearAllCachedResultValues();
-	}
+	public void setCellValueAsString(String cellValueAsString);
 
-	private CellValue evaluateFormula() {
-		return getExcelSheet().getEvaluator().evaluate(cell);
-	}
+	// public Number getCellValueAsNumber();
 
-	protected void createCellWhenNonExistant() {
-		if (cell == null) {
-			getExcelRow().createRowWhenNonExistant();
-			cell = getExcelRow().getRow().createCell(getColumnIndex());
-		}
-	}
+	public Integer getCellValueAsInteger();
 
-	public void setCellValue(String value) {
+	public void setCellValueAsInteger(Integer value);
 
-		createCellWhenNonExistant();
+	public void setCellValue(Object value);
 
-		if (value.startsWith("=")) {
-			setCellFormula(value);
-			setCellValue(evaluateFormula().formatAsString());
-			return;
-		}
-		if (value.equalsIgnoreCase("true")) {
-			cell.setCellValue(true);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		} else if (value.equalsIgnoreCase("false")) {
-			cell.setCellValue(false);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		}
-		try {
-			double doubleValue = Double.parseDouble(value);
-			cell.setCellValue(doubleValue);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		} catch (NumberFormatException e) {
-			cell.setCellValue(value);
-			getExcelSheet().getEvaluator().clearAllCachedResultValues();
-			return;
-		}
-	}
+	public void setCellStringValue(String value);
+
+	public void setCellNumericValue(Number value);
+
+	public void setCellBooleanValue(boolean value);
+
+	public void setCellDateValue(Date value);
 
 	/**
 	 * Return the specification of this cell
 	 * 
 	 * @return
 	 */
-	public String getDisplayCellSpecification() {
-		try {
-			if (getCellType() == CellType.NumericFormula || getCellType() == CellType.StringFormula) {
-				return "=" + FORMATTER.formatCellValue(cell);
-			}
-			return FORMATTER.formatCellValue(cell);
-		} catch (RuntimeException e) {
-			return "!ERROR: " + e.getMessage();
-		}
-	};
+	public String getDisplayCellSpecification();
+
+	public boolean hasTopBorder();
+
+	public boolean hasLeftBorder();
+
+	public boolean hasRightBorder();
+
+	public boolean hasBottomBorder();
+
+	public void setCellStyle(CellStyle style);
+
+	public CellStyle getCellStyle();
 
 	/**
-	 * Return a String identifying this cell (eg. (0,0) will return "A1")
+	 * Merge cell with supplied range
+	 * 
+	 * @param cellRange
+	 */
+	public void merge(CellRangeAddress cellRange);
+
+	/**
+	 * Indicated if this cell is merged
 	 * 
 	 * @return
 	 */
-	public String getCellIdentifier() {
-		return CellReference.convertNumToColString(getColumnIndex());
-	}
+	public boolean isMerged();
 
 	/**
-	 * Return string representation for this cell (debug)
+	 * Return the list of cells with which this cell has been merged
+	 * 
+	 * @return
 	 */
-	@Override
-	public String toString() {
-		return "["
-				+ getCellIdentifier()
-				+ "]/"
-				+ getCellType().name()
-				+ "/"
-				+ (isMerged() ? "MergedWith:" + "[" + getTopLeftMergedCell().getCellIdentifier() + ":"
-						+ getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "") + getDisplayValue();
-	}
+	public List<ExcelCell> getMergedCells();
 
-	public boolean hasTopBorder() {
-		if ((cell != null && cell.getCellStyle().getBorderTop() != CellStyle.BORDER_NONE)) {
-			return true;
-		}
-		if (isMerged()) {
-			return getTopMergedCell().cell != null && getTopMergedCell().cell.getCellStyle().getBorderTop() != CellStyle.BORDER_NONE;
-		}
-		return false;
-	}
+	/**
+	 * Return the top left merged cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getTopLeftMergedCell();
 
-	public boolean hasLeftBorder() {
-		if (cell != null && cell.getCellStyle().getBorderLeft() != CellStyle.BORDER_NONE) {
-			return true;
-		}
-		if (isMerged()) {
-			return getLeftMergedCell().cell != null && getLeftMergedCell().cell.getCellStyle().getBorderLeft() != CellStyle.BORDER_NONE;
-		}
-		return false;
-	}
+	/**
+	 * Return the top right merged cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getTopRightMergedCell();
 
-	public boolean hasRightBorder() {
-		if (cell != null && cell.getCellStyle().getBorderRight() != CellStyle.BORDER_NONE) {
-			return true;
-		}
-		if (isMerged()) {
-			return getRightMergedCell().cell != null && getRightMergedCell().cell.getCellStyle().getBorderRight() != CellStyle.BORDER_NONE;
-		}
-		return false;
-	}
+	/**
+	 * Return the bottom left merged cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getBottomLeftMergedCell();
 
-	public boolean hasBottomBorder() {
-		if (cell != null && cell.getCellStyle().getBorderBottom() != CellStyle.BORDER_NONE) {
-			return true;
-		}
-		if (isMerged()) {
-			return getBottomMergedCell().cell != null
-					&& getBottomMergedCell().cell.getCellStyle().getBorderBottom() != CellStyle.BORDER_NONE;
-		}
-		return false;
-	}
+	/**
+	 * Return the bottom right merged cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getBottomRightMergedCell();
 
-	public void setCellStyle(CellStyle style) {
-		if (getCell() != null) {
-			getCell().setCellStyle(style);
+	/**
+	 * Return the merged cell located at the top and at same column
+	 * 
+	 * @return
+	 */
+	public ExcelCell getTopMergedCell();
+
+	/**
+	 * Return the merged cell located at the bottom and at same column
+	 * 
+	 * @return
+	 */
+	public ExcelCell getBottomMergedCell();
+
+	/**
+	 * Return the merged cell located at the left and at same row
+	 * 
+	 * @return
+	 */
+	public ExcelCell getLeftMergedCell();
+
+	/**
+	 * Return the merged cell located at the right and at same row
+	 * 
+	 * @return
+	 */
+	public ExcelCell getRightMergedCell();
+
+	/**
+	 * Return the cell located at the top of this cell.<br>
+	 * If cell is merged, return first non-merged cell located at the top of this cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getUpperCell();
+
+	/**
+	 * Return the cell located at the bottom of this cell.<br>
+	 * If cell is merged, return first non-merged cell located at the bottom of this cell
+	 * 
+	 * @return
+	 */
+	public ExcelCell getLowerCell();
+
+	public PrimitiveType getInferedPrimitiveType();
+
+	/**
+	 * Copy contents and formatting from supplied cell
+	 * 
+	 * @param cellToCopy
+	 */
+	public void copyCellFrom(ExcelCell cellToCopy);
+
+	/**
+	 * Default base implementation for {@link ExcelCell}
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public static abstract class ExcelCellImpl extends ExcelObject.ExcelObjectImpl implements ExcelCell {
+		static final Logger logger = Logger.getLogger(ExcelCell.class.getPackage().getName());
+
+		// private Cell cell;
+		// private ExcelRow excelRow;
+
+		private CellRangeAddress cellRange = null;
+
+		/*@Override
+		public Cell getCell() {
+			return cell;
+		}*/
+
+		/*public ExcelCell(Cell cell, ExcelRow excelRow, ExcelTechnologyAdapter adapter) {
+			super(adapter);
+			this.cell = cell;
+			this.excelRow = excelRow;
+		}*/
+
+		/*@Override
+		public ExcelRow getExcelRow() {
+			return excelRow;
+		}*/
+
+		@Override
+		public ExcelWorkbook getResourceData() {
+			return getExcelSheet().getExcelWorkbook();
 		}
-	}
 
-	public CellStyle getCellStyle() {
-		if (getCell() != null) {
-			return getCell().getCellStyle();
+		@Override
+		public ExcelSheet getExcelSheet() {
+			return getExcelRow().getExcelSheet();
 		}
-		return null;
-	}
 
-	public void setCellStyle(CellStyleFeature cellStyle, Object value) {
-		if (getCell() != null && cellStyle != null) {
+		@Override
+		public int getColumnIndex() {
+			if (getCell() != null) {
+				return getCell().getColumnIndex();
+			}
+			return getExcelRow().getExcelCells().indexOf(this);
+		}
 
-			// First get the old style
-			CellStyle oldStyle = getCellStyle();
-			// Then create a new style
-			CellStyle newStyle = getExcelSheet().getWorkbook().getWorkbook().createCellStyle();
-			// Apply the old parameters to the new style
-			newStyle.cloneStyleFrom(oldStyle);
-			// Then apply the new parameter to the new style
-			switch (cellStyle) {
-				case Alignment:
-					newStyle.setAlignment(getPOIAlignmentStyle((CellAlignmentStyleFeature) value));
-					break;
-				case Font:
-					newStyle.setFont((Font) value);
-					break;
-				case BorderBottom:
-					newStyle.setBorderBottom(getPOIBorderStyle((CellBorderStyleFeature) value));
-					break;
-				case BorderLeft:
-					newStyle.setBorderLeft(getPOIBorderStyle((CellBorderStyleFeature) value));
-					break;
-				case BorderRight:
-					newStyle.setBorderRight(getPOIBorderStyle((CellBorderStyleFeature) value));
-					break;
-				case BorderTop:
-					newStyle.setBorderTop(getPOIBorderStyle((CellBorderStyleFeature) value));
-					break;
-				case Foreground:
-					if (value instanceof String) {
-						newStyle.setFillForegroundColor(Short.parseShort((String) value));
+		@Override
+		public int getRowIndex() {
+			if (getCell() != null) {
+				return getCell().getRowIndex();
+			}
+			return getExcelRow().getRowIndex();
+		}
+
+		/*@Override
+		public String getName() {
+		
+			if (cell != null) {
+				return "cell." + "row" + cell.getRowIndex() + "." + "col_" + cell.getColumnIndex();
+			}
+			else {
+				// This happens when the cell is empty (without any value)
+				// TODO: there is a risk for major issues here
+				return "EmpyCell";
+			}
+		}*/
+
+		@Override
+		public void merge(CellRangeAddress cellRange) {
+			this.cellRange = cellRange;
+		}
+
+		/**
+		 * Indicated if this cell is merged
+		 * 
+		 * @return
+		 */
+		@Override
+		public boolean isMerged() {
+			return cellRange != null;
+		}
+
+		/**
+		 * Return the list of cells with which this cell has been merged
+		 * 
+		 * @return
+		 */
+		@Override
+		public List<ExcelCell> getMergedCells() {
+			if (isMerged()) {
+				List<ExcelCell> returned = new ArrayList<>();
+				for (int row = cellRange.getFirstRow(); row <= cellRange.getLastRow(); row++) {
+					for (int col = cellRange.getFirstColumn(); col <= cellRange.getLastColumn(); col++) {
+						returned.add(getExcelSheet().getCellAt(row, col));
 					}
-					if (value instanceof Long) {
-						newStyle.setFillForegroundColor(((Long) value).shortValue());
-					} else {
-						break;
+				}
+				return returned;
+			}
+			return null;
+		}
+
+		/**
+		 * Return the top left merged cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getTopLeftMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getFirstRow(), cellRange.getFirstColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the top right merged cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getTopRightMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getFirstRow(), cellRange.getLastColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the bottom left merged cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getBottomLeftMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getLastRow(), cellRange.getFirstColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the bottom right merged cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getBottomRightMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getLastRow(), cellRange.getLastColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the merged cell located at the top and at same column
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getTopMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getFirstRow(), getColumnIndex());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the merged cell located at the bottom and at same column
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getBottomMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getLastRow(), getColumnIndex());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the merged cell located at the left and at same row
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getLeftMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(getRowIndex(), cellRange.getFirstColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the merged cell located at the right and at same row
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getRightMergedCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(getRowIndex(), cellRange.getLastColumn());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the cell located at the top of this cell.<br>
+		 * If cell is merged, return first non-merged cell located at the top of this cell<br>
+		 * If cells belongs to first row, return null;
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getUpperCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getFirstRow() - 1, getColumnIndex());
+			}
+			if (getRowIndex() > 0) {
+				return getExcelSheet().getCellAt(getRowIndex() - 1, getColumnIndex());
+			}
+			return null;
+		}
+
+		/**
+		 * Return the cell located at the bottom of this cell.<br>
+		 * If cell is merged, return first non-merged cell located at the bottom of this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getLowerCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(cellRange.getLastRow() + 1, getColumnIndex());
+			}
+			return getExcelSheet().getCellAt(getRowIndex() + 1, getColumnIndex());
+		}
+
+		/**
+		 * Return the cell located at the left of this cell.<br>
+		 * If cell is merged, return first non-merged cell located at the left of this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getPreviousCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(getRowIndex(), cellRange.getFirstColumn() - 1);
+			}
+			return getExcelSheet().getCellAt(getRowIndex(), getColumnIndex() - 1);
+		}
+
+		/**
+		 * Return the cell located at the right of this cell.<br>
+		 * If cell is merged, return first non-merged cell located at the right of this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public ExcelCell getNextCell() {
+			if (isMerged()) {
+				return getExcelSheet().getCellAt(getRowIndex(), cellRange.getLastColumn() + 1);
+			}
+			return getExcelSheet().getCellAt(getRowIndex(), getColumnIndex() + 1);
+		}
+
+		/**
+		 * Return type of this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public CellType getCellType() {
+			if (getCell() == null) {
+				return CellType.Empty;
+			}
+			switch (getCell().getCellTypeEnum()) {
+				case BLANK:
+					return CellType.Blank;
+				case NUMERIC:
+					return CellType.Numeric;
+				case STRING:
+					return CellType.String;
+				case FORMULA:
+					try {
+						getCell().getNumericCellValue();
+						return CellType.NumericFormula;
+					} catch (IllegalStateException e1) {
+						try {
+							getCell().getStringCellValue();
+							return CellType.StringFormula;
+						} catch (IllegalStateException e2) {
+							return CellType.Unknown;
+						}
 					}
-				case Background:
-					if (value instanceof Long) {
-						newStyle.setFillForegroundColor(((Long) value).shortValue());
-						newStyle.setFillBackgroundColor(((Long) value).shortValue());
-						newStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-					} else {
-						break;
-					}
+				case BOOLEAN:
+					return CellType.Boolean;
+				case ERROR:
+					return CellType.Error;
+				default:
+					return CellType.Unknown;
+			}
+		}
+
+		@Override
+		public void setCellType(CellType cellType) {
+			createCellWhenNonExistant();
+			switch (cellType) {
+				case Blank:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.BLANK);
+					break;
+				case Boolean:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.BOOLEAN);
+					break;
+				case Error:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.ERROR);
+					break;
+				case Numeric:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.NUMERIC);
+					break;
+				case NumericFormula:
+				case StringFormula:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.FORMULA);
+					break;
+				case String:
+					getCell().setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
+					break;
 				default:
 					break;
 			}
-			// Set the style of this cell to the new style
-			getCell().setCellStyle(newStyle);
 		}
-		return;
-	}
 
-	private Short getPOIBorderStyle(CellBorderStyleFeature borderStyle) {
-		if (borderStyle.name().equals("BORDER_DASH_DOT")) {
-			return CellStyle.BORDER_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_DASH_DOT_DOT")) {
-			return CellStyle.BORDER_DASH_DOT_DOT;
-		} else if (borderStyle.name().equals("BORDER_DASHED")) {
-			return CellStyle.BORDER_DASHED;
-		} else if (borderStyle.name().equals("BORDER_DOTTED")) {
-			return CellStyle.BORDER_DOTTED;
-		} else if (borderStyle.name().equals("BORDER_DOUBLE")) {
-			return CellStyle.BORDER_DOUBLE;
-		} else if (borderStyle.name().equals("BORDER_HAIR")) {
-			return CellStyle.BORDER_HAIR;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM")) {
-			return CellStyle.BORDER_MEDIUM;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT")) {
-			return CellStyle.BORDER_MEDIUM_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT_DOT")) {
-			return CellStyle.BORDER_MEDIUM_DASH_DOT_DOT;
-		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASHED")) {
-			return CellStyle.BORDER_MEDIUM_DASHED;
-		} else if (borderStyle.name().equals("BORDER_NONE")) {
-			return CellStyle.BORDER_NONE;
-		} else if (borderStyle.name().equals("BORDER_SLANTED_DASH_DOT")) {
-			return CellStyle.BORDER_SLANTED_DASH_DOT;
-		} else if (borderStyle.name().equals("BORDER_THICK")) {
-			return CellStyle.BORDER_THICK;
-		} else if (borderStyle.name().equals("BORDER_THIN")) {
-			return CellStyle.BORDER_THIN;
+		private static final DataFormatter FORMATTER = new DataFormatter();
+
+		/**
+		 * Return the value to be displayed in a generic viewer
+		 * 
+		 * @return
+		 */
+		@Override
+		public String getDisplayValue() {
+			try {
+				return FORMATTER.formatCellValue(getCell(), getExcelSheet().getEvaluator());
+			} catch (RuntimeException e) {
+				return "!ERROR: " + e.getMessage();
+			}
 		}
-		return null;
-	}
 
-	private Short getPOIAlignmentStyle(CellAlignmentStyleFeature alignmentStyle) {
-		if (alignmentStyle.name().equals("ALIGN_CENTER")) {
-			return CellStyle.ALIGN_CENTER;
-		} else if (alignmentStyle.name().equals("ALIGN_CENTER_SELECTION")) {
-			return CellStyle.ALIGN_CENTER_SELECTION;
-		} else if (alignmentStyle.name().equals("ALIGN_FILL")) {
-			return CellStyle.ALIGN_FILL;
-		} else if (alignmentStyle.name().equals("ALIGN_GENERAL")) {
-			return CellStyle.ALIGN_GENERAL;
-		} else if (alignmentStyle.name().equals("ALIGN_JUSTIFY")) {
-			return CellStyle.ALIGN_JUSTIFY;
-		} else if (alignmentStyle.name().equals("ALIGN_LEFT")) {
-			return CellStyle.ALIGN_LEFT;
-		} else if (alignmentStyle.name().equals("ALIGN_RIGHT")) {
-			return CellStyle.ALIGN_RIGHT;
-		} else if (alignmentStyle.name().equals("VERTICAL_BOTTOM")) {
-			return CellStyle.VERTICAL_BOTTOM;
-		} else if (alignmentStyle.name().equals("VERTICAL_JUSTIFY")) {
-			return CellStyle.VERTICAL_JUSTIFY;
-		} else if (alignmentStyle.name().equals("VERTICAL_CENTER")) {
-			return CellStyle.VERTICAL_CENTER;
-		} else if (alignmentStyle.name().equals("VERTICAL_TOP")) {
-			return CellStyle.VERTICAL_TOP;
+		/**
+		 * Return the value (set or computed) associated with this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public Object getCellValue() {
+			switch (getCellType()) {
+				case Blank:
+					return null;
+				case Boolean:
+					return getCell().getBooleanCellValue();
+				case Numeric:
+					if (DateUtil.isCellDateFormatted(getCell())) {
+						return getCell().getDateCellValue();
+					}
+					return getCell().getNumericCellValue();
+				case NumericFormula:
+					if (DateUtil.isCellDateFormatted(getCell())) {
+						return getCell().getDateCellValue();
+					}
+					return getCell().getNumericCellValue();
+				case String:
+					/*if (cell.getStringCellValue().contains("\n")) {
+						logger.warning("Excel Cell " + this.getCellIdentifier() + " contains line return.");
+					}*/
+					return getCell().getStringCellValue();
+				case StringFormula:
+					return getCell().getStringCellValue();
+				case Empty:
+					// System.out.println("EMPTY Cell at ind: " + this.getColumnIndex() + " ROW: " + this.getRowIndex() + " SHEET: "
+					// + this.getExcelSheet().getName());
+					return null;
+				case Error:
+					return getCell().getErrorCellValue();
+				case Unknown:
+					return "???";
+				default:
+					return "????";
+			}
+		};
+
+		@Override
+		public String getCellValueAsString() {
+			switch (getCellType()) {
+				case Blank:
+					return null;
+				case Boolean:
+					return Boolean.toString(getCell().getBooleanCellValue());
+				case Numeric:
+					if (DateUtil.isCellDateFormatted(getCell())) {
+						return getCell().getDateCellValue().toString();
+					}
+					return Double.toString(getCell().getNumericCellValue());
+				case NumericFormula:
+					if (DateUtil.isCellDateFormatted(getCell())) {
+						return getCell().getDateCellValue().toString();
+					}
+					return Double.toString(getCell().getNumericCellValue());
+				case String:
+					return getCell().getStringCellValue();
+				case StringFormula:
+					return getCell().getStringCellValue();
+				case Empty:
+					return null;
+				case Error:
+					return Byte.toString(getCell().getErrorCellValue());
+				case Unknown:
+					return "???";
+				default:
+					return "????";
+			}
 		}
-		return null;
-	}
 
-	@Override
-	public String getUri() {
-		return getExcelRow().getUri() + "/" + getName();
-	}
+		@Override
+		public void setCellValueAsString(String cellValueAsString) {
+			if ((cellValueAsString == null && getCellValueAsString() != null)
+					|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
+				String oldValue = getCellValueAsString();
+				createCellWhenNonExistant();
+				// System.out.println(
+				// "*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+				getCell().setCellValue(cellValueAsString);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
+				getExcelSheet().getExcelWorkbook().setIsModified();
+			}
+		}
 
-	@Override
-	public boolean delete(Object... context) {
-		try {
-			this.getExcelRow().getRow().removeCell(getCell());
-			cell = null;
-		} catch (Exception e) {
-			logger.warning("Unable to remove Excel Cell");
+		@Override
+		public Integer getCellValueAsInteger() {
+			if (getCellValue() instanceof Number) {
+				return ((Number) getCellValue()).intValue();
+			}
+			return 0;
+		}
+
+		@Override
+		public void setCellValueAsInteger(Integer value) {
+			setCellValue(value);
+		}
+
+		private void setCellFormula(String formula) {
+			if (formula.startsWith("=")) {
+				formula = formula.substring(formula.indexOf("=") + 1);
+			}
+			try {
+				getCell().setCellFormula(formula);
+			} catch (IllegalArgumentException e) {
+				logger.warning("Cannot parse forumla: " + formula);
+			}
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+		}
+
+		private CellValue evaluateFormula() {
+			return getExcelSheet().getEvaluator().evaluate(getCell());
+		}
+
+		protected void createCellWhenNonExistant() {
+			if (getCell() == null) {
+				getExcelRow().createRowWhenNonExistant(getExcelRow().getRowIndex());
+				setCell(getExcelRow().getRow().createCell(getColumnIndex()));
+			}
+		}
+
+		@Override
+		public void setCellValue(Object value) {
+
+			createCellWhenNonExistant();
+
+			if (value == null) {
+				getCell().setCellValue((String) null);
+				return;
+			}
+			if (value instanceof String) {
+				String valueString = (String) value;
+				if (valueString.startsWith("=")) {
+					setCellFormula(valueString);
+					setCellValue(evaluateFormula().formatAsString());
+					return;
+				}
+				if (valueString.equalsIgnoreCase("true")) {
+					getCell().setCellValue(true);
+					getExcelSheet().getEvaluator().clearAllCachedResultValues();
+					return;
+				}
+				else if (valueString.equalsIgnoreCase("false")) {
+					getCell().setCellValue(false);
+					getExcelSheet().getEvaluator().clearAllCachedResultValues();
+					return;
+				}
+				try {
+					double doubleValue = Double.parseDouble(valueString);
+					getCell().setCellValue(doubleValue);
+					getExcelSheet().getEvaluator().clearAllCachedResultValues();
+					return;
+				} catch (NumberFormatException e) {
+					getCell().setCellValue(valueString);
+					getExcelSheet().getEvaluator().clearAllCachedResultValues();
+					return;
+				}
+			}
+			else if (value instanceof Integer) {
+				getCell().setCellValue((Integer) value);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			else if (value instanceof Double) {
+				getCell().setCellValue((Double) value);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			else if (value instanceof Float) {
+				getCell().setCellValue((Float) value);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			else if (value instanceof Long) {
+				getCell().setCellValue((Long) value);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+			else if (value instanceof Boolean) {
+				getCell().setCellValue((Boolean) value);
+				getExcelSheet().getEvaluator().clearAllCachedResultValues();
+				return;
+			}
+
+		}
+
+		@Override
+		public void setCellStringValue(String value) {
+			setCellValueAsString(value);
+		}
+
+		@Override
+		public void setCellNumericValue(Number value) {
+			createCellWhenNonExistant();
+			getCell().setCellValue(value.doubleValue());
+		}
+
+		@Override
+		public void setCellBooleanValue(boolean value) {
+			createCellWhenNonExistant();
+			getCell().setCellValue(value);
+		}
+
+		@Override
+		public void setCellDateValue(Date value) {
+			createCellWhenNonExistant();
+			CellStyle cellStyle = getExcelSheet().getExcelWorkbook().getWorkbook().createCellStyle();
+			CreationHelper createHelper = getExcelSheet().getExcelWorkbook().getWorkbook().getCreationHelper();
+			cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+			getCell().setCellStyle(cellStyle);
+			getCell().setCellValue(value);
+		}
+
+		/**
+		 * Return the specification of this cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public String getDisplayCellSpecification() {
+			try {
+				if (getCellType() == CellType.NumericFormula || getCellType() == CellType.StringFormula) {
+					return "=" + FORMATTER.formatCellValue(getCell());
+				}
+				return FORMATTER.formatCellValue(getCell());
+			} catch (RuntimeException e) {
+				return "!ERROR: " + e.getMessage();
+			}
+		};
+
+		/**
+		 * Return string representation for this cell (debug)
+		 */
+		@Override
+		public String toString() {
+			return "["
+					+ getIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+							+ getTopLeftMergedCell().getIdentifier() + ":" + getBottomRightMergedCell().getIdentifier() + "]" + "/" : "")
+					+ getDisplayValue();
+		}
+
+		@Override
+		public boolean hasTopBorder() {
+			if ((getCell() != null && getCell().getCellStyle().getBorderTopEnum() != BorderStyle.NONE)) {
+				return true;
+			}
+			if (isMerged()) {
+				return getTopMergedCell().getCell() != null
+						&& getTopMergedCell().getCell().getCellStyle().getBorderTopEnum() != BorderStyle.NONE;
+			}
 			return false;
 		}
-		return true;
+
+		@Override
+		public boolean hasLeftBorder() {
+			if (getCell() != null && getCell().getCellStyle().getBorderLeftEnum() != BorderStyle.NONE) {
+				return true;
+			}
+			if (isMerged()) {
+				return getLeftMergedCell().getCell() != null
+						&& getLeftMergedCell().getCell().getCellStyle().getBorderLeftEnum() != BorderStyle.NONE;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean hasRightBorder() {
+			if (getCell() != null && getCell().getCellStyle().getBorderRightEnum() != BorderStyle.NONE) {
+				return true;
+			}
+			if (isMerged()) {
+				return getRightMergedCell().getCell() != null
+						&& getRightMergedCell().getCell().getCellStyle().getBorderRightEnum() != BorderStyle.NONE;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean hasBottomBorder() {
+			if (getCell() != null && getCell().getCellStyle().getBorderBottomEnum() != BorderStyle.NONE) {
+				return true;
+			}
+			if (isMerged()) {
+				return getBottomMergedCell().getCell() != null
+						&& getBottomMergedCell().getCell().getCellStyle().getBorderBottomEnum() != BorderStyle.NONE;
+			}
+			return false;
+		}
+
+		@Override
+		public void setCellStyle(CellStyle style) {
+			if (getCell() != null) {
+				getCell().setCellStyle(style);
+			}
+		}
+
+		@Override
+		public CellStyle getCellStyle() {
+			if (getCell() != null) {
+				return getCell().getCellStyle();
+			}
+			return null;
+		}
+
+		@Override
+		public void setStyle(CellStyleFeature cellStyle, Object value) {
+			if (getCell() != null && cellStyle != null) {
+				// First get the old style
+				CellStyle oldStyle = getCellStyle();
+				// Create a new style
+				CellStyle newStyle = getExcelSheet().getExcelWorkbook().getStyleManager().udapteCellStyle(cellStyle, value, oldStyle);
+				// Set the style of this cell to the new style
+				getCell().setCellStyle(newStyle);
+			}
+			return;
+		}
+
+		@Override
+		public boolean delete(Object... context) {
+			try {
+				this.getExcelRow().getRow().removeCell(getCell());
+				setCell(null);
+			} catch (Exception e) {
+				logger.warning("Unable to remove Excel Cell");
+				return false;
+			}
+			return true;
+
+		}
+
+		@Override
+		public String getIdentifier() {
+			return ExcelColumn.getColumnLetters(getColumnIndex()) + (getRowIndex() + 1);
+		}
+
+		@Override
+		public PrimitiveType getInferedPrimitiveType() {
+			switch (getCellType()) {
+				case String:
+				case StringFormula:
+					return PrimitiveType.String;
+				case Numeric:
+				case NumericFormula:
+					if (getCellValue() instanceof Double) {
+						return PrimitiveType.Double;
+					}
+					if (getCellValue() instanceof Float) {
+						return PrimitiveType.Float;
+					}
+					if (getCellValue() instanceof Long) {
+						return PrimitiveType.Long;
+					}
+					if (getCellValue() instanceof Integer) {
+						return PrimitiveType.Integer;
+					}
+					if (getCellValue() instanceof Short) {
+						return PrimitiveType.Integer;
+					}
+					if (getCellValue() instanceof Byte) {
+						return PrimitiveType.Integer;
+					}
+				default:
+					if (getCellValue() instanceof Date) {
+						return PrimitiveType.Date;
+					}
+					return PrimitiveType.String;
+			}
+
+		}
+
+		/**
+		 * Copy contents and formatting from supplied cell
+		 * 
+		 * @param cellToCopy
+		 */
+		@Override
+		public void copyCellFrom(ExcelCell cellToCopy) {
+			if (cellToCopy != null) {
+				setCellValue(cellToCopy.getCellValue());
+				getCell().setCellStyle(cellToCopy.getCell() == null ? null : cellToCopy.getCell().getCellStyle());
+			}
+		}
 
 	}
 

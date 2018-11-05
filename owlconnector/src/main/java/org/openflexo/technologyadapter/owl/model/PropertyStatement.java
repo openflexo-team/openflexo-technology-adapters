@@ -41,14 +41,13 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.Vector;
 
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.foundation.DataModification;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.localization.Language;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
-
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public abstract class PropertyStatement extends OWLStatement implements IFlexoOntologyPropertyValue<OWLTechnologyAdapter> {
 
@@ -94,6 +93,12 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 	private float floatValue = 0;
 	private double doubleValue = 0;
 
+	@Override
+	public String getDescription() {
+		// TODO
+		return null;
+	}
+
 	public final Language getLanguage() {
 		if (getLiteral() == null) {
 			return null;
@@ -117,7 +122,8 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 			// during updateOntologyStatements() !!!!!
 			if (aLanguage != null) {
 				getSubject().getOntResource().addProperty(getProperty().getOntProperty(), getStringValue(), aLanguage.getTag());
-			} else {
+			}
+			else {
 				getSubject().getOntResource().addProperty(getProperty().getOntProperty(), getStringValue());
 			}
 			getSubject().removePropertyStatement(this);
@@ -162,7 +168,8 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 		// during updateOntologyStatements() !!!!!
 		if (getLanguage() != null) {
 			getSubject().getOntResource().addProperty(getProperty().getOntProperty(), aValue, getLanguage().getTag());
-		} else {
+		}
+		else {
 			getSubject().getOntResource().addProperty(getProperty().getOntProperty(), aValue);
 		}
 		getSubject().removePropertyStatement(this);

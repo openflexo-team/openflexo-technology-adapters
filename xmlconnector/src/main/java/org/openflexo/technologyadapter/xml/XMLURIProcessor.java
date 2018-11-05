@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.io.UnsupportedEncodingException;
@@ -49,7 +48,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -88,7 +86,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
+		private final Map<String, XMLObject> uriCache = new HashMap<>();
 
 		/**
 		 * initialises an URIProcessor with the given URI
@@ -125,7 +123,8 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (name != null) {
 				typeURI = URI.create(name);
 				bindtypeURIToMappedType();
-			} else
+			}
+			else
 				typeURI = null;
 		}
 
@@ -134,7 +133,8 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (mappedXMLType != null) {
 				String _uri = mappedXMLType.getURI();
 				return _uri;
-			} else if (typeURI != null) {
+			}
+			else if (typeURI != null) {
 				return typeURI.toString();
 			}
 
@@ -168,10 +168,12 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null) {
 							setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName));
 						}
-					} else {
+					}
+					else {
 						logger.warning("unable to map typeURI to an OntClass, as metaModelResource or Type URI  is Null ");
 					}
-				} else
+				}
+				else
 					setMappedXMLType(null);
 			}
 		}
@@ -179,7 +181,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		// URI Calculation
 		// TODO : manage the fact that URI might change:
 		@Override
-		public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO) {
+		public String getURIForObject(XMLModel model, XMLObject xsO) {
 			String builtURI = null;
 			StringBuffer completeURIStr = new StringBuffer();
 
@@ -191,34 +193,35 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (getMappedXMLType() == null) {
 				logger.warning("Cannot process URI as URIProcessor is not initialized for that class: " + typeURI);
 				return null;
-			} else {
-				String attrName = getAttributeName();
-				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
+			}
+			String attrName = getAttributeName();
+			if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
 
-					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
-					XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
-					try {
-						// NPE protection
-						if (value != null) {
-							builtURI = URLEncoder.encode(value.toString(), "UTF-8");
-						} else {
-							logger.severe("XSURI: unable to compute an URI for given object");
-							builtURI = null;
-						}
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
+				XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
+				XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
+				try {
+					// NPE protection
+					if (value != null) {
+						builtURI = URLEncoder.encode(value.toString(), "UTF-8");
 					}
-				} else if (getMappingStyle() == MappingStyle.SINGLETON) {
-					try {
-						builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						logger.warning("Cannot process URI - Unexpected encoding error");
-						e.printStackTrace();
+					else {
+						logger.severe("XSURI: unable to compute an URI for given object");
 					}
-				} else {
-					logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
 				}
+			}
+			else if (getMappingStyle() == MappingStyle.SINGLETON) {
+				try {
+					builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					logger.warning("Cannot process URI - Unexpected encoding error");
+					e.printStackTrace();
+				}
+			}
+			else {
+				logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 			}
 
 			if (builtURI != null) {
@@ -235,7 +238,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		// get the Object given the URI
 
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException {
+		public Object retrieveObjectWithURI(XMLModel model, String objectURI) throws DuplicateURIException {
 
 			XMLObject o = uriCache.get(objectURI);
 
@@ -257,7 +260,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
 					String attrValue = URI.create(objectURI).getQuery();
 
-					for (XMLIndividual obj : ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType())) {
+					for (XMLIndividual obj : model.getIndividualsOfType(getMappedXMLType())) {
 
 						XMLPropertyValue value = obj.getPropertyValue(aProperty);
 						try {
@@ -270,18 +273,22 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						}
 					}
 
-				} else if (getMappingStyle() == MappingStyle.SINGLETON) {
-					List<?> indivList = ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType());
+				}
+				else if (getMappingStyle() == MappingStyle.SINGLETON) {
+					List<?> indivList = model.getIndividualsOfType(getMappedXMLType());
 					if (indivList.size() > 1) {
-						throw new DuplicateURIException("Cannot process URI - Several individuals found for singleton of type "
-								+ this.getTypeURI().toString());
-					} else if (indivList.size() == 0) {
+						throw new DuplicateURIException(
+								"Cannot process URI - Several individuals found for singleton of type " + this.getTypeURI().toString());
+					}
+					else if (indivList.size() == 0) {
 						logger.warning("Cannot find Singleton for type : " + this.getTypeURI().toString());
-					} else {
+					}
+					else {
 						o = (XMLObject) indivList.get(0);
 					}
 				}
-			} else {
+			}
+			else {
 				logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 
 			}
@@ -290,7 +297,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		// get the right URIProcessor for URI
-		public static String retrieveTypeURI(ModelSlotInstance msInstance, String objectURI) {
+		public static String retrieveTypeURI(XMLModel model, String objectURI) {
 
 			URI fullURI;
 			StringBuffer typeURIStr = new StringBuffer();
@@ -306,9 +313,8 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			if (mappedXMLType != null) {
 				return "XMLURIProcessor for " + this.mappedXMLType.getName();
-			} else {
-				return "";
 			}
+			return "";
 		}
 
 	}

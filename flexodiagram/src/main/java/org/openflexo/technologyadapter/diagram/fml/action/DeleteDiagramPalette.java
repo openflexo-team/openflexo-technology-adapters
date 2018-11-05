@@ -45,8 +45,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
@@ -54,8 +53,8 @@ public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, Diag
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramPalette.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramPalette, DiagramPalette, FlexoObject> actionType = new FlexoActionType<DeleteDiagramPalette, DiagramPalette, FlexoObject>(
-			"delete_diagram_palette", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramPalette, DiagramPalette, FlexoObject> actionType = new FlexoActionFactory<DeleteDiagramPalette, DiagramPalette, FlexoObject>(
+			"delete_diagram_palette", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -81,7 +80,7 @@ public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, Diag
 		FlexoObjectImpl.addActionForClass(DeleteDiagramPalette.actionType, DiagramPalette.class);
 	}
 
-	DeleteDiagramPalette(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	private DeleteDiagramPalette(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

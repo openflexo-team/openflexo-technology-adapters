@@ -38,15 +38,12 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import org.openflexo.FlexoCst;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -64,31 +61,25 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 
 	@Override
 	protected FlexoActionInitializer<DeleteDiagramElements> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				getController().getSelectionManager().resetSelection();
-				return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
-			}
+		return (e, action) -> {
+			getController().getSelectionManager().resetSelection();
+			return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
 		};
 	}
 
 	@Override
 	protected FlexoActionFinalizer<DeleteDiagramElements> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeleteDiagramElements>() {
-			@Override
-			public boolean run(EventObject e, DeleteDiagramElements action) {
-				if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
-						&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
-					getControllerActionInitializer().getController().getSelectionManager().resetSelection();
-				}
-				return true;
+		return (e, action) -> {
+			if (getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject() != null
+					&& getControllerActionInitializer().getController().getSelectionManager().getLastSelectedObject().isDeleted()) {
+				getControllerActionInitializer().getController().getSelectionManager().resetSelection();
 			}
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.DELETE_ICON;
 	}
 

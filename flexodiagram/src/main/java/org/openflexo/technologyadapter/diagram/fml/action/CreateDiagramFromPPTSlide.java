@@ -38,29 +38,31 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateDiagramFromPPTSlide, RepositoryFolder> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
-			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionFactory<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
+			"create_diagram_from_ppt_slide", FlexoActionFactory.newMenu, FlexoActionFactory.defaultGroup,
+			FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -95,24 +97,48 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram from ppt slide");
 
-		if (getDiagram() == null) {
-			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-					DiagramTechnologyAdapter.class);
+		try {
+			if (getDiagram() == null) {
+				DiagramResource newDiagramResource = makeDiagramResource(true);
+				setDiagramResource(newDiagramResource);
+			}
 
-			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null));
-			getFocusedObject().addToResources(getDiagramResource());
-			getDiagramResource().save(null);
+			else if (getDiagram().getResource() == null) {
+				DiagramResource newDiagramResource = makeDiagramResource(false);
+				getDiagram().setResource(newDiagramResource);
+				newDiagramResource.setResourceData(getDiagram());
+				setDiagramResource(newDiagramResource);
+			}
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
 		}
 
 		if (getSlide() != null) {
 			convertSlideToDiagram(getSlide());
-		} else {
+		}
+		else {
 			System.out.println("Error: no Slide");
 		}
+	}
+
+	protected <I> DiagramResource makeDiagramResource(boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+
+		String artefactName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
+				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc, artefactName,
+				getDiagramURI(), createEmptyContents);
+
+		return newDiagramResource;
 	}
 
 	@Override
@@ -124,13 +150,13 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
 	}
 
-	@Override
+	/*@Override
 	public File getDiagramFile() {
 		return getDefaultDiagramFile();
 	}
-
+	
 	public File getDefaultDiagramFile() {
 		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}
+	}*/
 
 }

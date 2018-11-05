@@ -50,9 +50,11 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -62,8 +64,8 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramElements.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionType<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>>(
-			"delete", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
+	public static FlexoActionFactory<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> actionType = new FlexoActionFactory<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>>(
+			"delete", FlexoActionFactory.editGroup, FlexoActionFactory.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -101,7 +103,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	 * @return
 	 */
 	protected static Vector<DiagramElement<?>> objectsToDelete(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection) {
-		Vector<DiagramElement<?>> allSelection = new Vector<DiagramElement<?>>();
+		Vector<DiagramElement<?>> allSelection = new Vector<>();
 		if (globalSelection == null || !globalSelection.contains(focusedObject)) {
 			allSelection.add(focusedObject);
 		}
@@ -113,7 +115,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 			}
 		}
 
-		Vector<DiagramElement<?>> returned = new Vector<DiagramElement<?>>();
+		Vector<DiagramElement<?>> returned = new Vector<>();
 		for (DiagramElement<?> o : allSelection) {
 			boolean isContainedByAnOtherObject = false;
 			for (DiagramElement<?> potentielContainer : allSelection) {
@@ -138,6 +140,14 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	protected DeleteDiagramElements(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		logger.info("Created DeleteShemaElements action focusedObject=" + focusedObject + "globalSelection=" + globalSelection);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -173,7 +183,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 
 		if (removePendingConnectors) {
 			// A list of connectors that may be deleted if a shape is connected to it
-			List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+			List<DiagramConnector> impliedConnectors = new ArrayList<>();
 			for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
 				if (o instanceof DiagramShape) {
 					impliedConnectors.addAll(((DiagramShape) o).getStartConnectors());
@@ -188,7 +198,8 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 					logger.info("Try to delete undeleted DiagramConnector " + connector);
 					connector.delete();
 					logger.info("DiagramConnector " + connector + " has been successfully deleted");
-				} else {
+				}
+				else {
 					logger.info("DiagramConnector " + connector + " has already been successfully deleted");
 				}
 			}
@@ -199,7 +210,8 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 			if (!o.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + o);
 				o.delete();
-			} else {
+			}
+			else {
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
 		}
@@ -211,7 +223,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 		}
 		return diagramElementsToDelete;
 	}
-
+	
 	private void computeElementsToDelete() {
 		diagramElementsToDelete = (List) getFocusedObject()
 				.getDiagram()
@@ -228,7 +240,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	public void setSelectedDeletionScheme(DeletionScheme selectedDeletionScheme) {
 		if (getSelectedFlexoConceptInstance() != null) {
 			if (selectedFlexoConceptInstanceDeletionSchemes == null) {
-				selectedFlexoConceptInstanceDeletionSchemes = new HashMap<FlexoConceptInstance, DeletionScheme>();
+				selectedFlexoConceptInstanceDeletionSchemes = new HashMap<>();
 			}
 			selectedFlexoConceptInstanceDeletionSchemes.put(getSelectedFlexoConceptInstance(), selectedDeletionScheme);
 			this.selectedDeletionScheme = selectedDeletionScheme;

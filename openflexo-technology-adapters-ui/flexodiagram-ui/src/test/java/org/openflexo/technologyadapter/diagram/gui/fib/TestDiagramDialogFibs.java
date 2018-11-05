@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -50,13 +50,8 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	 * Then copy-paste 
 	 */
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Dialog")).getFile(),
-				"Fib/Dialog/"));
-	}
-
-	@Test
-	public void testCreateDiagramDialog() {
-		validateFIB("Fib/Dialog/CreateDiagramDialog.fib");
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Dialog")).getFile(), "Fib/Dialog/"));
 	}
 
 	@Test
@@ -94,9 +89,10 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Dialog/ImportImageFileDialog.fib");
 	}
 
-	@Test
+	// Deprecated dialog
+	/*@Test
 	public void testPushToPaletteDialog() {
 		validateFIB("Fib/Dialog/PushToPaletteDialog.fib");
-	}
+	}*/
 
 }

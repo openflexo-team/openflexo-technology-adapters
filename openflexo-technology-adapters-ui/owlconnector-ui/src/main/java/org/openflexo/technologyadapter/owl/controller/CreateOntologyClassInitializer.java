@@ -46,6 +46,7 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
@@ -53,7 +54,7 @@ import org.openflexo.technologyadapter.owl.model.action.CreateOntologyClass;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateOntologyClassInitializer extends ActionInitializer<CreateOntologyClass, OWLObject, OWLConcept> {
+public class CreateOntologyClassInitializer extends ActionInitializer<CreateOntologyClass, OWLObject, OWLConcept<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -83,7 +84,7 @@ public class CreateOntologyClassInitializer extends ActionInitializer<CreateOnto
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return OWLIconLibrary.ONTOLOGY_CLASS_ICON;
 	}
 

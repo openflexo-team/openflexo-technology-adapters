@@ -58,7 +58,7 @@ public abstract class DiagramContainerElementImpl<G extends GraphicalRepresentat
 
 	@Override
 	public List<DiagramElement<?>> getDescendants() {
-		List<DiagramElement<?>> descendants = new ArrayList<DiagramElement<?>>();
+		List<DiagramElement<?>> descendants = new ArrayList<>();
 		appendDescendants(this, descendants);
 		return descendants;
 	}

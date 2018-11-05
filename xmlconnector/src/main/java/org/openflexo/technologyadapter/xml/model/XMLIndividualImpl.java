@@ -68,8 +68,8 @@ import org.w3c.dom.Element;
 
 public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIndividual {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class.getPackage()
-			.getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(XMLIndividualImpl.class.getPackage().getName());
 
 	/* Properties */
 
@@ -85,8 +85,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	public XMLIndividualImpl() {
 		super();
 		uuid = UUID.randomUUID().toString();
-		propertiesValues = new HashMap<XMLProperty, XMLPropertyValue>();
-		children = new HashMap<XMLComplexType, Set<XMLIndividualImpl>>();
+		propertiesValues = new HashMap<>();
+		children = new HashMap<>();
 	}
 
 	@Override
@@ -101,6 +101,14 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 			return this.getPropertyStringValue(attr);
 		}
 		return "";
+	}
+
+	@Override
+	public void setContentDATA(String value) {
+		XMLProperty attr = this.getType().getPropertyByName(XMLCst.CDATA_ATTR_NAME);
+		if (attr != null) {
+			addPropertyValue(XMLCst.CDATA_ATTR_NAME, value);
+		}
 	}
 
 	@Override
@@ -119,7 +127,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		Set<XMLIndividualImpl> typedSet = children.get(aType);
 
 		if (typedSet == null) {
-			typedSet = new HashSet<XMLIndividualImpl>();
+			typedSet = new HashSet<>();
 			children.put(aType, typedSet);
 		}
 		typedSet.add((XMLIndividualImpl) anIndividual);
@@ -129,7 +137,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	@Override
 	public List<XMLIndividual> getChildren() {
 
-		List<XMLIndividual> returned = new ArrayList<XMLIndividual>();
+		List<XMLIndividual> returned = new ArrayList<>();
 
 		for (Set<XMLIndividualImpl> s : children.values()) {
 			returned.addAll(s);
@@ -142,9 +150,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		XMLPropertyValue pv = propertiesValues.get(prop);
 		if (pv != null) {
 			return propertiesValues.get(prop).getStringValue();
-		} else {
-			return "";
 		}
+		return "";
 	}
 
 	@Override
@@ -159,8 +166,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 
 		if (attr != null) {
 			return propertiesValues.get(attr);
-		} else
-			return null;
+		}
+		return null;
 	}
 
 	@Override
@@ -168,8 +175,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 
 		if (prop != null) {
 			return propertiesValues.get(prop);
-		} else
-			return null;
+		}
+		return null;
 
 	}
 
@@ -193,7 +200,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 			if (!mm.isReadOnly()) {
 				// TODO Manage complex types and actual types for objects.
 				prop = this.getType().createProperty(name, mm.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-			} else {
+			}
+			else {
 				logger.warning("CANNOT give a value  for a non existant attribute :" + name);
 			}
 		}
@@ -206,7 +214,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 					((XMLDataPropertyValue) vals).setValue(value);
 					propertiesValues.put(prop, vals);
-				} else {
+				}
+				else {
 					// TODO..... complex attributes, collections
 				}
 			}
@@ -228,7 +237,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 				val = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 				((XMLDataPropertyValue) val).setValue(value);
 				propertiesValues.put(prop, val);
-			} else if (prop instanceof XMLObjectProperty) {
+			}
+			else if (prop instanceof XMLObjectProperty) {
 
 				val = XMLModelImpl.getModelFactory().newInstance(XMLObjectPropertyValue.class, prop);
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
@@ -239,7 +249,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		if (val != null) {
 			if (prop instanceof XMLDataProperty) {
 				((XMLDataPropertyValue) val).setValue(value);
-			} else if (prop instanceof XMLObjectProperty) {
+			}
+			else if (prop instanceof XMLObjectProperty) {
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
 			}
 		}
@@ -255,7 +266,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		Element element = null;
 		if (nsURI != null) {
 			element = doc.createElementNS(nsURI, getType().getFullyQualifiedName());
-		} else {
+		}
+		else {
 			element = doc.createElement(getType().getName());
 		}
 

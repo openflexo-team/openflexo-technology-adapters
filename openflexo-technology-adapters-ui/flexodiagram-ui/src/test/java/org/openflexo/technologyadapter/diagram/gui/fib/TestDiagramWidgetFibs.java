@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -50,8 +50,8 @@ public class TestDiagramWidgetFibs extends GenericFIBTestCase {
 	 * Then copy-paste 
 	 */
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(),
-				"Fib/Widget/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(), "Fib/Widget/"));
 	}
 
 	@Test
@@ -62,6 +62,11 @@ public class TestDiagramWidgetFibs extends GenericFIBTestCase {
 	@Test
 	public void testFIBDiagramPaletteBrowser() {
 		validateFIB("Fib/Widget/FIBDiagramPaletteBrowser.fib");
+	}
+
+	@Test
+	public void testFMLControlledVirtualModelSelector() {
+		validateFIB("Fib/Widget/FMLControlledVirtualModelSelector.fib");
 	}
 
 }

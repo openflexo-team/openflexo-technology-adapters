@@ -1,0 +1,21 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  compile flexoOntology()
+  // external dep
+  compile 'org.apache.jena:jena-core:3.1.0'
+
+  // testing dep
+    testCompile testUtils()
+    testCompile flexoFoundationTest()
+
+	// This resource center must always be present at run-time
+    runtime project(':owlconnector-rc')
+
+	// Test resource center
+    testRuntime project(':owlconnector-test-rc')
+
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

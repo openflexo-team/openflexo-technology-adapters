@@ -43,15 +43,15 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.components.widget.OntologyView;
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
+import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
@@ -72,12 +72,9 @@ import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.IFlexoOntologyTechnologyAdapterController;
-import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class EMFAdapterController extends TechnologyAdapterController<EMFTechnologyAdapter> implements
-		IFlexoOntologyTechnologyAdapterController {
+public class EMFAdapterController extends FlexoOntologyTechnologyAdapterController<EMFTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(EMFAdapterController.class.getPackage().getName());
 
@@ -100,7 +97,8 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		emfInspectorGroup = controller.loadInspectorGroup("EMF", getFMLTechnologyAdapterInspectorGroup());
+		emfInspectorGroup = controller.loadInspectorGroup("EMF", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup emfInspectorGroup;
@@ -184,12 +182,14 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFObjectIndividual.class);
-		} else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFClassClass.class);
-		} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFEnumClass.class);
 		}
 		return null;
@@ -215,24 +215,26 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	}
 
 	@Override
-	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
+	public OntologyBrowserModel<EMFTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<EMFTechnologyAdapter> context) {
 		if (context instanceof EMFMetaModel) {
 			return new EMFMetaModelBrowserModel((EMFMetaModel) context);
-		} else if (context instanceof EMFModel) {
+		}
+		else if (context instanceof EMFModel) {
 			return new EMFModelBrowserModel((EMFModel) context);
-		} else {
+		}
+		else {
 			logger.warning("Unexpected " + context);
 			return null;
 		}
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
 		return object instanceof EMFModel || object instanceof EMFMetaModel;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof EMFModel) {
 			return ((EMFModel) object).getName();
 		}
@@ -246,15 +248,16 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
-			OntologyView<EMFModel> returned = new EMFModelView((EMFModel) object, controller, perspective);
+			EMFModelView returned = new EMFModelView((EMFModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
 			returned.update();
 			return returned;
-		} else if (object instanceof EMFMetaModel) {
-			OntologyView<EMFMetaModel> returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
+		}
+		else if (object instanceof EMFMetaModel) {
+			EMFMetaModelView returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
@@ -262,6 +265,6 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			returned.update();
 			return returned;
 		}
-		return new EmptyPanel<TechnologyObject<EMFTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 }

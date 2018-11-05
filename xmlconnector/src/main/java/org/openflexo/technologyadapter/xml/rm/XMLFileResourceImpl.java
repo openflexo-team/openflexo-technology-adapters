@@ -39,32 +39,34 @@
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
+import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.IProgress;
 import org.openflexo.xml.XMLRootElementInfo;
 import org.openflexo.xml.XMLRootElementReader;
@@ -83,96 +85,23 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	private boolean isLoaded = false;
 
 	/**
+	 * Save the &quot;real&quot; resource data of this resource.
 	 * 
-	 * @param modelURI
-	 * @param xmlFile
-	 * @param technologyContextManager
-	 * @return
-	 */
-	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					XMLFileResource.class));
-			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
-			returned.initName(xmlFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
-
-			returned.setURI(xmlFile.toURI().toString());
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-
-			technologyContextManager.registerResource(returned);
-
-			if (!xmlFile.exists()) {
-
-				if (returned.resourceData == null) {
-					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-					returned.resourceData.setResource(returned);
-				}
-
-				returned.isLoaded = true;
-				returned.save(null);
-			}
-
-			return returned;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.openflexo.foundation.resource.FlexoResource#save(org.openflexo.toolbox
-	 * .IProgress)
-	 */
-
-	@Override
-	public void save(IProgress progress) throws SaveResourceException {
-
-		File myFile = this.getFile();
-
-		if (!myFile.exists()) {
-			// Creates a new file
-			try {
-				myFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new SaveResourceException(getFlexoIODelegate());
-			}
-		}
-
-		if (!getFlexoIODelegate().hasWritePermission()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
-			}
-			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
-		}
-
-		if (resourceData != null) {
-			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
-			writeToFile();
-			getFlexoIODelegate().hasWrittenOnDisk(lock);
-			notifyResourceStatusChanged();
-			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
-			}
-		}
-
-	}
-
-	/**
-	 * URI here is the full path to the file
+	 * @throws SaveResourceException
 	 */
 	@Override
-	public String getURI() {
-		if (getFile() != null) {
-			return getFile().toURI().toString();
+	public final void save(IProgress progress) throws SaveResourceException {
+		if (progress != null) {
+			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
 		}
-		return "uri_not_found";
+		if (!isLoaded()) {
+			return;
+		}
+		if (!isDeleted()) {
+			saveResourceData(true);
+			resourceData.clearIsModified(false);
+		}
+
 	}
 
 	/**
@@ -186,12 +115,10 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 		if (!isLoaded()) {
 			XMLRootElementInfo rootInfo;
-			rootInfo = REreader.readRootElement(this.getFile());
+			rootInfo = REreader.readRootElement(getIODelegate().getSerializationArtefactAsResource());
 			return rootInfo.getURI();
-		} else {
-			return this.getModel().getMetaModel().getURI();
 		}
-
+		return this.getModel().getMetaModel().getURI();
 	}
 
 	public static final String getTargetNamespace(File f) throws IOException {
@@ -199,33 +126,16 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(f);
 			return rootInfo.getURI();
-		} else {
-			throw new IOException("File Not Found ");
 		}
-	}
-
-	private void writeToFile() throws SaveResourceException {
-
-		OutputStreamWriter out = null;
-		try {
-			out = new OutputStreamWriter(new FileOutputStream(getFile()), "UTF-8");
-			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, out);
-
-			writer.writeDocument();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new SaveResourceException(getFlexoIODelegate());
-		} finally {
-			IOUtils.closeQuietly(out);
-		}
-		logger.info("Wrote " + getFile());
+		throw new IOException("File Not Found ");
 	}
 
 	@Override
-	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
+	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
-	FlexoException {
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
+		}
 
 		if (resourceData == null) {
 			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
@@ -239,19 +149,19 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 			try {
 
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = ((XMLFileResource) resourceData.getResource())
-						.getMetaModelResource();
-				if (resourceData.getMetaModel() == null && mmRes != null) {
-					resourceData.setMetaModel(mmRes.getMetaModelData());
-				}
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
 
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
 				factory.setContext(resourceData);
 
-				factory.deserialize(new FileInputStream(this.getFile()));
+				factory.deserialize(getInputStream());
 
 				factory.resetContext();
+
+				if (mmRes != null) {
+					resourceData.setMetaModel(mmRes.getMetaModelData());
+				}
 
 				isLoaded = true;
 
@@ -264,7 +174,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		return resourceData;
 	}
 
-	// TODO: Ask Sylvain if this could no be tractable with Pamela => Code duplication ?!?
+	// TODO: Ask Sylvain if this could no be tractable with Pamela => Code
+	// duplication ?!?
 
 	@Override
 	public XMLModel getModel() {
@@ -274,33 +185,53 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	@Override
 	public XMLModel getModelData() {
 
-		if (resourceData == null) {
-			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-			resourceData.setResource(this);
+		try {
+			return getResourceData(null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ResourceLoadingCancelledException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FlexoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?
+		return null;
+
 		/*
-		if (!isLoaded()) {
-			try {
-				resourceData = loadResourceData(null);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (ResourceLoadingCancelledException e) {
-				e.printStackTrace();
-			} catch (FlexoException e) {
-				e.printStackTrace();
-			}
-		}
+		 * if (resourceData == null) { resourceData =
+		 * XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+		 * resourceData.setResource(this); }
 		 */
-		return resourceData;
+		// TODO : check lifecycle for Resource.... should it be loaded on
+		// getModelData?
+		/*
+		 * if (!isLoaded()) { try { resourceData = loadResourceData(null); }
+		 * catch (FileNotFoundException e) { e.printStackTrace(); } catch
+		 * (ResourceLoadingCancelledException e) { e.printStackTrace(); } catch
+		 * (FlexoException e) { e.printStackTrace(); } }
+		 */
+		// return resourceData;
 	}
 
 	@Override
 	public void attachMetamodel() {
-		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
+
+		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
 		if (mmRes != null) {
 			resourceData.setMetaModel(mmRes.getMetaModelData());
 		}
+		else {
+			// Create default meta-model, on the fly
+
+			XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
+			mm.setURI(getURI() + "/Metamodel");
+			mm.setReadOnly(false);
+
+			resourceData.setMetaModel(mm);
+		}
+
 		if (resourceData.getMetaModel() == null) {
 			logger.warning("Setting a null Metamodel for Model " + this.getURI());
 		}
@@ -313,8 +244,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException,
-			ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public XMLModel getResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
@@ -324,7 +255,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			setLoading(true);
 			resourceData = loadResourceData(progress);
 			setLoading(false);
-			// That's fine, resource is loaded, now let's notify the loading of the resources
+			// That's fine, resource is loaded, now let's notify the loading of
+			// the resources
 			notifyResourceLoaded();
 		}
 		return resourceData;
@@ -337,12 +269,142 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		return isLoaded;
 	}
 
-	@Override
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate) getFlexoIODelegate();
+	/**
+	 * Return a FlexoIOStreamDelegate associated to this flexo resource
+	 * 
+	 * @return
+	 */
+	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
+		if (getIODelegate() instanceof StreamIODelegate) {
+			return (StreamIODelegate<?>) getIODelegate();
+		}
+		return null;
 	}
 
-	private File getFile() {
-		return getFileFlexoIODelegate().getFile();
+	public InputStream getInputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getInputStream();
+		}
+		return null;
 	}
+
+	public OutputStream getOutputStream() {
+		if (getFlexoIOStreamDelegate() != null) {
+			return getFlexoIOStreamDelegate().getOutputStream();
+		}
+		return null;
+	}
+
+	/**
+	 * Save current resource data to current XML resource file.<br>
+	 * Forces XML version to be the latest one.
+	 * 
+	 * @return
+	 */
+	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
+		// System.out.println("PamelaResourceImpl Saving " + getFile());
+		if (!getIODelegate().hasWritePermission()) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.warning("Permission denied : " + getIODelegate().toString());
+			}
+			throw new SaveResourcePermissionDeniedException(getIODelegate());
+		}
+		if (resourceData != null) {
+			_saveResourceData(clearIsModified);
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("Succeeding to save Resource " + this + " : " + getIODelegate().getSerializationArtefact());
+			}
+		}
+		if (clearIsModified) {
+			try {
+				getResourceData(null).clearIsModified(false);
+				// No need to reset the last memory update since it is valid
+				notifyResourceSaved();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
+
+		if (getFlexoIOStreamDelegate() == null) {
+			throw new SaveResourceException(getIODelegate());
+		}
+
+		FileWritingLock lock = getFlexoIOStreamDelegate().willWriteOnDisk();
+
+		if (logger.isLoggable(Level.INFO)) {
+			logger.info("Saving resource " + this + " : " + getIODelegate().getSerializationArtefact());
+		}
+
+		if (getFlexoIOStreamDelegate() instanceof FileIODelegate) {
+			File temporaryFile = null;
+			try {
+				File fileToSave = ((FileIODelegate) getFlexoIOStreamDelegate()).getFile();
+				// Make local copy
+				makeLocalCopy(fileToSave);
+				// Using temporary file
+				temporaryFile = ((FileIODelegate) getIODelegate()).createTemporaryArtefact(".pdf");
+				if (logger.isLoggable(Level.FINE)) {
+					logger.finer("Creating temp file " + temporaryFile.getAbsolutePath());
+				}
+				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+					write(fos);
+				}
+				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
+				FileUtils.rename(temporaryFile, fileToSave);
+			} catch (Exception e) {
+				e.printStackTrace();
+				if (temporaryFile != null) {
+					temporaryFile.delete();
+				}
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this);
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getIODelegate(), e);
+			}
+		}
+		else {
+			try {
+				write(getOutputStream());
+			} catch (Exception e) {
+				e.printStackTrace();
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Failed to save resource " + this);
+				}
+				getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+				throw new SaveResourceException(getIODelegate(), e);
+			}
+		}
+
+		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
+		if (clearIsModified) {
+			notifyResourceStatusChanged();
+		}
+	}
+
+	private void write(OutputStream out) throws IOException, XMLStreamException, ResourceLoadingCancelledException, FlexoException {
+		System.out.println("Writing xml file in : " + getIODelegate().getSerializationArtefact());
+		try (OutputStreamWriter outSW = new OutputStreamWriter(out, "UTF-8")) {
+			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<>(this, outSW);
+			writer.writeDocument();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			throw new SaveResourceException(getIODelegate());
+		} finally {
+			IOUtils.closeQuietly(out);
+		}
+		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
+	}
+
+	private static void makeLocalCopy(File file) throws IOException {
+		if (file != null && file.exists()) {
+			String localCopyName = file.getName() + "~";
+			File localCopy = new File(file.getParentFile(), localCopyName);
+			FileUtils.copyFileToFile(file, localCopy);
+		}
+	}
+
 }

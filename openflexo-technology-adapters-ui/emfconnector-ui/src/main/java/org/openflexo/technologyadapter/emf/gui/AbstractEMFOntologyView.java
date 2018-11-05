@@ -40,9 +40,10 @@ package org.openflexo.technologyadapter.emf.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.OntologyView;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -54,10 +55,12 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
+public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology<EMFTechnologyAdapter>>
+		extends OntologyView<T, EMFTechnologyAdapter> {
 
 	public AbstractEMFOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+		super(object, controller, perspective,
+				controller != null ? controller.getTechnologyAdapter(EMFTechnologyAdapter.class).getLocales() : null);
 	}
 
 	@Override

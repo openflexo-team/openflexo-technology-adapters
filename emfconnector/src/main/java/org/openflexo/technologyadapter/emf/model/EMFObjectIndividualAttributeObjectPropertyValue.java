@@ -143,7 +143,7 @@ public class EMFObjectIndividualAttributeObjectPropertyValue extends AEMFModelOb
 					result = Collections.emptyList();
 				}
 			} else {
-				result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+				result = new ArrayList<>();
 				List<?> valueList = (List<?>) object.eGet(attribute);
 				for (Object value : valueList) {
 					if (ontology.getMetaModel().getConverter().getEnumLiterals().get(value) != null) {

@@ -38,12 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
+import java.security.URIParameter;
+
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.URIParameter;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -92,8 +93,10 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 	@Setter(VALUE_KEY)
 	public void setValue(String value);
 
-	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl implements
-			FMLDiagramPaletteElementBindingParameter {
+	public boolean isEditable();
+
+	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl
+			implements FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
 		// private FMLDiagramPaletteElementBinding elementBinding;
@@ -116,7 +119,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
+		public VirtualModel getVirtualModel() {
 			if (getDiagramPaletteElementBinding() != null) {
 				return getDiagramPaletteElementBinding().getVirtualModel();
 			}
@@ -131,9 +134,9 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		@Override
 		public String getValue() {
 			if (getParameter() != null) {
-				if (getParameter() instanceof URIParameter) {
+				/*if (getParameter() instanceof URIParameter) {
 					return "< Computed URI >";
-				}
+				}*/
 				/*if (getParameter().getUsePaletteLabelAsDefaultValue()) {
 					return "< Takes palette element label >";
 				}*/
@@ -146,6 +149,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 			this.value = value;
 		}
 
+		@Override
 		public boolean isEditable() {
 			if (getParameter() != null) {
 				return !(getParameter() instanceof URIParameter) /*&& !getParameter().getUsePaletteLabelAsDefaultValue()*/;
@@ -163,7 +167,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		/*public void setElementBinding(FMLDiagramPaletteElementBinding elementBinding) {
 			this.elementBinding = elementBinding;
 		}
-
+		
 		public FMLDiagramPaletteElementBinding getElementBinding() {
 			return elementBinding;
 		}*/
@@ -180,7 +184,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getViewPoint().getBindingModel();
+			return getVirtualModel().getBindingModel();
 		}
 
 		@Override

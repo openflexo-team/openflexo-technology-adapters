@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.util.ArrayList;
@@ -45,9 +44,9 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.Function;
 import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.ontology.IndividualOfClass;
@@ -74,7 +73,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		if ((parent.getType() instanceof IndividualOfClass) && (object instanceof OWLProperty)) {
 			return PropertyStatementPathElement.makePropertyStatementPathElement(parent, (OWLProperty) object);
 		}
@@ -83,17 +82,17 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if ((technologySpecificType instanceof IndividualOfClass)
-				&& ((IndividualOfClass) technologySpecificType).getOntologyClass() instanceof OWLClass) {
+				&& ((IndividualOfClass<?>) technologySpecificType).getOntologyClass() instanceof OWLClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubClassOfClass)
-				&& ((SubClassOfClass) technologySpecificType).getOntologyClass() instanceof OWLClass) {
+				&& ((SubClassOfClass<?>) technologySpecificType).getOntologyClass() instanceof OWLClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubPropertyOfProperty)
-				&& ((SubPropertyOfProperty) technologySpecificType).getOntologyProperty() instanceof OWLProperty) {
+				&& ((SubPropertyOfProperty<?>) technologySpecificType).getOntologyProperty() instanceof OWLProperty) {
 			return true;
 		}
 		if (technologySpecificType instanceof StatementWithProperty) {
@@ -103,11 +102,11 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement element) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement element) {
 
 		if (element.getType() instanceof IndividualOfClass) {
-			IndividualOfClass parentType = (IndividualOfClass) element.getType();
-			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+			IndividualOfClass<?> parentType = (IndividualOfClass<?>) element.getType();
+			List<SimplePathElement> returned = new ArrayList<>();
 			returned.add(new URIPathElement(element));
 			returned.add(new URINamePathElement(element));
 			if (parentType.getOntologyClass() instanceof OWLClass) {
@@ -116,17 +115,19 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 				}
 			}
 			return returned;
-		} else if (element.getType() instanceof StatementWithProperty) {
+		}
+		else if (element.getType() instanceof StatementWithProperty) {
 
 			StatementWithProperty eltType = (StatementWithProperty) element.getType();
-			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+			List<SimplePathElement> returned = new ArrayList<>();
 			returned.add(new URIPathElement(element));
 			returned.add(new StatementPropertyPathElement(element));
 			returned.add(new StatementSubjectPathElement(element));
 			OWLProperty property = eltType.getProperty();
 			if (property instanceof OWLObjectProperty) {
 				returned.add(new StatementObjectPathElement(element));
-			} else if (property instanceof OWLDataProperty) {
+			}
+			else if (property instanceof OWLDataProperty) {
 				returned.add(new StatementValuePathElement(element));
 			}
 			returned.add(new StatementDisplayableRepresentationPathElement(element));
@@ -139,12 +140,12 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
+	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
 		return super.getAccessibleFunctionPathElements(parent);
 	}
 
 	@Override
-	public SimplePathElement makeSimplePathElement(BindingPathElement parent, String propertyName) {
+	public SimplePathElement makeSimplePathElement(IBindingPathElement parent, String propertyName) {
 		// We want to avoid code duplication, so iterate on all accessible simple path element and choose the right one
 		for (SimplePathElement e : getAccessibleSimplePathElements(parent)) {
 			if (e.getLabel().equals(propertyName)) {
@@ -155,23 +156,23 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public FunctionPathElement makeFunctionPathElement(BindingPathElement father, Function function, List<DataBinding<?>> args) {
+	public FunctionPathElement makeFunctionPathElement(IBindingPathElement father, Function function, List<DataBinding<?>> args) {
 		return super.makeFunctionPathElement(father, function, args);
 	}
 
-	private List<OWLProperty> searchProperties(OWLClass owlClass) {
+	private static List<OWLProperty> searchProperties(OWLClass owlClass) {
 
-		List<OWLProperty> returned = new ArrayList<OWLProperty>();
+		List<OWLProperty> returned = new ArrayList<>();
 
-		OWLProperty[] array = owlClass.getPropertiesTakingMySelfAsDomain().toArray(
-				new OWLProperty[owlClass.getPropertiesTakingMySelfAsDomain().size()]);
+		OWLProperty[] array = owlClass.getPropertiesTakingMySelfAsDomain()
+				.toArray(new OWLProperty[owlClass.getPropertiesTakingMySelfAsDomain().size()]);
 
 		// Big trick here
 		// A property may shadow another one relatively from its name
 		// We try to detect such shadowing, and we put the most specialized property first
 
-		List<Integer> i1 = new Vector<Integer>();
-		List<Integer> i2 = new Vector<Integer>();
+		List<Integer> i1 = new Vector<>();
+		List<Integer> i2 = new Vector<>();
 		for (int i = 0; i < array.length; i++) {
 			for (int j = i + 1; j < array.length; j++) {
 				if (array[i].getName().equals(array[j].getName())) {
@@ -179,7 +180,8 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 					// System.out.println("Detected name based shadowing between " + array[i] + " and " + array[j]);
 					if (array[i].getFlexoOntology().getAllImportedOntologies().contains(array[j].getFlexoOntology())) {
 						// array[i] appears to be the most specialized, don't do anything
-					} else if (array[j].getFlexoOntology().getAllImportedOntologies().contains(array[i].getFlexoOntology())) {
+					}
+					else if (array[j].getFlexoOntology().getAllImportedOntologies().contains(array[i].getFlexoOntology())) {
 						// array[j] appears to be the most specialized, we need to swap
 						i1.add(i);
 						i2.add(j);

@@ -48,13 +48,12 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
-import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
@@ -64,14 +63,14 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement extends
-		FlexoAction<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> {
+public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement
+		extends FlexoAction<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> {
 
-	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.class.getPackage()
-			.getName());
+	private static final Logger logger = Logger
+			.getLogger(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement>(
-			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionFactory<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> actionType = new FlexoActionFactory<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement>(
+			"create_new_palette_binding", FlexoActionFactory.defaultGroup, FlexoActionFactory.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -101,7 +100,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	private String description;
 
-	CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement(DiagramPaletteElement focusedObject,
+	private CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement(DiagramPaletteElement focusedObject,
 			Vector<DiagramPaletteElement> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
@@ -109,8 +108,8 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
 		logger.info("Add palette element binding to typed diagram modelslot");
-		FMLDiagramPaletteElementBinding newBinding = getTypedDiagramModelSlot().getFMLModelFactory().newInstance(
-				FMLDiagramPaletteElementBinding.class);
+		FMLDiagramPaletteElementBinding newBinding = getTypedDiagramModelSlot().getFMLModelFactory()
+				.newInstance(FMLDiagramPaletteElementBinding.class);
 
 		getTypedDiagramModelSlot().addToPaletteElementBindings(newBinding);
 		newBinding.setPaletteElement(getFocusedObject());
@@ -139,17 +138,18 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	private String errorMessage = EMPTY_NAME;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
-	private static final String FLEXO_CONCEPT_IS_EMPTY = FlexoLocalization.localizedForKey("flexo_concept_is_empty");
-	private static final String DROP_SCHEME_IS_EMPTY = FlexoLocalization.localizedForKey("drop_scheme_is_empty");
+	private static final String NAME_IS_VALID = "name_is_valid";
+	private static final String EMPTY_NAME = "empty_name";
+	private static final String FLEXO_CONCEPT_IS_EMPTY = "flexo_concept_is_empty";
+	private static final String DROP_SCHEME_IS_EMPTY = "drop_scheme_is_empty";
 
 	public boolean isNameValid() {
 		if (StringUtils.isEmpty(getName())) {
-			setErrorMessage(EMPTY_NAME);
+			setErrorMessage(getLocales().localizedForKey(EMPTY_NAME));
 			return false;
-		} else {
-			setErrorMessage(NAME_IS_VALID);
+		}
+		else {
+			setErrorMessage(getLocales().localizedForKey(NAME_IS_VALID));
 			return true;
 		}
 	}
@@ -263,7 +263,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	private void computeDropSchemes() {
 		if (dropSchemes == null) {
-			dropSchemes = new ArrayList<DropScheme>();
+			dropSchemes = new ArrayList<>();
 		}
 		dropSchemes.clear();
 		if (getFlexoConcept() != null) {
@@ -273,7 +273,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	private void computeFlexoConcepts() {
 		if (flexoConcepts == null) {
-			flexoConcepts = new ArrayList<FlexoConcept>();
+			flexoConcepts = new ArrayList<>();
 		}
 		flexoConcepts.clear();
 		if (getVirtualModel() != null) {
@@ -290,11 +290,13 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	public boolean isValid() {
 		if (!isNameValid()) {
 			return false;
-		} else if (getDropScheme() == null && !createDropScheme) {
-			setErrorMessage(DROP_SCHEME_IS_EMPTY);
+		}
+		else if (getDropScheme() == null && !createDropScheme) {
+			setErrorMessage(getLocales().localizedForKey(DROP_SCHEME_IS_EMPTY));
 			return false;
-		} else if (getFlexoConcept() == null) {
-			setErrorMessage(FLEXO_CONCEPT_IS_EMPTY);
+		}
+		else if (getFlexoConcept() == null) {
+			setErrorMessage(getLocales().localizedForKey(FLEXO_CONCEPT_IS_EMPTY));
 			return false;
 		}
 		return true;

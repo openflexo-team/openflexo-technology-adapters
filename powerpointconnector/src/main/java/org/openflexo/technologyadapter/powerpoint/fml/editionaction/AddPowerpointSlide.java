@@ -48,8 +48,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -67,7 +66,8 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
 	public void setSlideIndex(DataBinding<Integer> slideIndex);
 
-	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide>
+	public static abstract class AddPowerpointSlideImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide>
 			implements AddPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointSlide.class.getPackage().getName());
@@ -80,28 +80,29 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 		}
 
 		@Override
-		public PowerpointSlide execute(FlexoBehaviourAction action) {
+		public PowerpointSlide execute(RunTimeEvaluationContext evaluationContext) {
 
 			PowerpointSlide result = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(action);
-			if (modelSlotInstance.getResourceData() != null) {
+			PowerpointSlideshow receiver = getReceiver(evaluationContext);
+
+			if (receiver != null) {
 				try {
-					SlideShow ss = modelSlotInstance.getAccessedResourceData().getSlideShow();
+					SlideShow ss = receiver.getSlideShow();
 					Slide slide = null;
 					if (ss != null) {
 						slide = ss.createSlide();
-						Integer slideIndex = getSlideIndex().getBindingValue(action);
+						Integer slideIndex = getSlideIndex().getBindingValue(evaluationContext);
 						if (slideIndex != null) {
 							slide.setSlideNumber(slideIndex);
 						}
 
 						// Instanciate Wrapper.
-						result = modelSlotInstance.getAccessedResourceData().getConverter()
-								.convertPowerpointSlideToSlide(slide, modelSlotInstance.getAccessedResourceData(), null);
-						modelSlotInstance.getAccessedResourceData().addToPowerpointSlides(result);
-						modelSlotInstance.getAccessedResourceData().setIsModified();
-					} else {
+						result = receiver.getConverter().convertPowerpointSlideToSlide(slide, receiver, null);
+						receiver.addToPowerpointSlides(result);
+						receiver.setIsModified();
+					}
+					else {
 						logger.warning("Create a sheet requires a workbook");
 					}
 				} catch (TypeMismatchException e) {
@@ -114,7 +115,8 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -125,7 +127,7 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 		@Override
 		public DataBinding<Integer> getSlideIndex() {
 			if (slideIndex == null) {
-				slideIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				slideIndex = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				slideIndex.setBindingName("slideIndex");
 			}
 			return slideIndex;
@@ -142,10 +144,6 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 			this.slideIndex = slideIndex;
 		}
 
-		@Override
-		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(action);
-		}
 	}
 
 }

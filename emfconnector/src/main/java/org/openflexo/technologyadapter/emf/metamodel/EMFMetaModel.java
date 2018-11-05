@@ -66,8 +66,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * 
  * @author gbesancon
  */
-public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
-IFlexoOntology<EMFTechnologyAdapter> {
+public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements FlexoMetaModel<EMFMetaModel>, IFlexoOntology<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */
@@ -84,6 +84,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 		this.adapter = adapter;
 		this.ePackage = ePackage;
 		this.converter = converter;
+
 	}
 
 	/**
@@ -260,11 +261,12 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
 		List<IFlexoOntologyAnnotation> annotations = null;
 		if (ePackage.getEAnnotations() != null && ePackage.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<IFlexoOntologyAnnotation>();
+			annotations = new ArrayList<>();
 			for (EAnnotation annotation : ePackage.getEAnnotations()) {
 				annotations.add(this.getConverter().convertAnnotation(this, annotation));
 			}
-		} else {
+		}
+		else {
 			annotations = Collections.emptyList();
 		}
 		return annotations;
@@ -278,7 +280,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<IFlexoOntologyDataType<EMFTechnologyAdapter>> getDataTypes() {
-		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataType<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyDataType<EMFTechnologyAdapter> dataType : converter.getDataTypes().values()) {
 			result.add(dataType);
 		}
@@ -293,7 +295,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
-		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<>();
 		result.addAll(getClasses());
 		result.addAll(getIndividuals());
 		result.addAll(getDataProperties());
@@ -308,7 +310,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (EMFClassClass aClass : converter.getClasses().values()) {
 			result.add(aClass);
 		}
@@ -330,7 +332,8 @@ IFlexoOntology<EMFTechnologyAdapter> {
 			if (aClass.getURI().equalsIgnoreCase(classURI)) {
 				result = aClass;
 			}
-			if (result != null) break;
+			if (result != null)
+				break;
 		}
 		return result;
 	}
@@ -362,7 +365,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : converter.getEnumLiterals().values()) {
 			result.add(individual);
 		}
@@ -412,10 +415,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
-		if (result == null) {
-			result = getDataProperty(objectURI);
-		}
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = getDataProperty(objectURI);
 		if (result == null) {
 			result = getObjectProperty(objectURI);
 		}
@@ -439,7 +439,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getDataProperties() {
-		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : converter.getDataAttributes().values()) {
 			result.add(dataProperty);
 		}
@@ -457,7 +457,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
-				if (result != null) break;
+				break;
 			}
 		}
 		return result;
@@ -490,7 +490,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
-		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
+		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> result = new ArrayList<>();
 		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : converter.getObjectAttributes().values()) {
 			result.add(objectProperty);
 		}

@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> implements IFlexoOntologyDataType<EMFTechnologyAdapter> {
+public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType>implements IFlexoOntologyDataType<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -130,7 +130,8 @@ public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> impl
 		Class<?> result = null;
 		if (getBuiltInDataType() != null) {
 			result = getBuiltInDataType().getAccessedType();
-		} else {
+		}
+		else {
 			result = object.getInstanceClass();
 		}
 		return result;
@@ -144,5 +145,13 @@ public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> impl
 	@Override
 	public BuiltInDataType getBuiltInDataType() {
 		return BuiltInDataType.fromType(object.getInstanceClass());
+	}
+
+	@Override
+	public String toString() {
+		if (getAccessedType() != null) {
+			return getAccessedType().getSimpleName();
+		}
+		return super.toString();
 	}
 }

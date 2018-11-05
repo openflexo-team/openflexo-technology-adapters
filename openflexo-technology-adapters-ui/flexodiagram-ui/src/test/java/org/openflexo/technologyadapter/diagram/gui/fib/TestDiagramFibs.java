@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -61,6 +61,11 @@ public class TestDiagramFibs extends GenericFIBTestCase {
 	@Test
 	public void testDiagramSpecificationView() {
 		validateFIB("Fib/DiagramSpecificationView.fib");
+	}
+
+	@Test
+	public void testFMLControlledDiagramVirtualModelView() {
+		validateFIB("Fib/FMLControlledDiagramVirtualModelView.fib");
 	}
 
 }

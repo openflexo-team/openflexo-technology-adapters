@@ -45,8 +45,8 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
@@ -65,21 +65,19 @@ import org.openflexo.test.TestOrder;
 public class TestLoadAllEMFModel extends OpenflexoTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadAllEMFModel.class.getPackage().getName());
 
-
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		log("test0InstantiateResourceCenter()");
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 	}
-
 
 	@Test
 	@TestOrder(2)
 	public void TestListAllMetaModels() {
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		EMFTechnologyContextManager ctxManager = technologicalAdapter.getTechnologyContextManager();
 
@@ -88,26 +86,25 @@ public class TestLoadAllEMFModel extends OpenflexoTestCase {
 		for (String uri : ctxManager.getAllMetaModelURIs()) {
 			System.out.println("\t " + uri);
 		}
-		
+
 		System.out.println("ALL REGISTERED PROFILES: ");
 
 		for (String uri : ctxManager.getAllProfileURIs()) {
 			System.out.println("\t " + uri);
 		}
-		
+
 	}
 
 	@Test
 	@TestOrder(3)
 	public void TestLoadAllEMFModels() {
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
-
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
 			for (EMFModelResource modelResource : modelResources) {
 				System.out.println("\t Loading " + modelResource.getURI());

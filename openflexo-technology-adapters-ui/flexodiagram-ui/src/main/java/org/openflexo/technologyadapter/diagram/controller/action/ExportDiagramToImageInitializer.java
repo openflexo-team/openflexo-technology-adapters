@@ -38,11 +38,10 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
+import javax.swing.*;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ExportDiagramToImageAction;
@@ -59,16 +58,11 @@ public class ExportDiagramToImageInitializer extends ActionInitializer<ExportDia
 
 	@Override
 	protected FlexoActionInitializer<ExportDiagramToImageAction> getDefaultInitializer() {
-		return new FlexoActionInitializer<ExportDiagramToImageAction>() {
-			@Override
-			public boolean run(EventObject e, ExportDiagramToImageAction action) {
-				return action.saveAsImage();
-			}
-		};
+		return (e, action) -> action.saveAsImage();
 	}
 
 	@Override
-	protected Icon getEnabledIcon() {
+	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
 		return IconLibrary.EXPORT_ICON;
 	}
 

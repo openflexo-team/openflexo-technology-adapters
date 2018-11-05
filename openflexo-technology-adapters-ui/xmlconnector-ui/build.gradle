@@ -1,0 +1,15 @@
+dependencies {
+  // openflexo dep
+  compile project(":xmlconnector")
+
+  compile flexoUi()
+  compile flexoOntologyUi()
+
+  runtime fmlTechnologyAdapterUi()
+  // external dep
+  // testing dep
+    testCompile flexoUiTest()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

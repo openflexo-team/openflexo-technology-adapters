@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.net.URI;
@@ -46,9 +45,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
-import org.openflexo.foundation.FlexoProperty;
-import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -64,6 +62,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /* Correct processing of XML Objects URIs needs to add an internal class to store
  * for each XMLComplexType wich are the XML Elements (attributes or CDATA, or...) that will be 
@@ -127,7 +126,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 	public void setMappedXMLType(XMLType mappedType);
 
 	@Setter(MODELSLOT)
-	public void setModelSlot(AbstractXMLModelSlot modelslot);
+	public void setModelSlot(AbstractXMLModelSlot<?> modelslot);
 
 	@Getter(MODELSLOT)
 	public AbstractXMLModelSlot getModelSlot();
@@ -138,9 +137,9 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 	@Setter(BASE_PROPERTY)
 	public void setBasePropertyForURI(XMLDataProperty basePropertyForURI);
 
-	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException;
+	public Object retrieveObjectWithURI(XMLModel model, String objectURI) throws DuplicateURIException;
 
-	public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO);
+	public String getURIForObject(XMLModel model, XMLObject xsO);
 
 	public void reset();
 
@@ -164,7 +163,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
-		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
+		private final Map<String, XMLObject> uriCache = new HashMap<>();
 
 		/**
 		 * initialises an URIProcessor with the given URI
@@ -194,8 +193,13 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		}
 
 		@Override
-		public AbstractVirtualModel<?> getVirtualModel() {
-			return getModelSlot().getVirtualModel();
+		public VirtualModel getVirtualModel() {
+			AbstractXMLModelSlot<?> ms = getModelSlot();
+			if (ms != null) {
+				return ms.getOwningVirtualModel();
+			}
+			else
+				return null;
 		}
 
 		@Override
@@ -217,32 +221,6 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		}
 
 		@Override
-		public String getAttributeName() {
-			if (baseDataPropertyForURI != null) {
-				return baseDataPropertyForURI.getName();
-			} else {
-				return attributeName;
-			}
-		}
-
-		@Override
-		public void setAttributeName(String aName) {
-			attributeName = aName;
-			if (aName != null && mappedXMLType != null) {
-				FlexoProperty dataP = mappedXMLType.getPropertyNamed(aName);
-				attributeName = aName;
-				if (dataP != null) {
-					baseDataPropertyForURI = (XMLDataProperty) dataP;
-				} else {
-					logger.warning("Unable to set attribute name for uri processor : property not found in XMLType "
-							+ mappedXMLType.getName());
-				}
-			} else
-				logger.warning("Unable to set attribute name for uri processor : null XMLType ");
-
-		}
-
-		@Override
 		public XMLDataProperty getBasePropertyForURI() {
 			return baseDataPropertyForURI;
 		}
@@ -256,7 +234,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		}
 
 		// get the right URIProcessor for URI
-		public static String retrieveTypeURI(ModelSlotInstance msInstance, String objectURI) {
+		public static String retrieveTypeURI(ModelSlotInstance<?, ?> msInstance, String objectURI) {
 
 			URI fullURI;
 			StringBuffer typeURIStr = new StringBuffer();

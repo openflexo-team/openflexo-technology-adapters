@@ -43,15 +43,15 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.components.widget.OntologyView;
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
+import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.fml.DataPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.fml.OWLClassRole;
@@ -67,6 +67,9 @@ import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLIndividual;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.CreateOWLResource;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLClass;
+import org.openflexo.technologyadapter.owl.fml.editionaction.SelectOWLIndividual;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyView;
@@ -85,12 +88,9 @@ import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.IFlexoOntologyTechnologyAdapterController;
-import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class OWLAdapterController extends TechnologyAdapterController<OWLTechnologyAdapter> implements
-		IFlexoOntologyTechnologyAdapterController {
+public class OWLAdapterController extends FlexoOntologyTechnologyAdapterController<OWLTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(OWLAdapterController.class.getPackage().getName());
 
@@ -114,7 +114,8 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		owlInspectorGroup = controller.loadInspectorGroup("OWL", getFMLTechnologyAdapterInspectorGroup());
+		owlInspectorGroup = controller.loadInspectorGroup("OWL", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup owlInspectorGroup;
@@ -192,7 +193,8 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
-		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLStatement.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.ONTOLOGY_STATEMENT_ICON;
 		}
 		return null;
@@ -205,22 +207,29 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLClass.class);
-		} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLIndividual.class);
-		} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLDataProperty.class);
-		} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLObjectProperty.class);
-		} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLProperty.class);
-		} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(DataPropertyStatement.class);
-		} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ObjectPropertyStatement.class);
-		} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(SubClassStatement.class);
 		}
 		return null;
@@ -248,19 +257,29 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 		}
 		if (AddSubClassStatement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(SubClassStatement.class), IconLibrary.DUPLICATE);
-		} else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.DUPLICATE);
+		}
+		else if (CreateOWLResource.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLOntology.class), IconLibrary.DUPLICATE);
+		}
+		else if (SelectOWLIndividual.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLIndividual.class), IconLibrary.IMPORT);
+		}
+		else if (SelectOWLClass.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller) {
 		return object instanceof OWLOntology;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof OWLOntology) {
 			return ((OWLOntology) object).getName();
 		}
@@ -271,24 +290,22 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof OWLOntology) {
-			OntologyView<OWLOntology> returned = new OWLOntologyView((OWLOntology) object, controller, perspective);
+			OWLOntologyView returned = new OWLOntologyView((OWLOntology) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
 			returned.setShowAnnotationProperties(true);
 			return returned;
 		}
-		return new EmptyPanel<TechnologyObject<OWLTechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<>(controller, perspective, object);
 	}
 
 	@Override
-	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
+	public OntologyBrowserModel<OWLTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
 			return new OWLOntologyBrowserModel((OWLOntology) context);
-		} else {
-			logger.warning("Unexpected " + context);
-			return null;
 		}
+		logger.warning("Unexpected " + context);
+		return null;
 	}
-
 }

@@ -52,7 +52,7 @@ public abstract class XMLObjectPropertyValueImpl  implements XMLObjectPropertyVa
 	private List<XMLIndividual> values = null;
 
 	XMLObjectPropertyValueImpl(){
-		values = new ArrayList<XMLIndividual>();
+		values = new ArrayList<>();
 	}
 	
 	@Override

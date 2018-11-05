@@ -97,7 +97,6 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
 
 	@Getter(value = CONDITIONAL_KEY)
-	@XMLElement
 	public DataBinding<Boolean> getConditional();
 
 	@Setter(CONDITIONAL_KEY)
@@ -124,7 +123,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		}
 
 		@Override
-		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public Collection<Validable> getEmbeddedValidableObjects() {
 			return null;
 		}
 
@@ -132,7 +131,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		public GraphicalElementRole getGraphicalElementPatternRole() {
 			return graphicalElementPatternRole;
 		}
-
+		
 		@Override
 		public void setGraphicalElementPatternRole(GraphicalElementRole graphicalElementPatternRole) {
 			this.graphicalElementPatternRole = graphicalElementPatternRole;
@@ -141,7 +140,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		@Override
 		public DataBinding<Boolean> getConditional() {
 			if (conditional == null) {
-				conditional = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				conditional = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				conditional.setBindingName("conditional");
 			}
 			return conditional;

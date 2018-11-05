@@ -36,21 +36,20 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.owl.model.OWLClass;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
@@ -69,19 +68,27 @@ public class StatementObjectPathElement extends SimplePathElement {
 
 	private OWLObjectProperty property = null;
 
-	public StatementObjectPathElement(BindingPathElement parent) {
+	public StatementObjectPathElement(IBindingPathElement parent) {
 		super(parent, OBJECT, null); // Type is dynamically retrieved
 		if (parent.getType() instanceof StatementWithProperty) {
 			property = (OWLObjectProperty) ((StatementWithProperty) parent.getType()).getProperty();
-		} else {
+		}
+		else {
 			logger.warning("Unexpected type: " + parent.getType());
 		}
+	}
+
+	public LocalizedDelegate getLocales() {
+		if (property != null) {
+			return property.getLocales();
+		}
+		return FlexoLocalization.getMainLocalizer();
 	}
 
 	@Override
 	public Type getType() {
 		if (property != null) {
-			if (property.getRange() instanceof OWLClass) {
+			if (property.getRange() != null) {
 				return IndividualOfClass.getIndividualOfClass(property.getRange());
 			}
 		}
@@ -95,7 +102,7 @@ public class StatementObjectPathElement extends SimplePathElement {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_property_object");
+		return getLocales().localizedForKey("owl_property_object");
 	}
 
 	@Override
@@ -108,8 +115,8 @@ public class StatementObjectPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

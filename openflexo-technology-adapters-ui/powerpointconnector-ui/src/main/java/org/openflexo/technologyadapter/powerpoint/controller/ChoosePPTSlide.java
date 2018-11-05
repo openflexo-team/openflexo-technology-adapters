@@ -55,8 +55,10 @@ import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.WizardStep;
-import org.openflexo.fib.annotation.FIBPanel;
+import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
@@ -96,24 +98,31 @@ public class ChoosePPTSlide extends WizardStep {
 
 	@Override
 	public String getTitle() {
-		return FlexoLocalization.localizedForKey("choose_powerpoint_slide");
+		return getLocales().localizedForKey("choose_powerpoint_slide");
+	}
+
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class).getLocales();
+		}
+		return FlexoLocalization.getMainLocalizer();
 	}
 
 	@Override
 	public boolean isValid() {
 
 		if (getFile() == null || !getFile().exists()) {
-			setIssueMessage(FlexoLocalization.localizedForKey("please_select_a_valid_powerpoint_file"), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey("please_select_a_valid_powerpoint_file"), IssueMessageType.ERROR);
 			return false;
 		}
 
 		else if (getSlide() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey("please_select_a_slide_to_import"), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey("please_select_a_slide_to_import"), IssueMessageType.ERROR);
 			return false;
 		}
 
 		else if (StringUtils.isEmpty(getDiagramName())) {
-			setIssueMessage(FlexoLocalization.localizedForKey("please_set_diagram_name"), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey("please_set_diagram_name"), IssueMessageType.ERROR);
 			return false;
 		}
 
@@ -121,12 +130,12 @@ public class ChoosePPTSlide extends WizardStep {
 	}
 
 	public void loadSlideShow() {
-		try {
-			FileInputStream fis = new FileInputStream(getFile());
+		try (FileInputStream fis = new FileInputStream(getFile())) {
 			selectedSlideShow = new SlideShow(fis);
 			if (currentSlides == null) {
-				currentSlides = new ArrayList<Slide>();
-			} else {
+				currentSlides = new ArrayList<>();
+			}
+			else {
 				currentSlides.clear();
 			}
 			for (Slide slide : selectedSlideShow.getSlides()) {

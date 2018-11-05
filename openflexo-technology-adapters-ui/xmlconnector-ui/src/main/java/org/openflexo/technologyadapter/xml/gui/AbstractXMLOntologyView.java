@@ -40,9 +40,10 @@ package org.openflexo.technologyadapter.xml.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.OntologyView;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -54,10 +55,11 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
+public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOntology<XMLTechnologyAdapter>>
+		extends OntologyView<T, XMLTechnologyAdapter> {
 
 	public AbstractXMLOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+		super(object, controller, perspective, controller.getTechnologyAdapter(XMLTechnologyAdapter.class).getLocales());
 	}
 
 	@Override

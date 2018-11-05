@@ -53,12 +53,17 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
  */
 public class DiagramSpecificationFactory extends DefaultPamelaResourceModelFactory<DiagramSpecificationResource> {
 
+	private RelativePathResourceConverter relativePathResourceConverter;
+
 	public DiagramSpecificationFactory(DiagramSpecificationResource resource, EditingContext editingContext)
 			throws ModelDefinitionException {
 		super(resource, ModelContextLibrary.getModelContext(DiagramSpecification.class));
 		setEditingContext(editingContext);
-		if(resource!=null){
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+		if (resource != null && resource.getIODelegate() != null
+				&& resource.getIODelegate().getSerializationArtefactAsResource() != null) {
+			relativePathResourceConverter
+					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 

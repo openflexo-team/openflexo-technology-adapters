@@ -41,9 +41,8 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public abstract class OWLStatement extends OWLObject {
 
@@ -61,6 +60,11 @@ public abstract class OWLStatement extends OWLObject {
 		if (!s.getSubject().equals(_subject.getOntResource())) {
 			logger.warning("Inconsistant data: subject is not " + this);
 		}
+	}
+
+	@Override
+	public String getDescription() {
+		return getDisplayableDescription();
 	}
 
 	/**

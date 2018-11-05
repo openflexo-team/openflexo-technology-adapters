@@ -42,7 +42,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -52,15 +51,15 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.fml.ExcelActorReference;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
@@ -71,28 +70,52 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
+import org.openflexo.technologyadapter.excel.fml.editionaction.CreateExcelResource;
+import org.openflexo.technologyadapter.excel.fml.editionaction.GenerateExcelResource;
+import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Implementation of a basic ModelSlot class for the Excel technology adapter<br>
  * This model slot reflects a basic interpretation of a workbook, with basic excel notions, such as workbook, sheet, row, col, and cell
  * 
- * @author Vincent LeildÃ©, Sylvain GuÃ©rin
+ * @author Vincent Leildé, Sylvain Guérin
  * 
  */
 @DeclareActorReferences({ ExcelActorReference.class })
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
-@DeclareEditionActions({ AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
+@DeclareEditionActions({ CreateExcelResource.class, GenerateExcelResource.class, AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class,
+		CellStyleAction.class, MergeCells.class })
 @DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
 public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
+
+	@PropertyIdentifier(type = FlexoResource.class)
+	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
+
+	@PropertyIdentifier(type = String.class)
+	public static final String TEMPLATE_WORKBOOK_URI_KEY = "templateWorkbookURI";
+
+	@Getter(value = TEMPLATE_WORKBOOK_URI_KEY)
+	@XMLAttribute
+	public String getTemplateWorkbookURI();
+
+	@Setter(TEMPLATE_WORKBOOK_URI_KEY)
+	public void setTemplateWorkbookURI(String templateWorkbookURI);
+
+	@Getter(TEMPLATE_RESOURCE_KEY)
+	public ExcelWorkbookResource getTemplateResource();
+
+	@Setter(TEMPLATE_RESOURCE_KEY)
+	public void setTemplateResource(ExcelWorkbookResource templateResource);
 
 	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook> implements BasicExcelModelSlot {
 
@@ -100,14 +123,51 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		// private BasicExcelModelSlotURIProcessor uriProcessor;
 
-		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
+		private final Map<String, ExcelObject> uriCache = new HashMap<>();
 
-		/*public BasicExcelModelSlotURIProcessor getUriProcessor() {
-			if (uriProcessor == null && getFMLModelFactory() != null) {
-				uriProcessor = getFMLModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
+		private ExcelWorkbookResource templateResource;
+		protected String templateWorkbookURI;
+
+		@Override
+		public String getTemplateWorkbookURI() {
+			if (getTemplateResource() != null) {
+				return getTemplateResource().getURI();
 			}
-			return uriProcessor;
-		}*/
+			return templateWorkbookURI;
+		}
+
+		@Override
+		public void setTemplateWorkbookURI(String templateWorkbookURI) {
+			if ((templateWorkbookURI == null && this.templateWorkbookURI != null)
+					|| (templateWorkbookURI != null && !templateWorkbookURI.equals(this.templateWorkbookURI))) {
+				String oldValue = this.templateWorkbookURI;
+				this.templateWorkbookURI = templateWorkbookURI;
+				getPropertyChangeSupport().firePropertyChange(TEMPLATE_WORKBOOK_URI_KEY, oldValue, templateWorkbookURI);
+			}
+		}
+
+		@Override
+		public ExcelWorkbookResource getTemplateResource() {
+			if (templateResource == null && StringUtils.isNotEmpty(templateWorkbookURI)
+					&& getServiceManager().getResourceManager() != null) {
+				// System.out.println("Looking up " + templateDocumentURI);
+				templateResource = (ExcelWorkbookResource) getServiceManager().getResourceManager().getResource(templateWorkbookURI);
+				// System.out.println("templateResource = " + returned);
+				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
+				// System.out.println("> " + r.getURI());
+				// }
+			}
+			return templateResource;
+		}
+
+		@Override
+		public void setTemplateResource(ExcelWorkbookResource templateResource) {
+			if (templateResource != this.templateResource) {
+				ExcelWorkbookResource oldValue = this.templateResource;
+				this.templateResource = templateResource;
+				getPropertyChangeSupport().firePropertyChange("templateResource", oldValue, templateResource);
+			}
+		}
 
 		@Override
 		public Class<ExcelTechnologyAdapter> getTechnologyAdapterClass() {
@@ -118,9 +178,11 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return null;
@@ -132,18 +194,13 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<BasicExcelModelSlot, ExcelWorkbook> createConfiguration(CreateVirtualModelInstance action) {
-			return new BasicExcelModelSlotInstanceConfiguration(this, action);
-		}
-
-		@Override
-		public String getURIForObject(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance, Object o) {
+		public String getURIForObject(ExcelWorkbook model, Object o) {
 			ExcelObject excelObject = (ExcelObject) o;
 
 			String builtURI = null;
 
 			try {
-				builtURI = URLEncoder.encode(excelObject.getUri(), "UTF-8");
+				builtURI = URLEncoder.encode(excelObject.getSerializationIdentifier(), "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				logger.warning("Cannot process URI - Unexpected encoding error");
 				e.printStackTrace();
@@ -159,31 +216,35 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance,
-				String objectURI) {
+		public Object retrieveObjectWithURI(ExcelWorkbook model, String objectURI) {
 
 			try {
 				String builtURI = URLEncoder.encode(objectURI, "UTF-8");
 				ExcelObject o = uriCache.get(builtURI);
 				if (o != null) {
 					return o;
-				} else {
-					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
+				}
+				else {
+					TechnologyAdapterResource<ExcelWorkbook, ?> resource = model.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}
-					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
+					System.out.println("Tiens, la faut retrouver " + URLDecoder.decode(objectURI, "UTF-8"));
+					return null;
+					/*ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
 							.getAccessibleExcelObjects();
+					if (excelObject.size() > 100) {
+						logger.fine("WARNING: more than one hundred lines in Excel file");
+					}
 					for (ExcelObject obj : excelObject) {
 						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 							return obj;
 						}
-					}
+					}*/
 				}
 
-				return o;
+				// return o;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -194,17 +255,17 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			return (ExcelTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		@Override
-		public ExcelWorkbookResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
-		}
-
-		@Override
-		public TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> createSharedEmptyResource(
-				FlexoResourceCenter<?> resourceCenter, String relativePath, String filename, String modelUri) {
-			// TODO Auto-generated method stub
+		/*@Override
+		public ExcelWorkbookResource createProjectSpecificEmptyResource(VirtualModelInstance<?, ?> view, String filename, String modelUri) {
+			try {
+				return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename);
+			} catch (SaveResourceException e) {
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
+			}
 			return null;
-		}
+		}*/
 
 	}
 }

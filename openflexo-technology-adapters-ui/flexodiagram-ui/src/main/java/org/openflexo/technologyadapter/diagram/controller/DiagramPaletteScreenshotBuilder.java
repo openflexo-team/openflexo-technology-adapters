@@ -38,15 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram.controller;
 
-import javax.swing.JComponent;
-
-import org.openflexo.foundation.resource.ScreenshotBuilder;
+import javax.swing.*;
+import org.openflexo.fge.ScreenshotBuilder;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.view.controller.FlexoController;
 
 public class DiagramPaletteScreenshotBuilder extends ScreenshotBuilder<DiagramPalette> {
-	
+
 	@Override
 	public String getScreenshotName(DiagramPalette o) {
 		return o.getName();

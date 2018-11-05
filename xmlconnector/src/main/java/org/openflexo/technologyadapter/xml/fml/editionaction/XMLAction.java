@@ -38,10 +38,11 @@
 
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.xml.AbstractXMLModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /**
  * Abstract action for any {@link AbstractXMLModelSlot}
@@ -53,6 +54,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
  */
 
 @ModelEntity(isAbstract = true)
-public interface XMLAction<MS extends AbstractXMLModelSlot<?>, T extends XMLObject> extends TechnologySpecificAction<MS, T> {
+public interface XMLAction<MS extends AbstractXMLModelSlot<?>, T extends XMLObject>
+		extends TechnologySpecificActionDefiningReceiver<MS, XMLModel, T> {
 
 }

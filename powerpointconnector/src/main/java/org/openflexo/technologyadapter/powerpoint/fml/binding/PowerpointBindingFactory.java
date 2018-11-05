@@ -44,8 +44,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
-import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
@@ -59,14 +59,14 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  * 
  */
 public final class PowerpointBindingFactory extends TechnologyAdapterBindingFactory {
-	static final Logger	logger	= Logger.getLogger(PowerpointBindingFactory.class.getPackage().getName());
+	static final Logger logger = Logger.getLogger(PowerpointBindingFactory.class.getPackage().getName());
 
 	public PowerpointBindingFactory() {
 		super();
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		logger.warning("Unexpected " + object);
 		return null;
 	}
@@ -83,8 +83,8 @@ public final class PowerpointBindingFactory extends TechnologyAdapterBindingFact
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+		List<SimplePathElement> returned = new ArrayList<>();
 		if (parent instanceof PowerpointSlideshow) {
 			for (PowerpointSlide sheet : ((PowerpointSlideshow) parent).getPowerpointSlides()) {
 				returned.add(getSimplePathElement(sheet, parent));
@@ -94,7 +94,7 @@ public final class PowerpointBindingFactory extends TechnologyAdapterBindingFact
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
+	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
 		// TODO
 		return Collections.emptyList();
 	}

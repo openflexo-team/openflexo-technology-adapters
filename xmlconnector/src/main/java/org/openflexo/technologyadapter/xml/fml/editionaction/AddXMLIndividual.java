@@ -43,12 +43,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
-import org.openflexo.foundation.fml.editionaction.DataPropertyAssertion;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -80,7 +77,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ImplementationClass(AddXMLIndividual.AddXMLIndividualImpl.class)
 @Imports({ @Import(XMLDataPropertyAssertion.class), @Import(XMLActorReference.class), })
 @FML("AddXMLIndividual")
-public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAction<XMLModelSlot, XMLIndividual> {
+public interface AddXMLIndividual extends XMLAction<XMLModelSlot, XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TYPE_URI = "typeURI";
@@ -116,8 +113,8 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 	public XMLMetaModel getMetamodel();
 
-	public abstract static class AddXMLIndividualImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
-			AddXMLIndividual {
+	public abstract static class AddXMLIndividualImpl
+			extends TechnologySpecificActionDefiningReceiverImpl<XMLModelSlot, XMLModel, XMLIndividual> implements AddXMLIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddXMLIndividualImpl.class.getPackage().getName());
 
@@ -129,7 +126,11 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		@Override
 		public XMLMetaModel getMetamodel() {
-			return this.getModelSlot().getMetamodel();
+			if (getInferedModelSlot() != null) {
+				return getInferedModelSlot().getMetamodel();
+			}
+			return null;
+			// return this.getModelSlot().getMetamodel();
 		}
 
 		@Override
@@ -148,12 +149,13 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		private void rebindTypeURI() {
 			String aTypeURI = getTypeURI();
-			if (aTypeURI != null && getModelSlot() != null) {
-				XMLType t = getModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
+			if (aTypeURI != null && getInferedModelSlot() != null) {
+				XMLType t = getInferedModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
 
 				if (t instanceof XMLComplexType) {
 					xmlType = (XMLComplexType) t;
-				} else {
+				}
+				else {
 					logger.warning("Did not found XMLComplextType corresponding to URI " + aTypeURI);
 				}
 			}
@@ -180,23 +182,22 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 		}
 
 		@Override
-		public XMLIndividual execute(FlexoBehaviourAction action) {
+		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
 			XMLIndividual newIndividual = null;
 			try {
 
 				if (getXMLType() != null) {
-					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = (ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel>) getModelSlotInstance(action);
-					XMLModel model = modelSlotInstance.getAccessedResourceData();
-					XMLModelSlot modelSlot = (XMLModelSlot) modelSlotInstance.getModelSlot();
 
-					newIndividual = (XMLIndividual) model.addNewIndividual(getXMLType());
-					modelSlotInstance.getResourceData().setIsModified();
+					XMLModel receiver = getReceiver(evaluationContext);
+
+					newIndividual = receiver.addNewIndividual(getXMLType());
+					receiver.setIsModified();
 
 					for (XMLDataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
-						if (dataPropertyAssertion.evaluateCondition(action)) {
+						if (dataPropertyAssertion.evaluateCondition(evaluationContext)) {
 							XMLDataProperty property = dataPropertyAssertion.getDataProperty();
-							Object value = dataPropertyAssertion.getValue(action);
+							Object value = dataPropertyAssertion.getValue(evaluationContext);
 							newIndividual.addPropertyValue(property, value);
 						}
 					}
@@ -205,20 +206,25 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 					// Two phase creation, then addition, to be able to process URIs once you have the property values
 					// and verify that there is no duplicate URIs
 
-					String processedURI = modelSlot.getURIForObject(modelSlotInstance, newIndividual);
-					if (processedURI != null) {
-						Object o = modelSlot.retrieveObjectWithURI(modelSlotInstance, processedURI);
-						if (o != null) {
-							model.removeFromIndividuals(newIndividual);
-							throw new DuplicateURIException("Error while creating Individual of type " + getXMLType().getURI());
-						}
+					XMLModelSlot modelSlot = getInferedModelSlot();
 
-						return newIndividual;
-					} else {
-						// TODO Provide a way to push an error message to the user!
-						logger.warning("Error while creating Individual of type " + getXMLType().getURI());
-						if (newIndividual != null) {
-							model.removeFromIndividuals(newIndividual);
+					if (modelSlot != null) {
+						String processedURI = modelSlot.getURIForObject(receiver, newIndividual);
+						if (processedURI != null) {
+							Object o = modelSlot.retrieveObjectWithURI(receiver, processedURI);
+							if (o != null) {
+								receiver.removeFromIndividuals(newIndividual);
+								throw new DuplicateURIException("Error while creating Individual of type " + getXMLType().getURI());
+							}
+
+							return newIndividual;
+						}
+						else {
+							// TODO Provide a way to push an error message to the user!
+							logger.warning("Error while creating Individual of type " + getXMLType().getURI());
+							if (newIndividual != null) {
+								receiver.removeFromIndividuals(newIndividual);
+							}
 						}
 					}
 				}
@@ -227,6 +233,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 				e.printStackTrace();
 				return null;
 			}
+
 		}
 
 	}
