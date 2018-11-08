@@ -8,7 +8,7 @@
 	</parent>
 
 	<groupId>org.openflexo.rc</groupId>
-	<artifactId>excelconnector-test-rc</artifactId>
+	<artifactId>emfconnector-test-rc</artifactId>
 	<version>1.9.1-SNAPSHOT</version>
 	<properties>
 	    <ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>

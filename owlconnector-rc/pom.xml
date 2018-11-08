@@ -8,7 +8,7 @@
 	</parent>
 
 	<groupId>org.openflexo.rc</groupId>
-	<artifactId>excelconnector-test-rc</artifactId>
+	<artifactId>owlconnector-rc</artifactId>
 	<version>1.9.1-SNAPSHOT</version>
 	<properties>
 	    <ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
@@ -20,8 +20,8 @@
 		<tag>1.9.0</tag>
 	</scm>
 
-	<name>PDFTestRC</name>
-	<description>PDF Test Resource Center</description>
+	<name>OWLRC</name>
+	<description>OWL Resource Center</description>
 
 <build>
 		<resources>

@@ -55,8 +55,8 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
-public abstract class AbstractTestExcel extends OpenflexoTestCaseWithGUI {
-	protected static final Logger logger = Logger.getLogger(AbstractTestExcel.class.getPackage().getName());
+public abstract class AbstractTestExcelUI extends OpenflexoTestCaseWithGUI {
+	protected static final Logger logger = Logger.getLogger(AbstractTestExcelUI.class.getPackage().getName());
 
 	protected static SwingGraphicalContextDelegate gcDelegate;
 
@@ -118,7 +118,7 @@ public abstract class AbstractTestExcel extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate("AbstractTestExcel");
+		gcDelegate = new SwingGraphicalContextDelegate("AbstractTestExcelUI");
 
 	}
 

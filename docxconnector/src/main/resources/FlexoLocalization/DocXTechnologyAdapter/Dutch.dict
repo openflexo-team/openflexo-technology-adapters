@@ -7,6 +7,7 @@ end_iteration_index=End iteration index
 id_strategy=Id strategy
 initializing_adapter=initializing_adapter
 iteration=Iteration
+loading=loading
 multiline=Multiline
 nature=Nature
 object_to_represent=Object to represent

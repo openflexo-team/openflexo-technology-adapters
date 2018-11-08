@@ -6,33 +6,24 @@
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
 		<version>1.9.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>flexodiagram-ui</artifactId>
-	<name>FlexoDiagram technology adapter UI</name>
+	<artifactId>owlconnector-ui</artifactId>
+	<name>OWL technology connector UI</name>
     <issueManagement>
-        <system>JIRA</system>
-        <url>https://bugs.openflexo.org/browse/DIANATA/</url>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/OWL/</url>
     </issueManagement>
-	<build>
+  <build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<!-- <exclude>**/*/TestOntologies.java</exclude> -->
-					</excludes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>flexodiagram</artifactId>
+			<artifactId>owlconnector</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -47,27 +38,22 @@
 		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fml-technologyadapter-ui</artifactId>
+			<artifactId>flexo-ontology-ui</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fml-technologyadapter-ui</artifactId>
+			<artifactId>flexo-ontology-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fml-rt-technologyadapter-ui</artifactId>
+			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
 		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fml-rt-technologyadapter-ui</artifactId>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexo-foundation</artifactId>
+			<artifactId>gina-core</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
@@ -79,7 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>gina-core</artifactId>
+			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
@@ -89,12 +75,6 @@
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>-->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 </project>
 

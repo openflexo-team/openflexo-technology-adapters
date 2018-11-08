@@ -6,12 +6,12 @@
 		<artifactId>openflexo-technology-adapters</artifactId>
 		<version>1.9.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>docxconnector</artifactId>
-	<description>Technology Adapter for .docx documents</description>
-	<url>http://www.openflexo.com/technologyadapter/docxconnector</url>
+	<artifactId>pdfconnector</artifactId>
+	<description>Technology Adapter for .pdf documents</description>
+	<url>http://www.openflexo.com/technologyadapter/pdfconnector</url>
     <issueManagement>
        <system>JIRA</system>
-       <url>https://bugs.openflexo.org/browse/DOCX/</url>
+       <url>https://bugs.openflexo.org/browse/PDF/</url>
     </issueManagement>
 	<properties>
 		<technology.prefix>DOCX</technology.prefix>
@@ -21,6 +21,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/TestDocXResourceUnloading.java</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -35,11 +40,13 @@
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
-		</dependency>-->
+		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>testutils</artifactId>
-		</dependency>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-documentation</artifactId>
@@ -47,10 +54,36 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.docx4j</groupId>
-			<artifactId>docx4j</artifactId>
-			<version>3.2.0</version>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox-app</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox-examples</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox-tools</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox-debugger</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+
 
 	</dependencies>
 </project>

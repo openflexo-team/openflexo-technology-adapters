@@ -6,11 +6,11 @@
 		<artifactId>openflexo-technology-adapters</artifactId>
 		<version>1.9.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>flexodiagram</artifactId>
-	<name>FlexoDiagram technology adapter</name>
+	<artifactId>owlconnector</artifactId>
+	<name>OWL technology connector</name>
     <issueManagement>
-        <system>JIRA</system>
-        <url>https://bugs.openflexo.org/browse/DIANATA/</url>
+       <system>JIRA</system>
+       <url>https://bugs.openflexo.org/browse/OWL/</url>
     </issueManagement>
 	<build>
 		<plugins>
@@ -18,18 +18,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<!-- <exclude>**/*/TestOntologies.java</exclude> -->
-					</excludes>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+	<properties>
+		<jena-core.version>2.13.0</jena-core.version>
+	</properties>
 	<dependencies>
+		<!--  <dependency>
+			<groupId>org.openflexo.rc</groupId>
+			<artifactId>owlconnector-rc</artifactId>
+			<version>${project.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
@@ -43,26 +42,25 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology</artifactId>
+			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>testutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>testdiagram_vp</artifactId>
-			<version>1.1</version>
+			<artifactId>flexo-ontology</artifactId>
+			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>${jena-core.version}</version>
+		</dependency>
 	</dependencies>
 </project>
 
