@@ -210,7 +210,10 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 			BindingValueChangeListener<T> l = new BindingValueChangeListener<T>(grSpec.getValue(), getFlexoConceptInstance()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println("value changed for " + grSpec + " newValue=" + newValue);
+					// Hack to force element name (non FML-controlled) to take the name of federated diagram element
+					if (grSpec.getFeatureName().equals("label")) {
+						getDiagramElement().setName((String) newValue);
+					}
 					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, newValue);
 				}
 			};
@@ -257,7 +260,12 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 
 					// }
 
-					return getRole().getLabel().getBindingValue(getFlexoConceptInstance());
+					String newLabel = getRole().getLabel().getBindingValue(getFlexoConceptInstance());
+
+					// We force the name of the DiagramElement to be last computed name
+					getDiagramElement().setName(newLabel);
+
+					return newLabel;
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
@@ -272,6 +280,8 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		// TODO: to it generically for all GRSpecs
 		@Override
 		public void setLabel(String aLabel) {
+
+			System.out.println("Hop setLabel avec " + aLabel);
 
 			// We handle here a special use case encountered in FME
 			// When a FlexoConceptInstance changes its type (its FlexoConcept)

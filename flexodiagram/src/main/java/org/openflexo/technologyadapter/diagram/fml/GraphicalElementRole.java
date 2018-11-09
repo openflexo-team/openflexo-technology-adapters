@@ -97,6 +97,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public void applyToGraphicalRepresentation(GraphicalRepresentation gr, String value) {
+			// Hack to force element name (non FML-controlled) to take the name of federated diagram element
 			gr.setText(value);
 		}
 	}
