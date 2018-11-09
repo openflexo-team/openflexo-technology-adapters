@@ -109,7 +109,7 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	private File getExpectedScreenshotImageFile() {
 		if (expectedScreenshotImageFile == null && getResource().getIODelegate() instanceof FileIODelegate) {
 			FileIODelegate delegate = (FileIODelegate) getResource().getIODelegate();
-			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
+			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".png");
 		}
 		return expectedScreenshotImageFile;
 	}
