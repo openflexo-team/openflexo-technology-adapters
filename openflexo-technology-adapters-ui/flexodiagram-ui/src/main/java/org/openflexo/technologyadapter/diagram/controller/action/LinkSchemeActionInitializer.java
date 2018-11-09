@@ -85,8 +85,13 @@ public class LinkSchemeActionInitializer
 			// DiagamConnector,
 			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
 			// sure that the Drawing can discover that the new connector is FML-controlled
-			action.getNewConnector().getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null,
-					action.getNewConnector().getParent());
+			if (action.getNewConnector() != null) {
+				action.getNewConnector().getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null,
+						action.getNewConnector().getParent());
+			}
+			else if (action.getDiagram() != null) {
+				action.getDiagram().getPropertyChangeSupport().firePropertyChange("invalidate", null, action.getDiagram());
+			}
 
 			getController().getSelectionManager().setSelectedObject(action.getNewConnector());
 			return true;
