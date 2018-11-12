@@ -40,8 +40,8 @@ package org.openflexo.technologyadapter.xml.model;
 
 import java.util.List;
 
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 
 /**
  * Implementation of an Object Property values in XSD/XML technology.<br>

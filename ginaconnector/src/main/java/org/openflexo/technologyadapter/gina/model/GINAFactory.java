@@ -48,11 +48,11 @@ import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.model.converter.RelativePathFileConverter;
-import org.openflexo.model.converter.RelativePathResourceConverter;
-import org.openflexo.model.converter.TypeConverter;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.EditingContext;
+import org.openflexo.pamela.converter.RelativePathFileConverter;
+import org.openflexo.pamela.converter.RelativePathResourceConverter;
+import org.openflexo.pamela.converter.TypeConverter;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 
 /**

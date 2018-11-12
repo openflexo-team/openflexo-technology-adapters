@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.model.exceptions.ModelExecutionException;
+import org.openflexo.pamela.exceptions.ModelExecutionException;
 import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;

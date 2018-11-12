@@ -45,13 +45,13 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.gina.annotation.FIBPanel;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.toolbox.StringUtils;
 
@@ -134,8 +134,14 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 			}
 		}
 
+		private FlexoConcept targetFlexoConcept;
+
 		@Override
 		public FlexoConcept getTargetFlexoConcept() {
+			if (targetFlexoConcept != null) {
+				return targetFlexoConcept;
+			}
+
 			if (StringUtils.isEmpty(_getTarget())) {
 				return null;
 			}
@@ -143,23 +149,26 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 				return null;
 			}
 			if (getOwningVirtualModel() != null) {
-				FlexoConcept returned = getOwningVirtualModel().getFlexoConcept(_getTarget());
-				if (lastKnownTargetFlexoConcept != returned) {
+				targetFlexoConcept = getOwningVirtualModel().getFlexoConcept(_getTarget());
+				if (lastKnownTargetFlexoConcept != targetFlexoConcept) {
 					FlexoConcept oldValue = lastKnownTargetFlexoConcept;
-					lastKnownTargetFlexoConcept = returned;
-					getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+					lastKnownTargetFlexoConcept = targetFlexoConcept;
+					getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldValue, targetFlexoConcept);
 				}
-				return returned;
+				return targetFlexoConcept;
 			}
 			return null;
 		}
 
 		@Override
-		public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+		public void setTargetFlexoConcept(FlexoConcept aTargetFlexoConcept) {
 			/*if (targetFlexoConcept != null) {
 				setTopTarget(false);
 			}*/
-			_setTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
+			FlexoConcept oldTargetFlexoConcept = this.targetFlexoConcept;
+			this.targetFlexoConcept = aTargetFlexoConcept;
+			_setTarget(aTargetFlexoConcept != null ? aTargetFlexoConcept.getURI() : null);
+			getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldTargetFlexoConcept, aTargetFlexoConcept);
 			// updateBindingModels();
 		}
 

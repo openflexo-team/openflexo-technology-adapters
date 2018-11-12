@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import org.docx4j.wml.ContentAccessor;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**

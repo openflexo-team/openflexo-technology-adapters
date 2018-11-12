@@ -42,13 +42,13 @@ import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.gina.annotation.FIBPanel;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.toolbox.StringUtils;
 
@@ -165,6 +165,9 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 		private boolean isAvailableWithFloatingPalette = true;
 
+		private FlexoConcept fromTargetFlexoConcept = null;
+		private FlexoConcept toTargetFlexoConcept = null;
+
 		private FlexoConcept lastKnownFromTargetFlexoConcept = null;
 		private FlexoConcept lastKnownToTargetFlexoConcept = null;
 
@@ -203,43 +206,53 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		@Override
 		public FlexoConcept getFromTargetFlexoConcept() {
 
-			FlexoConcept returned = null;
+			if (fromTargetFlexoConcept != null) {
+				return fromTargetFlexoConcept;
+			}
 
 			if (!StringUtils.isEmpty(_getFromTarget()) && getOwningVirtualModel() != null) {
-				returned = getOwningVirtualModel().getFlexoConcept(_getFromTarget());
+				fromTargetFlexoConcept = getOwningVirtualModel().getFlexoConcept(_getFromTarget());
 			}
-			if (lastKnownFromTargetFlexoConcept != returned) {
+			if (lastKnownFromTargetFlexoConcept != fromTargetFlexoConcept) {
 				FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
-				lastKnownFromTargetFlexoConcept = returned;
-				getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+				lastKnownFromTargetFlexoConcept = fromTargetFlexoConcept;
+				getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, fromTargetFlexoConcept);
 			}
-			return returned;
+			return fromTargetFlexoConcept;
 		}
 
 		@Override
 		public void setFromTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			FlexoConcept oldFromTargetFlexoConcept = fromTargetFlexoConcept;
+			fromTargetFlexoConcept = targetFlexoConcept;
 			_setFromTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
+			getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldFromTargetFlexoConcept, fromTargetFlexoConcept);
 		}
 
 		@Override
 		public FlexoConcept getToTargetFlexoConcept() {
 
-			FlexoConcept returned = null;
+			if (toTargetFlexoConcept != null) {
+				return toTargetFlexoConcept;
+			}
+
 			if (!StringUtils.isEmpty(_getToTarget()) && getOwningVirtualModel() != null) {
-				returned = getOwningVirtualModel().getFlexoConcept(_getToTarget());
+				toTargetFlexoConcept = getOwningVirtualModel().getFlexoConcept(_getToTarget());
 			}
-			if (lastKnownToTargetFlexoConcept != returned) {
+			if (lastKnownToTargetFlexoConcept != toTargetFlexoConcept) {
 				FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
-				lastKnownToTargetFlexoConcept = returned;
-				getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+				lastKnownToTargetFlexoConcept = toTargetFlexoConcept;
+				getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, toTargetFlexoConcept);
 			}
-			return returned;
+			return toTargetFlexoConcept;
 		}
 
 		@Override
 		public void setToTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			FlexoConcept oldToTargetFlexoConcept = toTargetFlexoConcept;
+			toTargetFlexoConcept = targetFlexoConcept;
 			_setToTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
-			// updateBindingModels();
+			getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldToTargetFlexoConcept, toTargetFlexoConcept);
 		}
 
 		@Override

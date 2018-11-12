@@ -42,13 +42,13 @@ import java.util.logging.Logger;
 
 import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.InnerResourceData;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.validation.Validable;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.validation.Validable;
 
 @ModelEntity
 @ImplementationClass(DiagramPaletteElement.DiagramPaletteElementImpl.class)

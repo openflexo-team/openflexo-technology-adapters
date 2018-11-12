@@ -3,8 +3,8 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.openflexo.model.exceptions.MissingImplementationException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.MissingImplementationException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 
 public class TestDocXModelFactory {
 

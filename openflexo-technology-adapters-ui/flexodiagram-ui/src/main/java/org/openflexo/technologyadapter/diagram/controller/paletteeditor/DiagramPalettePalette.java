@@ -50,7 +50,7 @@ import org.openflexo.diana.control.PaletteModel;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.undo.CompoundEdit;
+import org.openflexo.pamela.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.CommonPalette;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;

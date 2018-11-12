@@ -39,8 +39,8 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.foundation.fml.TechnologySpecificFlexoBehaviour;
-import org.openflexo.model.annotations.Implementation;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.Implementation;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 
 /**

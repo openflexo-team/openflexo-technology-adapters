@@ -46,7 +46,7 @@ import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.control.PaletteElement;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.converter.RelativePathResourceConverter;
+import org.openflexo.pamela.converter.RelativePathResourceConverter;
 import org.openflexo.rm.ResourceLocator;
 
 public class CommonPalette extends DiagramEditorPaletteModel {

@@ -39,9 +39,9 @@
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
 
 @ModelEntity

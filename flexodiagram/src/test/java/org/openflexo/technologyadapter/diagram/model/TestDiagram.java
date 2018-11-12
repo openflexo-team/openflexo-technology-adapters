@@ -49,8 +49,8 @@ import org.junit.runner.RunWith;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.test.OpenflexoTestCase;
-import org.openflexo.model.ModelEntity;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.ModelEntity;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 

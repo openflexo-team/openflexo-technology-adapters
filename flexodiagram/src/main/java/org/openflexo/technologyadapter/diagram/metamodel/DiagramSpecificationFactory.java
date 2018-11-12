@@ -39,10 +39,10 @@
 package org.openflexo.technologyadapter.diagram.metamodel;
 
 import org.openflexo.foundation.DefaultPamelaResourceModelFactory;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.converter.RelativePathResourceConverter;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.EditingContext;
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.converter.RelativePathResourceConverter;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 /**

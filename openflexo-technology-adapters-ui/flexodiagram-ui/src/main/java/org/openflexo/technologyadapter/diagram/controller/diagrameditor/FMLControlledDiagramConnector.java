@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 
 @ModelEntity

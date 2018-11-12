@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionFactory;
 import org.openflexo.foundation.fml.rt.action.NavigationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.NavigationSchemeActionFactory;
-import org.openflexo.model.factory.EditingContext;
+import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;

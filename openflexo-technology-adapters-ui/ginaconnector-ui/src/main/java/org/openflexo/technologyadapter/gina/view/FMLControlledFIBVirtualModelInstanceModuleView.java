@@ -54,7 +54,7 @@ import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationIssue;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
