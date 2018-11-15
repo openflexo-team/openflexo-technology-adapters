@@ -138,14 +138,14 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 		@Override
 		public FlexoConcept getTargetFlexoConcept() {
+			if (isTopTarget()) {
+				return null;
+			}
 			if (targetFlexoConcept != null) {
 				return targetFlexoConcept;
 			}
 
 			if (StringUtils.isEmpty(_getTarget())) {
-				return null;
-			}
-			if (isTopTarget()) {
 				return null;
 			}
 			if (getOwningVirtualModel() != null) {
