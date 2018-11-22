@@ -39,6 +39,11 @@
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.dnd.DragSource;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
@@ -47,7 +52,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
+import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
+import org.openflexo.toolbox.ToolBox;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterControllerService;
@@ -58,6 +65,15 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramModuleView.class.getPackage().getName());
+
+	private static Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
+	private static Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
+
+	public static final Cursor dropOK = ToolBox.isMacOS()
+			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
+
+	public static final Cursor dropKO = ToolBox.isMacOS()
+			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
 	private final FMLControlledDiagramEditor editor;
 	private final FlexoPerspective perspective;
