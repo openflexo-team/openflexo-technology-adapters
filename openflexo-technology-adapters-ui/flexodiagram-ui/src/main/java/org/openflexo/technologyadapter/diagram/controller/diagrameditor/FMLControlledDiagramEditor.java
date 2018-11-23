@@ -46,6 +46,8 @@ import org.openflexo.diana.Drawing.DrawingTreeNode;
 import org.openflexo.diana.Drawing.RootNode;
 import org.openflexo.diana.Drawing.ShapeNode;
 import org.openflexo.diana.swing.control.SwingToolFactory;
+import org.openflexo.diana.swing.control.tools.DianaViewDropListener;
+import org.openflexo.diana.swing.view.JDianaView;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -151,4 +153,12 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 		}
 		return super.getConnectorForConnectorNode(connectorNode);
 	}
+
+	@Override
+	public DianaViewDropListener makeDropListener(JDianaView<?, ?> view) {
+		DianaViewDropListener returned = new DianaViewDropListener(view, this);
+		returned.addFlavor(new BrowserCellDataFlavorDelegate(returned));
+		return returned;
+	}
+
 }
