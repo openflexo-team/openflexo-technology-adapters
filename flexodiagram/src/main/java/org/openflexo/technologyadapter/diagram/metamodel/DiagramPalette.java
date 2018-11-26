@@ -47,14 +47,15 @@ import java.util.logging.Logger;
 
 import org.openflexo.diana.DrawingGraphicalRepresentation;
 import org.openflexo.diana.ScreenshotBuilder;
-import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -62,7 +63,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.converter.RelativePathResourceConverter;
 import org.openflexo.pamela.validation.Validable;
 import org.openflexo.swing.ImageUtils;
@@ -385,9 +385,9 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		@Override
 		public synchronized void setIsModified() {
 			super.setIsModified();
-			if (!isModified()) {
+			/*if (!isModified()) {
 				logger.info(">>>>>>>>>>>>>>> Palette " + this + " has been modified !!!");
-			}
+			}*/
 			screenshotModified = true;
 		}
 
