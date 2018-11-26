@@ -72,12 +72,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 
 			DrawingTreeNode<?, ?> focused = getFocusedObject(e);
 
-			System.out.println("transferedBrowserCell=" + transferedBrowserCell);
-			System.out.println("focused=" + focused);
-			System.out.println("getDragSourceContext=" + getDianaEditor().getDragSourceContext());
-			System.out.println("transferable=" + getDianaEditor().getDragSourceContext().getTransferable());
-			// C'est une BrowserCell !!!
-
 			if (focused == null) {
 				return false;
 			}
@@ -87,8 +81,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 							.getRepresentedObject() instanceof FlexoConceptInstance) {
 				FlexoConceptInstance droppedFCI = (FlexoConceptInstance) ((BrowserCell) getDianaEditor().getDragSourceContext()
 						.getTransferable()).getRepresentedObject();
-				System.out.println("droppedFCI=" + droppedFCI);
-				System.out.println("Les DS: " + getApplicableDropSchemes(droppedFCI, focused));
 				return getApplicableDropSchemes(droppedFCI, focused).size() > 0;
 			}
 		} catch (UnsupportedFlavorException e1) {
@@ -106,8 +98,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 	public boolean performDrop(DropTargetDropEvent e) {
 		Object data = getTransferData(e);
 
-		System.out.println("data=" + data);
-
 		if (data instanceof TransferedBrowserCell && getDianaEditor().getDragSourceContext().getTransferable() instanceof BrowserCell
 				&& ((BrowserCell) getDianaEditor().getDragSourceContext().getTransferable())
 						.getRepresentedObject() instanceof FlexoConceptInstance) {
@@ -115,7 +105,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 
 				FlexoConceptInstance droppedFCI = (FlexoConceptInstance) ((BrowserCell) getDianaEditor().getDragSourceContext()
 						.getTransferable()).getRepresentedObject();
-				System.out.println("droppedFCI=" + droppedFCI);
 
 				DrawingTreeNode<?, ?> focused = getFocusedObject(e);
 				if (focused == null) {
