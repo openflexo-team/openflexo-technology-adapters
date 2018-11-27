@@ -19,6 +19,7 @@ import javax.swing.JPopupMenu;
 
 import org.openflexo.diana.DianaUtils;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.geom.DianaDimension;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.impl.ShapeNodeImpl;
 import org.openflexo.diana.swing.control.tools.DataFlavorDelegate;
@@ -211,6 +212,14 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 		}
 		if (target.getDrawable() instanceof Diagram) {
 			container = (Diagram) target.getDrawable();
+		}
+
+		// Try to consider the dropped location as the center of the dropped shape
+		if (dropScheme.getFlexoConcept().getAccessibleProperties(ShapeRole.class).size() > 0) {
+			ShapeRole shapeRole = dropScheme.getFlexoConcept().getAccessibleProperties(ShapeRole.class).get(0);
+			DianaDimension size = shapeRole.getGraphicalRepresentation().getSize();
+			dropLocation.x = dropLocation.x - size.width / 2;
+			dropLocation.y = dropLocation.y - size.height / 2;
 		}
 
 		DropSchemeAction action = new DropSchemeAction(dropScheme, getFMLControlledDiagram(), null,
