@@ -38,14 +38,10 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
@@ -53,35 +49,17 @@ import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
+/**
+ * A {@link FetchRequest} allowing to retrieve a selection of some {@link ExcelSheet} matching some conditions
+ * 
+ * @author sylvain
+ * 
+ */
 @ModelEntity
-@ImplementationClass(SelectExcelSheet.SelectExcelSheetImpl.class)
+@ImplementationClass(SelectExcelSheet.AbstractSelectExcelSheetImpl.class)
 @XMLElement
 @FML("SelectExcelSheet")
-public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> {
+public interface SelectExcelSheet
+		extends AbstractSelectExcelSheet<List<ExcelSheet>>, FetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet> {
 
-	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelSheet>
-			implements SelectExcelSheet {
-
-		private static final Logger logger = Logger.getLogger(SelectExcelSheet.class.getPackage().getName());
-
-		@Override
-		public Type getFetchedType() {
-			return ExcelSheet.class;
-		}
-
-		@Override
-		public List<ExcelSheet> execute(RunTimeEvaluationContext evaluationContext) {
-
-			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
-
-			List<ExcelSheet> selectedExcelSheets = new ArrayList<>(0);
-
-			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
-
-			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, evaluationContext);
-
-			return returned;
-
-		}
-	}
 }

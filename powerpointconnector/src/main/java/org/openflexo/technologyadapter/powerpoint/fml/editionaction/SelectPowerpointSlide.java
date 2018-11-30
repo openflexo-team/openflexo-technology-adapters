@@ -59,7 +59,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide> {
 
 	public static abstract class SelectPowerpointSlideImpl
-			extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide> implements SelectPowerpointSlide {
+			extends AbstractFetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointSlide, List<PowerpointSlide>>
+			implements SelectPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointSlide.class.getPackage().getName());
 
@@ -69,7 +70,7 @@ public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModel
 		}
 
 		@Override
-		public List<PowerpointSlide> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<PowerpointSlide> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			return null;
 		}

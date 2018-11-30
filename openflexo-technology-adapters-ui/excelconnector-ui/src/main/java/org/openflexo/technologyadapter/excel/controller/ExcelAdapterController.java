@@ -54,6 +54,9 @@ import org.openflexo.technologyadapter.excel.controller.action.CreateSemanticsEx
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AbstractSelectExcelCell;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AbstractSelectExcelRow;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AbstractSelectExcelSheet;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
@@ -61,9 +64,6 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CreateExcelResource;
 import org.openflexo.technologyadapter.excel.fml.editionaction.GenerateExcelResource;
 import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
-import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
-import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
-import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
 import org.openflexo.technologyadapter.excel.gui.ExcelIconLibrary;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelColumn;
@@ -199,13 +199,13 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		else if (MergeCells.class.isAssignableFrom(editionActionClass)) {
 			return ExcelIconLibrary.EXCEL_CELL_ICON;
 		}
-		else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
+		else if (AbstractSelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.IMPORT);
 		}
-		else if (SelectExcelRow.class.isAssignableFrom(editionActionClass)) {
+		else if (AbstractSelectExcelRow.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.IMPORT);
 		}
-		else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
+		else if (AbstractSelectExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
 		}
 		else if (CreateSEResource.class.isAssignableFrom(editionActionClass)) {

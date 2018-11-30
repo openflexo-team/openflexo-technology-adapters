@@ -246,7 +246,9 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 				if (evt.getSource() == getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel()) {
 					if (evt.getPropertyName().equals(VirtualModel.FLEXO_CONCEPTS_KEY)) {
 						ShapeNode<FMLControlledDiagramShapeImpl> shapeNode = getDrawing().getShapeNode(this);
-						shapeNode.clearControlAreas();
+						if (shapeNode != null) {
+							shapeNode.clearControlAreas();
+						}
 					}
 				}
 			}

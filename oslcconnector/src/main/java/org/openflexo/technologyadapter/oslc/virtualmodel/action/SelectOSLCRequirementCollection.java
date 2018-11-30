@@ -59,8 +59,8 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 public interface SelectOSLCRequirementCollection
 		extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection> {
 
-	public static abstract class SelectOSLCRequirementCollectionImpl
-			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection>
+	public static abstract class SelectOSLCRequirementCollectionImpl extends
+			AbstractFetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirementCollection, List<OSLCRequirementCollection>>
 			implements SelectOSLCRequirementCollection {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirementCollection.class.getPackage().getName());
@@ -71,7 +71,7 @@ public interface SelectOSLCRequirementCollection
 		}
 
 		@Override
-		public List<OSLCRequirementCollection> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<OSLCRequirementCollection> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			List<OSLCRequirementCollection> returned = filterWithConditions(null, evaluationContext);
 
