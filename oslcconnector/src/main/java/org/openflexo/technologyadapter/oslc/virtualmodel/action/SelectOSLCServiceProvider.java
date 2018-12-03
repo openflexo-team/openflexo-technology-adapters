@@ -59,8 +59,9 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalo
 @FML("SelectOSLCServiceProvider")
 public interface SelectOSLCServiceProvider extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCServiceProvider> {
 
-	public static abstract class SelectOSLCServiceProviderImpl extends
-			FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCServiceProvider> implements SelectOSLCServiceProvider {
+	public static abstract class SelectOSLCServiceProviderImpl
+			extends AbstractFetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCServiceProvider, List<OSLCServiceProvider>>
+			implements SelectOSLCServiceProvider {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCServiceProvider.class.getPackage().getName());
 
@@ -70,7 +71,7 @@ public interface SelectOSLCServiceProvider extends FetchRequest<OSLCCoreModelSlo
 		}
 
 		@Override
-		public List<OSLCServiceProvider> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<OSLCServiceProvider> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			List<OSLCServiceProvider> selectedOSLCServiceProviders = new ArrayList<>();
 

@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2015, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Oslcconnector, a component of the software infrastructure 
+ * This file is part of Excelconnector, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,48 +36,29 @@
  * 
  */
 
-package org.openflexo.technologyadapter.oslc.virtualmodel.action;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+package org.openflexo.technologyadapter.excel.fml.editionaction;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
+import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCService;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
+import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
+/**
+ * A {@link FetchRequest} allowing to retrieve a unique {@link ExcellCell} matching some conditions
+ * 
+ * @author sylvain
+ * 
+ */
 @ModelEntity
-@ImplementationClass(SelectOSLCService.SelectOSLCServiceImpl.class)
+@ImplementationClass(SelectUniqueExcelCell.AbstractSelectExcelCellImpl.class)
 @XMLElement
-@FML("SelectOSLCService")
-public interface SelectOSLCService extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCService> {
+@FML("SelectUniqueExcelCell")
+public interface SelectUniqueExcelCell
+		extends AbstractSelectExcelCell<ExcelCell>, UniqueFetchRequest<BasicExcelModelSlot, ExcelWorkbook, ExcelCell> {
 
-	public static abstract class SelectOSLCServiceImpl
-			extends AbstractFetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCService, List<OSLCService>>
-			implements SelectOSLCService {
-
-		private static final Logger logger = Logger.getLogger(SelectOSLCService.class.getPackage().getName());
-
-		@Override
-		public Type getFetchedType() {
-			return OSLCService.class;
-		}
-
-		@Override
-		public List<OSLCService> performExecute(RunTimeEvaluationContext evaluationContext) {
-
-			List<OSLCService> selectedOSLCServices = new ArrayList<>();
-
-			List<OSLCService> returned = filterWithConditions(selectedOSLCServices, evaluationContext);
-
-			return returned;
-		}
-	}
 }

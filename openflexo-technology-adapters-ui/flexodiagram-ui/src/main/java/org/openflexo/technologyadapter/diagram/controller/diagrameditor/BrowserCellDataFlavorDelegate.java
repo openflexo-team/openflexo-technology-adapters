@@ -19,6 +19,7 @@ import javax.swing.JPopupMenu;
 
 import org.openflexo.diana.DianaUtils;
 import org.openflexo.diana.Drawing.DrawingTreeNode;
+import org.openflexo.diana.geom.DianaDimension;
 import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.diana.impl.ShapeNodeImpl;
 import org.openflexo.diana.swing.control.tools.DataFlavorDelegate;
@@ -72,12 +73,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 
 			DrawingTreeNode<?, ?> focused = getFocusedObject(e);
 
-			System.out.println("transferedBrowserCell=" + transferedBrowserCell);
-			System.out.println("focused=" + focused);
-			System.out.println("getDragSourceContext=" + getDianaEditor().getDragSourceContext());
-			System.out.println("transferable=" + getDianaEditor().getDragSourceContext().getTransferable());
-			// C'est une BrowserCell !!!
-
 			if (focused == null) {
 				return false;
 			}
@@ -87,8 +82,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 							.getRepresentedObject() instanceof FlexoConceptInstance) {
 				FlexoConceptInstance droppedFCI = (FlexoConceptInstance) ((BrowserCell) getDianaEditor().getDragSourceContext()
 						.getTransferable()).getRepresentedObject();
-				System.out.println("droppedFCI=" + droppedFCI);
-				System.out.println("Les DS: " + getApplicableDropSchemes(droppedFCI, focused));
 				return getApplicableDropSchemes(droppedFCI, focused).size() > 0;
 			}
 		} catch (UnsupportedFlavorException e1) {
@@ -106,8 +99,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 	public boolean performDrop(DropTargetDropEvent e) {
 		Object data = getTransferData(e);
 
-		System.out.println("data=" + data);
-
 		if (data instanceof TransferedBrowserCell && getDianaEditor().getDragSourceContext().getTransferable() instanceof BrowserCell
 				&& ((BrowserCell) getDianaEditor().getDragSourceContext().getTransferable())
 						.getRepresentedObject() instanceof FlexoConceptInstance) {
@@ -115,7 +106,6 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 
 				FlexoConceptInstance droppedFCI = (FlexoConceptInstance) ((BrowserCell) getDianaEditor().getDragSourceContext()
 						.getTransferable()).getRepresentedObject();
-				System.out.println("droppedFCI=" + droppedFCI);
 
 				DrawingTreeNode<?, ?> focused = getFocusedObject(e);
 				if (focused == null) {
@@ -222,6 +212,14 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 		}
 		if (target.getDrawable() instanceof Diagram) {
 			container = (Diagram) target.getDrawable();
+		}
+
+		// Try to consider the dropped location as the center of the dropped shape
+		if (dropScheme.getFlexoConcept().getAccessibleProperties(ShapeRole.class).size() > 0) {
+			ShapeRole shapeRole = dropScheme.getFlexoConcept().getAccessibleProperties(ShapeRole.class).get(0);
+			DianaDimension size = shapeRole.getGraphicalRepresentation().getSize();
+			dropLocation.x = dropLocation.x - size.width / 2;
+			dropLocation.y = dropLocation.y - size.height / 2;
 		}
 
 		DropSchemeAction action = new DropSchemeAction(dropScheme, getFMLControlledDiagram(), null,

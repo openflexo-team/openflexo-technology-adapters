@@ -76,6 +76,9 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelCell;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelRow;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
@@ -92,7 +95,8 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
 @DeclareEditionActions({ CreateExcelResource.class, GenerateExcelResource.class, AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class,
 		CellStyleAction.class, MergeCells.class })
-@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
+@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class, SelectUniqueExcelSheet.class,
+		SelectUniqueExcelRow.class, SelectUniqueExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
