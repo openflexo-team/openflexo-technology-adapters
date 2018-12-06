@@ -140,6 +140,9 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	@Override
 	protected DiagramShape getShapeForShapeNode(ShapeNode<?> shapeNode) {
+		if (shapeNode == null) {
+			return null;
+		}
 		if (shapeNode.getDrawable() instanceof FMLControlledDiagramShape) {
 			return ((FMLControlledDiagramShape) shapeNode.getDrawable()).getDiagramElement();
 		}
@@ -148,6 +151,9 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	@Override
 	protected DiagramConnector getConnectorForConnectorNode(ConnectorNode<?> connectorNode) {
+		if (connectorNode == null) {
+			return null;
+		}
 		if (connectorNode.getDrawable() instanceof FMLControlledDiagramConnector) {
 			return ((FMLControlledDiagramConnector) connectorNode.getDrawable()).getDiagramElement();
 		}
