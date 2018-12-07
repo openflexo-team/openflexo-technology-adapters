@@ -151,6 +151,15 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		private void performAddDefaultConnector(DiagramEditor controller) {
 			FlexoActionCompoundEdit drawEdgeEdit = (FlexoActionCompoundEdit) editingContext.getUndoManager().startRecording("Draw edge");
 
+			if (fromShape == null) {
+				logger.warning("Cannot add connector for null start node");
+				return;
+			}
+			if (toShape == null) {
+				logger.warning("Cannot add connector for null end node");
+				return;
+			}
+
 			DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
 			DiagramShape endShape = controller.getShapeForShapeNode(toShape);
 
