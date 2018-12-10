@@ -271,12 +271,4 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 		}
 	}
 
-	private static void makeLocalCopy(File file) throws IOException {
-		if (file != null && file.exists()) {
-			String localCopyName = file.getName() + "~";
-			File localCopy = new File(file.getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(file, localCopy);
-		}
-	}
-
 }

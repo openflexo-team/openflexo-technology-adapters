@@ -1,0 +1,29 @@
+dependencies {
+  compile project(":xx-ta")
+
+  // openflexo dep
+  compile flexoUi()
+  compile flexoOntologyUi()
+
+  runtime fmlTechnologyAdapterUi()
+
+  // external dep
+  // testing dep
+  testCompile flexoUiTest()
+
+  // Test resource center, if required
+ // testRuntime project(':xx-ta-test-rc')
+}
+task nonuiTest(type: Test) {
+  ignoreFailures = true
+  exclude '**/TestXXFib.class'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
+  include '**/TestXXFib.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
+}

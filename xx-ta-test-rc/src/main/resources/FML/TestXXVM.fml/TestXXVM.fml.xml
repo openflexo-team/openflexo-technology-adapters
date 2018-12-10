@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="SYL-5" virtualModelClass="org.openflexo.foundation.fml.VirtualModel" modelVersion="2.0" uri="http://www.openflexo.org/test/xx/resources/FML/TestXXVM.fml" version="0.1" name="TestXXVM" author="sylvain" userID="SYL" flexoID="5">
+  <FlexoConcept id="SYL-7" name="Line" author="sylvain" userID="SYL" flexoID="7">
+    <Inspector id="SYL-8" inspectorTitle="Line" userID="SYL" flexoID="8" />
+    <XXLineRole id="SYL-14" container="text" cloningStrategy="Reference" cardinality="ZeroOne" name="line" userID="SYL" flexoID="14" />
+    <CreationScheme id="SYL-12" name="create" width="800" label="create" height="600" userID="SYL" flexoID="12">
+      <BehaviourControlGraph_EmptyControlGraph id="SYL-15" userID="SYL" flexoID="15" />
+    </CreationScheme>
+    <DeletionScheme id="SYL-13" name="delete" width="800" label="delete" height="600" userID="SYL" flexoID="13">
+      <BehaviourControlGraph_EmptyControlGraph id="SYL-16" userID="SYL" flexoID="16" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <UseModelSlotDeclaration id="0" modelSlotClass="org.openflexo.technologyadapter.xx.XXModelSlot" userID="SYL" flexoID="-1" />
+  <Inspector id="SYL-1" inspectorTitle="TestXXVM" userID="SYL" flexoID="1" />
+  <XXModelSlot id="SYL-6" isRequired="true" cloningStrategy="Reference" cardinality="ZeroOne" name="text" userID="SYL" flexoID="6" />
+</VirtualModel>
