@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,18 +142,11 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
-	}
-
-	private static void makeLocalCopy(File file) throws IOException {
-		if (file != null && file.exists()) {
-			String localCopyName = file.getName() + "~";
-			File localCopy = new File(file.getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(file, localCopy);
-		}
 	}
 
 	@Override
@@ -176,27 +168,6 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	@Override
 	public Class<DocXDocument> getResourceDataClass() {
 		return DocXDocument.class;
-	}
-
-	/*
-	 * private File getFile() { return getFileFlexoIODelegate().getFile(); }
-	 * 
-	 * public FileFlexoIODelegate getFileFlexoIODelegate() { return
-	 * (FileFlexoIODelegate) getFlexoIODelegate(); }
-	 */
-
-	public InputStream getInputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getInputStream();
-		}
-		return null;
-	}
-
-	public OutputStream getOutputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getOutputStream();
-		}
-		return null;
 	}
 
 }

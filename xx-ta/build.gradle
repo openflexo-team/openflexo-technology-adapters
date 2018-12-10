@@ -1,0 +1,23 @@
+dependencies {
+  // openflexo dep
+  compile flexoFoundation()
+  compile flexoOntology()
+  // external dep
+  // Define here your dependancies
+  //compile 'my.library:artefact-name:1.0.0'
+
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+
+  // A particular resource center can be defined here
+  // If it always required to be present at run-time
+  //runtime project(':xx-ta-rc')
+
+  // Test resource center, if required
+  // testRuntime project(':xx-ta-test-rc')
+
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

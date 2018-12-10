@@ -21,3 +21,8 @@ include 'docxconnector',
     'openflexo-technology-adapters-ui:oslcconnector-ui',
     'openflexo-technology-adapters-ui:ginaconnector-ui',
     'openflexo-technology-adapters-ui:odtconnector-ui'
+    //'xx-ta',
+    //'xx-ta-ui',
+    //'xx-ta-test',
+    //'xx-ta-test-rc'
+    

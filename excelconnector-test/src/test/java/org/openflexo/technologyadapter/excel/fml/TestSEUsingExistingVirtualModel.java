@@ -152,6 +152,8 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	@Test
 	@TestOrder(4)
 	public void testCreateProject() {
+		log("testCreateProject()");
+
 		editor = createStandaloneProject("TestProject");
 		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
@@ -169,6 +171,9 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	@Test
 	@TestOrder(5)
 	public void testInstantiate() throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+
+		log("testInstantiate()");
+
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType
 				.makeNewAction(project.getVirtualModelInstanceRepository().getRootFolder(), null, editor);
 		action.setNewVirtualModelInstanceName("MyView");
@@ -234,12 +239,34 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 		assertEquals(6, allPersons.size());
 		assertSameList(allPersons, jeanDupont, bernadetteDupont, julesDupont, ninaDupont, gerardMenvusat, alainTerrieur);
 
+		ExcelSheet sheet = personListingWB.getExcelSheetAtPosition(0);
+
+		assertEquals(8, sheet.getExcelRows().size());
+
+		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
+			ExcelRow row = sheet.getRowAt(i);
+			assertSame(row, sheet.getExcelRows().get(i));
+			assertEquals(5, row.getExcelCells().size());
+			assertEquals(i, row.getRowIndex());
+			StringBuffer sb = new StringBuffer();
+			sb.append("[ROW-" + row.getRowIndex() + "/" + row.getRow().getRowNum() + "]");
+			for (int j = 0; j < row.getExcelCells().size(); j++) {
+				ExcelCell cell = row.getExcelCellAt(j);
+				assertSame(cell, row.getExcelCells().get(j));
+				assertSame(cell, sheet.getCellAt(i, j));
+				sb.append(" " + cell.getCellValue());
+			}
+			System.out.println(sb.toString());
+		}
+
 	}
 
 	@Test
 	@TestOrder(7)
 	public void testInsertNewPerson()
 			throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+
+		log("testInsertNewPerson()");
 
 		ExcelSheet sheet = personListingWB.getExcelSheetAtPosition(0);
 
@@ -361,6 +388,8 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	public void testRemovePerson()
 			throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
 
+		log("testRemovePerson()");
+
 		ExcelSheet sheet = personListingWB.getExcelSheetAtPosition(0);
 
 		assertEquals(9, sheet.getExcelRows().size());
@@ -382,11 +411,32 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 		}
 
 		System.out.println("Now remove a Person");
-		DeletionScheme deletionScheme = seVMI.getVirtualModel().getDeletionSchemes().get(0);
+
+		// DeletionScheme deletionScheme = seVMI.getVirtualModel().getDeletionSchemes().get(0);
+		DeletionScheme deletionScheme = ninaDupont.getFlexoConcept().getDeletionSchemes().get(0);
+
+		System.out.println("executing " + deletionScheme.getFMLRepresentation());
+
 		DeletionSchemeAction deletePerson = new DeletionSchemeAction(deletionScheme, ninaDupont, null, editor);
 		deletePerson.doAction();
 
 		assertTrue(deletePerson.hasActionExecutionSucceeded());
+
+		for (int i = 0; i < sheet.getExcelRows().size(); i++) {
+			ExcelRow row = sheet.getRowAt(i);
+			assertSame(row, sheet.getExcelRows().get(i));
+			assertEquals(5, row.getExcelCells().size());
+			assertEquals(i, row.getRowIndex());
+			StringBuffer sb = new StringBuffer();
+			sb.append("[ROW-" + row.getRowIndex() + "/" + row.getRow().getRowNum() + "]");
+			for (int j = 0; j < row.getExcelCells().size(); j++) {
+				ExcelCell cell = row.getExcelCellAt(j);
+				assertSame(cell, row.getExcelCells().get(j));
+				assertSame(cell, sheet.getCellAt(i, j));
+				sb.append(" " + cell.getCellValue());
+			}
+			System.out.println(sb.toString());
+		}
 
 		assertEquals(8, sheet.getExcelRows().size());
 

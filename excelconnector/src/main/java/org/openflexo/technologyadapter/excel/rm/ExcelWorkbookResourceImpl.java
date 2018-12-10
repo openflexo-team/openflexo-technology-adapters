@@ -42,7 +42,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -189,7 +188,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
@@ -211,71 +211,6 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		}
 		return null;
 	}
-
-	public InputStream getInputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getInputStream();
-		}
-		return null;
-	}
-
-	public OutputStream getOutputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getOutputStream();
-		}
-		return null;
-	}
-
-	/**
-	 * Save the &quot;real&quot; resource data of this resource.
-	 * 
-	 * @throws SaveResourceException
-	 */
-	/*@Override
-	public final void save(IProgress progress) throws SaveResourceException {
-		if (progress != null) {
-			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
-		}
-		if (!isLoaded()) {
-			return;
-		}
-		if (!isDeleted()) {
-			saveResourceData(true);
-			resourceData.clearIsModified(false);
-		}
-	}*/
-
-	/**
-	 * Save current resource data to current XML resource file.<br>
-	 * Forces XML version to be the latest one.
-	 * 
-	 * @return
-	 */
-	/*@Override
-	protected final void saveResourceData(boolean clearIsModified) throws SaveResourceException, SaveResourcePermissionDeniedException {
-		// System.out.println("PamelaResourceImpl Saving " + getFile());
-		if (!getIODelegate().hasWritePermission()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getIODelegate().toString());
-			}
-			throw new SaveResourcePermissionDeniedException(getIODelegate());
-		}
-		if (resourceData != null) {
-			_saveResourceData(resourceData, clearIsModified);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Succeeding to save " + getIODelegate().getSerializationArtefact());
-			}
-		}
-		if (clearIsModified) {
-			try {
-				getResourceData(null).clearIsModified(false);
-				// No need to reset the last memory update since it is valid
-				notifyResourceSaved();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}*/
 
 	@Override
 	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
@@ -325,14 +260,6 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 		if (clearIsModified) {
 			notifyResourceStatusChanged();
-		}
-	}
-
-	private static void makeLocalCopy(File file) throws IOException {
-		if (file != null && file.exists()) {
-			String localCopyName = file.getName() + "~";
-			File localCopy = new File(file.getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(file, localCopy);
 		}
 	}
 
