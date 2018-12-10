@@ -3,8 +3,7 @@ dependencies {
 
   // openflexo dep
   compile flexoUi()
-  compile flexoOntologyUi()
-
+ 
   runtime fmlTechnologyAdapterUi()
 
   // external dep
