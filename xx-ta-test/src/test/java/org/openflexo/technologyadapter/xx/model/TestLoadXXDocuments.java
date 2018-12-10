@@ -49,7 +49,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.excel.AbstractXXTest;
+import org.openflexo.technologyadapter.xx.AbstractXXTest;
 import org.openflexo.technologyadapter.xx.XXTechnologyAdapter;
 import org.openflexo.technologyadapter.xx.rm.XXTextResource;
 import org.openflexo.technologyadapter.xx.rm.XXTextResourceRepository;
