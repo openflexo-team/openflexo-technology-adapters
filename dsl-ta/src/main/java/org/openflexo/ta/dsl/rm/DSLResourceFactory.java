@@ -89,8 +89,8 @@ public class DSLResourceFactory
 	}
 
 	@Override
-	public DSLModelFactory makeResourceDataFactory(DSLResource resource,
-			TechnologyContextManager<DSLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+	public DSLModelFactory makeModelFactory(DSLResource resource, TechnologyContextManager<DSLTechnologyAdapter> technologyContextManager)
+			throws ModelDefinitionException {
 		return new DSLModelFactory(resource, technologyContextManager.getServiceManager().getEditingContext());
 	}
 

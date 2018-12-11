@@ -143,19 +143,6 @@ public abstract class DSLResourceImpl extends PamelaResourceImpl<DSLSystem, DSLM
 	}
 
 	/**
-	 * Return a FlexoIOStreamDelegate associated to this flexo resource
-	 * 
-	 * @return
-	 */
-	@Override
-	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
-		if (getIODelegate() instanceof StreamIODelegate) {
-			return (StreamIODelegate<?>) getIODelegate();
-		}
-		return null;
-	}
-
-	/**
 	 * Resource saving safe implementation<br>
 	 * Initial resource is first copied, then we write in a temporary file, renamed at the end when the seriaization has been successfully
 	 * performed
