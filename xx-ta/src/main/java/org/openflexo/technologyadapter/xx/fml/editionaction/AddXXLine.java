@@ -60,9 +60,9 @@ import org.openflexo.technologyadapter.xx.model.XXLine;
 import org.openflexo.technologyadapter.xx.model.XXText;
 
 @ModelEntity
-@ImplementationClass(AddXXLine.AddExcelRowImpl.class)
+@ImplementationClass(AddXXLine.AddXXLineImpl.class)
 @XMLElement
-@FML("AddExcelRow")
+@FML("AddXXLine")
 public interface AddXXLine extends XXAction<XXLine> {
 
 	@PropertyIdentifier(type = DataBinding.class)
@@ -75,7 +75,7 @@ public interface AddXXLine extends XXAction<XXLine> {
 	@Setter(LINE_NUMBER_KEY)
 	public void setLineNumber(DataBinding<Integer> lineNumber);
 
-	public static abstract class AddExcelRowImpl extends TechnologySpecificActionDefiningReceiverImpl<XXModelSlot, XXText, XXLine>
+	public static abstract class AddXXLineImpl extends TechnologySpecificActionDefiningReceiverImpl<XXModelSlot, XXText, XXLine>
 			implements AddXXLine {
 
 		private static final Logger logger = Logger.getLogger(AddXXLine.class.getPackage().getName());
@@ -90,7 +90,7 @@ public interface AddXXLine extends XXAction<XXLine> {
 		@Override
 		public XXLine execute(RunTimeEvaluationContext evaluationContext) {
 
-			XXLine excelRow = null;
+			XXLine line = null;
 
 			XXText resourceData = getReceiver(evaluationContext);
 
@@ -119,7 +119,7 @@ public interface AddXXLine extends XXAction<XXLine> {
 				e.printStackTrace();
 			}
 
-			return excelRow;
+			return line;
 
 		}
 

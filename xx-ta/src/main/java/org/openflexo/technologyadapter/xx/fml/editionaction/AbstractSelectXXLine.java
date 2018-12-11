@@ -76,14 +76,14 @@ public interface AbstractSelectXXLine<AT> extends AbstractFetchRequest<XXModelSl
 		@Override
 		public List<XXLine> performExecute(RunTimeEvaluationContext evaluationContext) {
 
-			List<XXLine> selectedExcelRows = new ArrayList<>();
+			List<XXLine> selectedLines = new ArrayList<>();
 			XXText resourceData = getReceiver(evaluationContext);
 
 			if (resourceData != null) {
-				selectedExcelRows.addAll(resourceData.getLines());
+				selectedLines.addAll(resourceData.getLines());
 			}
 
-			List<XXLine> returned = filterWithConditions(selectedExcelRows, evaluationContext);
+			List<XXLine> returned = filterWithConditions(selectedLines, evaluationContext);
 
 			return returned;
 

@@ -16,5 +16,5 @@
 		<Localized key="Advanced" lang="French" value="Avancé" />
 		<Localized key="Basic" lang="French" value="Basique" />
 	</LocalizedDictionary>
-	<Parameter name="title" value="SelectExcelLine action" />
+	<Parameter name="title" value="SelectXXLine action" />
 </Panel>

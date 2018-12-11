@@ -67,7 +67,7 @@ import org.openflexo.technologyadapter.xx.rm.XXTextResource;
 @ModelEntity
 @ImplementationClass(XXLineActorReference.XXLineActorReferenceImpl.class)
 @XMLElement
-@FML("ExcelActorReference")
+@FML("XXLineActorReference")
 public interface XXLineActorReference extends ActorReference<XXLine> {
 
 	@PropertyIdentifier(type = String.class)

@@ -81,10 +81,10 @@ public interface XXLine extends XXObject {
 	/**
 	 * Sets {@link XXText} where this {@link XXLine} is defined
 	 * 
-	 * @param workbook
+	 * @param text
 	 */
 	@Setter(XX_TEXT_KEY)
-	public void setXXText(XXText sheet);
+	public void setXXText(XXText text);
 
 	/**
 	 * Return value for this {@link XXLine}, as a String representing the line
@@ -126,6 +126,7 @@ public interface XXLine extends XXObject {
 	 */
 	public static abstract class XXLineImpl extends XXObjectImpl implements XXLine {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(XXLine.class.getPackage().getName());
 
 		public XXLineImpl() {
