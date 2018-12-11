@@ -20,9 +20,14 @@ include 'docxconnector',
     'openflexo-technology-adapters-ui:xmlconnector-ui',
     'openflexo-technology-adapters-ui:oslcconnector-ui',
     'openflexo-technology-adapters-ui:ginaconnector-ui',
-    'openflexo-technology-adapters-ui:odtconnector-ui'
-    //'xx-ta',
-    //'xx-ta-ui',
-    //'xx-ta-test',
-    //'xx-ta-test-rc'
+    'openflexo-technology-adapters-ui:odtconnector-ui',
+    'xx-ta',
+    'xx-ta-ui',
+    'xx-ta-test',
+    'xx-ta-test-rc',
+    'dsl-ta',
+    'dsl-ta-parser',
+    'dsl-ta-ui',
+    'dsl-ta-test',
+    'dsl-ta-test-rc'
     

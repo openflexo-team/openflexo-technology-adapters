@@ -1,0 +1,72 @@
+Package org.openflexo.technologyadapter.dsl.parser;
+
+Helpers
+
+ ht  = 0x0009;
+ lf  = 0x000a;
+ ff  = 0x000c;
+ cr  = 0x000d;
+ sp  = ' ';
+
+ line_terminator = lf | cr | cr lf;
+
+ upper_case = ['A' .. 'Z'] | [0x00c0 .. 0x00dd] | 0x20ac;
+ lower_case = ['a' .. 'z'] | [0x00e0 .. 0x00fd] | 0x20ac;
+ digit = ['0'..'9'];
+ letter = upper_case | lower_case | '_' ;
+ any        = [0 .. 0xffff];
+ not_hyphen = [any - '"' ];
+ not_hyphen2 = [any - ''' ];
+
+Tokens
+ l_par = '(';
+ r_par = ')';
+ dot = '.';
+ comma = ',';
+ semi  = ';';
+ colon = ':';
+ 
+// keywords
+
+ system = 'system';
+ component = 'component';
+ slot = 'slot';
+ link = 'link';
+ from = 'from';
+ to = 'to';
+ end = 'end';
+
+// literals
+ 
+ decimal_number = ['0' .. '9']+;
+ precise_number = ['0' .. '9']+ '.' ['0' .. '9']+;
+ scientific_notation_number = 
+ ['0' .. '9']+ '.' ['0' .. '9']+ 'e' ['0' .. '9']+ 
+ | ['0' .. '9']+ '.' ['0' .. '9']+ 'e' '-' ['0' .. '9']+
+ | ['0' .. '9']+ '.' ['0' .. '9']+ 'E' ['0' .. '9']+ 
+ | ['0' .. '9']+ '.' ['0' .. '9']+ 'E' '-' ['0' .. '9']+;
+ string_value = '"' (not_hyphen)* '"';
+ chars_value = ''' (not_hyphen2)* ''';
+ identifier = letter (letter | digit)*;
+// blank = (' ' | 13 | 10)+;
+
+ white_space = (sp | ht | ff | line_terminator)*;
+
+Ignored Tokens
+ white_space;
+ 
+Productions
+
+  system_definition = system [components]:component_definition* [links]:link_definition* end;
+
+  component_definition = component [name]:identifier colon [slots]:slot_definition*;
+
+  slot_definition = slot [name]:identifier semi;
+
+  link_definition = link [name]:identifier from [from_name]:dot_identifier to [to_name]:dot_identifier semi;
+
+  dot_identifier = 
+    {identifier} identifier |
+  	{tail} identifier dot dot_identifier;
+
+ 

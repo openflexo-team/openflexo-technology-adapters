@@ -1,0 +1,24 @@
+dependencies {
+  // openflexo dep
+  compile project(':dsl-ta-parser')
+  compile flexoFoundation()
+  //compile flexoOntology()
+  // external dep
+  // Define here your dependancies
+  //compile 'my.library:artefact-name:1.0.0'
+
+  // testing dep
+  testCompile testUtils()
+  testCompile flexoFoundationTest()
+
+  // A particular resource center can be defined here
+  // If it always required to be present at run-time
+  //runtime project(‘:dsl-ta-rc')
+
+  // Test resource center, if required
+  // testRuntime project(‘:dsl-ta-test-rc')
+
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}
