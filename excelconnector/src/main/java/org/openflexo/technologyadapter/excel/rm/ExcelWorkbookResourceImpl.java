@@ -188,8 +188,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {
-			}
+			} catch (IOException e) {}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
@@ -197,19 +196,6 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	@Override
 	public Class<ExcelWorkbook> getResourceDataClass() {
 		return ExcelWorkbook.class;
-	}
-
-	/**
-	 * Return a FlexoIOStreamDelegate associated to this flexo resource
-	 * 
-	 * @return
-	 */
-	@Override
-	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
-		if (getIODelegate() instanceof StreamIODelegate) {
-			return (StreamIODelegate<?>) getIODelegate();
-		}
-		return null;
 	}
 
 	@Override
