@@ -1,5 +1,15 @@
-/target
+**/target
+**/build
+**/bin
+*.ipr
+*.idea
+*.iws
+*.iml
 .classpath
 .project
 .settings
-/bin/
+.DS_Store
+/pom.xml~
+/target
+/.gradle/
+**/.metadata
