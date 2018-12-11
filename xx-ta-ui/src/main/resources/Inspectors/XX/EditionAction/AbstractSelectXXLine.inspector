@@ -11,7 +11,7 @@
 		</Tab>
 	</TabPanel>
 	<FIBVariable name="data"
-		type="org.openflexo.technologyadapter.xx.fml.editionaction.AbstractSelectXXLine" />
+		type="org.openflexo.ta.xx.fml.editionaction.AbstractSelectXXLine" />
 	<LocalizedDictionary>
 		<Localized key="Advanced" lang="French" value="Avancé" />
 		<Localized key="Basic" lang="French" value="Basique" />

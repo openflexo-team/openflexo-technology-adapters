@@ -48,7 +48,7 @@ structure it around the following packages:
        is a singleton often defined as a private final static attribute of the TA,
        method `TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory()`
     
-    2) The `XxTechnologyContextManager` extending `TechnologyContextManager<XxTechnologyAdapter>` to manage a context related to a technology. It stores the known resources of this technology. [(Sylvain, not sure it is really common? Most `XxTechnologyContextManager` seems to do nothing)]{.todo}
+    2) The `XxTechnologyContextManager` extending `TechnologyContextManager<XxTechnologyAdapter>` to manage a context related to a technology. It stores the known resources of this technology. [(Sylvain, not sure it is really common? Most `XxTechnologyContextManager` seems to do nothing)]{.todo} Pas le cas le plus courant
 
     2) The various model slots, `YyXxModelSlot` interfaces
 

@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Fabien Dagnat" />
-  <meta name="dcterms.date" content="2018-04-10" />
+  <meta name="dcterms.date" content="2018-11-26" />
   <title>A tutorial for building technology adapters</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -17,7 +17,7 @@
   <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -30,13 +30,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -100,7 +98,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul>
   <div class="sidebar-bottom">
           <p class="author">Fabien Dagnat</p>
-              <p class="date">April 10, 2018</p>
+              <p class="date">November 26, 2018</p>
       </div>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -126,7 +124,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>specify which resource should ignored <span class="todo">(Sylvain, what for?)</span>, method <code>&lt;I&gt; boolean isIgnorable(FlexoResourceCenter&lt;I&gt; resourceCenter, I contents)</code>, it often returns <code>false</code></li>
 <li>specify the <em>binding factory</em> for the specific types of the TA, this factory is a singleton often defined as a private final static attribute of the TA, method <code>TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory()</code></li>
 </ul></li>
-<li><p>The <code>XxTechnologyContextManager</code> extending <code>TechnologyContextManager&lt;XxTechnologyAdapter&gt;</code> to manage a context related to a technology. It encapsulates the TA instance, the resource center service (offering means to access resources) and stores the known resources of this technology.</p></li>
+<li><p>The <code>XxTechnologyContextManager</code> extending <code>TechnologyContextManager&lt;XxTechnologyAdapter&gt;</code> to manage a context related to a technology. It stores the known resources of this technology. <span class="todo">(Sylvain, not sure it is really common? Most <code>XxTechnologyContextManager</code> seems to do nothing)</span></p></li>
 <li><p>The various model slots, <code>YyXxModelSlot</code> interfaces</p></li>
 </ol></li>
 </ol>
