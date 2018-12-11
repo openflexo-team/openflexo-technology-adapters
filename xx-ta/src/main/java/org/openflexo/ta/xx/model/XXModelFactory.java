@@ -44,7 +44,6 @@ import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.pamela.ModelContextLibrary;
-import org.openflexo.pamela.converter.RelativePathResourceConverter;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.pamela.factory.ModelFactory;
@@ -66,17 +65,10 @@ public class XXModelFactory extends ModelFactory implements PamelaResourceModelF
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
-	private RelativePathResourceConverter relativePathResourceConverter;
-
 	public XXModelFactory(XXTextResource resource, EditingContext editingContext) throws ModelDefinitionException {
 		super(ModelContextLibrary.getCompoundModelContext(XXText.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
-		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
-		if (resource != null && resource.getIODelegate() != null && resource.getIODelegate().getSerializationArtefactAsResource() != null) {
-			relativePathResourceConverter
-					.setContainerResource(resource.getIODelegate().getSerializationArtefactAsResource().getContainer());
-		}
 	}
 
 	@Override
@@ -102,7 +94,7 @@ public class XXModelFactory extends ModelFactory implements PamelaResourceModelF
 		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
 			undoManager = (FlexoUndoManager) editingContext.getUndoManager();
 			undoManager.addToIgnoreHandlers(ignoreHandler = new IgnoreLoadingEdits(resource));
-			// System.out.println("@@@@@@@@@@@@@@@@ START LOADING RESOURCE " + resource.getURI());
+			System.out.println("@@@@@@@@@@@@@@@@ START LOADING RESOURCE " + resource.getURI());
 		}
 
 	}
@@ -111,7 +103,7 @@ public class XXModelFactory extends ModelFactory implements PamelaResourceModelF
 	public synchronized void stopDeserializing() {
 		if (ignoreHandler != null) {
 			undoManager.removeFromIgnoreHandlers(ignoreHandler);
-			// System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
+			System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
 		}
 
 	}
