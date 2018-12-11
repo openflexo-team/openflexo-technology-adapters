@@ -1,5 +1,5 @@
 dependencies {
-  compile project(":xx-ta")
+  compile project(":dsl-ta")
 
   // openflexo dep
   compile flexoUi()

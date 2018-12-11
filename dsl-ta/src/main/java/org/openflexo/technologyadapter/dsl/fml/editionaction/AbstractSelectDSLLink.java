@@ -38,27 +38,56 @@
 
 package org.openflexo.technologyadapter.dsl.fml.editionaction;
 
-import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.fml.editionaction.AbstractFetchRequest;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.dsl.DSLModelSlot;
-import org.openflexo.technologyadapter.dsl.model.DSLComponent;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
 import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a unique {@link DSLComponent} matching some conditions
+ * Generic {@link AbstractFetchRequest} allowing to retrieve a selection of some {@link DSLLink} matching some conditions
  * 
  * @author sylvain
- * 
+ *
+ * @param <AT>
  */
-@ModelEntity
-@ImplementationClass(SelectUniqueDSLComponent.AbstractSelectDSLComponentImpl.class)
-@XMLElement
-@FML("SelectUniqueDSLComponent")
-public interface SelectUniqueDSLComponent
-		extends AbstractSelectDSLComponent<DSLComponent>, UniqueFetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(AbstractSelectDSLLink.AbstractSelectDSLLinkImpl.class)
+public interface AbstractSelectDSLLink<AT> extends AbstractFetchRequest<DSLModelSlot, DSLSystem, DSLLink, AT> {
 
+	public static abstract class AbstractSelectDSLLinkImpl<AT> extends AbstractFetchRequestImpl<DSLModelSlot, DSLSystem, DSLLink, AT>
+			implements AbstractSelectDSLLink<AT> {
+
+		@SuppressWarnings("unused")
+		private static final Logger logger = Logger.getLogger(AbstractSelectDSLLink.class.getPackage().getName());
+
+		@Override
+		public Type getFetchedType() {
+			return DSLLink.class;
+		}
+
+		@Override
+		public List<DSLLink> performExecute(RunTimeEvaluationContext evaluationContext) {
+
+			List<DSLLink> selectedLinks = new ArrayList<>();
+			DSLSystem resourceData = getReceiver(evaluationContext);
+
+			if (resourceData != null) {
+				selectedLinks.addAll(resourceData.getLinks());
+			}
+
+			List<DSLLink> returned = filterWithConditions(selectedLinks, evaluationContext);
+
+			return returned;
+
+		}
+
+	}
 }

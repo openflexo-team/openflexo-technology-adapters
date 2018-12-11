@@ -45,20 +45,19 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.dsl.DSLModelSlot;
-import org.openflexo.technologyadapter.dsl.model.DSLComponent;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
 import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a unique {@link DSLComponent} matching some conditions
+ * A {@link FetchRequest} allowing to retrieve a unique {@link DSLLink} matching some conditions
  * 
  * @author sylvain
  * 
  */
 @ModelEntity
-@ImplementationClass(SelectUniqueDSLComponent.AbstractSelectDSLComponentImpl.class)
+@ImplementationClass(SelectUniqueDSLLink.AbstractSelectDSLLinkImpl.class)
 @XMLElement
-@FML("SelectUniqueDSLComponent")
-public interface SelectUniqueDSLComponent
-		extends AbstractSelectDSLComponent<DSLComponent>, UniqueFetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {
+@FML("SelectUniqueDSLLink")
+public interface SelectUniqueDSLLink extends AbstractSelectDSLLink<DSLLink>, UniqueFetchRequest<DSLModelSlot, DSLSystem, DSLLink> {
 
 }

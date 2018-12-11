@@ -56,9 +56,10 @@ import org.openflexo.technologyadapter.dsl.model.DSLSystem;
  * 
  */
 @ModelEntity
-@ImplementationClass(SelectXXLine.AbstractSelectXXLineImpl.class)
+@ImplementationClass(SelectDSLComponent.AbstractSelectDSLComponentImpl.class)
 @XMLElement
-@FML("SelectXXLine")
-public interface SelectXXLine extends AbstractSelectXXLine<List<DSLComponent>>, FetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {
+@FML("SelectDSLComponent")
+public interface SelectDSLComponent
+		extends AbstractSelectDSLComponent<List<DSLComponent>>, FetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {
 
 }

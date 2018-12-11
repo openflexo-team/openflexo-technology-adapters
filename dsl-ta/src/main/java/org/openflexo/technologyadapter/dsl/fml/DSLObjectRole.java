@@ -44,7 +44,6 @@ import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.dsl.DSLTechnologyAdapter;
-import org.openflexo.technologyadapter.dsl.model.DSLComponent;
 import org.openflexo.technologyadapter.dsl.model.DSLObject;
 
 /**
@@ -69,9 +68,9 @@ public interface DSLObjectRole<T extends DSLObject> extends FlexoRole<T> {
 		}
 
 		@Override
-		public ActorReference<DSLComponent> makeActorReference(DSLComponent object, FlexoConceptInstance fci) {
+		public ActorReference<T> makeActorReference(T object, FlexoConceptInstance fci) {
 			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
-			DSLObjectActorReference returned = factory.newInstance(DSLObjectActorReference.class);
+			ActorReference<T> returned = (ActorReference<T>) factory.newInstance(DSLObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);

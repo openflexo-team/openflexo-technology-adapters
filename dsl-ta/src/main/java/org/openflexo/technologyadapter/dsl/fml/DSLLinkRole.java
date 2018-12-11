@@ -36,29 +36,35 @@
  * 
  */
 
-package org.openflexo.technologyadapter.dsl.fml.editionaction;
+package org.openflexo.technologyadapter.dsl.fml;
+
+import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.technologyadapter.dsl.DSLModelSlot;
 import org.openflexo.technologyadapter.dsl.model.DSLComponent;
-import org.openflexo.technologyadapter.dsl.model.DSLSystem;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a unique {@link DSLComponent} matching some conditions
+ * A role which allow to reference a {@link DSLComponent}
  * 
  * @author sylvain
- * 
+ *
  */
 @ModelEntity
-@ImplementationClass(SelectUniqueDSLComponent.AbstractSelectDSLComponentImpl.class)
+@ImplementationClass(DSLLinkRole.DSLLinkRoleImpl.class)
 @XMLElement
-@FML("SelectUniqueDSLComponent")
-public interface SelectUniqueDSLComponent
-		extends AbstractSelectDSLComponent<DSLComponent>, UniqueFetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {
+@FML("DSLLinkRole")
+public interface DSLLinkRole extends DSLObjectRole<DSLLink> {
 
+	public static abstract class DSLLinkRoleImpl extends DSLObjectRoleImpl<DSLLink> implements DSLLinkRole {
+
+		@Override
+		public Type getType() {
+			return DSLLink.class;
+		}
+
+	}
 }

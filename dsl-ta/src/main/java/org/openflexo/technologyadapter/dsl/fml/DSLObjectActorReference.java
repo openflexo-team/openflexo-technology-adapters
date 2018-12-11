@@ -54,7 +54,6 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.technologyadapter.dsl.model.DSLComponent;
 import org.openflexo.technologyadapter.dsl.model.DSLObject;
 import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 import org.openflexo.technologyadapter.dsl.rm.DSLResource;
@@ -66,32 +65,32 @@ import org.openflexo.technologyadapter.dsl.rm.DSLResource;
  * 
  */
 @ModelEntity
-@ImplementationClass(DSLObjectActorReference.XXLineActorReferenceImpl.class)
+@ImplementationClass(DSLObjectActorReference.DSLObjectActorReferenceImpl.class)
 @XMLElement
 @FML("DSLObjectActorReference")
 public interface DSLObjectActorReference extends ActorReference<DSLObject> {
 
 	@PropertyIdentifier(type = String.class)
-	public static final String OBJECT_URI_KEY = "objectURI";
+	public static final String SERIALIZATION_IDENTIFIER_KEY = "serializationIdentifier";
 
-	@Getter(value = OBJECT_URI_KEY)
+	@Getter(value = SERIALIZATION_IDENTIFIER_KEY)
 	@XMLAttribute
-	public String getObjectURI();
+	public String getSerializationIdentifier();
 
-	@Setter(OBJECT_URI_KEY)
-	public void setObjectURI(String objectURI);
+	@Setter(SERIALIZATION_IDENTIFIER_KEY)
+	public void setSerializationIdentifier(String serializationIdentifier);
 
-	public abstract static class XXLineActorReferenceImpl extends ActorReferenceImpl<DSLComponent> implements DSLObjectActorReference {
+	public abstract static class DSLObjectActorReferenceImpl extends ActorReferenceImpl<DSLObject> implements DSLObjectActorReference {
 
 		private static final Logger logger = FlexoLogger.getLogger(DSLObjectActorReference.class.getPackage().toString());
 
-		private DSLComponent object;
-		private String objectURI;
+		private DSLObject object;
+		private String serializationId;
 
-		public DSLSystem getXXText() {
-			if (getXXTextResource() != null) {
+		public DSLSystem getDSLSystem() {
+			if (getDSLResource() != null) {
 				try {
-					return getXXTextResource().getResourceData();
+					return getDSLResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
@@ -103,7 +102,7 @@ public interface DSLObjectActorReference extends ActorReference<DSLObject> {
 			return null;
 		}
 
-		public DSLResource getXXTextResource() {
+		public DSLResource getDSLResource() {
 			ModelSlotInstance<?, ?> msInstance = getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof DSLResource) {
 				return (DSLResource) msInstance.getResource();
@@ -112,37 +111,36 @@ public interface DSLObjectActorReference extends ActorReference<DSLObject> {
 		}
 
 		@Override
-		public DSLComponent getModellingElement(boolean forceLoading) {
-			if (object == null && objectURI != null) {
-				int index = Integer.parseInt(objectURI);
-				return getXXText().getLines().get(index);
+		public DSLObject getModellingElement(boolean forceLoading) {
+			if (object == null && serializationId != null) {
+				return getDSLSystem().getObjectWithSerializationIdentifier(serializationId);
 			}
 			if (object == null) {
-				logger.warning("Could not retrieve object " + objectURI);
+				logger.warning("Could not retrieve object " + serializationId);
 			}
 			return object;
 
 		}
 
 		@Override
-		public void setModellingElement(DSLComponent object) {
+		public void setModellingElement(DSLObject object) {
 			this.object = object;
 			if (object != null) {
-				objectURI = "" + object.getIndex();
+				serializationId = object.getSerializationIdentifier();
 			}
 		}
 
 		@Override
-		public String getObjectURI() {
+		public String getSerializationIdentifier() {
 			if (object != null) {
-				return "" + object.getIndex();
+				return object.getSerializationIdentifier();
 			}
-			return objectURI;
+			return serializationId;
 		}
 
 		@Override
-		public void setObjectURI(String objectURI) {
-			this.objectURI = objectURI;
+		public void setSerializationIdentifier(String serializationId) {
+			this.serializationId = serializationId;
 		}
 
 	}

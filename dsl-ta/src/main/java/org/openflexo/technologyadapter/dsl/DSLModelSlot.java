@@ -52,29 +52,34 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.technologyadapter.dsl.fml.DSLComponentRole;
+import org.openflexo.technologyadapter.dsl.fml.DSLLinkRole;
 import org.openflexo.technologyadapter.dsl.fml.DSLObjectActorReference;
-import org.openflexo.technologyadapter.dsl.fml.DSLObjectRole;
-import org.openflexo.technologyadapter.dsl.fml.editionaction.AddXXLine;
-import org.openflexo.technologyadapter.dsl.fml.editionaction.SelectUniqueXXLine;
+import org.openflexo.technologyadapter.dsl.fml.DSLSlotRole;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AddDSLComponent;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AddDSLLink;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.SelectUniqueDSLComponent;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.SelectUniqueDSLLink;
 import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 
 /**
- * Implementation of the {@link ModelSlot} class for the XX technology adapter (plain text connector)
+ * Implementation of the {@link ModelSlot} class for the DSL-text technology adapter
  * 
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DSLObjectRole.class })
-@DeclareEditionActions({ AddXXLine.class })
-@DeclareFetchRequests({ SelectUniqueXXLine.class, SelectUniqueXXLine.class })
+@DeclareFlexoRoles({ DSLComponentRole.class, DSLSlotRole.class, DSLLinkRole.class })
+@DeclareEditionActions({ AddDSLComponent.class, AddDSLLink.class })
+@DeclareFetchRequests({ SelectUniqueDSLComponent.class, SelectUniqueDSLComponent.class, SelectUniqueDSLLink.class,
+		SelectUniqueDSLLink.class })
 @DeclareActorReferences({ DSLObjectActorReference.class })
 @ModelEntity
-@ImplementationClass(DSLModelSlot.XXModelSlotImpl.class)
+@ImplementationClass(DSLModelSlot.DSLModelSlotImpl.class)
 @XMLElement
-@FML("XXModelSlot")
+@FML("DSLModelSlot")
 public interface DSLModelSlot extends FreeModelSlot<DSLSystem> {
 
-	public static abstract class XXModelSlotImpl extends FreeModelSlotImpl<DSLSystem> implements DSLModelSlot {
+	public static abstract class DSLModelSlotImpl extends FreeModelSlotImpl<DSLSystem> implements DSLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DSLModelSlot.class.getPackage().getName());
 
@@ -84,9 +89,15 @@ public interface DSLModelSlot extends FreeModelSlot<DSLSystem> {
 		}
 
 		@Override
-		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (DSLObjectRole.class.isAssignableFrom(patternRoleClass)) {
-				return "line";
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> roleClass) {
+			if (DSLComponentRole.class.isAssignableFrom(roleClass)) {
+				return "component";
+			}
+			if (DSLSlotRole.class.isAssignableFrom(roleClass)) {
+				return "slot";
+			}
+			if (DSLLinkRole.class.isAssignableFrom(roleClass)) {
+				return "link";
 			}
 			return null;
 		}

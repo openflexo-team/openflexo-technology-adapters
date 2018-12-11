@@ -48,15 +48,21 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.technologyadapter.dsl.DSLTechnologyAdapter;
+import org.openflexo.technologyadapter.dsl.fml.DSLComponentRole;
+import org.openflexo.technologyadapter.dsl.fml.DSLLinkRole;
+import org.openflexo.technologyadapter.dsl.fml.DSLSlotRole;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AbstractSelectDSLComponent;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AbstractSelectDSLLink;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AddDSLComponent;
+import org.openflexo.technologyadapter.dsl.fml.editionaction.AddDSLLink;
 import org.openflexo.technologyadapter.dsl.gui.DSLIconLibrary;
-import org.openflexo.technologyadapter.dsl.view.DSLView;
-import org.openflexo.technologyadapter.xx.XXTechnologyAdapter;
-import org.openflexo.technologyadapter.xx.fml.XXLineRole;
-import org.openflexo.technologyadapter.xx.fml.editionaction.AbstractSelectXXLine;
-import org.openflexo.technologyadapter.xx.fml.editionaction.AddXXLine;
-import org.openflexo.technologyadapter.xx.model.XXLine;
-import org.openflexo.technologyadapter.xx.model.XXObject;
-import org.openflexo.technologyadapter.xx.model.XXText;
+import org.openflexo.technologyadapter.dsl.model.DSLComponent;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
+import org.openflexo.technologyadapter.dsl.model.DSLObject;
+import org.openflexo.technologyadapter.dsl.model.DSLSlot;
+import org.openflexo.technologyadapter.dsl.model.DSLSystem;
+import org.openflexo.technologyadapter.dsl.view.DSLSystemView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -64,15 +70,15 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class DSLAdapterController extends TechnologyAdapterController<XXTechnologyAdapter> {
+public class DSLAdapterController extends TechnologyAdapterController<DSLTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(DSLAdapterController.class.getPackage().getName());
 
-	private InspectorGroup xxInspectorGroup;
+	private InspectorGroup dslInspectorGroup;
 
 	@Override
-	public Class<XXTechnologyAdapter> getTechnologyAdapterClass() {
-		return XXTechnologyAdapter.class;
+	public Class<DSLTechnologyAdapter> getTechnologyAdapterClass() {
+		return DSLTechnologyAdapter.class;
 	}
 
 	/**
@@ -83,7 +89,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		xxInspectorGroup = controller.loadInspectorGroup("XX", getTechnologyAdapter().getLocales(),
+		dslInspectorGroup = controller.loadInspectorGroup("DSL", getTechnologyAdapter().getLocales(),
 				getFMLTechnologyAdapterInspectorGroup());
 	}
 
@@ -94,7 +100,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public InspectorGroup getTechnologyAdapterInspectorGroup() {
-		return xxInspectorGroup;
+		return dslInspectorGroup;
 	}
 
 	@Override
@@ -110,7 +116,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getTechnologyBigIcon() {
-		return DSLIconLibrary.XX_TA_BIG_ICON;
+		return DSLIconLibrary.DSL_TA_BIG_ICON;
 	}
 
 	/**
@@ -120,7 +126,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getTechnologyIcon() {
-		return DSLIconLibrary.XX_TA_ICON;
+		return DSLIconLibrary.DSL_TA_ICON;
 	}
 
 	/**
@@ -130,7 +136,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getModelIcon() {
-		return DSLIconLibrary.XX_TEXT_ICON;
+		return DSLIconLibrary.DSL_SYSTEM_ICON;
 	}
 
 	/**
@@ -140,7 +146,7 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getMetaModelIcon() {
-		return DSLIconLibrary.XX_TEXT_ICON;
+		return DSLIconLibrary.DSL_TA_ICON;
 	}
 
 	/**
@@ -151,22 +157,28 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
-		if (XXObject.class.isAssignableFrom(objectClass)) {
-			return DSLIconLibrary.iconForObject((Class<? extends XXObject>) objectClass);
+		if (DSLObject.class.isAssignableFrom(objectClass)) {
+			return DSLIconLibrary.iconForObject((Class<? extends DSLObject>) objectClass);
 		}
 		return null;
 	}
 
 	/**
-	 * Return icon representing supplied pattern property
+	 * Return icon representing supplied role
 	 * 
 	 * @param object
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (XXLineRole.class.isAssignableFrom(patternRoleClass)) {
-			return getIconForTechnologyObject(XXLine.class);
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> roleClass) {
+		if (DSLComponentRole.class.isAssignableFrom(roleClass)) {
+			return getIconForTechnologyObject(DSLComponent.class);
+		}
+		if (DSLSlotRole.class.isAssignableFrom(roleClass)) {
+			return getIconForTechnologyObject(DSLSlot.class);
+		}
+		if (DSLLinkRole.class.isAssignableFrom(roleClass)) {
+			return getIconForTechnologyObject(DSLLink.class);
 		}
 		return null;
 	}
@@ -179,33 +191,39 @@ public class DSLAdapterController extends TechnologyAdapterController<XXTechnolo
 	 */
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
-		if (AddXXLine.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(XXLine.class), IconLibrary.DUPLICATE);
+		if (AddDSLComponent.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(DSLComponent.class), IconLibrary.DUPLICATE);
 		}
-		else if (AbstractSelectXXLine.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(XXLine.class), IconLibrary.IMPORT);
+		if (AddDSLLink.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(DSLLink.class), IconLibrary.DUPLICATE);
+		}
+		else if (AbstractSelectDSLComponent.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(DSLComponent.class), IconLibrary.IMPORT);
+		}
+		else if (AbstractSelectDSLLink.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(DSLLink.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller) {
-		return object instanceof XXText;
+	public boolean hasModuleViewForObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller) {
+		return object instanceof DSLSystem;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller) {
-		if (object instanceof XXText) {
-			return ((XXText) object).getResource().getName();
+	public String getWindowTitleforObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof DSLSystem) {
+			return ((DSLSystem) object).getResource().getName();
 		}
 		return object.toString();
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
-		if (object instanceof XXText) {
-			DSLView returned = new DSLView((XXText) object, controller, perspective);
+		if (object instanceof DSLSystem) {
+			DSLSystemView returned = new DSLSystemView((DSLSystem) object, controller, perspective);
 			return returned;
 		}
 		return new EmptyPanel<>(controller, perspective, object);

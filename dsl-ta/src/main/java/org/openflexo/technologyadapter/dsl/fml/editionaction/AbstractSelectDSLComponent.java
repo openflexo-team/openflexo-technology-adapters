@@ -59,14 +59,14 @@ import org.openflexo.technologyadapter.dsl.model.DSLSystem;
  * @param <AT>
  */
 @ModelEntity(isAbstract = true)
-@ImplementationClass(AbstractSelectXXLine.AbstractSelectXXLineImpl.class)
-public interface AbstractSelectXXLine<AT> extends AbstractFetchRequest<DSLModelSlot, DSLSystem, DSLComponent, AT> {
+@ImplementationClass(AbstractSelectDSLComponent.AbstractSelectDSLComponentImpl.class)
+public interface AbstractSelectDSLComponent<AT> extends AbstractFetchRequest<DSLModelSlot, DSLSystem, DSLComponent, AT> {
 
-	public static abstract class AbstractSelectXXLineImpl<AT> extends AbstractFetchRequestImpl<DSLModelSlot, DSLSystem, DSLComponent, AT>
-			implements AbstractSelectXXLine<AT> {
+	public static abstract class AbstractSelectDSLComponentImpl<AT>
+			extends AbstractFetchRequestImpl<DSLModelSlot, DSLSystem, DSLComponent, AT> implements AbstractSelectDSLComponent<AT> {
 
 		@SuppressWarnings("unused")
-		private static final Logger logger = Logger.getLogger(AbstractSelectXXLine.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(AbstractSelectDSLComponent.class.getPackage().getName());
 
 		@Override
 		public Type getFetchedType() {
@@ -76,14 +76,14 @@ public interface AbstractSelectXXLine<AT> extends AbstractFetchRequest<DSLModelS
 		@Override
 		public List<DSLComponent> performExecute(RunTimeEvaluationContext evaluationContext) {
 
-			List<DSLComponent> selectedExcelRows = new ArrayList<>();
+			List<DSLComponent> selectedComponents = new ArrayList<>();
 			DSLSystem resourceData = getReceiver(evaluationContext);
 
 			if (resourceData != null) {
-				selectedExcelRows.addAll(resourceData.getLines());
+				selectedComponents.addAll(resourceData.getComponents());
 			}
 
-			List<DSLComponent> returned = filterWithConditions(selectedExcelRows, evaluationContext);
+			List<DSLComponent> returned = filterWithConditions(selectedComponents, evaluationContext);
 
 			return returned;
 

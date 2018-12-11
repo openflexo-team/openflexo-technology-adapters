@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.DefineValidationRule;
@@ -56,17 +57,22 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.dsl.DSLModelSlot;
-import org.openflexo.technologyadapter.dsl.model.DSLComponent;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
+import org.openflexo.technologyadapter.dsl.model.DSLSlot;
 import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 
 @ModelEntity
-@ImplementationClass(AddDSLComponent.AddDSLComponentImpl.class)
+@ImplementationClass(AddDSLLink.AddDSLLinkImpl.class)
 @XMLElement
-@FML("AddDSLComponent")
-public interface AddDSLComponent extends DSLAction<DSLComponent> {
+@FML("AddDSLLink")
+public interface AddDSLLink extends DSLAction<DSLLink> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String COMPONENT_NAME_KEY = "componentName";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String FROM_SLOT_KEY = "fromSlot";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String TO_SLOT_KEY = "toSlot";
 
 	@Getter(value = COMPONENT_NAME_KEY)
 	@XMLAttribute
@@ -75,39 +81,59 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 	@Setter(COMPONENT_NAME_KEY)
 	public void setComponentName(DataBinding<String> componentName);
 
-	public static abstract class AddDSLComponentImpl
-			extends TechnologySpecificActionDefiningReceiverImpl<DSLModelSlot, DSLSystem, DSLComponent> implements AddDSLComponent {
+	@Getter(value = FROM_SLOT_KEY)
+	@XMLAttribute
+	public DataBinding<DSLSlot> getFromSlot();
 
-		private static final Logger logger = Logger.getLogger(AddDSLComponent.class.getPackage().getName());
+	@Setter(FROM_SLOT_KEY)
+	public void setFromSlot(DataBinding<DSLSlot> slot);
+
+	@Getter(value = TO_SLOT_KEY)
+	@XMLAttribute
+	public DataBinding<DSLSlot> getToSlot();
+
+	@Setter(TO_SLOT_KEY)
+	public void setToSlot(DataBinding<DSLSlot> slot);
+
+	public static abstract class AddDSLLinkImpl extends TechnologySpecificActionDefiningReceiverImpl<DSLModelSlot, DSLSystem, DSLLink>
+			implements AddDSLLink {
+
+		private static final Logger logger = Logger.getLogger(AddDSLLink.class.getPackage().getName());
 
 		private DataBinding<String> componentName;
+		private DataBinding<DSLSlot> fromSlot;
+		private DataBinding<DSLSlot> toSlot;
 
 		@Override
 		public Type getAssignableType() {
-			return DSLComponent.class;
+			return DSLLink.class;
 		}
 
 		@Override
-		public DSLComponent execute(RunTimeEvaluationContext evaluationContext) {
+		public DSLLink execute(RunTimeEvaluationContext evaluationContext) throws InvalidParametersException {
 
-			DSLComponent newComponent = null;
+			DSLLink newLink = null;
 
 			DSLSystem resourceData = getReceiver(evaluationContext);
 
 			try {
-				if (resourceData != null) {
-					String componentName = getComponentName().getBindingValue(evaluationContext);
-					if (componentName != null) {
-						newComponent = resourceData.getFactory().makeDSLComponent(componentName);
-						resourceData.addToComponents(newComponent);
-					}
-					else {
-						logger.warning("Create a component requires a name");
-					}
+				if (resourceData == null) {
+					throw new InvalidParametersException("Cannot create component in null DSLSystem");
 				}
-				else {
-					logger.warning("Cannot create component in null resource data");
+				String componentName = getComponentName().getBindingValue(evaluationContext);
+				if (componentName == null) {
+					throw new InvalidParametersException("Create a component requires a name");
 				}
+				DSLSlot fromSlot = getFromSlot().getBindingValue(evaluationContext);
+				if (fromSlot == null) {
+					throw new InvalidParametersException("Create a component requires a start DSLSlot");
+				}
+				DSLSlot toSlot = getToSlot().getBindingValue(evaluationContext);
+				if (toSlot == null) {
+					throw new InvalidParametersException("Create a component requires a end DSLSlot");
+				}
+				newLink = resourceData.getFactory().makeDSLLink(componentName, fromSlot, toSlot);
+				resourceData.addToLinks(newLink);
 
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
@@ -117,7 +143,7 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 				e.printStackTrace();
 			}
 
-			return newComponent;
+			return null;
 
 		}
 
@@ -141,16 +167,56 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 			this.componentName = componentName;
 		}
 
-	}
-
-	@DefineValidationRule
-	public static class ComponentNameBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddDSLComponent> {
-		public ComponentNameBindingIsRequiredAndMustBeValid() {
-			super("'componentName'_binding_is_required_and_must_be_valid", AddDSLComponent.class);
+		@Override
+		public DataBinding<DSLSlot> getFromSlot() {
+			if (fromSlot == null) {
+				fromSlot = new DataBinding<>(this, DSLSlot.class, DataBinding.BindingDefinitionType.GET);
+				fromSlot.setBindingName("fromSlot");
+			}
+			return fromSlot;
 		}
 
 		@Override
-		public DataBinding<String> getBinding(AddDSLComponent object) {
+		public void setFromSlot(DataBinding<DSLSlot> fromSlot) {
+			if (fromSlot != null) {
+				fromSlot.setOwner(this);
+				fromSlot.setDeclaredType(DSLSlot.class);
+				fromSlot.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				fromSlot.setBindingName("fromSlot");
+			}
+			this.fromSlot = fromSlot;
+		}
+
+		@Override
+		public DataBinding<DSLSlot> getToSlot() {
+			if (toSlot == null) {
+				toSlot = new DataBinding<>(this, DSLSlot.class, DataBinding.BindingDefinitionType.GET);
+				toSlot.setBindingName("toSlot");
+			}
+			return fromSlot;
+		}
+
+		@Override
+		public void setToSlot(DataBinding<DSLSlot> toSlot) {
+			if (toSlot != null) {
+				toSlot.setOwner(this);
+				toSlot.setDeclaredType(DSLSlot.class);
+				toSlot.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				toSlot.setBindingName("toSlot");
+			}
+			this.toSlot = toSlot;
+		}
+
+	}
+
+	@DefineValidationRule
+	public static class ComponentNameBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddDSLLink> {
+		public ComponentNameBindingIsRequiredAndMustBeValid() {
+			super("'componentName'_binding_is_required_and_must_be_valid", AddDSLLink.class);
+		}
+
+		@Override
+		public DataBinding<String> getBinding(AddDSLLink object) {
 			return object.getComponentName();
 		}
 

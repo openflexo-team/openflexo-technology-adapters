@@ -118,6 +118,14 @@ public interface DSLSystem extends DSLObject, ResourceData<DSLSystem> {
 	public DSLResource getResource();
 
 	/**
+	 * Retrieve object with supplied serialization identifier, asserting this object resides in this {@link DSLSystem}
+	 * 
+	 * @param objectId
+	 * @return
+	 */
+	public DSLObject getObjectWithSerializationIdentifier(String objectId);
+
+	/**
 	 * Default base implementation for {@link DSLSystem}
 	 * 
 	 * @author sylvain

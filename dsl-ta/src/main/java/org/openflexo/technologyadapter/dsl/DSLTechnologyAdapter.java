@@ -49,11 +49,11 @@ import org.openflexo.technologyadapter.dsl.rm.DSLResourceFactory;
 import org.openflexo.technologyadapter.dsl.rm.DSLResourceRepository;
 
 /**
- * This class defines and implements an archetype of a technology adapter<br>
+ * This class defines and implements an archetype of a DSL technology adapter based on a sablecc grammar<br>
  * 
- * The idea is to demonstrate TechnologyAdapter API.
+ * The idea is to demonstrate TechnologyAdapter API using a sablecc grammar
  * 
- * We offer the connexion to a text file with a single role mapping a line in a text file
+ * We offer the connexion to a file conform to DSL grammar
  * 
  * @author sylvain
  * 
@@ -64,6 +64,7 @@ import org.openflexo.technologyadapter.dsl.rm.DSLResourceRepository;
 @DeclareResourceTypes({ DSLResourceFactory.class })
 public class DSLTechnologyAdapter extends TechnologyAdapter<DSLTechnologyAdapter> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(DSLTechnologyAdapter.class.getPackage().getName());
 
 	private static final DSLBindingFactory BINDING_FACTORY = new DSLBindingFactory();
@@ -104,6 +105,7 @@ public class DSLTechnologyAdapter extends TechnologyAdapter<DSLTechnologyAdapter
 		return getResourceFactory(DSLResourceFactory.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <I> DSLResourceRepository<I> getDSLResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		DSLResourceRepository<I> returned = resourceCenter.retrieveRepository(DSLResourceRepository.class, this);
 		if (returned == null) {

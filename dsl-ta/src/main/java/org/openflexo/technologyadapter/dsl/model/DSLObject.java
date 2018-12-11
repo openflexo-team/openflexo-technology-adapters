@@ -77,7 +77,21 @@ public interface DSLObject extends FlexoObject, InnerResourceData<DSLSystem>, Te
 	@Setter(NAME_KEY)
 	public void setName(String aName);
 
+	/**
+	 * Return the model factory which manages this {@link DSLObject}
+	 * 
+	 * @return
+	 */
 	public DSLModelFactory getFactory();
+
+	/**
+	 * Return serialization identifier of this object<br>
+	 * Assert that the {@link DSLSystem} (the ResourceData) in which this object is stored is kwown<br>
+	 * (You dont have to serialize DSLSystem)
+	 * 
+	 * @return
+	 */
+	public String getSerializationIdentifier();
 
 	/**
 	 * Default base implementation for {@link DSLObject}

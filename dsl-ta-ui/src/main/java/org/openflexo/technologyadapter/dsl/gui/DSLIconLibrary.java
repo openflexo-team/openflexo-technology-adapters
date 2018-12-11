@@ -44,26 +44,38 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.xx.model.XXLine;
-import org.openflexo.technologyadapter.xx.model.XXObject;
-import org.openflexo.technologyadapter.xx.model.XXText;
+import org.openflexo.technologyadapter.dsl.model.DSLComponent;
+import org.openflexo.technologyadapter.dsl.model.DSLLink;
+import org.openflexo.technologyadapter.dsl.model.DSLObject;
+import org.openflexo.technologyadapter.dsl.model.DSLSlot;
+import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 
 public class DSLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DSLIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource XX_TA_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/xx-ta-32x32.png"));
+	public static final ImageIconResource DSL_TA_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/dsl-ta-32x32.png"));
 
-	public static final ImageIconResource XX_TA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/xx-ta-16x16.png"));
-	public static final ImageIconResource XX_TEXT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XXText.png"));
-	public static final ImageIconResource XX_LINE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XXLine.png"));
+	public static final ImageIconResource DSL_TA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/dsl-ta-16x16.png"));
 
-	public static ImageIcon iconForObject(Class<? extends XXObject> objectClass) {
-		if (XXText.class.isAssignableFrom(objectClass)) {
-			return XX_TEXT_ICON;
+	public static final ImageIconResource DSL_SYSTEM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DSLSystem.png"));
+	public static final ImageIconResource DSL_COMPONENT_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/DSLComponent.png"));
+	public static final ImageIconResource DSL_SLOT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DSLSlot.png"));
+	public static final ImageIconResource DSL_LINK_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DSLLink.png"));
+
+	public static ImageIcon iconForObject(Class<? extends DSLObject> objectClass) {
+		if (DSLSystem.class.isAssignableFrom(objectClass)) {
+			return DSL_SYSTEM_ICON;
 		}
-		else if (XXLine.class.isAssignableFrom(objectClass)) {
-			return XX_LINE_ICON;
+		else if (DSLComponent.class.isAssignableFrom(objectClass)) {
+			return DSL_COMPONENT_ICON;
+		}
+		else if (DSLSlot.class.isAssignableFrom(objectClass)) {
+			return DSL_SLOT_ICON;
+		}
+		else if (DSLLink.class.isAssignableFrom(objectClass)) {
+			return DSL_LINK_ICON;
 		}
 		logger.warning("No icon for " + objectClass);
 		return null;

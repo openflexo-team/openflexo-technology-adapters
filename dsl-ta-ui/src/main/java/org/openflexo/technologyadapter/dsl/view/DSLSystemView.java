@@ -48,33 +48,33 @@ import javax.swing.JTextArea;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
-import org.openflexo.technologyadapter.xx.model.XXText;
+import org.openflexo.technologyadapter.dsl.model.DSLSystem;
 import org.openflexo.view.SelectionSynchronizedModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * This class represent the module view for a ExcelWorkbook.<br>
+ * This class represent the module view for a {@link DSLSystem}<br>
  * 
  * @author sylvain
  * 
  */
 @SuppressWarnings("serial")
-public class DSLView extends JPanel implements SelectionSynchronizedModuleView<XXText> {
+public class DSLSystemView extends JPanel implements SelectionSynchronizedModuleView<DSLSystem> {
 
-	private final XXText text;
+	private final DSLSystem system;
 	private final FlexoPerspective declaredPerspective;
 
 	private final FlexoController controller;
 	private JTextArea textArea;
 
-	public DSLView(XXText text, FlexoController controller, FlexoPerspective perspective) {
+	public DSLSystemView(DSLSystem system, FlexoController controller, FlexoPerspective perspective) {
 		super(new BorderLayout());
 		this.controller = controller;
 		declaredPerspective = perspective;
-		this.text = text;
+		this.system = system;
 		textArea = new JTextArea();
-		textArea.setText(text.getContents());
+		textArea.setText(system.toString());
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
 	}
 
@@ -114,8 +114,8 @@ public class DSLView extends JPanel implements SelectionSynchronizedModuleView<X
 	}
 
 	@Override
-	public XXText getRepresentedObject() {
-		return text;
+	public DSLSystem getRepresentedObject() {
+		return system;
 	}
 
 	@Override

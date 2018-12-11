@@ -53,6 +53,6 @@ import org.openflexo.technologyadapter.dsl.model.DSLSystem;
  */
 
 @ModelEntity(isAbstract = true)
-public interface XXAction<T extends Object> extends TechnologySpecificActionDefiningReceiver<DSLModelSlot, DSLSystem, T> {
+public interface DSLAction<T extends Object> extends TechnologySpecificActionDefiningReceiver<DSLModelSlot, DSLSystem, T> {
 
 }
