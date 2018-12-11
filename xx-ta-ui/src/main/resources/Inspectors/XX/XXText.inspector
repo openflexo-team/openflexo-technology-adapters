@@ -21,7 +21,7 @@
 				index="8" localize="true"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				visibleRowCount="4" rowHeight="18" textSelectionColor="255,255,255"
-				iteratorClassName="org.openflexo.technologyadapter.xx.model.XXLine"
+				iteratorClassName="org.openflexo.ta.xx.model.XXLine"
 				backgroundSelectionColor="26,96,206" backgroundNonSelectionColor="255,255,255"
 				name="LinesTable" textNonSelectionColor="0,0,0"
 				backgroundSecondarySelectionColor="173,215,255">
@@ -33,7 +33,7 @@
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"
-		type="org.openflexo.technologyadapter.xx.model.XXText" />
+		type="org.openflexo.ta.xx.model.XXText" />
 	<LocalizedDictionary id="14">
 		<Localized id="15" value="Avancé" lang="French" key="Advanced" />
 		<Localized id="16" value="Basique" lang="French" key="Basic" />

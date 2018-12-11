@@ -30,4 +30,3 @@ include 'docxconnector',
     'dsl-ta-ui',
     'dsl-ta-test',
     'dsl-ta-test-rc'
-    

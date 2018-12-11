@@ -49,8 +49,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.GraphicalRepresentation;
-import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ScreenshotBuilder.ScreenshotImage;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.ShapeGraphicalRepresentation.DimensionConstraints;
 import org.openflexo.diana.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.diana.shapes.ShapeSpecification.ShapeType;
@@ -124,7 +124,7 @@ public abstract class AbstractCreatePaletteElement<A extends FlexoAction<A, T1, 
 	private static final int X_OFFSET = 10;
 	private static final int Y_OFFSET = 10;
 
-	protected AbstractCreatePaletteElement(FlexoActionFactory actionType, T1 focusedObject, Vector<T2> globalSelection,
+	protected AbstractCreatePaletteElement(FlexoActionFactory<A, T1, T2> actionType, T1 focusedObject, Vector<T2> globalSelection,
 			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		diagramElementEntries = new Vector<>();
