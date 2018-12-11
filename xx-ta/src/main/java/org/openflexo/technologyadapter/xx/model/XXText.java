@@ -81,7 +81,7 @@ public interface XXText extends XXObject, ResourceData<XXText> {
 	public String getContents();
 
 	/**
-	 * Return all {@link ExcelSheet} defined in this {@link XXText}
+	 * Return all {@link XXLine} defined in this {@link XXText}
 	 * 
 	 * @return
 	 */
@@ -109,6 +109,7 @@ public interface XXText extends XXObject, ResourceData<XXText> {
 	 */
 	public static abstract class XXTextImpl extends XXObjectImpl implements XXText {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(XXObjectImpl.class.getPackage().getName());
 
 		public static final String ALL_KEY = "All";

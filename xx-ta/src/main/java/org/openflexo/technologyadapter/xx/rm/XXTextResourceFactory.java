@@ -58,6 +58,7 @@ import org.openflexo.technologyadapter.xx.model.XXText;
 public class XXTextResourceFactory
 		extends TechnologySpecificPamelaResourceFactory<XXTextResource, XXText, XXTechnologyAdapter, XXModelFactory> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(XXTextResourceFactory.class.getPackage().getName());
 
 	public static String TXT_FILE_EXTENSION = ".txt";

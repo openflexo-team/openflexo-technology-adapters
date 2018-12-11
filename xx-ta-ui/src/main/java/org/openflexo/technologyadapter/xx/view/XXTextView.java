@@ -54,7 +54,7 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * This class represent the module view for a ExcelWorkbook.<br>
+ * This class represent the module view for a XXText.<br>
  * 
  * @author sylvain
  * 

@@ -62,6 +62,7 @@ public interface XXTextResourceRepository<I> extends TechnologyAdapterResourceRe
 		ModelFactory factory;
 		try {
 			factory = new ModelFactory(XXTextResourceRepository.class);
+			@SuppressWarnings("unchecked")
 			XXTextResourceRepository<I> newRepository = factory.newInstance(XXTextResourceRepository.class);
 			newRepository.setTechnologyAdapter(technologyAdapter);
 			newRepository.setResourceCenter(resourceCenter);

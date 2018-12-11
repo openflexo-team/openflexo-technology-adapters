@@ -47,7 +47,7 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.xx.XXTechnologyAdapter;
 
 /**
- * Common API for all objects involved in Excel model
+ * Common API for all objects involved in XX model
  * 
  * @author sylvain
  *

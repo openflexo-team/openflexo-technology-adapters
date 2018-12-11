@@ -64,6 +64,7 @@ import org.openflexo.technologyadapter.xx.rm.XXTextResourceRepository;
 @DeclareResourceTypes({ XXTextResourceFactory.class })
 public class XXTechnologyAdapter extends TechnologyAdapter<XXTechnologyAdapter> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(XXTechnologyAdapter.class.getPackage().getName());
 
 	private static final XXBindingFactory BINDING_FACTORY = new XXBindingFactory();
@@ -108,6 +109,7 @@ public class XXTechnologyAdapter extends TechnologyAdapter<XXTechnologyAdapter> 
 		return getResourceFactory(XXTextResourceFactory.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <I> XXTextResourceRepository<I> getXXResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		XXTextResourceRepository<I> returned = resourceCenter.retrieveRepository(XXTextResourceRepository.class, this);
 		if (returned == null) {

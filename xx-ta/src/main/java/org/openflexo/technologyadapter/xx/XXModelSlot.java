@@ -76,6 +76,7 @@ public interface XXModelSlot extends FreeModelSlot<XXText> {
 
 	public static abstract class XXModelSlotImpl extends FreeModelSlotImpl<XXText> implements XXModelSlot {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(XXModelSlot.class.getPackage().getName());
 
 		@Override

@@ -117,7 +117,7 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 		}
 
 		if (resourceData == null) {
-			logger.warning("canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
+			logger.warning("Cannot retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
 
@@ -222,21 +222,20 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 	 */
 	private <I> XXText loadDocument(StreamIODelegate<I> ioDelegate) throws IOException {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()));
-
 		XXText returned = getFactory().makeXXText();
-		int index = 0;
-		String nextLine = null;
-		do {
-			nextLine = br.readLine();
-			if (nextLine != null) {
-				System.out.println("Ligne lue : " + nextLine);
-				XXLine newLine = getFactory().makeXXLine(nextLine, index);
-				returned.addToLines(newLine);
-				index++;
-			}
-		} while (nextLine != null);
-		br.close();
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {
+			int index = 0;
+			String nextLine = null;
+			do {
+				nextLine = br.readLine();
+				if (nextLine != null) {
+					System.out.println("Ligne lue : " + nextLine);
+					XXLine newLine = getFactory().makeXXLine(nextLine, index);
+					returned.addToLines(newLine);
+					index++;
+				}
+			} while (nextLine != null);
+		}
 		return returned;
 	}
 
@@ -248,8 +247,7 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 	 */
 	private void write(OutputStream out) throws SaveResourceException {
 		logger.info("Writing " + getIODelegate().getSerializationArtefact());
-		try {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out))) {
 			for (XXLine line : getXXText().getLines()) {
 				bw.write(line.getValue());
 				bw.newLine();
@@ -261,8 +259,7 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {
-			}
+			} catch (IOException e) {}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
