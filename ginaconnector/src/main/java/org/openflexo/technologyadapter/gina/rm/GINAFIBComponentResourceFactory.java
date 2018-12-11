@@ -51,7 +51,7 @@ public class GINAFIBComponentResourceFactory
 	}
 
 	@Override
-	public GINAFactory makeResourceDataFactory(GINAFIBComponentResource resource,
+	public GINAFactory makeModelFactory(GINAFIBComponentResource resource,
 			TechnologyContextManager<GINATechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new GINAFactory(resource, technologyContextManager.getServiceManager());
 	}

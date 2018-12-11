@@ -110,14 +110,14 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 
 		XXText resourceData = null;
 		try {
-			resourceData = loadDocument(getFlexoIOStreamDelegate());
+			resourceData = load(getFlexoIOStreamDelegate());
 			getInputStream().close();
 		} catch (IOException e) {
 			throw new IOFlexoException(e);
 		}
 
 		if (resourceData == null) {
-			logger.warning("Cannot retrieve resource data from serialization artifact " + getIODelegate().toString());
+			logger.warning("Cannot retrieve resource data from serialization artifact " + getIODelegate());
 			return null;
 		}
 
@@ -144,21 +144,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 	}
 
 	/**
-	 * Return a FlexoIOStreamDelegate associated to this flexo resource
-	 * 
-	 * @return
-	 */
-	@Override
-	public StreamIODelegate<?> getFlexoIOStreamDelegate() {
-		if (getIODelegate() instanceof StreamIODelegate) {
-			return (StreamIODelegate<?>) getIODelegate();
-		}
-		return null;
-	}
-
-	/**
 	 * Resource saving safe implementation<br>
-	 * Initial resource is first copied, then we write in a temporary file, renamed at the end when the seriaization has been successfully
+	 * Initial resource is first copied, then we write in a temporary file, renamed at the end when the serialization has been successfully
 	 * performed
 	 */
 	@Override
@@ -220,7 +207,7 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 	 * @return
 	 * @throws IOException
 	 */
-	private <I> XXText loadDocument(StreamIODelegate<I> ioDelegate) throws IOException {
+	private <I> XXText load(StreamIODelegate<I> ioDelegate) throws IOException {
 
 		XXText returned = getFactory().makeXXText();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {

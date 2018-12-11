@@ -78,7 +78,7 @@ public class ExcelWorkbookResourceFactory
 	}
 
 	@Override
-	public ExcelModelFactory makeResourceDataFactory(ExcelWorkbookResource resource,
+	public ExcelModelFactory makeModelFactory(ExcelWorkbookResource resource,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new ExcelModelFactory(resource, technologyContextManager.getServiceManager().getEditingContext());
 	}

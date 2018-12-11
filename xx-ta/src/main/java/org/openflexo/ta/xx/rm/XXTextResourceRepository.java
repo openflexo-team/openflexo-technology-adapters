@@ -59,9 +59,8 @@ public interface XXTextResourceRepository<I> extends TechnologyAdapterResourceRe
 
 	public static <I> XXTextResourceRepository<I> instanciateNewRepository(XXTechnologyAdapter technologyAdapter,
 			FlexoResourceCenter<I> resourceCenter) {
-		ModelFactory factory;
 		try {
-			factory = new ModelFactory(XXTextResourceRepository.class);
+			ModelFactory factory = new ModelFactory(XXTextResourceRepository.class);
 			@SuppressWarnings("unchecked")
 			XXTextResourceRepository<I> newRepository = factory.newInstance(XXTextResourceRepository.class);
 			newRepository.setTechnologyAdapter(technologyAdapter);

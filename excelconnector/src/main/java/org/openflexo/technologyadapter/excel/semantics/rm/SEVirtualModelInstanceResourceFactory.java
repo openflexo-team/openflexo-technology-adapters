@@ -370,7 +370,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 	 * Build and return model factory to use for resource data managing
 	 */
 	@Override
-	public AbstractVirtualModelInstanceModelFactory<?> makeResourceDataFactory(SEVirtualModelInstanceResource resource,
+	public AbstractVirtualModelInstanceModelFactory<?> makeModelFactory(SEVirtualModelInstanceResource resource,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new SEVirtualModelInstanceModelFactory(resource,
 				technologyContextManager.getTechnologyAdapter().getServiceManager().getEditingContext(),
