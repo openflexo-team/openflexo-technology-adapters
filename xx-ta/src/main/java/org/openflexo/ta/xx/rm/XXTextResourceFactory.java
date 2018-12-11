@@ -90,8 +90,8 @@ public class XXTextResourceFactory
 	}
 
 	@Override
-	public XXModelFactory makeResourceDataFactory(XXTextResource resource,
-			TechnologyContextManager<XXTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+	public XXModelFactory makeModelFactory(XXTextResource resource, TechnologyContextManager<XXTechnologyAdapter> technologyContextManager)
+			throws ModelDefinitionException {
 		return new XXModelFactory(resource, technologyContextManager.getServiceManager().getEditingContext());
 	}
 

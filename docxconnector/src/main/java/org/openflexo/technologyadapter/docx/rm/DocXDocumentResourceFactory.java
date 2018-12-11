@@ -48,7 +48,7 @@ public class DocXDocumentResourceFactory
 	}
 
 	@Override
-	public DocXFactory makeResourceDataFactory(DocXDocumentResource resource,
+	public DocXFactory makeModelFactory(DocXDocumentResource resource,
 			TechnologyContextManager<DocXTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new DocXFactory(resource, technologyContextManager.getServiceManager().getEditingContext(),
 				technologyContextManager.getTechnologyAdapter().getDefaultIDStrategy());

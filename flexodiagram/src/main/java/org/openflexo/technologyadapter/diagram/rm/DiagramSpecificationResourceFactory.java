@@ -76,7 +76,7 @@ public class DiagramSpecificationResourceFactory extends
 	}
 
 	@Override
-	public DiagramSpecificationFactory makeResourceDataFactory(DiagramSpecificationResource resource,
+	public DiagramSpecificationFactory makeModelFactory(DiagramSpecificationResource resource,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new DiagramSpecificationFactory(resource, technologyContextManager.getServiceManager().getEditingContext());
 	}
