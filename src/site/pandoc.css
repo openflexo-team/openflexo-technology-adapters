@@ -129,7 +129,7 @@ a:active {
 }
 
 a:focus {
-  outline: thin dotted;
+  outline: none;/*thin dotted;*/
 }
 
 *::-moz-selection {

@@ -9,8 +9,10 @@ notion of *concept* (`FlexoConcept` in the code). Each concept has
 properties and an executable behavior specifying how to manipulate its
 instances (`FlexoConceptInstance` in the code). The properties can
 link together instances. Intuitively, FML provides a class and object
-paradigm. The core of Openflexo is an FML interpretor. Tools build
-using Openflexo consists of FML models.
+paradigm. FML also comes with a language to build expressions named
+*binding* computing values reusing data from all instances. The core
+of Openflexo is an FML interpretor. Tools build using Openflexo
+consists of FML models.
 
 Openflexo core is also built to link FML models to external source of
 data named *resources*. Such resources are accessed by the FML
@@ -39,50 +41,72 @@ external data, called here after, the *TA concepts*
 
 A TA is composed of a set of Java classes. It serves several
 objectives and therefore is structured as a set of Java packages. It
-is generally defined using Pamela[^t].
+is generally defined using annotations from FML and Pamela
+(annotations for serialization / deserialization).
 
-[^t]: Pamela is java annotation based language offering services similar to beans in plain old Java.
+Let us suppose the TA is for the technology space xx.
 
-Let us suppose the TA is for the technology space xx. You should
-structure it around the following packages:
+## Overview
+
+You should structure it around the following packages:
 
 1) `xx` containing
 
-    1) The declaring class `XxTechnologyAdapter` defining the TA. It declares the available model slots, custom types and factories.
+    1) The declaring class `XXTechnologyAdapter` defining the TA. It declares the available model slots, custom types and factories.
 
-    2) The various model slots, the `YyXxModelSlot` interfaces declaring the accessible TA concepts and the actions to manipulate them.
+    2) The various model slots, the `YyXXModelSlot` interfaces declaring the accessible TA concepts and the actions to manipulate them.
 
 2) `xx.model` containing the abstractions of the underlying technology and the factory to instanciate them.
 
 3) `xx.rm` containing the classes that implements the resource management: resource definition, serialization / deserialization, identification...
 
-4) `xx.fml` containing the definition of the TA concepts and their actions.
+4) `xx.fml` containing the definition of the TA concepts and their actions relying on `xx.model` and `xx.rm`.
 
 
 ## Details
 
+### The declaring class `XXTechnologyAdapter`
 
-    1) The declaring class `XxTechnologyAdapter` defining the TA. It
-    must extends the `TechnologyAdapter` class with the generic
-    parameter `XxTechnologyAdapter`. It must declare model slots types
-    and some resource factories. A model slot type is declared using the
-    annotation `@@DeclareModelSlots({Yy1XxModelSlot.class,Yy2XxModelSlot.class})`
-    while resource factories are declared by
-    `@@DeclareResourceTypes({XxZzResourceFactory.class})`. Being a TA requires to define:
-    
-       * the name of the TA, method `String getName()`{.java}
-       * an identifier for the FML language, method `String getIdentifier()`{.java}
-       * the path to the localization resources (a.k.a dictionnaries) , method
-      `String getLocalizationDirectory()`{.java}, it is often `"FlexoLocalization/XxTechnologyAdapter"`
-       * specify which resource should be ignored [(Sylvain, what for?)]{.todo}, method
-       `<I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents)`,
-       it often returns `false`
-       * specify the *binding factory* for the specific types of the TA, this factory
-       is a singleton often defined as a private final static attribute of the TA,
-       method `TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory()`
-    
-    2) The various model slots, `YyXxModelSlot` interfaces
+First you must declare your TA by extending the `TechnologyAdapter`
+class with the generic parameter `XXTechnologyAdapter`.
+
+This classe must declare the various model slots types, specific
+custom types and resource factories using FML annotations. A model
+slot type is declared using the annotation
+`@@DeclareModelSlots({YyXXModelSlot.class,ZzXXModelSlot.class})`,
+`@@DeclareTechnologySpecificTypes({...})` is for specific types while
+resource factories are declared by
+`@@DeclareResourceFactories({...})`.
+
+Being a TA requires to define:
+
+* the name of the TA, method `String getName()`{.java}
+* an identifier for the FML language, method `String getIdentifier()`{.java}
+* the path to the localization resources (a.k.a dictionnaries) , method `String getLocalizationDirectory()`{.java}, it is often `"FlexoLocalization/XXTechnologyAdapter"`
+* specify which resources should be ignored when presenting all available resources, method `<I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents)`, it often returns `false`
+* specify the *binding factory* for the specific types of the TA, this factory is a singleton often defined as a private final static attribute of the TA, method `TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory()`
+
+### Model slots
+
+There is two kinds of model slots: the free ones extending
+`FreeModelSlot` and the type aware ones extending
+`TypeAwareModelSlot`. The former may point to any resource while the
+latter must point to a typed resource
+
+## A complete example
 
 
-    2) The `XxTechnologyContextManager` extending `TechnologyContextManager<XxTechnologyAdapter>` to manage a context related to a technology. It stores the known resources of this technology. [(Sylvain, not sure it is really common? Most `XxTechnologyContextManager` seems to do nothing)]{.todo} Pas le cas le plus courant
+
+
+
+## Advanced usage
+
+Looking at the available TA helps to discover the various extensions
+you may need for more complex TA.
+
+
+Context manager `XXTechnologyContextManager` extending
+`TechnologyContextManager<XXTechnologyAdapter>` can be defined to
+manage a context related to a technology. It stores the known
+resources of this technology. For example, [(Sylvain, which example?)]{.todo}...
 
