@@ -53,7 +53,7 @@ import org.openflexo.ta.dsl.rm.DSLResourceRepository;
  * 
  * The idea is to demonstrate TechnologyAdapter API using a sablecc grammar
  * 
- * We offer the connexion to a file conform to DSL grammar
+ * We offer the connection to a file conform to DSL grammar
  * 
  * @author sylvain
  * 

@@ -53,7 +53,7 @@ import org.openflexo.ta.xx.rm.XXTextResourceRepository;
  * 
  * The idea is to demonstrate TechnologyAdapter API.
  * 
- * We offer the connexion to a text file with a single role mapping a line in a text file
+ * We offer the connection to a text file with a single role mapping a line in a text file
  * 
  * @author sylvain
  * 

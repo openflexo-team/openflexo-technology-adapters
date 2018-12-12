@@ -61,7 +61,7 @@ public class BlankFlexoConceptFromConnectorCreationStrategy extends FlexoConcept
 
 	@Override
 	public String getDescriptionKey() {
-		return "<html>build_a_new_concept_without_connexion_to_any_data_source</html>";
+		return "<html>build_a_new_concept_without_connection_to_any_data_source</html>";
 	}
 
 }
