@@ -15,7 +15,7 @@ body {
   font-size: 12px;
   line-height: 1.7;
   padding: 1em;
-  margin-left: 13em;
+  margin-left: 11em;
   margin-right: 1em;
   max-width: 60em;
   background: #fefefe;
@@ -40,7 +40,7 @@ body {
 }
 
 .title{
-  font-size: 2.5em;
+  font-size: 2em;
   margin-top: 0.3em;
   margin-left: 1em;
   line-height: 125%;
@@ -68,7 +68,7 @@ body {
   bottom: 0;
   left: 0;
   font-size: 12px;
-  width: 200px;
+  width: 160px;
   z-index: 1000;
   display: block;
   padding: 10px 10px 10px 0px;
@@ -84,10 +84,10 @@ body {
 }
 
 .sidebar-bottom {
-  font-size: 18px;
+  font-size: 14px;
   position: fixed;
   bottom: 0;
-  width: 200px;
+  width: 160px;
   padding: 10px 10px 10px 0px;
 }
 
