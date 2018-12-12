@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
@@ -61,7 +61,7 @@ import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstance
  * 
  */
 @DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
-@DeclareResourceTypes({ ExcelWorkbookResourceFactory.class, SEVirtualModelInstanceResourceFactory.class })
+@DeclareResourceFactory({ ExcelWorkbookResourceFactory.class, SEVirtualModelInstanceResourceFactory.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter<ExcelTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(ExcelTechnologyAdapter.class.getPackage().getName());

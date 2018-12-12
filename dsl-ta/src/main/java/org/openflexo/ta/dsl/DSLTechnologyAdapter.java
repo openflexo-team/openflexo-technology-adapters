@@ -41,7 +41,7 @@ package org.openflexo.ta.dsl;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.ta.dsl.fml.binding.DSLBindingFactory;
@@ -61,7 +61,7 @@ import org.openflexo.ta.dsl.rm.DSLResourceRepository;
 @DeclareModelSlots({ DSLModelSlot.class })
 // You might declare your own types here
 // @DeclareTechnologySpecificTypes({ YourCustomType.class })
-@DeclareResourceTypes({ DSLResourceFactory.class })
+@DeclareResourceFactory({ DSLResourceFactory.class })
 public class DSLTechnologyAdapter extends TechnologyAdapter<DSLTechnologyAdapter> {
 
 	@SuppressWarnings("unused")
