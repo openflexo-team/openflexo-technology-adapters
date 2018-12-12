@@ -60,10 +60,6 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 public final class XXBindingFactory extends TechnologyAdapterBindingFactory {
 	static final Logger logger = Logger.getLogger(XXBindingFactory.class.getPackage().getName());
 
-	public XXBindingFactory() {
-		super();
-	}
-
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		logger.warning("Unexpected " + object);
@@ -75,6 +71,7 @@ public final class XXBindingFactory extends TechnologyAdapterBindingFactory {
 		return false;
 	}
 
+	// The methods below give entry points for customization
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement element) {
 		return super.getAccessibleSimplePathElements(element);
