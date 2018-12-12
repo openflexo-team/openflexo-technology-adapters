@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -62,7 +62,7 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  * 
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
-@DeclareResourceFactory({ PowerpointSlideshowResourceFactory.class })
+@DeclareResourceFactories({ PowerpointSlideshowResourceFactory.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter<PowerpointTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(PowerpointTechnologyAdapter.class.getPackage().getName());

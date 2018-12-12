@@ -41,7 +41,7 @@ package org.openflexo.ta.xx;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.ta.xx.fml.binding.XXBindingFactory;
@@ -61,7 +61,7 @@ import org.openflexo.ta.xx.rm.XXTextResourceRepository;
 @DeclareModelSlots({ XXModelSlot.class })
 // You might declare your own types here
 // @DeclareTechnologySpecificTypes({ YourCustomType.class })
-@DeclareResourceFactory({ XXTextResourceFactory.class })
+@DeclareResourceFactories({ XXTextResourceFactory.class })
 public class XXTechnologyAdapter extends TechnologyAdapter<XXTechnologyAdapter> {
 
 	@SuppressWarnings("unused")

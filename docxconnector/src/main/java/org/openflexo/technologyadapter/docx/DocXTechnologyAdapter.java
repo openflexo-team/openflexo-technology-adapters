@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceFactory;
  */
 
 @DeclareModelSlots({ DocXModelSlot.class })
-@DeclareResourceFactory({ DocXDocumentResourceFactory.class })
+@DeclareResourceFactories({ DocXDocumentResourceFactory.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
 public class DocXTechnologyAdapter extends TechnologyAdapter<DocXTechnologyAdapter> {
 

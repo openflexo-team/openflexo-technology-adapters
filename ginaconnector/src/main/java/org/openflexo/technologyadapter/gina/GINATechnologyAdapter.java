@@ -21,7 +21,7 @@
 package org.openflexo.technologyadapter.gina;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -41,7 +41,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 
 @DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
-@DeclareResourceFactory({ GINAFIBComponentResourceFactory.class })
+@DeclareResourceFactories({ GINAFIBComponentResourceFactory.class })
 public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapter> {
 	public GINATechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}

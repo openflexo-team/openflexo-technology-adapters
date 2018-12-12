@@ -43,7 +43,7 @@ import java.io.File;
 import org.openflexo.diana.ScreenshotBuilder;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -72,7 +72,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceFa
  */
 @DeclareModelSlots({ TypedDiagramModelSlot.class, FreeDiagramModelSlot.class })
 @DeclareTechnologySpecificTypes({ DiagramType.class })
-@DeclareResourceFactory({ DiagramSpecificationResourceFactory.class, DiagramResourceFactory.class })
+@DeclareResourceFactories({ DiagramSpecificationResourceFactory.class, DiagramResourceFactory.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDiagramVirtualModelInstanceNature.class })
 public class DiagramTechnologyAdapter extends TechnologyAdapter<DiagramTechnologyAdapter> {
 	private ScreenshotBuilder<Diagram> screenshotBuilder;

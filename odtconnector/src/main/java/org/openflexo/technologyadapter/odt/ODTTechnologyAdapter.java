@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.odt;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -43,7 +43,7 @@ import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceFactory;
  */
 
 @DeclareModelSlots({ ODTModelSlot.class })
-@DeclareResourceFactory({ ODTDocumentResourceFactory.class })
+@DeclareResourceFactories({ ODTDocumentResourceFactory.class })
 public class ODTTechnologyAdapter extends TechnologyAdapter<ODTTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(ODTTechnologyAdapter.class.getPackage().getName());

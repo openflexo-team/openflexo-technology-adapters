@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.oslc;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
  */
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
-@DeclareResourceFactory({ OSLCResourceFactory.class })
+@DeclareResourceFactories({ OSLCResourceFactory.class })
 public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapter> {
 	// Unused private static String OSLC_FILE_EXTENSION = ".oslc";
 
