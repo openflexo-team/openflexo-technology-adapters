@@ -51,6 +51,7 @@ import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -58,7 +59,6 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -80,9 +80,10 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 
 	public static final String GRAPHICAL_REPRESENTATION = "graphicalRepresentation";
 	public static final String NAME = "name";
+	public static final String TEXT = "text";
 	public static final String PARENT = "parent";
 
-	public String getIdentifier();
+	// public String getIdentifier();
 
 	/**
 	 * Return name of this diagram element
@@ -100,6 +101,23 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 */
 	@Setter(value = NAME)
 	public void setName(String aName);
+
+	/**
+	 * Return text of this diagram element
+	 * 
+	 * @return
+	 */
+	@Getter(value = TEXT)
+	@XMLAttribute
+	public String getText();
+
+	/**
+	 * Sets text of this diagram element
+	 * 
+	 * @param aName
+	 */
+	@Setter(value = TEXT)
+	public void setText(String aText);
 
 	/**
 	 * Return parent of this diagram element

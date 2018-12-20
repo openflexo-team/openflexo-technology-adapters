@@ -39,11 +39,11 @@
         <Children id="29" data="palette.elements" name="elements" />
       </BrowserElement>
       <BrowserElement id="30" dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement" icon="controller.iconForObject(paletteElement)" label="paletteElement.name" editableLabel="paletteElement.name" isEditable="false" name="paletteElement" />
-      <BrowserElement id="31" dataClassName="org.openflexo.technologyadapter.diagram.model.DiagramShape" icon="controller.iconForObject(shape)" label="shape.identifier" isEditable="false" name="shape">
+      <BrowserElement id="31" dataClassName="org.openflexo.technologyadapter.diagram.model.DiagramShape" icon="controller.iconForObject(shape)" label="shape.name" isEditable="false" name="shape">
         <Children id="32" data="shape.shapes" name="children" />
         <Children id="33" data="shape.connectors" name="connectors" />
       </BrowserElement>
-      <BrowserElement id="34" dataClassName="org.openflexo.technologyadapter.diagram.model.DiagramConnector" icon="controller.iconForObject(connector)" label="connector.identifier" isEditable="false" name="connector" />
+      <BrowserElement id="34" dataClassName="org.openflexo.technologyadapter.diagram.model.DiagramConnector" icon="controller.iconForObject(connector)" label="connector.name" isEditable="false" name="connector" />
     </Browser>
     <Browser id="35" backgroundSelectionColor="9,80,208" visibleRowCount="5" boundToSelectionManager="true" backgroundNonSelectionColor="255,255,255" iteratorClassName="java.lang.Object" textSelectionColor="255,255,255" backgroundSecondarySelectionColor="178,215,255" showRootsHandle="true" showFooter="true" textNonSelectionColor="0,0,0" root="data" deepExploration="true" selectionMode="DiscontiguousTreeSelection" rootVisible="true" rowHeight="18" localize="true" manageDynamicModel="true" rightClickAction="controller.rightClick(FlexoConceptBrowser.selected,event)" doubleClickAction="controller.doubleClick(FlexoConceptBrowser.selected)" clickAction="controller.singleClick(FlexoConceptBrowser.selected)" index="0" constraints="split(index=0;location=north;splitIdentifier=left)" name="FlexoConceptBrowser">
       <BrowserElement id="36" dataClassName="org.openflexo.foundation.fml.VirtualModel" icon="controller.iconForObject(virtualModel)" label="virtualModel.name" editableLabel="virtualModel.name" isEditable="false" name="virtualModel">

@@ -243,8 +243,8 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	}
 
 	@Override
-	public String getIdentifier() {
-		String returned = getName();
+	public String getName() {
+		String returned = (String) performSuperGetter(NAME);
 		if (StringUtils.isEmpty(returned)) {
 			return getDefaultName();
 		}
