@@ -61,6 +61,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.toolbox.JavaUtils;
 
 /**
  * This abstract class is a base action that allows to create or transform a {@link FlexoConcept} from a {@link DiagramElement}<br>
@@ -101,25 +102,20 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 
 		// Get the set of internal elements inside the current focused object
 		drawingObjectEntries = new Vector<>();
-		int shapeIndex = 1;
-		int connectorIndex = 1;
 
 		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement
-				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants()
-				: Collections.singletonList(getFocusedObject()));
+				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants() : Collections.singletonList(getFocusedObject()));
 
 		for (DiagramElement<?> o : elements) {
 			if (o instanceof DiagramShape) {
 				DiagramShape shape = (DiagramShape) o;
-				String shapeRoleName = "shape" + (shapeIndex > 1 ? shapeIndex : "");
+				String shapeRoleName = JavaUtils.getVariableName(shape.getName());
 				drawingObjectEntries.add(new DrawingObjectEntry(shape, shapeRoleName));
-				shapeIndex++;
 			}
 			if (o instanceof DiagramConnector) {
 				DiagramConnector connector = (DiagramConnector) o;
-				String connectorRoleName = "connector" + (connectorIndex > 1 ? connectorIndex : "");
+				String connectorRoleName = JavaUtils.getVariableName(connector.getName());
 				drawingObjectEntries.add(new DrawingObjectEntry(connector, connectorRoleName));
-				connectorIndex++;
 			}
 		}
 	}
