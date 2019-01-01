@@ -58,6 +58,7 @@ declare_connector_in_flexo_concept=D\u00E9clarer le connecteur comme un FlexoCon
 declare_in_flexo_concept=declare_in_flexo_concept
 declare_shape_in_flexo_concept=D\u00E9clarer la forme comme un FlexoConcept
 define_popup_size=D\u00E9finir la taille de la popup
+delete_palette_element=delete_palette_element
 describe_fml_controlled_diagram_virtual_model=D\u00E9crire le diagramme controll\u00E9 par FML
 description=Description
 destination_concept_is_not_defined=Le concept de destination n'est pas d\u00E9fini

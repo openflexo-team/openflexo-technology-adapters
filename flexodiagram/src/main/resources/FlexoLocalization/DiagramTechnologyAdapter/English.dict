@@ -58,6 +58,7 @@ declare_connector_in_flexo_concept=Declare connector in flexo concept
 declare_in_flexo_concept=Declare in flexo concept
 declare_shape_in_flexo_concept=Declare shape in flexo concept
 define_popup_size=Define popup size
+delete_palette_element=Delete palette element
 describe_fml_controlled_diagram_virtual_model=Describe fml controlled diagram virtual model
 description=Description
 destination_concept_is_not_defined=Destination concept is not defined
