@@ -48,6 +48,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
+import org.openflexo.technologyadapter.diagram.gui.widget.FIBDiagramBrowser;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -65,6 +66,8 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 
 	private final JPanel bottomPanel;
 
+	private FIBDiagramBrowser browser;
+
 	public FreeDiagramModuleView(FreeDiagramEditor editor, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
@@ -72,6 +75,8 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 		this.perspective = perspective;
 		add(editor.getToolsPanel(), BorderLayout.NORTH);
 		add(new JScrollPane(editor.getDrawingView()), BorderLayout.CENTER);
+
+		browser = new FIBDiagramBrowser(editor.getDiagram(), perspective.getController());
 
 		bottomPanel = new JPanel(new BorderLayout());
 
@@ -113,6 +118,7 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 
 	@Override
 	public void willHide() {
+		getPerspective().setBottomLeftView(null);
 
 		// Not required as no specific paste handler is required such edition
 		// getEditor().getFlexoController().getEditingContext().unregisterPasteHandler(getEditor().getPasteHandler());
@@ -122,6 +128,7 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 
 	@Override
 	public void willShow() {
+		getPerspective().setBottomLeftView(browser);
 
 		// Not required as no specific paste handler is required such edition
 		// getEditor().getFlexoController().getEditingContext().registerPasteHandler(getEditor().getPasteHandler());
