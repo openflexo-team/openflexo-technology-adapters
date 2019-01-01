@@ -38,6 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -131,6 +133,19 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 			List<FMLControlledDiagramElement<?, ?>> allFMLControlledDiagramElements = getDrawing()
 					.getFMLControlledDiagramElements((FlexoConceptInstance) object);
 			if (allFMLControlledDiagramElements != null && allFMLControlledDiagramElements.size() > 0) {
+				if (allFMLControlledDiagramElements.size() > 1) {
+					// If we have here many controlled diagram elements matching supplied object
+					// Try to return first one which is focusable
+					Collections.sort(allFMLControlledDiagramElements, new Comparator<FMLControlledDiagramElement<?, ?>>() {
+						@Override
+						public int compare(FMLControlledDiagramElement<?, ?> o1, FMLControlledDiagramElement<?, ?> o2) {
+							if (o1.getRole().getGraphicalRepresentation().getIsFocusable()) {
+								return -1;
+							}
+							return 1;
+						}
+					});
+				}
 				// Return first one !
 				return allFMLControlledDiagramElements.get(0);
 			}
