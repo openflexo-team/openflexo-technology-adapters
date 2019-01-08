@@ -56,6 +56,7 @@ import org.openflexo.ta.xx.fml.XXLineActorReference;
 import org.openflexo.ta.xx.fml.XXLineRole;
 import org.openflexo.ta.xx.fml.editionaction.AddXXLine;
 import org.openflexo.ta.xx.fml.editionaction.SelectUniqueXXLine;
+import org.openflexo.ta.xx.fml.editionaction.SelectXXLine;
 import org.openflexo.ta.xx.model.XXText;
 
 /**
@@ -66,7 +67,7 @@ import org.openflexo.ta.xx.model.XXText;
  */
 @DeclareFlexoRoles({ XXLineRole.class })
 @DeclareEditionActions({ AddXXLine.class })
-@DeclareFetchRequests({ SelectUniqueXXLine.class, SelectUniqueXXLine.class })
+@DeclareFetchRequests({ SelectUniqueXXLine.class, SelectXXLine.class })
 @DeclareActorReferences({ XXLineActorReference.class })
 @ModelEntity
 @ImplementationClass(XXModelSlot.XXModelSlotImpl.class)
