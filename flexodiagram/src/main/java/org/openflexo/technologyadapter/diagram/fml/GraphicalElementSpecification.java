@@ -192,7 +192,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		public void setValue(DataBinding<T> value) {
 			if (value != null) {
 				value.setOwner(this);
-				value.setDeclaredType(String.class);
+				value.setDeclaredType((getFeature() != null ? getFeature().getType() : Object.class));
 				value.setBindingName(featureName);
 				value.setMandatory(mandatory);
 				value.setBindingDefinitionType(getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
