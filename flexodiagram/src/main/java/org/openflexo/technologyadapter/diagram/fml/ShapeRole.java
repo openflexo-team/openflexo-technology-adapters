@@ -262,7 +262,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
-				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+				for (GraphicalFeature<?, ?> GF : AVAILABLE_SHAPE_FEATURES) {
 					// logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
 							.newInstance(GraphicalElementSpecification.class);

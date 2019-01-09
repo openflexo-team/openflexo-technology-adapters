@@ -139,7 +139,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
-				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+				for (GraphicalFeature<?, ?> GF : AVAILABLE_CONNECTOR_FEATURES) {
 					// logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
 							.newInstance(GraphicalElementSpecification.class);
