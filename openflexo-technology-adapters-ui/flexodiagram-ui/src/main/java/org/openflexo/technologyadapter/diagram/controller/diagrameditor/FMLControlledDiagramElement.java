@@ -175,6 +175,35 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					}
 				}
 
+				if (getRole() != null && getRole().getGrSpecifications() != null) {
+					// When diagram element is set, apply initial values of all GRSpecs
+					for (GraphicalElementSpecification<?, GR> grSpec : getRole().getGrSpecifications()) {
+						applyValue(grSpec);
+					}
+				}
+
+			}
+		}
+
+		/**
+		 * Internally called to apply a GRSpec
+		 * 
+		 * @param grSpec
+		 */
+		private <T> void applyValue(GraphicalElementSpecification<T, GR> grSpec) {
+			if (grSpec.getValue() != null && grSpec.getValue().isValid()) {
+				T initValue;
+				try {
+					initValue = grSpec.getValue().getBindingValue(getFlexoConceptInstance());
+					grSpec.getFeature().applyToGraphicalRepresentation(getDiagramElement().getGraphicalRepresentation(), initValue);
+					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, initValue);
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -211,8 +240,12 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// Hack to force element name (non FML-controlled) to take the name of federated diagram element
-					if (grSpec.getFeatureName().equals("label")) {
+					if (grSpec.getFeatureName().equals("label") && getDiagramElement() != null) {
 						getDiagramElement().setName((String) newValue);
+					}
+					// We detect here that the value computed from GRSpec has changed, apply it
+					if (getDiagramElement() != null) {
+						grSpec.getFeature().applyToGraphicalRepresentation(getDiagramElement().getGraphicalRepresentation(), newValue);
 					}
 					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, newValue);
 				}
@@ -280,8 +313,6 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		// TODO: to it generically for all GRSpecs
 		@Override
 		public void setLabel(String aLabel) {
-
-			System.out.println("Hop setLabel avec " + aLabel);
 
 			// We handle here a special use case encountered in FME
 			// When a FlexoConceptInstance changes its type (its FlexoConcept)

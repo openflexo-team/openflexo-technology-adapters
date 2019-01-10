@@ -47,17 +47,17 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.diana.ConnectorGraphicalRepresentation;
-import org.openflexo.diana.DrawingGraphicalRepresentation;
 import org.openflexo.diana.DianaModelFactory;
-import org.openflexo.diana.GRStructureVisitor;
-import org.openflexo.diana.GraphicalRepresentation;
-import org.openflexo.diana.ShapeGraphicalRepresentation;
+import org.openflexo.diana.DrawingGraphicalRepresentation;
 import org.openflexo.diana.GRBinding.ConnectorGRBinding;
 import org.openflexo.diana.GRBinding.DrawingGRBinding;
 import org.openflexo.diana.GRBinding.ShapeGRBinding;
 import org.openflexo.diana.GRProvider.ConnectorGRProvider;
 import org.openflexo.diana.GRProvider.DrawingGRProvider;
 import org.openflexo.diana.GRProvider.ShapeGRProvider;
+import org.openflexo.diana.GRStructureVisitor;
+import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.diana.geom.DianaGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FMLBindingFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -87,6 +87,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  */
 public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramDrawing.class.getPackage().getName());
 
 	private final FMLRTVirtualModelInstance virtualModelInstance;
@@ -455,10 +456,14 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 			}
 		});
 
-		// TODO: move this to FME !!!
 		fmlControlledShapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"), true);
 		fmlControlledConnectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"),
 				true);
+
+		/*fmlControlledShapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TRANSPARENCY,
+				new DataBinding<Double>("drawable.transparency"), false);
+		fmlControlledConnectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TRANSPARENCY,
+				new DataBinding<Double>("drawable.transparency"), false);*/
 
 		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
 		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);

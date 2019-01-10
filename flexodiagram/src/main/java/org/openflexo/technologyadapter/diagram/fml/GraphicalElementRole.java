@@ -47,7 +47,9 @@ import java.util.logging.Logger;
 import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.diana.ConnectorGraphicalRepresentation;
 import org.openflexo.diana.GraphicalRepresentation;
+import org.openflexo.diana.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -60,6 +62,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -67,7 +70,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.FreeDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -124,7 +126,16 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public void applyToGraphicalRepresentation(GraphicalRepresentation gr, Double value) {
-			gr.setTransparency(value);
+			if (value != null) {
+				gr.setTransparency(value);
+				if (gr instanceof ShapeGraphicalRepresentation) {
+					((ShapeGraphicalRepresentation) gr).getForeground().setTransparencyLevel(value.floatValue());
+					((ShapeGraphicalRepresentation) gr).getBackground().setTransparencyLevel(value.floatValue());
+				}
+				else if (gr instanceof ConnectorGraphicalRepresentation) {
+					((ConnectorGraphicalRepresentation) gr).getForeground().setTransparencyLevel(value.floatValue());
+				}
+			}
 		}
 	};
 
