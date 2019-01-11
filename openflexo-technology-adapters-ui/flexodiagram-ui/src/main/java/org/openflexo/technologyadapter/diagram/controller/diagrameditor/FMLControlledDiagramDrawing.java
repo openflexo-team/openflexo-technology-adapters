@@ -465,8 +465,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 		fmlControlledConnectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TRANSPARENCY,
 				new DataBinding<Double>("drawable.transparency"), false);*/
 
-		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
-		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
+		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.text"), true);
+		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.text"), true);
 
 	}
 	/*protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {

@@ -241,7 +241,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				public void bindingValueChanged(Object source, T newValue) {
 					// Hack to force element name (non FML-controlled) to take the name of federated diagram element
 					if (grSpec.getFeatureName().equals("label") && getDiagramElement() != null) {
-						getDiagramElement().setName((String) newValue);
+						getDiagramElement().setText((String) newValue);
 					}
 					// We detect here that the value computed from GRSpec has changed, apply it
 					if (getDiagramElement() != null) {
@@ -296,7 +296,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					String newLabel = getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 
 					// We force the name of the DiagramElement to be last computed name
-					getDiagramElement().setName(newLabel);
+					getDiagramElement().setText(newLabel);
 
 					return newLabel;
 				} catch (TypeMismatchException e) {
