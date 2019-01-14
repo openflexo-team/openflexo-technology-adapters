@@ -56,6 +56,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Finder;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -63,7 +64,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -412,11 +412,16 @@ public interface FMLDiagramPaletteElementBinding extends FlexoConceptObject {
 
 		@Override
 		public FMLModelFactory getFMLModelFactory() {
+			return getDiagramModelSlot().getFMLModelFactory();
+		}
+
+		/*@Override
+		public FMLModelFactory getFMLModelFactory() {
 			if (getOwningVirtualModel() != null) {
 				return getOwningVirtualModel().getFMLModelFactory();
 			}
 			return getDeserializationFactory();
-		}
+		}*/
 
 		/*@Override
 		public Vector<OverridingGraphicalRepresentation> getOverridingGraphicalRepresentations() {

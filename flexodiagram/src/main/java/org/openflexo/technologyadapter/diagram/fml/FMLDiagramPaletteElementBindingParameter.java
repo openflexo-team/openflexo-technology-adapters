@@ -114,7 +114,10 @@ public interface FMLDiagramPaletteElementBindingParameter extends FlexoConceptOb
 
 		@Override
 		public FlexoConcept getFlexoConcept() {
-			return getDiagramPaletteElementBinding().getFlexoConcept();
+			if (getDiagramPaletteElementBinding() != null) {
+				return getDiagramPaletteElementBinding().getFlexoConcept();
+			}
+			return null;
 		}
 
 		@Override
