@@ -19,6 +19,7 @@ a_palette_element_with_that_name_already_exists=A palette element with that name
 a_palette_with_that_name_already_exists=A palette with that name already exists
 action=Actie
 actions=actions
+add_connector=add_connector
 as_described_in_action=As described in action
 author=author
 available\ with\ floating\ palette=Available with floating palette
