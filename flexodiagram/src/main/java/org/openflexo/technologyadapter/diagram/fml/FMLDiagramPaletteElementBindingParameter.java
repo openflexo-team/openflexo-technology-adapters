@@ -95,7 +95,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends FlexoConceptOb
 	public boolean isEditable();
 
 	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl
-			implements FMLDiagramPaletteElementBindingParameter {
+	implements FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
 		// private FMLDiagramPaletteElementBinding elementBinding;
@@ -161,7 +161,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends FlexoConceptOb
 		/*public void setElementBinding(FMLDiagramPaletteElementBinding elementBinding) {
 			this.elementBinding = elementBinding;
 		}
-		
+
 		public FMLDiagramPaletteElementBinding getElementBinding() {
 			return elementBinding;
 		}*/
