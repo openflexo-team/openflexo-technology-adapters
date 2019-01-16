@@ -106,6 +106,7 @@ new=New
 no_flexo_concept_selected=No flexo concept selected
 no_palette_element_name_defined=No palette element name defined
 no_palette_name_defined=No palette name defined
+no_palette_selected=No palette selected
 no_role_defined=No role defined
 no_role_name_defined=No role name defined
 no_virtual_model_selected=No virtual model selected

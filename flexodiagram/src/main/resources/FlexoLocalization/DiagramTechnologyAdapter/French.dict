@@ -106,6 +106,7 @@ new=Nouveau
 no_flexo_concept_selected=Aucun concept s\u00E9lectionn\u00E9
 no_palette_element_name_defined=Le nom de l'\u00E9l\u00E9ment de palette n'est pas d\u00E9fini
 no_palette_name_defined=Le nom de palette n'est pas d\u00E9fini
+no_palette_selected=no_palette_selected
 no_role_defined=Pas de r\u00F4le d\u00E9fini
 no_role_name_defined=Pas de nom de r\u00F4le d\u00E9fini
 no_virtual_model_selected=Pas de VirtualModel s\u00E9lectionn\u00E9
