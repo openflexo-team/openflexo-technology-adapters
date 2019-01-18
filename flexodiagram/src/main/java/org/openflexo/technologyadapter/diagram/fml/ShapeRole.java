@@ -350,7 +350,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		public void setParentShapeRole(ShapeRole parentShapeRole) {
 			if (parentShapeRole != this.parentShapeRole) {
 				ShapeRole oldParentShapeRole = this.parentShapeRole;
-				logger.info(">>>> setParentShapePatternRole() with " + parentShapeRole);
+				// logger.info(">>>> setParentShapePatternRole() with " + parentShapeRole);
 				this.parentShapeRole = parentShapeRole;
 				if (detectLoopInParentShapePatternRoleDefinition()) {
 					logger.warning("Detecting a loop in parent shape pattern property definition. Resetting parent shape pattern property");
