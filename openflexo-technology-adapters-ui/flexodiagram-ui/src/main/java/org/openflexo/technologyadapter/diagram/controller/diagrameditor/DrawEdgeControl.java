@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -263,7 +264,10 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 						}
 					});
 					popup.add(menuItem);
-					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
+
+					System.out.println("source: " + context.getSource());
+					popup.show((context.getSource() instanceof Component ? (Component) context.getSource() : controller.getDrawingView()),
+							context.getPoint().x, context.getPoint().y);
 				}
 				else {
 					performAddDefaultConnector(controller);
