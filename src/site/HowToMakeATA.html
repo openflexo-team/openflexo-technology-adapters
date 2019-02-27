@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Fabien Dagnat" />
-  <meta name="dcterms.date" content="2018-12-12" />
+  <meta name="dcterms.date" content="2019-02-26" />
   <title>A tutorial for building technology adapters</title>
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -107,13 +107,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul>
   <div class="sidebar-bottom">
           <p class="author">Fabien Dagnat</p>
-              <p class="date">December 12, 2018</p>
+              <p class="date">February 26, 2019</p>
       </div>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 <h1 id="context">Context</h1>
-<p>Openflexo is a framework supporting model federation and free modeling. It relies on a modeling language named FML that rely on a notion of <em>concept</em> (<code>FlexoConcept</code> in the code). Each concept has properties and an executable behavior specifying how to manipulate its instances (<code>FlexoConceptInstance</code> in the code). The properties can link together instances. Intuitively, FML provides a class and object paradigm. FML also comes with a language to build expressions named <em>binding</em> computing values reusing data from all instances. The core of Openflexo is an FML interpretor. Tools build using Openflexo consists of FML models.</p>
-<p>Openflexo core is also built to link FML models to external source of data named <em>resources</em>. Such resources are accessed by the FML interpretor through <em>connectors</em> (<code>ModelSlot</code> in the code). Such a connector is in charge of maintaining the link between the running FML models and the resource. The implementation of connectors are offered by libraries called <em>Technology Adapter</em> (named TA after).</p>
+<p>Openflexo is a framework supporting model federation and free modeling. It relies on a modeling language named FML whose central notion is the <em>concept</em> (<code>FlexoConcept</code> in the code). Each concept has properties and an executable behavior specifying how to manipulate its instances (<code>FlexoConceptInstance</code> in the code). The properties can link together instances. Intuitively, FML provides a class and object paradigm. FML also comes with a language to build expressions named <em>binding</em> computing values reusing data from other instances. This basic description of the core of FML is represented below using a UML like diagram.</p>
+<p><img src="img/model.png" title="Openflexo core UML diagram" /></p>
+<p>At runtime, both the modelling level and the instance level exist and are linked. Manipulating model instances and their concept instances is done using the behaviors of the modelling level. An instance maintains references toward data and also offer access to value computed at each access through the <em>computed properties</em> of its concept.</p>
+<p>The core of Openflexo is an FML interpretor. Tools built using Openflexo consists of FML models.</p>
+<p>Openflexo core is also built to link FML models to external source of data named <em>resources</em>. Such resources are accessed by the FML interpretor through <em>connectors</em> (<code>ModelSlot</code> in the code). Such a connector is in charge of maintaining the link between the running FML models and the resource. The implementation of a connector is offered by a library called <em>Technology Adapter</em> (named TA after). This add the orange part in the following diagram.</p>
+<p><img src="img/model2.png" title="Openflexo core UML diagram with Technology Adapter" /></p>
 <p>The purpose of this tutorial is to give an insight of how to develop a TA.</p>
 <h1 id="conceptual-view">Conceptual view</h1>
 <p>A TA provides the definition of:</p>
@@ -133,14 +137,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>The declaring class <code>XXTechnologyAdapter</code> defining the TA. It declares the available model slots, custom types and factories.</p></li>
 <li><p>The various model slots, the <code>YyXXModelSlot</code> interfaces declaring the accessible TA concepts and the actions to manipulate them.</p></li>
 </ol></li>
-<li><p><code>xx.model</code> containing the abstractions of the underlying technology and the factory to instanciate them.</p></li>
+<li><p><code>xx.model</code> containing the abstractions of the underlying technology, called <em>technology objects</em>, and the factory to instanciate them.</p></li>
 <li><p><code>xx.rm</code> containing the classes that implements the resource management: resource definition, serialization / deserialization, identification…</p></li>
 <li><p><code>xx.fml</code> containing the definition of the TA concepts and their actions relying on <code>xx.model</code> and <code>xx.rm</code>.</p></li>
 </ol>
 <h2 id="details">Details</h2>
 <h3 id="the-declaring-class-xxtechnologyadapter">The declaring class <code>XXTechnologyAdapter</code></h3>
 <p>First you must declare your TA by extending the <code>TechnologyAdapter</code> class with the generic parameter <code>XXTechnologyAdapter</code>.</p>
-<p>This classe must declare the various model slots types, specific custom types and resource factories using FML annotations. A model slot type is declared using the annotation <code>@DeclareModelSlots({YyXXModelSlot.class,ZzXXModelSlot.class})</code>, <code>@DeclareTechnologySpecificTypes({...})</code> is for specific types while resource factories are declared by <code>@DeclareResourceFactories({...})</code>.</p>
+<p>This class must declare the various model slots types, specific custom types and resource factories using FML annotations. A model slot type is declared using the annotation <code>@DeclareModelSlots({YyXXModelSlot.class,ZzXXModelSlot.class})</code>, <code>@DeclareTechnologySpecificTypes({...})</code> is for specific types while resource factories are declared by <code>@DeclareResourceFactories({...})</code>.</p>
 <p>Being a TA requires to define:</p>
 <ul>
 <li>the name of the TA, method <code class="sourceCode java"><span class="bu">String</span> <span class="fu">getName</span>()</code></li>
@@ -150,7 +154,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>specify the <em>binding factory</em> for the specific types of the TA, this factory is a singleton often defined as a private final static attribute of the TA, method <code>TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory()</code></li>
 </ul>
 <h3 id="model-slots">Model slots</h3>
-<p>There is two kinds of model slots: the free ones extending <code>FreeModelSlot</code> and the type aware ones extending <code>TypeAwareModelSlot</code>. The former may point to any resource while the latter must point to a typed resource</p>
+<p>There is two kinds of model slots: the free ones extending <code>FreeModelSlot</code> and the type aware ones extending <code>TypeAwareModelSlot</code>. The former may point to any resource while the latter must point to a typed resource. Therefore, defining a type aware model slot require that you specify the type of the resource accessed. This type is generally a metamodel describing the language in which the model is described. For example, the EMF TA provides a type aware model slot that enable to connect to a model conforming to a specified metamodel. Type aware model slot are more complex but are more powerful because they know the precise form of the models they will be connected to.</p>
+<p>For this basic tutorial, we will only look at the free model slot and invite the reader interested in type aware ones to look at the code of the OWL TA.</p>
+<p>In the model slot, you should declare four lists:</p>
+<ul>
+<li>the list of roles <code>@DeclareFlexoRoles({...})</code> specific to your technology <!---
+XXLineRole.class
+--></li>
+<li>the list of actor reference <code>@DeclareActorReferences({...})</code> <!---
+XXLineActorReference.class
+--></li>
+<li>the list of actions <code>@DeclareEditionActions({...})</code> <!---
+AddXXLine.class
+--></li>
+<li>the list of requests <code>@DeclareFetchRequests({...})</code> <!---
+SelectUniqueXXLine.class, SelectXXLine.class
+--></li>
+</ul>
+<p>A model slot is defined using the pamela framework as an interface. This interface may contain pamela attributes to store properties specific to the model slot and must contain its implementation as an internal class. This implementation must extends either the class <code>FreeModelSlot</code>, the class <code>TypeAwareModelSlot</code> or any classes that specialize them.</p>
+<p>A model slot is parameterized by the technology object it provides access to.</p>
+<p>public interface XXModelSlot extends FreeModelSlot<XXText> {</p>
+<pre><code>public static abstract class XXModelSlotImpl extends FreeModelSlotImpl&lt;XXText&gt; implements XXModelSlot {
+
+    SuppressWarnings(&quot;unused&quot;)
+    private static final Logger logger = Logger.getLogger(XXModelSlot.class.getPackage().getName());
+
+    Override
+    public Class&lt;XXTechnologyAdapter&gt; getTechnologyAdapterClass() {
+        return XXTechnologyAdapter.class;
+    }
+
+    Override
+    public &lt;PR extends FlexoRole&lt;?&gt;&gt; String defaultFlexoRoleName(Class&lt;PR&gt; patternRoleClass) {
+        if (XXLineRole.class.isAssignableFrom(patternRoleClass)) {
+            return &quot;line&quot;;
+        }
+        return null;
+    }
+
+    Override
+    public Type getType() {
+        return XXText.class;
+    }
+
+    Override
+    public XXTechnologyAdapter getModelSlotTechnologyAdapter() {
+        return (XXTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+    }</code></pre>
 <h2 id="a-complete-example">A complete example</h2>
 <h2 id="advanced-usage">Advanced usage</h2>
 <p>Looking at the available TA helps to discover the various extensions you may need for more complex TA.</p>

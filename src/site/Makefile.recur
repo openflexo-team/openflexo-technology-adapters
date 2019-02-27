@@ -1,0 +1,8 @@
+subdirs:
+	@for i in $(SUBDIRS) $(SUBDIRS_NOT_IN_POLY); do echo $(notdir $(CURDIR))/$$i; $(MAKE) -C $$i --no-print-directory; done
+
+booklet:
+	@for i in $(SUBDIRS); do echo $(notdir $(CURDIR))/$$i; $(MAKE) -C $$i --no-print-directory booklet; done
+
+clean:
+	@for i in $(SUBDIRS); do $(MAKE) -C $$i clean ; done
