@@ -61,17 +61,24 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 
 	@Override
 	public int getAcceptableActions() {
-		return DnDConstants.ACTION_MOVE;
+		return DnDConstants.ACTION_COPY_OR_MOVE;
 	}
 
 	@Override
 	public boolean isDragOk(DropTargetDragEvent e) {
 
+		System.out.println("isDragOK with " + e + " ????");
+
 		try {
 			TransferedBrowserCell transferedBrowserCell = (TransferedBrowserCell) e.getTransferable()
 					.getTransferData(FIBBrowserModel.BROWSER_CELL_FLAVOR);
 
+			System.out.println("transferedBrowserCell=" + transferedBrowserCell);
+			System.out.println("e=" + e);
+
 			DrawingTreeNode<?, ?> focused = getFocusedObject(e);
+
+			System.out.println("focused=" + focused);
 
 			if (focused == null) {
 				return false;
@@ -82,6 +89,7 @@ public class BrowserCellDataFlavorDelegate extends DataFlavorDelegate {
 							.getRepresentedObject() instanceof FlexoConceptInstance) {
 				FlexoConceptInstance droppedFCI = (FlexoConceptInstance) ((BrowserCell) getDianaEditor().getDragSourceContext()
 						.getTransferable()).getRepresentedObject();
+				System.out.println("droppedFCI=" + droppedFCI);
 				return getApplicableDropSchemes(droppedFCI, focused).size() > 0;
 			}
 		} catch (UnsupportedFlavorException e1) {
