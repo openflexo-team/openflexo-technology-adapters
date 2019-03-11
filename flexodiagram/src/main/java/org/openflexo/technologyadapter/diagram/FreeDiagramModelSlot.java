@@ -53,6 +53,7 @@ import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
+import org.openflexo.technologyadapter.diagram.fml.DrawRectangleScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -72,7 +73,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * 
  */
 @DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
-@DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
+@DeclareFlexoBehaviours({ DropScheme.class, DrawRectangleScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
 @DeclareEditionActions({ CreateDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
 @DeclareFetchRequests({})
 @ModelEntity

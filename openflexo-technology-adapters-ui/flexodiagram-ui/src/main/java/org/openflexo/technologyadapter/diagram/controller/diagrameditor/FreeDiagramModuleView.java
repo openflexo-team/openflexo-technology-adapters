@@ -83,7 +83,7 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 		bottomPanel.add(editor.getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		editor.getFlexoController().setInfoMessage("Free diagramming - CTRL-drag to draw edges", false);
+		editor.getFlexoController().setInfoMessage("Free diagramming - CTRL-drag to draw edges - ALT-drag to draw rectangles", false);
 
 		validate();
 

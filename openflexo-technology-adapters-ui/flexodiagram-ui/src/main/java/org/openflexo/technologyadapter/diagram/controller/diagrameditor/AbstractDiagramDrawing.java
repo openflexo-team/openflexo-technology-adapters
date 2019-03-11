@@ -154,6 +154,7 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 		if (!ToolBox.isMacOS()) {
 			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
+		returned.addToMouseDragControls(new DrawRectangleControl(factory));
 		return returned;
 	}
 
@@ -174,6 +175,8 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 				returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 			}
 			returned.addToMouseDragControls(new DrawEdgeControl(factory));
+			returned.addToMouseDragControls(new DrawRectangleControl(factory));
+
 			return returned;
 		}
 		return null;

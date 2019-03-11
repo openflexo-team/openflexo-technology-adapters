@@ -101,7 +101,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	}
 
 	public String getInfoMessage() {
-		return "Controlled diagramming - CTRL-drag to draw edges";
+		return "Controlled diagramming - CTRL-drag to draw edges - ALT-drag to draw rectangles";
 		// return FlexoLocalization.getMainLocalizer().localizedForKey("controlled_diagramming")
 	}
 

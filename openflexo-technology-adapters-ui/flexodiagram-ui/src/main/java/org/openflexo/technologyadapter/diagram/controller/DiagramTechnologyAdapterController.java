@@ -96,6 +96,7 @@ import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramP
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
+import org.openflexo.technologyadapter.diagram.fml.DrawRectangleScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
@@ -386,6 +387,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ImageIcon getIconForFlexoBehaviour(Class<? extends FlexoBehaviour> flexoBehaviourClass) {
 		if (DropScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.DROP_SCHEME_ICON;
+		}
+		if (DrawRectangleScheme.class.isAssignableFrom(flexoBehaviourClass)) {
+			return DiagramIconLibrary.DRAW_RECTANGLE_SCHEME_ICON;
 		}
 		else if (LinkScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.LINK_SCHEME_ICON;

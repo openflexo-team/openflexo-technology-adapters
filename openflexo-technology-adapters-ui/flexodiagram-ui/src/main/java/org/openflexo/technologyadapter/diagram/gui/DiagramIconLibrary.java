@@ -91,6 +91,8 @@ public class DiagramIconLibrary extends IconLibrary {
 
 	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DropSchemeIcon.png"));
+	public static final ImageIconResource DRAW_RECTANGLE_SCHEME_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/DrawRectangleSchemeIcon.png"));
 	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/LinkSchemeIcon.png"));
 	public static final ImageIconResource NAVIGATION_SCHEME_ICON = new ImageIconResource(

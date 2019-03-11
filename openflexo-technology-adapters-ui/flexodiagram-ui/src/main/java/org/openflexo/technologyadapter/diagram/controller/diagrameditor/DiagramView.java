@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.diana.swing.view.JDrawingView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DrawEdgeControl.DrawEdgeAction;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DrawRectangleControl.DrawRectangleAction;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 @SuppressWarnings("serial")
@@ -61,9 +62,14 @@ public class DiagramView extends JDrawingView<Diagram> {
 	}
 
 	private DrawEdgeAction _drawEdgeAction;
+	private DrawRectangleAction _drawRectangleAction;
 
 	public void setDrawEdgeAction(DrawEdgeAction action) {
 		_drawEdgeAction = action;
+	}
+
+	public void setDrawRectangleAction(DrawRectangleAction action) {
+		_drawRectangleAction = action;
 	}
 
 	public void resetDrawEdgeAction() {
@@ -88,6 +94,9 @@ public class DiagramView extends JDrawingView<Diagram> {
 		super.paint(g);
 		if (_drawEdgeAction != null && !isBuffering) {
 			_drawEdgeAction.paint(g, getController());
+		}
+		if (_drawRectangleAction != null && !isBuffering) {
+			_drawRectangleAction.paint(g, getController());
 		}
 		if (fMLControlledDiagramFloatingPalette != null && !isBuffering) {
 			fMLControlledDiagramFloatingPalette.paint(g, getController());
