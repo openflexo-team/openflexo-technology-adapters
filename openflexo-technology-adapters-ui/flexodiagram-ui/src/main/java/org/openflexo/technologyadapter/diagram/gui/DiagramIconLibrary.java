@@ -105,6 +105,7 @@ public class DiagramIconLibrary extends IconLibrary {
 			ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
 
 	public static final IconMarker DROP_SCHEME_MARKER = new IconMarker(DROP_SCHEME_ICON, 45, 0);
+	public static final IconMarker DRAW_RECTANGLE_SCHEME_MARKER = new IconMarker(DRAW_RECTANGLE_SCHEME_ICON, 45, 0);
 
 	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UnknownIcon.gif"));
 

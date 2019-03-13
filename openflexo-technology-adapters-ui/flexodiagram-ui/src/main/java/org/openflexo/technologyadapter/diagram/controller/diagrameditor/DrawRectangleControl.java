@@ -59,13 +59,18 @@ import org.openflexo.diana.control.AbstractDianaEditor;
 import org.openflexo.diana.control.MouseControlContext;
 import org.openflexo.diana.control.actions.MouseDragControlActionImpl;
 import org.openflexo.diana.control.actions.MouseDragControlImpl;
+import org.openflexo.diana.geom.DianaPoint;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.fml.DrawRectangleScheme;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
+import org.openflexo.technologyadapter.diagram.model.action.DrawRectangleSchemeAction;
 
 public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 
@@ -88,6 +93,8 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 		private final EditingContext editingContext;
 
 		private DrawRectangleScheme drawRectangleScheme;
+		private DiagramContainerElement<?> containerElement;
+		private FlexoConceptInstance containerFlexoConceptInstance;
 
 		public DrawRectangleAction(DiagramFactory factory) {
 			this.factory = factory;
@@ -110,6 +117,20 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 					logger.warning("Multiple applicable DrawRectangleSchemes, taking first one");
 					drawRectangleScheme = availableRectangleSchemes.get(0);
 				}
+
+				// System.out.println("node: " + node);
+				// System.out.println("drawable: " + node.getDrawable());
+
+				if (node.getDrawable() instanceof FMLControlledDiagramElement) {
+					containerElement = (DiagramContainerElement<?>) ((FMLControlledDiagramElement<?, ?>) node.getDrawable())
+							.getDiagramElement();
+					containerFlexoConceptInstance = ((FMLControlledDiagramElement<?, ?>) node.getDrawable()).getFlexoConceptInstance();
+				}
+
+				if (node.getDrawable() instanceof Diagram) {
+					containerElement = (Diagram) node.getDrawable();
+				}
+
 				drawRectangle = true;
 				startPointInDrawingView = getPointInDrawingView(controller, context);
 				controller.getDrawingView().setDrawRectangleAction(this);
@@ -125,29 +146,38 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 
 				endPointInDrawingView = getPointInDrawingView(controller, context);
 
-				System.out.println("On y va pour le rectangle de " + startPointInDrawingView + " a " + endPointInDrawingView);
+				// System.out.println("Building rectangle from " + startPointInDrawingView + " to " + endPointInDrawingView);
 
-				/*if (fromShape != null && toShape != null) {
-				
-					// VINCENT: I comment this because I tried on huge viewpoints with many link schemes, and this is not easy to use.
-					// Most of the case what we want to reuse is the shape of connector pattern roles, so, I change the code to display only
-					// the
-					// shapes
-					// of the connector pattern roles available for this virtual model
-				
-					if (controller instanceof FMLControlledDiagramEditor) {
-						handleFMLControlledEdge(controller, context);
+				DrawRectangleSchemeAction action = new DrawRectangleSchemeAction(drawRectangleScheme,
+						((FMLControlledDiagramEditor) controller).getVirtualModelInstance(), null,
+						((FMLControlledDiagramEditor) controller).getFlexoController().getEditor());
+				action.setTargetConceptInstance(containerFlexoConceptInstance);
+				if (drawRectangleScheme.getSelectObjects() && node instanceof ContainerNode) {
+					List<DrawingTreeNode<?, ?>> nodeSelection = buildCurrentSelection((ContainerNode<?, ?>) node, controller);
+					List<FlexoConceptInstance> selection = new ArrayList<>();
+					// System.out.println("nodeSelection = " + nodeSelection);
+					for (DrawingTreeNode<?, ?> dtn : nodeSelection) {
+						if (dtn.getDrawable() instanceof FMLControlledDiagramElement) {
+							// System.out.println(" Hop > " + ((FMLControlledDiagramElement) dtn.getDrawable()).getFlexoConceptInstance());
+							selection.add(((FMLControlledDiagramElement) dtn.getDrawable()).getFlexoConceptInstance());
+						}
 					}
-					else {
-						performAddDefaultConnector(controller);
-					}
-				
-					// System.out.println("Add ConnectorSpecification contextualMenuInvoker="+contextualMenuInvoker+"
-					// point="+contextualMenuClickedPoint);
+					action.setSelection(selection);
 				}
-				drawEdge = false;
-				fromShape = null;
-				toShape = null;*/
+				action.setFromLocation(new DianaPoint(startPointInDrawingView.getX(), startPointInDrawingView.getY()));
+				action.setToLocation(new DianaPoint(endPointInDrawingView.getX(), endPointInDrawingView.getY()));
+				action.doAction();
+
+				// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+				// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+				// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the
+				// DiagamShape,
+				// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+				// sure that the Drawing can discover that the new shape is FML-controlled
+
+				if (containerElement != null) {
+					containerElement.getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, containerElement);
+				}
 
 				controller.getDrawingView().setDrawRectangleAction(null);
 				drawRectangle = false;
@@ -156,7 +186,8 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 				currentDraggingLocationInDrawingView = null;
 				controller.getDrawingView().getPaintManager().repaint(controller.getDrawingView());
 
-				return true;
+				return action.hasActionExecutionSucceeded();
+
 			}
 			return false;
 
@@ -216,9 +247,6 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 								.isAssignableFrom(((FlexoConceptInstance) childObject).getFlexoConcept())) {
 							takeIt = true;
 						}
-						else {
-							System.out.println("Je prends pas " + childObject);
-						}
 						if (takeIt && child.isContainedInSelection(getRectangleSelection(), controller.getScale())) {
 							returned.add(child);
 						}
@@ -264,37 +292,10 @@ public class DrawRectangleControl extends MouseDragControlImpl<DiagramEditor> {
 
 		public void paint(Graphics g, AbstractDianaEditor controller) {
 			if (drawRectangle && currentDraggingLocationInDrawingView != null) {
-				/*Point from = controller.getDrawing().getRoot().convertRemoteNormalizedPointToLocalViewCoordinates(
-						fromShape.getShape().getShape().getCenter(), fromShape, controller.getScale());
-				Point to = currentDraggingLocationInDrawingView;
-				if (toShape != null) {
-					to = controller.getDrawing().getRoot().convertRemoteNormalizedPointToLocalViewCoordinates(
-							toShape.getShape().getShape().getCenter(), toShape, controller.getScale());
-					g.setColor(Color.BLUE);
-				}
-				else {
-					g.setColor(Color.RED);
-				}
-				g.drawLine(from.x, from.y, to.x, to.y);*/
-
-				// Point from = startPointInDrawingView;
-				// Point to = currentDraggingLocationInDrawingView;
 				Rectangle selection = getRectangleSelection();
-
-				/*if (toShape != null) {
-					to = controller.getDrawing().getRoot().convertRemoteNormalizedPointToLocalViewCoordinates(
-							toShape.getShape().getShape().getCenter(), toShape, controller.getScale());
-					g.setColor(Color.BLUE);
-				}
-				else {
-					g.setColor(Color.RED);
-				}*/
-
 				Graphics2D g2d = (Graphics2D) g;
-
 				g.setColor(Color.RED);
 				g.drawRect(selection.x, selection.y, selection.width, selection.height);
-
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
 				g.setColor(Color.YELLOW);
 				g.fillRect(selection.x, selection.y, selection.width, selection.height);
