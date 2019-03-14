@@ -134,6 +134,12 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 			}
 		}
 
+		@Override
+		public void finalizeDeserialization() {
+			super.finalizeDeserialization();
+			getTargetFlexoConcept();
+		}
+
 		private FlexoConcept targetFlexoConcept;
 
 		@Override

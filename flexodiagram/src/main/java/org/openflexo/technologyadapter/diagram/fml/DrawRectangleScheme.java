@@ -213,6 +213,12 @@ public interface DrawRectangleScheme extends AbstractCreationScheme, DiagramFlex
 		}
 
 		@Override
+		public void finalizeDeserialization() {
+			super.finalizeDeserialization();
+			getChildrenFlexoConcept();
+		}
+
+		@Override
 		public FlexoConcept getChildrenFlexoConcept() {
 			if (StringUtils.isEmpty(_getChildren())) {
 				return null;

@@ -204,6 +204,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		}
 
 		@Override
+		public void finalizeDeserialization() {
+			super.finalizeDeserialization();
+			getFromTargetFlexoConcept();
+			getToTargetFlexoConcept();
+		}
+
+		@Override
 		public FlexoConcept getFromTargetFlexoConcept() {
 
 			if (fromTargetFlexoConcept != null) {
