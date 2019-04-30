@@ -36,7 +36,7 @@
     </issueManagement>
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
-		<module>flexodiagram</module>
+		<module>diagram-ta</module>
 		<module>ginaconnector</module>
 		<module>owlconnector</module>
 		<!--  <module>owlconnector-rc</module> -->
