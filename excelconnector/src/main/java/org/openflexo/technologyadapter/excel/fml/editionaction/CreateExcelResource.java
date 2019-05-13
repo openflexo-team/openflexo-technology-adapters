@@ -100,8 +100,7 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 
 			ExcelWorkbookResource newResource;
 			try {
-				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
-						".xlsx", true);
+				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, evaluationContext, ".xlsx", true);
 				System.out.println("Return new excel workbook resource: " + newResource);
 
 				newResource.setIsModified();

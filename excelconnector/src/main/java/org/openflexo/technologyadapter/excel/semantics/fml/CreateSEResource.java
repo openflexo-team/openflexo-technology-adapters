@@ -63,9 +63,11 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -73,8 +75,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ValidationError;
@@ -377,7 +377,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 
 				SEVirtualModelInstanceResource newResource = createResource(
 						getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class),
-						getResourceFactoryClass(), rc, resourceName, resourceURI, getRelativePath(), getSuffix(), true);
+						getResourceFactoryClass(), evaluationContext, getSuffix(), true);
 				SEVirtualModelInstance data = newResource.getResourceData();
 				data.setVirtualModel(getVirtualModel());
 

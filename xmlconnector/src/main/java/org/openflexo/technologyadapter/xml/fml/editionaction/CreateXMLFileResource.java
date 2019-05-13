@@ -93,8 +93,8 @@ public interface CreateXMLFileResource
 
 			XMLResource newResource;
 			try {
-				newResource = createResource(xmlTA, XMLFileResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
-						XMLFileResource.XML_FILE_EXTENSION, true);
+				newResource = createResource(xmlTA, XMLFileResourceFactory.class, evaluationContext, XMLFileResource.XML_FILE_EXTENSION,
+						true);
 
 				newResource.save();
 				newResource.setIsModified();
