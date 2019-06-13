@@ -296,7 +296,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 		}*/
 
 		@Override
-		protected SEFlexoConceptInstance buildNewFlexoConceptInstance(FlexoConcept concept) {
+		public SEFlexoConceptInstance buildNewFlexoConceptInstance(FlexoConcept concept) {
 			return getResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
 		}
 
