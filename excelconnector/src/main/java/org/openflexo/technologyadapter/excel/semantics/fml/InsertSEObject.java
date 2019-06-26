@@ -127,6 +127,11 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 		}
 
 		@Override
+		protected Class<? extends FlexoConcept> getDynamicFlexoConceptTypeType() {
+			return FlexoConcept.class;
+		}
+
+		@Override
 		public FlexoConcept getFlexoConceptType() {
 			if (getDataArea().isValid()) {
 				Type itemType = TypeUtils.getTypeArgument(getDataArea().getAnalyzedType(), SEDataArea.class, 0);
