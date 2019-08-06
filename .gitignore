@@ -14,3 +14,5 @@
 /.DS_Store
 **/out/
 **/.DS_Store
+*.fls
+*.fdb_latexmk
