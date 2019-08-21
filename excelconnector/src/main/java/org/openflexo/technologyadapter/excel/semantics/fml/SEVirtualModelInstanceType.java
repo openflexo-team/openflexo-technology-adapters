@@ -38,12 +38,15 @@
 
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
@@ -114,6 +117,24 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 		@Override
 		public SEVirtualModelInstanceType getType(VirtualModel virtualModel) {
 			return getVirtualModelInstanceType(virtualModel);
+		}
+
+		@Override
+		public VirtualModel resolveVirtualModel(SEVirtualModelInstanceType typeToResolve) {
+			try {
+				return getTechnologyAdapter().getTechnologyAdapterService().getServiceManager().getVirtualModelLibrary()
+						.getVirtualModel(typeToResolve.getConceptURI());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 	}
