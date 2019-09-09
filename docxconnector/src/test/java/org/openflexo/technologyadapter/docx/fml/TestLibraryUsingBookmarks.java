@@ -80,8 +80,8 @@ import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.controlgraph.IterationAction;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot;
@@ -158,7 +158,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public static DocXDocument generatedDocument;
 
 	public static VirtualModel viewPoint;
-	public static VirtualModelResource viewPointResource;
+	public static CompilationUnitResource viewPointResource;
 
 	public static VirtualModel libraryVirtualModel;
 	public static FlexoConcept bookConcept;
@@ -344,9 +344,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 		// viewPoint = VirtualModelImpl.newVirtualModel(VIEWPOINT_NAME, VIEWPOINT_URI,
@@ -394,16 +394,16 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(LIBRARY_VIRTUAL_MODEL_NAME,
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
+		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(LIBRARY_VIRTUAL_MODEL_NAME,
 				viewPoint.getVirtualModelResource(), true);
 		libraryVirtualModel = newVMResource.getLoadedResourceData();
 
 		// libraryVirtualModel =
 		// VirtualModelImpl.newVirtualModel("LibraryVirtualModel", viewPoint);
 		assertTrue(
-				ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((VirtualModelResource) libraryVirtualModel.getResource()).getIODelegate().exists());
+				ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) libraryVirtualModel.getResource()).getDirectory()).exists());
+		assertTrue(((CompilationUnitResource) libraryVirtualModel.getResource()).getIODelegate().exists());
 
 		CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewAction(libraryVirtualModel, null, _editor);
 		createConceptAction.setNewFlexoConceptName("Book");
@@ -568,16 +568,16 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
+		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(DOCUMENT_VIRTUAL_MODEL_NAME,
 				viewPoint.getVirtualModelResource(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
 
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
-		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getIODelegate().exists());
+		assertTrue(((CompilationUnitResource) documentVirtualModel.getResource()).getIODelegate().exists());
 
 		// Now we create the library model slot
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, _editor);
@@ -585,7 +585,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 				.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FMLTechnologyAdapter.class));
 		createLibraryModelSlot.setModelSlotClass(FMLRTVirtualModelInstanceModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
-		createLibraryModelSlot.setVmRes((VirtualModelResource) libraryVirtualModel.getResource());
+		createLibraryModelSlot.setVmRes((CompilationUnitResource) libraryVirtualModel.getResource());
 		createLibraryModelSlot.doAction();
 		assertTrue(createLibraryModelSlot.hasActionExecutionSucceeded());
 		assertNotNull(libraryModelSlot = (FMLRTModelSlot<?, ?>) createLibraryModelSlot.getNewModelSlot());

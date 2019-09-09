@@ -55,7 +55,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -111,9 +111,9 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 	@PropertyIdentifier(type = DataBinding.class)
 	String EXCEL_WORKBOOK = "excelWorkbook";
 
-	public VirtualModelResource getVirtualModelResource();
+	public CompilationUnitResource getVirtualModelResource();
 
-	public void setVirtualModelResource(VirtualModelResource virtualModelResource);
+	public void setVirtualModelResource(CompilationUnitResource virtualModelResource);
 
 	public VirtualModel getVirtualModel();
 
@@ -165,7 +165,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 		private DataBinding<ExcelWorkbook> excelWorkbook;
 
 		private VirtualModel virtualModel;
-		private VirtualModelResource virtualModelResource;
+		private CompilationUnitResource virtualModelResource;
 
 		private CreationScheme creationScheme;
 		private String _creationSchemeURI;
@@ -180,23 +180,23 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 		}
 
 		@Override
-		public VirtualModelResource getVirtualModelResource() {
+		public CompilationUnitResource getVirtualModelResource() {
 			if (virtualModelResource != null) {
 				return virtualModelResource;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getVirtualModelResource();
+				return getVirtualModel().getCompilationUnitResource();
 			}
 			return virtualModelResource;
 		}
 
 		@Override
-		public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
+		public void setVirtualModelResource(CompilationUnitResource virtualModelResource) {
 			if ((virtualModelResource == null && getVirtualModelResource() != null)
 					|| (virtualModelResource != null && !virtualModelResource.equals(getVirtualModelResource()))) {
-				VirtualModelResource oldValue = getVirtualModelResource();
+				CompilationUnitResource oldValue = getVirtualModelResource();
 				this.virtualModelResource = virtualModelResource;
-				setVirtualModel(virtualModelResource != null ? virtualModelResource.getVirtualModel() : null);
+				setVirtualModel(virtualModelResource != null ? virtualModelResource.getCompilationUnit() : null);
 				getPropertyChangeSupport().firePropertyChange("virtualModelResource", oldValue, virtualModelResource);
 			}
 		}
@@ -210,7 +210,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 				return ((SemanticsExcelModelSlot) getAssignedFlexoProperty()).getAccessedVirtualModel();
 			}
 			if (virtualModelResource != null) {
-				return virtualModelResource.getVirtualModel();
+				return virtualModelResource.getCompilationUnit();
 			}
 			return virtualModel;
 		}
@@ -221,7 +221,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 				VirtualModel oldValue = this.virtualModel;
 				this.virtualModel = aVirtualModel;
 				if (aVirtualModel != null) {
-					this.virtualModelResource = aVirtualModel.getVirtualModelResource();
+					this.virtualModelResource = aVirtualModel.getCompilationUnitResource();
 					getPropertyChangeSupport().firePropertyChange("availableCreationSchemes", null, aVirtualModel.getCreationSchemes());
 				}
 				if (creationScheme == null || creationScheme.getFlexoConcept() != aVirtualModel) {

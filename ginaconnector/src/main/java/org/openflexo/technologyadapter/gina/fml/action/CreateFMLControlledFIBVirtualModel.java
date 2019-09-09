@@ -72,7 +72,7 @@ import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -175,7 +175,7 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
 		try {
-			VirtualModelResource vmResource = makeVirtualModelResource();
+			CompilationUnitResource vmResource = makeVirtualModelResource();
 			newVirtualModel = vmResource.getLoadedResourceData();
 			newVirtualModel.setDescription(getNewVirtualModelDescription());
 		} catch (SaveResourceException e) {

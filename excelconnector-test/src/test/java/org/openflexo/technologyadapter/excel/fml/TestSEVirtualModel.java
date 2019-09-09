@@ -53,7 +53,7 @@ import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateGenericBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -201,7 +201,7 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		createMS1.setTechnologyAdapter(getTA(ExcelTechnologyAdapter.class));
 		createMS1.setModelSlotClass(SemanticsExcelModelSlot.class);
 		createMS1.setModelSlotName("personListing");
-		createMS1.setVmRes((VirtualModelResource) mappingVirtualModel.getResource());
+		createMS1.setVmRes((CompilationUnitResource) mappingVirtualModel.getResource());
 		createMS1.doAction();
 		assertTrue(createMS1.hasActionExecutionSucceeded());
 

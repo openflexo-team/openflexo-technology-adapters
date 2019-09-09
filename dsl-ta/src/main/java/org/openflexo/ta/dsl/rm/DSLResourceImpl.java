@@ -94,44 +94,25 @@ public abstract class DSLResourceImpl extends PamelaResourceImpl<DSLSystem, DSLM
 		return null;
 	}
 
-	/**
-	 * Load the resource data of this resource.
-	 * 
-	 * @return the resource data.
-	 * @throws IOFlexoException
-	 */
 	@Override
-	public DSLSystem loadResourceData() throws IOFlexoException {
-
+	protected DSLSystem performLoad() throws IOException, Exception {
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new IOFlexoException("Cannot load document with this IO/delegate: " + getIODelegate());
 		}
 
-		DSLSystem resourceData = null;
+		DSLSystem returned = null;
 		try {
-			resourceData = loadDocument(getFlexoIOStreamDelegate());
+			returned = loadDocument(getFlexoIOStreamDelegate());
 			getInputStream().close();
 		} catch (IOException e) {
 			throw new IOFlexoException(e);
 		}
 
-		if (resourceData == null) {
+		if (returned == null) {
 			logger.warning("canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
-
-		resourceData.setResource(this);
-		setResourceData(resourceData);
-
-		return resourceData;
-	}
-
-	/**
-	 * Provides hook when {@link ResourceData} is unloaded
-	 */
-	@Override
-	public void unloadResourceData(boolean deleteResourceData) {
-		super.unloadResourceData(deleteResourceData);
+		return returned;
 	}
 
 	/**
@@ -148,7 +129,7 @@ public abstract class DSLResourceImpl extends PamelaResourceImpl<DSLSystem, DSLM
 	 * performed
 	 */
 	@Override
-	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
+	protected void performSave(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());

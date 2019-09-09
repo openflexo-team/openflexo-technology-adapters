@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.gina.rm;
 
-import org.openflexo.foundation.resource.PamelaResource;
+import org.openflexo.foundation.resource.PamelaXMLSerializableResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -33,13 +33,12 @@ import org.openflexo.technologyadapter.gina.model.GINAFactory;
 
 @ModelEntity
 @ImplementationClass(GINAFIBComponentResourceImpl.class)
-public interface GINAFIBComponentResource extends
-		TechnologyAdapterResource<GINAFIBComponent, GINATechnologyAdapter>,
-		PamelaResource<GINAFIBComponent, GINAFactory>
-{
+public interface GINAFIBComponentResource extends TechnologyAdapterResource<GINAFIBComponent, GINATechnologyAdapter>,
+		PamelaXMLSerializableResource<GINAFIBComponent, GINAFactory> {
 
 	String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
+	@Override
 	@Getter(value = "technologyContextManager", ignoreType = true)
 	GINATechnologyContextManager getTechnologyContextManager();
 

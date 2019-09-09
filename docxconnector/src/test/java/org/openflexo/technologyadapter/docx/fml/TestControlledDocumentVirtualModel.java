@@ -67,8 +67,8 @@ import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
@@ -123,7 +123,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	public static DocXDocument generatedDocument;
 
 	public static VirtualModel viewPoint;
-	public static VirtualModelResource viewPointResource;
+	public static CompilationUnitResource viewPointResource;
 	public static DocXModelSlot docXModelSlot;
 	public static DocXFragmentRole fragmentRole;
 	public static VirtualModel virtualModel;
@@ -266,9 +266,9 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 
@@ -301,15 +301,15 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME,
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
+		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME,
 				viewPoint.getVirtualModelResource(), true);
 		virtualModel = newVMResource.getLoadedResourceData();
 
 		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel",
 		// viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((VirtualModelResource) virtualModel.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) virtualModel.getResource()).getDirectory()).exists());
+		assertTrue(((CompilationUnitResource) virtualModel.getResource()).getIODelegate().exists());
 
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel, null, _editor);
 		useDeclarationAction.setModelSlotClass(DocXModelSlot.class);

@@ -20,14 +20,14 @@
 
 package org.openflexo.technologyadapter.gina.rm;
 
-import org.openflexo.foundation.resource.PamelaResourceImpl;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.resource.PamelaXMLSerializableResourceImpl;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.model.GINAFactory;
 
-import java.util.logging.Logger;
-
-public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GINAFIBComponent, GINAFactory>
+public abstract class GINAFIBComponentResourceImpl extends PamelaXMLSerializableResourceImpl<GINAFIBComponent, GINAFactory>
 		implements GINAFIBComponentResource {
 
 	private static final Logger LOGGER = Logger.getLogger(GINAFIBComponentResourceImpl.class.getPackage().getName());

@@ -53,8 +53,8 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelLibrary;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
+import org.openflexo.foundation.fml.rm.CompilationUnitResource;
+import org.openflexo.foundation.fml.rm.CompilationUnitResourceFactory;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.swing.utils.FIBJPanel;
@@ -94,7 +94,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
 	public static VirtualModel viewPoint;
-	public static VirtualModelResource viewPointResource;
+	public static CompilationUnitResource viewPointResource;
 
 	public static VirtualModel documentVirtualModel;
 	public static DocXModelSlot docXModelSlot;
@@ -134,9 +134,9 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
-		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
+		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		viewPoint = viewPointResource.getLoadedResourceData();
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
@@ -153,14 +153,14 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertEquals(19, templateDocument.getElements().size());
 
 		// We create a VM
-		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
+		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(DOCUMENT_VIRTUAL_MODEL_NAME,
 				viewPoint.getVirtualModelResource(), true);
 		documentVirtualModel = newVMResource.getLoadedResourceData();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
-		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getIODelegate().exists());
+		assertTrue(((CompilationUnitResource) documentVirtualModel.getResource()).getIODelegate().exists());
 
 		// Then we create the docx model slot
 		CreateModelSlot createDocumentModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, editor);

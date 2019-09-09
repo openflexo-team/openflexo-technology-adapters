@@ -88,19 +88,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		return converter;
 	}
 
-	/**
-	 * Load the &quot;real&quot; load resource data of this resource.
-	 * 
-	 * @param progress
-	 *            a progress monitor in case the resource data is not immediately available.
-	 * @return the resource data.
-	 * @throws ResourceLoadingCancelledException
-	 * @throws ResourceDependencyLoopException
-	 * @throws FileNotFoundException
-	 * @throws FlexoException
-	 */
 	@Override
-	public ExcelWorkbook loadResourceData() throws IOFlexoException {
+	protected ExcelWorkbook performLoad() throws IOException, Exception {
 
 		converter = new BasicExcelModelConverter(this);
 
@@ -108,9 +97,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			throw new IOFlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
 		}
 
-		ExcelWorkbook resourceData = null;
+		ExcelWorkbook returned = null;
 		try {
-			resourceData = createOrLoadExcelWorkbook(getFlexoIOStreamDelegate());
+			returned = createOrLoadExcelWorkbook(getFlexoIOStreamDelegate());
 			getInputStream().close();
 		} catch (OfficeXmlFileException e) {
 			throw new IOFlexoException(e.getMessage());
@@ -118,15 +107,11 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			throw new IOFlexoException(e);
 		}
 
-		if (resourceData == null) {
+		if (returned == null) {
 			logger.warning("canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
-
-		resourceData.setResource(this);
-		setResourceData(resourceData);
-
-		return resourceData;
+		return returned;
 	}
 
 	@Override
@@ -137,41 +122,6 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		}
 		converter = null;
 	}
-
-	/**
-	 * Save the &quot;real&quot; resource data of this resource.
-	 * 
-	 * @throws SaveResourceException
-	 */
-	/*
-	 * @Override public void save(IProgress progress) throws
-	 * SaveResourceException {
-	 * 
-	 * if (getFlexoIOStreamDelegate() == null) { throw new
-	 * SaveResourceException(getFlexoIODelegate()); }
-	 * 
-	 * ExcelWorkbook resourceData; try { resourceData =
-	 * getResourceData(progress); } catch (FileNotFoundException e) {
-	 * e.printStackTrace(); throw new
-	 * SaveResourceException(getFlexoIODelegate()); } catch
-	 * (ResourceLoadingCancelledException e) { e.printStackTrace(); throw new
-	 * SaveResourceException(getFlexoIODelegate()); } catch (FlexoException e) {
-	 * e.printStackTrace(); throw new
-	 * SaveResourceException(getFlexoIODelegate()); }
-	 * 
-	 * if (!getFlexoIODelegate().hasWritePermission()) { if
-	 * (logger.isLoggable(Level.WARNING)) {
-	 * logger.warning("Permission denied : " + getFlexoIODelegate().toString());
-	 * } throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
-	 * } if (resourceData != null) { FileWritingLock lock =
-	 * getFlexoIODelegate().willWriteOnDisk();
-	 * writeToFile(resourceData.getWorkbook());
-	 * getFlexoIODelegate().hasWrittenOnDisk(lock);
-	 * notifyResourceStatusChanged(); resourceData.clearIsModified(false); if
-	 * (logger.isLoggable(Level.INFO)) {
-	 * logger.info("Succeeding to save Resource " + getURI() + " : " +
-	 * getFlexoIODelegate().toString()); } } }
-	 */
 
 	/**
 	 * Write file.
@@ -188,7 +138,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
@@ -199,7 +150,7 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 	}
 
 	@Override
-	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
+	protected void performSave(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());

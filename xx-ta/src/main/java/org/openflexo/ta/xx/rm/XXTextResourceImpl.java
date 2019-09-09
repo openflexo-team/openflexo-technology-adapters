@@ -95,44 +95,26 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 		return null;
 	}
 
-	/**
-	 * Load the resource data of this resource.
-	 * 
-	 * @return the resource data.
-	 * @throws IOFlexoException
-	 */
 	@Override
-	public XXText loadResourceData() throws IOFlexoException {
-
+	protected XXText performLoad() throws IOException, Exception {
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new IOFlexoException("Cannot load document with this IO/delegate: " + getIODelegate());
 		}
 
-		XXText resourceData = null;
+		XXText returned = null;
 		try {
-			resourceData = load(getFlexoIOStreamDelegate());
+			returned = load(getFlexoIOStreamDelegate());
 			getInputStream().close();
 		} catch (IOException e) {
 			throw new IOFlexoException(e);
 		}
 
-		if (resourceData == null) {
+		if (returned == null) {
 			logger.warning("Cannot retrieve resource data from serialization artifact " + getIODelegate());
 			return null;
 		}
 
-		resourceData.setResource(this);
-		setResourceData(resourceData);
-
-		return resourceData;
-	}
-
-	/**
-	 * Provides hook when {@link ResourceData} is unloaded
-	 */
-	@Override
-	public void unloadResourceData(boolean deleteResourceData) {
-		super.unloadResourceData(deleteResourceData);
+		return returned;
 	}
 
 	/**
@@ -149,7 +131,7 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 	 * performed
 	 */
 	@Override
-	protected void _saveResourceData(boolean clearIsModified) throws SaveResourceException {
+	protected void performSave(boolean clearIsModified) throws SaveResourceException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new SaveResourceException(getIODelegate());
@@ -246,7 +228,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}

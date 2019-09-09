@@ -142,7 +142,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getVirtualModel("http://www.openflexo.org/test/excel/RootVM.fml");
 
-		System.out.println("hop:" + vpLib.getVirtualModels());
+		System.out.println("hop:" + vpLib.getCompilationUnitResources());
 
 		assertNotNull(viewPoint);
 

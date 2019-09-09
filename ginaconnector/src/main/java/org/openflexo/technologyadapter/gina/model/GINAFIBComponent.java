@@ -140,7 +140,7 @@ public interface GINAFIBComponent
 				return;
 			}
 
-			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getDeclaringVirtualModel()));
+			getComponent().setBindingFactory(new FMLFIBBindingFactory(concept.getDeclaringCompilationUnit()));
 
 			getComponent().setCustomTypeManager(getResource().getServiceManager().getTechnologyAdapterService());
 
