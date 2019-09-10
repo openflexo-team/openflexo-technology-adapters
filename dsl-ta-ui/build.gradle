@@ -13,16 +13,3 @@ dependencies {
   // Test resource center, if required
  // testRuntime project(':dsl-ta-test-rc')
 }
-// task nonuiTest(type: Test) {
-//   ignoreFailures = true
-//   exclude '**/TestXXFib.class'
-//   jvmArgs += ["-Djava.awt.headless=true"]
-// }
-// 
-// task uiTest(type: Test,dependsOn: 'nonuiTest') {
-//   ignoreFailures = true
-//   include '**/TestXXFib.class'
-// }
-// 
-// task test(overwrite: true,dependsOn: 'uiTest') {
-// }
