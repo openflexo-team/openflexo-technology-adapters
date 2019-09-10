@@ -52,6 +52,7 @@ import javax.swing.tree.TreeNode;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
@@ -72,6 +73,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of {@link FlexoDocumentEditor}
@@ -98,6 +100,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testInitRetrieveDocuments() {
 
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
@@ -113,6 +116,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
@@ -121,6 +125,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
@@ -129,6 +134,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void testOpenStructuredDocumentWithNumberingEditor()
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocumentWithNumbering.docx");
@@ -138,6 +144,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(5)
+	@Category(UITest.class)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
@@ -146,6 +153,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(6)
+	@Category(UITest.class)
 	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
@@ -154,6 +162,7 @@ public class TestFlexoDocumentViewer extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(7)
+	@Category(UITest.class)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);

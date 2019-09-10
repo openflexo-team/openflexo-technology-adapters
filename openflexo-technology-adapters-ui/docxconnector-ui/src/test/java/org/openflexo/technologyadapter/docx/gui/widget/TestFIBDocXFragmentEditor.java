@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.openflexo.components.doc.editorkit.widget.FlexoDocFragmentEditorWidget;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -49,8 +49,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
-import org.openflexo.test.OrderedRunner;
-import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of FIBDocXFragmentSelector
@@ -58,7 +57,6 @@ import org.openflexo.test.TestOrder;
  * @author sylvain
  * 
  */
-@RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 
 	// private static SwingGraphicalContextDelegate gcDelegate;
@@ -91,7 +89,7 @@ public class TestFIBDocXFragmentEditor extends AbstractTestDocX {
 	}*/
 
 	@Test
-	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2InstanciateWidget() throws FragmentConsistencyException {
 
 		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");

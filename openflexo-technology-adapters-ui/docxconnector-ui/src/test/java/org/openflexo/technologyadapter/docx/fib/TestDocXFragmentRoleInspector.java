@@ -44,6 +44,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -56,6 +57,7 @@ import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test StandardFlexoConceptView fib
@@ -76,6 +78,7 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testLoadWidget() {
 
 		fibResource = ResourceLocator.locateResource("Inspectors/DocX/DocXFragmentRole.inspector");
@@ -84,6 +87,7 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testValidateWidget() throws InterruptedException {
 
 		validateFIB(fibResource);
@@ -93,6 +97,7 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
@@ -120,6 +125,7 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void testInstanciateWidget() {
 
 		System.out.println("On instancie le widget");
