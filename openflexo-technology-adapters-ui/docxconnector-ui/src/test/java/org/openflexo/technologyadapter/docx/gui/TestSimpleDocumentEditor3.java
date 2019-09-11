@@ -52,6 +52,7 @@ import javax.swing.tree.TreeNode;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
@@ -73,6 +74,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of {@link FlexoDocumentEditor}
@@ -97,6 +99,7 @@ public class TestSimpleDocumentEditor3 extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testInitRetrieveDocuments() {
 
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
@@ -112,6 +115,7 @@ public class TestSimpleDocumentEditor3 extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		docXDocument = getDocument("ExampleReport.docx");
 		assertNotNull(docXDocument);

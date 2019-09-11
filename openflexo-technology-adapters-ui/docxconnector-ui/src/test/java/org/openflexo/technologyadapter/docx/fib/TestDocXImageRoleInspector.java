@@ -38,14 +38,15 @@
 
 package org.openflexo.technologyadapter.docx.fib;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -69,6 +70,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test StandardFlexoConceptView fib
@@ -104,6 +106,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testLoadWidget() {
 
 		fibResource = ResourceLocator.locateResource("Inspectors/DocX/DocXImageRole.inspector");
@@ -112,6 +115,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testValidateWidget() throws InterruptedException {
 
 		validateFIB(fibResource);
@@ -123,6 +127,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void loadConcepts() throws ResourceLoadingCancelledException, FlexoException, ModelDefinitionException, IOException {
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
@@ -190,6 +195,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void testInstanciateWidget() {
 
 		FIBJPanel<DocXImageRole> widget = instanciateFIB(fibResource, role, DocXImageRole.class);

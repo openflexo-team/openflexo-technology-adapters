@@ -44,6 +44,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -56,6 +57,7 @@ import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test StandardFlexoConceptView fib
@@ -74,6 +76,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testLoadWidget() {
 
 		fibResource = ResourceLocator.locateResource("Inspectors/DocX/DocXTableRole.inspector");
@@ -82,6 +85,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testValidateWidget() throws InterruptedException {
 
 		validateFIB(fibResource);
@@ -91,6 +95,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		VirtualModelLibrary vpLib = serviceManager.getVirtualModelLibrary();
@@ -113,6 +118,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void testInstanciateWidget() {
 
 		FIBJPanel<DocXTableRole> widget = instanciateFIB(fibResource, role, DocXTableRole.class);

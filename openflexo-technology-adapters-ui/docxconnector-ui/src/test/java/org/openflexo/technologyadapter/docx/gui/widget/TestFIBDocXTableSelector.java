@@ -41,14 +41,13 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
 import org.openflexo.components.doc.editorkit.widget.FIBDocTableSelector;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
-import org.openflexo.test.OrderedRunner;
-import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of FIBDocXFragmentSelector when a table is involved
@@ -56,13 +55,12 @@ import org.openflexo.test.TestOrder;
  * @author sylvain
  * 
  */
-@RunWith(OrderedRunner.class)
 public class TestFIBDocXTableSelector extends AbstractTestDocX {
 
 	private static FIBDocTableSelector<DocXTable, DocXDocument, DocXTechnologyAdapter> selector;
 
 	@Test
-	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2InstanciateWidget() {
 
 		DocXDocument structuredDocument = getDocument("DocumentWithManyTables.docx");
