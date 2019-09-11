@@ -156,9 +156,9 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		CompilationUnitResource viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		CompilationUnitResource compilationUnitResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(), true);
-		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
+		VirtualModel newViewPoint = compilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		// ViewPoint newViewPoint =
 		// ViewPointImpl.newViewPoint("TestPPTViewPoint",
@@ -168,8 +168,8 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(testApplicationContext.getVirtualModelLibrary().getVirtualModel(VIEWPOINT_URI));
 
-		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME, viewPointResource, true);
-		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
+		CompilationUnitResource newCompilationUnitResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME, compilationUnitResource, true);
+		VirtualModel newVirtualModel = newCompilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		// VirtualModel newVirtualModel = null;
 		// try {
@@ -275,7 +275,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("resourceCenter.getViewPointRepository()=" + resourceCenter.getVirtualModelRepository());
 		CompilationUnitResource viewPointResource = testApplicationContext.getVirtualModelLibrary().getCompilationUnitResource(viewPointURI);
 		assertNotNull(viewPointResource);
-		VirtualModel viewPoint = viewPointResource.getCompilationUnit();
+		VirtualModel viewPoint = viewPointResource.getCompilationUnit().getVirtualModel();
 		assertTrue(viewPointResource.isLoaded());
 		return viewPoint;
 	}

@@ -158,7 +158,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public static DocXDocument generatedDocument;
 
 	public static VirtualModel viewPoint;
-	public static CompilationUnitResource viewPointResource;
+	public static CompilationUnitResource compilationUnitResource;
 
 	public static VirtualModel libraryVirtualModel;
 	public static FlexoConcept bookConcept;
@@ -197,7 +197,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		generatedDocument = null;
 
 		viewPoint = null;
-		viewPointResource = null;
+		compilationUnitResource = null;
 
 		libraryVirtualModel = null;
 		bookConcept = null;
@@ -346,17 +346,17 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		compilationUnitResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
-		viewPoint = viewPointResource.getLoadedResourceData();
+		viewPoint = compilationUnitResource.getLoadedResourceData().getVirtualModel();
 		// viewPoint = VirtualModelImpl.newVirtualModel(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// _project.getDirectory(),
 		// serviceManager.getVirtualModelLibrary(),
 		// resourceCenter);
 		// viewPointResource = (VirtualModelResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
-		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getIODelegate().exists());
+		assertTrue(compilationUnitResource.getDirectory() != null);
+		assertTrue(compilationUnitResource.getIODelegate().exists());
 	}
 
 	/**
@@ -396,8 +396,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(LIBRARY_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), true);
-		libraryVirtualModel = newVMResource.getLoadedResourceData();
+				viewPoint.getCompilationUnitResource(), true);
+		libraryVirtualModel = newVMResource.getLoadedResourceData().getVirtualModel();
 
 		// libraryVirtualModel =
 		// VirtualModelImpl.newVirtualModel("LibraryVirtualModel", viewPoint);
@@ -570,8 +570,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(DOCUMENT_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), true);
-		documentVirtualModel = newVMResource.getLoadedResourceData();
+				viewPoint.getCompilationUnitResource(), true);
+		documentVirtualModel = newVMResource.getLoadedResourceData().getVirtualModel();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
 

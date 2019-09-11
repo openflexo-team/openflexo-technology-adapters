@@ -176,7 +176,7 @@ public class CreateFMLControlledFIBVirtualModel extends AbstractCreateNatureSpec
 
 		try {
 			CompilationUnitResource vmResource = makeVirtualModelResource();
-			newVirtualModel = vmResource.getLoadedResourceData();
+			newVirtualModel = vmResource.getLoadedResourceData().getVirtualModel();
 			newVirtualModel.setDescription(getNewVirtualModelDescription());
 		} catch (SaveResourceException e) {
 			throw new SaveResourceException(null);

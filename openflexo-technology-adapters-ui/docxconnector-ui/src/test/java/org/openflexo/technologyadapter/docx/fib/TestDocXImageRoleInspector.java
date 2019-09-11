@@ -96,7 +96,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
 	public static VirtualModel viewPoint;
-	public static CompilationUnitResource viewPointResource;
+	public static CompilationUnitResource compilationUnitResource;
 
 	public static VirtualModel documentVirtualModel;
 	public static DocXModelSlot docXModelSlot;
@@ -141,16 +141,16 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		compilationUnitResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
-		viewPoint = viewPointResource.getLoadedResourceData();
+		viewPoint = compilationUnitResource.getLoadedResourceData().getVirtualModel();
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// resourceCenter.getDirectory(),
 		// serviceManager.getViewPointLibrary(), resourceCenter);
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
-		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getIODelegate().exists());
+		assertTrue(compilationUnitResource.getDirectory() != null);
+		assertTrue(compilationUnitResource.getIODelegate().exists());
 
 		templateResource = getDocumentResource("DocumentWithSomeImages.docx");
 		assertNotNull(templateDocument = templateResource.getResourceData());
@@ -158,9 +158,9 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertEquals(19, templateDocument.getElements().size());
 
 		// We create a VM
-		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(DOCUMENT_VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), true);
-		documentVirtualModel = newVMResource.getLoadedResourceData();
+		CompilationUnitResource newCompilationUnitResource = factory.makeContainedCompilationUnitResource(DOCUMENT_VIRTUAL_MODEL_NAME,
+				viewPoint.getCompilationUnitResource(), true);
+		documentVirtualModel = newCompilationUnitResource.getLoadedResourceData().getVirtualModel();
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) documentVirtualModel.getResource()).getDirectory())

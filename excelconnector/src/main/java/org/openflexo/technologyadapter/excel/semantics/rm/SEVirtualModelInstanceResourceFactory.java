@@ -97,7 +97,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 
 		if (createEmptyContents) {
 			SEVirtualModelInstance resourceData = createEmptyContents(returned);
-			resourceData.setVirtualModel(virtualModelResource.getCompilationUnit());
+			resourceData.setVirtualModel(virtualModelResource.getCompilationUnit().getVirtualModel());
 			returned.save();
 			if (resourceData.getFMLRunTimeEngine() != null) {
 				// TODO: today FMLRTVirtualModelInstance is a RunTimeEvaluationContext
@@ -142,7 +142,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 
 		if (createEmptyContents) {
 			SEVirtualModelInstance resourceData = createEmptyContents(returned);
-			resourceData.setVirtualModel(virtualModelResource.getCompilationUnit());
+			resourceData.setVirtualModel(virtualModelResource.getCompilationUnit().getVirtualModel());
 			returned.save();
 			if (resourceData.getFMLRunTimeEngine() != null) {
 				// TODO: today FMLRTVirtualModelInstance is a RunTimeEvaluationContext

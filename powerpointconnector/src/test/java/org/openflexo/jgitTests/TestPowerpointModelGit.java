@@ -135,15 +135,15 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		CompilationUnitResource viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		CompilationUnitResource compilationUnitResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(gitResourceCenter).getRootFolder(), true);
-		VirtualModel newViewPoint = viewPointResource.getLoadedResourceData();
+		VirtualModel newViewPoint = compilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		assertNotNull(testApplicationContext.getVirtualModelLibrary()
 				.getVirtualModel("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint.fml"));
 
-		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME, viewPointResource, true);
-		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
+		CompilationUnitResource newCompilationUnitResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME, compilationUnitResource, true);
+		VirtualModel newVirtualModel = newCompilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
 		newVirtualModel.addToFlexoConcepts(newFlexoConcept);
@@ -271,7 +271,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		// resourceCenter.getViewPointRepository());
 		CompilationUnitResource viewPointResource = testApplicationContext.getVirtualModelLibrary().getCompilationUnitResource(viewPointURI);
 		assertNotNull(viewPointResource);
-		VirtualModel viewPoint = viewPointResource.getCompilationUnit();
+		VirtualModel viewPoint = viewPointResource.getCompilationUnit().getVirtualModel();
 		assertTrue(viewPointResource.isLoaded());
 		return viewPoint;
 	}

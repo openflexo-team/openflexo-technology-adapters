@@ -183,8 +183,8 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 
 		@Override
 		public ExcelTechnologyAdapter getTechnologyAdapter() {
-			if (getResource() != null) {
-				return getResource().getTechnologyAdapter();
+			if (getVirtualModelInstanceResource() != null) {
+				return getVirtualModelInstanceResource().getTechnologyAdapter();
 			}
 			return null;
 		}
@@ -297,7 +297,7 @@ public interface SEVirtualModelInstance extends VirtualModelInstance<SEVirtualMo
 
 		@Override
 		public SEFlexoConceptInstance buildNewFlexoConceptInstance(FlexoConcept concept) {
-			return getResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
+			return getVirtualModelInstanceResource().getFactory().newInstance(SEFlexoConceptInstance.class, concept);
 		}
 
 		@Override

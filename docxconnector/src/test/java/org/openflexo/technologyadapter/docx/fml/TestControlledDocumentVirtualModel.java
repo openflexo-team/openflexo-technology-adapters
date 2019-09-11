@@ -123,7 +123,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	public static DocXDocument generatedDocument;
 
 	public static VirtualModel viewPoint;
-	public static CompilationUnitResource viewPointResource;
+	public static CompilationUnitResource compilationUnitResource;
 	public static DocXModelSlot docXModelSlot;
 	public static DocXFragmentRole fragmentRole;
 	public static VirtualModel virtualModel;
@@ -145,7 +145,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		generatedDocument = null;
 
 		viewPoint = null;
-		viewPointResource = null;
+		compilationUnitResource = null;
 		docXModelSlot = null;
 		fragmentRole = null;
 		virtualModel = null;
@@ -268,9 +268,9 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 
-		viewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		compilationUnitResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
-		viewPoint = viewPointResource.getLoadedResourceData();
+		viewPoint = compilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 		// _project.getDirectory(),
@@ -278,8 +278,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// resourceCenter);
 		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
-		assertTrue(viewPointResource.getDirectory() != null);
-		assertTrue(viewPointResource.getIODelegate().exists());
+		assertTrue(compilationUnitResource.getDirectory() != null);
+		assertTrue(compilationUnitResource.getIODelegate().exists());
 
 	}
 
@@ -302,9 +302,9 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
-		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME,
-				viewPoint.getVirtualModelResource(), true);
-		virtualModel = newVMResource.getLoadedResourceData();
+		CompilationUnitResource newCompilationUnitResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME,
+				viewPoint.getCompilationUnitResource(), true);
+		virtualModel = newCompilationUnitResource.getLoadedResourceData().getVirtualModel();
 
 		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel",
 		// viewPoint);
@@ -605,7 +605,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertNotNull(_project.getResource(newView.getURI()));
 
 		System.out.println("viewPoint.getURI()=" + viewPoint.getURI());
-		System.out.println("viewPointResource.getURI()=" + viewPointResource.getURI());
+		System.out.println("viewPointResource.getURI()=" + compilationUnitResource.getURI());
 
 		FMLRTVirtualModelInstanceResource newViewResource = _project.getVirtualModelInstanceRepository()
 				.getVirtualModelInstance(newView.getURI());
