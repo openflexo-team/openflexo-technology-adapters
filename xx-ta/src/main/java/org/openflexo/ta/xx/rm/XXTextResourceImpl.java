@@ -108,6 +108,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 			throw new IOFlexoException("Cannot load document with this IO/delegate: " + getIODelegate());
 		}
 
+		notifyResourceWillLoad();
+
 		XXText resourceData = null;
 		try {
 			resourceData = load(getFlexoIOStreamDelegate());
@@ -123,6 +125,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 
 		resourceData.setResource(this);
 		setResourceData(resourceData);
+
+		notifyResourceLoaded();
 
 		return resourceData;
 	}
@@ -246,7 +250,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}

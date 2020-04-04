@@ -108,6 +108,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			throw new IOFlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
 		}
 
+		notifyResourceWillLoad();
+
 		ExcelWorkbook resourceData = null;
 		try {
 			resourceData = createOrLoadExcelWorkbook(getFlexoIOStreamDelegate());
@@ -125,6 +127,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 
 		resourceData.setResource(this);
 		setResourceData(resourceData);
+
+		notifyResourceLoaded();
 
 		return resourceData;
 	}
@@ -188,7 +192,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 		} finally {
 			try {
 				out.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 		logger.info("Wrote " + getIODelegate().getSerializationArtefact());
 	}
