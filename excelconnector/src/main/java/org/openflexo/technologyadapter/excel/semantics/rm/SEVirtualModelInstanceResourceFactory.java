@@ -220,7 +220,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 	}
 
 	@Override
-	protected <I> SEVirtualModelInstanceResource registerResource(SEVirtualModelInstanceResource resource,
+	public <I> SEVirtualModelInstanceResource registerResource(SEVirtualModelInstanceResource resource,
 			FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 

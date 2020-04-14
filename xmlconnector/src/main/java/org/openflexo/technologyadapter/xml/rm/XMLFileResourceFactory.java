@@ -60,7 +60,7 @@ public class XMLFileResourceFactory extends TechnologySpecificFlexoResourceFacto
 	}
 
 	@Override
-	protected <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the XMLModelRepository of supplied resource center

@@ -65,7 +65,7 @@ public class DocXDocumentResourceFactory
 	}
 
 	@Override
-	protected <I> DocXDocumentResource registerResource(DocXDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> DocXDocumentResource registerResource(DocXDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the DocXDocumentRepository of supplied resource center

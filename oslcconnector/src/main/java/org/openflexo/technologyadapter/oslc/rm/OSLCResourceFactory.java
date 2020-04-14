@@ -59,7 +59,7 @@ public class OSLCResourceFactory
 	}
 
 	@Override
-	protected <I> OSLCResourceResource registerResource(OSLCResourceResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> OSLCResourceResource registerResource(OSLCResourceResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the OSLCRepository of supplied resource center

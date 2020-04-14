@@ -63,7 +63,7 @@ public class XSDMetaModelResourceFactory
 	}
 
 	@Override
-	protected <I> XSDMetaModelResource registerResource(XSDMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> XSDMetaModelResource registerResource(XSDMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the XSDMetaModelRepository of supplied resource center

@@ -91,7 +91,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoActionWizard<Cr
 	@Override
 	public Image getDefaultPageImage() {
 		// TODO change icon
-		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_BIG_ICON, IconLibrary.NEW_32_32).getImage();
+		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_BIG_ICON, IconLibrary.BIG_NEW_MARKER).getImage();
 	}
 
 	public ConfigureSemanticsExcelVirtualModel getConfigureSemanticsExcelVirtualModel() {

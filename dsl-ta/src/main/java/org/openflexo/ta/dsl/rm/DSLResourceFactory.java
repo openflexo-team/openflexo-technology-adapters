@@ -78,7 +78,7 @@ public class DSLResourceFactory
 	}
 
 	@Override
-	protected <I> DSLResource registerResource(DSLResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> DSLResource registerResource(DSLResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the repository of supplied resource center

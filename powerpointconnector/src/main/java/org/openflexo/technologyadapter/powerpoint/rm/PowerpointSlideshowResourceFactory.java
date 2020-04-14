@@ -58,8 +58,7 @@ public class PowerpointSlideshowResourceFactory
 	}
 
 	@Override
-	protected <I> PowerpointSlideshowResource registerResource(PowerpointSlideshowResource resource,
-			FlexoResourceCenter<I> resourceCenter) {
+	public <I> PowerpointSlideshowResource registerResource(PowerpointSlideshowResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the PowerpointSlideshowRepository of supplied resource center
