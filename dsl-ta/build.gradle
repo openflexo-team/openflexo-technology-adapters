@@ -19,6 +19,3 @@ dependencies {
   // testRuntime project(‘:dsl-ta-test-rc')
 
 }
-tasks.withType(Test) {
-	jvmArgs += ["-Djava.awt.headless=true"]
-}

@@ -155,8 +155,8 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public Map<? extends XMLProperty, XMLPropertyValue> getPropertiesValues() {
-		return propertiesValues;
+	public List<? extends XMLPropertyValue> getPropertiesValues() {
+		return new ArrayList<XMLPropertyValue>(propertiesValues.values());
 	}
 
 	@Override

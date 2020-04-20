@@ -82,7 +82,7 @@ public class GINAFIBComponentResourceFactory
 	}
 
 	@Override
-	protected <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the GINAResourceRepository of supplied resource center

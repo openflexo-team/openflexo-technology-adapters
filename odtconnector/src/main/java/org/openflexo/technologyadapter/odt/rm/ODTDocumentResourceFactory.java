@@ -57,7 +57,7 @@ public class ODTDocumentResourceFactory
 	}
 
 	@Override
-	protected <I> ODTDocumentResource registerResource(ODTDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> ODTDocumentResource registerResource(ODTDocumentResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the ODTDocumentRepository of supplied resource center

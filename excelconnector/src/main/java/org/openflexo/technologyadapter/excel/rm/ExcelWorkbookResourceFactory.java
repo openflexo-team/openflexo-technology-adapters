@@ -66,7 +66,7 @@ public class ExcelWorkbookResourceFactory
 	}
 
 	@Override
-	protected <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> ExcelWorkbookResource registerResource(ExcelWorkbookResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the ExcelWorkbookRepository of supplied

@@ -71,7 +71,7 @@ public class CreateGINAFIBComponentWizard extends FlexoActionWizard<CreateGINAFI
 
 	@Override
 	public Image getDefaultPageImage() {
-		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_BIG_ICON, IconLibrary.NEW_32_32).getImage();
+		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_BIG_ICON, IconLibrary.BIG_NEW_MARKER).getImage();
 	}
 
 	public DescribeNewComponent getConfigureNewConcept() {

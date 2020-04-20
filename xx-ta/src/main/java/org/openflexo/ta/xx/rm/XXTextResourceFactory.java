@@ -79,7 +79,7 @@ public class XXTextResourceFactory
 	}
 
 	@Override
-	protected <I> XXTextResource registerResource(XXTextResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> XXTextResource registerResource(XXTextResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the repository of supplied resource center

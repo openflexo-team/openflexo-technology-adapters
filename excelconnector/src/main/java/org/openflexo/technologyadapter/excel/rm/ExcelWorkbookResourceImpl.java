@@ -97,6 +97,8 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			throw new IOFlexoException("Cannot load Excel document with this IO/delegate: " + getIODelegate());
 		}
 
+		notifyResourceWillLoad();
+
 		ExcelWorkbook returned = null;
 		try {
 			returned = createOrLoadExcelWorkbook(getFlexoIOStreamDelegate());
@@ -111,6 +113,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 			logger.warning("canno't retrieve resource data from serialization artifact " + getIODelegate().toString());
 			return null;
 		}
+
+		notifyResourceLoaded();
+
 		return returned;
 	}
 

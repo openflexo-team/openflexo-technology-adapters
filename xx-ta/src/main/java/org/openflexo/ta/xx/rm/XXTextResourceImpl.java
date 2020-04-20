@@ -101,6 +101,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 			throw new IOFlexoException("Cannot load document with this IO/delegate: " + getIODelegate());
 		}
 
+		notifyResourceWillLoad();
+
 		XXText returned = null;
 		try {
 			returned = load(getFlexoIOStreamDelegate());
@@ -113,6 +115,8 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 			logger.warning("Cannot retrieve resource data from serialization artifact " + getIODelegate());
 			return null;
 		}
+
+		notifyResourceLoaded();
 
 		return returned;
 	}
