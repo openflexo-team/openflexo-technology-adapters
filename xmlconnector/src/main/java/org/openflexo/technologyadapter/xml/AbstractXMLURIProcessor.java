@@ -236,11 +236,6 @@ public interface AbstractXMLURIProcessor extends FlexoConceptObject {
 		}
 
 		@Override
-		public String getURI() {
-			return "URIProcessor/" + this.getFlexoID();
-		}
-
-		@Override
 		public BindingModel getBindingModel() {
 			return null;
 		}

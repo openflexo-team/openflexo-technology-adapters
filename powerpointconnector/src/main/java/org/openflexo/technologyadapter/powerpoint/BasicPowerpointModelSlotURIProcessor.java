@@ -168,10 +168,5 @@ public interface BasicPowerpointModelSlotURIProcessor extends FlexoConceptObject
 			return Collections.emptyList();
 		}
 
-		@Override
-		public String getURI() {
-			return null;
-		}
-
 	}
 }

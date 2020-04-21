@@ -164,10 +164,5 @@ public interface BasicExcelModelSlotURIProcessor extends FlexoConceptObject {
 			return null;
 		}
 
-		@Override
-		public String getURI() {
-			return null;
-		}
-
 	}
 }
