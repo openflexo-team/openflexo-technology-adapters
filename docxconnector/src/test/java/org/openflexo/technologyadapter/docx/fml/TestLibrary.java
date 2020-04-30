@@ -512,7 +512,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(libraryVirtualModel.getFMLModelFactory().stringRepresentation(libraryVirtualModel));
 
 		System.out.println("FML:");
-		System.out.println(libraryVirtualModel.getFMLRepresentation());
+		System.out.println(libraryVirtualModel.getFMLPrettyPrint());
 	}
 
 	/**
@@ -640,7 +640,7 @@ public class TestLibrary extends AbstractTestDocX {
 		System.out.println(documentVirtualModel.getFMLModelFactory().stringRepresentation(documentVirtualModel));
 
 		System.out.println("FML:");
-		System.out.println(documentVirtualModel.getFMLRepresentation());
+		System.out.println(documentVirtualModel.getFMLPrettyPrint());
 
 		assertTrue(documentVirtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(documentVirtualModel));
@@ -948,7 +948,7 @@ public class TestLibrary extends AbstractTestDocX {
 		matchFlexoConceptInstance.setCreationScheme(bookDescriptionSection.getCreationSchemes().get(0));
 
 		// We check here that matching criterias were updated
-		System.out.println(documentVirtualModel.getFMLRepresentation());
+		System.out.println(documentVirtualModel.getFMLPrettyPrint());
 		System.out.println("criterias" + matchFlexoConceptInstance.getMatchingCriterias());
 		for (MatchingCriteria mc : matchFlexoConceptInstance.getMatchingCriterias()) {
 			System.out.println("mc: " + mc.getFlexoProperty());
@@ -1683,7 +1683,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println("Applying updateDocumentActionScheme: ");
 
-		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
+		System.out.println(updateDocumentActionScheme.getFMLPrettyPrint());
 
 		// Launch updateDocument actions
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(updateDocumentActionScheme, documentVMI);
@@ -1806,7 +1806,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println("Applying updateDocumentActionScheme: ");
 
-		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
+		System.out.println(updateDocumentActionScheme.getFMLPrettyPrint());
 
 		// Launch updateDocument actions
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(updateDocumentActionScheme, documentVMI);
@@ -1927,7 +1927,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println("Applying reinjectFromDocumentActionScheme: ");
 
-		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+		System.out.println(reinjectFromDocumentActionScheme.getFMLPrettyPrint());
 
 		// Launch updateDocument actions
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);
@@ -2014,7 +2014,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println("Applying reinjectFromDocumentActionScheme: ");
 
-		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+		System.out.println(reinjectFromDocumentActionScheme.getFMLPrettyPrint());
 
 		// Launch updateDocument actions
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);
@@ -2119,7 +2119,7 @@ public class TestLibrary extends AbstractTestDocX {
 
 		System.out.println("Applying reinjectFromDocumentActionScheme: ");
 
-		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+		System.out.println(reinjectFromDocumentActionScheme.getFMLPrettyPrint());
 
 		// Launch updateDocument actions
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(reinjectFromDocumentActionScheme, documentVMI);

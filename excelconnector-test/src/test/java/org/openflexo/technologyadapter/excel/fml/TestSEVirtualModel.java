@@ -186,7 +186,7 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 
 		mappingVirtualModel.getResource().save();
 
-		System.out.println(mappingVirtualModel.getFMLRepresentation());
+		System.out.println(mappingVirtualModel.getFMLPrettyPrint());
 
 		assertVirtualModelIsValid(mappingVirtualModel);
 	}
@@ -239,7 +239,7 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 
 		rootVirtualModel.getResource().save();
 
-		System.out.println(rootVirtualModel.getFMLRepresentation());
+		System.out.println(rootVirtualModel.getFMLPrettyPrint());
 
 		assertVirtualModelIsValid(rootVirtualModel);
 

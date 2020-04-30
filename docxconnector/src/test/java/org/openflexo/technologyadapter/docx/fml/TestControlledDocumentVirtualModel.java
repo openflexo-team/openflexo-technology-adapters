@@ -408,7 +408,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		createDocX.setResourceCenter(new DataBinding<>("this.resourceCenter"));*/
 
 		System.out.println("VirtualModel ***************************");
-		System.out.println(virtualModel.getFMLRepresentation());
+		System.out.println(virtualModel.getFMLPrettyPrint());
 	}
 
 	/**
@@ -469,7 +469,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 				.exists());
 		assertTrue(((FMLRTVirtualModelInstanceResource) newView.getResource()).getIODelegate().exists());
 
-		System.out.println("FML: " + newVirtualModelInstance.getVirtualModel().getFMLRepresentation());
+		System.out.println("FML: " + newVirtualModelInstance.getVirtualModel().getFMLPrettyPrint());
 
 		newVirtualModelInstance.getResource().save();
 
@@ -503,7 +503,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
 		System.out.println("Executing FML:");
-		System.out.println(actionScheme.getFMLRepresentation());
+		System.out.println(actionScheme.getFMLPrettyPrint());
 
 		ActionSchemeActionFactory actionType = new ActionSchemeActionFactory(actionScheme, newVirtualModelInstance);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, _editor);

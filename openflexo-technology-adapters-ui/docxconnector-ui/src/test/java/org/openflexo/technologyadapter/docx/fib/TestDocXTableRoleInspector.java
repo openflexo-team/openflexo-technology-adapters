@@ -107,7 +107,7 @@ public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 		FlexoConcept bookDescriptionSection = virtualModel.getFlexoConcept("BookDescriptionSection");
 		assertNotNull(bookDescriptionSection);
 
-		System.out.println(virtualModel.getFMLRepresentation());
+		System.out.println(virtualModel.getFMLPrettyPrint());
 
 		role = (DocXTableRole) virtualModel.getAccessibleProperty("bookListingTable");
 		System.out.println("role=" + role);

@@ -189,7 +189,7 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 		assertNotNull(role);
 
-		System.out.println(viewPoint.getFMLRepresentation());
+		System.out.println(viewPoint.getFMLPrettyPrint());
 
 	}
 

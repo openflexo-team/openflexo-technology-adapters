@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -306,14 +305,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 					.append(fullURI.getFragment());
 
 			return typeURIStr.toString();
-		}
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
-			if (mappedXMLType != null) {
-				return "XMLURIProcessor for " + this.mappedXMLType.getName();
-			}
-			return "";
 		}
 
 	}

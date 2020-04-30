@@ -206,8 +206,7 @@ public interface AddDocXFragment extends TechnologySpecificActionDefiningReceive
 				System.out.println("contents=\n" + document.debugStructuredContents());
 				System.out.println("fragment=" + getFragment());
 				System.out.println("getAssignedFlexoProperty()=" + getAssignedFlexoProperty());
-				System.out.println("FML=" + getFMLRepresentation());
-				System.out.println("Owner=" + getOwner().getFMLRepresentation());
+				System.out.println("FML=" + getFMLPrettyPrint());
 
 				for (DocXElement element : getFragment().getElements()) {
 
@@ -252,7 +251,8 @@ public interface AddDocXFragment extends TechnologySpecificActionDefiningReceive
 
 		private DocXElement getLastDeepChild(DocXElement e) {
 			DocXElement lastChild = e.getChildrenElements().size() > 0
-					? (DocXElement) e.getChildrenElements().get(e.getChildrenElements().size() - 1) : null;
+					? (DocXElement) e.getChildrenElements().get(e.getChildrenElements().size() - 1)
+					: null;
 			if (lastChild == null) {
 				return e;
 			}

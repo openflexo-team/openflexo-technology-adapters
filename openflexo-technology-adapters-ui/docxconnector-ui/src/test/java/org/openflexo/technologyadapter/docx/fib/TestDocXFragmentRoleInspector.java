@@ -110,7 +110,7 @@ public class TestDocXFragmentRoleInspector extends AbstractTestDocXInspector {
 		FlexoConcept bookDescriptionSection = virtualModel.getFlexoConcept("BookDescriptionSection");
 		assertNotNull(bookDescriptionSection);
 
-		System.out.println(virtualModel.getFMLRepresentation());
+		System.out.println(virtualModel.getFMLPrettyPrint());
 
 		role = (DocXFragmentRole) bookDescriptionSection.getAccessibleProperty("section");
 		System.out.println("role=" + role);

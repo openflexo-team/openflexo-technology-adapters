@@ -40,8 +40,6 @@ package org.openflexo.technologyadapter.xml.fml;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
@@ -132,14 +130,6 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 		@Override
 		public void setIndividualURI(String conceptURI) {
 			this.individualURI = conceptURI;
-		}
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
-			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getTypeDescription() + " from "
-					+ getModelSlot().getName() + " ;", context);
-			return out.toString();
 		}
 
 		@Override

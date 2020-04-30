@@ -415,7 +415,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 		// DeletionScheme deletionScheme = seVMI.getVirtualModel().getDeletionSchemes().get(0);
 		DeletionScheme deletionScheme = ninaDupont.getFlexoConcept().getDeletionSchemes().get(0);
 
-		System.out.println("executing " + deletionScheme.getFMLRepresentation());
+		System.out.println("executing " + deletionScheme.getFMLPrettyPrint());
 
 		DeletionSchemeAction deletePerson = new DeletionSchemeAction(deletionScheme, ninaDupont, null, editor);
 		deletePerson.doAction();
