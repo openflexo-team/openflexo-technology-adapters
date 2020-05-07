@@ -56,6 +56,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.InvalidNameException;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
@@ -292,10 +293,12 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	 * 
 	 * @throws FragmentConsistencyException
 	 * @throws ModelDefinitionException
+	 * @throws InvalidNameException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testCreateVirtualModel() throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException {
+	public void testCreateVirtualModel()
+			throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException, InvalidNameException {
 
 		log("testCreateVirtualModel()");
 
@@ -308,8 +311,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel",
 		// viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) virtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((CompilationUnitResource) virtualModel.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(virtualModel.getResource().getDirectory()).exists());
+		assertTrue(virtualModel.getResource().getIODelegate().exists());
 
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(virtualModel, null, _editor);
 		useDeclarationAction.setModelSlotClass(DocXModelSlot.class);

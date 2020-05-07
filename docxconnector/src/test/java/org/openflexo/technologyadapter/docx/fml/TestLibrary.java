@@ -58,6 +58,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.InvalidNameException;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
@@ -352,10 +353,11 @@ public class TestLibrary extends AbstractTestDocX {
 	 * </code>
 	 * 
 	 * @throws ModelDefinitionException
+	 * @throws InvalidNameException
 	 */
 	@Test
 	@TestOrder(5)
-	public void testCreateLibraryVirtualModel() throws SaveResourceException, ModelDefinitionException {
+	public void testCreateLibraryVirtualModel() throws SaveResourceException, ModelDefinitionException, InvalidNameException {
 
 		log("testCreateLibraryVirtualModel()");
 
@@ -368,9 +370,8 @@ public class TestLibrary extends AbstractTestDocX {
 
 		// libraryVirtualModel =
 		// VirtualModelImpl.newVirtualModel("LibraryVirtualModel", viewPoint);
-		assertTrue(
-				ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) libraryVirtualModel.getResource()).getDirectory()).exists());
-		assertTrue(((CompilationUnitResource) libraryVirtualModel.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(libraryVirtualModel.getResource().getDirectory()).exists());
+		assertTrue(libraryVirtualModel.getResource().getIODelegate().exists());
 
 		CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewAction(libraryVirtualModel, null, _editor);
 		createConceptAction.setNewFlexoConceptName("Book");
@@ -527,10 +528,12 @@ public class TestLibrary extends AbstractTestDocX {
 	 * 
 	 * @throws FragmentConsistencyException
 	 * @throws ModelDefinitionException
+	 * @throws InvalidNameException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testCreateDocumentVirtualModel() throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException {
+	public void testCreateDocumentVirtualModel()
+			throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException, InvalidNameException {
 
 		log("testCreateDocumentVirtualModel()");
 
@@ -543,9 +546,8 @@ public class TestLibrary extends AbstractTestDocX {
 
 		// documentVirtualModel =
 		// VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((CompilationUnitResource) documentVirtualModel.getResource()).getDirectory())
-				.exists());
-		assertTrue(((CompilationUnitResource) documentVirtualModel.getResource()).getIODelegate().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(documentVirtualModel.getResource().getDirectory()).exists());
+		assertTrue(documentVirtualModel.getResource().getIODelegate().exists());
 
 		// Now we create the library model slot
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, _editor);
@@ -553,7 +555,7 @@ public class TestLibrary extends AbstractTestDocX {
 				.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FMLTechnologyAdapter.class));
 		createLibraryModelSlot.setModelSlotClass(FMLRTVirtualModelInstanceModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
-		createLibraryModelSlot.setVmRes((CompilationUnitResource) libraryVirtualModel.getResource());
+		createLibraryModelSlot.setVmRes(libraryVirtualModel.getResource());
 		createLibraryModelSlot.doAction();
 		assertTrue(createLibraryModelSlot.hasActionExecutionSucceeded());
 		assertNotNull(libraryModelSlot = (FMLRTModelSlot<?, ?>) createLibraryModelSlot.getNewModelSlot());
@@ -646,7 +648,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(documentVirtualModel));
 	}
 
-	private static FlexoConcept createBookDescriptionSection() throws FragmentConsistencyException {
+	private static FlexoConcept createBookDescriptionSection() throws FragmentConsistencyException, InvalidNameException {
 
 		FlexoConcept bookDescriptionSection;
 
