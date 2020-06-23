@@ -39,8 +39,8 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
@@ -60,7 +60,6 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
     	try {
 			 MF = new ModelFactory(XSDMetaModel.class);
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

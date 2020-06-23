@@ -52,9 +52,9 @@ import org.openflexo.foundation.fml.rt.rm.AbstractVirtualModelInstanceResourceIm
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -63,7 +63,6 @@ import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializer;
 import org.openflexo.technologyadapter.excel.semantics.fml.SEInitializerAction;
 import org.openflexo.technologyadapter.excel.semantics.model.ExcelMappingException;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * This is the {@link FlexoResource} encoding a {@link FMLRTVirtualModelInstance}
@@ -159,14 +158,13 @@ public interface SEVirtualModelInstanceResource
 		}
 
 		@Override
-		public SEVirtualModelInstance loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException,
-				InvalidXMLException, InconsistentDataException, InvalidModelDefinitionException {
-			SEVirtualModelInstance returned = super.loadResourceData(progress);
+		public SEVirtualModelInstance loadResourceData() throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
+				InconsistentDataException, InvalidModelDefinitionException {
+			SEVirtualModelInstance returned = super.loadResourceData();
 
 			try {
 				returned.updateData();
 			} catch (ExcelMappingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

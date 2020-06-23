@@ -49,19 +49,18 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelObject;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.validation.Validable;
+import org.openflexo.foundation.fml.FlexoConceptObject;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.validation.Validable;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlotURIProcessor.BasicPowerpointModelSlotURIProcessorImpl.class)
 @XMLElement
-public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject {
+public interface BasicPowerpointModelSlotURIProcessor extends FlexoConceptObject {
 
 	public String getURIForObject(PowerpointSlideshow resourceData, PowerpointObject powerpointObject);
 
@@ -92,11 +91,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 		@Override
 		public FlexoConcept getFlexoConcept() {
 			return getModelSlot().getFlexoConcept();
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			return getModelSlot().getVirtualModel();
 		}
 
 		@Override
@@ -166,7 +160,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		@Override
 		public BindingModel getBindingModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -177,7 +170,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject
 
 		@Override
 		public String getURI() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

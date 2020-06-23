@@ -44,15 +44,14 @@ import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
-import org.openflexo.toolbox.IProgress;
 
 import com.sun.xml.xsom.XSAttributeDecl;
 import com.sun.xml.xsom.XSComplexType;
@@ -84,7 +83,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	@Override
 	public XMLMetaModel getMetaModelData() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
@@ -99,14 +98,13 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 
 	 * @param progress
-	 *            a progress monitor in case the resource data is not
-	 *            immediately available.
+	 *            a progress monitor in case the resource data is not immediately available.
 	 * @return the resource data.
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
 	@Override
-	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FlexoException {
+	public XMLMetaModel loadResourceData() throws ResourceLoadingCancelledException, FlexoException {
 
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new FlexoException("Cannot load XML document with this IO/delegate: " + getIODelegate());
@@ -164,7 +162,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
@@ -183,10 +182,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(element.getName(),
 								resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-					} else {
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner for : " + uri);
 				}
 
@@ -205,10 +206,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					// TODO: better manage types
 					((XMLComplexType) owner).createProperty(attribute.getName(),
 							resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
-			} else {
+			}
+			else {
 				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
@@ -233,7 +236,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(name, t);
-					} else {
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
@@ -264,7 +268,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			loadDataProperties();
 			loadObjectProperties();
 			isLoaded = true;
-		} else
+		}
+		else
 			logger.info("I've not been able to parse the stream" + getInputStream());
 		isLoading = false;
 		return isLoaded;
@@ -305,7 +310,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	 * Save the &quot;real&quot; resource data of this resource.
 	 */
 	@Override
-	public void save(IProgress progress) {
+	public void save() {
 		logger.info("Not implemented yet");
 	}
 

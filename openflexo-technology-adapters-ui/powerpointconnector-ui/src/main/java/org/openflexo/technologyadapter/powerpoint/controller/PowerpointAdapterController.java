@@ -105,7 +105,6 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 
 	@Override
 	public ImageIcon getModelIcon() {
-		// TODO Auto-generated method stub
 		return PowerpointIconLibrary.POWERPOINT_TECHNOLOGY_ICON;
 	}
 
@@ -131,7 +130,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof PowerpointSlideshow) {
 			return true;
 		}
@@ -139,7 +138,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof PowerpointSlide) {
 			return ((PowerpointSlide) object).getName();
 		}

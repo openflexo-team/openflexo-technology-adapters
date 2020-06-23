@@ -46,10 +46,10 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
@@ -101,21 +101,20 @@ public interface GenerateExcelResource extends CreateExcelResource {
 				ExcelWorkbookResource newResource;
 				try {
 
-					ExcelWorkbook templateDocument = templateResource.getResourceData(null);
+					ExcelWorkbook templateDocument = templateResource.getResourceData();
 
-					newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI,
-							getRelativePath(), ".xlsx", false);
+					newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, evaluationContext, ".xlsx", false);
 					System.out.println("Return new excel workbook resource: " + newResource);
 
 					newResource.setResourceData(templateDocument);
-					newResource.save(null);
+					newResource.save();
 					newResource.unloadResourceData(false);
 					templateResource.unloadResourceData(false);
-					newResource.loadResourceData(null);
+					newResource.loadResourceData();
 
 					System.out.println("Et hop on relit la RD");
 
-					ExcelWorkbook generatedDocument = newResource.getResourceData(null);
+					ExcelWorkbook generatedDocument = newResource.getResourceData();
 
 					System.out.println("Et hop, en fin de generate, on retourne " + generatedDocument);
 					System.out.println("-------> generatedDocument.getResource()=" + generatedDocument.getResource());

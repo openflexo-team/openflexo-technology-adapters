@@ -1,0 +1,15 @@
+dependencies {
+  compile project(":dsl-ta")
+
+  // openflexo dep
+  compile flexoUi()
+
+  runtime fmlTechnologyAdapterUi()
+
+  // external dep
+  // testing dep
+  testCompile flexoUiTest()
+
+  // Test resource center, if required
+ // testRuntime project(':dsl-ta-test-rc')
+}

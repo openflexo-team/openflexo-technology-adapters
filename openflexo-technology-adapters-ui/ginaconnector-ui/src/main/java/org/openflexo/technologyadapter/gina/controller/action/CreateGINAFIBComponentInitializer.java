@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.gina.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -46,9 +45,8 @@ import javax.swing.Icon;
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoActionFactory;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.IconFactory;
@@ -59,8 +57,8 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateGINAFIBComponentInitializer extends ActionInitializer<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> {
-
+public class CreateGINAFIBComponentInitializer
+		extends ActionInitializer<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -69,35 +67,30 @@ public class CreateGINAFIBComponentInitializer extends ActionInitializer<CreateG
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateGINAFIBComponent> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateGINAFIBComponent>() {
-			@Override
-			public boolean run(EventObject e, CreateGINAFIBComponent action) {
-				Wizard wizard = new CreateGINAFIBComponentWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
+	protected FlexoActionRunnable<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultInitializer() {
+		return (e, action) -> {
+			Wizard wizard = new CreateGINAFIBComponentWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
 			}
+			return true;
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateGINAFIBComponent> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateGINAFIBComponent>() {
-			@Override
-			public boolean run(EventObject e, CreateGINAFIBComponent action) {
-				getController().selectAndFocusObject(action.getNewComponent());
-				return true;
-			}
+	protected FlexoActionRunnable<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().selectAndFocusObject(action.getNewComponent());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory actionType) {
+	protected Icon getEnabledIcon(
+			FlexoActionFactory<CreateGINAFIBComponent, RepositoryFolder<GINAFIBComponentResource, ?>, FlexoObject> actionType) {
 		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_ICON, IconLibrary.NEW_MARKER);
 	}
 

@@ -109,7 +109,7 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
 			for (DocXDocumentResource docResource : documents) {
 				try {
-					docResource.loadResourceData(null);
+					docResource.loadResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {

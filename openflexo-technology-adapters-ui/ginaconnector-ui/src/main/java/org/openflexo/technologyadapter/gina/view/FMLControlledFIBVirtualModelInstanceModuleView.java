@@ -54,7 +54,7 @@ import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationIssue;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -199,7 +199,6 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 						try {
 							saveEditedComponent();
 						} catch (SaveResourceException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -344,7 +343,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 		if (component.getResource().getIODelegate() instanceof StreamIODelegate) {
 			((StreamIODelegate<?>) component.getResource().getIODelegate()).setSaveToSourceResource(true);
 		}
-		component.getResource().save(null);
+		component.getResource().save();
 
 		return true;
 	}
@@ -374,13 +373,10 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
 				editorController.getController().setVariableValue(variableAssignment.getVariable(), value);
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -399,13 +395,10 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 						// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
 						componentView.getController().setVariableValue(variableAssignment.getVariable(), value);
 					} catch (TypeMismatchException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -592,7 +585,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 	private static FlexoObject getRelevantObject(FlexoObject object) {
 		if (object instanceof FlexoResource<?> && ((FlexoResource<?>) object).isLoaded()) {
 			try {
-				return (FlexoObject) ((FlexoResource<?>) object).getResourceData(null);
+				return (FlexoObject) ((FlexoResource<?>) object).getResourceData();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {

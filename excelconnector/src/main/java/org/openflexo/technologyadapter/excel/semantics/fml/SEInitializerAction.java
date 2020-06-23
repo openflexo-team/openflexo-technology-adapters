@@ -88,7 +88,8 @@ public class SEInitializerAction extends AbstractActionSchemeAction<SEInitialize
 
 	@Override
 	protected void doAction(Object context) throws FlexoException {
-		if (getActionScheme() != null && getActionScheme().evaluateCondition(getFlexoConceptInstance())) {
+		SEInitializer applicableActionScheme = getApplicableFlexoBehaviour();
+		if (applicableActionScheme != null && applicableActionScheme.evaluateCondition(getFlexoConceptInstance())) {
 			executeControlGraph();
 		}
 	}

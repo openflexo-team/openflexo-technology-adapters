@@ -20,16 +20,3 @@ if (JavaVersion.current().isJava9Compatible()) {
 	jvmArgs += ['--add-modules', 'java.xml.bind']
     }
 }
-task nonuiTest(type: Test) {
-  ignoreFailures = true
-  include '**/TestDocXInspectors.class'
-  jvmArgs += ["-Djava.awt.headless=true"]
-}
-
-task uiTest(type: Test,dependsOn: 'nonuiTest') {
-  ignoreFailures = true
-  exclude '**/TestDocXInspectors.class'
-}
-
-task test(overwrite: true,dependsOn: 'uiTest') {
-}

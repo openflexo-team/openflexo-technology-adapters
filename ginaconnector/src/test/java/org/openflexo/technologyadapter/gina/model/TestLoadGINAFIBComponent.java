@@ -107,7 +107,7 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 		assertNotNull(editor);
 
 		System.out.println("RC=" + resourceCenter);
-		System.out.println("resources: " + resourceCenter.getAllResources(null));
+		System.out.println("resources: " + resourceCenter.getAllResources());
 
 	}
 
@@ -132,7 +132,7 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 		assertNotNull(componentResource);
 
-		GINAFIBComponent component = componentResource.getResourceData(null);
+		GINAFIBComponent component = componentResource.getResourceData();
 
 		assertNotNull(component);
 		assertSame(componentResource, component.getResource());

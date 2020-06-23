@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.ApplicationContext;
-import org.openflexo.components.wizard.FlexoWizard;
+import org.openflexo.components.wizard.FlexoActionWizard;
 import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -65,12 +65,10 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
+public class CreateSemanticsExcelVirtualModelWizard extends FlexoActionWizard<CreateSemanticsExcelVirtualModel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateSemanticsExcelVirtualModelWizard.class.getPackage().getName());
-
-	private final CreateSemanticsExcelVirtualModel action;
 
 	private final ConfigureSemanticsExcelVirtualModel configureSemanticsExcelVirtualModel;
 	private final List<ConfigureNewSEFlexoConcept> configureNewSEFlexoConcepts = new ArrayList<>();
@@ -78,8 +76,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 	private static final Dimension DIMENSIONS = new Dimension(600, 500);
 
 	public CreateSemanticsExcelVirtualModelWizard(CreateSemanticsExcelVirtualModel action, FlexoController controller) {
-		super(controller);
-		this.action = action;
+		super(action, controller);
 		addStep(configureSemanticsExcelVirtualModel = new ConfigureSemanticsExcelVirtualModel());
 		ConfigureNewSEFlexoConcept newConfigureNewSEFlexoConcept = new ConfigureNewSEFlexoConcept();
 		configureNewSEFlexoConcepts.add(newConfigureNewSEFlexoConcept);
@@ -88,13 +85,13 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 
 	@Override
 	public String getWizardTitle() {
-		return action.getLocales().localizedForKey("create_virtual_model_reflecting_an_excel_workbook");
+		return getAction().getLocales().localizedForKey("create_virtual_model_reflecting_an_excel_workbook");
 	}
 
 	@Override
 	public Image getDefaultPageImage() {
 		// TODO change icon
-		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_BIG_ICON, IconLibrary.NEW_32_32).getImage();
+		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_BIG_ICON, IconLibrary.BIG_NEW_MARKER).getImage();
 	}
 
 	public ConfigureSemanticsExcelVirtualModel getConfigureSemanticsExcelVirtualModel() {
@@ -120,25 +117,26 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		}
 
 		public CreateSemanticsExcelVirtualModel getAction() {
-			return action;
+			return CreateSemanticsExcelVirtualModelWizard.this.getAction();
 		}
 
 		@Override
 		public String getTitle() {
-			return action.getLocales().localizedForKey("choose_virtual_model_name_and_template_excel");
+			return getAction().getLocales().localizedForKey("choose_virtual_model_name_and_template_excel");
 		}
 
 		@Override
 		public boolean isValid() {
 
 			if (getExcelWorkbookResource() == null) {
-				setIssueMessage(action.getLocales().localizedForKey("please_select_an_excel_workbook_to_be_used_as_a_template"),
+				setIssueMessage(getAction().getLocales().localizedForKey("please_select_an_excel_workbook_to_be_used_as_a_template"),
 						IssueMessageType.ERROR);
 				return false;
 			}
 
 			if (StringUtils.isEmpty(getNewVirtualModelName())) {
-				setIssueMessage(action.getLocales().localizedForKey("please_enter_name_for_new_virtual_model"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_enter_name_for_new_virtual_model"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 
@@ -147,26 +145,26 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		}
 
 		public String getNewVirtualModelName() {
-			return action.getNewVirtualModelName();
+			return getAction().getNewVirtualModelName();
 		}
 
 		public void setNewVirtualModelName(String newVirtualModelName) {
 			if (!newVirtualModelName.equals(getNewVirtualModelName())) {
 				String oldValue = getNewVirtualModelName();
-				action.setNewVirtualModelName(newVirtualModelName);
+				getAction().setNewVirtualModelName(newVirtualModelName);
 				getPropertyChangeSupport().firePropertyChange("newVirtualModelName", oldValue, newVirtualModelName);
 				checkValidity();
 			}
 		}
 
 		public ExcelWorkbookResource getExcelWorkbookResource() {
-			return action.getExcelWorkbookResource();
+			return getAction().getExcelWorkbookResource();
 		}
 
 		public void setExcelWorkbookResource(ExcelWorkbookResource excelWorkbookResource) {
 			if (excelWorkbookResource != getExcelWorkbookResource()) {
 				ExcelWorkbookResource oldValue = getExcelWorkbookResource();
-				action.setExcelWorkbookResource(excelWorkbookResource);
+				getAction().setExcelWorkbookResource(excelWorkbookResource);
 				getPropertyChangeSupport().firePropertyChange("excelWorkbookResource", oldValue, excelWorkbookResource);
 				getPropertyChangeSupport().firePropertyChange("newVirtualModelName", null, getNewVirtualModelName());
 				checkValidity();
@@ -198,23 +196,24 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 		}
 
 		public CreateSemanticsExcelVirtualModel getAction() {
-			return action;
+			return CreateSemanticsExcelVirtualModelWizard.this.getAction();
 		}
 
 		@Override
 		public String getTitle() {
-			return action.getLocales().localizedForKey("identify_new_concept");
+			return getAction().getLocales().localizedForKey("identify_new_concept");
 		}
 
 		@Override
 		public boolean isValid() {
 
 			if (getCellRange() == null) {
-				setIssueMessage(action.getLocales().localizedForKey("please_define_data_range"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_define_data_range"), IssueMessageType.ERROR);
 				return false;
 			}
 			if (StringUtils.isEmpty(getNewConceptName())) {
-				setIssueMessage(action.getLocales().localizedForKey("please_enter_name_for_new_flexo_concept"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_enter_name_for_new_flexo_concept"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 
@@ -264,15 +263,12 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 
 		public ExcelWorkbook getExcelWorkbook() {
 			try {
-				return getAction().getExcelWorkbookResource().getResourceData(null);
+				return getAction().getExcelWorkbookResource().getResourceData();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -333,7 +329,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 	
 		@Override
 		public String getTitle() {
-			return action.getLocales().localizedForKey("choose_entities_to_be_reflected");
+			return getAction().getLocales().localizedForKey("choose_entities_to_be_reflected");
 		}
 	
 		@Override
@@ -345,7 +341,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 			}
 	
 			if (getAction().getTablesToBeReflected() == null || getAction().getTablesToBeReflected().size() == 0) {
-				setIssueMessage(action.getLocales().localizedForKey("please_choose_some_entities"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_choose_some_entities"), IssueMessageType.ERROR);
 				return false;
 			}
 	
@@ -412,7 +408,7 @@ public class CreateSemanticsExcelVirtualModelWizard extends FlexoWizard {
 	
 		@Override
 		public String getTitle() {
-			return action.getLocales().localizedForKey("configure_table_mapping_for") + " " + tableMapping.getTable().getName();
+			return getAction().getLocales().localizedForKey("configure_table_mapping_for") + " " + tableMapping.getTable().getName();
 		}
 	
 		@Override

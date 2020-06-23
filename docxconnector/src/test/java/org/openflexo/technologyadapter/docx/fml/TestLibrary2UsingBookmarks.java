@@ -70,7 +70,6 @@ import org.openflexo.foundation.doc.fml.FlexoTableRole.FlexoTableRoleImpl;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
-import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -110,7 +109,7 @@ import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -292,7 +291,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		templateResource = getDocumentResource("ExampleLibrary2UsingBookmarks.docx");
 
-		assertNotNull(templateDocument = templateResource.getResourceData(null));
+		assertNotNull(templateDocument = templateResource.getResourceData());
 
 		System.out.println(templateDocument.debugStructuredContents());
 
@@ -568,7 +567,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		allBooksProperty = createAllBooksProperty.getNewFlexoProperty();
 		assertNotNull(allBooksProperty);
 
-		libraryVirtualModel.getResource().save(null);
+		libraryVirtualModel.getResource().save();
 
 		System.out.println(libraryVirtualModel.getFMLModelFactory().stringRepresentation(libraryVirtualModel));
 
@@ -813,7 +812,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		updateDocumentActionScheme = createUpdateDocument();
 		reinjectFromDocumentActionScheme = createReinjectFromDocument();
 
-		documentVirtualModel.getResource().save(null);
+		documentVirtualModel.getResource().save();
 
 		System.out.println(documentVirtualModel.getFMLModelFactory().stringRepresentation(documentVirtualModel));
 
@@ -1344,7 +1343,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
 		assertTrue(libraryVMI.isModified());
 
-		libraryVMI.getResource().save(null);
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 
@@ -1454,15 +1453,15 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
 
-		documentVMI.getResource().save(null);
-		newView.getResource().save(null);
+		documentVMI.getResource().save();
+		newView.getResource().save();
 
 		// assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		generatedDocument.getResource().save(null);
+		generatedDocument.getResource().save();
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(44, generatedDocument.getElements().size());
@@ -1537,15 +1536,15 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
 
-		documentVMI.getResource().save(null);
-		newView.getResource().save(null);
+		documentVMI.getResource().save();
+		newView.getResource().save();
 
 		// assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		generatedDocument.getResource().save(null);
+		generatedDocument.getResource().save();
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(62, generatedDocument.getElements().size());
@@ -1766,7 +1765,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 				.getVirtualModelInstance(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
-		newViewResource.loadResourceData(null);
+		newViewResource.loadResourceData();
 		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		// TAKE CARE TO RELOAD all static fields as they are still pointing on
@@ -1808,7 +1807,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		FMLRTVirtualModelInstanceResource libraryVmiResource = newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).get(0);
 		assertNotNull(libraryVmiResource);
 		assertNull(libraryVmiResource.getLoadedResourceData());
-		libraryVmiResource.loadResourceData(null);
+		libraryVmiResource.loadResourceData();
 		assertNotNull(libraryVMI = libraryVmiResource.getVirtualModelInstance());
 		assertEquals(3, libraryVMI.getFlexoConceptInstances().size());
 
@@ -1821,7 +1820,7 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 				.get(0);
 		assertNotNull(documentVmiResource);
 		assertNull(documentVmiResource.getLoadedResourceData());
-		documentVmiResource.loadResourceData(null);
+		documentVmiResource.loadResourceData();
 		assertNotNull(documentVMI = documentVmiResource.getVirtualModelInstance());
 		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
 
@@ -1914,9 +1913,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		assertTrue(documentVMI.isModified());
 		assertTrue(generatedDocument.isModified());
 
-		libraryVMI.getResource().save(null);
-		documentVMI.getResource().save(null);
-		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save();
+		documentVMI.getResource().save();
+		generatedDocument.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2069,9 +2068,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 												// been modified
 		assertTrue(generatedDocument.isModified());
 
-		libraryVMI.getResource().save(null);
-		documentVMI.getResource().save(null);
-		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save();
+		documentVMI.getResource().save();
+		generatedDocument.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2157,9 +2156,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 												// modified
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		documentVMI.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		documentVMI.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2245,8 +2244,8 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 		assertFalse(documentVMI.isModified());
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -2355,9 +2354,9 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 												// added)
 		assertTrue(generatedDocument.isModified());
 
-		generatedDocument.getResource().save(null);
-		documentVMI.getResource().save(null);
-		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save();
+		documentVMI.getResource().save();
+		libraryVMI.getResource().save();
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());

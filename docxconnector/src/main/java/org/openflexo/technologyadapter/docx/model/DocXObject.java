@@ -21,7 +21,7 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import org.openflexo.foundation.doc.FlexoDocObject;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**

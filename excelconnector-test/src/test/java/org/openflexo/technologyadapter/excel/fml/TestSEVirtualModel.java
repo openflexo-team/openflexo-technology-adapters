@@ -184,7 +184,7 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 
 		assertNotNull(mappingCreationScheme = mappingVirtualModel.getCreationSchemes().get(0));
 
-		mappingVirtualModel.getResource().save(null);
+		mappingVirtualModel.getResource().save();
 
 		System.out.println(mappingVirtualModel.getFMLRepresentation());
 
@@ -232,12 +232,12 @@ public class TestSEVirtualModel extends AbstractTestExcel {
 		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
 
 		CreateSEResource createSEResourceAction = (CreateSEResource) action1.getAssignableAction();
-		createSEResourceAction.setExcelWorkbook(new DataBinding<>("parameters.excelResource.getResourceData(null)"));
+		createSEResourceAction.setExcelWorkbook(new DataBinding<>("parameters.excelResource.getResourceData()"));
 		createSEResourceAction.setResourceName(new DataBinding<String>("(this.name + \"_xls\")"));
 		createSEResourceAction.setResourceCenter(new DataBinding<FlexoResourceCenter<?>>("this.resourceCenter"));
 		createSEResourceAction.setCreationScheme(mappingCreationScheme);
 
-		rootVirtualModel.getResource().save(null);
+		rootVirtualModel.getResource().save();
 
 		System.out.println(rootVirtualModel.getFMLRepresentation());
 

@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.gina.controller.action;
 
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -47,8 +46,7 @@ import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
@@ -70,38 +68,31 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledFIBVirtualModel> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLControlledFIBVirtualModel>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledFIBVirtualModel action) {
-				Wizard wizard = new CreateFMLControlledFIBVirtualModelWizard(action, getController());
-				WizardDialog dialog = new WizardDialog(wizard, getController());
-				dialog.showDialog();
-				if (dialog.getStatus() != Status.VALIDATED) {
-					// Operation cancelled
-					return false;
-				}
-				return true;
-				// return instanciateAndShowDialog(action, VPMCst.CREATE_VIRTUAL_MODEL_DIALOG_FIB);
+	protected FlexoActionRunnable<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
+		return (e, action) -> {
+			Wizard wizard = new CreateFMLControlledFIBVirtualModelWizard(action, getController());
+			WizardDialog dialog = new WizardDialog(wizard, getController());
+			dialog.showDialog();
+			if (dialog.getStatus() != Status.VALIDATED) {
+				// Operation cancelled
+				return false;
 			}
+			return true;
+			// return instanciateAndShowDialog(action, VPMCst.CREATE_VIRTUAL_MODEL_DIALOG_FIB);
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel>() {
-			@Override
-			public boolean run(EventObject e, CreateFMLControlledFIBVirtualModel action) {
-
-				getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
-				getController().selectAndFocusObject(action.getNewVirtualModel());
-				return true;
-			}
+	protected FlexoActionRunnable<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> getDefaultFinalizer() {
+		return (e, action) -> {
+			getController().focusOnTechnologyAdapter(getController().getTechnologyAdapter(GINATechnologyAdapter.class));
+			getController().selectAndFocusObject(action.getNewVirtualModel());
+			return true;
 		};
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateFMLControlledFIBVirtualModel, FlexoObject, FMLObject> actionType) {
 		return IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 

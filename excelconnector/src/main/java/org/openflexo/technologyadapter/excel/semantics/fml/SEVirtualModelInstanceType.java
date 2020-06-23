@@ -38,12 +38,15 @@
 
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections15.map.HashedMap;
 import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
@@ -71,7 +74,7 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 		return SEVirtualModelInstance.class;
 	}
 
-	private static Map<VirtualModel, SEVirtualModelInstanceType> types = new HashedMap<>();
+	private static Map<VirtualModel, SEVirtualModelInstanceType> types = new HashMap<>();
 
 	public static SEVirtualModelInstanceType getVirtualModelInstanceType(VirtualModel aVirtualModel) {
 		if (aVirtualModel != null) {
@@ -94,7 +97,8 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SEVirtualModelInstanceTypeFactory extends AbstractVirtualModelInstanceTypeFactory<SEVirtualModelInstanceType> {
+	public static class SEVirtualModelInstanceTypeFactory
+			extends AbstractVirtualModelInstanceTypeFactory<SEVirtualModelInstanceType, ExcelTechnologyAdapter> {
 
 		public SEVirtualModelInstanceTypeFactory(ExcelTechnologyAdapter technologyAdapter) {
 			super(technologyAdapter);
@@ -113,6 +117,24 @@ public class SEVirtualModelInstanceType extends VirtualModelInstanceType {
 		@Override
 		public SEVirtualModelInstanceType getType(VirtualModel virtualModel) {
 			return getVirtualModelInstanceType(virtualModel);
+		}
+
+		@Override
+		public VirtualModel resolveVirtualModel(SEVirtualModelInstanceType typeToResolve) {
+			try {
+				return getTechnologyAdapter().getTechnologyAdapterService().getServiceManager().getVirtualModelLibrary()
+						.getVirtualModel(typeToResolve.getConceptURI());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 	}

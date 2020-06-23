@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.gina.controller;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.controller.view.StandardFlexoConceptView;
-import org.openflexo.fml.controller.view.VirtualModelView;
+import org.openflexo.fml.controller.view.StandardVirtualModelView;
 import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -103,7 +103,7 @@ public class FMLControlledFIBNaturePerspective extends SpecificNaturePerspective
 		if (virtualModel.hasNature(getVirtualModelNature())) {
 			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
 		}
-		return new VirtualModelView(virtualModel, getController(), this);
+		return new StandardVirtualModelView(virtualModel, getController(), this);
 	}
 
 	@Override

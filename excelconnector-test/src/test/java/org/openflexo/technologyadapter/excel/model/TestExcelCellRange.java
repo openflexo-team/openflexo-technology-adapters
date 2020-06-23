@@ -71,7 +71,7 @@ public class TestExcelCellRange extends AbstractTestExcel {
 	public void testLoadExcelDocument() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		workbook1Resource = getExcelResource("Workbook1.xlsx");
-		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData(null);
+		ExcelWorkbook workbook1 = workbook1Resource.loadResourceData();
 		System.out.println("Workbook1.xlsx:\n" + workbook1);
 
 		assertEquals(1, workbook1.getExcelSheets().size());

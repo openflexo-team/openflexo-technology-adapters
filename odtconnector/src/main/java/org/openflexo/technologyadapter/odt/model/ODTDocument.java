@@ -21,9 +21,9 @@
 package org.openflexo.technologyadapter.odt.model;
 
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * Represents a {@link ODTDocument}<br>

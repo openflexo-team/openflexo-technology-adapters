@@ -43,15 +43,13 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.fml.binding.PowerpointBindingFactory;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
@@ -64,8 +62,8 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  * 
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
-@DeclareResourceTypes({ PowerpointSlideshowResourceFactory.class })
-public class PowerpointTechnologyAdapter extends TechnologyAdapter {
+@DeclareResourceFactories({ PowerpointSlideshowResourceFactory.class })
+public class PowerpointTechnologyAdapter extends TechnologyAdapter<PowerpointTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(PowerpointTechnologyAdapter.class.getPackage().getName());
 
@@ -86,13 +84,8 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/PowerPointTechnologyAdapter";
-	}
-
-	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
-		return new PowerpointTechnologyContextManager(this, service);
 	}
 
 	@Override
@@ -193,26 +186,18 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
-
-	@Override
-	public PowerpointTechnologyContextManager getTechnologyContextManager() {
-		return (PowerpointTechnologyContextManager) super.getTechnologyContextManager();
-	}
 
 	/**
 	 * 

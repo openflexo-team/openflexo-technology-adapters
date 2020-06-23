@@ -32,9 +32,9 @@ import org.openflexo.foundation.resource.GitResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.test.OpenFlexoTestCaseWithGit;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
@@ -158,8 +158,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				newVirtualModel.addToModelSlots(modelSlot);
 			}
 		}
-		newViewPoint.getResource().save(null);
-		newVirtualModel.getResource().save(null);
+		newViewPoint.getResource().save();
+		newVirtualModel.getResource().save();
 
 		assertNotNull(newVirtualModel);
 	}
@@ -174,7 +174,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			logger.info("Load file " + pssResource.getIODelegate().toString());
 			assertNotNull(pssResource);
 			assertFalse(pssResource.isLoaded());
-			pssResource.loadResourceData(null);
+			pssResource.loadResourceData();
 			assertTrue(pssResource.isLoaded());
 			assertNotNull(pssResource.getLoadedResourceData());
 		}
@@ -196,7 +196,6 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				try {
 					gitDelegate.save(flexoResource);
 				} catch (NotImplementedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ObjectId commitId = gitDelegate.getGitObjectId();
@@ -253,7 +252,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		// pptFile,
 		// powerpointAdapter.getTechnologyContextManager(), resourceCenter);
 
-		modelRes.save(null);
+		modelRes.save();
 
 		System.out.println("Serialization artefact = " + modelRes.getIODelegate().getSerializationArtefact());
 		System.out.println("pptFile = " + pptFile);

@@ -47,17 +47,16 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelObject;
+import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlotURIProcessor.BasicExcelModelSlotURIProcessorImpl.class)
 @Deprecated
-public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
+public interface BasicExcelModelSlotURIProcessor extends FlexoConceptObject {
 
 	// URI Calculation
 	public String getURIForObject(ModelSlotInstance msInstance, ExcelObject excelObject);
@@ -98,11 +97,6 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 		@Override
 		public FlexoConcept getFlexoConcept() {
 			return getModelSlot().getFlexoConcept();
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			return getModelSlot().getVirtualModel();
 		}
 
 		@Override
@@ -167,13 +161,11 @@ public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 		@Override
 		public BindingModel getBindingModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public String getURI() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

@@ -34,22 +34,19 @@
  */
 package org.openflexo.technologyadapter.excel.controller.action;
 
-import java.util.logging.Logger;
-
 import javax.swing.Icon;
 
 import org.openflexo.components.wizard.Wizard;
 import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFactory;
-import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.FlexoActionRunnable;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.model.exceptions.ModelExecutionException;
+import org.openflexo.pamela.exceptions.ModelExecutionException;
 import org.openflexo.technologyadapter.excel.action.CreateSemanticsExcelVirtualModel;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -57,16 +54,12 @@ import org.openflexo.view.controller.FlexoController;
 
 public class CreateSemanticsExcelVirtualModelInitializer
 		extends ActionInitializer<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
-
 	public CreateSemanticsExcelVirtualModelInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateSemanticsExcelVirtualModel.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateSemanticsExcelVirtualModel> getDefaultInitializer() {
+	protected FlexoActionRunnable<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> getDefaultInitializer() {
 		return (e, action) -> {
 			Wizard wizard = new CreateSemanticsExcelVirtualModelWizard(action, getController());
 			WizardDialog dialog = new WizardDialog(wizard, getController());
@@ -80,12 +73,7 @@ public class CreateSemanticsExcelVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateSemanticsExcelVirtualModel> getDefaultFinalizer() {
-		return (e, action) -> true;
-	}
-
-	@Override
-	protected FlexoExceptionHandler<CreateSemanticsExcelVirtualModel> getDefaultExceptionHandler() {
+	protected FlexoExceptionHandler<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> getDefaultExceptionHandler() {
 		return (exception, action) -> {
 			Throwable cause = exception.getCause();
 			if (cause instanceof ModelExecutionException) {
@@ -102,7 +90,7 @@ public class CreateSemanticsExcelVirtualModelInitializer
 	}
 
 	@Override
-	protected Icon getEnabledIcon(FlexoActionFactory<?, ?, ?> actionType) {
+	protected Icon getEnabledIcon(FlexoActionFactory<CreateSemanticsExcelVirtualModel, FlexoObject, FMLObject> actionType) {
 		return IconFactory.getImageIcon(FMLIconLibrary.VIRTUAL_MODEL_ICON, FMLIconLibrary.NEW_MARKER);
 	}
 

@@ -89,7 +89,7 @@ public abstract class AbstractTestExcel extends OpenflexoProjectAtRunTimeTestCas
 
 		ExcelWorkbook document = null;
 		try {
-			document = documentResource.getResourceData(null);
+			document = documentResource.getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {

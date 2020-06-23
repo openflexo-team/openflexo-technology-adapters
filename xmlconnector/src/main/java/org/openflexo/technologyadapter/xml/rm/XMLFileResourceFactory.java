@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.TechnologySpecificFlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
@@ -60,12 +60,7 @@ public class XMLFileResourceFactory extends TechnologySpecificFlexoResourceFacto
 	}
 
 	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
-	}
-
-	@Override
-	protected <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> XMLFileResource registerResource(XMLFileResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the XMLModelRepository of supplied resource center

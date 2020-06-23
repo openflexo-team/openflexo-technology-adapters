@@ -4,9 +4,13 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.9.0</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	<name>Excel technology connector</name>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://bugs.openflexo.org/browse/XLSX/</url>
+    </issueManagement>
 	<build>
 		<plugins>
 			<plugin>

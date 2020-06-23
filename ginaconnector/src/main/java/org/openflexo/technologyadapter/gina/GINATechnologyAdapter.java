@@ -20,10 +20,8 @@
 
 package org.openflexo.technologyadapter.gina;
 
-import java.util.logging.Logger;
-
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -43,11 +41,8 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 
 @DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
-@DeclareResourceTypes({ GINAFIBComponentResourceFactory.class })
-public class GINATechnologyAdapter extends TechnologyAdapter {
-
-	private static final Logger LOGGER = Logger.getLogger(GINATechnologyAdapter.class.getPackage().getName());
-
+@DeclareResourceFactories({ GINAFIBComponentResourceFactory.class })
+public class GINATechnologyAdapter extends TechnologyAdapter<GINATechnologyAdapter> {
 	public GINATechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
 
@@ -57,7 +52,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/GINATechnologyAdapter";
 	}
 
@@ -68,13 +63,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public GINATechnologyContextManager getTechnologyContextManager() {
-		// TODO Auto-generated method stub
 		return (GINATechnologyContextManager) super.getTechnologyContextManager();
 	}
 
 	@Override
 	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -134,13 +127,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		if (contents instanceof File) {
 			return (initializeGINAFile(resourceCenter, (File) contents) != null);
 		}
@@ -149,19 +140,16 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

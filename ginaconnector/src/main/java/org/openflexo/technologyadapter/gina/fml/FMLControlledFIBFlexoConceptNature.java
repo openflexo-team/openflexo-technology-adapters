@@ -93,15 +93,12 @@ public class FMLControlledFIBFlexoConceptNature implements FlexoConceptNature {
 		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(flexoConcept);
 		if (modelSlot != null && modelSlot.getTemplateResource() != null) {
 			try {
-				return modelSlot.getTemplateResource().getResourceData(null);
+				return modelSlot.getTemplateResource().getResourceData();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

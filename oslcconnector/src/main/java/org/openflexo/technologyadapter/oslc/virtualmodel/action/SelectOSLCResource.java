@@ -46,9 +46,9 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
@@ -60,7 +60,8 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalo
 public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> {
 
 	public static abstract class SelectOSLCResourceImpl
-			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource> implements SelectOSLCResource {
+			extends AbstractFetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCResource, List<OSLCResource>>
+			implements SelectOSLCResource {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCResource.class.getPackage().getName());
 
@@ -70,7 +71,7 @@ public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLC
 		}
 
 		@Override
-		public List<OSLCResource> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<OSLCResource> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			List<OSLCResource> selectedOSLCResources = new ArrayList<>();
 

@@ -42,7 +42,7 @@ import java.awt.Image;
 import java.util.logging.Logger;
 
 import org.openflexo.ApplicationContext;
-import org.openflexo.components.wizard.FlexoWizard;
+import org.openflexo.components.wizard.FlexoActionWizard;
 import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
@@ -52,29 +52,26 @@ import org.openflexo.technologyadapter.gina.model.action.CreateGINAFIBComponent;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateGINAFIBComponentWizard extends FlexoWizard {
+public class CreateGINAFIBComponentWizard extends FlexoActionWizard<CreateGINAFIBComponent> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CreateGINAFIBComponentWizard.class.getPackage().getName());
 
-	private final CreateGINAFIBComponent action;
-
 	private final DescribeNewComponent configureNewConcept;
 
 	public CreateGINAFIBComponentWizard(CreateGINAFIBComponent action, FlexoController controller) {
-		super(controller);
-		this.action = action;
+		super(action, controller);
 		addStep(configureNewConcept = new DescribeNewComponent());
 	}
 
 	@Override
 	public String getWizardTitle() {
-		return action.getLocales().localizedForKey("create_new_component");
+		return getAction().getLocales().localizedForKey("create_new_component");
 	}
 
 	@Override
 	public Image getDefaultPageImage() {
-		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_BIG_ICON, IconLibrary.NEW_32_32).getImage();
+		return IconFactory.getImageIcon(GINAIconLibrary.GINA_TECHNOLOGY_BIG_ICON, IconLibrary.BIG_NEW_MARKER).getImage();
 	}
 
 	public DescribeNewComponent getConfigureNewConcept() {
@@ -95,7 +92,7 @@ public class CreateGINAFIBComponentWizard extends FlexoWizard {
 		}
 
 		public CreateGINAFIBComponent getAction() {
-			return action;
+			return CreateGINAFIBComponentWizard.this.getAction();
 		}
 
 		@Override
@@ -115,26 +112,26 @@ public class CreateGINAFIBComponentWizard extends FlexoWizard {
 		}
 
 		public String getComponentName() {
-			return action.getComponentName();
+			return getAction().getComponentName();
 		}
 
 		public void setComponentName(String newComponentName) {
 			if (!newComponentName.equals(getComponentName())) {
 				String oldValue = getComponentName();
-				action.setComponentName(newComponentName);
+				getAction().setComponentName(newComponentName);
 				getPropertyChangeSupport().firePropertyChange("componentName", oldValue, newComponentName);
 				checkValidity();
 			}
 		}
 
 		public String getDescription() {
-			return action.getDescription();
+			return getAction().getDescription();
 		}
 
 		public void setDescription(String newComponentDescription) {
 			if (!newComponentDescription.equals(getDescription())) {
 				String oldValue = getDescription();
-				action.setDescription(newComponentDescription);
+				getAction().setDescription(newComponentDescription);
 				getPropertyChangeSupport().firePropertyChange("description", oldValue, newComponentDescription);
 				checkValidity();
 			}

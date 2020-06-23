@@ -72,7 +72,6 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	private boolean selectObjectProperties = true;
 	private boolean selectDataProperties = true;
 
-
 	public FIBXMLPropertySelector(XMLProperty editedObject) {
 		super(editedObject);
 	}
@@ -112,23 +111,17 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	}
 
 	private boolean modelWillBeUpdated = false;
-	
+
 	private void performFireModelUpdated() {
 		if (modelWillBeUpdated) {
 			return;
-		} else {
-			modelWillBeUpdated = true;
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					getPropertyChangeSupport().firePropertyChange("context", null, context);
-					modelWillBeUpdated = false;
-				}
-			});
 		}
+		modelWillBeUpdated = true;
+		SwingUtilities.invokeLater(() -> {
+			getPropertyChangeSupport().firePropertyChange("context", null, context);
+			modelWillBeUpdated = false;
+		});
 	}
-
-
 
 	public boolean getSelectObjectProperties() {
 		return selectObjectProperties;
@@ -147,7 +140,5 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	public void setSelectDataProperties(boolean selectDataProperties) {
 		this.selectDataProperties = selectDataProperties;
 	}
-
-	
 
 }

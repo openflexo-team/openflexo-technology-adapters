@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc;
 
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -46,10 +45,5 @@ public class OSLCTechnologyContextManager extends TechnologyContextManager<OSLCT
 
 	public OSLCTechnologyContextManager(OSLCTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
-	}
-
-	@Override
-	public OSLCTechnologyAdapter getTechnologyAdapter() {
-		return super.getTechnologyAdapter();
 	}
 }

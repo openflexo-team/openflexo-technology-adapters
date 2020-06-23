@@ -79,10 +79,10 @@ import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphIndent;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphNumbering;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphSpacing.LineSpacingRule;
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.foundation.doc.FlexoParagraphStyle.ParagraphTab;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph.DocXParagraphImpl;
@@ -453,7 +453,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 					try {
 						font = getThemePart(document).getFontFromTheme(rFonts.getAsciiTheme()/*, themeFontLang*/);
 					} catch (Docx4JException e) {
-						// TODO Auto-generated catch block
 						// log.error(e.getMessage(), e);
 					}
 					if (font != null) {

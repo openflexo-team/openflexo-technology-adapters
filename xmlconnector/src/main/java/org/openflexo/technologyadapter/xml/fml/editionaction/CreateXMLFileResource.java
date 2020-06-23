@@ -48,10 +48,10 @@ import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.xml.AbstractXMLModelSlot;
 import org.openflexo.technologyadapter.xml.FreeXMLURIProcessor;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
@@ -93,13 +93,13 @@ public interface CreateXMLFileResource
 
 			XMLResource newResource;
 			try {
-				newResource = createResource(xmlTA, XMLFileResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
-						XMLFileResource.XML_FILE_EXTENSION, true);
+				newResource = createResource(xmlTA, XMLFileResourceFactory.class, evaluationContext, XMLFileResource.XML_FILE_EXTENSION,
+						true);
 
-				newResource.save(null);
+				newResource.save();
 				newResource.setIsModified();
 
-				XMLModel xmlModel = newResource.getResourceData(null);
+				XMLModel xmlModel = newResource.getResourceData();
 
 				return xmlModel;
 			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {

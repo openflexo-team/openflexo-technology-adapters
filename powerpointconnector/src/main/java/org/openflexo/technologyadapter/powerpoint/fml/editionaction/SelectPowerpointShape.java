@@ -45,9 +45,9 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
@@ -59,7 +59,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> {
 
 	public static abstract class SelectPowerpointShapeImpl
-			extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape> implements SelectPowerpointShape {
+			extends AbstractFetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlideshow, PowerpointShape, List<PowerpointShape>>
+			implements SelectPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointShape.class.getPackage().getName());
 
@@ -69,7 +70,7 @@ public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModel
 		}
 
 		@Override
-		public List<PowerpointShape> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<PowerpointShape> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			return null;
 		}

@@ -49,10 +49,10 @@ import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -72,7 +72,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 public interface CreateExcelResource extends AbstractCreateResource<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	public static abstract class CreateExcelResourceImpl
-			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter>implements CreateExcelResource {
+			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> implements CreateExcelResource {
 
 		private static final Logger logger = Logger.getLogger(CreateExcelResourceImpl.class.getPackage().getName());
 
@@ -100,13 +100,12 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 
 			ExcelWorkbookResource newResource;
 			try {
-				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
-						".xlsx", true);
+				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, evaluationContext, ".xlsx", true);
 				System.out.println("Return new excel workbook resource: " + newResource);
 
 				newResource.setIsModified();
 
-				ExcelWorkbook workbook = newResource.getResourceData(null);
+				ExcelWorkbook workbook = newResource.getResourceData();
 
 				System.out.println("Return " + workbook);
 				return workbook;

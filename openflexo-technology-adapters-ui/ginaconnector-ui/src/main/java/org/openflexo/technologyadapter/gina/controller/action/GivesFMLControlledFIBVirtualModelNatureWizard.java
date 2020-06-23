@@ -43,7 +43,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.ApplicationContext;
-import org.openflexo.components.wizard.FlexoWizard;
+import org.openflexo.components.wizard.FlexoActionWizard;
 import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -62,25 +62,18 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class GivesFMLControlledFIBVirtualModelNatureWizard extends FlexoWizard {
+public class GivesFMLControlledFIBVirtualModelNatureWizard extends FlexoActionWizard<GivesFMLControlledFIBVirtualModelNature> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(GivesFMLControlledFIBVirtualModelNatureWizard.class.getPackage().getName());
-
-	private final GivesFMLControlledFIBVirtualModelNature action;
 
 	private final ChooseStrategy chooseStrategy;
 	private UseExistingGINAFIBComponent useExistingGINAFIBComponent;
 	private CreateNewGINAFIBComponent createNewGINAFIBComponent;
 
 	public GivesFMLControlledFIBVirtualModelNatureWizard(GivesFMLControlledFIBVirtualModelNature action, FlexoController controller) {
-		super(controller);
-		this.action = action;
+		super(action, controller);
 		addStep(chooseStrategy = new ChooseStrategy());
-	}
-
-	public GivesFMLControlledFIBVirtualModelNature getAction() {
-		return action;
 	}
 
 	@Override
@@ -92,7 +85,7 @@ public class GivesFMLControlledFIBVirtualModelNatureWizard extends FlexoWizard {
 	public Image getDefaultPageImage() {
 		return IconFactory
 				.getImageIcon(IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_BIG_ICON, FMLIconLibrary.VIRTUAL_MODEL_BIG_MARKER),
-						IconLibrary.NEW_32_32)
+						IconLibrary.BIG_NEW_MARKER)
 				.getImage();
 	}
 

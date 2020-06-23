@@ -93,7 +93,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, false);
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
-			XMLModel model = ((XMLModel) taRes.getResourceData(null));
+			XMLModel model = ((XMLModel) taRes.getResourceData());
 			if (model.getNamespace().size() == 2) {
 				NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
 				NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
@@ -111,7 +111,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 				myWriter.writeStartDocument("UTF-8", "1.0");
 				myWriter.writeCharacters(LINE_SEP);
 
-				XMLIndividual rootIndiv = ((XMLModel) taRes.getResourceData(null)).getRoot();
+				XMLIndividual rootIndiv = ((XMLModel) taRes.getResourceData()).getRoot();
 
 				if (rootIndiv != null) {
 					writeRootElement(rootIndiv, NSURI, NSPrefix);

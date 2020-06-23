@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.oslc;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -59,9 +59,9 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
  */
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
-@DeclareResourceTypes({ OSLCResourceFactory.class })
-public class OSLCTechnologyAdapter extends TechnologyAdapter {
-	private static String OSLC_FILE_EXTENSION = ".oslc";
+@DeclareResourceFactories({ OSLCResourceFactory.class })
+public class OSLCTechnologyAdapter extends TechnologyAdapter<OSLCTechnologyAdapter> {
+	// Unused private static String OSLC_FILE_EXTENSION = ".oslc";
 
 	protected static final Logger logger = Logger.getLogger(OSLCTechnologyAdapter.class.getPackage().getName());
 
@@ -76,7 +76,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/OSLCTechnologyAdapter";
 	}
 
@@ -179,7 +179,6 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -197,19 +196,16 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

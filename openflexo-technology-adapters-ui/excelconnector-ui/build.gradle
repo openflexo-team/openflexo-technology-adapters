@@ -13,16 +13,3 @@ dependencies {
   // testing dep
     testCompile flexoUiTest()
 }
-task nonuiTest(type: Test) {
-  ignoreFailures = true
-  exclude '**/TestFIBCellRangeSelector.class'
-  jvmArgs += ["-Djava.awt.headless=true"]
-}
-
-task uiTest(type: Test,dependsOn: 'nonuiTest') {
-  ignoreFailures = true
-  include '**/TestFIBCellRangeSelector.class'
-}
-
-task test(overwrite: true,dependsOn: 'uiTest') {
-}

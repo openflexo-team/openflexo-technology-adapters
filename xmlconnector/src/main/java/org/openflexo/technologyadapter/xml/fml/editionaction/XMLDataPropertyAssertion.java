@@ -48,16 +48,16 @@ import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.fml.editionaction.AbstractAssertion;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.validation.ValidationError;
-import org.openflexo.model.validation.ValidationIssue;
-import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.validation.ValidationError;
+import org.openflexo.pamela.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationRule;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -77,11 +77,11 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 
 	@Override
 	@Getter(value = ACTION_KEY, inverse = AddXMLIndividual.DATA_ASSERTIONS_KEY)
-	public AddIndividual<?, ?, ?> getAction();
+	public AddIndividual<?, ?, ?, ?> getAction();
 
 	@Override
 	@Setter(ACTION_KEY)
-	public void setAction(AddIndividual<?, ?, ?> action);
+	public void setAction(AddIndividual<?, ?, ?, ?> action);
 
 	@Getter(value = DATA_PROPERTY_NAME_KEY)
 	@XMLAttribute
@@ -201,8 +201,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 		public ValidationIssue<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> applyValidation(
 				XMLDataPropertyAssertion assertion) {
 			if (assertion.getDataProperty() == null) {
-				return new ValidationError<>(this, assertion,
-						"data_property_assertion_does_not_define_an_ontology_property");
+				return new ValidationError<>(this, assertion, "data_property_assertion_does_not_define_an_ontology_property");
 			}
 			return null;
 		}

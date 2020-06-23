@@ -49,9 +49,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
@@ -268,7 +268,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 								return obj;
 							}
 						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

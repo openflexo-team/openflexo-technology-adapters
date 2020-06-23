@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;

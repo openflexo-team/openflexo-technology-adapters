@@ -39,10 +39,10 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 
 @ModelEntity

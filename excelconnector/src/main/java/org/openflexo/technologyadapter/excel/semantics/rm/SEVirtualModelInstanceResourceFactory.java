@@ -33,7 +33,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstanceModelFactory;
@@ -98,7 +98,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 		if (createEmptyContents) {
 			SEVirtualModelInstance resourceData = createEmptyContents(returned);
 			resourceData.setVirtualModel(virtualModelResource.getVirtualModel());
-			returned.save(null);
+			returned.save();
 			if (resourceData.getFMLRunTimeEngine() != null) {
 				// TODO: today FMLRTVirtualModelInstance is a RunTimeEvaluationContext
 				// TODO: design issue, we should separate FlexoConceptInstance from RunTimeEvaluationContext
@@ -143,7 +143,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 		if (createEmptyContents) {
 			SEVirtualModelInstance resourceData = createEmptyContents(returned);
 			resourceData.setVirtualModel(virtualModelResource.getVirtualModel());
-			returned.save(null);
+			returned.save();
 			if (resourceData.getFMLRunTimeEngine() != null) {
 				// TODO: today FMLRTVirtualModelInstance is a RunTimeEvaluationContext
 				// TODO: design issue, we should separate FlexoConceptInstance from RunTimeEvaluationContext
@@ -220,7 +220,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 	}
 
 	@Override
-	protected <I> SEVirtualModelInstanceResource registerResource(SEVirtualModelInstanceResource resource,
+	public <I> SEVirtualModelInstanceResource registerResource(SEVirtualModelInstanceResource resource,
 			FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
@@ -362,12 +362,6 @@ public class SEVirtualModelInstanceResourceFactory extends
 	}
 
 	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public SEVirtualModelInstance makeEmptyResourceData(SEVirtualModelInstanceResource resource) {
 		return resource.getFactory().newInstance(SEVirtualModelInstance.class/*, resource.getServiceManager()*/);
 	}
@@ -376,7 +370,7 @@ public class SEVirtualModelInstanceResourceFactory extends
 	 * Build and return model factory to use for resource data managing
 	 */
 	@Override
-	public AbstractVirtualModelInstanceModelFactory<?> makeResourceDataFactory(SEVirtualModelInstanceResource resource,
+	public AbstractVirtualModelInstanceModelFactory<?> makeModelFactory(SEVirtualModelInstanceResource resource,
 			TechnologyContextManager<ExcelTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new SEVirtualModelInstanceModelFactory(resource,
 				technologyContextManager.getTechnologyAdapter().getServiceManager().getEditingContext(),

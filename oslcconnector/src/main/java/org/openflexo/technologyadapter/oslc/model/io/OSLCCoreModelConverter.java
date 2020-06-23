@@ -48,9 +48,9 @@ import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
 import org.eclipse.lyo.oslc4j.core.model.Service;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCCreationFactory;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCQueryCapability;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
@@ -74,7 +74,6 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCServiceProviderCatalog.class,
 					OSLCServiceProvider.class, OSLCQueryCapability.class, OSLCCreationFactory.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

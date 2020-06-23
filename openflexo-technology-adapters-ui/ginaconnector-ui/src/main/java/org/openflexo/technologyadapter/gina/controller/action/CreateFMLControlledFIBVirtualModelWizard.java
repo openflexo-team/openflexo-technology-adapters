@@ -88,7 +88,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 	public Image getDefaultPageImage() {
 		return IconFactory
 				.getImageIcon(IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_BIG_ICON, FMLIconLibrary.VIRTUAL_MODEL_BIG_MARKER),
-						IconLibrary.NEW_32_32)
+						IconLibrary.BIG_NEW_MARKER)
 				.getImage();
 	}
 

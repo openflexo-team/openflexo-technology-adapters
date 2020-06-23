@@ -119,16 +119,12 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 					oslcRestClient = new OslcRestClient(providers, oslcRestClient.getUri(), oslcRestClient.getMediaType(),
 							oslcRestClient.getReadTimeout(), oAuth);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (InvalidCredentialsException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (OAuthException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (URISyntaxException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -174,7 +170,6 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	@Override
 	public <T> ClientResponse removeOslcResourceReturnClientResponse(T resource) {
-		// TODO Auto-generated method stub
 		return oslcRestClient.removeOslcResourceReturnClientResponse();
 	}
 

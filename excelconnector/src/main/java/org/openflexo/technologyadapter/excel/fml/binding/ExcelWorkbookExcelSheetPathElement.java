@@ -46,6 +46,7 @@ import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 public class ExcelWorkbookExcelSheetPathElement extends SimplePathElement {
 
@@ -55,27 +56,27 @@ public class ExcelWorkbookExcelSheetPathElement extends SimplePathElement {
 
 	@Override
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPropertyName();
 	}
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		// TODO Auto-generated method stub
-		return null;
+		return "sheet " + getPropertyName();
 	}
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException {
-		// TODO Auto-generated method stub
+		if (target instanceof ExcelWorkbook) {
+			ExcelWorkbook ew = (ExcelWorkbook) target;
+			ew.getExcelSheetByName(getPropertyName());
+		}
 		return null;
 	}
 
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		// TODO Auto-generated method stub
 
 	}
 

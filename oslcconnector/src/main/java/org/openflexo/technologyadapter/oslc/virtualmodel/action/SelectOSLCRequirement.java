@@ -46,9 +46,9 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
@@ -60,7 +60,8 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> {
 
 	public static abstract class SelectOSLCRequirementImpl
-			extends FetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement> implements SelectOSLCRequirement {
+			extends AbstractFetchRequestImpl<OSLCCoreModelSlot, OSLCServiceProviderCatalog, OSLCRequirement, List<OSLCRequirement>>
+			implements SelectOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(SelectOSLCRequirement.class.getPackage().getName());
 
@@ -70,7 +71,7 @@ public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, O
 		}
 
 		@Override
-		public List<OSLCRequirement> execute(RunTimeEvaluationContext evaluationContext) {
+		public List<OSLCRequirement> performExecute(RunTimeEvaluationContext evaluationContext) {
 
 			// Unused OSLCServiceProviderCatalog receiver = getReceiver(evaluationContext);
 

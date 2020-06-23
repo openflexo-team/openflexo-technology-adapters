@@ -39,8 +39,8 @@
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
 import org.openflexo.foundation.fml.editionaction.RoleSpecificAction;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;

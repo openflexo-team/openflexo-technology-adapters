@@ -61,7 +61,7 @@ public class OSLCIconLibrary {
 	public static final ImageIcon OSLC_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/oslc_16x16.png"));
 	public static final ImageIcon OSLC_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/oslc_32x32.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (OSLCResource.class.isAssignableFrom(objectClass)) {
 			return OSLC_TECHNOLOGY_ICON;
 		}

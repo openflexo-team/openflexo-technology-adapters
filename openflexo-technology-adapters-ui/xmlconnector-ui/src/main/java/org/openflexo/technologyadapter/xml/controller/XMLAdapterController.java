@@ -190,7 +190,7 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
+	public boolean hasModuleViewForObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof XMLObject) {
 			return true;
 		}
@@ -198,7 +198,7 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+	public String getWindowTitleforObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof XMLObject) {
 			return "XML Object: " + ((XMLObject) object).getName();
 		}

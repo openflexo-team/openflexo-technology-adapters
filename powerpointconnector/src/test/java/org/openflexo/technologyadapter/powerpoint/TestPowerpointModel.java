@@ -61,7 +61,7 @@ import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceFactory;
@@ -189,8 +189,8 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 				newVirtualModel.addToModelSlots(modelSlot);
 			}
 		}
-		newViewPoint.getResource().save(null);
-		newVirtualModel.getResource().save(null);
+		newViewPoint.getResource().save();
+		newVirtualModel.getResource().save();
 		/*
 		 * } catch (SaveResourceException e) { fail(e.getMessage()); }
 		 */
@@ -209,7 +209,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 			logger.info("Load file " + pssResource.getIODelegate().toString());
 			assertNotNull(pssResource);
 			assertFalse(pssResource.isLoaded());
-			pssResource.loadResourceData(null);
+			pssResource.loadResourceData();
 			assertTrue(pssResource.isLoaded());
 			assertNotNull(pssResource.getLoadedResourceData());
 		}
@@ -238,7 +238,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		// PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(),
 		// pptFile,
 		// powerpointAdapter.getTechnologyContextManager(), resourceCenter);
-		modelRes.save(null);
+		modelRes.save();
 		assertTrue(pptFile.exists());
 
 		modelRes.delete();

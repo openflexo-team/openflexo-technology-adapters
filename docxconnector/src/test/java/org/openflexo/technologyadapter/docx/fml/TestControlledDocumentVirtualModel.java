@@ -80,7 +80,7 @@ import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -202,7 +202,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		templateResource = getDocumentResource("StructuredDocument.docx");
 
-		assertNotNull(templateDocument = templateResource.getResourceData(null));
+		assertNotNull(templateDocument = templateResource.getResourceData());
 
 		assertEquals(13, templateDocument.getElements().size());
 
@@ -381,7 +381,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		assertEquals(fragment, createFragment.getFragment());
 
-		virtualModel.getResource().save(null);
+		virtualModel.getResource().save();
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
@@ -471,7 +471,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		System.out.println("FML: " + newVirtualModelInstance.getVirtualModel().getFMLRepresentation());
 
-		newVirtualModelInstance.getResource().save(null);
+		newVirtualModelInstance.getResource().save();
 
 		// The VMI does not have the FMLControlledDocXVirtualModelInstanceNature, because document is still null
 		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
@@ -495,7 +495,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		FMLRTVirtualModelInstanceResource vmiRes = (FMLRTVirtualModelInstanceResource) newVirtualModelInstance.getResource();
 
-		System.out.println("Template:\n" + templateResource.getResourceData(null).debugStructuredContents());
+		System.out.println("Template:\n" + templateResource.getResourceData().debugStructuredContents());
 
 		// assertFalse(templateResource.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
@@ -528,15 +528,15 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
-		newVirtualModelInstance.getResource().save(null);
-		newView.getResource().save(null);
+		newVirtualModelInstance.getResource().save();
+		newView.getResource().save();
 
 		assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		generatedDocument.getResource().save(null);
+		generatedDocument.getResource().save();
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(13, generatedDocument.getElements().size());
@@ -615,14 +615,14 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println("newViewResource.getURI()=" + newViewResource.getURI());
 		System.out.println("newViewResource.getViewPointResource().getURI()=" + newViewResource.getVirtualModelResource().getURI());
 
-		newViewResource.loadResourceData(null);
+		newViewResource.loadResourceData();
 		assertNotNull(newView = newViewResource.getVirtualModelInstance());
 
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
 		FMLRTVirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
 		assertNotNull(vmiResource);
 		assertNull(vmiResource.getLoadedResourceData());
-		vmiResource.loadResourceData(null);
+		vmiResource.loadResourceData();
 		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
 
 		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));

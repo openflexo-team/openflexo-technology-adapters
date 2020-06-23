@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -64,8 +64,8 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceFactory;
  */
 
 @DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
-@DeclareResourceTypes({ XSDMetaModelResourceFactory.class, XMLFileResourceFactory.class })
-public class XMLTechnologyAdapter extends TechnologyAdapter {
+@DeclareResourceFactories({ XSDMetaModelResourceFactory.class, XMLFileResourceFactory.class })
+public class XMLTechnologyAdapter extends TechnologyAdapter<XMLTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(XMLTechnologyAdapter.class.getPackage().getName());
 
@@ -89,7 +89,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/XMLTechnologyAdapter";
 	}
 

@@ -102,7 +102,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 	@TestOrder(3)
 	public void testOperationsOnExcelWorkbook() {
 		try {
-			ExcelWorkbook excelWorkbook = workbook.loadResourceData(null);
+			ExcelWorkbook excelWorkbook = workbook.loadResourceData();
 			assertNotNull(excelWorkbook);
 
 			// Workbook operations

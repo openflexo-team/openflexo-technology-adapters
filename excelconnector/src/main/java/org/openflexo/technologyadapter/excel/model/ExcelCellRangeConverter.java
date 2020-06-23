@@ -45,8 +45,8 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.StringConverterLibrary.Converter;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.StringConverterLibrary.Converter;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 
 public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
@@ -109,7 +109,7 @@ public class ExcelCellRangeConverter extends Converter<ExcelCellRange> {
 			if (documentResource != null) {
 				ExcelWorkbook document;
 				try {
-					document = documentResource.getResourceData(null);
+					document = documentResource.getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					return null;

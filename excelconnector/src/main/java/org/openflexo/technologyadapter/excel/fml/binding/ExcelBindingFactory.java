@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
@@ -68,11 +69,15 @@ public final class ExcelBindingFactory extends TechnologyAdapterBindingFactory {
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		logger.warning("Unexpected " + object);
+		if (object instanceof ExcelSheet) {
+			ExcelSheet sheet = (ExcelSheet) object;
+			return new ExcelWorkbookExcelSheetPathElement((BindingPathElement) parent, sheet.getName(), ExcelSheet.class);
+		}
 		return null;
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
 		if (technologySpecificType instanceof ExcelWorkbook) {
 			return true;
 		}

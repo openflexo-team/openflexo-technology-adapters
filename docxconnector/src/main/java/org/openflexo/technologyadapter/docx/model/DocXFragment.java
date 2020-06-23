@@ -23,9 +23,9 @@ package org.openflexo.technologyadapter.docx.model;
 import java.util.List;
 
 import org.openflexo.foundation.doc.FlexoDocFragment;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**

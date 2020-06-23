@@ -60,7 +60,6 @@ import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.model.io.BasicPowerpointModelConverter;
 import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * Represents the resource associated to a {@link PowerpointSlideShow}
@@ -85,7 +84,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * @throws FlexoException
 	 */
 	@Override
-	public PowerpointSlideshow loadResourceData(IProgress progress) throws FlexoException {
+	public PowerpointSlideshow loadResourceData() throws FlexoException {
 
 		if (!getIODelegate().exists() || getFlexoIOStreamDelegate() == null) {
 			throw new FlexoException("Cannot load PowerPoint document with this IO/delegate: " + getIODelegate());
@@ -137,10 +136,8 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			out.close();
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -182,10 +179,8 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * @throws SaveResourceException
 	 */
 	@Override
-	public final void save(IProgress progress) throws SaveResourceException {
-		if (progress != null) {
-			progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
-		}
+	public final void save() throws SaveResourceException {
+		// progress.setProgress(getLocales().localizedForKey("saving") + " " + this.getName());
 		if (!isLoaded()) {
 			return;
 		}
@@ -217,7 +212,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 		}
 		if (clearIsModified) {
 			try {
-				getResourceData(null).clearIsModified(false);
+				getResourceData().clearIsModified(false);
 				// No need to reset the last memory update since it is valid
 				notifyResourceSaved();
 			} catch (Exception e) {
@@ -273,14 +268,6 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 		getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 		if (clearIsModified) {
 			notifyResourceStatusChanged();
-		}
-	}
-
-	private static void makeLocalCopy(File file) throws IOException {
-		if (file != null && file.exists()) {
-			String localCopyName = file.getName() + "~";
-			File localCopy = new File(file.getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(file, localCopy);
 		}
 	}
 

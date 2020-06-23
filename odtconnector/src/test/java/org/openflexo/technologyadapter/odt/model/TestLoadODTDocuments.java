@@ -94,15 +94,12 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			Collection<ODTDocumentResource> documents = odtRepository.getAllResources();
 			for (ODTDocumentResource doc : documents) {
 				try {
-					doc.loadResourceData(null);
+					doc.loadResourceData();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				assertNotNull(doc.getLoadedResourceData());

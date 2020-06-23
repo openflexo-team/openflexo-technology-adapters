@@ -1,0 +1,7 @@
+#Metadata for directory /Users/sylvain/GIT-2.0.0/openflexo-technology-adapters/xx-ta-test-rc/src/main/resources/FML/TestXXVM.fml
+#Mon Dec 10 11:12:08 CET 2018
+TestXXVM.fml.xml.modelVersion=2.0
+TestXXVM.fml.xml.name=TestXXVM
+TestXXVM.fml.xml.uri=http\://www.openflexo.org/test/xx/resources/FML/TestXXVM.fml
+TestXXVM.fml.xml.requiredModelSlotList=org.openflexo.technologyadapter.xx.XXModelSlot
+TestXXVM.fml.xml.version=0.1

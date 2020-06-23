@@ -54,13 +54,13 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.fml.ExcelActorReference;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.fml.ExcelColumnRole;
@@ -76,6 +76,9 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.MergeCells;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelCell;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelRow;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectUniqueExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
@@ -92,7 +95,8 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
 @DeclareEditionActions({ CreateExcelResource.class, GenerateExcelResource.class, AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class,
 		CellStyleAction.class, MergeCells.class })
-@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
+@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class, SelectUniqueExcelSheet.class,
+		SelectUniqueExcelRow.class, SelectUniqueExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
@@ -227,7 +231,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = model.getResource();
 					if (!resource.isLoaded()) {
-						resource.loadResourceData(null);
+						resource.loadResourceData();
 					}
 					System.out.println("Tiens, la faut retrouver " + URLDecoder.decode(objectURI, "UTF-8"));
 					return null;

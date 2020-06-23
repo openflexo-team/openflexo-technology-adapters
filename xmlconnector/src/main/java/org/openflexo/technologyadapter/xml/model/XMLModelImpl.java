@@ -51,9 +51,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
@@ -89,7 +89,6 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLIndividual.class, XMLPropertyValue.class,
 					XMLDataPropertyValue.class, XMLObjectPropertyValue.class));
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -147,7 +146,6 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	@Override
 	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

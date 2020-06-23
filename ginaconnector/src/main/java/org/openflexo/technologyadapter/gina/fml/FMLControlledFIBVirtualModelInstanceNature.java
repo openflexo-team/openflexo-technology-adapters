@@ -121,7 +121,7 @@ public class FMLControlledFIBVirtualModelInstanceNature
 		FIBComponentModelSlot fibMS = virtualModelInstance.getVirtualModel().getModelSlots(FIBComponentModelSlot.class).get(0);
 		GINAFIBComponent fibComponent = null;
 		try {
-			fibComponent = fibMS.getTemplateResource().getResourceData(null);
+			fibComponent = fibMS.getTemplateResource().getResourceData();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

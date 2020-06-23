@@ -24,12 +24,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.openflexo.foundation.FlexoException;
@@ -142,24 +140,19 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		} finally {
-			IOUtils.closeQuietly(out);
+			try {
+				out.close();
+			} catch (IOException e) {
+			}
 		}
 
 		System.out.println("Wrote : " + getIODelegate().getSerializationArtefact());
 	}
 
-	private static void makeLocalCopy(File file) throws IOException {
-		if (file != null && file.exists()) {
-			String localCopyName = file.getName() + "~";
-			File localCopy = new File(file.getParentFile(), localCopyName);
-			FileUtils.copyFileToFile(file, localCopy);
-		}
-	}
-
 	@Override
 	public DocXDocument getDocument() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			return null;
@@ -175,27 +168,6 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	@Override
 	public Class<DocXDocument> getResourceDataClass() {
 		return DocXDocument.class;
-	}
-
-	/*
-	 * private File getFile() { return getFileFlexoIODelegate().getFile(); }
-	 * 
-	 * public FileFlexoIODelegate getFileFlexoIODelegate() { return
-	 * (FileFlexoIODelegate) getFlexoIODelegate(); }
-	 */
-
-	public InputStream getInputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getInputStream();
-		}
-		return null;
-	}
-
-	public OutputStream getOutputStream() {
-		if (getFlexoIOStreamDelegate() != null) {
-			return getFlexoIOStreamDelegate().getOutputStream();
-		}
-		return null;
 	}
 
 }

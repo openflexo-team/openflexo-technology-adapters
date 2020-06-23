@@ -6,13 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.GitResourceCenter;
-import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyContextManager;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 public class ResourceLifeTest {
 	private GitResourceCenter gitResourceCenter;
-
-	private PowerpointTechnologyContextManager technologyContextManager;
 
 	private File pptFile;
 

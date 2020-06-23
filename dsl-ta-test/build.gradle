@@ -1,0 +1,12 @@
+dependencies {
+
+    compile project(':dsl-ta')
+    compile flexoFoundation()
+    
+     compile testUtils()
+    compile flexoFoundationTest()
+
+	  // Test resource center
+	  testRuntime project(':dsl-ta-test-rc')
+  
+}

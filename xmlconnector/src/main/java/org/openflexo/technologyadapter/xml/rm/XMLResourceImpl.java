@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 
-public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel>implements XMLResource {
+public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLResource {
 
 	protected static final Logger logger = Logger.getLogger(XMLResourceImpl.class.getPackage().getName());
 
@@ -71,7 +71,7 @@ public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel>impleme
 
 		if (!isLoaded()) {
 			try {
-				resourceData = loadResourceData(null);
+				resourceData = loadResourceData();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (ResourceLoadingCancelledException e) {

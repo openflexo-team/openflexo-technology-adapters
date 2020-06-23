@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.9.0</version>
+		<version>1.9.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters-ui</artifactId>
@@ -17,7 +17,7 @@
 	<modules>
 		<module>owlconnector-ui</module>
 		<module>emfconnector-ui</module>
-		<module>flexodiagram-ui</module>
+		<module>diagram-ta-ui</module>
 		<module>ginaconnector-ui</module>
 		<!--  <module>csvconnector-ui</module> -->
 		<module>excelconnector-ui</module>

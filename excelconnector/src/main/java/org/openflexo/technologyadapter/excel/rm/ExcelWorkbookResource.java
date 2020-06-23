@@ -42,9 +42,8 @@ package org.openflexo.technologyadapter.excel.rm;
 import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.model.ExcelModelFactory;
@@ -52,7 +51,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 @ModelEntity
 @ImplementationClass(ExcelWorkbookResourceImpl.class)
-@XMLElement
 public interface ExcelWorkbookResource
 		extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter>, PamelaResource<ExcelWorkbook, ExcelModelFactory> {
 

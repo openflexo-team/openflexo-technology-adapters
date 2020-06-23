@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.excel.view;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.technologyadapter.excel.AbstractTestExcelUI;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
@@ -50,6 +51,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.widget.FIBCellRangeSelector;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of FIBDocXFragmentSelector
@@ -64,6 +66,7 @@ public class TestFIBCellRangeSelector extends AbstractTestExcelUI {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testSelectorWithNoRange() {
 
 		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");
@@ -81,6 +84,7 @@ public class TestFIBCellRangeSelector extends AbstractTestExcelUI {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testSelectorWithRangeOnSheet1() {
 
 		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");
@@ -103,6 +107,7 @@ public class TestFIBCellRangeSelector extends AbstractTestExcelUI {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void testSelectorWithRangeOnSheet2() {
 
 		ExcelWorkbook workbook = getWorkbook("PersonListing.xlsx");

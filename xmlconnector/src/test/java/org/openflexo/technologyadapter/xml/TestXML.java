@@ -116,7 +116,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertNotNull(modelRes.loadResourceData(null));
+		assertNotNull(modelRes.loadResourceData());
 		assertTrue(modelRes.isLoaded());
 
 		// dumpTypes(modelRes.getModel());
@@ -139,7 +139,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertNotNull(modelRes.loadResourceData(null));
+		assertNotNull(modelRes.loadResourceData());
 		assertTrue(modelRes.isLoaded());
 
 		// dumpTypes(modelRes.getModel());
@@ -162,7 +162,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertNotNull(modelRes.loadResourceData(null));
+		assertNotNull(modelRes.loadResourceData());
 		assertTrue(modelRes.isLoaded());
 
 		// dumpTypes(modelRes.getModel());
@@ -184,7 +184,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertNotNull(modelRes.loadResourceData(null));
+		assertNotNull(modelRes.loadResourceData());
 		assertTrue(modelRes.isLoaded());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
@@ -257,7 +257,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 			Helpers.dumpTypes(aMetamodel);
 			Helpers.dumpIndividual(modelRes.getModel().getRoot(), "");
 
-			modelRes.save(null);
+			modelRes.save();
 		}
 	}
 }

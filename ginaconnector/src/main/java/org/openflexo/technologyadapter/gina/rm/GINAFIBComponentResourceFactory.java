@@ -27,7 +27,7 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.TechnologySpecificPamelaResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.model.GINAFactory;
@@ -51,7 +51,7 @@ public class GINAFIBComponentResourceFactory
 	}
 
 	@Override
-	public GINAFactory makeResourceDataFactory(GINAFIBComponentResource resource,
+	public GINAFactory makeModelFactory(GINAFIBComponentResource resource,
 			TechnologyContextManager<GINATechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
 		return new GINAFactory(resource, technologyContextManager.getServiceManager());
 	}
@@ -65,11 +65,6 @@ public class GINAFIBComponentResourceFactory
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(GINA_COMPONENT_EXTENSION)
 				|| resourceCenter.retrieveName(serializationArtefact).endsWith(GINA_INSPECTOR_EXTENSION);
-	}
-
-	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
 	}
 
 	public <I> GINAFIBComponentResource makeGINAFIBComponentResource(String baseName, RepositoryFolder<GINAFIBComponentResource, I> folder,
@@ -87,7 +82,7 @@ public class GINAFIBComponentResourceFactory
 	}
 
 	@Override
-	protected <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> GINAFIBComponentResource registerResource(GINAFIBComponentResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		// Register the resource in the GINAResourceRepository of supplied resource center

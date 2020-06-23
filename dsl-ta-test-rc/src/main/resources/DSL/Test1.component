@@ -1,0 +1,18 @@
+system
+	component ComponentA:
+		slot inputA;
+		slot outputA1;
+		slot outputA2;
+	component ComponentB:
+		slot inputB1;
+		slot inputB2;
+		slot outputB;
+	component ComponentC:
+		slot inputC;
+		slot outputC;
+	link link1 from ComponentA.outputA1 to ComponentB.inputB1;
+	link link2 from ComponentA.outputA2 to ComponentB.inputB2;
+	link link3 from ComponentB.outputB to ComponentC.inputC;
+	link link4 from ComponentC.outputC to ComponentA.inputA;
+end
+	

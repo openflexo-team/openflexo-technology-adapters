@@ -90,29 +90,26 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
-	public void testEmptyDocXCreation()
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+	public void testEmptyDocXCreation() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		DocXDocumentResource newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter,
-				"DocX", "TestBlankDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
+		DocXDocumentResource newDocResource = technologicalAdapter.createNewDocXDocumentResource(newResourceCenter, "DocX",
+				"TestBlankDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
 		DocXDocument newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBlankDocument.docx",
-				newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBlankDocument.docx", newDocResource.getURI());
 
-		assertNotNull(newDocument = newDocResource.getResourceData(null));
+		assertNotNull(newDocument = newDocResource.getResourceData());
 
 		System.out.println(newDocument.debugStructuredContents());
 
 		assertEquals(0, newDocument.getRootElements().size());
 
-		newDocResource.save(null);
+		newDocResource.save();
 
 		assertFalse(newDocResource.isModified());
 

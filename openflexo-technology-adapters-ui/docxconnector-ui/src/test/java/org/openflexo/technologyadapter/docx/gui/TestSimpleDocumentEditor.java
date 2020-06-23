@@ -53,6 +53,7 @@ import javax.swing.tree.TreeNode;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.components.doc.editorkit.element.ParagraphElement;
@@ -76,6 +77,7 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of {@link FlexoDocumentEditor}
@@ -100,6 +102,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testInitRetrieveDocuments() {
 
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
@@ -115,6 +118,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		docXDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(docXDocument);
@@ -155,6 +159,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void appendCharInARun() {
 
 		log("appendCharInARun()");
@@ -196,6 +201,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void appendStringInARun() {
 
 		log("appendStringInARun()");
@@ -237,6 +243,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(5)
+	@Category(UITest.class)
 	public void replaceStringInARun() {
 		log("replaceStringInARun()");
 
@@ -277,6 +284,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(6)
+	@Category(UITest.class)
 	public void appendNewLineInARun() {
 
 		log("appendNewLineInARun()");
@@ -323,6 +331,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(7)
+	@Category(UITest.class)
 	public void mergeTwoParagraphs() {
 
 		log("appendNewLineInARun()");
@@ -361,7 +370,7 @@ public class TestSimpleDocumentEditor extends AbstractTestDocX {
 	private static void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		DocXDocument doc = docResource.getResourceData(null);
+		DocXDocument doc = docResource.getResourceData();
 
 		Split defaultLayout = getDefaultLayout();
 

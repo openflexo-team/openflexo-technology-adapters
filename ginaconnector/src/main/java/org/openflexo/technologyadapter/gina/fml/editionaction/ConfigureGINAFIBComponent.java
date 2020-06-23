@@ -52,9 +52,9 @@ import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
@@ -103,7 +103,7 @@ public interface ConfigureGINAFIBComponent
 				GINAFIBComponent fibComponent = null;
 				try {
 					if (modelSlot.getTemplateResource() != null) {
-						fibComponent = modelSlot.getTemplateResource().getResourceData(null);
+						fibComponent = modelSlot.getTemplateResource().getResourceData();
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -120,12 +120,10 @@ public interface ConfigureGINAFIBComponent
 				}
 
 				try {
-					return modelSlot.getTemplateResource().getResourceData(null);
+					return modelSlot.getTemplateResource().getResourceData();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -55,7 +55,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
@@ -164,11 +164,11 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 		// templateDocument.getWordprocessingMLPackage().getMainDocumentPart()
 
 		generatedResource.setResourceData(templateDocument);
-		generatedResource.save(null);
+		generatedResource.save();
 		generatedResource.unloadResourceData(false);
-		generatedResource.loadResourceData(null);
+		generatedResource.loadResourceData();
 
-		generatedDocument = generatedResource.getResourceData(null);
+		generatedDocument = generatedResource.getResourceData();
 
 		for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();

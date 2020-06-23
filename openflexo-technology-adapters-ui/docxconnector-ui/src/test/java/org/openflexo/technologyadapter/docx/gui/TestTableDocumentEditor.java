@@ -53,6 +53,7 @@ import javax.swing.tree.TreeNode;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.components.doc.editorkit.FlexoDocumentEditor;
 import org.openflexo.components.doc.editorkit.widget.FIBFlexoDocumentBrowser;
@@ -74,6 +75,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of {@link FlexoDocumentEditor}
@@ -98,6 +100,7 @@ public class TestTableDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testInitRetrieveDocuments() {
 
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
@@ -113,6 +116,7 @@ public class TestTableDocumentEditor extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testOpenImageDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		docXDocument = getDocument("DocumentWithManyTables.docx");
 		assertNotNull(docXDocument);
@@ -145,7 +149,7 @@ public class TestTableDocumentEditor extends AbstractTestDocX {
 	private static void openFlexoDocumentEditor(FlexoResource<DocXDocument> docResource)
 			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		DocXDocument doc = docResource.getResourceData(null);
+		DocXDocument doc = docResource.getResourceData();
 
 		Split defaultLayout = getDefaultLayout();
 

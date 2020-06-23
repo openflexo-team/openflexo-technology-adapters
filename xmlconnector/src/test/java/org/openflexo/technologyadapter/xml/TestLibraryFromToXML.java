@@ -123,7 +123,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		XMLModel mLib = libraryRes.getModel();
 
-		libraryRes.loadResourceData(null);
+		libraryRes.loadResourceData();
 
 		assertNotNull(mLib);
 		assertTrue(mLib.getResource().isLoaded());

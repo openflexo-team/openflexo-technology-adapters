@@ -45,8 +45,8 @@ import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.StringConverterLibrary.Converter;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.StringConverterLibrary.Converter;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXElementConverter extends Converter<DocXElement> {
@@ -81,7 +81,7 @@ public class DocXElementConverter extends Converter<DocXElement> {
 				if (documentResource != null) {
 					DocXDocument document;
 					try {
-						document = documentResource.getResourceData(null);
+						document = documentResource.getResourceData();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 						return null;
