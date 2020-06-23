@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.excel.model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -148,12 +149,18 @@ public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 		ExcelCell cell13 = row1.getExcelCellAt(2);
 		cell13.setCellStringValue("D");
 		System.out.println("Saving to " + workbook1Resource.getIODelegate().getSerializationArtefact());
-		workbook1Resource.save();
+		if (workbook1Resource.getIODelegate().getSerializationArtefact() instanceof File) {
+			workbook1Resource.save();
+		}
 	}
 
 	@Test
 	@TestOrder(6)
 	public void testWorkbook1Reloading() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		if (!(workbook1Resource.getIODelegate().getSerializationArtefact() instanceof File)) {
+			return;
+		}
 
 		System.out.println("Unload " + workbook1Resource.getIODelegate().getSerializationArtefact());
 		workbook1Resource.unloadResourceData(false);
