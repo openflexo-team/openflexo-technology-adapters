@@ -181,12 +181,12 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value) {
+	public void addPropertyValue(/*XMLProperty attr,*/ XMLPropertyValue value) {
 		// TODO
 	}
 
 	@Override
-	public void deletePropertyValues(XMLProperty attr) {
+	public void deletePropertyValues(XMLPropertyValue value) {
 		// TODO
 	}
 

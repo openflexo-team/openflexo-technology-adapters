@@ -131,14 +131,15 @@ public interface XMLIndividual extends XMLObject {
 	public String getPropertyStringValue(XMLProperty prop);
 
 	@Adder(value = PROPERTIES_VALUES)
-	public void addPropertyValue(XMLProperty prop, XMLPropertyValue value);
+	public void addPropertyValue(/*XMLProperty prop,*/ XMLPropertyValue value);
 
 	public void addPropertyValue(String name, Object value);
 
 	public void addPropertyValue(XMLProperty prop, Object value);
 
 	@Remover(value = PROPERTIES_VALUES)
-	public void deletePropertyValues(XMLProperty attr);
+	// public void deletePropertyValues(XMLProperty attr);
+	public void deletePropertyValues(XMLPropertyValue value);
 
 	@Getter(TEXT)
 	public String getText();
