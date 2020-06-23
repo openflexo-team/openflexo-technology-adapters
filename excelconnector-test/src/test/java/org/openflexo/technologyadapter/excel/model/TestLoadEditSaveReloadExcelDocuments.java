@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -58,6 +59,8 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileUtils;
 
 @RunWith(OrderedRunner.class)
+// TODO: run this test locally
+@Ignore
 public class TestLoadEditSaveReloadExcelDocuments extends AbstractTestExcel {
 	protected static final Logger logger = Logger.getLogger(TestLoadEditSaveReloadExcelDocuments.class.getPackage().getName());
 
