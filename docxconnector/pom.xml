@@ -7,6 +7,7 @@
 		<version>2.0.0</version>
 	</parent>
 	<artifactId>docxconnector</artifactId>
+	<name>Word technology connector</name>
 	<description>Technology Adapter for .docx documents</description>
 	<url>http://www.openflexo.com/technologyadapter/docxconnector</url>
     <issueManagement>

@@ -7,6 +7,7 @@
 		<version>2.0.0</version>
 	</parent>
 	<artifactId>odtconnector</artifactId>
+	<name>ODT technology connector</name>
 	<description>Technology Adapter for .odt documents</description>
 	<url>http://www.openflexo.com/technologyadapter/odtconnector</url>
     <issueManagement>
