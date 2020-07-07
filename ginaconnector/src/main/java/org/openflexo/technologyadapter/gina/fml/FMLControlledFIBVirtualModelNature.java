@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.gina.fml;
 import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.FMLCompilationUnit;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
@@ -85,12 +86,12 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 		return true;
 	}
 
-	public static FIBComponentModelSlot getFIBComponentModelSlot(VirtualModel virtualModel) {
-		return INSTANCE._getFIBComponentModelSlot(virtualModel);
+	public static FIBComponentModelSlot getFIBComponentModelSlot(FMLCompilationUnit compilationUnit) {
+		return INSTANCE._getFIBComponentModelSlot(compilationUnit.getVirtualModel());
 	}
 
-	public static GINAFIBComponent getFIBComponent(VirtualModel virtualModel) {
-		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(virtualModel);
+	public static GINAFIBComponent getFIBComponent(FMLCompilationUnit compilationUnit) {
+		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(compilationUnit);
 		if (modelSlot != null && modelSlot.getTemplateResource() != null) {
 			try {
 				return modelSlot.getTemplateResource().getResourceData();

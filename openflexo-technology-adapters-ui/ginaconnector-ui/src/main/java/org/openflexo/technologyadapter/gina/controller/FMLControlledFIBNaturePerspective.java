@@ -40,11 +40,11 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
+import org.openflexo.fml.controller.view.StandardCompilationUnitView;
 import org.openflexo.fml.controller.view.StandardFlexoConceptView;
-import org.openflexo.fml.controller.view.StandardVirtualModelView;
 import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
+import org.openflexo.foundation.fml.FMLCompilationUnit;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -53,8 +53,8 @@ import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBFlexoConceptInst
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBFlexoConceptNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
+import org.openflexo.technologyadapter.gina.view.FMLControlledFIBCompilationUnitModuleView;
 import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
-import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelModuleView;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.SpecificNaturePerspective;
@@ -98,12 +98,12 @@ public class FMLControlledFIBNaturePerspective extends SpecificNaturePerspective
 	}
 
 	@Override
-	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
+	protected ModuleView<FMLCompilationUnit> createModuleViewForCompilationUnit(FMLCompilationUnit compilationUnit) {
 
-		if (virtualModel.hasNature(getVirtualModelNature())) {
-			return new FMLControlledFIBVirtualModelModuleView(virtualModel, getController(), this);
+		if (compilationUnit.getVirtualModel().hasNature(getVirtualModelNature())) {
+			return new FMLControlledFIBCompilationUnitModuleView(compilationUnit, getController(), this);
 		}
-		return new StandardVirtualModelView(virtualModel, getController(), this);
+		return new StandardCompilationUnitView(compilationUnit, getController(), this);
 	}
 
 	@Override

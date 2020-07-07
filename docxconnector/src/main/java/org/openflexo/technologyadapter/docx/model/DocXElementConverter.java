@@ -45,8 +45,8 @@ import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.pamela.StringConverterLibrary.Converter;
 import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXElementConverter extends Converter<DocXElement> {

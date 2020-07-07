@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+import org.openflexo.foundation.fml.FMLCompilationUnit;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -45,10 +46,10 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledFIBVirtualModelModuleView extends JPanel implements ModuleView<VirtualModel> {
+public class FMLControlledFIBCompilationUnitModuleView extends JPanel implements ModuleView<FMLCompilationUnit> {
 
 	private final FlexoController controller;
-	private final VirtualModel representedObject;
+	private final FMLCompilationUnit representedObject;
 	private final FlexoPerspective perspective;
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
@@ -63,7 +64,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	 *            GINModel object that will be represented
 	 * @param perspective
 	 */
-	public FMLControlledFIBVirtualModelModuleView(VirtualModel representedObject, FlexoController controller,
+	public FMLControlledFIBCompilationUnitModuleView(FMLCompilationUnit representedObject, FlexoController controller,
 			FlexoPerspective perspective) {
 		super(new BorderLayout());
 		this.controller = controller;
@@ -72,7 +73,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		modelSlot = FMLControlledFIBVirtualModelNature.getFIBComponentModelSlot(representedObject);
 		component = FMLControlledFIBVirtualModelNature.getFIBComponent(representedObject);
 
-		component.bindTo(representedObject, modelSlot);
+		component.bindTo(representedObject.getVirtualModel(), modelSlot);
 
 		component.getComponent().setCustomTypeEditorProvider(controller.getApplicationContext().getTechnologyAdapterControllerService());
 
@@ -101,7 +102,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	@Override
 	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
 
-		component.bindTo(representedObject, modelSlot);
+		component.bindTo(representedObject.getVirtualModel(), modelSlot);
 
 		// Sets palette view of editor to be the top right view
 		flexoPerspective.setTopRightView(getFIBEditor(false).getPalettes());
@@ -142,7 +143,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	}
 
 	@Override
-	public VirtualModel getRepresentedObject() {
+	public FMLCompilationUnit getRepresentedObject() {
 		return representedObject;
 	}
 
