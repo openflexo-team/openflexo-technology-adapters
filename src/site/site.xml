@@ -38,19 +38,21 @@
 		<menu name="Technology-Adapters">
 			<item name="Home" href="index.html" />
 			<item name="Model layer" href="ModelLayer.html">
-				<item name="Diagram" href="diagram-ta/index.html" />
+				<item name="GINA" href="ginaconnector/index.html" />
 				<item name="XML/XSD" href="xmlconnector/index.html" />
 				<item name="Word" href="docxconnector/index.html" />
 				<item name="Excel" href="excelconnector/index.html" />
 				<item name="PowerPoint" href="powerpointconnector/index.html" />
+				<item name="ODT" href="odtconnector/index.html" />
 				<item name="OSLC" href="oslcconnector/index.html" />
 			</item>
 			<item name="UI layer" href="openflexo-technology-adapters-ui/index.html">
-				<item name="Diagram-UI" href="openflexo-technology-adapters-ui/diagram-ta-ui/index.html" />
+				<item name="GINA-UI" href="openflexo-technology-adapters-ui/ginaconnector-ui/index.html" />
 				<item name="XML/XSD-UI" href="openflexo-technology-adapters-ui/xmlconnector-ui/index.html" />
 				<item name="Word-UI" href="openflexo-technology-adapters-ui/docxconnector-ui/index.html" />
 				<item name="Excel-UI" href="openflexo-technology-adapters-ui/excelconnector-ui/index.html" />
 				<item name="PowerPoint-UI" href="openflexo-technology-adapters-ui/powerpointconnector-ui/index.html" />
+				<item name="ODT-UI" href="openflexo-technology-adapters-ui/odtconnector-ui/index.html" />
 				<item name="OSLC-UI" href="openflexo-technology-adapters-ui/oslcconnector-ui/index.html" />
 			</item>
 			<item name="FAQ" href="faq.html" />

@@ -4,9 +4,10 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>2.0.0</version>
 	</parent>
 	<artifactId>odtconnector</artifactId>
+	<name>ODT technology connector</name>
 	<description>Technology Adapter for .odt documents</description>
 	<url>http://www.openflexo.com/technologyadapter/odtconnector</url>
     <issueManagement>

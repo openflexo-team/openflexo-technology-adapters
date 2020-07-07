@@ -5,3 +5,20 @@
  -----
 
 This package contains some TechnologyAdapters developed at Openflexo.
+
+Contents of this package
+
+  * {{{./ginaconnector/index.html}Gina connector}}, a technology adapter for graphical user interfaces
+  
+  * {{{./docxconnector/index.html}Word connector}}, a technology adapter for .docx/.doc (Microsoft Word) documents
+ 
+  * {{{./excelconnector/index.html}Excel connector}}, a technology adapter for .xlsx/.xls (Microsoft Excel) documents
+  
+  * {{{./powerpointconnector/index.html}PowerPoint connector}}, a technology adapter for .pptx/.ppt (Microsoft PowerPoint) documents
+
+  * {{{./odtconnector/index.html}ODT connector}}, a technology adapter for .odt (Openoffice) documents
+
+  * {{{./xmlconnector/index.html}XML connector}}, a technology adapter for XML/XSD documents
+
+  * {{{./oslcconnector/index.html}OSLC connector}}, a technology adapter for OSLC
+  
