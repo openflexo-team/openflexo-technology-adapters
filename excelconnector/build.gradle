@@ -6,7 +6,7 @@ dependencies {
   api group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
 
   // Test resource center
-  testRuntime project(':excelconnector-test-rc')
+  testRuntimeOnly project(':excelconnector-test-rc')
 
   // testing dep
   testImplementation flexoFoundationTest()
