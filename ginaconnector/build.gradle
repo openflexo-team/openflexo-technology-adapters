@@ -1,7 +1,7 @@
 dependencies {
   // openflexo dep
   implementation flexoFoundation()
-  implementation ginaApi()
+  api ginaApi()
   // external dep
   // testing dep
   testImplementation flexoFoundationTest()
