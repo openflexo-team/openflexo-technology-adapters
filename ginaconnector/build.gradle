@@ -1,13 +1,11 @@
 dependencies {
   // openflexo dep
-  compile flexoFoundation()
-  compile ginaApi()
+  implementation flexoFoundation()
+  implementation ginaApi()
   // external dep
   // testing dep
-  testCompile testUtils()
-  testCompile flexoFoundationTest()
-  
+  testImplementation flexoFoundationTest()
+
    // Test resource center
-  testRuntime project(':ginaconnector-test-rc')
-  
+  testRuntimeOnly project(':ginaconnector-test-rc')
 }

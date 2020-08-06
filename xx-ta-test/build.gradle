@@ -1,12 +1,10 @@
 dependencies {
+    implementation project(':xx-ta')
+    implementation flexoFoundation()
 
-    compile project(':xx-ta')
-    compile flexoFoundation()
-    
-    compile testUtils()
-    compile flexoFoundationTest()
+    implementation testUtils()
+    implementation flexoFoundationTest()
 
-	// Test resource center
-	testRuntime project(':xx-ta-test-rc')
-  
+    // Test resource center
+    testRuntimeOnly project(':xx-ta-test-rc')
 }

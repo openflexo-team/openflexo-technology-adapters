@@ -1,9 +1,9 @@
 dependencies {
-    compile project(":odtconnector")
+  implementation project(":odtconnector")
 
   // openflexo dep
-   compile flexoUi()
+  implementation flexoUi()
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testImplementation flexoUiTest()
 }

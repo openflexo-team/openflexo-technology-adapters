@@ -1,14 +1,13 @@
 dependencies {
   // openflexo dep
-  compile flexoFoundation()
+  implementation flexoFoundation()
   // external dep
-    compile group: 'org.apache.poi', name: 'poi', version: '3.17'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+  api group: 'org.apache.poi', name: 'poi', version: '3.17'
+  api group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
 
   // Test resource center
   testRuntime project(':excelconnector-test-rc')
 
   // testing dep
-  testCompile testUtils()
-  testCompile flexoFoundationTest()
+  testImplementation flexoFoundationTest()
 }

@@ -1,12 +1,10 @@
 dependencies {
+    implementation project(':excelconnector')
+    implementation flexoFoundation()
 
-    compile project(':excelconnector')
-    compile flexoFoundation()
-    
-     compile testUtils()
-    compile flexoFoundationTest()
+    implementation testUtils()
+    implementation flexoFoundationTest()
 
-	  // Test resource center
-	  testRuntime project(':excelconnector-test-rc')
-  
+    // Test resource center
+    testRuntimeOnly project(':excelconnector-test-rc')
 }

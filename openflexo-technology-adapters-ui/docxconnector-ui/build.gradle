@@ -2,14 +2,15 @@ dependencies {
   compile project(":docxconnector")
 
   // openflexo dep
-  compile flexoUi()
-  compile flexoDocumentationUi()
+  implementation flexoUi()
+  implementation flexoDocumentationUi()
   // external dep
   // testing dep
-  testCompile flexoUiTest()
+  testImplementation flexoUiTest()
+  testImplementation flexoFoundationTest()
 
   // Test resource center
-  testRuntime project(':docxconnector-test-rc')
+  testRuntimeOnly project(':docxconnector-test-rc')
 }
 if (JavaVersion.current().isJava9Compatible()) {
     tasks.withType(JavaCompile) {

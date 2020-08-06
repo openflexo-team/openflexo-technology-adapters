@@ -1,15 +1,16 @@
 dependencies {
-    compile project(":excelconnector")
+  implementation project(":excelconnector")
 
   // openflexo dep
-   compile flexoUi()
-   compile fmlTechnologyAdapterUi()
-   compile fmlRtTechnologyAdapterUi()
+  implementation flexoUi()
+  implementation fmlTechnologyAdapterUi()
+  implementation fmlRtTechnologyAdapterUi()
 
   // Test resource center
-  testRuntime project(':excelconnector-test-rc')
+  testRuntimeOnly project(':excelconnector-test-rc')
 
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testImplementation flexoUiTest()
+  testImplementation flexoFoundationTest()
 }

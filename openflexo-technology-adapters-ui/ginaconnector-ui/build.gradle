@@ -1,11 +1,11 @@
 dependencies {
-  compile project(":ginaconnector")
+  implementation project(":ginaconnector")
 
   // openflexo dep
-   compile flexoUi()
-   compile fmlTechnologyAdapterUi()
-   compile fmlRtTechnologyAdapterUi()
+  implementation flexoUi()
+  implementation fmlTechnologyAdapterUi()
+  implementation fmlRtTechnologyAdapterUi()
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testImplementation flexoUiTest()
 }

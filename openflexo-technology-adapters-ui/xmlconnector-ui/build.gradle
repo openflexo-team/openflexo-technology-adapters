@@ -1,13 +1,13 @@
 dependencies {
   // openflexo dep
-  compile project(":xmlconnector")
+  implementation project(":xmlconnector")
 
-  compile flexoUi()
-  compile flexoOntologyUi()
+  implementation flexoUi()
+  implementation flexoOntologyUi()
 
-  runtime fmlTechnologyAdapterUi()
+  runtimeOnly fmlTechnologyAdapterUi()
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testImplementation flexoUiTest()
 }
 

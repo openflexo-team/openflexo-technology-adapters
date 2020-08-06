@@ -1,15 +1,14 @@
 dependencies {
   // openflexo dep
-  compile flexoFoundation()
-  compile flexoDocumentation()
+  implementation flexoFoundation()
+  api flexoDocumentation()
   // external dep
-  compile 'org.docx4j:docx4j:3.3.0'
+  api 'org.docx4j:docx4j:3.3.0'
   // testing dep
-  testCompile testUtils()
-  testCompile flexoFoundationTest()
-  
+  testImplementation flexoFoundationTest()
+
   // Test resource center
-  testRuntime project(':docxconnector-test-rc')  
+  testRuntimeOnly project(':docxconnector-test-rc')
 }
 if (JavaVersion.current().isJava9Compatible()) {
 	tasks.withType(JavaCompile) {
@@ -18,4 +17,4 @@ if (JavaVersion.current().isJava9Compatible()) {
 	tasks.withType(Test) {
 		jvmArgs += ['--add-modules', 'java.xml.bind']
     }
-}  
+}

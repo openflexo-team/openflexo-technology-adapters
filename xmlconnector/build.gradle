@@ -1,14 +1,12 @@
 dependencies {
   // openflexo dep
-  compile flexoFoundation()
-  compile flexoOntology()
+  implementation flexoFoundation()
+  api flexoOntology()
   // external dep
-  compile 'com.sun.xsom:xsom:20140925'
+  implementation 'com.sun.xsom:xsom:20140925'
   // testing dep
-  testCompile testUtils()
-  testCompile flexoFoundationTest()
-  
+  testImplementation flexoFoundationTest()
+
   // Test resource center
-  testRuntime project(':xmlconnector-test-rc')
-  
+  testRuntimeOnly project(':xmlconnector-test-rc')
 }

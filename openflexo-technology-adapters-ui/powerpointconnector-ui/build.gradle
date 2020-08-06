@@ -1,11 +1,11 @@
 dependencies {
-    compile project(":powerpointconnector")
+  implementation project(":powerpointconnector")
 
   // openflexo dep
-   compile flexoUi()
-   runtime fmlTechnologyAdapterUi()
-   
+  implementation flexoUi()
+  runtimeOnly fmlTechnologyAdapterUi()
+
   // external dep
   // testing dep
-    testCompile flexoUiTest()
+  testImplementation flexoUiTest()
 }
