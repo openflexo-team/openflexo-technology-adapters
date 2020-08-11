@@ -3,6 +3,7 @@ dependencies {
   implementation flexoFoundation()
   // external dep
   implementation 'org.eclipse.lyo.oslc4j.core:oslc4j-wink:2.1.0'
+  implementation 'org.apache.httpcomponents:httpclient:4.5.12'
   implementation 'javax.servlet:servlet-api:2.5'
   implementation 'net.oauth.core:oauth-httpclient4:20090913'
   implementation group: 'org.eclipse.lyo.clients', name: 'oslc-java-client', version: '3.0.0-20150202.133917-1'
