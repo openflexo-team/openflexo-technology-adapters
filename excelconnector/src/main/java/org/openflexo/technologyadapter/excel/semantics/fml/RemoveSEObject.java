@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -156,7 +155,7 @@ public interface RemoveSEObject extends AssignableAction<SEFlexoConceptInstance>
 				e1.printStackTrace();
 			} catch (NullReferenceException e1) {
 				e1.printStackTrace();
-			} catch (InvocationTargetException e1) {
+			} catch (ReflectiveOperationException e1) {
 				e1.printStackTrace();
 			}
 

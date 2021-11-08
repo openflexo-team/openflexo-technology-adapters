@@ -170,7 +170,8 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	 */
 	@Test
 	@TestOrder(5)
-	public void testInstantiate() throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+	public void testInstantiate()
+			throws TypeMismatchException, NullReferenceException, ReflectiveOperationException, InvalidBindingException {
 
 		log("testInstantiate()");
 
@@ -264,7 +265,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	@Test
 	@TestOrder(7)
 	public void testInsertNewPerson()
-			throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+			throws TypeMismatchException, NullReferenceException, ReflectiveOperationException, InvalidBindingException {
 
 		log("testInsertNewPerson()");
 
@@ -386,7 +387,7 @@ public class TestSEUsingExistingVirtualModel extends AbstractTestExcel {
 	@Test
 	@TestOrder(8)
 	public void testRemovePerson()
-			throws TypeMismatchException, NullReferenceException, InvocationTargetException, InvalidBindingException {
+			throws TypeMismatchException, NullReferenceException, ReflectiveOperationException, InvalidBindingException {
 
 		log("testRemovePerson()");
 

@@ -40,18 +40,19 @@ package org.openflexo.technologyadapter.excel.fml.binding;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
-public class ExcelWorkbookExcelSheetPathElement extends SimplePathElement {
+public class ExcelWorkbookExcelSheetPathElement extends SimplePathElementImpl {
 
-	public ExcelWorkbookExcelSheetPathElement(BindingPathElement parent, String propertyName, Type type) {
-		super(parent, propertyName, type);
+	public ExcelWorkbookExcelSheetPathElement(BindingPathElement parent, String propertyName, Type type, Bindable bindable) {
+		super(parent, propertyName, type, bindable);
 	}
 
 	@Override
@@ -78,6 +79,15 @@ public class ExcelWorkbookExcelSheetPathElement extends SimplePathElement {
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
 
+	}
+
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
 	}
 
 }

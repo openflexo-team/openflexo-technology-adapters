@@ -1278,8 +1278,8 @@ public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 	 */
 	@Test
 	@TestOrder(8)
-	public void testInstantiateLibrary()
-			throws SaveResourceException, AssertionFailedError, TypeMismatchException, NullReferenceException, InvocationTargetException {
+	public void testInstantiateLibrary() throws SaveResourceException, AssertionFailedError, TypeMismatchException, NullReferenceException,
+			ReflectiveOperationException {
 
 		log("testInstantiateLibrary()");
 

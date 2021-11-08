@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
@@ -67,11 +68,11 @@ public final class ExcelBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		logger.warning("Unexpected " + object);
 		if (object instanceof ExcelSheet) {
 			ExcelSheet sheet = (ExcelSheet) object;
-			return new ExcelWorkbookExcelSheetPathElement((BindingPathElement) parent, sheet.getName(), ExcelSheet.class);
+			return new ExcelWorkbookExcelSheetPathElement((BindingPathElement) parent, sheet.getName(), ExcelSheet.class, bindable);
 		}
 		return null;
 	}
@@ -88,18 +89,18 @@ public final class ExcelBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<>();
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
+		List<SimplePathElement<?>> returned = new ArrayList<>();
 		if (parent instanceof ExcelWorkbook) {
 			for (ExcelSheet sheet : ((ExcelWorkbook) parent).getExcelSheets()) {
-				returned.add(getSimplePathElement(sheet, parent));
+				returned.add(getSimplePathElement(sheet, parent, bindable));
 			}
 		}
 		return returned;
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
+	public List<? extends FunctionPathElement<?>> getAccessibleFunctionPathElements(IBindingPathElement parent, Bindable bindable) {
 		// TODO
 		return Collections.emptyList();
 	}

@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -180,7 +179,7 @@ public interface SelectGeneratedDocXParagraph extends DocXParagraphAction {
 						e1.printStackTrace();
 					} catch (NullReferenceException e1) {
 						e1.printStackTrace();
-					} catch (InvocationTargetException e1) {
+					} catch (ReflectiveOperationException e1) {
 						e1.printStackTrace();
 					}
 					if (searchAreaFragment != null) {

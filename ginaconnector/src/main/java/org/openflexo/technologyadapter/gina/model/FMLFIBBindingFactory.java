@@ -44,10 +44,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.foundation.fml.FMLBindingFactory;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.binding.FMLBindingFactory;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.FIBViewType;
@@ -68,36 +69,36 @@ public class FMLFIBBindingFactory extends FMLBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		if (object instanceof FIBVariable) {
-			return new FIBVariablePathElement(parent, (FIBVariable<?>) object);
+			return new FIBVariablePathElement(parent, (FIBVariable<?>) object, bindable);
 		}
-		return super.makeSimplePathElement(object, parent);
+		return super.makeSimplePathElement(object, parent, bindable);
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 
 		if (parent != null) {
 			Type pType = parent.getType();
 
 			if (pType instanceof FIBViewType) {
-				List<SimplePathElement> returned = new ArrayList<>();
+				List<SimplePathElement<?>> returned = new ArrayList<>();
 				FIBComponent concept = ((FIBViewType<?>) pType).getFIBComponent();
 
 				if (concept != null) {
 					for (FIBVariable<?> variable : concept.getVariables()) {
-						returned.add(getSimplePathElement(variable, parent));
+						returned.add(getSimplePathElement(variable, parent, bindable));
 					}
 				}
 
-				returned.addAll(((FIBViewType<?>) pType).getAccessibleSimplePathElements(parent));
+				returned.addAll(((FIBViewType<?>) pType).getAccessibleSimplePathElements(parent, bindable));
 
 				return returned;
 			}
 
 			// In all other cases, consider it using FML/Java rules
-			return super.getAccessibleSimplePathElements(parent);
+			return super.getAccessibleSimplePathElements(parent, bindable);
 		}
 		else {
 			logger.warning("Trying to find accessible path elements for a NULL parent");

@@ -36,7 +36,6 @@
 package org.openflexo.technologyadapter.excel.semantics.fml;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -394,7 +393,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 							throw new InvalidArgumentException("No valid connection while creating new SEResource");
 						}
 
-					} catch (TypeMismatchException | NullReferenceException | InvocationTargetException e) {
+					} catch (TypeMismatchException | NullReferenceException | ReflectiveOperationException e) {
 						e.printStackTrace();
 					}
 

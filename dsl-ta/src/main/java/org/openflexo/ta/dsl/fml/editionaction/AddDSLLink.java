@@ -38,7 +38,6 @@
 
 package org.openflexo.ta.dsl.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -139,7 +138,7 @@ public interface AddDSLLink extends DSLAction<DSLLink> {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 

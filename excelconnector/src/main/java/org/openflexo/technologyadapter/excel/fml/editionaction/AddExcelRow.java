@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
@@ -157,7 +156,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 

@@ -41,8 +41,7 @@ package org.openflexo.ta.dsl.fml.binding;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.Function;
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
@@ -65,7 +64,7 @@ public final class DSLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		logger.warning("Unexpected " + object);
 		return null;
 	}
@@ -76,28 +75,24 @@ public final class DSLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement element) {
-		return super.getAccessibleSimplePathElements(element);
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
+		return super.getAccessibleSimplePathElements(parent, bindable);
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
-		return super.getAccessibleFunctionPathElements(parent);
+	public List<? extends FunctionPathElement<?>> getAccessibleFunctionPathElements(IBindingPathElement parent, Bindable bindable) {
+		return super.getAccessibleFunctionPathElements(parent, bindable);
 	}
 
 	@Override
-	public SimplePathElement makeSimplePathElement(IBindingPathElement parent, String propertyName) {
+	public SimplePathElement<?> makeSimplePathElement(IBindingPathElement parent, String propertyName, Bindable bindable) {
 		// We want to avoid code duplication, so iterate on all accessible simple path element and choose the right one
-		for (SimplePathElement e : getAccessibleSimplePathElements(parent)) {
+		for (SimplePathElement<?> e : getAccessibleSimplePathElements(parent, bindable)) {
 			if (e.getLabel().equals(propertyName)) {
 				return e;
 			}
 		}
-		return super.makeSimplePathElement(parent, propertyName);
+		return super.makeSimplePathElement(parent, propertyName, bindable);
 	}
 
-	@Override
-	public FunctionPathElement makeFunctionPathElement(IBindingPathElement father, Function function, List<DataBinding<?>> args) {
-		return super.makeFunctionPathElement(father, function, args);
-	}
 }

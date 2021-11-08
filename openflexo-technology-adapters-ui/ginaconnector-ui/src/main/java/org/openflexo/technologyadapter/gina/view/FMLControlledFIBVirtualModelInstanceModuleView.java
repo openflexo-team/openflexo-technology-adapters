@@ -25,7 +25,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -376,7 +375,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -398,7 +397,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
 						e.printStackTrace();
-					} catch (InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						e.printStackTrace();
 					}
 				}

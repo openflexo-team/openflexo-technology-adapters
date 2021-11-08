@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +73,8 @@ public interface AbstractSelectExcelRow<AT> extends AbstractFetchRequest<BasicEx
 	@Setter(EXCEL_SHEET_KEY)
 	public void setExcelSheet(DataBinding<ExcelSheet> excelSheet);
 
-	public static abstract class AbstractSelectExcelRowImpl<AT> extends AbstractFetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow, AT>
-			implements AbstractSelectExcelRow<AT> {
+	public static abstract class AbstractSelectExcelRowImpl<AT>
+			extends AbstractFetchRequestImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelRow, AT> implements AbstractSelectExcelRow<AT> {
 
 		private static final Logger logger = Logger.getLogger(AbstractSelectExcelRow.class.getPackage().getName());
 
@@ -112,7 +111,7 @@ public interface AbstractSelectExcelRow<AT> extends AbstractFetchRequest<BasicEx
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 

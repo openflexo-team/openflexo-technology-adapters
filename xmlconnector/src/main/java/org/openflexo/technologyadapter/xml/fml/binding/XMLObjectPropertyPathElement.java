@@ -41,9 +41,10 @@ package org.openflexo.technologyadapter.xml.fml.binding;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -56,12 +57,12 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  * @author xtof
  *
  */
-public class XMLObjectPropertyPathElement extends SimplePathElement {
+public class XMLObjectPropertyPathElement extends SimplePathElementImpl {
 
 	private final XMLObjectPropertyImpl property;
 
-	public XMLObjectPropertyPathElement(IBindingPathElement parent, XMLObjectPropertyImpl property) {
-		super(parent, property.getName(), property.getType());
+	public XMLObjectPropertyPathElement(IBindingPathElement parent, XMLObjectPropertyImpl property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		this.property = property;
 	}
 
@@ -112,6 +113,15 @@ public class XMLObjectPropertyPathElement extends SimplePathElement {
 
 		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
 		((XMLIndividual) target).addPropertyValue(prop, value);
+	}
+
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
 	}
 
 }

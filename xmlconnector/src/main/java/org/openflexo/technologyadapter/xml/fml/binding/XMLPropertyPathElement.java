@@ -36,28 +36,28 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.fml.binding;
+
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
-
-public class XMLPropertyPathElement extends SimplePathElement {
+public class XMLPropertyPathElement extends SimplePathElementImpl {
 
 	private final XMLProperty property;
 
 	private static final Logger logger = Logger.getLogger(XMLPropertyPathElement.class.getPackage().getName());
 
-	public XMLPropertyPathElement(BindingPathElement parent, XMLProperty property) {
-		super(parent, property.getName(), property.getType());
+	public XMLPropertyPathElement(BindingPathElement parent, XMLProperty property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		this.property = property;
 	}
 
@@ -69,7 +69,7 @@ public class XMLPropertyPathElement extends SimplePathElement {
 	public Type getType() {
 
 		return property.getType();
-		
+
 	}
 
 	@Override
@@ -89,9 +89,19 @@ public class XMLPropertyPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
 		((XMLIndividual) target).addPropertyValue(prop, value);
 	}
+
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
+	}
+
 }

@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -146,7 +145,7 @@ public interface AddOSLCRequirement
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 

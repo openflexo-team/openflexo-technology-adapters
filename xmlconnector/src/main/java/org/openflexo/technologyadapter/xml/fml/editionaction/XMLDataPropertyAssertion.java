@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -153,7 +151,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			return null;

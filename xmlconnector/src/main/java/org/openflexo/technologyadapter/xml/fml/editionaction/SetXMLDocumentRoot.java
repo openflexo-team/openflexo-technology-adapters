@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -130,13 +129,13 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 					rootIndiv = (XMLIndividual) o;
 				}
 				else {
-					logger.warning("Invalid value in Binding :" + getParameter().getUnparsedBinding());
+					logger.warning("Invalid value in Binding :" + getParameter());
 				}
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 

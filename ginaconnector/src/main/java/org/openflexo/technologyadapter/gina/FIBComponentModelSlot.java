@@ -298,7 +298,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 
 				if (value != null) {
 					value.setOwner(getOwner());
-					value.decode();
+					// value.decode();
 				}
 			}
 

@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
 import java.awt.Color;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Vector;
@@ -190,7 +189,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -245,7 +244,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -537,7 +536,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			if (logger.isLoggable(Level.FINE)) {

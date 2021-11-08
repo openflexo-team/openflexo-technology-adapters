@@ -42,9 +42,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
@@ -53,14 +54,14 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLDataPropertyValue;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
-public class XMLDataPropertyPathElement extends SimplePathElement {
+public class XMLDataPropertyPathElement extends SimplePathElementImpl {
 
 	private final XMLDataProperty property;
 
 	private static final Logger logger = Logger.getLogger(XMLDataPropertyPathElement.class.getPackage().getName());
 
-	public XMLDataPropertyPathElement(IBindingPathElement parent, XMLDataProperty property) {
-		super(parent, property.getName(), property.getType());
+	public XMLDataPropertyPathElement(IBindingPathElement parent, XMLDataProperty property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		this.property = property;
 	}
 
@@ -111,5 +112,14 @@ public class XMLDataPropertyPathElement extends SimplePathElement {
 			throws TypeMismatchException, NullReferenceException {
 		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
 		((XMLIndividual) target).addPropertyValue(prop, value);
+	}
+
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
 	}
 }

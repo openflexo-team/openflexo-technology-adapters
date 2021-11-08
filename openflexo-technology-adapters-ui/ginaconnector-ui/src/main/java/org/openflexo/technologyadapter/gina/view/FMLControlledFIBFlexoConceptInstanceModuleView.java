@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -333,7 +332,7 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -364,7 +363,7 @@ public class FMLControlledFIBFlexoConceptInstanceModuleView extends JPanel imple
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}

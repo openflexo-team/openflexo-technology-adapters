@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
@@ -67,7 +68,7 @@ public final class OSLCBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		logger.warning("Unexpected " + object);
 		return null;
 	}
@@ -87,8 +88,8 @@ public final class OSLCBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		List<SimplePathElement> returned = new ArrayList<>();
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
+		List<SimplePathElement<?>> returned = new ArrayList<>();
 		if (parent instanceof OSLCResource) {
 
 		}
@@ -96,7 +97,7 @@ public final class OSLCBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
+	public List<? extends FunctionPathElement<?>> getAccessibleFunctionPathElements(IBindingPathElement parent, Bindable bindable) {
 		// TODO
 		return Collections.emptyList();
 	}

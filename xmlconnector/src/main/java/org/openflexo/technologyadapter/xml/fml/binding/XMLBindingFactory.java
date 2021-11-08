@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
@@ -69,15 +70,15 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		if (object instanceof XMLDataProperty) {
 			XMLDataProperty attr = (XMLDataProperty) object;
 
-			return new XMLDataPropertyPathElement(parent, attr);
+			return new XMLDataPropertyPathElement(parent, attr, bindable);
 		}
 		else if (object instanceof XMLObjectPropertyImpl) {
 			XMLObjectPropertyImpl attr = (XMLObjectPropertyImpl) object;
-			return new XMLObjectPropertyPathElement(parent, attr);
+			return new XMLObjectPropertyPathElement(parent, attr, bindable);
 
 		}
 		logger.warning("Unexpected " + object);
@@ -93,24 +94,24 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 
-		List<SimplePathElement> returned = new ArrayList<>();
+		List<SimplePathElement<?>> returned = new ArrayList<>();
 
 		if (parent instanceof XMLIndividual) {
 			for (XMLProperty attr : ((XMLIndividual) parent).getType().getProperties()) {
-				returned.add(getSimplePathElement(attr, parent));
+				returned.add(getSimplePathElement(attr, parent, bindable));
 			}
 		}
 
-		returned.addAll(super.getAccessibleSimplePathElements(parent));
+		returned.addAll(super.getAccessibleSimplePathElements(parent, bindable));
 
 		return returned;
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
-		return super.getAccessibleFunctionPathElements(parent);
+	public List<? extends FunctionPathElement<?>> getAccessibleFunctionPathElements(IBindingPathElement parent, Bindable bindable) {
+		return super.getAccessibleFunctionPathElements(parent, bindable);
 	}
 
 }
