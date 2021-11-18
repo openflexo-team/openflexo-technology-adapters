@@ -42,7 +42,7 @@
 			</DropDown>
 			<Label label="value" align="right" index="7" data=""
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
-				visible="!(data.isBorderStyle | data.isAlignmentStyle | data.isColorStyle | data.isPatternStyle)"> format=""
+				visible="!(data.isBorderStyle || data.isAlignmentStyle || data.isColorStyle || data.isPatternStyle)"> format=""
 				icon="" tooltip="" localize="true" enable="" clickAction=""
 				doubleClickAction="" rightClickAction="" enterPressedAction=""
 				valueChangedAction="" valueTransform="" valueValidator="">
@@ -55,7 +55,7 @@
 				valueChangedAction="" valueTransform="" valueValidator="" index="7"
 				data="data.value"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="!(data.isBorderStyle | data.isAlignmentStyle | data.isColorStyle | data.isPatternStyle)">
+				visible="!(data.isBorderStyle || data.isAlignmentStyle || data.isColorStyle || data.isPatternStyle)">
 				<Assignment variable="component.bindable" value="data" />
 				<Dependancy componentName="cellStyleDD" />
 			</Custom>
