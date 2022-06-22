@@ -77,6 +77,10 @@ public class FMLControlledFIBVirtualModelInstanceNature
 	@Override
 	public boolean hasNature(FMLRTVirtualModelInstance virtualModelInstance) {
 
+		if (virtualModelInstance.getVirtualModel() == null) {
+			return false;
+		}
+
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
 		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledFIBVirtualModelNature.INSTANCE)) {
 			return false;
