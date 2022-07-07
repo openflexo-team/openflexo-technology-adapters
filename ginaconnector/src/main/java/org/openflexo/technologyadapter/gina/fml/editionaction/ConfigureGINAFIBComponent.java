@@ -46,11 +46,12 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ReturnException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -84,7 +85,7 @@ public interface ConfigureGINAFIBComponent
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public GINAFIBComponent execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FlexoException {
+		public GINAFIBComponent execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FMLExecutionException {
 
 			// System.out.println("ConfigureGINAFIBComponent for :" + getAssignedFlexoProperty());
 
@@ -122,9 +123,11 @@ public interface ConfigureGINAFIBComponent
 				try {
 					return modelSlot.getTemplateResource().getResourceData();
 				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					throw new FMLExecutionException(e);
 				} catch (ResourceLoadingCancelledException e) {
-					e.printStackTrace();
+					throw new FMLExecutionException(e);
+				} catch (FlexoException e) {
+					throw new FMLExecutionException(e);
 				}
 			}
 			return null;

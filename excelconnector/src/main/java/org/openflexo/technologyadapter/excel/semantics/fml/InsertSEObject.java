@@ -47,9 +47,9 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.editionaction.AbstractAddFlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -201,7 +201,7 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 		}
 
 		@Override
-		public SEFlexoConceptInstance execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public SEFlexoConceptInstance execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 			SEVirtualModelInstance vmi = getVirtualModelInstance(evaluationContext);
 
 			// System.out.println("InsertSEObject for receiver " + getReceiver() + " = " + vmi + " concept=" + getFlexoConceptType());
@@ -216,7 +216,8 @@ public interface InsertSEObject extends AbstractAddFlexoConceptInstance<SEFlexoC
 		}
 
 		@Override
-		protected SEFlexoConceptInstance makeNewFlexoConceptInstance(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		protected SEFlexoConceptInstance makeNewFlexoConceptInstance(RunTimeEvaluationContext evaluationContext)
+				throws FMLExecutionException {
 
 			SEDataArea<?> dataArea = getDataArea(evaluationContext);
 			Integer index = getRowIndex(evaluationContext);

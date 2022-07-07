@@ -40,10 +40,11 @@ package org.openflexo.technologyadapter.docx.fml.editionaction;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.fml.ImageActorReference;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
+import org.openflexo.foundation.nature.ScreenshotService.CouldNotGenerateScreenshotException;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
@@ -61,7 +62,7 @@ public interface GenerateDocXImage extends DocXImageAction {
 		private static final Logger logger = Logger.getLogger(GenerateDocXImage.class.getPackage().getName());
 
 		@Override
-		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			ImageActorReference<DocXDrawingRun> actorReference = (ImageActorReference<DocXDrawingRun>) evaluationContext
 					.getFlexoConceptInstance().getActorReference(getInferedFlexoRole());
@@ -69,7 +70,11 @@ public interface GenerateDocXImage extends DocXImageAction {
 			System.out.println("role=" + getInferedFlexoRole());
 			System.out.println("actorReference=" + actorReference);
 
-			actorReference.generateImage();
+			try {
+				actorReference.generateImage();
+			} catch (CouldNotGenerateScreenshotException e) {
+				throw new FMLExecutionException(e);
+			}
 
 			return actorReference.getModellingElement();
 		}

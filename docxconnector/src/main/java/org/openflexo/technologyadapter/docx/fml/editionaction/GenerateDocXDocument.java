@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -52,6 +51,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.controlgraph.FMLControlGraph;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -125,7 +125,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 		 * Main action
 		 */
 		@Override
-		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			List<DocXElement> elementsToIgnore = new ArrayList<>();
 			appendElementsToIgnore(evaluationContext.getFlexoConceptInstance().getFlexoConcept().getOwner(), elementsToIgnore);
@@ -226,7 +226,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 			catch (Exception e) {
 				e.printStackTrace();
-				throw new FlexoException(e);
+				throw new FMLExecutionException(e);
 			}
 
 			return generatedDocument;

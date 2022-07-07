@@ -46,8 +46,9 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
+import org.openflexo.foundation.fml.rt.ReturnException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -83,7 +84,7 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 		}
 
 		@Override
-		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FlexoException {
+		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FMLExecutionException {
 
 			System.out.println("OK, on cree un fichier DocX. ");
 
@@ -111,9 +112,11 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 					System.out.println("Return " + returned);
 					return returned;
 				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					throw new FMLExecutionException(e);
 				} catch (ResourceLoadingCancelledException e) {
-					e.printStackTrace();
+					throw new FMLExecutionException(e);
+				} catch (FlexoException e) {
+					throw new FMLExecutionException(e);
 				}
 			}
 

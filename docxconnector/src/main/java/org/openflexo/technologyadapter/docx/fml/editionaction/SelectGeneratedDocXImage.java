@@ -45,11 +45,11 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.Getter;
@@ -186,7 +186,7 @@ public interface SelectGeneratedDocXImage extends DocXImageAction {
 		}
 
 		@Override
-		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			// The idea is to access the underying role, asserting this role was assigned to this EditionAction
 			if (getAssignedFlexoRole() != null && getAssignedFlexoRole().getModelSlot() != null) {

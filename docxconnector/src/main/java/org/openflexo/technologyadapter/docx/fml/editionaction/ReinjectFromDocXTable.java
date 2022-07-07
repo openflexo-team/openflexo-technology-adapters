@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.docx.fml.editionaction;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.fml.TableActorReference;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -61,7 +61,7 @@ public interface ReinjectFromDocXTable extends DocXTableAction {
 		private static final Logger logger = Logger.getLogger(ReinjectFromDocXTable.class.getPackage().getName());
 
 		@Override
-		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			TableActorReference<DocXTable> actorReference = (TableActorReference<DocXTable>) evaluationContext.getFlexoConceptInstance()
 					.getActorReference(getInferedFlexoRole());

@@ -45,10 +45,11 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.Getter;
@@ -155,7 +156,7 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 		}
 
 		@Override
-		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			// The idea is to access the underying role, asserting this role was assigned to this EditionAction
 			if (getAssignedFlexoRole() != null && getAssignedFlexoRole().getModelSlot() != null) {
@@ -207,7 +208,11 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 				}
 
 				if (startIndex > -1 && endIndex > -1) {
-					return document.getFragment(document.getElements().get(startIndex), document.getElements().get(endIndex));
+					try {
+						return document.getFragment(document.getElements().get(startIndex), document.getElements().get(endIndex));
+					} catch (FragmentConsistencyException e) {
+						throw new FMLExecutionException(e);
+					}
 				}
 			}
 

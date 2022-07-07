@@ -45,7 +45,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.InvalidArgumentException;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
@@ -55,11 +54,13 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rm.CompilationUnitResource;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
 import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
@@ -82,6 +83,7 @@ import org.openflexo.pamela.validation.ValidationRule;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.SemanticsExcelModelSlot;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.semantics.model.ExcelMappingException;
 import org.openflexo.technologyadapter.excel.semantics.model.SEVirtualModelInstance;
 import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceResource;
 import org.openflexo.technologyadapter.excel.semantics.rm.SEVirtualModelInstanceResourceFactory;
@@ -361,10 +363,10 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 		}
 
 		@Override
-		public SEVirtualModelInstance execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public SEVirtualModelInstance execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			if (getCreationScheme() == null) {
-				throw new InvalidArgumentException("No creation scheme defined");
+				throw new FMLExecutionException("No creation scheme defined");
 			}
 
 			try {
@@ -390,7 +392,7 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 							System.out.println("Setting excelWorkbook: " + excelWorkbook);
 						}
 						else {
-							throw new InvalidArgumentException("No valid connection while creating new SEResource");
+							throw new FMLExecutionException("No valid connection while creating new SEResource");
 						}
 
 					} catch (TypeMismatchException | NullReferenceException | ReflectiveOperationException e) {
@@ -431,12 +433,18 @@ public interface CreateSEResource extends AbstractCreateResource<SemanticsExcelM
 							evaluationContext);*/
 				}
 				else {
-					throw new InvalidArgumentException("SEResource creation must be affected to a SEModelSlot");
+					throw new FMLExecutionException("SEResource creation must be affected to a SEModelSlot");
 				}
 
 				return data;
 			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {
-				throw new FlexoException(e);
+				throw new FMLExecutionException(e);
+			} catch (SaveResourceException e) {
+				throw new FMLExecutionException(e);
+			} catch (ExcelMappingException e) {
+				throw new FMLExecutionException(e);
+			} catch (FlexoException e) {
+				throw new FMLExecutionException(e);
 			}
 
 		}

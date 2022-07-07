@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Getter;
@@ -109,7 +109,7 @@ public interface AddDSLLink extends DSLAction<DSLLink> {
 		}
 
 		@Override
-		public DSLLink execute(RunTimeEvaluationContext evaluationContext) throws InvalidParametersException {
+		public DSLLink execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			DSLLink newLink = null;
 
@@ -117,29 +117,29 @@ public interface AddDSLLink extends DSLAction<DSLLink> {
 
 			try {
 				if (resourceData == null) {
-					throw new InvalidParametersException("Cannot create component in null DSLSystem");
+					throw new FMLExecutionException("Cannot create component in null DSLSystem");
 				}
 				String componentName = getComponentName().getBindingValue(evaluationContext);
 				if (componentName == null) {
-					throw new InvalidParametersException("Create a component requires a name");
+					throw new FMLExecutionException("Create a component requires a name");
 				}
 				DSLSlot fromSlot = getFromSlot().getBindingValue(evaluationContext);
 				if (fromSlot == null) {
-					throw new InvalidParametersException("Create a component requires a start DSLSlot");
+					throw new FMLExecutionException("Create a component requires a start DSLSlot");
 				}
 				DSLSlot toSlot = getToSlot().getBindingValue(evaluationContext);
 				if (toSlot == null) {
-					throw new InvalidParametersException("Create a component requires a end DSLSlot");
+					throw new FMLExecutionException("Create a component requires a end DSLSlot");
 				}
 				newLink = resourceData.getFactory().makeDSLLink(componentName, fromSlot, toSlot);
 				resourceData.addToLinks(newLink);
 
 			} catch (TypeMismatchException e) {
-				e.printStackTrace();
+				throw new FMLExecutionException(e);
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				throw new FMLExecutionException(e);
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				throw new FMLExecutionException(e);
 			}
 
 			return null;

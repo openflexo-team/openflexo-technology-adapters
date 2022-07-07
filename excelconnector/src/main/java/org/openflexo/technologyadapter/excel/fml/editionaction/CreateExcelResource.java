@@ -46,9 +46,11 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
@@ -82,7 +84,7 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 		}
 
 		@Override
-		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			System.out.println("OK, on cree un fichier excel ");
 
@@ -110,7 +112,11 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 				System.out.println("Return " + workbook);
 				return workbook;
 			} catch (ModelDefinitionException | FileNotFoundException | ResourceLoadingCancelledException e) {
-				throw new FlexoException(e);
+				throw new FMLExecutionException(e);
+			} catch (SaveResourceException e) {
+				throw new FMLExecutionException(e);
+			} catch (FlexoException e) {
+				throw new FMLExecutionException(e);
 			}
 
 		}

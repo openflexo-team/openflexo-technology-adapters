@@ -27,11 +27,12 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocTable;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -139,7 +140,7 @@ public interface AddDocXFragment extends TechnologySpecificActionDefiningReceive
 		}
 
 		@Override
-		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			System.out.println("execute  AddDocXFragment(), location=" + getLocation());
 
@@ -155,7 +156,7 @@ public interface AddDocXFragment extends TechnologySpecificActionDefiningReceive
 					e.printStackTrace();
 				}
 				if (location == null) {
-					throw new FlexoException("Could not retrieve location");
+					throw new FMLExecutionException("Could not retrieve location");
 				}
 			}
 
@@ -241,7 +242,11 @@ public interface AddDocXFragment extends TechnologySpecificActionDefiningReceive
 				// System.out.println("document=" + document);
 				// System.out.println("contents=\n" + document.debugStructuredContents());
 
-				return document.getFragment(startElement, endElement);
+				try {
+					return document.getFragment(startElement, endElement);
+				} catch (FragmentConsistencyException e) {
+					throw new FMLExecutionException(e);
+				}
 			}
 
 			// Cannot add at index < 0 !

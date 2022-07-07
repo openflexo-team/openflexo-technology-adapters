@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -76,7 +77,7 @@ public interface GenerateExcelResource extends CreateExcelResource {
 		private static final Logger logger = Logger.getLogger(GenerateExcelResource.class.getPackage().getName());
 
 		@Override
-		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			if (getAssignedModelSlot() != null) {
 				ExcelWorkbookResource templateResource = getAssignedModelSlot().getTemplateResource();
@@ -128,11 +129,13 @@ public interface GenerateExcelResource extends CreateExcelResource {
 					// System.out.println("Return " + generatedDocument);
 					return generatedDocument;
 				} catch (ModelDefinitionException e) {
-					new FlexoException(e);
+					new FMLExecutionException(e);
 				} catch (FileNotFoundException e) {
-					new FlexoException(e);
+					new FMLExecutionException(e);
 				} catch (ResourceLoadingCancelledException e) {
-					new FlexoException(e);
+					new FMLExecutionException(e);
+				} catch (FlexoException e) {
+					new FMLExecutionException(e);
 				}
 			}
 			logger.warning("Could not create resource!");
