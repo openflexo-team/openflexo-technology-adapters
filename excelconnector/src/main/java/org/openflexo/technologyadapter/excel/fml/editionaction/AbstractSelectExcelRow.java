@@ -94,10 +94,18 @@ public interface AbstractSelectExcelRow<AT> extends AbstractFetchRequest<BasicEx
 
 			ExcelWorkbook excelWorkbook = getReceiver(evaluationContext);
 
+			//System.out.println("getReceiver()=" + getReceiver());
+			//System.out.println("getReceiver() valid=" + getReceiver().isValid());
+			//System.out.println("getReceiver() reason=" + getReceiver().invalidBindingReason());
+			//System.out.println("excelWorkbook=" + excelWorkbook);
+
 			List<ExcelRow> selectedExcelRows = new ArrayList<>();
 			ExcelSheet excelSheet;
 			try {
 				excelSheet = getExcelSheet().getBindingValue(evaluationContext);
+
+				//System.out.println("getExcelSheet()=" + getExcelSheet());
+				//System.out.println("excelSheet=" + excelSheet);
 
 				if (excelSheet != null) {
 					selectedExcelRows.addAll(excelSheet.getExcelRows());

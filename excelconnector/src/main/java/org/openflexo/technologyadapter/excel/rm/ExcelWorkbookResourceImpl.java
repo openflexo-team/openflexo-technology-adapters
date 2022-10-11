@@ -85,6 +85,9 @@ public abstract class ExcelWorkbookResourceImpl extends PamelaResourceImpl<Excel
 
 	@Override
 	public BasicExcelModelConverter getConverter() {
+		if (converter == null) {
+			converter = new BasicExcelModelConverter(this);
+		}
 		return converter;
 	}
 

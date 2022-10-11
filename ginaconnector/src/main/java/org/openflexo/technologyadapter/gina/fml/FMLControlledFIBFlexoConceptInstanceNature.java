@@ -75,6 +75,10 @@ public class FMLControlledFIBFlexoConceptInstanceNature implements FlexoConceptI
 	@Override
 	public boolean hasNature(FlexoConceptInstance flexoConceptInstance) {
 
+		if (flexoConceptInstance.getFlexoConcept() == null) {
+			return false;
+		}
+
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
 		if (!flexoConceptInstance.getFlexoConcept().hasNature(FMLControlledFIBFlexoConceptNature.INSTANCE)) {
 			return false;
