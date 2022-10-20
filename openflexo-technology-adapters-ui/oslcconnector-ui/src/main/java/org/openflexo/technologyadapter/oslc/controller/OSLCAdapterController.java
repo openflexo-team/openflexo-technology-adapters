@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -162,7 +163,7 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<OSLCTechnologyAdapter> arg0, FlexoController arg1,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<OSLCTechnologyAdapter> arg0, FlexoController arg1,
 			FlexoPerspective arg2) {
 		if (arg0 instanceof OSLCServiceProviderCatalog) {
 			return new FIBOSLCCatalog((OSLCResource) arg0, arg1);
@@ -199,13 +200,18 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<OSLCTechnologyAdapter> arg0, FlexoController arg1) {
-		if (arg0 instanceof OSLCServiceProviderCatalog) {
-			return true;
-		}
-		return false;
+	public boolean isRepresentableInModuleView(TechnologyObject<OSLCTechnologyAdapter> object) {
+		return object instanceof OSLCServiceProviderCatalog;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<OSLCTechnologyAdapter> object) {
+		if (object instanceof OSLCServiceProviderCatalog) {
+			return object;
+		}
+		return null;
+	}
+	
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return OSLCIconLibrary.iconForObject(objectClass);

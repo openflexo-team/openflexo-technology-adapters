@@ -48,6 +48,7 @@ import javax.swing.JTextArea;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
+import org.openflexo.selection.SelectionManager;
 import org.openflexo.ta.dsl.model.DSLSystem;
 import org.openflexo.view.SelectionSynchronizedModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -146,6 +147,66 @@ public class DSLSystemView extends JPanel implements SelectionSynchronizedModule
 	@Override
 	public void fireEndMultipleSelection() {
 
+	}
+
+	@Override
+	public SelectionManager getSelectionManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<FlexoObject> getSelection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void resetSelection() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addToSelected(FlexoObject object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeFromSelected(FlexoObject object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addToSelected(Vector<? extends FlexoObject> objects) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeFromSelected(Vector<? extends FlexoObject> objects) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSelectedObjects(Vector<? extends FlexoObject> objects) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public FlexoObject getFocusedObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean mayRepresents(FlexoObject anObject) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

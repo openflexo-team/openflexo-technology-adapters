@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.doc.fml.TextBinding;
@@ -193,7 +194,7 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof DocXDocument) {
 			return new DocXDocumentModuleView((DocXDocument) object, perspective);
@@ -230,11 +231,16 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller) {
+	public boolean isRepresentableInModuleView(TechnologyObject<DocXTechnologyAdapter> object) {
+		return object instanceof DocXDocument;
+	}
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<DocXTechnologyAdapter> object) {
 		if (object instanceof DocXDocument) {
-			return true;
+			return object;
 		}
-		return false;
+		return object;
 	}
 
 	@Override

@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
@@ -190,13 +191,27 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller) {
-		if (object instanceof XMLObject) {
+	public boolean isRepresentableInModuleView(TechnologyObject<XMLTechnologyAdapter> object) {
+		if (object instanceof XMLModel) {
+			return true;
+		}
+		else if (object instanceof XMLMetaModel) {
 			return true;
 		}
 		return false;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<XMLTechnologyAdapter> object) {
+		if (object instanceof XMLModel) {
+			return object;
+		}
+		else if (object instanceof XMLMetaModel) {
+			return object;
+		}
+		return null;
+	}
+	
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof XMLObject) {
@@ -206,7 +221,7 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof XMLModel) {
 			return new XMLModelView((XMLModel) object, controller, perspective);

@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
@@ -73,7 +74,7 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1,
 			FlexoPerspective arg2) {
 		return null;
 	}
@@ -89,8 +90,13 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1) {
+	public boolean isRepresentableInModuleView(TechnologyObject<ODTTechnologyAdapter> object) {
 		return false;
+	}
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<ODTTechnologyAdapter> object) {
+		return null;
 	}
 
 	@Override

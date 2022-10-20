@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -189,8 +190,16 @@ public class XXAdapterController extends TechnologyAdapterController<XXTechnolog
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller) {
+	public boolean isRepresentableInModuleView(TechnologyObject<XXTechnologyAdapter> object) {
 		return object instanceof XXText;
+	}
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<XXTechnologyAdapter> object) {
+		if (object instanceof XXText) {
+			return object;
+		}
+		return null;
 	}
 
 	@Override
@@ -202,7 +211,7 @@ public class XXAdapterController extends TechnologyAdapterController<XXTechnolog
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<XXTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof XXText) {
 			XXTextView returned = new XXTextView((XXText) object, controller, perspective);

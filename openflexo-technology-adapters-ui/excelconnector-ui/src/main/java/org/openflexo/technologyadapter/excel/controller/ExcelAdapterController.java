@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.excel.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.fml.rt.controller.view.VirtualModelInstanceView;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -221,7 +222,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
+	public boolean isRepresentableInModuleView(TechnologyObject<ExcelTechnologyAdapter> object) {
 		if (object instanceof SEVirtualModelInstance) {
 			return true;
 		}
@@ -230,7 +231,18 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		}
 		return false;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<ExcelTechnologyAdapter> object) {
+		if (object instanceof SEVirtualModelInstance) {
+			return object;
+		}
+		if (object instanceof ExcelWorkbook) {
+			return object;
+		}
+		return null;
+	}
+	
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
@@ -240,7 +252,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof SEVirtualModelInstance) {
 			return new VirtualModelInstanceView((SEVirtualModelInstance) object, controller, perspective);

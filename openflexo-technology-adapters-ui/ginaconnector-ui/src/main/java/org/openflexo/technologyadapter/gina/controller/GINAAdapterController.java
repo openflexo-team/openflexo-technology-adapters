@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.foundation.task.Progress;
@@ -179,7 +180,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(final TechnologyObject<GINATechnologyAdapter> object, final FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(final TechnologyObject<GINATechnologyAdapter> object, final FlexoController controller,
 			final FlexoPerspective perspective) {
 		if (object instanceof GINAFIBComponent) {
 			return new GINAModuleView((GINAFIBComponent) object, controller, perspective);
@@ -201,10 +202,18 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<GINATechnologyAdapter> obj, FlexoController controller) {
-		return obj instanceof GINAFIBComponent;
+	public boolean isRepresentableInModuleView(TechnologyObject<GINATechnologyAdapter> object) {
+		return object instanceof GINAFIBComponent;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<GINATechnologyAdapter> object) {
+		if (object instanceof GINAFIBComponent) {
+			return object;
+		}
+		return null;
+	}
+	
 	public class LoadFIBEditor extends FlexoTask {
 
 		public LoadFIBEditor() {

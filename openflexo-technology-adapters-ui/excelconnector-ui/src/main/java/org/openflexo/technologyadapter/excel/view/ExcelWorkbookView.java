@@ -39,16 +39,11 @@
 
 package org.openflexo.technologyadapter.excel.view;
 
-import java.util.List;
-import java.util.Vector;
-
 import javax.swing.JTabbedPane;
 
-import org.openflexo.foundation.FlexoObject;
-import org.openflexo.selection.SelectionListener;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
-import org.openflexo.view.SelectionSynchronizedModuleView;
+import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -59,7 +54,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchronizedModuleView<ExcelWorkbook> {
+public class ExcelWorkbookView extends JTabbedPane implements ModuleView<ExcelWorkbook> {
 
 	private final ExcelWorkbook workbook;
 	private final FlexoPerspective declaredPerspective;
@@ -93,13 +88,6 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 	}
 
 	@Override
-	public List<SelectionListener> getSelectionListeners() {
-		Vector<SelectionListener> reply = new Vector<>();
-		reply.add(this);
-		return reply;
-	}
-
-	@Override
 	public void willHide() {
 	}
 
@@ -121,29 +109,5 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 		return false;
 	}
 
-	@Override
-	public void fireObjectSelected(FlexoObject object) {
-
-	}
-
-	@Override
-	public void fireObjectDeselected(FlexoObject object) {
-
-	}
-
-	@Override
-	public void fireResetSelection() {
-
-	}
-
-	@Override
-	public void fireBeginMultipleSelection() {
-
-	}
-
-	@Override
-	public void fireEndMultipleSelection() {
-
-	}
 
 }

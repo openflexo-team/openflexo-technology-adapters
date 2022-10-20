@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -205,12 +206,20 @@ public class DSLAdapterController extends TechnologyAdapterController<DSLTechnol
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
-
+	
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller) {
+	public boolean isRepresentableInModuleView(TechnologyObject<DSLTechnologyAdapter> object) {
 		return object instanceof DSLSystem;
 	}
 
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<DSLTechnologyAdapter> object) {
+		if (object instanceof DSLSystem) {
+			return object;
+		}
+		return null;
+	}
+	
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof DSLSystem) {
@@ -220,7 +229,7 @@ public class DSLAdapterController extends TechnologyAdapterController<DSLTechnol
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<DSLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof DSLSystem) {
 			DSLSystemView returned = new DSLSystemView((DSLSystem) object, controller, perspective);

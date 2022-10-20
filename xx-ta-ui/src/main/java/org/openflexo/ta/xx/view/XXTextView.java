@@ -48,6 +48,7 @@ import javax.swing.JTextArea;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
+import org.openflexo.selection.SelectionManager;
 import org.openflexo.ta.xx.model.XXText;
 import org.openflexo.view.SelectionSynchronizedModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -146,6 +147,59 @@ public class XXTextView extends JPanel implements SelectionSynchronizedModuleVie
 	@Override
 	public void fireEndMultipleSelection() {
 
+	}
+
+	@Override
+	public SelectionManager getSelectionManager() {
+		if (getFlexoController() != null) {
+			return getFlexoController().getSelectionManager();
+		}
+		return null;
+	}
+
+	@Override
+	public Vector<FlexoObject> getSelection() {
+		return getSelectionManager().getSelection();
+	}
+
+	@Override
+	public void resetSelection() {
+		getSelectionManager().resetSelection();
+	}
+
+	@Override
+	public void addToSelected(FlexoObject object) {
+		getSelectionManager().addToSelected(object);
+	}
+
+	@Override
+	public void removeFromSelected(FlexoObject object) {
+		getSelectionManager().removeFromSelected(object);
+	}
+
+	@Override
+	public void addToSelected(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().addToSelected(objects);
+	}
+
+	@Override
+	public void removeFromSelected(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().removeFromSelected(objects);
+	}
+	
+	@Override
+	public void setSelectedObjects(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().setSelectedObjects(objects);
+	}
+
+	@Override
+	public FlexoObject getFocusedObject() {
+		return getSelectionManager().getFocusedObject();
+	}
+
+	@Override
+	public boolean mayRepresents(FlexoObject anObject) {
+		return false;
 	}
 
 }

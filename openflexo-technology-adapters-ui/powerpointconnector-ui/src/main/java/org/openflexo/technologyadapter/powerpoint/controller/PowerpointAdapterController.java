@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.utils.InspectorGroup;
@@ -130,13 +131,18 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller) {
-		if (object instanceof PowerpointSlideshow) {
-			return true;
-		}
-		return false;
+	public boolean isRepresentableInModuleView(TechnologyObject<PowerpointTechnologyAdapter> object) {
+		return object instanceof PowerpointSlideshow;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<PowerpointTechnologyAdapter> object) {
+		if (object instanceof PowerpointSlideshow) {
+			return object;
+		}
+		return object;
+	}
+	
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof PowerpointSlide) {
@@ -146,7 +152,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof PowerpointSlideshow) {
 			return new PowerpointSlideshowView((PowerpointSlideshow) object, controller, perspective);

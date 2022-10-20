@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -545,6 +546,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 		}
 	}
 
+	@Override
 	public SelectionManager getSelectionManager() {
 		if (getFlexoController() != null) {
 			return getFlexoController().getSelectionManager();
@@ -594,6 +596,51 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel
 			}
 		}
 		return object;
+	}
+
+	@Override
+	public Vector<FlexoObject> getSelection() {
+		return getSelectionManager().getSelection();
+	}
+
+	@Override
+	public void resetSelection() {
+		getSelectionManager().resetSelection();
+	}
+
+	@Override
+	public void addToSelected(FlexoObject object) {
+		getSelectionManager().addToSelected(object);
+	}
+
+	@Override
+	public void removeFromSelected(FlexoObject object) {
+		getSelectionManager().removeFromSelected(object);
+	}
+
+	@Override
+	public void addToSelected(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().addToSelected(objects);
+	}
+
+	@Override
+	public void removeFromSelected(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().removeFromSelected(objects);
+	}
+	
+	@Override
+	public void setSelectedObjects(Vector<? extends FlexoObject> objects) {
+		getSelectionManager().setSelectedObjects(objects);
+	}
+
+	@Override
+	public FlexoObject getFocusedObject() {
+		return getSelectionManager().getFocusedObject();
+	}
+
+	@Override
+	public boolean mayRepresents(FlexoObject anObject) {
+		return false;
 	}
 
 }
