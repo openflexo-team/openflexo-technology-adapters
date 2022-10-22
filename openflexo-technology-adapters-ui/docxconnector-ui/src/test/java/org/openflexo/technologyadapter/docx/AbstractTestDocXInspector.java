@@ -188,7 +188,9 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		OpenflexoTestCaseWithGUI.tearDownClass();
-		gcDelegate.tearDown();
+		if (gcDelegate != null) {
+			gcDelegate.tearDown();
+		}
 	}
 
 }
