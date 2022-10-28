@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<GINAFIBComponent id="0" flexoID="-1" userID="FLX">
-  <Panel id="1" borderLeft="0" layout="none" controllerClassName="org.openflexo.gina.controller.FIBController" borderRight="0" border="empty" trackViewPortWidth="true" borderBottom="0" borderTop="0" trackViewPortHeight="true" />
-</GINAFIBComponent>

@@ -1,8 +1,0 @@
-dependencies {
-  // openflexo dep
-  implementation flexoFoundation()
-  // external dep
-  // testing dep
-  testImplementation flexoFoundationTest()
-  testRuntimeOnly flexoTestResources()
-}

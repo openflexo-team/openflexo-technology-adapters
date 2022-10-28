@@ -1,4 +1,4 @@
 openflexo-technology-adapters
 =============================
 
-This repository contains all Openflexo technology adapters maintained by Openflexo team
+This repository contains templates for Openflexo technology adapters

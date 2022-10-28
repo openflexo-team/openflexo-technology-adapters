@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" flexoID="1" name="ToBeRemoved">
-  <Inspector id="1" flexoID="-1" useSpecificDescriptions="false" userID="FLX" inspectorTitle="ToBeRemoved" />
-  <ModelSlot_BasicExcelModelSlot id="2" flexoID="2" isRequired="true" name="excel" userID="FLX" useSpecificDescriptions="false" isReadOnly="false" cloningStrategy="Reference" cardinality="ZeroOne" />
-</VirtualModel>
