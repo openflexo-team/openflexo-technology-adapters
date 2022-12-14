@@ -43,20 +43,20 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.ta.xx.rm.XXTextResource;
 
 /**
- * A {@link ModelFactory} used to manage a XXText<br>
+ * A {@link PamelaModelFactory} used to manage a XXText<br>
  * One instance of this class should be used for each {@link XXTextResource}
  * 
  * @author sylvain
  * 
  */
-public class XXModelFactory extends ModelFactory implements PamelaResourceModelFactory<XXTextResource> {
+public class XXModelFactory extends PamelaModelFactory implements PamelaResourceModelFactory<XXTextResource> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(XXModelFactory.class.getPackage().getName());
@@ -66,7 +66,7 @@ public class XXModelFactory extends ModelFactory implements PamelaResourceModelF
 	private FlexoUndoManager undoManager = null;
 
 	public XXModelFactory(XXTextResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(XXText.class));
+		super(PamelaMetaModelLibrary.getCompoundModelContext(XXText.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 	}

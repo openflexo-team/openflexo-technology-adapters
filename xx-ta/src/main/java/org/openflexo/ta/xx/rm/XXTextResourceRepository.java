@@ -42,7 +42,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.ta.xx.XXTechnologyAdapter;
 import org.openflexo.ta.xx.model.XXText;
 
@@ -60,7 +60,7 @@ public interface XXTextResourceRepository<I> extends TechnologyAdapterResourceRe
 	public static <I> XXTextResourceRepository<I> instanciateNewRepository(XXTechnologyAdapter technologyAdapter,
 			FlexoResourceCenter<I> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(XXTextResourceRepository.class);
+			PamelaModelFactory factory = new PamelaModelFactory(XXTextResourceRepository.class);
 			@SuppressWarnings("unchecked")
 			XXTextResourceRepository<I> newRepository = factory.newInstance(XXTextResourceRepository.class);
 			newRepository.setTechnologyAdapter(technologyAdapter);

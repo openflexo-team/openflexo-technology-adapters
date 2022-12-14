@@ -42,7 +42,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.ta.dsl.DSLTechnologyAdapter;
 import org.openflexo.ta.dsl.model.DSLSystem;
 
@@ -59,9 +59,9 @@ public interface DSLResourceRepository<I> extends TechnologyAdapterResourceRepos
 
 	public static <I> DSLResourceRepository<I> instanciateNewRepository(DSLTechnologyAdapter technologyAdapter,
 			FlexoResourceCenter<I> resourceCenter) {
-		ModelFactory factory;
+		PamelaModelFactory factory;
 		try {
-			factory = new ModelFactory(DSLResourceRepository.class);
+			factory = new PamelaModelFactory(DSLResourceRepository.class);
 			DSLResourceRepository<I> newRepository = factory.newInstance(DSLResourceRepository.class);
 			newRepository.setTechnologyAdapter(technologyAdapter);
 			newRepository.setResourceCenter(resourceCenter);

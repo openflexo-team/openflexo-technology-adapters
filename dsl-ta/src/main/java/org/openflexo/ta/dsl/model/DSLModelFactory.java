@@ -43,21 +43,21 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.converter.RelativePathResourceConverter;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.ta.dsl.rm.DSLResource;
 
 /**
- * A {@link ModelFactory} used to manage a {@link DSLSystem}<br>
+ * A {@link PamelaModelFactory} used to manage a {@link DSLSystem}<br>
  * One instance of this class should be used for each {@link DSLResource}
  * 
  * @author sylvain
  * 
  */
-public class DSLModelFactory extends ModelFactory implements PamelaResourceModelFactory<DSLResource> {
+public class DSLModelFactory extends PamelaModelFactory implements PamelaResourceModelFactory<DSLResource> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(DSLModelFactory.class.getPackage().getName());
@@ -69,7 +69,7 @@ public class DSLModelFactory extends ModelFactory implements PamelaResourceModel
 	private RelativePathResourceConverter relativePathResourceConverter;
 
 	public DSLModelFactory(DSLResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DSLSystem.class));
+		super(PamelaMetaModelLibrary.getCompoundModelContext(DSLSystem.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
