@@ -66,7 +66,7 @@ public class XXModelFactory extends PamelaModelFactory implements PamelaResource
 	private FlexoUndoManager undoManager = null;
 
 	public XXModelFactory(XXTextResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(PamelaMetaModelLibrary.getCompoundModelContext(XXText.class));
+		super(PamelaMetaModelLibrary.retrieveMetaModel(XXText.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 	}

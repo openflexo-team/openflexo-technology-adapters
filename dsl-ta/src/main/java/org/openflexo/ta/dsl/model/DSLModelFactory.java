@@ -69,7 +69,7 @@ public class DSLModelFactory extends PamelaModelFactory implements PamelaResourc
 	private RelativePathResourceConverter relativePathResourceConverter;
 
 	public DSLModelFactory(DSLResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(PamelaMetaModelLibrary.getCompoundModelContext(DSLSystem.class));
+		super(PamelaMetaModelLibrary.retrieveMetaModel(DSLSystem.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
