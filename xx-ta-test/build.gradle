@@ -5,6 +5,12 @@ dependencies {
     implementation testUtils()
     implementation flexoFoundationTest()
 
+	// testing dep
+    testImplementation flexoFoundation()
+    testImplementation flexoFoundationTest()
+    testImplementation fmlCli()
+    testImplementation fmlCliTest()
+
     // Test resource center
     testRuntimeOnly project(':xx-ta-test-rc')
 }

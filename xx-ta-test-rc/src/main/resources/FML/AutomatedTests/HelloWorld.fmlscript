@@ -1,0 +1,9 @@
+// Perform some initialization, display resources and the context
+service ResourceCenterService status;
+resources;
+context;
+
+log "Hello world !";
+
+assert 2+2 == 4;
+
