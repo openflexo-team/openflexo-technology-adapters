@@ -103,7 +103,7 @@ public interface DSLObjectActorReference extends ActorReference<DSLObject> {
 		}
 
 		public DSLResource getDSLResource() {
-			FreeModelSlotInstance<?, ?> msInstance = (FreeModelSlotInstance<?, ?>) getModelSlotInstance();
+			FreeModelSlotInstance<?, ?, ?> msInstance = (FreeModelSlotInstance<?, ?, ?>) getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof DSLResource) {
 				return (DSLResource) msInstance.getResource();
 			}

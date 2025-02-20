@@ -61,6 +61,7 @@ import org.openflexo.ta.dsl.fml.editionaction.AddDSLLink;
 import org.openflexo.ta.dsl.fml.editionaction.SelectUniqueDSLComponent;
 import org.openflexo.ta.dsl.fml.editionaction.SelectUniqueDSLLink;
 import org.openflexo.ta.dsl.model.DSLSystem;
+import org.openflexo.ta.dsl.rm.DSLResource;
 
 /**
  * Implementation of the {@link ModelSlot} class for the DSL-text technology adapter
@@ -77,9 +78,9 @@ import org.openflexo.ta.dsl.model.DSLSystem;
 @ImplementationClass(DSLModelSlot.DSLModelSlotImpl.class)
 @XMLElement
 @FML("DSLModelSlot")
-public interface DSLModelSlot extends FreeModelSlot<DSLSystem> {
+public interface DSLModelSlot extends FreeModelSlot<DSLSystem, DSLResource> {
 
-	public static abstract class DSLModelSlotImpl extends FreeModelSlotImpl<DSLSystem> implements DSLModelSlot {
+	public static abstract class DSLModelSlotImpl extends FreeModelSlotImpl<DSLSystem, DSLResource> implements DSLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DSLModelSlot.class.getPackage().getName());
 

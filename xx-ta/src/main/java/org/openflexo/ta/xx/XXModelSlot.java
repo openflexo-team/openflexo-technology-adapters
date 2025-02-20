@@ -58,6 +58,7 @@ import org.openflexo.ta.xx.fml.editionaction.AddXXLine;
 import org.openflexo.ta.xx.fml.editionaction.SelectUniqueXXLine;
 import org.openflexo.ta.xx.fml.editionaction.SelectXXLine;
 import org.openflexo.ta.xx.model.XXText;
+import org.openflexo.ta.xx.rm.XXTextResource;
 
 /**
  * Implementation of the {@link ModelSlot} class for the XX technology adapter (plain text connector)
@@ -73,9 +74,9 @@ import org.openflexo.ta.xx.model.XXText;
 @ImplementationClass(XXModelSlot.XXModelSlotImpl.class)
 @XMLElement
 @FML("XXModelSlot")
-public interface XXModelSlot extends FreeModelSlot<XXText> {
+public interface XXModelSlot extends FreeModelSlot<XXText, XXTextResource> {
 
-	public static abstract class XXModelSlotImpl extends FreeModelSlotImpl<XXText> implements XXModelSlot {
+	public static abstract class XXModelSlotImpl extends FreeModelSlotImpl<XXText, XXTextResource> implements XXModelSlot {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(XXModelSlot.class.getPackage().getName());

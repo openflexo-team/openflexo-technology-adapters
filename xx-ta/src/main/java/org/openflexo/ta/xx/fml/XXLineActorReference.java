@@ -103,7 +103,7 @@ public interface XXLineActorReference extends ActorReference<XXLine> {
 		}
 
 		public XXTextResource getXXTextResource() {
-			FreeModelSlotInstance<?, ?> msInstance = (FreeModelSlotInstance<?, ?>) getModelSlotInstance();
+			FreeModelSlotInstance<?, ?, ?> msInstance = (FreeModelSlotInstance<?, ?, ?>) getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof XXTextResource) {
 				return (XXTextResource) msInstance.getResource();
 			}
