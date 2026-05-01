@@ -82,7 +82,7 @@ public interface XXLineRole extends FlexoRole<XXLine> {
 
 		@Override
 		public ActorReference<XXLine> makeActorReference(XXLine object, FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory factory = fci.getFactory();
 			XXLineActorReference returned = factory.newInstance(XXLineActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
