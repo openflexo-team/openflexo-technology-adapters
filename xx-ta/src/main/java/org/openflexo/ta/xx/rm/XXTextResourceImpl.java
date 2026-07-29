@@ -161,7 +161,9 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 				try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
 					write(fos);
 				}
-				System.out.println("Renamed " + temporaryFile + " to " + fileToSave);
+				if (logger.isLoggable(Level.FINE)) {
+					logger.fine("Renamed " + temporaryFile + " to " + fileToSave);
+				}
 				FileUtils.rename(temporaryFile, fileToSave);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -202,7 +204,9 @@ public abstract class XXTextResourceImpl extends PamelaResourceImpl<XXText, XXMo
 			do {
 				nextLine = br.readLine();
 				if (nextLine != null) {
-					System.out.println("Ligne lue : " + nextLine);
+					if (logger.isLoggable(Level.FINEST)) {
+						logger.finest("Read line: " + nextLine);
+					}
 					XXLine newLine = getFactory().makeXXLine(nextLine, index);
 					returned.addToLines(newLine);
 					index++;

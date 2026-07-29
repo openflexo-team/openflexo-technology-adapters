@@ -98,7 +98,8 @@ public interface AddXXLine extends XXAction<XXLine> {
 				if (resourceData != null) {
 					Integer lineNumber = getLineNumber().getBindingValue(evaluationContext);
 					if (lineNumber != null) {
-						System.out.println("TODO: addLine not implemented");
+						// TODO: implement actual line insertion for your technology
+						logger.warning("addLine is not implemented yet");
 						resourceData.setIsModified();
 						resourceData.setModified(true);
 

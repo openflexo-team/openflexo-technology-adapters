@@ -64,7 +64,6 @@ import org.openflexo.ta.xx.rm.XXTextResourceRepository;
 @DeclareResourceFactories({ XXTextResourceFactory.class })
 public class XXTechnologyAdapter extends TechnologyAdapter<XXTechnologyAdapter> {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(XXTechnologyAdapter.class.getPackage().getName());
 
 	private static final XXBindingFactory BINDING_FACTORY = new XXBindingFactory();
@@ -88,7 +87,7 @@ public class XXTechnologyAdapter extends TechnologyAdapter<XXTechnologyAdapter> 
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		System.out.println("Tiens: " + contents);
+		logger.fine("isIgnorable called for " + contents);
 		return false;
 	}
 
