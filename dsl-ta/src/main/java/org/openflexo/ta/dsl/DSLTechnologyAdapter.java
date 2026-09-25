@@ -110,7 +110,8 @@ public class DSLTechnologyAdapter extends TechnologyAdapter<DSLTechnologyAdapter
 		DSLResourceRepository<I> returned = resourceCenter.retrieveRepository(DSLResourceRepository.class, this);
 		if (returned == null) {
 			returned = DSLResourceRepository.instanciateNewRepository(this, resourceCenter);
-			resourceCenter.registerRepository(returned, DSLResourceRepository.class, this);
+			// Another thread may have registered one meanwhile: use the registered one (CORE-D-25)
+			returned = resourceCenter.registerRepository(returned, DSLResourceRepository.class, this);
 		}
 		return returned;
 	}
