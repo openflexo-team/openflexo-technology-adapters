@@ -69,7 +69,7 @@ public interface DSLObjectRole<T extends DSLObject> extends FlexoRole<T> {
 
 		@Override
 		public ActorReference<T> makeActorReference(T object, FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory factory = fci.getFactory();
 			ActorReference<T> returned = (ActorReference<T>) factory.newInstance(DSLObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);

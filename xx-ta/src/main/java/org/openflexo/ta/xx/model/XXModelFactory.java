@@ -58,7 +58,6 @@ import org.openflexo.ta.xx.rm.XXTextResource;
  */
 public class XXModelFactory extends PamelaModelFactory implements PamelaResourceModelFactory<XXTextResource> {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(XXModelFactory.class.getPackage().getName());
 
 	private final XXTextResource resource;
@@ -94,7 +93,7 @@ public class XXModelFactory extends PamelaModelFactory implements PamelaResource
 		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
 			undoManager = (FlexoUndoManager) editingContext.getUndoManager();
 			undoManager.addToIgnoreHandlers(ignoreHandler = new IgnoreLoadingEdits(resource));
-			System.out.println("@@@@@@@@@@@@@@@@ START LOADING RESOURCE " + resource.getURI());
+			logger.fine("Start loading resource " + resource.getURI());
 		}
 
 	}
@@ -103,7 +102,7 @@ public class XXModelFactory extends PamelaModelFactory implements PamelaResource
 	public synchronized void stopDeserializing() {
 		if (ignoreHandler != null) {
 			undoManager.removeFromIgnoreHandlers(ignoreHandler);
-			System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
+			logger.fine("End loading resource " + resource.getURI());
 		}
 
 	}

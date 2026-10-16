@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.xx.model.fml;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -52,6 +53,7 @@ import org.openflexo.foundation.fml.cli.CommandInterpreter;
 import org.openflexo.foundation.fml.cli.ParseException;
 import org.openflexo.foundation.fml.cli.command.FMLCommandExecutionException;
 import org.openflexo.foundation.fml.cli.command.FMLScript;
+import org.openflexo.foundation.fml.cli.command.fml.FMLAssertException;
 import org.openflexo.foundation.fml.cli.test.FMLScriptParserTestCase;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
@@ -94,7 +96,11 @@ public class AutomatedTests extends FMLScriptParserTestCase {
 		System.out.println("Parse script " + fmlResource.getRelativePath());
 		script = parseFMLScript(fmlResource, commandInterpreter);
 		checkFMLScript(fmlResource.getRelativePath(), script);
-		script.execute();
+		try {
+			script.execute();
+		} catch (FMLAssertException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	/*	@Test
