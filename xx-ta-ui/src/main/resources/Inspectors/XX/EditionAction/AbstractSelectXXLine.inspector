@@ -13,8 +13,6 @@
 	<FIBVariable name="data"
 		type="org.openflexo.ta.xx.fml.editionaction.AbstractSelectXXLine" />
 	<LocalizedDictionary>
-		<Localized key="Advanced" lang="French" value="Avancé" />
-		<Localized key="Basic" lang="French" value="Basique" />
 	</LocalizedDictionary>
 	<Parameter name="title" value="SelectXXLine action" />
 </Panel>

@@ -24,8 +24,6 @@
 	<FIBVariable name="data"
 		type="org.openflexo.ta.dsl.fml.editionaction.AddDSLComponent" />
 	<LocalizedDictionary>
-		<Localized key="Advanced" lang="French" value="Avancé" />
-		<Localized key="Basic" lang="French" value="Basique" />
 	</LocalizedDictionary>
 	<Parameter name="title" value="AddDSLComponent action" />
 </Panel>
