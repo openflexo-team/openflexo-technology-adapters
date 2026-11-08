@@ -1,0 +1,14 @@
+// Instantiate the template VirtualModel TestXXVM on the XX text XX/Test1.txt
+
+vm = load -r ["http://www.openflexo.org/test/xx/FML/TestXXVM.fml"];
+assert vm != null;
+
+txt = load -r ["http://www.openflexo.org/test/xx/XX/Test1.txt"];
+assert txt != null;
+
+// The instance is created in a temporary resource center
+service ResourceCenterService add_temp_rc;
+model = new TestXXVM(txt.resource) with (name="xxTest");
+assert model != null;
+assert model.text != null;
+assert model.text.lines.size == 5;

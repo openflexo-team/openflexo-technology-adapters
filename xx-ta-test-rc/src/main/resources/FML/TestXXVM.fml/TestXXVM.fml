@@ -1,32 +1,27 @@
-use org.openflexo.technologyadapter.xx.XXModelSlot;
+use org.openflexo.ta.xx.XXModelSlot as XX;
+
+import org.openflexo.ta.xx.model.XXText;
+import org.openflexo.ta.xx.model.XXLine;
 
 /**
- * 
- * @author sylvain
- * @version 0.1
+ * Template VirtualModel of the XX technology adapter: a model slot on an XX text, and a concept playing one of its lines.
+ * Exercised by AutomatedTests/TestXXVM.fmlscript.
  */
-@VirtualModel(uri="http://www.openflexo.org/test/xx/resources/FML/TestXXVM.fml")
-public class TestXXVM {
+@URI("http://www.openflexo.org/test/xx/FML/TestXXVM.fml")
+@Version("0.1")
+public model TestXXVM {
 
-  @XXModelSlot(cardinality=ZeroOne,readOnly=false)  
-  public XXText text;
+	public XXText text with XXModelSlot();
 
-  @FlexoConcept  
-  public class Line {  
-  
-    @XXLineRole(cardinality=ZeroOne,readOnly=false)    
-    public XXLine line;  
-  
-    @CreationScheme    
-    Line:create() {    
-      
-    }    
-  
-    @DeletionScheme    
-    Void delete() {    
-      
-    }    
-  
-  }  
+	create(required Resource<XXText> resource) {
+		connect text using parameters.resource;
+	}
 
+	public concept Line {
+		public XXLine line with XXLineRole();
+		create() {
+		}
+		delete() {
+		}
+	}
 }
