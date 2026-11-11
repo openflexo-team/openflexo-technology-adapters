@@ -95,7 +95,7 @@ public interface DSLSlot extends DSLObject {
 
 		@Override
 		public DSLSystem getResourceData() {
-			return getComponent().getResourceData();
+			return getComponent() != null ? getComponent().getResourceData() : null;
 		}
 
 		@Override
