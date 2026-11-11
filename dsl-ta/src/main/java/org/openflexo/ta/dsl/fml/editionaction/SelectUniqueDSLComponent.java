@@ -43,7 +43,6 @@ import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.DSLModelSlot;
 import org.openflexo.ta.dsl.model.DSLComponent;
 import org.openflexo.ta.dsl.model.DSLSystem;
@@ -56,7 +55,6 @@ import org.openflexo.ta.dsl.model.DSLSystem;
  */
 @ModelEntity
 @ImplementationClass(SelectUniqueDSLComponent.AbstractSelectDSLComponentImpl.class)
-@XMLElement
 @FML("SelectUniqueDSLComponent")
 public interface SelectUniqueDSLComponent
 		extends AbstractSelectDSLComponent<DSLComponent>, UniqueFetchRequest<DSLModelSlot, DSLSystem, DSLComponent> {

@@ -53,15 +53,12 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.DSLModelSlot;
 import org.openflexo.ta.dsl.model.DSLComponent;
 import org.openflexo.ta.dsl.model.DSLSystem;
 
 @ModelEntity
 @ImplementationClass(AddDSLComponent.AddDSLComponentImpl.class)
-@XMLElement
 @FML("AddDSLComponent")
 public interface AddDSLComponent extends DSLAction<DSLComponent> {
 
@@ -69,7 +66,6 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 	public static final String COMPONENT_NAME_KEY = "componentName";
 
 	@Getter(value = COMPONENT_NAME_KEY)
-	@XMLAttribute
 	public DataBinding<String> getComponentName();
 
 	@Setter(COMPONENT_NAME_KEY)

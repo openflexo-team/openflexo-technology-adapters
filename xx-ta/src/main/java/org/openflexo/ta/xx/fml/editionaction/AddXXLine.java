@@ -53,15 +53,12 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.xx.XXModelSlot;
 import org.openflexo.ta.xx.model.XXLine;
 import org.openflexo.ta.xx.model.XXText;
 
 @ModelEntity
 @ImplementationClass(AddXXLine.AddXXLineImpl.class)
-@XMLElement
 @FML("AddXXLine")
 public interface AddXXLine extends XXAction<XXLine> {
 
@@ -69,7 +66,6 @@ public interface AddXXLine extends XXAction<XXLine> {
 	public static final String LINE_NUMBER_KEY = "lineNumber";
 
 	@Getter(value = LINE_NUMBER_KEY)
-	@XMLAttribute
 	public DataBinding<Integer> getLineNumber();
 
 	@Setter(LINE_NUMBER_KEY)

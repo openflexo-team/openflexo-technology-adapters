@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.model.DSLComponent;
 import org.openflexo.ta.dsl.model.DSLLink;
 
@@ -55,7 +54,6 @@ import org.openflexo.ta.dsl.model.DSLLink;
  */
 @ModelEntity
 @ImplementationClass(DSLLinkRole.DSLLinkRoleImpl.class)
-@XMLElement
 @FML("DSLLinkRole")
 public interface DSLLinkRole extends DSLObjectRole<DSLLink> {
 

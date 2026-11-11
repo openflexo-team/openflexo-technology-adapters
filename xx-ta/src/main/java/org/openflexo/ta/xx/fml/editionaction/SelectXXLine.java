@@ -44,7 +44,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.xx.XXModelSlot;
 import org.openflexo.ta.xx.model.XXLine;
 import org.openflexo.ta.xx.model.XXText;
@@ -57,7 +56,6 @@ import org.openflexo.ta.xx.model.XXText;
  */
 @ModelEntity
 @ImplementationClass(SelectXXLine.AbstractSelectXXLineImpl.class)
-@XMLElement
 @FML("SelectXXLine")
 public interface SelectXXLine extends AbstractSelectXXLine<List<XXLine>>, FetchRequest<XXModelSlot, XXText, XXLine> {
 

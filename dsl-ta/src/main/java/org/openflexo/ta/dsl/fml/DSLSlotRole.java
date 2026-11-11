@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.model.DSLSlot;
 
 /**
@@ -54,7 +53,6 @@ import org.openflexo.ta.dsl.model.DSLSlot;
  */
 @ModelEntity
 @ImplementationClass(DSLSlotRole.DSLSlotRoleImpl.class)
-@XMLElement
 @FML("DSLSlotRole")
 public interface DSLSlotRole extends DSLObjectRole<DSLSlot> {
 

@@ -44,7 +44,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.DSLModelSlot;
 import org.openflexo.ta.dsl.model.DSLLink;
 import org.openflexo.ta.dsl.model.DSLSystem;
@@ -57,7 +56,6 @@ import org.openflexo.ta.dsl.model.DSLSystem;
  */
 @ModelEntity
 @ImplementationClass(SelectDSLLink.AbstractSelectDSLLinkImpl.class)
-@XMLElement
 @FML("SelectDSLLink")
 public interface SelectDSLLink extends AbstractSelectDSLLink<List<DSLLink>>, FetchRequest<DSLModelSlot, DSLSystem, DSLLink> {
 

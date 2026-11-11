@@ -54,8 +54,6 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.DSLModelSlot;
 import org.openflexo.ta.dsl.model.DSLLink;
 import org.openflexo.ta.dsl.model.DSLSlot;
@@ -63,7 +61,6 @@ import org.openflexo.ta.dsl.model.DSLSystem;
 
 @ModelEntity
 @ImplementationClass(AddDSLLink.AddDSLLinkImpl.class)
-@XMLElement
 @FML("AddDSLLink")
 public interface AddDSLLink extends DSLAction<DSLLink> {
 
@@ -75,21 +72,18 @@ public interface AddDSLLink extends DSLAction<DSLLink> {
 	public static final String TO_SLOT_KEY = "toSlot";
 
 	@Getter(value = COMPONENT_NAME_KEY)
-	@XMLAttribute
 	public DataBinding<String> getComponentName();
 
 	@Setter(COMPONENT_NAME_KEY)
 	public void setComponentName(DataBinding<String> componentName);
 
 	@Getter(value = FROM_SLOT_KEY)
-	@XMLAttribute
 	public DataBinding<DSLSlot> getFromSlot();
 
 	@Setter(FROM_SLOT_KEY)
 	public void setFromSlot(DataBinding<DSLSlot> slot);
 
 	@Getter(value = TO_SLOT_KEY)
-	@XMLAttribute
 	public DataBinding<DSLSlot> getToSlot();
 
 	@Setter(TO_SLOT_KEY)

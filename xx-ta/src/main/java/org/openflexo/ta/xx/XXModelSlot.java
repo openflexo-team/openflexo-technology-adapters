@@ -51,7 +51,6 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.xx.fml.XXLineActorReference;
 import org.openflexo.ta.xx.fml.XXLineRole;
 import org.openflexo.ta.xx.fml.editionaction.AddXXLine;
@@ -72,7 +71,6 @@ import org.openflexo.ta.xx.rm.XXTextResource;
 @DeclareActorReferences({ XXLineActorReference.class })
 @ModelEntity
 @ImplementationClass(XXModelSlot.XXModelSlotImpl.class)
-@XMLElement
 @FML("XXModelSlot")
 public interface XXModelSlot extends FreeModelSlot<XXText, XXTextResource> {
 

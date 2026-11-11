@@ -51,7 +51,6 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.dsl.fml.DSLComponentRole;
 import org.openflexo.ta.dsl.fml.DSLLinkRole;
 import org.openflexo.ta.dsl.fml.DSLObjectActorReference;
@@ -76,7 +75,6 @@ import org.openflexo.ta.dsl.rm.DSLResource;
 @DeclareActorReferences({ DSLObjectActorReference.class })
 @ModelEntity
 @ImplementationClass(DSLModelSlot.DSLModelSlotImpl.class)
-@XMLElement
 @FML("DSLModelSlot")
 public interface DSLModelSlot extends FreeModelSlot<DSLSystem, DSLResource> {
 
