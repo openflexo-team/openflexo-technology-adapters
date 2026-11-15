@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.xx.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public interface AbstractSelectXXLine<AT> extends AbstractFetchRequest<XXModelSl
 		}
 
 		@Override
-		public List<XXLine> performExecute(RunTimeEvaluationContext evaluationContext) {
+		public List<XXLine> performExecute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			List<XXLine> selectedLines = new ArrayList<>();
 			XXText resourceData = getReceiver(evaluationContext);

@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.xx.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -84,7 +85,7 @@ public interface AddXXLine extends XXAction<XXLine> {
 		}
 
 		@Override
-		public XXLine execute(RunTimeEvaluationContext evaluationContext) {
+		public XXLine execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			XXLine line = null;
 

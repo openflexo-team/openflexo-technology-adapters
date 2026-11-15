@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.dsl.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public interface AbstractSelectDSLComponent<AT> extends AbstractFetchRequest<DSL
 		}
 
 		@Override
-		public List<DSLComponent> performExecute(RunTimeEvaluationContext evaluationContext) {
+		public List<DSLComponent> performExecute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			List<DSLComponent> selectedComponents = new ArrayList<>();
 			DSLSystem resourceData = getReceiver(evaluationContext);

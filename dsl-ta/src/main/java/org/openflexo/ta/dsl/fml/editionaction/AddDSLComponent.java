@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.dsl.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -84,7 +85,7 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 		}
 
 		@Override
-		public DSLComponent execute(RunTimeEvaluationContext evaluationContext) {
+		public DSLComponent execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			DSLComponent newComponent = null;
 
