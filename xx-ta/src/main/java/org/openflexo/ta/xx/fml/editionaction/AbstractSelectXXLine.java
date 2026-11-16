@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.xx.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -79,6 +80,10 @@ public interface AbstractSelectXXLine<AT> extends AbstractFetchRequest<XXModelSl
 
 			List<XXLine> selectedLines = new ArrayList<>();
 			XXText resourceData = getReceiver(evaluationContext);
+			if (resourceData == null) {
+				// A null source (CORE-F-11)
+				throw new FMLNullReferenceError(getStringRepresentation() + ": nothing to select from");
+			}
 
 			if (resourceData != null) {
 				selectedLines.addAll(resourceData.getLines());

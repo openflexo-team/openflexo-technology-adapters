@@ -38,13 +38,13 @@
 
 package org.openflexo.ta.dsl.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
+import org.openflexo.foundation.fml.rt.error.FMLEvaluation;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.validation.BindingIsRequiredAndMustBeValid;
@@ -91,27 +91,18 @@ public interface AddDSLComponent extends DSLAction<DSLComponent> {
 
 			DSLSystem resourceData = getReceiver(evaluationContext);
 
-			try {
-				if (resourceData != null) {
-					String componentName = getComponentName().getBindingValue(evaluationContext);
-					if (componentName != null) {
-						newComponent = resourceData.getFactory().makeDSLComponent(componentName);
-						resourceData.addToComponents(newComponent);
-					}
-					else {
-						logger.warning("Create a component requires a name");
-					}
+			if (resourceData != null) {
+				String componentName = FMLEvaluation.evaluate(getComponentName(), evaluationContext, this);
+				if (componentName != null) {
+					newComponent = resourceData.getFactory().makeDSLComponent(componentName);
+					resourceData.addToComponents(newComponent);
 				}
 				else {
-					logger.warning("Cannot create component in null resource data");
+					throw new FMLNullReferenceError("Create a component requires a name");
 				}
-
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+			}
+			else {
+				throw new FMLNullReferenceError("Cannot create component in null resource data");
 			}
 
 			return newComponent;

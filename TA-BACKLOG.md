@@ -123,3 +123,18 @@ placement (true service vs catalogue-materializing document).
 
 *Keep this list in sync with `TA-CATALOG.md` §4 (roadmap). When a task is picked up, set it
 `IN PROGRESS` and link the branch/PR; when done, mark `DONE` and update the catalogue grid.*
+
+## FML runtime errors
+
+### TA-F-1 — The technology-adapters adapter raises typed FML errors instead of returning null after a warning or a printed stack  ·  `DONE`
+
+**Problem.** Part of `CORE-F-11` phase 6 (`openflexo-core/BACKLOG.md`), done with the other remaining adapters in one batch (asked by the user, 2026-11-16), with the rules settled on the first adapters (xlsx, xml, jdbc, rest, formod, docx): the edition actions caught the failures of their evaluations (four catches printing the stack, or a log), and went on with null after a warning.
+
+**Rules applied (decided with the user on the first adapters).** Evaluations through `FMLEvaluation`; every `execute` / `performExecute` declares `throws FMLExecutionException`; a null receiver, model, document, name or required input is an `FMLNullReferenceError`; a select from a null source is an `FMLNullReferenceError` naming the select; a foreseen failure of the technology an `FMLTechnologyError` with a message of its own; a `ModelDefinitionException` an `FMLInternalError`; a cancelled loading an `FMLCancellation`; a typed failure of `AbstractCreateResource` rethrown unchanged; a log just before a throw removed (the failure is reported once, by the editor); the `System.out` traces of the actions removed. Scope: the paths that FML execution goes through; loading and conversion code left.
+
+**Done (2026-11-16).**
+- dsl-ta: `AddDSLComponent`, `AddDSLLink`: evaluations through `FMLEvaluation`, null inputs are `FMLNullReferenceError`s (they were untyped); `AddDSLLink` returned null even when it created the link: it returns the link.
+- xx-ta (the template of a new adapter): `AddXXLine` evaluations through `FMLEvaluation` (its insertion is still not implemented).
+- The selects of components, links and lines: a null receiver is an `FMLNullReferenceError` (an empty result before).
+
+**Verified (2026-11-16).** dsl-ta-test 5, xx-ta-test 7 green; ECJ compiles dsl-ta and xx-ta. No new test.

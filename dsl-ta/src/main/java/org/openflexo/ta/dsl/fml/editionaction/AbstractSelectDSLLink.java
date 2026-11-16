@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.dsl.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -79,6 +80,10 @@ public interface AbstractSelectDSLLink<AT> extends AbstractFetchRequest<DSLModel
 
 			List<DSLLink> selectedLinks = new ArrayList<>();
 			DSLSystem resourceData = getReceiver(evaluationContext);
+			if (resourceData == null) {
+				// A null source (CORE-F-11)
+				throw new FMLNullReferenceError(getStringRepresentation() + ": nothing to select from");
+			}
 
 			if (resourceData != null) {
 				selectedLinks.addAll(resourceData.getLinks());
