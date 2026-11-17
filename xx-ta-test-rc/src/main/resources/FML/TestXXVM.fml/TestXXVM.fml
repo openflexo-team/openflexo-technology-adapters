@@ -14,7 +14,7 @@ public model TestXXVM {
 	public XXText text with XXModelSlot();
 
 	create(required Resource<XXText> resource) {
-		connect text using parameters.resource;
+		connect text using resource;
 	}
 
 	public concept Line {
