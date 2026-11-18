@@ -48,7 +48,7 @@ import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -88,7 +88,7 @@ public abstract class DSLResourceImpl extends PamelaResourceImpl<DSLSystem, DSLM
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		}
 		return null;

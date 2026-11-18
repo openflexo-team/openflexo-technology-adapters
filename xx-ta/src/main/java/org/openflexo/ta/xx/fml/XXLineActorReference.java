@@ -41,7 +41,7 @@ package org.openflexo.ta.xx.fml;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
@@ -95,7 +95,7 @@ public interface XXLineActorReference extends ActorReference<XXLine> {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
 					e.printStackTrace();
-				} catch (FlexoException e) {
+				} catch (OpenflexoRuntimeException e) {
 					e.printStackTrace();
 				}
 			}
